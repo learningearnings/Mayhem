@@ -9,7 +9,33 @@
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
+*.swp
+*.swn
+*.swo
+*.sw
+config/database.yml
+config/sunspot.yml
+public/uploads/**/*
+
+# Ignore solr stuff
+solr/data/**/*
+log/sunspot-solr-test.log.lck
+
+# Ignore vendor/viator
+/vendor/viator/**/*
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/log/sunspot*
 /tmp
+
+coverage
+
+.yardoc
+chromedriver.log
+
+# Ignore all key files
+lib/keys/*.rb
+
+# Ignore GNU Screen logs
+screenlog.*
