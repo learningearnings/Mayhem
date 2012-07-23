@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.5'
+gem "rails", "~> 3.2.6"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -47,14 +47,28 @@ gem "has_scope"
 gem "responders"
 gem "will_paginate"
 gem "bootstrap-will_paginate"
-gem "letter_opener", :group => :development
 gem "ranked-model"
 gem "squeel"
-gem "rspec-rails", :group => ["development", "test"]
-gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git", :group => :assets
 gem "rack-cache", :require => "rack/cache"
 gem "dragonfly"
 gem "haml-rails"
 gem "nested_form", :git => "git://github.com/ryanb/nested_form.git"
 gem "simple_form"
 gem "country_select"
+
+group :assets do
+  gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
+end
+
+group :development, :test do
+  gem "pry", "~> 0.9.10"
+  gem "letter_opener"
+end
+
+group :test do
+  gem "minitest", "~> 3.2.0"
+  gem "minitest-rails", "~> 0.1.1"
+  gem "spinach", "~> 0.5.2"
+  gem "spinach-rails", "~> 0.1.7"
+  gem "mocha", "~> 0.12.1"
+end

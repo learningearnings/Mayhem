@@ -46,12 +46,4 @@ ActiveRecord::Schema.define(:version => 20120723014331) do
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
-  create_table "bucks", :force => true do |t|
-    t.integer  "user_id"
-    t.float    "amount"
-    t.integer  "otucode_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
 end
