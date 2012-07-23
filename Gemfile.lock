@@ -11,6 +11,13 @@ GIT
     compass_twitter_bootstrap (2.0.3)
       compass
 
+GIT
+  remote: git://github.com/wojtekmach/valid_attribute.git
+  revision: cf96d8b1544ed068a97d694c3124ac86ea37f398
+  branch: minitest-matchers-11
+  specs:
+    valid_attribute (1.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -310,4 +317,5 @@ DEPENDENCIES
   squeel
   therubyracer
   uglifier (>= 1.0.3)
+  valid_attribute!
   will_paginate

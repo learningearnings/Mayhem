@@ -1,6 +1,12 @@
+ENV["RAILS_ENV"] = "test"
+
 # Set up simplecov
 require 'simplecov'
-ENV["RAILS_ENV"] = "test"
+if ENV["JENKINS"]
+  # We use an rcov formatter in the jenkins environment to support code coverage graphs
+  require 'simplecov-rcov'
+  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+end
 SimpleCov.start 'rails'
 
 require File.expand_path('../../config/environment', __FILE__)
@@ -9,7 +15,7 @@ require 'minitest/matchers'
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/reporters'
-#require 'valid_attribute'
+require 'valid_attribute'
 
 require 'mocha'
 
