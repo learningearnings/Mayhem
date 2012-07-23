@@ -157,17 +157,75 @@
 +------------------+--------------------------------+------+-----+---------+----------------+
 </code></pre>
  * tbl\_usertypes
+<pre><code>
++------------+----------------------+-----------+
+| usertypeID | usertype             | status_id |
++------------+----------------------+-----------+
+|          1 | Student              |       200 |
+|          2 | Teacher              |       200 |
+|          3 | Admin                |       200 |
+|          4 | Partner              |       400 |
+|          5 | School Administrator |       400 |
+|          6 | Sales Demo           |       200 |
+|          7 | PBIS Recruitment     |       400 |
+|          8 | School Recruitment   |       400 |
+|          9 | Marketing Agency     |       400 |
+|         10 | Corporate Sales      |       400 |
+|         11 | LE Demo              |       400 |
++------------+----------------------+-----------+
+</code></pre>
  * tbl\_verified
  * tbl\_participatingusers
  * tbl\_school\_ips
  * tbl\_schoolchange
  * tbl\_schoolimages
  * tbl\_schools
+ <pre><code>
++--------------------+-----------------------------------+------+-----+-------------------+----------------+
+| Field              | Type                              | Null | Key | Default           | Extra          |
++--------------------+-----------------------------------+------+-----+-------------------+----------------+
+| schoolID           | int(11)                           | NO   | PRI | NULL              | auto_increment |
+| schooltypeID       | int(11)                           | NO   | MUL | NULL              |                |
+| school             | varchar(255)                      | NO   |     | NULL              |                |
+| min\_grade          | tinyint(4)                        | YES  |     | NULL              |                |
+| max\_grade          | tinyint(4)                        | YES  |     | NULL              |                |
+| schooladdress      | varchar(255)                      | NO   |     | NULL              |                |
+| schooladdress2     | varchar(255)                      | YES  |     | NULL              |                |
+| cityID             | varchar(255)                      | NO   |     | NULL              |                |
+| stateID            | varchar(255)                      | NO   | MUL | NULL              |                |
+| schoolzip          | varchar(255)                      | NO   |     | NULL              |                |
+| schoolphone        | varchar(255)                      | NO   |     | NULL              |                |
+| schoolmailto       | varchar(255)                      | NO   |     | NULL              |                |
+| logo\_path          | varchar(60)                       | YES  |     | NULL              |                |
+| mascot_name        | varchar(30)                       | YES  |     | NULL              |                |
+| schooldemo         | tinyint(1)                        | NO   |     | 0                 |                |
+| createdate         | timestamp                         | NO   |     | CURRENT\_TIMESTAMP |                |
+| status_id          | smallint(5) unsigned              | YES  | MUL | NULL              |                |
+| lat                | decimal(18,12)                    | YES  |     | NULL              |                |
+| lon                | decimal(18,12)                    | YES  |     | NULL              |                |
+| pnt                | point                             | NO   | MUL | NULL              |                |
+| timezone           | varchar(50)                       | YES  |     | NULL              |                |
+| gmtoffset          | decimal(5,0)                      | YES  |     | NULL              |                |
+| distribution\_model | enum('Centralized','Distributed') | NO   |     | Centralized       |                |
+| ad_profile         | tinyint(4)                        | YES  |     | 1                 |                |
++--------------------+-----------------------------------+------+-----+-------------------+----------------+
+</code></pre>
  * tbl\_studentreporting
 
 ## Advertising related
  * tbl\_page
  * tbl\_adsense\_cache (need to talk about this one)
+<pre><code>
++------------------+--------------+------+-----+-------------------+-----------------------------+
+| Field            | Type         | Null | Key | Default           | Extra                       |
++------------------+--------------+------+-----+-------------------+-----------------------------+
+| id               | bigint(11)   | NO   | PRI | NULL              | auto\_increment              |
+| userkey          | varchar(255) | NO   | MUL | NULL              |                             |
+| pagedata         | text         | YES  |     | NULL              |                             |
+| createddate      | timestamp    | NO   | MUL | CURRENT\_TIMESTAMP | on update CURRENT\_TIMESTAMP |
+| adsensefetchdate | datetime     | YES  |     | NULL              |                             |
++------------------+--------------+------+-----+-------------------+-----------------------------+
+</code></pre>
  * tbl\_adblockers (??)
 
 ## Tables that go away
