@@ -63,14 +63,16 @@ end
 group :development, :test do
   gem "pry", "~> 0.9.10"
   gem "letter_opener"
-  gem "spinach-rails", "~> 0.1.7"
-  gem "minitest-rails", "~> 0.1.1"
-  gem "minitest-matchers", "~> 1.2.0"
-  gem "mocha", "~> 0.12.1"
 end
 
 group :test do
   gem "minitest", "~> 3.2.0"
+  gem 'minitest-reporters', '~> 0.8.0'
+  gem 'minitest-matchers', '~> 1.2.0'
   gem "spinach", "~> 0.5.2"
   gem "database_cleaner", "~> 0.8.0"
+  gem "spinach-rails", "~> 0.1.7"
+  gem 'simplecov', '~> 0.6.4'
+  gem 'simplecov-rcov', '~> 0.2.3'
+  gem "mocha", "~> 0.12.1"
 end
