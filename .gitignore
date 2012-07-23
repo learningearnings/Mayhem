@@ -39,3 +39,6 @@ lib/keys/*.rb
 
 # Ignore GNU Screen logs
 screenlog.*
+
+# Emacs stuff
+*~
