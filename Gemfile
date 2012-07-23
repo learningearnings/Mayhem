@@ -79,4 +79,5 @@ group :test do
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
   gem "mocha", "~> 0.12.1"
+  gem 'valid_attribute', git: 'git://github.com/wojtekmach/valid_attribute.git', branch: 'minitest-matchers-11'
 end
