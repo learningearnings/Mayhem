@@ -9,7 +9,7 @@ require 'minitest/matchers'
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/reporters'
-#require 'valid_attribute'
+require 'valid_attribute'
 
 require 'mocha'
 
