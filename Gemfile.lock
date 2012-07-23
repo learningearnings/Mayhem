@@ -108,6 +108,11 @@ GEM
     guard (1.2.3)
       listen (>= 0.4.2)
       thor (>= 0.14.6)
+    guard-minitest (0.5.0)
+      guard (>= 0.4)
+    guard-spinach (0.0.2)
+      guard (>= 1.1)
+      spinach
     haml (3.1.6)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
@@ -133,6 +138,7 @@ GEM
       addressable (~> 2.2.6)
     letter_opener (0.0.2)
       launchy
+    libnotify (0.7.3)
     libv8 (3.3.10.4)
     libwebsocket (0.1.4)
       addressable
@@ -276,10 +282,13 @@ DEPENDENCIES
   devise
   dragonfly
   guard (~> 1.2.3)
+  guard-minitest
+  guard-spinach
   haml-rails
   has_scope
   jquery-rails
   letter_opener
+  libnotify
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)

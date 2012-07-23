@@ -64,6 +64,9 @@ group :development, :test do
   gem "pry", "~> 0.9.10"
   gem "letter_opener"
   gem "guard", "~> 1.2.3"
+  gem "guard-minitest"
+  gem "guard-spinach"
+  gem 'libnotify'
 end
 
 group :test do
