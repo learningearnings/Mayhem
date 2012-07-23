@@ -86,7 +86,7 @@ GEM
       fssm (>= 0.2.7)
       sass (~> 3.1)
     compass-rails (1.0.3)
-      compass (>= 0.12.2, < 0.14)
+      compass (< 0.14, >= 0.12.2)
     country_select (1.0.1)
     database_cleaner (0.8.0)
     devise (2.1.2)
@@ -100,7 +100,7 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     fastercsv (1.5.5)
-    ffi (1.1.0)
+    ffi (1.0.11)
     formtastic (2.1.1)
       actionpack (~> 3.0)
     fssm (0.2.9)
@@ -138,7 +138,8 @@ GEM
       addressable (~> 2.2.6)
     letter_opener (0.0.2)
       launchy
-    libnotify (0.7.3)
+    libnotify (0.7.4)
+      ffi (~> 1.0.11)
     libv8 (3.3.10.4)
     libwebsocket (0.1.4)
       addressable
@@ -282,13 +283,13 @@ DEPENDENCIES
   devise
   dragonfly
   guard (~> 1.2.3)
-  guard-minitest
-  guard-spinach
+  guard-minitest (~> 0.5.0)
+  guard-spinach (~> 0.0.2)
   haml-rails
   has_scope
   jquery-rails
   letter_opener
-  libnotify
+  libnotify (~> 0.7.4)
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
