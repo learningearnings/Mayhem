@@ -108,6 +108,11 @@ GEM
     guard (1.2.3)
       listen (>= 0.4.2)
       thor (>= 0.14.6)
+    guard-minitest (0.5.0)
+      guard (>= 0.4)
+    guard-spinach (0.0.2)
+      guard (>= 1.1)
+      spinach
     haml (3.1.6)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
@@ -278,6 +283,8 @@ DEPENDENCIES
   devise
   dragonfly
   guard (~> 1.2.3)
+  guard-minitest (~> 0.5.0)
+  guard-spinach (~> 0.0.2)
   haml-rails
   has_scope
   jquery-rails
