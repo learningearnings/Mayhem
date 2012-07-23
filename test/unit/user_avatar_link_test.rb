@@ -7,7 +7,7 @@ describe UserAvatarLink do
   end
   describe "Validations" do
     it "wont have a valid user_id when nil" do
-      subject.new.wont have_valid(:user_id).when(nil)
+      subject.new.wont have_valid(:user_id).when(1)
     end
   end
 end
