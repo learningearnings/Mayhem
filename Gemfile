@@ -1,12 +1,8 @@
 source 'https://rubygems.org'
 
 gem "rails", "~> 3.2.6"
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
-
+#gem 'sqlite3'
+gem 'pg'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -18,17 +14,8 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
+  gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
 end
-
-gem 'jquery-rails'
-gem 'activeadmin'
-
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
 
 # Use unicorn as the app server
 # gem 'unicorn'
@@ -39,6 +26,8 @@ gem 'activeadmin'
 # To use debugger
 # gem 'debugger'
 
+gem 'jquery-rails'
+gem 'activeadmin'
 gem "cancan"
 gem "devise"
 gem "therubyracer"
@@ -55,10 +44,6 @@ gem "haml-rails"
 gem "nested_form", :git => "git://github.com/ryanb/nested_form.git"
 gem "simple_form"
 gem "country_select"
-
-group :assets do
-  gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
-end
 
 group :development, :test do
   gem "pry", "~> 0.9.10"
@@ -77,3 +62,5 @@ group :test do
   gem 'simplecov-rcov', '~> 0.2.3'
   gem "mocha", "~> 0.12.1"
 end
+
+gem 'libnotify'
