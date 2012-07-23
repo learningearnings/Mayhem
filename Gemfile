@@ -68,6 +68,7 @@ end
 group :test do
   gem "minitest", "~> 3.2.0"
   gem "minitest-rails", "~> 0.1.1"
+  gem "minitest-matchers", "~> 1.2.0"
   gem "spinach", "~> 0.5.2"
   gem "spinach-rails", "~> 0.1.7"
   gem "mocha", "~> 0.12.1"

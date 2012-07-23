@@ -144,6 +144,8 @@ GEM
     method_source (0.8)
     mime-types (1.19)
     minitest (3.2.0)
+    minitest-matchers (1.2.0)
+      minitest (>= 2.5.0)
     minitest-rails (0.1.1)
       minitest (~> 3.0)
       rails (~> 3.0)
@@ -254,6 +256,7 @@ DEPENDENCIES
   jquery-rails
   letter_opener
   minitest (~> 3.2.0)
+  minitest-matchers (~> 1.2.0)
   minitest-rails (~> 0.1.1)
   mocha (~> 0.12.1)
   nested_form!
