@@ -87,6 +87,7 @@ GEM
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
     country_select (1.0.1)
+    database_cleaner (0.8.0)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -249,6 +250,7 @@ DEPENDENCIES
   compass-rails
   compass_twitter_bootstrap!
   country_select
+  database_cleaner (~> 0.8.0)
   devise
   dragonfly
   haml-rails

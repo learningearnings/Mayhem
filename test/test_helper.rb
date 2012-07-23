@@ -23,3 +23,7 @@ end
 # B) Require this file's code in test_helper.rb
 
 # MiniTest::Rails.override_testunit!
+# Database cleaner.
+require 'database_cleaner'
+DatabaseCleaner.strategy  = :truncation
+MiniTest::Unit.after_tests { DatabaseCleaner.clean }

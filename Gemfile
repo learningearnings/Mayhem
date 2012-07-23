@@ -72,4 +72,5 @@ end
 group :test do
   gem "minitest", "~> 3.2.0"
   gem "spinach", "~> 0.5.2"
+  gem "database_cleaner", "~> 0.8.0"
 end
