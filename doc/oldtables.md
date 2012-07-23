@@ -125,6 +125,37 @@
 ## Students, Teachers and Schools
  * tbl\_userattributes
  * tbl\_users
+<pre><code>
++------------------+--------------------------------+------+-----+---------+----------------+
+| Field            | Type                           | Null | Key | Default | Extra          |
++------------------+--------------------------------+------+-----+---------+----------------+
+| userID           | bigint(11)                     | NO   | PRI | NULL    | auto_increment |
+| schoolID         | int(11)                        | NO   | MUL | 0       |                |
+| grade            | tinyint(4)                     | YES  |     | NULL    |                |
+| usertypeID       | int(11)                        | NO   | MUL | NULL    |                |
+| username         | varchar(65)                    | NO   | MUL | NULL    |                |
+| usergender       | enum('Male','Female')          | YES  |     | NULL    |                |
+| usersalutation   | enum('Mr.','Mrs.','Ms.','Dr.') | YES  |     | NULL    |                |
+| useremail        | varchar(65)                    | YES  |     | NULL    |                |
+| userpass         | varchar(32)                    | NO   | MUL | NULL    |                |
+| userfname        | varchar(50)                    | NO   |     | NULL    |                |
+| userlname        | varchar(50)                    | NO   |     | NULL    |                |
+| dateofbirth      | date                           | YES  |     | NULL    |                |
+| stateID          | int(2)                         | NO   |     | NULL    |                |
+| zipcode          | varchar(5)                     | NO   |     | NULL    |                |
+| usercreated      | datetime                       | NO   |     | NULL    |                |
+| verificationcode | varchar(25)                    | YES  |     | NULL    |                |
+| verificationDate | datetime                       | YES  |     | NULL    |                |
+| userlastlogin    | datetime                       | YES  |     | NULL    |                |
+| userlastloginip  | varchar(15)                    | YES  |     | NULL    |                |
+| status\_id        | smallint(5) unsigned           | YES  | MUL | NULL    |                |
+| point_bal        | int(11)                        | NO   |     | 0       |                |
+| virtual\_bal      | int(11)                        | NO   |     | 0       |                |
+| new\_msgs         | smallint(5) unsigned           | NO   |     | 0       |                |
+| facebookID       | varchar(100)                   | YES  | UNI | NULL    |                |
+| recoverypassword | varchar(100)                   | YES  |     | NULL    |                |
++------------------+--------------------------------+------+-----+---------+----------------+
+</code></pre>
  * tbl\_usertypes
  * tbl\_verified
  * tbl\_participatingusers
