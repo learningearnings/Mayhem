@@ -16,6 +16,7 @@ require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/reporters'
 require 'valid_attribute'
+require 'factory_girl'
 
 require 'mocha'
 
