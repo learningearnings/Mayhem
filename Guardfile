@@ -2,7 +2,7 @@
 # More info at https://github.com/guard/guard#readme
 
 #notification :libnotify, :timeout => 5, :transient => true, :append => false, :urgency => :critical
-notification :libnotify
+#notification :libnotify
 #notification :notifysend
 
 guard 'minitest' do

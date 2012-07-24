@@ -145,8 +145,6 @@ GEM
       addressable (~> 2.2.6)
     letter_opener (0.0.2)
       launchy
-    libnotify (0.7.4)
-      ffi (~> 1.0.11)
     libv8 (3.3.10.4)
     libwebsocket (0.1.4)
       addressable
@@ -296,7 +294,6 @@ DEPENDENCIES
   has_scope
   jquery-rails
   letter_opener
-  libnotify (~> 0.7.4)
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)

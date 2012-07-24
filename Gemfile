@@ -33,7 +33,6 @@ group :development, :test do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
   gem 'guard', '~> 1.2.3'
-  gem 'libnotify', '~> 0.7.4'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
 end
