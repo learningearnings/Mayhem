@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20120723160256) do
-=======
-ActiveRecord::Schema.define(:version => 20120723220807) do
->>>>>>> master
+ActiveRecord::Schema.define(:version => 20120724184942) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -32,7 +28,6 @@ ActiveRecord::Schema.define(:version => 20120723220807) do
   add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
 
-<<<<<<< HEAD
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"
@@ -42,16 +37,19 @@ ActiveRecord::Schema.define(:version => 20120723220807) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "user_avatar_links", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "avatar_id"
+  create_table "people", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "dob"
+    t.integer  "grade"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "type"
+    t.integer  "school_id"
   end
 
-  add_index "user_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
+  add_index "people", ["type"], :name => "index_people_on_type"
 
-=======
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.integer  "school_type_id"
@@ -73,7 +71,15 @@ ActiveRecord::Schema.define(:version => 20120723220807) do
     t.datetime "updated_at",         :null => false
   end
 
->>>>>>> master
+  create_table "user_avatar_links", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "avatar_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "user_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
+
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
@@ -88,11 +94,8 @@ ActiveRecord::Schema.define(:version => 20120723220807) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "username"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.datetime "dob"
-    t.string   "grade"
     t.integer  "school_id"
+    t.integer  "person_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
