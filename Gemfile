@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 3.2.6'
-gem 'sqlite3'
+#gem 'sqlite3'
+gem 'pg'
 
 gem 'jquery-rails'
 gem 'activeadmin'
@@ -27,7 +28,17 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
+  gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
 end
+
+# Use unicorn as the app server
+# gem 'unicorn'
+
+# Deploy with Capistrano
+# gem 'capistrano'
+
+# To use debugger
+# gem 'debugger'
 
 group :development, :test do
   gem 'pry', '~> 0.9.10'
@@ -50,3 +61,5 @@ group :test do
   gem 'valid_attribute', git: 'git://github.com/wojtekmach/valid_attribute.git', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
 end
+
+gem 'libnotify'
