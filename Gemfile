@@ -63,3 +63,4 @@ group :test do
 end
 
 gem 'libnotify'
+gem 'simple_roles'
