@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120724184942) do
+ActiveRecord::Schema.define(:version => 20120725202614) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -37,18 +37,36 @@ ActiveRecord::Schema.define(:version => 20120724184942) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "messages", :force => true do |t|
+    t.integer  "message_body_id"
+    t.integer  "person_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "people", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.string   "type"
     t.integer  "school_id"
+    t.integer  "roles",      :default => 0
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
+
+  create_table "school_addresses", :force => true do |t|
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zip"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "schools", :force => true do |t|
     t.string   "name"
