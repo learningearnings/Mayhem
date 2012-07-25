@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120723160256) do
+ActiveRecord::Schema.define(:version => 20120724184942) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -37,6 +37,40 @@ ActiveRecord::Schema.define(:version => 20120723160256) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "people", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.datetime "dob"
+    t.integer  "grade"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "type"
+    t.integer  "school_id"
+  end
+
+  add_index "people", ["type"], :name => "index_people_on_type"
+
+  create_table "schools", :force => true do |t|
+    t.string   "name"
+    t.integer  "school_type_id"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.string   "school_phone"
+    t.string   "school_mail_to"
+    t.string   "logo_uid"
+    t.string   "logo_name"
+    t.string   "mascot_name"
+    t.boolean  "school_demo"
+    t.string   "status"
+    t.string   "timezone"
+    t.decimal  "gmt_offset"
+    t.string   "distribution_model"
+    t.integer  "ad_profile"
+    t.integer  "school_address_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
   create_table "user_avatar_links", :force => true do |t|
     t.integer  "user_id"
     t.integer  "avatar_id"
@@ -59,6 +93,9 @@ ActiveRecord::Schema.define(:version => 20120723160256) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "username"
+    t.integer  "school_id"
+    t.integer  "person_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

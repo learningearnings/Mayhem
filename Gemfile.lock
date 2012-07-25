@@ -12,6 +12,13 @@ GIT
       compass
 
 GIT
+  remote: git://github.com/vwall/compass-twitter-bootstrap.git
+  revision: 26e3eda96941b050f06758be168e11f511b3d9c7
+  specs:
+    compass_twitter_bootstrap (2.0.3)
+      compass
+
+GIT
   remote: git://github.com/wojtekmach/valid_attribute.git
   revision: cf96d8b1544ed068a97d694c3124ac86ea37f398
   branch: minitest-matchers-11
@@ -106,6 +113,11 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    factory_girl (3.5.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (3.5.0)
+      factory_girl (~> 3.5.0)
+      railties (>= 3.0.0)
     fastercsv (1.5.5)
     ffi (1.0.11)
     formtastic (2.1.1)
@@ -145,6 +157,7 @@ GEM
       addressable (~> 2.2.6)
     letter_opener (0.0.2)
       launchy
+    libnotify (0.7.3)
     libv8 (3.3.10.4)
     libwebsocket (0.1.4)
       addressable
@@ -177,6 +190,7 @@ GEM
     multi_json (1.3.6)
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
+    pg (0.14.0)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -216,6 +230,7 @@ GEM
       ffi (>= 0.5.0)
     rdoc (3.12)
       json (~> 1.4)
+    require_all (1.2.1)
     responders (0.9.2)
       railties (~> 3.1)
     ruby-progressbar (0.0.10)
@@ -233,6 +248,11 @@ GEM
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    simple_roles (0.0.8)
+      activerecord
+      require_all
+      sugar-high
+      sweetloader
     simplecov (0.6.4)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
@@ -251,11 +271,14 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sqlite3 (1.3.6)
     squeel (1.0.7)
       activerecord (~> 3.0)
       activesupport (~> 3.0)
       polyamorous (~> 0.5.0)
+    sugar-high (0.7.0)
+    sweetloader (0.1.6)
+      activesupport (>= 3.0.1)
+      i18n
     therubyracer (0.10.1)
       libv8 (~> 3.3.10)
     thor (0.15.4)
@@ -287,6 +310,7 @@ DEPENDENCIES
   database_cleaner (~> 0.8.0)
   devise
   dragonfly
+  factory_girl_rails
   guard (~> 1.2.3)
   guard-minitest (~> 0.5.0)
   guard-spinach (~> 0.0.2)
@@ -294,11 +318,13 @@ DEPENDENCIES
   has_scope
   jquery-rails
   letter_opener
+  libnotify
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
   mocha (~> 0.12.1)
   nested_form!
+  pg
   pry (~> 0.9.10)
   rack-cache
   rails (~> 3.2.6)
@@ -306,11 +332,11 @@ DEPENDENCIES
   responders
   sass-rails (~> 3.2.3)
   simple_form
+  simple_roles
   simplecov (~> 0.6.4)
   simplecov-rcov (~> 0.2.3)
   spinach (~> 0.5.2)
   spinach-rails (~> 0.1.7)
-  sqlite3
   squeel
   therubyracer
   uglifier (>= 1.0.3)
