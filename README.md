@@ -15,3 +15,28 @@ Run guard to run the tests as you develop:
     bundle exec guard
 
 Then when you change files, tests will run.
+
+### Project Gems
+
+Below are a list of 'important' gems that the project is utilizing:
+
+#### CanCan
+
+CanCan enables us to set up a file to declare what certain groups of users can and cannot do, then we are able to reference those restrictions throughout the site to simplify view logic. The Ability model is the file for configuring abilities, and is initially set up to restrict Teachers, Students, Parents, and LeAdmins.
+
+https://github.com/ryanb/cancan
+
+Assuming a Teacher can manage the site, the last statement here should be true:
+
+    teacher = Teacher.create
+    ability = Ability.new(teacher)
+    message = teacher.messages.create
+    ability.can?(:destroy, message)
+
+Assuming a Student can only read the site, the last statement here should be false:
+
+    student = Student.create
+    ability = Ability.new(student)
+    message = student.messages.create
+    ability.can?(:destroy, message)
+
