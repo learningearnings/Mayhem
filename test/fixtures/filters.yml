@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  minimum_grade: 1
+  maximum_grade: 1
+  nickname: MyString
+
+two:
+  minimum_grade: 1
+  maximum_grade: 1
+  nickname: MyString

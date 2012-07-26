@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  school_id: 1
+  filter_id: 1
+
+two:
+  school_id: 1
+  filter_id: 1
