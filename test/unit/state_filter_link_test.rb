@@ -1,7 +1,7 @@
 require 'test_helper'
 
-describe SchoolFilter do
-  subject { SchoolFilter }
+describe StateFilterLink do
+  subject { StateFilterLink }
 
   it "has the basics down" do
     subject.must_be_kind_of Class

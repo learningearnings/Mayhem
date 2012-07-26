@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20120726014501) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "classroom_filters", :force => true do |t|
+  create_table "classroom_filter_links", :force => true do |t|
     t.integer  "classroom_id"
     t.integer  "filter_id"
     t.datetime "created_at",   :null => false
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(:version => 20120726014501) do
 
   add_index "people", ["type"], :name => "index_people_on_type"
 
-  create_table "person_class_filters", :force => true do |t|
+  create_table "person_class_filter_links", :force => true do |t|
     t.integer  "person_class"
     t.integer  "filter_id"
     t.datetime "created_at",   :null => false
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(:version => 20120726014501) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "school_filters", :force => true do |t|
+  create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
     t.datetime "created_at", :null => false
@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(:version => 20120726014501) do
     t.datetime "updated_at",         :null => false
   end
 
-  create_table "state_filters", :force => true do |t|
+  create_table "state_filter_links", :force => true do |t|
     t.integer  "state_id"
     t.integer  "filter_id"
     t.datetime "created_at", :null => false

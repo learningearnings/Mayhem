@@ -1,4 +1,4 @@
-class StateFilter < ActiveRecord::Base
+class StateFilterLink < ActiveRecord::Base
   belongs_to :state
   belongs_to :filter
 

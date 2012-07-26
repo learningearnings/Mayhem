@@ -1,6 +1,6 @@
-class CreateStateFilters < ActiveRecord::Migration
+class CreateStateFilterLinks < ActiveRecord::Migration
   def change
-    create_table :state_filters do |t|
+    create_table :state_filter_links do |t|
       t.integer :state_id
       t.integer :filter_id
 

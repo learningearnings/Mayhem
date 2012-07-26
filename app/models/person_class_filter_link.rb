@@ -1,4 +1,4 @@
-class PersonClassFilter < ActiveRecord::Base
+class PersonClassFilterLink < ActiveRecord::Base
   belongs_to :filter
 
   attr_accessible :filter_id, :person_class

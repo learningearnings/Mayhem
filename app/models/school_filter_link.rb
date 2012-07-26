@@ -1,4 +1,4 @@
-class SchoolFilter < ActiveRecord::Base
+class SchoolFilterLink < ActiveRecord::Base
   belongs_to :school
   belongs_to :filter
 
