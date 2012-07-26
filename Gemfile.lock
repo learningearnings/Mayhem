@@ -10,11 +10,6 @@ GIT
   specs:
     compass_twitter_bootstrap (2.0.3)
       compass
-
-GIT
-  remote: git://github.com/vwall/compass-twitter-bootstrap.git
-  revision: 26e3eda96941b050f06758be168e11f511b3d9c7
-  specs:
     compass_twitter_bootstrap (2.0.3)
       compass
 
