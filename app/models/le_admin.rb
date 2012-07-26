@@ -1,0 +1,3 @@
+class LeAdmin < Person
+
+end
