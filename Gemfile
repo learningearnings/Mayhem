@@ -64,3 +64,4 @@ end
 
 gem 'libnotify'
 gem 'simple_roles'
+gem 'plutus'

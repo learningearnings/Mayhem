@@ -10,6 +10,11 @@ GIT
   specs:
     compass_twitter_bootstrap (2.0.3)
       compass
+
+GIT
+  remote: git://github.com/vwall/compass-twitter-bootstrap.git
+  revision: 26e3eda96941b050f06758be168e11f511b3d9c7
+  specs:
     compass_twitter_bootstrap (2.0.3)
       compass
 
@@ -186,6 +191,8 @@ GEM
     nokogiri (1.5.5)
     orm_adapter (0.4.0)
     pg (0.14.0)
+    plutus (0.7.0)
+      rails (~> 3.1)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -320,6 +327,7 @@ DEPENDENCIES
   mocha (~> 0.12.1)
   nested_form!
   pg
+  plutus
   pry (~> 0.9.10)
   rack-cache
   rails (~> 3.2.6)
