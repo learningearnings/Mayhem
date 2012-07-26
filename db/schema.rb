@@ -49,11 +49,10 @@ ActiveRecord::Schema.define(:version => 20120725202614) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "type"
     t.integer  "school_id"
-    t.integer  "roles",      :default => 0
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
