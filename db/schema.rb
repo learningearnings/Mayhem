@@ -37,6 +37,21 @@ ActiveRecord::Schema.define(:version => 20120727162005) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "classroom_filter_links", :force => true do |t|
+    t.integer  "classroom_id"
+    t.integer  "filter_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "filters", :force => true do |t|
+    t.integer  "minimum_grade"
+    t.integer  "maximum_grade"
+    t.string   "nickname"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "messages", :force => true do |t|
     t.integer  "message_body_id"
     t.integer  "person_id"
@@ -58,6 +73,13 @@ ActiveRecord::Schema.define(:version => 20120727162005) do
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
+
+  create_table "person_class_filter_links", :force => true do |t|
+    t.integer  "person_class"
+    t.integer  "filter_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
@@ -100,6 +122,13 @@ ActiveRecord::Schema.define(:version => 20120727162005) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "school_filter_links", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.integer  "school_type_id"
@@ -119,6 +148,13 @@ ActiveRecord::Schema.define(:version => 20120727162005) do
     t.integer  "school_address_id"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+  end
+
+  create_table "state_filter_links", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "states", :force => true do |t|
