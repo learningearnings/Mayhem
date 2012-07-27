@@ -40,3 +40,17 @@ Assuming a Student can only read the site, the last statement here should be fal
     message = student.messages.create
     ability.can?(:destroy, message)
 
+#### State Machine
+
+State machine allows us to give a model a status field and keep track of that.
+
+https://github.com/pluginaweek/state_machine/
+
+To Test out:
+
+    a = Person.create
+    a.status    # should equal 'new'
+    a.activate 
+    a.status    # should now equal 'active'
+    a.deactivate 
+    a.status    # should now equal 'inactive'
