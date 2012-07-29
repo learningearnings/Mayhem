@@ -1,27 +1,16 @@
+require "basic_statuses"
+
 class Person < ActiveRecord::Base
-
-  has_one :user
-  attr_accessible :dob, :first_name, :grade, :last_name
+  include BasicStatuses
+  has_many :person_school_links
+  has_many :schools, :through => :person_school_links, :source => :school
   has_many :messages
+  has_one  :user
 
-  state_machine :status, :initial => :new do
-#    after_transition :new => :active, :do => :after_activate
+  has_many :person_school_classroom_links,:through => :person_school_links, :conditions => {:status => 'active'}
+  has_many :classrooms, :through => :person_school_classroom_links, :source => :classroom
 
-    event :activate do
-      transition [:new, :inactive] => :active
-    end
+  attr_accessible :dob, :first_name, :grade, :last_name
 
-    event :deactivate do
-      transition [:new, :active] => :inactive
-    end
-
-    state :new
-    state :active
-    state :inactive
-  end
-
-  def after_activate
-    # do something after going from state 'new' to 'active'
-  end
-
+  validates_presence_of :first_name, :last_name, :grade
 end

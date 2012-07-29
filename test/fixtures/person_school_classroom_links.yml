@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  person_school_link_id: 1
+  status: MyString
+  owner: false
+
+two:
+  person_school_link_id: 1
+  status: MyString
+  owner: false
