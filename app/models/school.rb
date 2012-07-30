@@ -13,4 +13,22 @@ class School < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
 
+  after_create :ensure_account
+
+  def account_name
+    "SCHOOL#{name}"
+  end
+
+  def account
+    Plutus::Asset.find_by_name account_name
+  end
+
+  def balance
+    account.balance
+  end
+
+  private
+  def ensure_account
+    account || Plutus::Asset.create(name: account_name)
+  end
 end
