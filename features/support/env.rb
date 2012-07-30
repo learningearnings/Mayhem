@@ -2,7 +2,7 @@ require './test/test_helper'
 
 # Spinach && Database Cleaner.
 require 'database_cleaner'
-DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.strategy = :transaction
 Spinach.hooks.before_scenario do |scenario_data|
   DatabaseCleaner.start
 end

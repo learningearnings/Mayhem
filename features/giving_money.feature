@@ -4,9 +4,13 @@ Feature: Giving Credits
   As an administrator, I want to give students credits
   As an administrator, I want to give schools credits
   As a teacher, I want to give schools credits
+
+  Background:
+    Given the main account exists
   
   Scenario: End of the Month
     Given a school exists with credits
+     Then that school should have some credits
      When I take away all of the schools credits
      Then that school should have 0 credits
     

@@ -1,4 +1,8 @@
 class GivingCredits < Spinach::FeatureSteps
+  Given 'the main account exists' do
+    Plutus::Liability.create(name: CreditManager.new.main_account_name)
+  end
+
   Given 'I am an administrator' do
     pending 'step not implemented'
   end
@@ -13,6 +17,10 @@ class GivingCredits < Spinach::FeatureSteps
   And 'I take away all of the schools credits' do
     cm = CreditManager.new
     cm.revoke_credits_for_school(@school, @credits)
+  end
+
+  Then 'that school should have some credits' do
+    @school.balance.wont_equal 0
   end
 
   Then 'that school should have 0 credits' do
