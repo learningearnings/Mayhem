@@ -18,8 +18,8 @@ describe CreditManager do
     @mock_transaction = mock "Plutus::Transaction instance"
     @transaction_class.expects(:build).with({
       description: "Credit Transfer",
-      debits:      [{ account: @account1, amount: @amount }],
-      credits:     [{ account: @account2, amount: @amount }]
+      debits:      [{ account: @account2, amount: @amount }],
+      credits:     [{ account: @account1, amount: @amount }]
     }).returns(@mock_transaction)
     @mock_transaction.expects(:save).once
     @credit_manager.transfer_credits(@account1, @account2, @amount)
@@ -42,6 +42,35 @@ describe CreditManager do
       @amount = BigDecimal("500.00")
       @credit_manager.expects(:transfer_credits).with(@school_account_name, @credit_manager.main_account_name, @amount).once
       @credit_manager.revoke_credits_for_school(@school, @amount)
+    end
+
+    describe "dealing with a teacher" do
+      before do
+        @teacher_account_name = "TEACHER17"
+        @teacher = mock "teacher"
+        @teacher.expects(:account_name).returns(@teacher_account_name)
+      end
+
+      it "issues credits to a teacher" do
+        @amount = BigDecimal("500.00")
+        @credit_manager.expects(:transfer_credits).with(@school_account_name, @teacher_account_name, @amount).once
+        @credit_manager.issue_credits_to_teacher(@school, @teacher, @amount)
+      end
+
+      describe "dealing with a student" do
+        before do
+          @school.account_name # Satisfy school expectation...test needs refactoring, this nesting causes problems
+          @student_account_name = "STUDENT17"
+          @student = mock "student"
+          @student.expects(:account_name).returns(@student_account_name)
+        end
+
+        it "issues credits to a student" do
+          @amount = BigDecimal("500.00")
+          @credit_manager.expects(:transfer_credits).with(@teacher_account_name, @student_account_name, @amount).once
+          @credit_manager.issue_credits_to_student(@school, @teacher, @student, @amount)
+        end
+      end
     end
   end
 end

@@ -8,7 +8,7 @@ Fork, then clone the repository to your development environment
 
     gem install bundler
     bundle install
-    rake db:reset db:test:clone test
+    rake db:drop db:create:all db:migrate db:test:clone test
 
 Run guard to run the tests as you develop:
 

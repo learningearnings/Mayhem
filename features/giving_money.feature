@@ -21,7 +21,7 @@ Feature: Giving Credits
 
   Scenario: Giving a teacher credits
     Given a school has 10000 credits to give
-     When it gives a teacher 1000 credits
+     When the school gives a teacher 1000 credits
      Then that teacher should have 1000 credits to give
       And the school should have 9000 credits to give
 

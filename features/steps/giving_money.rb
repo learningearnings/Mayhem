@@ -3,10 +3,6 @@ class GivingCredits < Spinach::FeatureSteps
     Plutus::Liability.create(name: CreditManager.new.main_account_name)
   end
 
-  Given 'I am an administrator' do
-    pending 'step not implemented'
-  end
-
   When 'a school exists with credits' do
     @school = FactoryGirl.create(:school)
     @credits = 20_000
@@ -28,47 +24,61 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   When 'a school exists with a student' do
-    pending 'step not implemented'
+    @school = FactoryGirl.create(:school)
+    @student = FactoryGirl.create(:student)
+    @link = FactoryGirl.create(:person_school_link, school: @school, person: @student)
   end
 
   And 'I give a school 10000 credits' do
-    pending 'step not implemented'
+    @credits = 10_000
+    cm = CreditManager.new
+    cm.issue_credits_to_school(@school, @credits)
   end
 
   Then 'that school should have 10000 credits' do
-    pending 'step not implemented'
-  end
-
-  And 'I have 10000 credits to give' do
-    pending 'step not implemented'
-  end
-
-  And 'I give a teacher 1000 credits' do
-    pending 'step not implemented'
+    @school.balance.must_equal BigDecimal("10000")
   end
 
   Then 'that teacher should have 1000 credits to give' do
-    pending 'step not implemented'
+    @teacher.balance.must_equal BigDecimal('1000')
   end
 
-  And 'I should have 9000 credits to give' do
-    pending 'step not implemented'
+  And 'the school should have 9000 credits to give' do
+    @school.balance.must_equal BigDecimal('9000')
+  end
+
+  Given 'I am a teacher at a school with students' do
+    @school = FactoryGirl.create(:school)
+    @student1 = FactoryGirl.create(:student)
+    @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
+    @student2 = FactoryGirl.create(:student)
+    @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+    @teacher = FactoryGirl.create(:teacher)
+    @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
   end
 
   When 'I have 1000 credits to give' do
-    pending 'step not implemented'
+    @credits = 1000
+    cm = CreditManager.new
+    cm.issue_credits_to_school(@school, @credits)
+    cm.issue_credits_to_teacher(@school, @teacher, @credits)
   end
 
   And 'I give a student 10 credits' do
-    pending 'step not implemented'
+    @student_credits = 10
+    cm = CreditManager.new
+    cm.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
   end
 
   Then 'I should have 990 credits' do
-    pending 'step not implemented'
+    @teacher.balance.must_equal BigDecimal('990')
   end
 
   And 'I give 2 students 5 credits each' do
-    pending 'step not implemented'
+    @student_credits = 5
+    cm = CreditManager.new
+    cm.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
+    cm.issue_credits_to_student(@school, @teacher, @student2, @student_credits)
   end
 
   When 'I have 100 credits' do
@@ -83,7 +93,18 @@ class GivingCredits < Spinach::FeatureSteps
     pending 'step not implemented'
   end
 
+  When 'the school gives a teacher 1000 credits' do
+    @teacher = FactoryGirl.create(:teacher)
+    @teacher_credits = 1_000
+    @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
+    cm = CreditManager.new
+    cm.issue_credits_to_teacher(@school, @teacher, @teacher_credits)
+  end
+
   Given 'a school has 10000 credits to give' do
-    pending 'step not implemented'
+    @school = FactoryGirl.create(:school)
+    @credits = 10_000
+    cm = CreditManager.new
+    cm.issue_credits_to_school(@school, @credits)
   end
 end

@@ -7,11 +7,21 @@ FactoryGirl.define do
   end
 
   factory :person do
-    username "Testable"
     first_name "Testy"
     last_name "McTesterson"
     dob 15.years.ago
     grade 9
+
+    factory :student, class: Student do
+    end
+
+    factory :teacher, class: Teacher do
+    end
+  end
+
+  factory :person_school_link do
+    person
+    school
   end
 
   factory :school do
