@@ -33,3 +33,4 @@ MiniTest::Unit.after_tests { DatabaseCleaner.clean }
 # Set up minitest
 MiniTest::Unit.runner = MiniTest::SuiteRunner.new
 MiniTest::Unit.runner.reporters << MiniTest::Reporters::SpecReporter.new
+MiniTest::Unit.runner.reporters << MiniTest::Reporters::GuardReporter.new
