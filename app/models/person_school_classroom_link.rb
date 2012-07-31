@@ -31,7 +31,8 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
 # There can be an unlimited number of person_id -> school_id combinations that *don't* have status == "active"
 # but only one active one for a person -> school combination
 def validate_unique_with_status
-  pscl = PersonSchoolClassroomLink.where(:person_school_link_id => self.person_school_link_id, :classroom_id => self.classroom_id, :status => 'active')
+#  pscl = PersonSchoolClassroomLink.where(:person_school_link_id => self.person_school_link_id, :classroom_id => self.classroom_id, :status => 'active')
+  pscl = PersonSchoolClassroomLink.where(:person_school_link_id => self.person_school_link_id, :classroom_id => self.classroom_id).status_active
   if self.id
     pscl = pscl.where("id != #{self.id}")
   end

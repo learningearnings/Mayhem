@@ -4,6 +4,7 @@ class FilterFactory
   end
 
   def initialize(conditions = nil)
+    @filter = nil
     # ...
   end
 

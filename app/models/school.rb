@@ -1,10 +1,9 @@
-class School < ActiveRecord::Base
+require "basic_statuses"
 
-  has_many :person_school_links, :conditions => {:status => 'active'}
-  has_many :parents, :through => :person_school_links, :source => :person, :class_name => 'Parent', :conditions => {:status => 'active'}
-  has_many :teachers, :through => :person_school_links, :source => :person, :class_name => 'Teacher', :conditions => {:status => 'active'}
-  has_many :students, :through => :person_school_links, :source => :person, :class_name => 'Student', :conditions => {:status => 'active'}
-  has_many :school_admins, :through => :person_school_links, :source => :person, :class_name => 'SchoolAdmin', :conditions => {:status => 'active'}
+class School < ActiveRecord::Base
+  include BasicStatuses
+
+  has_many :person_school_links
 
   attr_accessible :ad_profile, :school_address_id, :distribution_model, :gmt_offset,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
@@ -14,6 +13,25 @@ class School < ActiveRecord::Base
   validates_uniqueness_of :name
 
   after_create :ensure_account
+
+  # Relationships
+  def person_school_links(status = :status_active)
+    PersonSchoolLink.where(school_id: self.id).send(status)
+  end
+  def parents(status = :status_active)
+    Parent.joins(:person_school_links).merge(person_school_links(status)).send(status)
+  end
+  def teachers(status = :status_active)
+    Teacher.joins(:person_school_links).merge(person_school_links(status)).send(status)
+  end
+  def school_admins(status = :status_active)
+    SchoolAdmin.joins(:person_school_links).merge(person_school_links(status)).send(status)
+  end
+  def students(status = :status_active)
+    Student.joins(:person_school_links).merge(person_school_links(status)).send(status)
+  end
+  # End Relationships
+
 
   def account_name
     "SCHOOL#{name}"

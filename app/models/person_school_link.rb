@@ -1,10 +1,9 @@
 require 'basic_statuses'
 
 class PersonSchoolLink < ActiveRecord::Base
-  scope :active_status, where(:status => 'active')
-  scope :not_this_id, where("id != #{@id}")
   state_machine :status, :initial => :active do
   end
+  scope :not_this_id, where("id != #{@id}")
   include BasicStatuses
 
   belongs_to :school
@@ -26,6 +25,20 @@ class PersonSchoolLink < ActiveRecord::Base
     end
   end
 
+  # Relationships
+  def person_school_classroom_links(status = :status_active)
+    PersonSchoolClassroomLink.where(person_school_link_id: self.id).send(status)
+  end
+
+  def classrooms(status = :status_active)
+    Classroom.joins(:person_school_classroom_links).merge(person_school_classroom_links(status)).send(status)
+  end
+
+  # End Relationships
+
+
+
+
 
 ################### Validations ########################
 
@@ -33,7 +46,7 @@ class PersonSchoolLink < ActiveRecord::Base
 # There can be an unlimited number of person_id -> school_id combinations that *don't* have status == "active"
 # but only one active one for a person -> school combination
 def validate_unique_with_status
-  psl = PersonSchoolLink.where(:person_id => self.person_id, :school_id => self.school_id, :status => 'active')
+  psl = PersonSchoolLink.where(:person_id => self.person_id, :school_id => self.school_id).status_active
   if self.id
     psl = psl.where("id != #{self.id}")
   end

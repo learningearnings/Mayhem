@@ -23,7 +23,7 @@ FactoryGirl.define do
     school_mail_to "school@test.com"
     mascot_name "Bubbles"
     school_demo false
-    status "Acive"
+    status "active"
     logo_name "Logo"
     logo_uid "2323"
     timezone "Central"

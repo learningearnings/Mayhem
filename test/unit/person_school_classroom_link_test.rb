@@ -42,8 +42,10 @@ describe PersonSchoolClassroomLink do
       psl = PersonSchoolLink.new(:person_id => p.id,:school_id => s.id)
       psl.must_be :valid?
       psl.save
+      psl.activate
       c = Classroom.new(:name => "Classroom - is valid with classroom_id and person_school_link_id")
       c.valid?
+      c.activate
       c.save
       pscl = subject.new(:person_school_link_id => psl.id, :classroom_id => c.id)
       pscl.must_be :valid?
@@ -63,8 +65,10 @@ describe PersonSchoolClassroomLink do
       psl = PersonSchoolLink.new(:person_id => p.id,:school_id => s.id)
       psl.must_be :valid?
       psl.save
+      psl.activate
       c = Classroom.new(:name => "Classroom - is valid with classroom_id and person_school_link_id")
       c.valid?
+      c.activate
       c.save
       pscl = subject.new(:person_school_link_id => psl.id, :classroom_id => c.id)
       pscl.must_be :valid?

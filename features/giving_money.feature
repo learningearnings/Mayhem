@@ -7,13 +7,13 @@ Feature: Giving Credits
 
   Background:
     Given the main account exists
-  
+
   Scenario: End of the Month
     Given a school exists with credits
      Then that school should have some credits
      When I take away all of the schools credits
      Then that school should have 0 credits
-    
+
   Scenario: First of the Month
     Given a school exists with a student
      When I give a school 10000 credits
@@ -36,7 +36,7 @@ Feature: Giving Credits
      When I have 1000 credits to give
       And I give 2 students 5 credits each
      Then I should have 990 credits
-    
+
   Scenario: Students spending credits
     Given I am a student
      When I have 100 credits

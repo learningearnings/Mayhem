@@ -38,11 +38,13 @@ describe PersonSchoolLink do
       s.save
       p.save
       p.activate
+      s.activate
 
       psl = subject.new
       psl.link({:school => s, :person => p })
       psl.must_be :valid?
       psl.save
+      psl.activate
       s1 = School.find(s.id)
       p1 = Student.find(p.id)
       p1.schools.must_include(s)
@@ -56,19 +58,35 @@ describe PersonSchoolLink do
       s.save
       p.save
       p.activate
+      s.activate
 
       psl = subject.new
       psl.link({:school => s, :person => p })
       psl.must_be :valid?
+      psl.activate
       psl.save
       pslid = psl.id
-      psl = subject.new
-      psl.link({:school => s, :person => p })
-      psl.wont_be :valid?
-      s1 = School.find(s.id)
-      p1 = Student.find(p.id)
-      p1.schools.must_include(s)
-      s1.students.must_include(p)
+      psl1 = subject.new
+      psl1.link({:school => s, :person => p })
+      psl1.wont_be :valid?
+      p.reload
+      s.reload
+      p.schools.must_include(s)
+      s.students.must_include(p)
+      s.deactivate
+      p.deactivate
+      p.reload
+      s.reload
+      p.schools.wont_include(s)
+      s.students.wont_include(p)
+      p.activate
+      s.activate
+      psl.deactivate
+      psl.save
+      p.reload
+      s.reload
+      p.schools.wont_include(s)
+      s.students.wont_include(p)
     end
   end
 

@@ -15,5 +15,9 @@ module BasicStatuses
       state :active
       state :inactive
     end
+    scope :status_active, where(:status => 'active')
+    scope :status_inactive, where(:status => 'inactive')
+    scope :status_new, where(:status => 'new')
+    scope :status_all, where(:status => ['new','inactive','active'])
   end
 end
