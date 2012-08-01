@@ -1,0 +1,41 @@
+body {
+  margin-top: 50px;
+  font-size: 66.67%;
+}
+
+.body-content {
+  min-height: 500px;
+}
+
+footer {
+  color: $supporting-text-color;
+  .container {
+    position: relative;
+    .secondary-nav {
+      position: absolute;
+      right: 0;
+      top: 0;
+      li {
+        display: inline-block;
+        margin-right: 1em;
+      }
+    }
+  }
+}
+
+.boxes {
+  .big-box {
+    min-height: 32.5em;
+    background-color: $primary-background;
+  }
+  .side-box {
+    min-height: 15em;
+    background-color: $primary-background;
+    margin-bottom: 2.5em;
+  }
+}
+
+.image-placeholder {
+  min-height: 8em;
+  background-color: $primary-background;
+}

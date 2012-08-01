@@ -1,4 +1,6 @@
 Leror::Application.routes.draw do
+  root to: 'high_voltage/pages#show', :id => 'home'
+
   ActiveAdmin.routes(self)
 
   devise_for :users
