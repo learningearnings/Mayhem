@@ -62,7 +62,8 @@ group :test do
   gem 'factory_girl_rails'
 end
 
-gem 'libnotify'
+gem 'libnotify' if /linux/ =~ RUBY_PLATFORM
+gem 'growl' if /darwin/ =~ RUBY_PLATFORM
 gem 'simple_roles'
 gem 'plutus'
 gem 'state_machine'

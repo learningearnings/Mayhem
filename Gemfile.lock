@@ -10,8 +10,6 @@ GIT
   specs:
     compass_twitter_bootstrap (2.0.3)
       compass
-    compass_twitter_bootstrap (2.0.3)
-      compass
 
 GIT
   remote: git://github.com/wojtekmach/valid_attribute.git
@@ -119,6 +117,7 @@ GEM
       actionpack (~> 3.0)
     fssm (0.2.9)
     gherkin-ruby (0.2.1)
+    growl (1.0.3)
     guard (1.2.3)
       listen (>= 0.4.2)
       thor (>= 0.14.6)
@@ -152,7 +151,6 @@ GEM
       addressable (~> 2.2.6)
     letter_opener (0.0.2)
       launchy
-    libnotify (0.7.3)
     libv8 (3.3.10.4)
     libwebsocket (0.1.4)
       addressable
@@ -309,6 +307,7 @@ DEPENDENCIES
   devise
   dragonfly
   factory_girl_rails
+  growl
   guard (~> 1.2.3)
   guard-minitest (~> 0.5.0)
   guard-spinach (~> 0.0.2)
@@ -316,7 +315,6 @@ DEPENDENCIES
   has_scope
   jquery-rails
   letter_opener
-  libnotify
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
