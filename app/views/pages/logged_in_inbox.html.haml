@@ -6,7 +6,7 @@
 #inbox-accordion.accordion.inbox
   .accordion-group
     .accordion-heading
-      = link_to 'Friend Messages', '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+      = link_to 'Friend Messages (2)', '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
     #friend-messages.accordion-body.collapse.in
       .accordion-inner
         .message
@@ -19,8 +19,34 @@
             Lipsum
   .accordion-group
     .accordion-heading
-      = link_to 'School Messages', '#school-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+      = link_to 'School Messages (2)', '#school-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
     #school-messages.accordion-body.collapse
+      .accordion-inner
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
+  .accordion-group
+    .accordion-heading
+      = link_to 'Teacher Messages (0)', '#teacher-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+    #teacher-messages.accordion-body.collapse
+      .accordion-inner
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
+  .accordion-group
+    .accordion-heading
+      = link_to 'System Messages (0)', '#system-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+    #system-messages.accordion-body.collapse
       .accordion-inner
         .message
           .image= image_tag("http://placekitten.com/50/50")

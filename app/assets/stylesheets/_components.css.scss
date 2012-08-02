@@ -15,6 +15,11 @@
   background-color: $primary-background;
 }
 
+.primary-image {
+  min-height: 20em;
+  background-color: $primary-background;
+}
+
 .message {
   margin-bottom: 1em;
   .image {
@@ -24,5 +29,31 @@
   .content {
     display: inline-block;
     vertical-align: top;
+  }
+}
+
+.sorting-interface {
+  .sorting-interface-header {
+    position: relative;
+  }
+  .sorting-interface-sorter {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .pagination-wrapper {
+    position: relative;
+    height: 40px;
+    .pagination {
+      margin-top: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+  .sorting-interface-contents {
+    &> .row {
+      margin-top: 2em;
+    }
   }
 }
