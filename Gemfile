@@ -23,7 +23,7 @@ gem 'nested_form', :git => 'git://github.com/ryanb/nested_form.git'
 gem 'simple_form'
 gem 'country_select'
 gem 'high_voltage'
-
+gem 'whereabouts', '~> 0.8.0'
 group :assets do
   gem 'compass_twitter_bootstrap', :git => 'git://github.com/vwall/compass-twitter-bootstrap.git'
   gem 'sass-rails',   '~> 3.2.3'
