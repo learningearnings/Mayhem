@@ -53,7 +53,15 @@
   }
   .sorting-interface-contents {
     &> .row {
-      margin-top: 2em;
+      padding-bottom: 1em;
+      padding-top: 1em;
+      border-bottom: 1px solid $primary-border;
     }
+  }
+}
+
+.press-releases {
+  .press-release {
+    margin-bottom: 2em;
   }
 }
