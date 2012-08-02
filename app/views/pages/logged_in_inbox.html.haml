@@ -3,7 +3,32 @@
 %p
   Lipsum
 
-%p
-  Accordion goes here...
+#inbox-accordion.accordion.inbox
+  .accordion-group
+    .accordion-heading
+      = link_to 'Friend Messages', '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+    #friend-messages.accordion-body.collapse.in
+      .accordion-inner
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
+  .accordion-group
+    .accordion-heading
+      = link_to 'School Messages', '#school-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+    #school-messages.accordion-body.collapse
+      .accordion-inner
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
+        .message
+          .image= image_tag("http://placekitten.com/50/50")
+          .content
+            Lipsum
 
 = link_to "Send a message", '#', class: 'btn'

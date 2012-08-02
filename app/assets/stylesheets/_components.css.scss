@@ -14,3 +14,15 @@
   min-height: 8em;
   background-color: $primary-background;
 }
+
+.message {
+  margin-bottom: 1em;
+  .image {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .content {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
