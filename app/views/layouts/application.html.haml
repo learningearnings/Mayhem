@@ -13,7 +13,7 @@
       .supplemental
         .login.supplemental-part
           %h4 Log In
-          %form
+          %form{ action: page_path('logged_in_home') }
             %label User Name:
             %input
             %label Password:
