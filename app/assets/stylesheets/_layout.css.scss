@@ -1,6 +1,42 @@
+/* apply a natural box layout model to all elements */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
 body {
-  margin-top: 50px;
   font-size: 66.67%;
+}
+
+input, textarea, select {
+  height: 26px; /* Fix for box-sizing in twitter bootstrap */
+}
+
+.head {
+  position: relative;
+  .logo {
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+    background-color: $primary-background;
+  }
+  .supplemental {
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    .supplemental-part {
+      display: inline-block;
+      vertical-align: top;
+      min-width: 150px;
+      margin-right: 1em;
+      &.join {
+        .btn {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.navbar-inner {
+  border-radius: 0;
 }
 
 .body-content {
@@ -21,21 +57,4 @@ footer {
       }
     }
   }
-}
-
-.boxes {
-  .big-box {
-    min-height: 32.5em;
-    background-color: $primary-background;
-  }
-  .side-box {
-    min-height: 15em;
-    background-color: $primary-background;
-    margin-bottom: 2.5em;
-  }
-}
-
-.image-placeholder {
-  min-height: 8em;
-  background-color: $primary-background;
 }

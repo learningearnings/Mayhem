@@ -1,0 +1,70 @@
+%h2 My Bank Header
+
+.row
+  .span8
+    %p Lipsum
+
+    .bank-account
+      %h4 My Account
+      .balances
+        %p Checking Balance: $200.00
+        %p Savings Balance: $100.00
+      .actions
+        = link_to "Transfer Credits", "#", class: 'btn'
+    = link_to "View Checking History", "#", class: 'btn'
+    = link_to "View Savings History", "#", class: 'btn'
+    = link_to "View Credit History", "#", class: 'btn'
+
+    .pending-credits
+      %h4 Pending Credits
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th Source
+            %th Date
+            %th{ colspan: 99 } Amount
+        %tbody
+          %tr
+            %td Food Fight Winnings
+            %td 07/05/2012
+            %td 1.42
+            %td= link_to "Claim Credits", "#", class: 'btn'
+          %tr
+            %td Teacher Defined Task
+            %td 07/05/2012
+            %td 25.00
+            %td= link_to "Claim Credits", "#", class: 'btn'
+          %tr
+            %td Concentration
+            %td 07/05/2012
+            %td .27
+            %td Need 0.73 more to claim
+      .actions
+        = link_to "Enter Codes", "#", class: 'btn'
+  .span4
+    %h3 Rewards Highlights
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        lipsum
+    %hr
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        lipsum
+    %hr
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        lipsum
+    %hr
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        lipsum
+    %hr
+    = link_to "Redeem Credits", "#", class: 'btn'

@@ -1,0 +1,16 @@
+.boxes {
+  .big-box {
+    min-height: 32.5em;
+    background-color: $primary-background;
+  }
+  .side-box {
+    min-height: 15em;
+    background-color: $primary-background;
+    margin-bottom: 2.5em;
+  }
+}
+
+.image-placeholder {
+  min-height: 8em;
+  background-color: $primary-background;
+}

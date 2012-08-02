@@ -7,10 +7,28 @@
     = csrf_meta_tags
 
   %body
-    .navbar.navbar-fixed-top
+    .head
+      .logo
+        logo
+      .supplemental
+        .login.supplemental-part
+          %h4 Log In
+          %form
+            %label User Name:
+            %input
+            %label Password:
+            %input
+            .actions
+              %button.btn Sign In
+              = link_to "Forgot Password"
+        .join.supplemental-part
+          %h4 Join
+          %p= link_to "Students", "#", class: 'btn'
+          %p= link_to "Educators", "#", class: 'btn'
+          %p= link_to "Parents", "#", class: 'btn'
+    .navbar
       .fill.navbar-inner
         .container
-          = link_to 'Learning Earnings', '/', :class => 'brand'
           = render 'layouts/menu'
 
     .container
@@ -18,5 +36,4 @@
       .body-content
         .row
           .span12= yield
-    .clear
     = render "layouts/footer"
