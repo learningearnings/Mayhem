@@ -32,4 +32,19 @@ describe School do
     Plutus::Asset.expects(:find_by_name).with("SCHOOLfoo").returns(account)
     school.account.must_equal account
   end
+
+  it "can add an address to a school" do
+    bama = State.find_by_abbr('AL')
+    a = Address.new(:line1 => '4630 Wooddale Lane',
+                    :city => 'Pelham',
+                    :state => bama,
+                    :zip => '35124')
+    s = Factory.create(:school)
+    s.addresses << a
+    s.addresses.wont_be_empty
+    puts "Bama :" + bama.to_yaml.to_s
+    puts "Addresses:" + s.addresses.to_yaml.to_s
+    s.addresses[0].state.abbr.must_be_equal('AL')
+  end
+
 end
