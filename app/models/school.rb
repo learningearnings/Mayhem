@@ -4,6 +4,8 @@ class School < ActiveRecord::Base
   include BasicStatuses
 
   has_many :person_school_links
+  has_many :school_filter_links, :inverse_of => :schools
+  has_many :filters, :through => :school_filter_links
 
   attr_accessible :ad_profile, :school_address_id, :distribution_model, :gmt_offset,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,

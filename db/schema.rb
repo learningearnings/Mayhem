@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120731144313) do
+ActiveRecord::Schema.define(:version => 20120731220448) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(:version => 20120731144313) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
+
+  add_index "classroom_filter_links", ["filter_id", "classroom_id"], :name => "index_classroom_filter_links_on_filter_id_and_classroom_id", :unique => true
 
   create_table "classrooms", :force => true do |t|
     t.string   "name"
@@ -85,6 +87,8 @@ ActiveRecord::Schema.define(:version => 20120731144313) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
+
+  add_index "person_class_filter_links", ["filter_id", "person_class"], :name => "index_person_class_filter_links_on_filter_id_and_person_class", :unique => true
 
   create_table "person_school_classroom_links", :force => true do |t|
     t.integer  "person_school_link_id"
@@ -151,6 +155,8 @@ ActiveRecord::Schema.define(:version => 20120731144313) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "school_filter_links", ["filter_id", "school_id"], :name => "index_school_filter_links_on_filter_id_and_school_id", :unique => true
+
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.integer  "school_type_id"
@@ -178,6 +184,8 @@ ActiveRecord::Schema.define(:version => 20120731144313) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "state_filter_links", ["filter_id", "state_id"], :name => "index_state_filter_links_on_filter_id_and_state_id", :unique => true
 
   create_table "states", :force => true do |t|
     t.string   "name"

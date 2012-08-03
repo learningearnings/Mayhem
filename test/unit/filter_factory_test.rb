@@ -4,6 +4,8 @@ describe FilterFactory do
   subject { FilterFactory }
 
   before do
+
+    require "#{Rails.root}/db/seeds.rb"
     @school_1 = School.create(:name => "FilterFactory School 1")
     @school_2 = School.create(:name => "FilterFactory School 2")
     @school_3 = School.create(:name => "FilterFactory School 3")
@@ -107,4 +109,37 @@ describe FilterFactory do
   it "has the basics down" do
     subject.must_be_kind_of Class
   end
+
+  it "can find the all inclusive filter" do
+    ff = FilterFactory.new
+    f = ff.find_or_create_filter
+    f.wont_be_nil
+  end
+
+  it "can create a filter that doesn't exist" do
+    fc = FilterConditions.new
+    fc << @school_1
+    ff = FilterFactory.new
+    f = ff.find_or_create_filter(fc)
+    f.must_be :valid?
+    f.wont_be_nil
+    f.save
+    f.id.wont_be_nil
+  end
+
+  it "can create a filter and find it later" do
+    fc = FilterConditions.new
+    fc << @school_2
+    ff = FilterFactory.new
+    f = ff.find_or_create_filter(fc)
+    f.must_be :valid?
+    f.wont_be_nil
+    f.save
+    f1 = ff.find_or_create_filter(fc)
+    f.id.must_equal(f1.id)
+  end
+
+
+
 end
+
