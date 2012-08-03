@@ -6,15 +6,24 @@ describe FilterFactory do
   before do
 
     require "#{Rails.root}/db/seeds.rb"
-    @school_1 = School.create(:name => "FilterFactory School 1")
-    @school_2 = School.create(:name => "FilterFactory School 2")
-    @school_3 = School.create(:name => "FilterFactory School 3")
-    @school_4 = School.create(:name => "FilterFactory School 4")
+    @school_1 = School.create(:name => "FilterFactory School 1 (AL)")
+    @school_2 = School.create(:name => "FilterFactory School 2 (GA)")
+    @school_3 = School.create(:name => "FilterFactory School 3 (FL)")
+    @school_4 = School.create(:name => "FilterFactory School 4 (TN)")
 
     @alabama = State.find_by_abbr('AL')
     @georgia = State.find_by_abbr('GA')
     @florida = State.find_by_abbr('FL')
     @tennessee = State.find_by_abbr('TN')
+
+    @school_1_address = Address.create(:line1 => '123 Main Street',
+                                       :line2 => nil,
+                                       :state => @alabama.abbr,
+                                       :zip => '35124',
+                                       :addressable_id => @school_id,
+                                       :addressable_type => 'School')
+
+
 
     @school_1_classroom_1 = Classroom.create(:name => 'FilterFactory School 1 Classroom 1')
     @school_1_classroom_2 = Classroom.create(:name => 'FilterFactory School 1 Classroom 2')
@@ -139,7 +148,20 @@ describe FilterFactory do
     f.id.must_equal(f1.id)
   end
 
+  it "can find state-only filter membership" do
+  end
 
+  it "can find school-only filter membership" do
+  end
+
+  it "can find person-class-only filter membership" do
+  end
+
+  it "can find school-classroom filter membership" do
+  end
+
+  it "can find grade filter membership" do
+  end
 
 end
 
