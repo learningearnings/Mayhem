@@ -6,6 +6,8 @@ class PagesController < HighVoltage::PagesController
       case params[:id]
       when /logged_in/
         'logged_in'
+      when /pdf/
+        false
       else
         'application'
       end

@@ -16,6 +16,19 @@ Run guard to run the tests as you develop:
 
 Then when you change files, tests will run.
 
+### Binary Dependencies
+Below are a list of binary dependencies that the project uses:
+
+#### wkhtmltopdf
+Install via instructions [here](https://github.com/pdfkit/pdfkit/wiki/Installing-WKHTMLTOPDF).  We have to install 0.9.9 because of a bug in 0.11.0.rc1.
+
+If you want to try it out, you'll have to run the app with unicorn and multiple workers.  There's a config already set up, just do this:
+
+    unicorn_rails -c config/unicorn.conf # (from rails_root)
+
+Then visit [this page](http://localhost:8080/pages/pdf.pdf) in the browser.
+
+
 ### Project Gems
 
 Below are a list of 'important' gems that the project is utilizing:

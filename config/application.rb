@@ -1,5 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 
+# For PDFKit Middleware
+require 'pdfkit'
+
 require 'rails/all'
 
 if defined?(Bundler)
@@ -58,5 +61,8 @@ module Leror
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # For generating pdfs from routes in the site
+    config.middleware.use PDFKit::Middleware, {}, only: %r[^/pages/pdf]
   end
 end
