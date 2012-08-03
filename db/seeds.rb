@@ -5,7 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }" =>  { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel'" =>  city: cities.first)
-
 State.create([{ :name => "Alabama", :abbr => "AL"},
               { :name => "Alaska", :abbr => "AK"},
               { :name => "Arizona", :abbr => "AZ"},
@@ -58,4 +57,19 @@ State.create([{ :name => "Alabama", :abbr => "AL"},
               { :name => "Wisconsin", :abbr => "WI"},
               { :name => "Wyoming", :abbr => "WY"}
              ])
+
+begin
+  f = Filter.find(1)
+rescue
+  if Filter.all.count < 1
+    f = Filter.new(:minimum_grade => 0, :maximum_grade => 12)
+    #  f.id = 0
+    f.school_filter_links << SchoolFilterLink.create(:school_id => nil)
+    f.classroom_filter_links << ClassroomFilterLink.create(:classroom_id => nil)
+    f.state_filter_links << StateFilterLink.create(:state_id => nil)
+    f.person_class_filter_links << PersonClassFilterLink.create(:person_class => nil)
+    f.save
+  end
+end
+
 
