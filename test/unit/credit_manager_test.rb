@@ -29,16 +29,17 @@ describe CreditManager do
     before do
       @school_account_name = "SCHOOLfoo"
       @school = mock "school"
-      @school.expects(:account_name).returns(@school_account_name)
     end
 
     it "issues credits to a school" do
+      @school.expects(:account_name).returns(@school_account_name)
       @amount = BigDecimal("500.00")
       @credit_manager.expects(:transfer_credits).with(@credit_manager.main_account_name, @school_account_name, @amount).once
       @credit_manager.issue_credits_to_school(@school, @amount)
     end
 
     it "revokes credits from a school" do
+      @school.expects(:account_name).returns(@school_account_name)
       @amount = BigDecimal("500.00")
       @credit_manager.expects(:transfer_credits).with(@school_account_name, @credit_manager.main_account_name, @amount).once
       @credit_manager.revoke_credits_for_school(@school, @amount)
@@ -48,10 +49,11 @@ describe CreditManager do
       before do
         @teacher_account_name = "TEACHER17"
         @teacher = mock "teacher"
-        @teacher.expects(:account_name).returns(@teacher_account_name)
       end
 
       it "issues credits to a teacher" do
+        @school.expects(:account_name).returns(@school_account_name)
+        @teacher.expects(:account_name).returns(@teacher_account_name)
         @amount = BigDecimal("500.00")
         @credit_manager.expects(:transfer_credits).with(@school_account_name, @teacher_account_name, @amount).once
         @credit_manager.issue_credits_to_teacher(@school, @teacher, @amount)
@@ -59,7 +61,6 @@ describe CreditManager do
 
       describe "dealing with a student" do
         before do
-          @school.account_name # Satisfy school expectation...test needs refactoring, this nesting causes problems
           @student_account_name = "STUDENT17"
           @student = mock "student"
           @student.expects(:account_name).returns(@student_account_name)
@@ -67,8 +68,15 @@ describe CreditManager do
 
         it "issues credits to a student" do
           @amount = BigDecimal("500.00")
+          @teacher.expects(:account_name).returns(@teacher_account_name)
           @credit_manager.expects(:transfer_credits).with(@teacher_account_name, @student_account_name, @amount).once
           @credit_manager.issue_credits_to_student(@school, @teacher, @student, @amount)
+        end
+
+        it "transfers credits from a student for reward purchase" do
+          @amount = BigDecimal("500.00")
+          @credit_manager.expects(:transfer_credits).with(@student_account_name, @credit_manager.main_account_name, @amount).once
+          @credit_manager.transfer_credits_for_reward_purchase(@student, @amount)
         end
       end
     end

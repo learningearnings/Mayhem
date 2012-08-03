@@ -82,15 +82,18 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   When 'I have 100 credits' do
-    pending 'step not implemented'
+    @student_credits = 100
+    cm = CreditManager.new
+    cm.issue_credits_to_student(@school, @teacher, @student, @student_credits)
   end
 
   And 'I purchase a reward that cost 5 credits' do
-    pending 'step not implemented'
+    cm = CreditManager.new
+    cm.transfer_credits_for_reward_purchase(@student, BigDecimal('5'))
   end
 
   Then 'I should have 95 credits' do
-    pending 'step not implemented'
+    @student.balance.must_equal BigDecimal('95')
   end
 
   When 'the school gives a teacher 1000 credits' do
@@ -106,5 +109,13 @@ class GivingCredits < Spinach::FeatureSteps
     @credits = 10_000
     cm = CreditManager.new
     cm.issue_credits_to_school(@school, @credits)
+  end
+
+  Given 'I am a student' do
+    @school = FactoryGirl.create(:school)
+    @student = FactoryGirl.create(:student)
+    @link = FactoryGirl.create(:person_school_link, school: @school, person: @student)
+    @teacher = FactoryGirl.create(:teacher)
+    @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
   end
 end

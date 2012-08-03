@@ -35,4 +35,8 @@ class CreditManager
   def issue_credits_to_student school, teacher, student, amount
     transfer_credits teacher.account_name, student.account_name, amount
   end
+
+  def transfer_credits_for_reward_purchase student, amount
+    transfer_credits student.account_name, main_account_name, amount
+  end
 end
