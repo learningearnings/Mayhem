@@ -41,7 +41,6 @@ class FilterFactory
     f = f.joins(:state_filter_links).merge(sfl)
     pcfl = PersonClassFilterLink.where(:person_class => person_classes)
     f = f.joins(:person_class_filter_links).merge(pcfl)
-    puts f.to_sql
     f.group('filters.id').first
   end
 
@@ -62,7 +61,6 @@ class FilterFactory
     @filter.minimum_grade = minimum_grade
     @filter.maximum_grade = maximum_grade
 
-    puts "Creating this filter"
     if conditions && conditions.schools && conditions.schools.count > 0
       conditions.schools.each do |s|
         @filter.school_filter_links << SchoolFilterLink.new(:school_id => s)
@@ -91,7 +89,6 @@ class FilterFactory
     else
       @filter.person_class_filter_links << PersonClassFilterLink.new(:person_class => nil)
     end
-    puts @filter.to_yaml.to_s
     @filter
    end
 
@@ -123,8 +120,6 @@ class FilterFactory
     f = f.joins(:state_filter_links).merge(sfl)
     pcfl = PersonClassFilterLink.where(:person_class => person.class).or(:person_class => nil)
     f = f.joins(:person_class_filter_links).merge(pcfl)
-    puts f.to_sql
     f.group('filters.id')
-
   end
 end

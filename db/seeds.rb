@@ -5,8 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }" =>  { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel'" =>  city: cities.first)
-puts "Populating states table..."
-
 State.create([{ :name => "Alabama", :abbr => "AL"},
               { :name => "Alaska", :abbr => "AK"},
               { :name => "Arizona", :abbr => "AZ"},
@@ -60,11 +58,9 @@ State.create([{ :name => "Alabama", :abbr => "AL"},
               { :name => "Wyoming", :abbr => "WY"}
              ])
 
-puts "Populating the all inclusive filter (id == 1)..."
 begin
   f = Filter.find(1)
 rescue
-  puts "Needed to create it..."
   if Filter.all.count < 1
     f = Filter.new(:minimum_grade => 0, :maximum_grade => 12)
     #  f.id = 0

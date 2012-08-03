@@ -16,12 +16,10 @@ describe FilterFactory do
     @florida = State.find_by_abbr('FL')
     @tennessee = State.find_by_abbr('TN')
 
-    @school_1_address = Address.create(:line1 => '123 Main Street',
-                                       :line2 => nil,
-                                       :state => @alabama.abbr,
-                                       :zip => '35124',
-                                       :addressable_id => @school_id,
-                                       :addressable_type => 'School')
+    @school_1.addresses << Address.create(:line1 => '123 Main Street',
+                                          :line2 => nil,
+                                          :state => @alabama,
+                                          :zip => '35124')
 
 
 
@@ -147,7 +145,7 @@ describe FilterFactory do
     f1 = ff.find_or_create_filter(fc)
     f.id.must_equal(f1.id)
   end
-
+=begin
   it "can find state-only filter membership" do
   end
 
@@ -162,6 +160,6 @@ describe FilterFactory do
 
   it "can find grade filter membership" do
   end
-
+=end
 end
 

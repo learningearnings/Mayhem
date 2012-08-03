@@ -39,12 +39,10 @@ describe School do
                     :city => 'Pelham',
                     :state => bama,
                     :zip => '35124')
-    s = Factory.create(:school)
-    s.addresses << a
-    s.addresses.wont_be_empty
-    puts "Bama :" + bama.to_yaml.to_s
-    puts "Addresses:" + s.addresses.to_yaml.to_s
-    s.addresses[0].state.abbr.must_be_equal('AL')
+    school = Factory.create(:school)
+    school.addresses << a
+    school.addresses.wont_be_empty
+    school.addresses.first.must_equal a
   end
 
 end
