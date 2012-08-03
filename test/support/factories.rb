@@ -42,7 +42,6 @@ FactoryGirl.define do
     gmt_offset "6.0"
     distribution_model "Delivery"
     ad_profile 1
-    school_address_id 1
   end
 
   factory :classroom do

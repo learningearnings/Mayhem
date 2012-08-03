@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120802151136) do
+ActiveRecord::Schema.define(:version => 20120803162931) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20120802151136) do
     t.string   "line1"
     t.string   "line2"
     t.string   "city"
-    t.string   "state"
     t.string   "zip"
     t.string   "type"
     t.float    "latitude"
@@ -41,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20120802151136) do
     t.string   "addressable_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.integer  "state_id"
   end
 
   add_index "addresses", ["addressable_id"], :name => "index_addresses_on_addressable_id"
@@ -157,16 +157,6 @@ ActiveRecord::Schema.define(:version => 20120802151136) do
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
 
-  create_table "school_addresses", :force => true do |t|
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "city"
-    t.integer  "state_id"
-    t.string   "zip"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -192,7 +182,6 @@ ActiveRecord::Schema.define(:version => 20120802151136) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.integer  "school_address_id"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
   end

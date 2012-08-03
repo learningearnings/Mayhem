@@ -2,12 +2,13 @@ require "basic_statuses"
 
 class School < ActiveRecord::Base
   include BasicStatuses
+  has_many :addresses, :as => :addressable
 
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
 
-  attr_accessible :ad_profile, :school_address_id, :distribution_model, :gmt_offset,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 

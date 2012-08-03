@@ -12,11 +12,13 @@
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
   .accordion-group
     .accordion-heading
       = link_to 'School Messages (2)', '#school-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
@@ -25,11 +27,13 @@
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', class: 'btn', "data-toggle" => 'modal'
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
   .accordion-group
     .accordion-heading
       = link_to 'Teacher Messages (0)', '#teacher-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
@@ -38,11 +42,13 @@
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', class: 'btn', "data-toggle" => 'modal'
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
   .accordion-group
     .accordion-heading
       = link_to 'System Messages (0)', '#system-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
@@ -51,10 +57,35 @@
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', class: 'btn', "data-toggle" => 'modal'
         .message
           .image= image_tag("http://placekitten.com/50/50")
           .content
-            Lipsum
+            %p.subject= lipsum(50)
+            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
 
-= link_to "Send a message", '#', class: 'btn'
+= link_to "Send a message", '#send-message-modal', class: 'btn', 'data-toggle' => 'modal'
+
+#read-message-modal.modal.hide
+  %h3 Read Message Header
+  .image-placeholder
+    Message
+  = link_to "Reply to this message", "#", class: 'btn btn-primary'
+
+#send-message-modal.modal.hide
+  %h3 Send Message Header
+  %p= lipsum 100
+  .row
+    .span3
+      .select-message
+        %strong Select Message
+        = select_tag "Select Your Message..."
+      .select-recipient
+        %strong Select Who To Send It To
+        .image-placeholder
+          Paginated Friend List
+    .span2
+      %strong Select Image
+      %p images here...
+  = link_to "Preview Message", "#", class: 'btn btn-primary'

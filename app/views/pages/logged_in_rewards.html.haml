@@ -24,71 +24,20 @@
             %li= link_to "4", "#"
             %li= link_to "Next", "#"
       .sorting-interface-contents
-        .row
-          .span2
-            .image-placeholder
-              image
-          .span4
-            %h4 Reward Title
-            %p= lipsum 200
-            .cost
-              %strong Cost: 10,000
-            .remaining
-              %strong Remaining: 9,000
-          .span2
-            = link_to "Check It Out", '#', class: 'btn'
-        .row
-          .span2
-            .image-placeholder
-              image
-          .span4
-            %h4 Reward Title
-            %p= lipsum 200
-            .cost
-              %strong Cost: 10,000
-            .remaining
-              %strong Remaining: 9,000
-          .span2
-            = link_to "Check It Out", '#', class: 'btn'
-        .row
-          .span2
-            .image-placeholder
-              image
-          .span4
-            %h4 Reward Title
-            %p= lipsum 200
-            .cost
-              %strong Cost: 10,000
-            .remaining
-              %strong Remaining: 9,000
-          .span2
-            = link_to "Check It Out", '#', class: 'btn'
-        .row
-          .span2
-            .image-placeholder
-              image
-          .span4
-            %h4 Reward Title
-            %p= lipsum 200
-            .cost
-              %strong Cost: 10,000
-            .remaining
-              %strong Remaining: 9,000
-          .span2
-            = link_to "Check It Out", '#', class: 'btn'
-        .row
-          .span2
-            .image-placeholder
-              image
-          .span4
-            %h4 Reward Title
-            %p= lipsum 200
-            .cost
-              %strong Cost: 10,000
-            .remaining
-              %strong Remaining: 9,000
-          .span2
-            = link_to "Check It Out", '#', class: 'btn'
+        - 6.times do
+          .row
+            .span2
+              .image-placeholder
+                image
+            .span4
+              %h4 Reward Title
+              %p= lipsum 200
+              .cost
+                %strong Cost: 10,000
+              .remaining
+                %strong Remaining: 9,000
+            .span2
+              = link_to "Check It Out", '#reward-detail-modal', class: 'btn', 'data-toggle' => 'modal'
 
   .span4
     %h3 Pending Credits
@@ -97,3 +46,17 @@
     = link_to "Play Now", "#", class: 'btn'
     .image-placeholder
       Suggest a reward callout
+
+#reward-detail-modal.modal.hide
+  %h3 Reward Detail Header
+  %p= lipsum 200
+  .image-placeholder
+    Reward Detail
+  .row
+    .span3
+      = link_to "Get This Reward", '#', class: 'btn btn-primary'
+    .span2
+      %p
+        %strong Cost: $3,000
+      %p
+        %strong Remaining: $2,000
