@@ -1,3 +1,30 @@
+GIT
+  remote: git://github.com/ryanb/nested_form.git
+  revision: 59d9c367785b76a8052162a65f31dbaf04191dcd
+  specs:
+    nested_form (0.2.2)
+
+GIT
+  remote: git://github.com/vwall/compass-twitter-bootstrap.git
+  revision: 26e3eda96941b050f06758be168e11f511b3d9c7
+  specs:
+    compass_twitter_bootstrap (2.0.3)
+      compass
+
+GIT
+  remote: git://github.com/vwall/compass-twitter-bootstrap.git
+  revision: 26e3eda96941b050f06758be168e11f511b3d9c7
+  specs:
+    compass_twitter_bootstrap (2.0.3)
+      compass
+
+GIT
+  remote: git://github.com/wojtekmach/valid_attribute.git
+  revision: cf96d8b1544ed068a97d694c3124ac86ea37f398
+  branch: minitest-matchers-11
+  specs:
+    valid_attribute (1.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -17,6 +44,17 @@ GEM
     active_utils (1.0.3)
       activesupport (>= 2.3.11)
       i18n
+    activeadmin (0.4.4)
+      bourbon (>= 1.0.0)
+      devise (>= 1.1.2)
+      fastercsv
+      formtastic (~> 2.1.1)
+      inherited_resources (>= 1.3.1)
+      jquery-rails (>= 1.0.0)
+      kaminari (>= 0.13.0)
+      meta_search (>= 0.9.2)
+      rails (>= 3.0.0)
+      sass (>= 3.1.0)
     activemerchant (1.20.4)
       active_utils (>= 1.0.2)
       activesupport (>= 2.3.11)
@@ -40,11 +78,8 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     acts_as_list (0.1.4)
-<<<<<<< Updated upstream
-    addressable (2.2.8)
+    addressable (2.3.2)
     ansi (1.4.3)
-=======
->>>>>>> Stashed changes
     arel (3.0.2)
     aws-sdk (1.3.9)
       httparty (~> 0.7)
@@ -52,16 +87,12 @@ GEM
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
     bcrypt-ruby (3.0.1)
-<<<<<<< Updated upstream
-    bootstrap-will_paginate (0.0.7)
-      will_paginate
-=======
->>>>>>> Stashed changes
+    bourbon (2.1.1)
+      sass (>= 3.1)
     braintree (2.16.0)
       builder (>= 2.0.0)
     builder (3.0.0)
     cancan (1.6.7)
-<<<<<<< Updated upstream
     capybara (1.1.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -82,21 +113,14 @@ GEM
       execjs
     coffee-script-source (1.3.3)
     colorize (0.5.8)
-=======
-    chunky_png (1.2.5)
-    cocaine (0.2.1)
->>>>>>> Stashed changes
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
-<<<<<<< Updated upstream
     country_select (1.0.1)
     database_cleaner (0.8.0)
-=======
->>>>>>> Stashed changes
     deface (0.9.1)
       nokogiri (~> 1.5.0)
       rails (~> 3.1)
@@ -108,7 +132,6 @@ GEM
     dragonfly (0.9.12)
       rack
     erubis (2.7.0)
-<<<<<<< Updated upstream
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (3.5.0)
@@ -116,8 +139,11 @@ GEM
     factory_girl_rails (3.5.0)
       factory_girl (~> 3.5.0)
       railties (>= 3.0.0)
+    fastercsv (1.5.5)
     ffaker (1.12.1)
     ffi (1.0.11)
+    formtastic (2.1.1)
+      actionpack (~> 3.0)
     fssm (0.2.9)
     gherkin-ruby (0.2.1)
     guard (1.2.3)
@@ -135,16 +161,15 @@ GEM
       haml (~> 3.0)
       railties (~> 3.0)
     has_scope (0.5.1)
-=======
-    ffaker (1.12.1)
-    fssm (0.2.9)
->>>>>>> Stashed changes
     highline (1.6.11)
     hike (1.2.1)
     httparty (0.8.3)
       multi_json (~> 1.0)
       multi_xml
     i18n (0.6.0)
+    inherited_resources (1.3.1)
+      has_scope (~> 0.5.0)
+      responders (~> 0.6)
     journey (1.0.4)
     jquery-rails (2.0.2)
       railties (>= 3.2.0, < 5.0)
@@ -154,12 +179,28 @@ GEM
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
       railties (>= 3.0.0)
+    launchy (2.1.1)
+      addressable (~> 2.3)
+    letter_opener (0.0.2)
+      launchy
+    libnotify (0.7.4)
+      ffi (~> 1.0.11)
     libv8 (3.3.10.4)
+    libwebsocket (0.1.5)
+      addressable
+    listen (0.4.7)
+      rb-fchange (~> 0.0.5)
+      rb-fsevent (~> 0.9.1)
+      rb-inotify (~> 0.8.8)
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-<<<<<<< Updated upstream
+    meta_search (1.1.3)
+      actionpack (~> 3.1)
+      activerecord (~> 3.1)
+      activesupport (~> 3.1)
+      polyamorous (~> 0.5.0)
     metaclass (0.0.1)
     method_source (0.8)
     mime-types (1.19)
@@ -173,9 +214,6 @@ GEM
       ruby-progressbar
     mocha (0.12.1)
       metaclass (~> 0.0.1)
-=======
-    mime-types (1.19)
->>>>>>> Stashed changes
     money (3.7.1)
       i18n (~> 0.4)
     multi_json (1.3.6)
@@ -191,16 +229,15 @@ GEM
       cocaine (>= 0.0.2)
       mime-types
     pg (0.14.0)
+    plutus (0.7.0)
+      rails (~> 3.1)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
-<<<<<<< Updated upstream
     pry (0.9.10)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
-=======
->>>>>>> Stashed changes
     rabl (0.6.5)
       activesupport (>= 2.3.14)
       multi_json (~> 1.0)
@@ -227,29 +264,24 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     rake (0.9.2.2)
-<<<<<<< Updated upstream
     ranked-model (0.1.0)
       activerecord (>= 3.0.3)
-=======
->>>>>>> Stashed changes
     ransack (0.6.0)
       actionpack (~> 3.0)
       activerecord (~> 3.0)
       polyamorous (~> 0.5.0)
-<<<<<<< Updated upstream
     rb-fchange (0.0.5)
       ffi
     rb-fsevent (0.9.1)
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
-=======
->>>>>>> Stashed changes
     rdoc (3.12)
       json (~> 1.4)
     responders (0.9.2)
       railties (~> 3.1)
+    ruby-progressbar (0.11.0)
+    rubyzip (0.9.9)
     sass (3.1.20)
-<<<<<<< Updated upstream
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -262,11 +294,6 @@ GEM
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
-    simple_roles (0.0.8)
-      activerecord
-      require_all
-      sugar-high
-      sweetloader
     simplecov (0.6.4)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
@@ -281,8 +308,6 @@ GEM
       capybara (>= 1.0)
       railties (>= 3)
       spinach (>= 0.4)
-=======
->>>>>>> Stashed changes
     spree (1.1.3)
       spree_api (= 1.1.3)
       spree_auth (= 1.1.3)
@@ -329,15 +354,12 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    squeel (1.0.9)
+      activerecord (~> 3.0)
+      activesupport (~> 3.0)
+      polyamorous (~> 0.5.0)
     state_machine (1.1.2)
     stringex (1.3.3)
-<<<<<<< Updated upstream
-    sugar-high (0.7.0)
-    sweetloader (0.1.6)
-      activesupport (>= 3.0.1)
-      i18n
-=======
->>>>>>> Stashed changes
     therubyracer (0.10.1)
       libv8 (~> 3.3.10)
     thor (0.15.4)
@@ -346,39 +368,51 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.33)
-<<<<<<< Updated upstream
     uglifier (1.2.6)
       execjs (>= 0.3.0)
       multi_json (~> 1.3)
-=======
->>>>>>> Stashed changes
     uuidtools (2.1.3)
     warden (1.1.1)
       rack (>= 1.0)
+    xpath (0.1.4)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-<<<<<<< Updated upstream
-  bootstrap-will_paginate
+  activeadmin
+  cancan
   coffee-rails (~> 3.2.1)
   compass-rails
   compass_twitter_bootstrap!
   country_select
   database_cleaner (~> 0.8.0)
-=======
-  compass-rails
->>>>>>> Stashed changes
+  devise
   dragonfly
+  factory_girl_rails
+  guard (~> 1.2.3)
+  guard-minitest (~> 0.5.0)
+  guard-spinach (~> 0.0.2)
+  haml-rails
+  has_scope
   jquery-rails
+  letter_opener
+  libnotify
+  minitest (~> 3.2.0)
+  minitest-matchers (~> 1.2.0)
+  minitest-reporters (~> 0.8.0)
+  mocha (~> 0.12.1)
+  nested_form!
   pg
+  plutus
+  pry (~> 0.9.10)
+  rack-cache
   rails (~> 3.2.6)
+  ranked-model
   responders
-<<<<<<< Updated upstream
   sass-rails (~> 3.2.3)
   simple_form
-  simple_roles
   simplecov (~> 0.6.4)
   simplecov-rcov (~> 0.2.3)
   spinach (~> 0.5.2)
@@ -386,7 +420,6 @@ DEPENDENCIES
   spree
   squeel
   state_machine
-=======
-  spree (= 1.1.3)
->>>>>>> Stashed changes
   therubyracer
+  uglifier (>= 1.0.3)
+  valid_attribute!
