@@ -6,26 +6,51 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
 
+
   %body
     .head
       .logo
         logo
       .supplemental
         .login.supplemental-part
-          %h4 Log In
-          %form{ action: page_path('logged_in_home') }
-            %label User Name:
-            %input
-            %label Password:
-            %input
-            .actions
-              %button.btn Sign In
-              = link_to "Forgot Password"
+          - if current_user
+            %h4= link_to 'Sign out', destroy_user_session_path, :method => :delete
+          - else
+            %h4= link_to 'Sign in', new_user_session_path
         .join.supplemental-part
-          %h4 Join
-          %p= link_to "Students", "#", class: 'btn'
-          %p= link_to "Educators", "#", class: 'btn'
-          %p= link_to "Parents", "#", class: 'btn'
+          - if current_user
+            .current-user-avatar.supplemental-part
+              = image_tag "http://placekitten.com/140/140"
+              .current-user.supplemental-part
+                %h3= current_user.email
+                %p= link_to "Edit My Profile", '#'#edit_user_registration_path(current_user)
+                %h4 Credit Balance
+                %table.table.table-bordered
+                  %thead
+                    %tr
+                      %th Checking
+                      %th Savings
+                  %tbody
+                    %tr
+                      - if current_user.person.present? && current_user.person.account.present?
+                        %td=number_to_currency(current_user.person.account.balance)
+                        %td=number_to_currency(current_user.person.account.balance)
+                      - else
+                        %td=number_to_currency(0.00)
+                        %td=number_to_currency(0.00)
+
+                %p
+                  %strong
+                    Messages:
+                  = link_to '2', page_path('logged_in_inbox')
+          - else
+            %h4 Join
+            %p= link_to "Students", "#", class: 'btn'
+            %p= link_to "Educators", "#", class: 'btn'
+            %p= link_to "Parents", "#", class: 'btn'
+
+
+
     .navbar
       .fill.navbar-inner
         .container
