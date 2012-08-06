@@ -39,7 +39,7 @@ describe School do
                     :city => 'Pelham',
                     :state => bama,
                     :zip => '35124')
-    school = Factory.create(:school)
+    school = FactoryGirl.create(:school)
     school.addresses << a
     school.addresses.wont_be_empty
     school.addresses.first.must_equal a

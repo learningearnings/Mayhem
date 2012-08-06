@@ -1,7 +1,6 @@
 require 'test_helper'
 
-class PersonTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+describe Person do
+  subject { Person.new }
+
 end

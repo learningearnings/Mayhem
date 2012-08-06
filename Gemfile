@@ -5,15 +5,21 @@ gem 'rails', '~> 3.2.6'
 gem 'pg'
 
 gem 'jquery-rails'
+
 gem 'activeadmin'
 gem 'cancan'
 gem 'devise'
+
 gem 'therubyracer'
 gem 'compass-rails'
+
 gem 'has_scope'
 gem 'responders'
-gem 'will_paginate'
-gem 'bootstrap-will_paginate'
+
+#gem 'simple_roles'
+#gem 'will_paginate'
+#gem 'bootstrap-will_paginate'
+
 gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'
@@ -23,7 +29,7 @@ gem 'nested_form', :git => 'git://github.com/ryanb/nested_form.git'
 gem 'simple_form'
 gem 'country_select'
 gem 'high_voltage'
-gem 'whereabouts', '~> 0.8.0'
+gem 'whereabouts', '~> 0.9.0'
 gem 'pdfkit'
 
 group :assets do
@@ -67,6 +73,6 @@ group :test do
 end
 
 gem 'libnotify'
-gem 'simple_roles'
 gem 'plutus'
 gem 'state_machine'
+gem 'spree', '1.1.3'

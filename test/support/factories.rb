@@ -8,22 +8,35 @@ FactoryGirl.define do
   end
 
   factory :person do
-    sequence(:first_name) {|n| "Testy #{n}"}
     first_name "Testy"
     last_name "McTesterson"
-    dob 15.years.ago
-    grade 9
 
     factory :student, class: Student do
+      sequence(:first_name) {|n| "Student #{n}"}
+      dob nil
+      grade 9
     end
 
     factory :teacher, class: Teacher do
+      sequence(:first_name) {|n| "Teacher #{n}"}
+      dob 25.years.ago
+      grade 9
     end
   end
 
   factory :person_school_link do
     person
     school
+  end
+
+  factory :person_school_classroom_link do
+    person_school_link
+    classroom
+  end
+
+  factory :state do
+    name {|n| "State #{n}" }
+    abbr {|n| "S#{n}" }
   end
 
   factory :school do
@@ -48,8 +61,11 @@ FactoryGirl.define do
     sequence(:name) {|n| "Test Classroom #{n}"}
   end
 
-
-
   factory :address do
+    state
+    line1 "529 Beacon Parkway"
+    city "Birmingham"
+    zip "35209"
+    association :addressable
   end
 end

@@ -43,13 +43,13 @@ class FilterConditions
 
   def <<(d)
     if d.kind_of? School
-      @schools |= [d.id]
+      @schools << d.id
     elsif d.kind_of? Classroom
-      @classrooms |= [d.id]
+      @classrooms << d.id
     elsif d.kind_of? State
-      @states |= [d.id]
+      @states << d.id
     elsif d.kind_of? String
-      @person_classes |= [d]
+      @person_classes << d
     elsif d.kind_of? Range
       @minimum_grade = d.min
       @maximum_grade = d.max

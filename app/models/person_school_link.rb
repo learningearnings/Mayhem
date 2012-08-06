@@ -9,8 +9,8 @@ class PersonSchoolLink < ActiveRecord::Base
   belongs_to :school
   belongs_to :person
 
-  has_many :person_school_classroom_links
-  has_many :classrooms, :through => :person_school_classroom_links, :source => :classroom
+  has_many :person_school_classroom_links, :inverse_of => :person_school_link
+  has_many :classrooms, :through => :person_school_classroom_links, :source => :classroom, :inverse_of => :classroom
 
   attr_accessible :person_id, :school_id, :status
   validates_presence_of :person_id, :school_id
