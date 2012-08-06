@@ -35,6 +35,20 @@ describe FilterConditions do
       fc.person_classes.count.must_equal(4)
       fc.states.count.must_equal(1)
     end
+    it "can receive a hash" do
+      fc = subject.new
+      fc << {:schools => [1,2,3], :classrooms => [1,2], :states => [1], :person_classes => ['Student','Teacher','SuperTeacher','LEAdmin']}
+      fc.schools.count.must_equal(3)
+      fc.classrooms.count.must_equal(2)
+      fc.person_classes.count.must_equal(4)
+      fc.states.count.must_equal(1)
+    end
+    it "can receive a string" do
+      fc = subject.new
+      fc << 'SuperTeacher'
+      fc.person_classes.count.must_equal(1)
+      fc.person_classes.must_include 'SuperTeacher'
+    end
     it "doesn't store duplicates" do
       fc = subject.new
       fc << {:schools => [1,2,3], :classrooms => [1,2], :states => [1], :person_classes => ['Student','Teacher','SuperTeacher','LEAdmin']}

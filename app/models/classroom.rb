@@ -3,14 +3,15 @@ require 'basic_statuses'
 class Classroom < ActiveRecord::Base
   state_machine :status, :initial => :active do
   end
-
   include BasicStatuses
-  has_many :person_school_classroom_links
 
+  belongs_to :school
+
+  has_many :person_school_classroom_links
   has_many :classroom_filter_links, :inverse_of => :classrooms
   has_many :filters, :through => :classroom_filter_links
 
-  attr_accessible :name, :status
+  attr_accessible :name, :status, :school
   validates_presence_of :name
 
   # Roll our own Relationships (with ARel merge!)
@@ -19,11 +20,11 @@ class Classroom < ActiveRecord::Base
   end
 
   def students(status = :status_active)
-    Student.joins(:person_school_links).merge(person_school_links(status)).send(status)
+    Student.joins(:person_school_links).send(status)
   end
 
   def teachers(status = :status_active)
-    Teacher.joins(:person_school_classroom_links).merge(person_school_links(status)).send(status)
+    Teacher.joins(:person_school_classroom_links).send(status)
   end
 
   def owner(status = :status_active)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120803162931) do
+ActiveRecord::Schema.define(:version => 20120806164244) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20120803162931) do
     t.string   "status"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "school_id"
   end
 
   create_table "filters", :force => true do |t|
@@ -101,13 +102,11 @@ ActiveRecord::Schema.define(:version => 20120803162931) do
   add_index "people", ["type"], :name => "index_people_on_type"
 
   create_table "person_class_filter_links", :force => true do |t|
-    t.integer  "person_class"
     t.integer  "filter_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.string   "person_class", :limit => 25
   end
-
-  add_index "person_class_filter_links", ["filter_id", "person_class"], :name => "index_person_class_filter_links_on_filter_id_and_person_class", :unique => true
 
   create_table "person_school_classroom_links", :force => true do |t|
     t.integer  "person_school_link_id"

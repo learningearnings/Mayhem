@@ -99,27 +99,32 @@ class FilterFactory
   def find_filter_membership(person)
     # get the user class ????
     # get the classrooms for this user
-    f = Filter.where(:minimum_grade => minimum_grade..maximum_grade)
-    f = f.where(:maximum_grade => minimum_grade..maximum_grade)
+    f = Filter.where('minimum_grade <= ?',person.grade)
+    f = f.where('maximum_grade >= ?',person.grade )
 
     school_ids = person.schools.collect do |s|
       s.id
     end
+    classroom_ids = []
     classroom_ids = person.classrooms.collect do |s|
       s.id
     end
     state_ids = person.schools.collect do |s|
-      s.state.id
+      s.addresses.first.state.id
     end
-
-    sfl = SchoolFilterLink.where(:school_id => school_ids).or(:school_id => nil)
+    sfl_arel = SchoolFilterLink.arel_table
+    sfl = SchoolFilterLink.where(sfl_arel[:school_id].in(school_ids).or(sfl_arel[:school_id].eq(nil)))
     f = f.joins(:school_filter_links).merge(sfl)
-    cfl = ClassroomFilterLink.where(:classroom_id => classroom_ids).or(:classroom_id => nil)
+    cfl_arel = ClassroomFilterLink.arel_table
+    cfl = ClassroomFilterLink.where(cfl_arel[:classroom_id].in(classroom_ids).or(cfl_arel[:classroom_id].eq(nil)))
     f = f.joins(:classroom_filter_links).merge(cfl)
-    stfl = StateFilterLink.where(:state_id => state_ids).or(:state_id => nil)
+    stfl_arel = StateFilterLink.arel_table
+    stfl = StateFilterLink.where(stfl_arel[:state_id].in(state_ids).or(stfl_arel[:state_id].eq(nil)))
     f = f.joins(:state_filter_links).merge(sfl)
-    pcfl = PersonClassFilterLink.where(:person_class => person.class).or(:person_class => nil)
+    pcfl_arel = PersonClassFilterLink.arel_table
+    pcfl = PersonClassFilterLink.where(pcfl_arel[:person_class].in(person.class.to_s).or(pcfl_arel[:person_class].eq(nil)))
     f = f.joins(:person_class_filter_links).merge(pcfl)
-    f.group('filters.id')
+    f = f.select('filters.id').group('filters.id')
+    f.all
   end
 end

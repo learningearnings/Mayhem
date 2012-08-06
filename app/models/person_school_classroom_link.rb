@@ -4,7 +4,7 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
   state_machine :status, :initial => :active do
   end
   include BasicStatuses
-  belongs_to :person_school_link
+  belongs_to :person_school_link, :inverse_of => :person_school_classroom_links
   belongs_to :classroom
   has_one :teacher, :through => :person_school_link, :source => :person, :class_name => 'Teacher'
   has_one :student, :through => :person_school_link, :source => :person, :class_name => 'Student'
