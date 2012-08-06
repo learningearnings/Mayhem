@@ -1,0 +1,60 @@
+/* apply a natural box layout model to all elements */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+body {
+  font-size: 66.67%;
+}
+
+input, textarea, select {
+  height: 26px; /* Fix for box-sizing in twitter bootstrap */
+}
+
+.head {
+  position: relative;
+  .logo {
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+    background-color: $primary-background;
+  }
+  .supplemental {
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    .supplemental-part {
+      display: inline-block;
+      vertical-align: top;
+      min-width: 150px;
+      margin-right: 1em;
+      &.join {
+        .btn {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.navbar-inner {
+  border-radius: 0;
+}
+
+.body-content {
+  min-height: 500px;
+}
+
+footer {
+  color: $supporting-text-color;
+  .container {
+    position: relative;
+    .secondary-nav {
+      position: absolute;
+      right: 0;
+      top: 0;
+      li {
+        display: inline-block;
+        margin-right: 1em;
+      }
+    }
+  }
+}

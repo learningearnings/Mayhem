@@ -1,10 +1,39 @@
 !!!
 %html
   %head
-    %title leror
+    %title Learning Earnings
     = stylesheet_link_tag    'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
 
-  %body{:class => controller_name}
-    = yield
+  %body
+    .head
+      .logo
+        logo
+      .supplemental
+        .login.supplemental-part
+          %h4 Log In
+          %form{ action: page_path('logged_in_home') }
+            %label User Name:
+            %input
+            %label Password:
+            %input
+            .actions
+              %button.btn Sign In
+              = link_to "Forgot Password"
+        .join.supplemental-part
+          %h4 Join
+          %p= link_to "Students", "#", class: 'btn'
+          %p= link_to "Educators", "#", class: 'btn'
+          %p= link_to "Parents", "#", class: 'btn'
+    .navbar
+      .fill.navbar-inner
+        .container
+          = render 'layouts/menu'
+
+    .container
+      = render "layouts/flashes"
+      .body-content
+        .row
+          .span12= yield
+    = render "layouts/footer"

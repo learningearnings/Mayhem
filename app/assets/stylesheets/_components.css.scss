@@ -1,0 +1,67 @@
+.boxes {
+  .big-box {
+    min-height: 32.5em;
+    background-color: $primary-background;
+  }
+  .side-box {
+    min-height: 15em;
+    background-color: $primary-background;
+    margin-bottom: 2.5em;
+  }
+}
+
+.image-placeholder {
+  min-height: 8em;
+  background-color: $primary-background;
+}
+
+.primary-image {
+  min-height: 20em;
+  background-color: $primary-background;
+}
+
+.message {
+  margin-bottom: 1em;
+  .image {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .content {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.sorting-interface {
+  .sorting-interface-header {
+    position: relative;
+  }
+  .sorting-interface-sorter {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .pagination-wrapper {
+    position: relative;
+    height: 40px;
+    .pagination {
+      margin-top: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+  .sorting-interface-contents {
+    &> .row {
+      padding-bottom: 1em;
+      padding-top: 1em;
+      border-bottom: 1px solid $primary-border;
+    }
+  }
+}
+
+.press-releases {
+  .press-release {
+    margin-bottom: 2em;
+  }
+}

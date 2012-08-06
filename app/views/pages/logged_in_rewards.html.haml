@@ -1,0 +1,62 @@
+%h2 Rewards Header
+
+%p= lipsum
+
+%p Checking Balance: $20,000
+
+.row
+  .span8
+    .sorting-interface
+      .sorting-interface-header
+        %h3 Rewards Shop
+        .sorting-interface-sorter
+          %strong Sort Rewards by
+          = select_tag "What Can I Afford"
+      .pagination-wrapper
+        .pagination-info
+          Showing 1 - 5 of 52
+        .pagination
+          %ul
+            %li= link_to "Prev", "#"
+            %li= link_to "1", "#", class: 'active'
+            %li= link_to "2", "#"
+            %li= link_to "3", "#"
+            %li= link_to "4", "#"
+            %li= link_to "Next", "#"
+      .sorting-interface-contents
+        - 6.times do
+          .row
+            .span2
+              .image-placeholder
+                image
+            .span4
+              %h4 Reward Title
+              %p= lipsum 200
+              .cost
+                %strong Cost: 10,000
+              .remaining
+                %strong Remaining: 9,000
+            .span2
+              = link_to "Check It Out", '#reward-detail-modal', class: 'btn', 'data-toggle' => 'modal'
+
+  .span4
+    %h3 Pending Credits
+    %h4 Concentration
+    %p Need .73 more to claim
+    = link_to "Play Now", "#", class: 'btn'
+    .image-placeholder
+      Suggest a reward callout
+
+#reward-detail-modal.modal.hide
+  %h3 Reward Detail Header
+  %p= lipsum 200
+  .image-placeholder
+    Reward Detail
+  .row
+    .span3
+      = link_to "Get This Reward", '#', class: 'btn btn-primary'
+    .span2
+      %p
+        %strong Cost: $3,000
+      %p
+        %strong Remaining: $2,000

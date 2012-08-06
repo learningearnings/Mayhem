@@ -1,0 +1,22 @@
+.boxes.row
+  .span8
+    #how-it-works-carousel.carousel.slide
+      .carousel-inner
+        .active.item
+          .interactive-presentation.big-box
+            Item 1
+        .item
+          .interactive-presentation.big-box
+            Item 2
+        .item
+          .interactive-presentation.big-box
+            Item 3
+      = link_to "&lsaquo; prev".html_safe, '#how-it-works-carousel', 'data-slide' => 'prev'
+      = link_to "next &rsaquo;".html_safe, '#how-it-works-carousel', 'data-slide' => 'next'
+
+  .span4
+    .parent-section.side-box
+      Call to action
+
+    .educator-section.side-box
+      Call to action

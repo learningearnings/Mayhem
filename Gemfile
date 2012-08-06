@@ -28,6 +28,9 @@ gem 'haml-rails'
 gem 'nested_form', :git => 'git://github.com/ryanb/nested_form.git'
 gem 'simple_form'
 gem 'country_select'
+gem 'high_voltage'
+gem 'whereabouts', '~> 0.8.0'
+gem 'pdfkit'
 
 group :assets do
   gem 'compass_twitter_bootstrap', :git => 'git://github.com/vwall/compass-twitter-bootstrap.git'
@@ -52,6 +55,7 @@ group :development, :test do
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
+  gem 'unicorn'
 end
 
 group :test do

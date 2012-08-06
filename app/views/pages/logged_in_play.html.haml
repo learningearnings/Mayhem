@@ -1,0 +1,46 @@
+%h2 Play Header
+
+.primary-image
+  Image
+
+%h3 Featured / Sponsored Game
+%p= lipsum
+= link_to "Play Now", "#", class: 'btn'
+
+.games.row
+  .span8
+    .game.row
+      .span2
+        .image-placeholder
+          image
+      .span6
+        %h4 Number Muncher
+        %p= lipsum(200)
+        = link_to "Play Now", "$", class: 'btn'
+    .game.row
+      .span2
+        .image-placeholder
+          image
+      .span6
+        %h4 Game Title
+        %p= lipsum(200)
+        = link_to "Play Now", "$", class: 'btn'
+  .span4
+    %h3 Rewards Highlights
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        %p= lipsum 100
+        %strong Cost: $2,000
+    %hr
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        %p= lipsum 100
+        %strong Cost: $2,000
+    .row
+      .span4
+        %h3 Suggest a Game Callout
+        .image-placeholder

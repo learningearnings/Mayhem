@@ -42,3 +42,5 @@ screenlog.*
 
 # Emacs stuff
 *~
+
+.sass-cache

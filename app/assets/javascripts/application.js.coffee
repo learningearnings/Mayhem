@@ -12,6 +12,6 @@
 //= require bootstrap-collapse
 //= require bootstrap-carousel
 //= require bootstrap-typeahead
+//= require bootstrap-transition
 //= require jquery.html5-placeholder-shim
 //= require jquery_nested_form
-

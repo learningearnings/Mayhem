@@ -8,13 +8,26 @@ Fork, then clone the repository to your development environment
 
     gem install bundler
     bundle install
-    rake db:reset db:test:clone test
+    rake db:drop db:create:all db:migrate db:test:clone test
 
 Run guard to run the tests as you develop:
 
     bundle exec guard
 
 Then when you change files, tests will run.
+
+### Binary Dependencies
+Below are a list of binary dependencies that the project uses:
+
+#### wkhtmltopdf
+Install via instructions [here](https://github.com/pdfkit/pdfkit/wiki/Installing-WKHTMLTOPDF).  We have to install 0.9.9 because of a bug in 0.11.0.rc1.
+
+If you want to try it out, you'll have to run the app with unicorn and multiple workers.  There's a config already set up, just do this:
+
+    unicorn_rails -c config/unicorn.conf # (from rails_root)
+
+Then visit [this page](http://localhost:8080/pages/pdf.pdf) in the browser.
+
 
 ### Project Gems
 

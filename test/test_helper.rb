@@ -23,8 +23,14 @@ require 'mocha'
 require 'ostruct'
 
 # Load support files
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f; puts f }
+
+# Database cleaner.
+require 'database_cleaner'
+DatabaseCleaner.strategy  = :truncation
+MiniTest::Unit.after_tests { DatabaseCleaner.clean }
 
 # Set up minitest
 MiniTest::Unit.runner = MiniTest::SuiteRunner.new
 MiniTest::Unit.runner.reporters << MiniTest::Reporters::SpecReporter.new
+MiniTest::Unit.runner.reporters << MiniTest::Reporters::GuardReporter.new
