@@ -34,7 +34,7 @@ describe School do
   end
 
   it "can add an address to a school" do
-    bama = State.find_by_abbr('AL')
+    bama = FactoryGirl.create(:state)
     a = Address.new(:line1 => '4630 Wooddale Lane',
                     :city => 'Pelham',
                     :state => bama,

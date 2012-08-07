@@ -1,6 +1,7 @@
 class Student < Person
+  before_save :check_coppa
   after_create :ensure_account
-
+  validates_presence_of :grade
   def school
     schools.where("person_school_links.status = 'active'").order('created_at desc').first
   end
@@ -21,6 +22,13 @@ class Student < Person
   private
   def ensure_account
     account || Plutus::Asset.create(name: account_name)
+  end
+  private
+
+  def check_coppa
+    if self.grade <= 6
+      self.last_name = self.last_name[0]
+    end
   end
 
 end

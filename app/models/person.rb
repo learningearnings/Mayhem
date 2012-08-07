@@ -5,9 +5,8 @@ class Person < ActiveRecord::Base
   has_many :messages
   has_one  :user
   has_many :person_school_links, :inverse_of => :person
-
   attr_accessible :dob, :first_name, :grade, :last_name
-  validates_presence_of :first_name, :last_name, :grade
+  validates_presence_of :first_name, :last_name
 
   # Relationships
   def person_school_links(status = :status_active)
@@ -28,23 +27,17 @@ class Person < ActiveRecord::Base
   end
   # End Relationships
 
+
+
   # Allow sending a school or classroom to a person
   def <<(d)
     if d.is_a? School
-      person_school_links << PersonSchoolLink.new(:school_id => d.id, :person_id => self.id)
+      puts "School #{d.name}"
+      PersonSchoolLink.create(:school_id => d.id, :person_id => self.id)
     elsif d.is_a? Classroom
-      school_id = PersonSchoolClassroomLink.find(:classroom_id => d.id, :owner => true).person_school_link.person.school_id
-      if school_id
-        my_school_link = PersonSchoolLink.find(:school_id, :person_id => self.id)
-        if !my_school_link
-          my_school_link = PersonSchoolLink.new(:school_id => school_id, :person_id => self.id)
-          person_school_links << my_school_link
-        end
-        if my_school_link
-          person_school_classroom_links << PersonSchoolClassroomLink.new(:classroom_id => d.id, :person_school_link_id => my_school_link.id)
-        end
-      end
-      PersonSchoolClassroomLink.new(:school_id => d.id, :person_id => self.id)
+      psl = PersonSchoolLink.create(:school_id => d.school_id, :person_id => self.id)
+#      self.person_school_links << psl
+      PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl)
     end
   end
 

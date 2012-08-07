@@ -1,5 +1,4 @@
 require_relative '../test_helper'
-
 =begin
 describe Address do
   before do
