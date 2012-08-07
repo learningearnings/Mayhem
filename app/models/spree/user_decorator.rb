@@ -1,14 +1,11 @@
-class User < ActiveRecord::Base
-
-  belongs_to :person
-
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
+Spree::User.class_eval do
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
-  # attr_accessible :title, :body
+ 
+  belongs_to :person
+  has_one :user_avatar_link
+  has_one :avatar, :through => :user_avatar_link
 end

@@ -8,10 +8,10 @@ Leror::Application.routes.draw do
   mount Spree::Core::Engine, :at => '/store'
   root to: 'pages#show', :id => 'home'
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
-
+ 
   ActiveAdmin.routes(self)
 
-  devise_for :users
+  #devise_for :users
 
   resources :pdfs
 

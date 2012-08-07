@@ -20,10 +20,10 @@
         .join.supplemental-part
           - if current_user
             .current-user-avatar.supplemental-part
-              = image_tag "http://placekitten.com/140/140"
+              = image_tag current_user.avatar.image.thumb('175x175#').url
               .current-user.supplemental-part
                 %h3= current_user.email
-                %p= link_to "Edit My Profile", '#'#edit_user_registration_path(current_user)
+                %p= link_to "Edit My Profile", '#'#edit_user_path#(current_user)
                 %h4 Credit Balance
                 %table.table.table-bordered
                   %thead

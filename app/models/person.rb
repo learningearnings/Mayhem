@@ -3,7 +3,7 @@ require "basic_statuses"
 class Person < ActiveRecord::Base
   include BasicStatuses
   has_many :messages
-  has_one  :user
+  has_one  :user, :class_name => Spree::User
   has_many :person_school_links, :inverse_of => :person
   attr_accessible :dob, :first_name, :grade, :last_name
   validates_presence_of :first_name, :last_name
