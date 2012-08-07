@@ -44,3 +44,5 @@ screenlog.*
 *~
 
 .sass-cache
+
+public/system
