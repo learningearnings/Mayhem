@@ -20,7 +20,8 @@
         .join.supplemental-part
           - if current_user
             .current-user-avatar.supplemental-part
-              = image_tag current_user.avatar.image.thumb('175x175#').url
+              - if current_user.avatar.present?
+                = image_tag current_user.avatar.image.thumb('175x175#').url
               .current-user.supplemental-part
                 %h3= current_user.email
                 %p= link_to "Edit My Profile", '#'#edit_user_path#(current_user)
