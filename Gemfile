@@ -72,6 +72,7 @@ group :test do
   gem 'factory_girl_rails'
 end
 
+gem 'thor','0.14.6'
 gem 'libnotify'
 gem 'plutus'
 gem 'state_machine'
