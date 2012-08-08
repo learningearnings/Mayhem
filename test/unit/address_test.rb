@@ -1,12 +1,15 @@
 require_relative '../test_helper'
-=begin
 describe Address do
-  before do
-    @address = FactoryGirl.build :address
+  subject { Address }
+
+  describe 'validations' do
+    it 'validates on zip codes correctly' do
+      a = subject.new
+      a.zip = 'fooooo'
+      a.wont_be :valid?
+      a.zip = '35205'
+      a.must_be :valid?
+    end
   end
 
-  it "has a description" do
-    @address.address1.must_equal '123 Street'
-  end
 end
-=end
