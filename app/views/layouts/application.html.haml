@@ -16,7 +16,13 @@
           - if current_user
             %h4= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
           - else
-            %h4= link_to 'Sign in', spree.new_user_session_path
+            = form_tag spree.user_session_path do
+              = text_field_tag 'user[email]'
+              = password_field_tag 'user[password]'
+              = label_tag 'user[remember_me]', 'Remember me'
+              = check_box_tag 'user[remember_me]'
+              %button Sign in
+              = link_to "Forgot your password?", spree.new_user_password_path('user')
         .join.supplemental-part
           - if current_user
             .current-user-avatar.supplemental-part
