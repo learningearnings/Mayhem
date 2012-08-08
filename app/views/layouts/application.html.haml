@@ -14,9 +14,9 @@
       .supplemental
         .login.supplemental-part
           - if current_user
-            %h4= link_to 'Sign out', destroy_user_session_path, :method => :delete
+            %h4= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
           - else
-            %h4= link_to 'Sign in', new_user_session_path
+            %h4= link_to 'Sign in', spree.new_user_session_path
         .join.supplemental-part
           - if current_user
             .current-user-avatar.supplemental-part
