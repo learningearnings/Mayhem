@@ -1,4 +1,7 @@
 .navbar
   .fill.navbar-inner
     .container
-      = render 'layouts/menu'
+      - if current_user
+        = render 'layouts/logged_in_menu'
+      - else
+        = render 'layouts/menu'
