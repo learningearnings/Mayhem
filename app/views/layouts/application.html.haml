@@ -17,12 +17,15 @@
             %h4= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
           - else
             = form_tag spree.user_session_path do
+
+
+              %label User Name:
               = text_field_tag 'user[email]'
+              %label Password:
               = password_field_tag 'user[password]'
-              = label_tag 'user[remember_me]', 'Remember me'
-              = check_box_tag 'user[remember_me]'
-              %button Sign in
-              = link_to "Forgot your password?", spree.new_user_password_path('user')
+              .actions
+                %button.btn Sign in
+                = link_to "Forgot your password?", spree.new_user_password_path('user')
         .join.supplemental-part
           - if current_user
             .current-user-avatar.supplemental-part
