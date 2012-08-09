@@ -7,37 +7,7 @@
     = csrf_meta_tags
 
   %body
-    .head
-      .logo
-        logo
-      .supplemental
-        .current-user-avatar.supplemental-part
-          = image_tag "http://placekitten.com/140/140"
-        .current-user.supplemental-part
-          %h3 Username
-          %p= link_to "Edit My Profile", "#"
-          %h4 Credit Balance
-          %table.table.table-bordered
-            %thead
-              %tr
-                %th Checking
-                %th Savings
-            %tbody
-              %tr
-                %td $200.00
-                %td $100.00
-          %p
-            %strong
-              Messages:
-            = link_to '2', page_path('logged_in_inbox')
-    .navbar
-      .fill.navbar-inner
-        .container
-          = render 'layouts/logged_in_menu'
-
-    .container
-      = render "layouts/flashes"
-      .body-content
-        .row
-          .span12= yield
+    = render 'layouts/head'
+    = render 'layouts/logged_in_navbar'
+    = render 'layouts/content_container'
     = render "layouts/footer"
