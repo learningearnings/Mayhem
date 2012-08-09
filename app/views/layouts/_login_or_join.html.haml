@@ -1,0 +1,12 @@
+.supplemental
+  .login.supplemental-part
+    - unless current_user
+      = render 'layouts/login_form'
+  .join.supplemental-part
+    - if current_user
+      = render 'layouts/logged_in_block'
+    - else
+      %h4 Join
+      %p= link_to "Students", "#", class: 'btn'
+      %p= link_to "Educators", "#", class: 'btn'
+      %p= link_to "Parents", "#", class: 'btn'

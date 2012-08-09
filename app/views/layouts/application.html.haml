@@ -5,8 +5,6 @@
     = stylesheet_link_tag    'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
-
-
   %body
     .head
       .logo
@@ -68,4 +66,7 @@
       .body-content
         .row
           .span12= yield
+    = render 'layouts/head'
+    = render 'layouts/navbar'
+    = render 'layouts/content_container'
     = render "layouts/footer"

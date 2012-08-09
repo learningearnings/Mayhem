@@ -1,10 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }" =>  { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel'" =>  city: cities.first)
+
+
 State.create([{ :name => "Alabama", :abbr => "AL"},
               { :name => "Alaska", :abbr => "AK"},
               { :name => "Arizona", :abbr => "AZ"},
@@ -133,3 +130,43 @@ rescue
   end
 end
 
+# Prepare some seed data for use in development
+if Rails.env.development?
+  # Get our factories
+  require 'factory_girl'
+  require Rails.root.join('test', 'support', 'factories.rb')
+
+  # Prepare a creditmanager instance
+  @credit_manager = CreditManager.new
+
+  # Create the main liability account for LE
+  Plutus::Liability.create(name: @credit_manager.main_account_name)
+
+  # Prepare a school
+  @school = FactoryGirl.create(:school)
+  # Issue some credits to the school
+  @school_credits = 20_000
+  @credit_manager.issue_credits_to_school(@school, @school_credits)
+
+  # Create a teacher
+  @teacher = FactoryGirl.create(:teacher)
+  @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
+
+  # Give the teacher some credits
+  @teacher_credits = 5000
+  @credit_manager.issue_credits_to_teacher(@school, @teacher, @teacher_credits)
+
+  # Give the school some students
+  @student1 = FactoryGirl.create(:student)
+  @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
+  @student2 = FactoryGirl.create(:student)
+  @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+
+  # Associate spree users with thoses students
+  @user1 = FactoryGirl.create(:spree_user, person: @student1, email: 'student1@example.com')
+  @user2 = FactoryGirl.create(:spree_user, person: @student2, email: 'student2@example.com')
+
+  # Give a student some credits
+  @student_credits = 100
+  @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
+end
