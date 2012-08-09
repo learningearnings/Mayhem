@@ -4,8 +4,6 @@ class PagesController < HighVoltage::PagesController
   protected
     def layout_for_page
       case params[:id]
-      when /logged_in/
-        'logged_in'
       when /pdf/
         false
       else

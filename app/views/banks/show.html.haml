@@ -88,11 +88,12 @@
         %th Source
         %th Date
         %th Amount
-    - @recent_checking_transactions.each do |transaction|
+    - @recent_checking_amounts.each do |amount|
       %tr
-        %th Foo
-        %th 2012/01/01
-        %td= number_to_currency(5)
+        // FIXME: This view is horrible, refactor
+        %td= amount.transaction.description
+        %td= amount.transaction.created_at.to_s(:db)
+        %td= number_to_currency(amount.amount)
 
 #savings-history-modal.modal.hide
   %h3 Savings History Header

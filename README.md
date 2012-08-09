@@ -30,11 +30,9 @@ Then visit [this page](http://localhost:8080/pages/pdf.pdf) in the browser.
 
 
 ### Project Gems
-
 Below are a list of 'important' gems that the project is utilizing:
 
 #### CanCan
-
 CanCan enables us to set up a file to declare what certain groups of users can and cannot do, then we are able to reference those restrictions throughout the site to simplify view logic. The Ability model is the file for configuring abilities, and is initially set up to restrict Teachers, Students, Parents, and LeAdmins.
 
 https://github.com/ryanb/cancan
@@ -54,10 +52,9 @@ Assuming a Student can only read the site, the last statement here should be fal
     ability.can?(:destroy, message)
 
 #### State Machine
-
 State machine allows us to give a model a status field and keep track of that.
 
-https://github.com/pluginaweek/state_machine/
+[https://github.com/pluginaweek/state_machine/](https://github.com/pluginaweek/state_machine/)
 
 To Test out:
 
@@ -67,3 +64,8 @@ To Test out:
     a.status    # should now equal 'active'
     a.deactivate 
     a.status    # should now equal 'inactive'
+
+#### Plutus
+Plutus is a General Ledger / Accounting engine that Isotope11 has contributed to and that we use in multiple projects.
+
+Right now, you can hit /plutus (as anyone) to view the chart of accounts, balances, and transactions.  This is basic reporting provided out of the box by plutus, and can be useful.  We must lock this down before going into production

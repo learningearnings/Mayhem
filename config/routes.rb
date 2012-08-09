@@ -6,6 +6,11 @@ Leror::Application.routes.draw do
   #
   # We ask that you don't use the :as option here, as Spree relies on it being the default of "spree"
   mount Spree::Core::Engine, :at => '/store'
+
+  # Mount the plutus controllers for viewing accounts for basic reporting
+  # FIXME: Lock this down before hitting production
+  mount Plutus::Engine => "/plutus", :as => "plutus"
+
   root to: 'pages#show', :id => 'home'
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
  
@@ -14,6 +19,7 @@ Leror::Application.routes.draw do
   #devise_for :users
 
   resources :pdfs
+  resource :bank
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

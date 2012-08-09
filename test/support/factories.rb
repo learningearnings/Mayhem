@@ -68,4 +68,11 @@ FactoryGirl.define do
     zip "35209"
     association :addressable
   end
+
+  factory :spree_user, class: Spree::User do
+    email "foo@bar.com"
+    password "123456"
+    password_confirmation "123456"
+    person
+  end
 end

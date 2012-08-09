@@ -124,6 +124,9 @@ GEM
       warden (~> 1.1.1)
     dragonfly (0.9.12)
       rack
+    draper (0.15.0)
+      actionpack (~> 3.2)
+      activesupport (~> 3.2)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -394,6 +397,7 @@ DEPENDENCIES
   database_cleaner (~> 0.8.0)
   devise
   dragonfly
+  draper
   factory_girl_rails
   guard (~> 1.2.3)
   guard-minitest (~> 0.5.0)
