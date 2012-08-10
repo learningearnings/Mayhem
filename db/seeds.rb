@@ -131,7 +131,7 @@ rescue
 end
 
 # Prepare some seed data for use in development
-if Rails.env.development?
+if Rails.env.development? || Rails.env.production?
   # Get our factories
   require 'factory_girl'
   require Rails.root.join('test', 'support', 'factories.rb')
