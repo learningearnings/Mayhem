@@ -140,6 +140,17 @@ Spree::PaymentMethod.delete_all
   pm.save
 end
 
+existing = Spree::ShippingMethod.find_by_name('In Classroom')
+if existing.nil?
+  sc = Spree::ShippingCategory.new(name: 'In Classroom')
+  sm = Spree::ShippingMethod.new(name: 'In Classroom', zone_id: 2, match_none: false, match_one: false)
+  c = Spree::Calculator::FlatRate.new()
+  sm.calculator = c
+  sm.shipping_category = sc
+  sm.save
+end
+
+
 # Prepare some seed data for use in development
 if Rails.env.development? || Rails.env.production?
   # Get our factories
