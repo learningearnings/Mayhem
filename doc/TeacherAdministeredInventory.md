@@ -1,7 +1,7 @@
 # How SchoolAdmins (aka SuperTeachers) manage the school store
 
 ## Initial setup
-*   When a schools is setup all of the students are considered "active" for 45 days
+*   When a school is setup all of the students are considered "active" for 45 days
 *   New students are considered active for 45 days
 *   The School has an account created called *Store Credits*
 *   *Store Credits* are used by the SchoolAdmin to purchase items for the 

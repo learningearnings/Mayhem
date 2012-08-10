@@ -130,6 +130,16 @@ rescue
   end
 end
 
+# Get rid of the core spree payment methods and just add one for LE Bucks
+Spree::PaymentMethod.delete_all
+[:development, :production].each do |environment|
+  pm = Spree::PaymentMethod.new(name: "LearningEarnings")
+  pm.type = "Spree::Gateway::LearningEarnings"
+  pm.environment = environment
+  pm.active = true
+  pm.save
+end
+
 # Prepare some seed data for use in development
 if Rails.env.development? || Rails.env.production?
   # Get our factories

@@ -8,5 +8,14 @@
 Spree.config do |config|
   # Example:
   # Uncomment to override the default site name.
-  # config.site_name = "Spree Demo Site"
+  config.site_name = "Learning Earnings Store"
+  config.auto_capture = true
+end
+
+module SpreeOverrideEngine
+  class Engine < Rails::Engine
+    config.after_initialize do
+      Rails.application.config.spree.payment_methods = [Spree::Gateway::LearningEarnings]
+    end
+  end
 end

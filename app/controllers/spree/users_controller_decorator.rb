@@ -12,7 +12,7 @@ Spree::UsersController.class_eval do
         if avatar_link = UserAvatarLink.find_by_user_id(@user.id)
           avatar_link.update_attributes(:avatar_id => params[:avatar_id])
         else
-          UserAvatarLink.create.(:avatar_id => params[:avatar_id], :user_id => @user.id)
+          UserAvatarLink.create(:avatar_id => params[:avatar_id], :user_id => @user.id)
         end
       end
       flash[:notice] = 'User updated.'

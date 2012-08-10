@@ -27,8 +27,6 @@ class Person < ActiveRecord::Base
   end
   # End Relationships
 
-
-
   # Allow sending a school or classroom to a person
   def <<(d)
     if d.is_a? School
@@ -40,6 +38,4 @@ class Person < ActiveRecord::Base
       PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl)
     end
   end
-
-
 end

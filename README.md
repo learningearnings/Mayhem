@@ -16,6 +16,14 @@ Run guard to run the tests as you develop:
 
 Then when you change files, tests will run.
 
+To load up some sample data, run:
+
+    rake db:seed
+
+To load up sample spree products, also run:
+
+    rake spree_sample:load
+
 ### Binary Dependencies
 Below are a list of binary dependencies that the project uses:
 

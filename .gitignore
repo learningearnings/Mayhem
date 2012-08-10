@@ -46,3 +46,4 @@ screenlog.*
 .sass-cache
 
 public/system
+public/spree

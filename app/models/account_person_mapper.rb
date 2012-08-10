@@ -1,0 +1,21 @@
+# This is a class used to map people to their respective accounts.
+# Useful for finding a person when you only have their account number.
+# Also, a handy place to define what the mapping is.
+class AccountPersonMapper
+  attr_accessor :account_name
+
+  def person_id
+    account_name.gsub(/[^\d]/, '').to_i
+  end
+
+  def find_person
+    type.find person_id
+  end
+
+  def type
+    case account_name
+    when /^STUDENT/
+      Student
+    end
+  end
+end

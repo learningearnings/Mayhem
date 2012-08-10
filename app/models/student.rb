@@ -23,12 +23,10 @@ class Student < Person
   def ensure_account
     account || Plutus::Asset.create(name: account_name)
   end
-  private
 
   def check_coppa
     if self.grade <= 6
       self.last_name = self.last_name[0]
     end
   end
-
 end
