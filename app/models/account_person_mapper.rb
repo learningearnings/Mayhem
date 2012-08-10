@@ -4,6 +4,10 @@
 class AccountPersonMapper
   attr_accessor :account_name
 
+  def initialize account_name
+    @account_name = account_name
+  end
+
   def person_id
     account_name.gsub(/[^\d]/, '').to_i
   end

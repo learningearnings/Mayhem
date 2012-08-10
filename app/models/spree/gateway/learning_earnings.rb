@@ -11,17 +11,14 @@ module Spree
     end
 
     def authorize(money, credit_card, options = {})
-      Rails.logger.warn("authorizing order")
-      Rails.logger.warn money.inspect
       #TODO: Fail if not enough money...
       # Credit card numbers are actually just strings containing the person's account name.  We can then find the account that way.
-      person = AccountPersonMapper.new(credit_card).find_person
-      cm = CreditManager.new
-      cm.transfer_credits_for_reward_purchase(person, money)
+      charge_person(money, credit_card, options)
       ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345', :avs_result => { :code => 'A' })
     end
 
     def purchase(money, credit_card, options = {})
+      charge_person(money, credit_card, options)
       ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345', :avs_result => { :code => 'A' })
     end
 
@@ -30,7 +27,6 @@ module Spree
     end
 
     def capture(authorization, credit_card, gateway_options)
-      Rails.logger.warn("capturing order")
       ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '67890')
     end
 
@@ -48,6 +44,13 @@ module Spree
 
     def actions
       %w(capture void credit)
+    end
+
+    private
+    def charge_person(money, credit_card, options)
+      person = AccountPersonMapper.new(credit_card.number).find_person
+      cm = CreditManager.new
+      cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
     end
   end
 end
