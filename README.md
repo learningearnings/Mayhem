@@ -24,6 +24,9 @@ To load up sample spree products, also run:
 
     rake spree_sample:load
 
+Or, to load up some sample Learning Earnings products, do:
+    rake db:load_dir[samples]
+
 ### Binary Dependencies
 Below are a list of binary dependencies that the project uses:
 
