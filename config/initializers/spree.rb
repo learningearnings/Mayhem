@@ -10,6 +10,7 @@ Spree.config do |config|
   # Uncomment to override the default site name.
   config.site_name = "Learning Earnings Store"
   config.auto_capture = true
+  config.layout = 'store'
 end
 
 module SpreeOverrideEngine
