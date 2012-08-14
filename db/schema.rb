@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120808155745) do
+ActiveRecord::Schema.define(:version => 20120814183349) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -403,6 +403,7 @@ ActiveRecord::Schema.define(:version => 20120808155745) do
     t.string   "payment_state"
     t.string   "email"
     t.text     "special_instructions"
+    t.integer  "store_id"
   end
 
   add_index "spree_orders", ["number"], :name => "index_orders_on_number"
@@ -441,12 +442,12 @@ ActiveRecord::Schema.define(:version => 20120808155745) do
   add_index "spree_pending_promotions", ["user_id"], :name => "index_spree_pending_promotions_on_user_id"
 
   create_table "spree_preferences", :force => true do |t|
-    t.string   "name",       :limit => 100
-    t.integer  "owner_id",   :limit => 30
-    t.string   "owner_type", :limit => 50
-    t.text     "value",      :limit => 255
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.string   "name"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "key"
     t.string   "value_type"
   end
@@ -498,6 +499,14 @@ ActiveRecord::Schema.define(:version => 20120808155745) do
 
   add_index "spree_products_promotion_rules", ["product_id"], :name => "index_products_promotion_rules_on_product_id"
   add_index "spree_products_promotion_rules", ["promotion_rule_id"], :name => "index_products_promotion_rules_on_promotion_rule_id"
+
+  create_table "spree_products_stores", :id => false, :force => true do |t|
+    t.integer "product_id"
+    t.integer "store_id"
+  end
+
+  add_index "spree_products_stores", ["product_id"], :name => "index_products_stores_on_product_id"
+  add_index "spree_products_stores", ["store_id"], :name => "index_products_stores_on_store_id"
 
   create_table "spree_products_taxons", :id => false, :force => true do |t|
     t.integer "product_id"
@@ -630,6 +639,16 @@ ActiveRecord::Schema.define(:version => 20120808155745) do
     t.integer "country_id"
   end
 
+  create_table "spree_stores", :force => true do |t|
+    t.string   "name"
+    t.string   "code"
+    t.text     "domains"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "default",    :default => false
+    t.string   "email"
+  end
+
   create_table "spree_tax_categories", :force => true do |t|
     t.string   "name"
     t.string   "description"
@@ -652,7 +671,10 @@ ActiveRecord::Schema.define(:version => 20120808155745) do
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "store_id"
   end
+
+  add_index "spree_taxonomies", ["store_id"], :name => "index_spree_taxonomies_on_store_id"
 
   create_table "spree_taxons", :force => true do |t|
     t.integer  "parent_id"
@@ -691,18 +713,19 @@ ActiveRecord::Schema.define(:version => 20120808155745) do
     t.boolean  "active",       :default => true
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
+    t.integer  "store_id"
   end
 
   create_table "spree_users", :force => true do |t|
-    t.string   "encrypted_password",     :limit => 128
-    t.string   "password_salt",          :limit => 128
+    t.string   "encrypted_password"
+    t.string   "password_salt"
     t.string   "email"
     t.string   "remember_token"
     t.string   "persistence_token"
     t.string   "reset_password_token"
     t.string   "perishable_token"
-    t.integer  "sign_in_count",                         :default => 0, :null => false
-    t.integer  "failed_attempts",                       :default => 0, :null => false
+    t.integer  "sign_in_count",                        :default => 0, :null => false
+    t.integer  "failed_attempts",                      :default => 0, :null => false
     t.datetime "last_request_at"
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -711,8 +734,8 @@ ActiveRecord::Schema.define(:version => 20120808155745) do
     t.string   "login"
     t.integer  "ship_address_id"
     t.integer  "bill_address_id"
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.string   "authentication_token"
     t.string   "unlock_token"
     t.datetime "locked_at"

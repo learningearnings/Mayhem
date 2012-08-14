@@ -49,6 +49,7 @@ gem 'state_machine'
 
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
 gem 'spree', '1.1.3'
+gem 'spree_multi_domain', :git =>  "git://github.com/spree/spree-multi-domain.git", :branch => "master"
 
 group :assets do
   gem 'compass_twitter_bootstrap', :git => 'git://github.com/vwall/compass-twitter-bootstrap.git'
