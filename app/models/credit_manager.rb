@@ -37,6 +37,7 @@ class CreditManager
   end
 
   def transfer_credits_for_reward_purchase student, amount
+    return false if student.balance < amount
     transfer_credits "Reward Purchase", student.account_name, main_account_name, amount
   end
 end
