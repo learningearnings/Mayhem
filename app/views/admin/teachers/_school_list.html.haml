@@ -1,0 +1,15 @@
+%h2= @teacher.name
+
+= form_for admin_teacher_path, :method => 'put' do |f|
+  = select_tag :school, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
+  = f.submit 'Add School'
+
+%table
+  %thead
+    %tr
+      %th School Name
+  %tbody
+    - @teacher.schools.each do |school|
+      %tr
+        %td= link_to school.name, admin_school_path(school)
+

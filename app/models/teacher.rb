@@ -1,5 +1,6 @@
 class Teacher < Person
 
+  has_many :schools, :through => :person_school_links
   validates_presence_of :grade
   after_create :ensure_account
 
@@ -14,6 +15,10 @@ class Teacher < Person
 
   def balance
     account.balance
+  end
+
+  def name
+    first_name + ' ' + last_name
   end
 
   private
