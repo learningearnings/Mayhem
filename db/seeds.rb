@@ -154,7 +154,7 @@ Dir.foreach('public/avatars/football/college') do |item|
   next if item.match(/^\./)
   a = Avatar.new
   a.image = Rails.root.join("public/avatars/football/college/#{item}")
-  a.description = item
+  a.description = item.gsub('.jpg', '').gsub('.png', '').gsub('.gif', '').gsub('_', ' ')
   a.save
 end
 
