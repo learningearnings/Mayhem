@@ -15,7 +15,7 @@ class School < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
 
-  after_create :ensure_account
+  after_create :ensure_accounts
 
   # Relationships
   def person_school_links(status = :status_active)
@@ -36,12 +36,20 @@ class School < ActiveRecord::Base
   # End Relationships
 
 
-  def account_name
-    "SCHOOL#{name}"
+  def main_account_name
+    "SCHOOL #{name} MAIN"
   end
 
-  def account
-    Plutus::Asset.find_by_name account_name
+  def credit_account_name
+    "SCHOOL #{name} CREDIT"
+  end
+
+  def main_account
+    Plutus::Asset.find_by_name main_account_name
+  end
+
+  def credit_account
+    Plutus::Asset.find_by_name credit_account_name
   end
 
   def balance
@@ -49,7 +57,8 @@ class School < ActiveRecord::Base
   end
 
   private
-  def ensure_account
-    account || Plutus::Asset.create(name: account_name)
+  def ensure_accounts
+    main_account || Plutus::Asset.create(name: main_account_name)
+    credit_account || Plutus::Asset.create(name: credit_account_name)
   end
 end
