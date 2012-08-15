@@ -6,6 +6,7 @@
   = render :partial => 'spree/shared/user_form', :locals => { :f => f }
   - Avatar.all.each do |a|
     = image_tag a.image.thumb('175x175#').url
+    = a.description
     = radio_button_tag :avatar_id, a.id
   %p= f.submit t(:update)
 
