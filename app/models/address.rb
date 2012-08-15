@@ -1,5 +1,5 @@
 class Address < ActiveRecord::Base
-  attr_accessible :line1, :line2, :city, :state, :zip
+  attr_accessible :line1, :line2, :city, :state_id, :zip, :latitude, :longitude, :state
 
   belongs_to :state
   belongs_to :addressable, :polymorphic => true
