@@ -1,16 +1,16 @@
 GIT
-  remote: git://github.com/ryanb/nested_form.git
-  revision: 59d9c367785b76a8052162a65f31dbaf04191dcd
-  specs:
-    nested_form (0.2.2)
-
-GIT
-  remote: git://github.com/spree/spree-multi-domain.git
-  revision: 3af112f02938876c66567506db9efd00a7278b6f
+  remote: git://github.com/johndavid400/spree-multi-domain.git
+  revision: bbd6aca0fd2ed7d8b3e579320f33bfdeeae4b036
   branch: master
   specs:
     spree_multi_domain (1.0.0)
       spree_core (~> 1.0)
+
+GIT
+  remote: git://github.com/ryanb/nested_form.git
+  revision: 59d9c367785b76a8052162a65f31dbaf04191dcd
+  specs:
+    nested_form (0.2.2)
 
 GIT
   remote: git://github.com/vwall/compass-twitter-bootstrap.git
