@@ -15,13 +15,13 @@ describe School do
   end
 
   it "has an account name" do
-    subject.new(name: 'foo').account_name.must_equal 'SCHOOLfoo'
+    subject.new(name: 'foo').name.must_equal "foo"
   end
 
   it "responds to #balance with the balance of its plutus account" do
     school = subject.new(name: 'foo')
     account = mock('account')
-    school.expects(:account).returns(account)
+    school.expects(:main_account).returns(account)
     account.expects(:balance).returns(0)
     school.balance.must_equal 0
   end
@@ -29,8 +29,8 @@ describe School do
   it "responds to #account with the plutus account with its account name" do
     school = subject.new(name: 'foo')
     account = mock('account')
-    Plutus::Asset.expects(:find_by_name).with("SCHOOLfoo").returns(account)
-    school.account.must_equal account
+    Plutus::Asset.expects(:find_by_name).with("SCHOOL#{school.id} MAIN").returns(account)
+    school.main_account.must_equal account
   end
 
   it "can add an address to a school" do
