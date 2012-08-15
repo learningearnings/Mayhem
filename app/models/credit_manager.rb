@@ -29,15 +29,15 @@ class CreditManager
   end
 
   def issue_credits_to_teacher school, teacher, amount
-    transfer_credits "Issue Credits to Teacher", school.main_account_name, teacher.account_name, amount
+    transfer_credits "Issue Credits to Teacher", school.main_account_name, "#{teacher.main_account_name} SCHOOL#{school.id}", amount
   end
 
   def issue_credits_to_student school, teacher, student, amount
-    transfer_credits "Issue Credits to Student", teacher.account_name, student.account_name, amount
+    transfer_credits "Issue Credits to Student", "#{teacher.main_account_name} SCHOOL#{school.id}", student.checking_account_name, amount
   end
 
   def transfer_credits_for_reward_purchase student, amount
     return false if student.balance < amount
-    transfer_credits "Reward Purchase", student.account_name, main_account_name, amount
+    transfer_credits "Reward Purchase", student.checking_account_name, main_account_name, amount
   end
 end
