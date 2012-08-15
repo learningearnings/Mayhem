@@ -150,6 +150,14 @@ if existing.nil?
   sm.save
 end
 
+Dir.foreach('public/avatars/football/college') do |item|
+  next if item.match(/^\./)
+  a = Avatar.new
+  a.image = Rails.root.join("public/avatars/football/college/#{item}")
+  a.description = item
+  a.save
+end
+
 
 # Prepare some seed data for use in development
 if Rails.env.development? || Rails.env.production?
