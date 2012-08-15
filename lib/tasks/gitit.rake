@@ -1,13 +1,15 @@
 require 'readline'
 
 namespace :git do
-  desc "Show the current status of the checkout"
+  desc "Fetch from all your remotes and list the commits fetched"
   task :fetch do
-    remotes = `git remote`
-    remotes.each_line do |l|
-      l.strip!
-      system "echo git fetch #{l}"
-      system "git fetch #{l}"
+    commits = `git fetch --all 2>&1`
+    commits.each_line do |commit|
+      commit.strip!
+      if commit.match /^([0-9a-f.]*).*-> *(([^\/]*)\/.*)$/
+        puts "------> #{$2} <------"
+        puts `git log #{$1} --no-merges --pretty=short --abbrev-commit #{$3}`
+      end
     end
   end
 end
