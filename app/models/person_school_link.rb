@@ -6,6 +6,8 @@ class PersonSchoolLink < ActiveRecord::Base
   scope :not_this_id, where("id != #{@id}")
   include BasicStatuses
 
+  after_create :setup_accounts
+
   belongs_to :school
   belongs_to :person
 
@@ -36,7 +38,11 @@ class PersonSchoolLink < ActiveRecord::Base
 
   # End Relationships
 
-
+  def setup_accounts
+    if self.person.class == Teacher
+      self.person.setup_accounts(self.school)
+    end
+  end
 
 
 

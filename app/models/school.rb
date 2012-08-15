@@ -37,11 +37,11 @@ class School < ActiveRecord::Base
 
 
   def main_account_name
-    "SCHOOL #{name} MAIN"
+    "SCHOOL#{id} MAIN"
   end
 
   def credit_account_name
-    "SCHOOL #{name} CREDIT"
+    "SCHOOL#{id} CREDIT"
   end
 
   def main_account
@@ -53,7 +53,7 @@ class School < ActiveRecord::Base
   end
 
   def balance
-    account.balance
+    main_account.balance
   end
 
   private

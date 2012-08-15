@@ -4,6 +4,7 @@
   = select_tag :school, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
   = f.submit 'Add School'
 
+%h4 Schools
 %table
   %thead
     %tr
@@ -12,4 +13,17 @@
     - @teacher.schools.each do |school|
       %tr
         %td= link_to school.name, admin_school_path(school)
+
+%h4 Accounts
+%table
+  %thead
+    %tr
+      %th Name
+      %th Balance
+  %tbody
+    - @teacher.accounts.each do |account|
+      %tr
+        %td= link_to account.name
+        %td= account.balance
+
 
