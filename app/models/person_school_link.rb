@@ -39,8 +39,8 @@ class PersonSchoolLink < ActiveRecord::Base
   # End Relationships
 
   def setup_accounts
-    if self.person.class == Teacher
-      self.person.setup_accounts(self.school)
+    if person.is_a? Teacher
+      person.setup_accounts(school)
     end
   end
 

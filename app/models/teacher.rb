@@ -29,6 +29,7 @@ class Teacher < Person
   end
 
   def accounts
+    # FIXME: I hate this -ja
     Plutus::Account.where "name LIKE '%TEACHER#{id}%'"
   end
 
@@ -41,8 +42,8 @@ class Teacher < Person
   end
 
   def setup_accounts(school)
-    main_account || Plutus::Asset.create(name: (main_account_name + " SCHOOL#{school.id}"))
-    unredeemed_account || Plutus::Asset.create(name: (unredeemed_account_name + " SCHOOL#{school.id}"))
-    undeposited_account || Plutus::Asset.create(name: (undeposited_account_name + " SCHOOL#{school.id}"))
+    main_account(school)        || Plutus::Asset.create(name: main_account_name(school))
+    unredeemed_account(school)  || Plutus::Asset.create(name: unredeemed_account_name(school))
+    undeposited_account(school) || Plutus::Asset.create(name: undeposited_account_name(school))
   end
 end
