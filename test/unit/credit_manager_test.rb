@@ -54,7 +54,7 @@ describe CreditManager do
 
       it "issues credits to a teacher" do
         @school.expects(:main_account_name).returns(@school_account_name)
-        @teacher.expects(:main_account_name).returns(@teacher_account_name)
+        @teacher.expects(:main_account_name).with(@school).returns(@teacher_account_name)
         @amount = BigDecimal("500.00")
         @credit_manager.expects(:transfer_credits).with("Issue Credits to Teacher", @school_account_name, @teacher_account_name, @amount).once
         @credit_manager.issue_credits_to_teacher(@school, @teacher, @amount)
@@ -69,7 +69,7 @@ describe CreditManager do
 
         it "issues credits to a student" do
           @amount = BigDecimal("500.00")
-          @teacher.expects(:main_account_name).returns(@teacher_account_name)
+          @teacher.expects(:main_account_name).with(@school).returns(@teacher_account_name)
           @credit_manager.expects(:transfer_credits).with("Issue Credits to Student", @teacher_account_name, @student_account_name, @amount).once
           @credit_manager.issue_credits_to_student(@school, @teacher, @student, @amount)
         end

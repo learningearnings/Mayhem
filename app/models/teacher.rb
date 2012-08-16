@@ -4,28 +4,28 @@ class Teacher < Person
   validates_presence_of :grade
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
-  def main_account_name
-    "TEACHER#{id} MAIN"
+  def main_account_name(school)
+    "TEACHER#{id} MAIN SCHOOL#{school.id}"
   end
 
-  def unredeemed_account_name
-    "TEACHER#{id} UNREDEEMED"
+  def unredeemed_account_name(school)
+    "TEACHER#{id} UNREDEEMED SCHOOL#{school.id}"
   end
 
-  def undeposited_account_name
-    "TEACHER#{id} UNDEPOSITED"
+  def undeposited_account_name(school)
+    "TEACHER#{id} UNDEPOSITED SCHOOL#{school.id}"
   end
 
-  def main_account
-    Plutus::Asset.find_by_name main_account_name
+  def main_account(school)
+    Plutus::Asset.find_by_name main_account_name(school)
   end
 
-  def unredeemed_account
-    Plutus::Asset.find_by_name unredeemed_account_name
+  def unredeemed_account(school)
+    Plutus::Asset.find_by_name unredeemed_account_name(school)
   end
 
-  def undeposited_account
-    Plutus::Asset.find_by_name undeposited_account_name
+  def undeposited_account(school)
+    Plutus::Asset.find_by_name undeposited_account_name(school)
   end
 
   def accounts
