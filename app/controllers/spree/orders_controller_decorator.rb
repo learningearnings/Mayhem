@@ -54,7 +54,7 @@ Spree::OrdersController.class_eval do
     
     # Payment
     payment_source_attributes = {}
-    payment_source_attributes["number"] = current_person.account_name
+    payment_source_attributes["number"] = current_person.checking_account_name
     payment_source_attributes["month"] = "1"
     payment_source_attributes["year"] = "2100"
     payment_source_attributes["verification_value"] = "111"
