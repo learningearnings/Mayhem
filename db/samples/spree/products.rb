@@ -9,3 +9,7 @@ Spree::Asset.all.each do |asset|
     asset.save
   end
 end
+
+Spree::Product.all.each do |product|
+  product.stores.push(Spree::Store.first)
+end
