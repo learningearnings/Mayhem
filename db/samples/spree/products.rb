@@ -11,5 +11,7 @@ Spree::Asset.all.each do |asset|
 end
 
 Spree::Product.all.each do |product|
-  product.stores.push(Spree::Store.first)
+  Spree::Store.all.each do |s|
+    product.stores << s
+  end
 end
