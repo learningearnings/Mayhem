@@ -7,6 +7,7 @@ class School < ActiveRecord::Base
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
+  after_save :create_spree_store
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
@@ -16,6 +17,12 @@ class School < ActiveRecord::Base
   validates_uniqueness_of :name
 
   after_create :ensure_accounts
+
+  def create_spree_store
+    unless Spree::Store.find_by_code(self.id.to_s)
+      Spree::Store.create(code: self.id.to_s, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.id.to_s}.localhost:3000")
+    end
+  end
 
   # Relationships
   def person_school_links(status = :status_active)

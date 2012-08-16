@@ -198,4 +198,6 @@ if Rails.env.development? || Rails.env.production?
   # Give a student some credits
   @student_credits = 100
   @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
+
+  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le.localhost:3000")
 end
