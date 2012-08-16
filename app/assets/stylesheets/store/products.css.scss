@@ -1,0 +1,20 @@
+
+.product-tile {
+    text-align: center;
+    min-height: 140px;
+    font-size: 1.2em;
+    float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    @extend .span2;
+    @extend .thumbnail;
+}
+
+.product-image {
+    height: 100px;
+}
+
+a.info {
+    height: 20px;
+    overflow: hidden;
+}

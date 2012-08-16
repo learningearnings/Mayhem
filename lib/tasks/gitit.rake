@@ -8,7 +8,7 @@ namespace :git do
       commit.strip!
       if commit.match /^([0-9a-f.]*).*-> *(([^\/]*)\/.*)$/
         puts "------> #{$2} <------"
-        puts `git log #{$1} --no-merges --pretty=short --abbrev-commit #{$3}`
+        puts `git log #{$1} --no-merges --pretty=short --abbrev-commit`
       end
     end
   end
