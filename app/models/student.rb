@@ -24,7 +24,15 @@ class Student < Person
   end
 
   def balance
-    checking_account.balance 
+    checking_account.balance
+  end
+
+  def checking_balance
+    checking_account.balance
+  end
+
+  def savings_balance
+    savings_account.balance
   end
 
   private
