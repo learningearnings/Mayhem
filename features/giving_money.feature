@@ -42,3 +42,10 @@ Feature: Giving Credits
      When I have 100 credits
       And I purchase a reward that cost 5 credits
      Then I should have 95 credits
+
+  Scenario: Attempting to spend more credits than available
+    Given I am a student
+     When I have 100 credits
+      And I attempt to purchase a reward that costs 105 credits
+     Then I should have 100 credits
+

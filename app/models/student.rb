@@ -1,27 +1,36 @@
 class Student < Person
   before_save :check_coppa
-  after_create :ensure_account
+  after_create :ensure_accounts
   validates_presence_of :grade
   def school
     schools.where("person_school_links.status = 'active'").order('created_at desc').first
   end
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
-  def account_name
-    "STUDENT#{id}"
+  def checking_account_name
+    "STUDENT#{id} CHECKING"
   end
 
-  def account
-    Plutus::Asset.find_by_name account_name
+  def savings_account_name
+    "STUDENT#{id} SAVINGS"
+  end
+
+  def checking_account
+    Plutus::Asset.find_by_name checking_account_name
+  end
+
+  def savings_account
+    Plutus::Asset.find_by_name savings_account_name
   end
 
   def balance
-    account.balance
+    checking_account.balance 
   end
 
   private
-  def ensure_account
-    account || Plutus::Asset.create(name: account_name)
+  def ensure_accounts
+    checking_account || Plutus::Asset.create(name: checking_account_name)
+    savings_account || Plutus::Asset.create(name: savings_account_name)
   end
 
   def check_coppa

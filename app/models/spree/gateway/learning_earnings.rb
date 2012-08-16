@@ -11,15 +11,19 @@ module Spree
     end
 
     def authorize(money, credit_card, options = {})
-      #TODO: Fail if not enough money...
-      # Credit card numbers are actually just strings containing the person's account name.  We can then find the account that way.
-      charge_person(money, credit_card, options)
-      ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345', :avs_result => { :code => 'A' })
+      if charge_person(money, credit_card, options)
+        ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345', :avs_result => { :code => 'A' })
+      else
+        ActiveMerchant::Billing::Response.new(false, 'LE Gateway: Forced failure', :message => 'LE Gateway: Forced Failure', :test => test?)
+      end
     end
 
     def purchase(money, credit_card, options = {})
-      charge_person(money, credit_card, options)
-      ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345', :avs_result => { :code => 'A' })
+      if charge_person(money, credit_card, options)
+        ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345', :avs_result => { :code => 'A' })
+      else
+        ActiveMerchant::Billing::Response.new(false, 'LE Gateway: Forced failure', :message => 'LE Gateway: Forced Failure', :test => test?)
+      end
     end
 
     def credit(money, credit_card, response_code, options = {})

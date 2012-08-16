@@ -1,24 +1,49 @@
 class Teacher < Person
 
+  has_many :schools, :through => :person_school_links
   validates_presence_of :grade
-  after_create :ensure_account
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
-  def account_name
-    "TEACHER#{id}"
+  def main_account_name(school)
+    "TEACHER#{id} MAIN SCHOOL#{school.id}"
   end
 
-  def account
-    Plutus::Asset.find_by_name account_name
+  def unredeemed_account_name(school)
+    "TEACHER#{id} UNREDEEMED SCHOOL#{school.id}"
+  end
+
+  def undeposited_account_name(school)
+    "TEACHER#{id} UNDEPOSITED SCHOOL#{school.id}"
+  end
+
+  def main_account(school)
+    Plutus::Asset.find_by_name main_account_name(school)
+  end
+
+  def unredeemed_account(school)
+    Plutus::Asset.find_by_name unredeemed_account_name(school)
+  end
+
+  def undeposited_account(school)
+    Plutus::Asset.find_by_name undeposited_account_name(school)
+  end
+
+  def accounts
+    # FIXME: I hate this -ja
+    Plutus::Account.where "name LIKE '%TEACHER#{id}%'"
   end
 
   def balance
-    account.balance
+    main_account.balance
   end
 
-  private
-  # FIXME: There needs to be an account per teacher per school.  This part doesn't so much work long term
-  def ensure_account
-    account || Plutus::Asset.create(name: account_name)
+  def name
+    first_name + ' ' + last_name
+  end
+
+  def setup_accounts(school)
+    main_account(school)        || Plutus::Asset.create(name: main_account_name(school))
+    unredeemed_account(school)  || Plutus::Asset.create(name: unredeemed_account_name(school))
+    undeposited_account(school) || Plutus::Asset.create(name: undeposited_account_name(school))
   end
 end

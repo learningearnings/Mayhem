@@ -92,6 +92,15 @@ class GivingCredits < Spinach::FeatureSteps
     cm.transfer_credits_for_reward_purchase(@student, BigDecimal('5'))
   end
 
+  And 'I attempt to purchase a reward that costs 105 credits' do
+    cm = CreditManager.new
+    cm.transfer_credits_for_reward_purchase(@student, BigDecimal('105'))
+  end
+
+  Then 'I should have 100 credits' do
+    @student.balance.must_equal BigDecimal('100')
+  end
+
   Then 'I should have 95 credits' do
     @student.balance.must_equal BigDecimal('95')
   end

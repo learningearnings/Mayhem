@@ -21,22 +21,23 @@ class CreditManager
   end
 
   def issue_credits_to_school school, amount
-    transfer_credits "Issue Credits to School", main_account_name, school.account_name, amount
+    transfer_credits "Issue Credits to School", main_account_name, school.main_account_name, amount
   end
 
   def revoke_credits_for_school school, amount
-    transfer_credits "Revoke Credits for School", school.account_name, main_account_name, amount
+    transfer_credits "Revoke Credits for School", school.main_account_name, main_account_name, amount
   end
 
   def issue_credits_to_teacher school, teacher, amount
-    transfer_credits "Issue Credits to Teacher", school.account_name, teacher.account_name, amount
+    transfer_credits "Issue Credits to Teacher", school.main_account_name, teacher.main_account_name(school), amount
   end
 
   def issue_credits_to_student school, teacher, student, amount
-    transfer_credits "Issue Credits to Student", teacher.account_name, student.account_name, amount
+    transfer_credits "Issue Credits to Student", teacher.main_account_name(school), student.checking_account_name, amount
   end
 
   def transfer_credits_for_reward_purchase student, amount
-    transfer_credits "Reward Purchase", student.account_name, main_account_name, amount
+    return false if student.balance < amount
+    transfer_credits "Reward Purchase", student.checking_account_name, main_account_name, amount
   end
 end

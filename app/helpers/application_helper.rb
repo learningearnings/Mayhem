@@ -3,7 +3,7 @@ module ApplicationHelper
   # NOTE: I'm not sure if this is confusing, since current_person will be different depending on the context (controller or view)
   # For now I think it makes sense, but we can rethink if it confuses anyone...
   def current_person
-    if current_user
+    if current_user && current_user.person
       PersonDecorator.decorate(current_user.person)
     end
   end
