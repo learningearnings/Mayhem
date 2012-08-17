@@ -40,6 +40,9 @@ class School < ActiveRecord::Base
   def students(status = :status_active)
     Student.joins(:person_school_links).merge(person_school_links(status)).send(status)
   end
+  def active_students
+    (self.students.recent + self.students.logged).uniq
+  end
   # End Relationships
 
 

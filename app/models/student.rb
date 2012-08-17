@@ -2,8 +2,18 @@ class Student < Person
   before_save :check_coppa
   after_create :ensure_accounts
   validates_presence_of :grade
+
+  has_many :schools, :through => :person_school_links
+
+  scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
+  scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
+
   def school
     schools.where("person_school_links.status = 'active'").order('created_at desc').first
+  end
+  
+  def name
+    first_name + ' ' + last_name
   end
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
