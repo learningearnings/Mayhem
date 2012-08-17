@@ -2,11 +2,11 @@ class PersonDecorator < Draper::Base
   decorates :person
 
   def checking_balance
-    h.number_to_currency(person.account.balance)
+    h.number_to_currency(person.checking_account.balance)
   end
 
   def savings_balance
-    h.number_to_currency(0)
+    h.number_to_currency(person.savings_account.balance)
   end
 
   # Accessing Helpers
