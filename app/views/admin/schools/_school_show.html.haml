@@ -1,0 +1,38 @@
+%h2= @school.name
+
+%h4 Teachers
+%table
+  %thead
+    %tr
+      %th Teacher Name
+  %tbody
+    - @school.teachers.each do |teacher|
+      %tr
+        %td= link_to teacher.name, admin_teacher_path(teacher)
+
+%h4 Students
+%table
+  %thead
+    %tr
+      %th Student Name
+  %tbody
+    - @school.students.each do |student|
+      %tr
+        %td= link_to student.name, admin_student_path(student)
+
+%h4 Accounts
+%table
+  %thead
+    %tr
+      %th Name
+      %th Balance
+  %tbody
+    %tr
+      %td= link_to @school.main_account.name
+      %td= @school.main_account.balance
+    %tr
+      %td= link_to @school.credit_account.name
+      %td= @school.credit_account.balance
+ 
+
+

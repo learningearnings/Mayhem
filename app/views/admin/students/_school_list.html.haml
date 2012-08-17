@@ -1,0 +1,32 @@
+%h2= @student.name
+
+/= form_for admin_student_path, :method => 'put' do |f|
+/  = select_tag :school, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
+/  = f.submit 'Add School'
+
+%h4 Schools
+%table
+  %thead
+    %tr
+      %th School Name
+  %tbody
+    - @student.schools.each do |school|
+      %tr
+        %td= link_to school.name, admin_school_path(school)
+
+%h4 Accounts
+%table
+  %thead
+    %tr
+      %th Name
+      %th Balance
+  %tbody
+    %tr
+      %td= link_to @student.checking_account.name
+      %td= @student.checking_account.balance
+    %tr
+      %td= link_to @student.savings_account.name
+      %td= @student.savings_account.balance
+ 
+
+
