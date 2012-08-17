@@ -5,6 +5,9 @@ class Student < Person
 
   has_many :schools, :through => :person_school_links
 
+  scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
+  scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
+
   def school
     schools.where("person_school_links.status = 'active'").order('created_at desc').first
   end

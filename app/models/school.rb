@@ -4,8 +4,6 @@ class School < ActiveRecord::Base
   include BasicStatuses
   has_many :addresses, :as => :addressable
   has_many :classrooms
-  has_many :teachers, :through => :person_school_links, :class_name => 'Teacher'
-  has_many :students, :through => :person_school_links, :class_name => 'Student'
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
@@ -41,6 +39,9 @@ class School < ActiveRecord::Base
   end
   def students(status = :status_active)
     Student.joins(:person_school_links).merge(person_school_links(status)).send(status)
+  end
+  def active_students
+    (self.students.recent + self.students.logged).uniq
   end
   # End Relationships
 
