@@ -142,6 +142,30 @@ reward_366:
   description: This reward is 1 Halloween bouncing ball.
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+mega_pencils:
+  permalink: mega-school-pencils
+  name: Mega School Pencils
+  description: A box of Mega School Pencils
+  available_on: <%= Time.zone.now.to_s(:db) %>
+  count_on_hand: 10
+reward_371:
+  permalink: reward_371
+  name: School Pencils
+  description: This reward is 1 mega school pencil. Collect them all, because each one is different!
+  available_on: <%= Time.zone.now.to_s(:db) %>
+  count_on_hand: 10
+friendship_rope_bracelets:
+  permalink: friendship-rope-bracelets
+  name: Frindship Rope Bracelets
+  description: A box of Friendship Rope Bracelets
+  available_on: <%= Time.zone.now.to_s(:db) %>
+  count_on_hand: 10
+reward_439:
+  permalink: reward_439
+  name: Friendship Rope Bracelets
+  description: This reward is 1 bracelet.
+  available_on: <%= Time.zone.now.to_s(:db) %>
+  count_on_hand: 10
 #reward_367:
 #  permalink: reward_367
 #  name: Inspirational Bracelet (collect them all!)
@@ -164,12 +188,6 @@ reward_366:
 #  permalink: reward_370
 #  name: Mega Rubber Ducky (collect them all!)
 #  description: This reward is 1 mega rubber ducky. Be sure to collect them all!
-#  available_on: <%= Time.zone.now.to_s(:db) %>
-#  count_on_hand: 10
-#reward_371:
-#  permalink: reward_371
-#  name: School Pencils
-#  description: This reward is 1 mega school pencil. Collect them all, because each one is different!
 #  available_on: <%= Time.zone.now.to_s(:db) %>
 #  count_on_hand: 10
 #reward_372:
@@ -440,12 +458,6 @@ reward_366:
 #  permalink: reward_438
 #  name: Foam Sport Ball
 #  description: This reward is 1 foam sport ball!
-#  available_on: <%= Time.zone.now.to_s(:db) %>
-#  count_on_hand: 10
-#reward_439:
-#  permalink: reward_439
-#  name: Friendship Rope Bracelets
-#  description: This reward is 1 bracelet.
 #  available_on: <%= Time.zone.now.to_s(:db) %>
 #  count_on_hand: 10
 #reward_440:

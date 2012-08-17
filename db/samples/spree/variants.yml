@@ -142,6 +142,30 @@ reward_366_v:
   cost_price: 0
   count_on_hand: 10
   is_master: true
+mega_pencils_v:
+  product: mega_pencils
+  price: 3600
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
+friendship_rope_bracelets_v:
+  product: friendship_rope_bracelets
+  price: 7200
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
+reward_371_v:
+  product: reward_371
+  price: 36
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
+reward_439_v:
+  product: reward_439
+  price: 100
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
 #reward_367_v:
 #  product: reward_367
 #  price: 183
@@ -163,12 +187,6 @@ reward_366_v:
 #reward_370_v:
 #  product: reward_370
 #  price: 86
-#  cost_price: 0
-#  count_on_hand: 10
-#  is_master: true
-#reward_371_v:
-#  product: reward_371
-#  price: 36
 #  cost_price: 0
 #  count_on_hand: 10
 #  is_master: true
@@ -439,12 +457,6 @@ reward_366_v:
 #reward_438_v:
 #  product: reward_438
 #  price: 61
-#  cost_price: 0
-#  count_on_hand: 10
-#  is_master: true
-#reward_439_v:
-#  product: reward_439
-#  price: 100
 #  cost_price: 0
 #  count_on_hand: 10
 #  is_master: true

@@ -214,6 +214,42 @@ reward_366:
   attachment_height: 120
   type: Spree::Image
   position: 1
+reward_371:
+  viewable: reward_371_v
+  attachment_file_name: http://learningearnings.com/images/rewardimage/pencilassortment.jpg
+  viewable_type: Spree::Variant
+  attachment_content_type: image/jpg
+  attachment_width: 160
+  attachment_height: 120
+  type: Spree::Image
+  position: 1
+reward_439:
+  viewable: reward_439_v
+  attachment_file_name: http://learningearnings.com/images/rewardimage/friendship_rope_bracelets.jpg
+  viewable_type: Spree::Variant
+  attachment_content_type: image/jpg
+  attachment_width: 160
+  attachment_height: 120
+  type: Spree::Image
+  position: 1
+mega_pencils:
+  viewable: mega_pencils_v
+  attachment_file_name: http://learningearnings.com/images/rewardimage/pencilassortment.jpg
+  viewable_type: Spree::Variant
+  attachment_content_type: image/jpg
+  attachment_width: 160
+  attachment_height: 120
+  type: Spree::Image
+  position: 1
+friendship_rope_bracelets:
+  viewable: friendship_rope_bracelets_v
+  attachment_file_name: http://learningearnings.com/images/rewardimage/friendship_rope_bracelets.jpg
+  viewable_type: Spree::Variant
+  attachment_content_type: image/jpg
+  attachment_width: 160
+  attachment_height: 120
+  type: Spree::Image
+  position: 1
 #reward_367:
 #  viewable: reward_367_v
 #  attachment_file_name: http://learningearnings.com/images/rewardimage/inspirationalbracelet.jpg
@@ -244,15 +280,6 @@ reward_366:
 #reward_370:
 #  viewable: reward_370_v
 #  attachment_file_name: http://learningearnings.com/images/rewardimage/duckieassortment.jpg
-#  viewable_type: Spree::Variant
-#  attachment_content_type: image/jpg
-#  attachment_width: 160
-#  attachment_height: 120
-#  type: Spree::Image
-#  position: 1
-#reward_371:
-#  viewable: reward_371_v
-#  attachment_file_name: http://learningearnings.com/images/rewardimage/pencilassortment.jpg
 #  viewable_type: Spree::Variant
 #  attachment_content_type: image/jpg
 #  attachment_width: 160
@@ -658,15 +685,6 @@ reward_366:
 #reward_438:
 #  viewable: reward_438_v
 #  attachment_file_name: http://learningearnings.com/images/rewardimage/foamsportsballs.png
-#  viewable_type: Spree::Variant
-#  attachment_content_type: image/jpg
-#  attachment_width: 160
-#  attachment_height: 120
-#  type: Spree::Image
-#  position: 1
-#reward_439:
-#  viewable: reward_439_v
-#  attachment_file_name: http://learningearnings.com/images/rewardimage/friendship_rope_bracelets.jpg
 #  viewable_type: Spree::Variant
 #  attachment_content_type: image/jpg
 #  attachment_width: 160

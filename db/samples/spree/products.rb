@@ -12,6 +12,10 @@ end
 
 Spree::Product.all.each do |product|
   Spree::Store.all.each do |s|
-    product.stores << s
+    if(s.default && product.property('wholesale'))
+      product.stores << s
+    elsif !s.default && product.property('wholesale').nil?
+      product.stores << s
+    end
   end
 end

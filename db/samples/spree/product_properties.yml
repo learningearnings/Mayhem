@@ -1,0 +1,26 @@
+mega_pencils_a:
+  product: mega_pencils
+  property: prop_wholesale
+  value: 1
+mega_pencils_b:
+  product: mega_pencils
+  property: prop_retail_quantity
+  value: 100
+mega_pencils_c:
+  product: mega_pencils
+  property: prop_retail_product
+  value: reward_371
+friendship_rope_bracelets_a:
+  product: friendship_rope_bracelets
+  property: prop_wholesale
+  value: 1
+friendship_rope_bracelets_b:
+  product: friendship_rope_bracelets
+  property: prop_retail_quantity
+  value: 72
+friendship_rope_bracelets_c:
+  product: friendship_rope_bracelets
+  property: prop_retail_product
+  value: reward_439
+
+
