@@ -3,6 +3,23 @@ Project Mayhem
 
 Ruby On Rails reimplementation of LearningEarnings.com
 
+### Multi-Domain Spree **** IMPORTANT ****
+
+We're using multi-domain Spree, and that means that every school has it's own domain.
+Currently, we're using the schools id as the domain, so the domain would be (for localhost development)
+
+    1.localhost:3000
+
+This requires that you put 1.localhost in your hosts file.   If your on the Interwebs, then you can use
+the domain lvh.me (local virtual host - resolves to 127.0.0.1) which has a subdomain wildcard so *.lvh.me
+resolves to 127.0.0.1
+
+Everything might not be working right, but development from here on should use the below url:
+
+    lvh.me:3000
+
+The app now will try to redirect you to 1.lvh.me:3000 if you come in without a subdomain.
+
 ### Development
 Fork, then clone the repository to your development environment
 

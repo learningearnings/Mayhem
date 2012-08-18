@@ -199,7 +199,7 @@ if Rails.env.development? || Rails.env.production?
   @student_credits = 100
   @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
 
-  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le.localhost:3000")
+  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le.lvh.me:3000")
 
   Rake::Task['db:load_dir'].reenable
   Rake::Task['db:load_dir'].invoke("samples")

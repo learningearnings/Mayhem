@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   # Users are required to access the application
   # using a subdomain
   def subdomain_required
-    if current_user && request.subdomain.empty?
+    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain) && home_host
       token = Devise.friendly_token
       current_user.authentication_token = token
       my_redirect_url = home_host + "?auth_token=#{token}"
@@ -32,19 +32,28 @@ class ApplicationController < ActionController::Base
   end
 
   def home_subdomain
-      subdomain = current_user.person.schools[0].id.to_s
+    if current_user && current_user.person && current_user.person.schools.count > 0
+      current_user.person.schools[0].id.to_s
+    else
+      ""
+    end
   end
 
 
   def home_host
     return request.protocol + request.host_with_port unless current_user.person
-    if current_user.person.schools.count > 0
+    if current_user && current_user.person && current_user.person.schools.count > 0
       # TODO - figure out a better hostname naming scheme
-      subdomain = current_user.person.schools[0].id.to_s
+      subdomain = home_subdomain
       if request.host.match /^#{subdomain}\./
         host = request.protocol + request.host_with_port
       else
-        subdomain = subdomain + '.' + request.host
+        if !request.subdomain.empty?
+          host = request.host.gsub /^#{request.subdomain}\./,''
+        else
+          host = request.host
+        end
+        subdomain = subdomain + '.' + host
         if Rails.env == 'development'
           match_found = false
           begin
@@ -64,8 +73,8 @@ class ApplicationController < ActionController::Base
             end
           end
           if !match_found
-            subdomain = request.host
-            flash[:error] = "Hosts aren't configured correctly for development"
+            flash[:error] = ("Localhost(s) aren't configured correctly for development - use " + "<a href=\"http://lvh.me:3000\">lvh.me:3000</a>").html_safe
+            return nil
           end
         end
         host = request.protocol + subdomain

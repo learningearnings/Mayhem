@@ -20,7 +20,7 @@ class School < ActiveRecord::Base
 
   def create_spree_store
     unless Spree::Store.find_by_code(self.id.to_s)
-      Spree::Store.create(code: self.id.to_s, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.id.to_s}.localhost:3000")
+      Spree::Store.create(code: self.id.to_s, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.id.to_s}.lvh.me:3000")
     end
   end
 

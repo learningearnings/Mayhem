@@ -18,7 +18,7 @@ class Person < ActiveRecord::Base
   end
 
   def schools(status = :status_active)
-    School.joins(:person_school_links).merge(person_school_links(status)).send(status)
+    School.joins(:person_school_links).merge(person_school_links(status)).send(status).order('created_at desc')
   end
 
   def classrooms(status = :status_active)
