@@ -181,6 +181,12 @@ if Rails.env.development? || Rails.env.production?
   @teacher = FactoryGirl.create(:teacher)
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
 
+  # Create a LE Admin
+  @le_admin = FactoryGirl.create(:le_admin)
+  @spree_admin = Spree::User.find(1)
+  @spree_admin.person = @le_admin
+  @spree_admin.save
+
   # Give the teacher some credits
   @teacher_credits = 5000
   @credit_manager.issue_credits_to_teacher(@school, @teacher, @teacher_credits)

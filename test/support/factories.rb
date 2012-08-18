@@ -22,6 +22,11 @@ FactoryGirl.define do
       dob 25.years.ago
       grade 9
     end
+
+    factory :le_admin, class: LeAdmin do
+      sequence(:first_name) {|n| "LE Admin #{n}"}
+      dob 40.years.ago
+    end
   end
 
   factory :person_school_link do

@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
   # Users are required to access the application
   # using a subdomain
   def subdomain_required
+    return if current_user && current_user.respond_to?(:person) && current_user.person.is_a?(LeAdmin)
+    return if current_user && !current_user.respond_to?(:person)
     if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain) && home_host
       token = Devise.friendly_token
       current_user.authentication_token = token
@@ -54,6 +56,9 @@ class ApplicationController < ActionController::Base
           host = request.host
         end
         subdomain = subdomain + '.' + host
+
+        # If this is a development environment, check to see if the
+        # hosts file is setup right
         if Rails.env == 'development'
           match_found = false
           begin
