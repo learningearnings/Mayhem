@@ -197,14 +197,17 @@ if Rails.env.development? || Rails.env.production?
   @student2 = FactoryGirl.create(:student)
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
 
-  # Associate spree users with thoses students
+  # Associate spree users with thoses students & teachers
   @user1 = FactoryGirl.create(:spree_user, person: @student1, email: 'student1@example.com')
   @user2 = FactoryGirl.create(:spree_user, person: @student2, email: 'student2@example.com')
+  @user3 = FactoryGirl.create(:spree_user, person: @teacher, email: 'teacher@example.com')
 
   # Give a student some credits
   @student_credits = 100
   @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
 
+
+  # create the default store - le wholesale store
   @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le.lvh.me:3000")
 
   Rake::Task['db:load_dir'].reenable

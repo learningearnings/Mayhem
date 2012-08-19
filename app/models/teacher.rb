@@ -34,7 +34,9 @@ class Teacher < Person
   end
 
   def balance
-    main_account.balance
+    schools.collect do |s| 
+      main_account(s).balance
+    end
   end
 
   def name

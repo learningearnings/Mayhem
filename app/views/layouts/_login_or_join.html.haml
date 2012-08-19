@@ -3,8 +3,8 @@
     - unless current_user
       = render 'layouts/login_form'
   .join.supplemental-part
-    - if current_user
-      = render 'layouts/logged_in_block'
+    - if current_user && current_user.person
+      = render 'layouts/logged_in_block_' + current_user.person.class.to_s.downcase
     - else
       %h4 Join
       %p= link_to "Students", "#", class: 'btn'
