@@ -45,7 +45,7 @@ class Student < Person
   end
 
   def username
-    self.name.gsub(' ', '').camelize.underscore 
+    self.name.gsub(' ', '').underscore 
   end
 
   private
