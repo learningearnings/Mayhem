@@ -55,7 +55,9 @@ class Student < Person
   end
 
   def create_user
-    Spree::User.create(:email => self.username, :password => 'test123', :password_confirmation => 'test123')
+    user = Spree::User.create(:email => "#{self.username}@example.com", :password => 'test123', :password_confirmation => 'test123')
+    user.person_id = self.id
+    user.save
   end
 
   def check_coppa

@@ -15,6 +15,7 @@ describe Person do
       p.grade = 6
       p.save
       p.last_name.must_equal 'T'
+      p.user.email.must_equal 'test_first_test_last@example.com'
     end
 
   end
