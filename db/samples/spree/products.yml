@@ -156,7 +156,7 @@ reward_371:
   count_on_hand: 10
 friendship_rope_bracelets:
   permalink: friendship-rope-bracelets
-  name: Frindship Rope Bracelets
+  name: Friendship Rope Bracelets
   description: A box of Friendship Rope Bracelets
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
