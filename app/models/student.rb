@@ -51,7 +51,7 @@ class Student < Person
   private
   def ensure_accounts
     checking_account || Plutus::Asset.create(name: checking_account_name)
-    savings_account || Plutus::Asset.create(name: savings_account_name)
+    savings_account  || Plutus::Asset.create(name: savings_account_name)
   end
 
   def create_user
