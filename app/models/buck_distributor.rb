@@ -1,5 +1,4 @@
 class BuckDistributor
-
   def initialize
     @schools = School.all
     @credit_manager = CreditManager.new
@@ -27,10 +26,10 @@ class BuckDistributor
         amount = (school.main_account.balance / school.active_teachers.count)
         pay_teacher(school, teacher, amount)
       end
+    end
   end
 
   def pay_teacher(school, teacher, amount)
     @credit_manager.issue_credits_to_teacher school, teacher, amount
   end
-
 end

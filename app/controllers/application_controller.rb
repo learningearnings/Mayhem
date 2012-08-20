@@ -28,7 +28,6 @@ class ApplicationController < ActionController::Base
     '/'
   end
 
-
   def ensure_le_admin!
     current_user.person.is_a?(LeAdmin)
   end
@@ -40,7 +39,6 @@ class ApplicationController < ActionController::Base
       ""
     end
   end
-
 
   def home_host
     return request.protocol + request.host_with_port unless current_user.person

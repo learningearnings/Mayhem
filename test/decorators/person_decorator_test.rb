@@ -5,9 +5,12 @@ describe PersonDecorator do
     ApplicationController.new.set_current_view_context
     # Provide a mock person that responds to the decorator's API interactions properly
     @person  = mock 'Person'
-    @account = mock 'Account'
-    @person.stubs(:account).returns(@account)
-    @account.stubs(:balance).returns(100)
+    @savings_account = mock 'Account'
+    @person.stubs(:savings_account).returns(@savings_account)
+    @savings_account.stubs(:balance).returns(0)
+    @checking_account = mock 'Account'
+    @person.stubs(:checking_account).returns(@checking_account)
+    @checking_account.stubs(:balance).returns(100)
   end
 
   subject { PersonDecorator.new(@person) }
