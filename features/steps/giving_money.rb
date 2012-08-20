@@ -40,7 +40,7 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   Then 'that teacher should have 1000 credits to give' do
-    @teacher.balance.must_equal BigDecimal('1000')
+    @teacher.main_account(@school).balance.must_equal BigDecimal('1000')
   end
 
   And 'the school should have 9000 credits to give' do
@@ -71,7 +71,7 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   Then 'I should have 990 credits' do
-    @teacher.balance.must_equal BigDecimal('990')
+    @teacher.main_account(@school).balance.must_equal BigDecimal('990')
   end
 
   And 'I give 2 students 5 credits each' do

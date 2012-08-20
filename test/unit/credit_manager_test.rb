@@ -83,4 +83,27 @@ describe CreditManager do
       end
     end
   end
+
+  describe "transferring credits from/to checking/savings" do
+    before do
+      @student = mock "student"
+      @student_checking_account_name = "STUDENT17 CHECKING"
+      @student_savings_account_name = "STUDENT17 SAVING"
+      @student.expects(:checking_account_name).returns(@student_checking_account_name)
+      @student.expects(:savings_account_name).returns(@student_savings_account_name)
+      @amount = BigDecimal('100.00')
+    end
+
+    it "responds to #transfer_credits_from_checking_to_savings" do
+      @student.expects(:checking_balance).returns(@amount)
+      @credit_manager.expects(:transfer_credits).with("Transfer from Checking to Savings", @student_checking_account_name, @student_savings_account_name, @amount).once
+      @credit_manager.transfer_credits_from_checking_to_savings @student, @amount
+    end
+
+    it "responds to #transfer_credits_from_savings_to_checking" do
+      @student.expects(:savings_balance).returns(@amount)
+      @credit_manager.expects(:transfer_credits).with("Transfer from Savings to Checking", @student_savings_account_name, @student_checking_account_name, @amount).once
+      @credit_manager.transfer_credits_from_savings_to_checking @student, @amount
+    end
+  end
 end
