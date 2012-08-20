@@ -1,7 +1,7 @@
 class BuckDistributor
-  def initialize
-    @schools = School.all
-    @credit_manager = CreditManager.new
+  def initialize(schools=School.all, credit_manager=CreditManager.new)
+    @schools = schools
+    @credit_manager = credit_manager
   end
 
   def run
@@ -10,14 +10,17 @@ class BuckDistributor
 
   def handle_schools
     @schools.each do |school|
-      @credit_manager.revoke_credits_for_school(school, school.main_account.balance)
-      amount = 700 * school.active_students.count
-      pay_school(school, amount)
+      @credit_manager.revoke_credits_for_school(school, school.balance)
+      pay_school(school)
     end
   end  
 
   def pay_school(school, amount)
-    @credit_manager.issue_credits_to_school school, amount
+    @credit_manager.issue_credits_to_school school, amount_for_school(school)
+  end
+
+  def amount_for_school school
+    700 * school.number_of_active_students
   end
 
   def handle_teachers
