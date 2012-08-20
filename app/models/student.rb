@@ -1,6 +1,7 @@
 class Student < Person
   before_save :check_coppa
   after_create :ensure_accounts
+  after_create :create_user
   validates_presence_of :grade
 
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
@@ -43,10 +44,18 @@ class Student < Person
     savings_account.balance
   end
 
+  def username
+    self.name.gsub(' ', '').camelize.underscore 
+  end
+
   private
   def ensure_accounts
     checking_account || Plutus::Asset.create(name: checking_account_name)
     savings_account || Plutus::Asset.create(name: savings_account_name)
+  end
+
+  def create_user
+    Spree::User.create(:email => self.username, :password => 'test123', :password_confirmation => 'test123', :person_id => self.id)
   end
 
   def check_coppa
