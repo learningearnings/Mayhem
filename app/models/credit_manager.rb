@@ -40,4 +40,14 @@ class CreditManager
     return false if student.balance < amount
     transfer_credits "Reward Purchase", student.checking_account_name, main_account_name, amount
   end
+
+  def transfer_credits_from_checking_to_savings student, amount
+    return false if student.checking_balance < amount
+    transfer_credits "Transfer from Checking to Savings", student.checking_account_name, student.savings_account_name, amount
+  end
+
+  def transfer_credits_from_savings_to_checking student, amount
+    return false if student.savings_balance < amount
+    transfer_credits "Transfer from Savings to Checking", student.savings_account_name, student.checking_account_name, amount
+  end
 end
