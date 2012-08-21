@@ -1,26 +1,203 @@
-mega_pencils_a:
-  product: mega_pencils
-  property: prop_wholesale
+# Retail Quantities
+reward_248_q:
+  product: reward_248
+  property: prop_retail_quantity
   value: 1
-mega_pencils_b:
+reward_251_q:
+  product: reward_251
+  property: prop_retail_quantity
+  value: 1
+reward_252_q:
+  product: reward_252
+  property: prop_retail_quantity
+  value: 1
+reward_348_q:
+  product: reward_348
+  property: prop_retail_quantity
+  value: 10
+reward_283_q:
+  product: reward_283
+  property: prop_retail_quantity
+  value: 1
+reward_285_q:
+  product: reward_285
+  property: prop_retail_quantity
+  value: 1
+reward_286_q:
+  product: reward_286
+  property: prop_retail_quantity
+  value: 1
+reward_287_q:
+  product: reward_287
+  property: prop_retail_quantity
+  value: 1
+reward_351_q:
+  product: reward_351
+  property: prop_retail_quantity
+  value: 144
+reward_352_q:
+  product: reward_352
+  property: prop_retail_quantity
+  value: 5
+reward_353_q:
+  product: reward_353
+  property: prop_retail_quantity
+  value: 100
+reward_354_q:
+  product: reward_354
+  property: prop_retail_quantity
+  value: 15
+reward_355_q:
+  product: reward_355
+  property: prop_retail_quantity
+  value: 15
+reward_357_q:
+  product: reward_357
+  property: prop_retail_quantity
+  value: 4
+reward_358_q:
+  product: reward_358
+  property: prop_retail_quantity
+  value: 4
+reward_359_q:
+  product: reward_359
+  property: prop_retail_quantity
+  value: 24
+reward_360_q:
+  product: reward_360
+  property: prop_retail_quantity
+  value: 12
+reward_361_q:
+  product: reward_361
+  property: prop_retail_quantity
+  value: 24
+reward_362_q:
+  product: reward_362
+  property: prop_retail_quantity
+  value: 12
+reward_363_q:
+  product: reward_363
+  property: prop_retail_quantity
+  value: 24
+reward_364_q:
+  product: reward_364
+  property: prop_retail_quantity
+  value: 8
+reward_365_q:
+  product: reward_365
+  property: prop_retail_quantity
+  value: 12
+reward_366_q:
+  product: reward_366
+  property: prop_retail_quantity
+  value: 4
+mega_pencils_q:
   product: mega_pencils
   property: prop_retail_quantity
   value: 100
-mega_pencils_c:
-  product: mega_pencils
-  property: prop_retail_product
-  value: reward_371
-friendship_rope_bracelets_a:
-  product: friendship_rope_bracelets
-  property: prop_wholesale
-  value: 1
-friendship_rope_bracelets_b:
+friendship_rope_bracelets_q:
   product: friendship_rope_bracelets
   property: prop_retail_quantity
   value: 72
-friendship_rope_bracelets_c:
+
+# Retail prices
+reward_248_q:
+  product: reward_248
+  property: prop_retail_price
+  value: 767
+reward_251_q:
+  product: reward_251
+  property: prop_retail_price
+  value: 517
+reward_252_q:
+  product: reward_252
+  property: prop_retail_price
+  value: 372
+reward_348_q:
+  product: reward_348
+  property: prop_retail_price
+  value: 102
+reward_283_q:
+  product: reward_283
+  property: prop_retail_price
+  value: 224
+reward_285_q:
+  product: reward_285
+  property: prop_retail_price
+  value: 263
+reward_286_q:
+  product: reward_286
+  property: prop_retail_price
+  value: 266
+reward_287_q:
+  product: reward_287
+  property: prop_retail_price
+  value: 349
+reward_351_q:
+  product: reward_351
+  property: prop_retail_price
+  value: 77
+reward_352_q:
+  product: reward_352
+  property: prop_retail_price
+  value: 67
+reward_353_q:
+  product: reward_353
+  property: prop_retail_price
+  value: 47
+reward_354_q:
+  product: reward_354
+  property: prop_retail_price
+  value: 69
+reward_355_q:
+  product: reward_355
+  property: prop_retail_price
+  value: 61
+reward_357_q:
+  product: reward_357
+  property: prop_retail_price
+  value: 87
+reward_358_q:
+  product: reward_358
+  property: prop_retail_price
+  value: 82
+reward_359_q:
+  product: reward_359
+  property: prop_retail_price
+  value: 132
+reward_360_q:
+  product: reward_360
+  property: prop_retail_price
+  value: 45
+reward_361_q:
+  product: reward_361
+  property: prop_retail_price
+  value: 35
+reward_362_q:
+  product: reward_362
+  property: prop_retail_price
+  value: 36
+reward_363_q:
+  product: reward_363
+  property: prop_retail_price
+  value: 37
+reward_364_q:
+  product: reward_364
+  property: prop_retail_price
+  value: 65
+reward_365_q:
+  product: reward_365
+  property: prop_retail_price
+  value: 132
+reward_366_q:
+  product: reward_366
+  property: prop_retail_price
+  value: 56
+mega_pencils_q:
+  product: mega_pencils
+  property: prop_retail_price
+  value: 100
+friendship_rope_bracelets_q:
   product: friendship_rope_bracelets
-  property: prop_retail_product
-  value: reward_439
-
-
+  property: prop_retail_price
+  value: 72

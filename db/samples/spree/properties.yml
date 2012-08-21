@@ -1,9 +1,3 @@
-prop_wholesale:
-  name: wholesale
-  presentation: Wholesale Product
 prop_retail_quantity:
   name: retail_quantity
   presentation: Retail Quantity
-prop_retail_product:
-  name: retail_product
-  presentation: Retail Product
