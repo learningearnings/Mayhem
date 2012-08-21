@@ -15,6 +15,7 @@ gem 'compass-rails'
 
 gem 'has_scope'
 gem 'responders'
+gem 'kaminari'
 
 # Draper provides decorators to help keep your views dry and low on logic
 gem 'draper'
