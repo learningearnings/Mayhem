@@ -15,7 +15,7 @@ class BuckDistributor
     end
   end  
 
-  def pay_school(school, amount)
+  def pay_school(school)
     @credit_manager.issue_credits_to_school school, amount_for_school(school)
   end
 
@@ -26,13 +26,16 @@ class BuckDistributor
   def handle_teachers
     @schools.each do |school|
       school.active_teachers.each do |teacher|
-        amount = (school.main_account.balance / school.active_teachers.count)
-        pay_teacher(school, teacher, amount)
+        pay_teacher(school, teacher)
       end
     end
   end
 
-  def pay_teacher(school, teacher, amount)
-    @credit_manager.issue_credits_to_teacher school, teacher, amount
+  def amount_for_teacher(school)
+    school.balance / school.number_of_participating_teachers
+  end
+
+  def pay_teacher(school, teacher)
+    @credit_manager.issue_credits_to_teacher school, teacher, amount_for_teacher(school)
   end
 end

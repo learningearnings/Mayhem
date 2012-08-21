@@ -22,7 +22,7 @@ describe BuckDistributor do
       @amount = BigDecimal('20')
       @credit_manager.expects(:issue_credits_to_school).with(@school, @amount).once
       @buck_distributor.expects(:amount_for_school).with(@school).returns(@amount)
-      @buck_distributor.pay_school(@school, @amount)
+      @buck_distributor.pay_school(@school)
     end
 
     it "responds to #handle_schools" do
@@ -37,5 +37,36 @@ describe BuckDistributor do
       @school.expects(:number_of_active_students).returns(2)
       @buck_distributor.amount_for_school(@school).must_equal(1400)
     end
+  end
+
+  describe "handling teachers" do
+    before do
+      @school = mock 'school'
+      @schools = [@school]
+      @teacher = mock 'teacher'
+      @teachers = [@teacher]
+      @buck_distributor = BuckDistributor.new @schools, @credit_manager
+    end
+
+    it "responds to #pay_teacher" do
+      @amount = BigDecimal('20')
+      @credit_manager.expects(:issue_credits_to_teacher).with(@school, @teacher, @amount).once
+      @buck_distributor.expects(:amount_for_teacher).with(@school).returns(@amount)
+      @buck_distributor.pay_teacher(@school, @teacher)
+    end
+
+    it "responds to #handle_teachers" do
+      @school.expects(:active_teachers).returns(@teachers)
+      @buck_distributor.expects(:pay_teacher).with(@school, @teacher)
+      @buck_distributor.handle_teachers
+    end
+
+    it "knows the amount for a given teacher" do
+      balance = BigDecimal('100')
+      @school.expects(:balance).returns(balance)
+      @school.expects(:number_of_participating_teachers).returns(2)
+      @buck_distributor.amount_for_teacher(@school).must_equal(50)
+    end
+ 
   end
 end

@@ -19,6 +19,7 @@ class BuckDistribution < Spinach::FeatureSteps
 
   When 'I run the BuckDistributor' do
     @buck_distributor = BuckDistributor.new
+    @buck_distributor.run
   end
 
   Then 'school1 should have 4900 credits' do
