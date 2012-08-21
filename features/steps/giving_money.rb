@@ -40,7 +40,7 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   Then 'that teacher should have 1000 credits to give' do
-    @teacher.balance.must_equal BigDecimal('1000')
+    @teacher.main_account(@school).balance.must_equal BigDecimal('1000')
   end
 
   And 'the school should have 9000 credits to give' do
@@ -71,7 +71,7 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   Then 'I should have 990 credits' do
-    @teacher.balance.must_equal BigDecimal('990')
+    @teacher.main_account(@school).balance.must_equal BigDecimal('990')
   end
 
   And 'I give 2 students 5 credits each' do
@@ -126,5 +126,31 @@ class GivingCredits < Spinach::FeatureSteps
     @link = FactoryGirl.create(:person_school_link, school: @school, person: @student)
     @teacher = FactoryGirl.create(:teacher)
     @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
+  end
+
+  And 'I transfer 45 credits to savings' do
+    cm = CreditManager.new
+    cm.transfer_credits_from_checking_to_savings(@student, BigDecimal('45'))
+  end
+
+  And 'I transfer 35 credits to checking' do
+    cm = CreditManager.new
+    cm.transfer_credits_from_savings_to_checking(@student, BigDecimal('35'))
+  end
+
+  Then 'I should have 45 credits in savings' do
+    @student.savings_balance.must_equal BigDecimal('45')
+  end
+
+  Then 'I should have 55 credits in checking' do
+    @student.checking_balance.must_equal BigDecimal('55')
+  end
+
+  Then 'I should have 10 credits in savings' do
+    @student.savings_balance.must_equal BigDecimal('10')
+  end
+
+  Then 'I should have 90 credits in checking' do
+    @student.checking_balance.must_equal BigDecimal('90')
   end
 end

@@ -30,7 +30,9 @@ class ImporterBase
 
   def import!
     csv.each do |row|
-      model = model_class.create(attributes_hash(header_mapping, row))
+      model_klass = model_class(row)
+      next unless model_klass
+      model = model_klass.create(attributes_hash(header_mapping, row))
       next unless model.valid?
       handle_associated_many_classes(model, row)
       handle_associated_single_classes(model, row)
@@ -62,7 +64,7 @@ class ImporterBase
   end
 
   # Overridden in subclassed importers
-  def model_class
+  def model_class row=''
     nil
   end
 

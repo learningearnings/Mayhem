@@ -34,6 +34,11 @@ FactoryGirl.define do
     school
   end
 
+  factory :student_school_link, class: PersonSchoolLink do
+    association :person, factory: :student
+    school
+  end
+
   factory :person_school_classroom_link do
     person_school_link
     classroom

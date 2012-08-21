@@ -66,6 +66,10 @@ class School < ActiveRecord::Base
     main_account.balance
   end
 
+  def number_of_active_students
+    active_students.count
+  end
+
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
