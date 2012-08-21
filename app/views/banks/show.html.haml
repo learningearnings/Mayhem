@@ -74,9 +74,7 @@
     = link_to "Redeem Credits", "#", class: 'btn'
 
 #transfer-credits-modal.modal.hide
-  %h3 Bank Transfer Header
-  %p= lipsum 100
-  transfer interface goes here...
+  = render 'transfer_credits'
 
 #checking-history-modal.modal.hide
   %h3 Checking History Header

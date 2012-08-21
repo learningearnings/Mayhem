@@ -19,6 +19,7 @@ Leror::Application.routes.draw do
   #devise_for :users
 
   resources :pdfs
+  resources :student_transfer_commands
   resource :bank
 
   # The priority is based upon order of creation:

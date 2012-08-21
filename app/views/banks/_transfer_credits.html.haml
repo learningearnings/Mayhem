@@ -1,0 +1,7 @@
+%h3 Bank Transfer Header
+%p= lipsum 100
+
+= form_for StudentTransferCommand.new do |f|
+  = f.text_field :amount, placeholder: "Amount"
+  = f.select :direction, options_for_select([["Checking to Savings", "checking_to_savings"], ["Savings to Checking", "savings_to_checking"]])
+  = submit_tag "Transfer"
