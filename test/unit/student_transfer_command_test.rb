@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe StudentTransferCommand do
-  subject { Transfer.new }
+  subject { StudentTransferCommand.new }
 
   it "requires valid amount" do
     subject.wont have_valid(:amount).when(nil)
