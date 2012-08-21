@@ -76,7 +76,7 @@ group :development, :test do
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
   gem 'unicorn'
-gem 'libnotify'
+  gem 'libnotify'
 end
 
 group :test do
