@@ -43,6 +43,7 @@ class School < ActiveRecord::Base
   def active_students
     (self.students.recent + self.students.logged).uniq
   end
+
   # End Relationships
 
 
@@ -68,6 +69,10 @@ class School < ActiveRecord::Base
 
   def number_of_active_students
     active_students.count
+  end
+
+  def number_of_participating_teachers
+    teachers.count
   end
 
   private
