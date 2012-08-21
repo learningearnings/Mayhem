@@ -1,3 +1,6 @@
 prop_retail_quantity:
   name: retail_quantity
   presentation: Retail Quantity
+prop_retail_price:
+  name: retail_price
+  presentation: Retail Price

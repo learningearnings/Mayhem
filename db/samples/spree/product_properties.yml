@@ -101,103 +101,103 @@ friendship_rope_bracelets_q:
   value: 72
 
 # Retail prices
-reward_248_q:
+reward_248_p:
   product: reward_248
   property: prop_retail_price
   value: 767
-reward_251_q:
+reward_251_p:
   product: reward_251
   property: prop_retail_price
   value: 517
-reward_252_q:
+reward_252_p:
   product: reward_252
   property: prop_retail_price
   value: 372
-reward_348_q:
+reward_348_p:
   product: reward_348
   property: prop_retail_price
   value: 102
-reward_283_q:
+reward_283_p:
   product: reward_283
   property: prop_retail_price
   value: 224
-reward_285_q:
+reward_285_p:
   product: reward_285
   property: prop_retail_price
   value: 263
-reward_286_q:
+reward_286_p:
   product: reward_286
   property: prop_retail_price
   value: 266
-reward_287_q:
+reward_287_p:
   product: reward_287
   property: prop_retail_price
   value: 349
-reward_351_q:
+reward_351_p:
   product: reward_351
   property: prop_retail_price
   value: 77
-reward_352_q:
+reward_352_p:
   product: reward_352
   property: prop_retail_price
   value: 67
-reward_353_q:
+reward_353_p:
   product: reward_353
   property: prop_retail_price
   value: 47
-reward_354_q:
+reward_354_p:
   product: reward_354
   property: prop_retail_price
   value: 69
-reward_355_q:
+reward_355_p:
   product: reward_355
   property: prop_retail_price
   value: 61
-reward_357_q:
+reward_357_p:
   product: reward_357
   property: prop_retail_price
   value: 87
-reward_358_q:
+reward_358_p:
   product: reward_358
   property: prop_retail_price
   value: 82
-reward_359_q:
+reward_359_p:
   product: reward_359
   property: prop_retail_price
   value: 132
-reward_360_q:
+reward_360_p:
   product: reward_360
   property: prop_retail_price
   value: 45
-reward_361_q:
+reward_361_p:
   product: reward_361
   property: prop_retail_price
   value: 35
-reward_362_q:
+reward_362_p:
   product: reward_362
   property: prop_retail_price
   value: 36
-reward_363_q:
+reward_363_p:
   product: reward_363
   property: prop_retail_price
   value: 37
-reward_364_q:
+reward_364_p:
   product: reward_364
   property: prop_retail_price
   value: 65
-reward_365_q:
+reward_365_p:
   product: reward_365
   property: prop_retail_price
   value: 132
-reward_366_q:
+reward_366_p:
   product: reward_366
   property: prop_retail_price
   value: 56
-mega_pencils_q:
+mega_pencils_p:
   product: mega_pencils
   property: prop_retail_price
   value: 100
-friendship_rope_bracelets_q:
+friendship_rope_bracelets_p:
   product: friendship_rope_bracelets
   property: prop_retail_price
   value: 72
