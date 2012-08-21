@@ -13,12 +13,15 @@ Leror::Application.routes.draw do
 
   root to: 'pages#show', :id => 'home'
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
+
+  match "/get_avatar_results" => 'spree/users#get_avatar_results'
  
   ActiveAdmin.routes(self)
 
   #devise_for :users
 
   resources :pdfs
+  resources :student_transfer_commands
   resource :bank
 
   # The priority is based upon order of creation:

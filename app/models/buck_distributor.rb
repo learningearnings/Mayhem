@@ -6,6 +6,7 @@ class BuckDistributor
 
   def run
     handle_schools
+    handle_teachers
   end
 
   def handle_schools

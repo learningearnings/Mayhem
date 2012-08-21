@@ -52,7 +52,7 @@ class ImporterBase
   def handle_associated_single_classes model, row
     associated_single_classes.each do |klass|
       headers_hash = headers_hash_for_class(klass)
-      association_method = "build_#{klass.to_s.underscore}".to_sym
+      association_method = "build_#{klass.to_s.demodulize.underscore}".to_sym
       association = model.send(association_method)
       association_attributes = attributes_hash(send(headers_hash), row)
       association.update_attributes(association_attributes)
@@ -60,7 +60,7 @@ class ImporterBase
   end
 
   def headers_hash_for_class klass
-    "#{klass.to_s.underscore}_header_mapping".to_sym
+    "#{klass.to_s.demodulize.underscore}_header_mapping".to_sym
   end
 
   # Overridden in subclassed importers
