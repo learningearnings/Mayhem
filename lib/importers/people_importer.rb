@@ -9,14 +9,25 @@ class PeopleImporter < ImporterBase
     }
   end
 
+  def user_header_mapping
+    {
+      username: 'username',
+      email: 'useremail'
+    }
+  end
+
+  def associated_single_classes
+    [Spree::User]
+  end
+
   def model_class row=''
-    case row[3]
+    case row[index_for_header('usertypeID')]
     when '1'
       Student
     when '2'
       Teacher
-    when '3'
-      LeAdmin
+    when '3' || '5'
+      SchoolAdmin
     else
       nil
     end
