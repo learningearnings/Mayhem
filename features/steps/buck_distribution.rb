@@ -1,5 +1,6 @@
 class BuckDistribution < Spinach::FeatureSteps
   Given 'school1 has 7 active students' do
+    Plutus::Liability.create(name: 'MAIN_ACCOUNT')
     @school1 = FactoryGirl.create(:school)
     7.times do
       link = FactoryGirl.create(:student_school_link, school: @school1)
@@ -19,7 +20,7 @@ class BuckDistribution < Spinach::FeatureSteps
 
   When 'I run the BuckDistributor' do
     @buck_distributor = BuckDistributor.new
-    @buck_distributor.run
+    @buck_distributor.handle_schools
   end
 
   Then 'school1 should have 4900 credits' do
