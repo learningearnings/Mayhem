@@ -1,8 +1,14 @@
 Spree::UsersController.class_eval do
 
   def edit
+    @avatars = Avatar.page params[:page]
     render :layout => 'application'
     @user = Spree::User.find(params[:id])
+  end
+
+  def get_avatar_results
+    @avatars = Avatar.page params[:page]
+    render partial: 'spree/users/avatars'
   end
 
   def update
@@ -22,5 +28,6 @@ Spree::UsersController.class_eval do
       render :new
     end
   end
+
 
 end

@@ -1,0 +1,6 @@
+= paginate @avatars
+- @avatars.each do |a|
+  = radio_button_tag :avatar_id, a.id
+  = image_tag a.image.thumb('50x50#').url
+  = a.description
+
