@@ -177,6 +177,10 @@ if Rails.env.development? || Rails.env.production?
   @school_credits = 20_000
   @credit_manager.issue_credits_to_school(@school, @school_credits)
 
+  # Create a school_admin
+  @school_admin = FactoryGirl.create(:school_admin)
+  @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
+
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher)
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)

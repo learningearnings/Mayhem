@@ -17,6 +17,12 @@ FactoryGirl.define do
       grade 9
     end
 
+    factory :school_admin, class: SchoolAdmin do
+      sequence(:first_name) {|n| "SchoolAdmin #{n}"}
+      dob 25.years.ago
+      grade 9
+    end
+
     factory :teacher, class: Teacher do
       sequence(:first_name) {|n| "Teacher #{n}"}
       dob 25.years.ago
