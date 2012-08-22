@@ -32,3 +32,14 @@
 ## Active Student Calculations...
 *   It's acceptable to calculate the *active* students once a month when we allocate bucks
     to the school and teachers.
+
+
+## Spree Configuration
+*   The LE Administrator only manages Wholesale items
+*   Wholesale items have the following properties (Spree Properties)
+    * retail_quantity - Number of these items to add to the student visible store
+    * retail_price - how many credits a student should pay for this item
+    * 
+*   When a School Administrator "purchases" an item with the school's Store Credit,
+    that item is added to the store that the students see at the price indicated by
+    retail_price on the wholesale item
