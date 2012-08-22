@@ -18,8 +18,6 @@ GIT
   specs:
     compass_twitter_bootstrap (2.0.3)
       compass
-    compass_twitter_bootstrap (2.0.3)
-      compass
 
 GIT
   remote: git://github.com/wojtekmach/valid_attribute.git
@@ -416,6 +414,7 @@ DEPENDENCIES
   has_scope
   high_voltage
   jquery-rails
+  kaminari
   letter_opener
   libnotify
   minitest (~> 3.2.0)
