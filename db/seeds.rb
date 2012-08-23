@@ -180,6 +180,8 @@ if Rails.env.development? || Rails.env.production?
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin)
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
+  @school_credits = 20_000
+  @credit_manager.issue_credits_to_teacher(@school, @school_admin, @school_credits)
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher)

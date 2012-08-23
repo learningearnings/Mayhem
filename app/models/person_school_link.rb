@@ -39,30 +39,27 @@ class PersonSchoolLink < ActiveRecord::Base
   # End Relationships
 
   def setup_accounts
-    if person.is_a? Teacher
+    if person.is_a?(Teacher)
+      person.setup_accounts(school)
+    elsif person.is_a?(SchoolAdmin)
       person.setup_accounts(school)
     end
   end
 
 
+  ################### Validations ########################
 
-################### Validations ########################
-
-#
-# There can be an unlimited number of person_id -> school_id combinations that *don't* have status == "active"
-# but only one active one for a person -> school combination
-def validate_unique_with_status
-  psl = PersonSchoolLink.where(:person_id => self.person_id, :school_id => self.school_id).status_active
-  if self.id
-    psl = psl.where("id != #{self.id}")
-  end
-  if psl.length > 0
-    errors.add(:status, "Person is already associated with this school")
+  #
+  # There can be an unlimited number of person_id -> school_id combinations that *don't* have status == "active"
+  # but only one active one for a person -> school combination
+  def validate_unique_with_status
+    psl = PersonSchoolLink.where(:person_id => self.person_id, :school_id => self.school_id).status_active
+    if self.id
+      psl = psl.where("id != #{self.id}")
+    end
+    if psl.length > 0
+      errors.add(:status, "Person is already associated with this school")
+    end
   end
 end
 
-
-
-
-
-end
