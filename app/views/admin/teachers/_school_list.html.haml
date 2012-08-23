@@ -9,10 +9,12 @@
   %thead
     %tr
       %th School Name
+      %th Remove
   %tbody
     - @teacher.schools.each do |school|
       %tr
         %td= link_to school.name, admin_school_path(school)
+        %td= link_to 'Remove', admin_delete_teacher_school_link_path(:school => school, :teacher => @teacher)
 
 %h4 Accounts
 %table

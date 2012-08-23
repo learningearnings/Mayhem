@@ -13,7 +13,7 @@ ActiveAdmin.register SchoolAdmin do
       @school_admin = SchoolAdmin.find(params[:id])
       @school = School.find_by_name(params[:school])
       PersonSchoolLink.create(:person_id => @school_admin.id, :school_id => @school.id)
-      redirect_to 'show'
+      redirect_to admin_school_admin_path(@school_admin)
     end
 
     def create
@@ -22,10 +22,21 @@ ActiveAdmin.register SchoolAdmin do
       if @teacher.save
         PersonSchoolLink.create(:person_id => @school_admin.id, :school_id => @school.id)
         flash[:notice] = 'SchoolAdmin created.'
-        redirect_to 'show'
+        redirect_to admin_school_admin_path(@school_admin)
       else
         flash[:error] = 'SchoolAdmin not created.'
         render 'form'
+      end
+    end
+
+    def delete_school_link
+      @school_admin = SchoolAdmin.find(params[:school_admin])
+      @school = School.find(params[:school])
+      link = PersonSchoolLink.find_by_person_id_and_school_id(@school_admin.id, @school.id)
+      if link.delete
+        redirect_to admin_school_admin_path(@school_admin)
+      else
+        render 'show'
       end
     end
 

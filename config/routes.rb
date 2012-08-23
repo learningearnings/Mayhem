@@ -15,6 +15,13 @@ Leror::Application.routes.draw do
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
  
   ActiveAdmin.routes(self)
+  
+  namespace :admin do
+    get :delete_student_school_link, :controller => :students, :action => :delete_school_link
+    get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
+    get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
+  end
+
 
   resources :pdfs
   resources :student_transfer_commands
