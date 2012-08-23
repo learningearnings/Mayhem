@@ -203,15 +203,24 @@ if Rails.env.development? || Rails.env.production?
   @student2 = FactoryGirl.create(:student)
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
 
-  # Associate spree users with thoses students & teachers
-  @user1 = FactoryGirl.create(:spree_user, person: @student1, email: 'student1@example.com')
-  @user2 = FactoryGirl.create(:spree_user, person: @student2, email: 'student2@example.com')
-  @user3 = FactoryGirl.create(:spree_user, person: @teacher, email: 'teacher@example.com')
+  @message1 = FactoryGirl.create(:message, from: @student1, to: @student2)
+  @message2 = FactoryGirl.create(:message, from: @student2, to: @student1)
+  @message3 = FactoryGirl.create(:message, from: @student1, to: @student2)
+  @message4 = FactoryGirl.create(:message, from: @student2, to: @student1)
+  @message5 = FactoryGirl.create(:message, from: @student1, to: @student2)
+  @message6 = FactoryGirl.create(:message, from: @student2, to: @student1)
+
+  # Get better usernames for our students and teachers
+  @user1.password = @user1.password_confirmation = '123456'
+  @user1.email = 'student1@example.com'
+  @user1.save
+  @user2.password = @user2.password_confirmation = '123456'
+  @user2.email = 'student2@example.com'
+  @user2.save
 
   # Give a student some credits
   @student_credits = 100
   @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
-
 
   # create the default store - le wholesale store
   @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le.lvh.me:3000")

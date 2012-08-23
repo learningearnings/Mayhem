@@ -53,7 +53,6 @@ gem 'spree', '1.1.3'
 gem 'spree_multi_domain', :git =>  "git://github.com/johndavid400/spree-multi-domain.git", :branch => "master"
 
 group :assets do
-  gem 'compass_twitter_bootstrap', :git => 'git://github.com/vwall/compass-twitter-bootstrap.git'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'

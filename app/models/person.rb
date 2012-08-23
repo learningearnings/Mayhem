@@ -5,6 +5,11 @@ class Person < ActiveRecord::Base
   has_many :messages
   has_one  :user, :class_name => Spree::User
   has_many :person_school_links, :inverse_of => :person
+  has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
+  has_many :received_messages, class_name: "Message", foreign_key: "to_id"
+
+  delegate :avatar, to: :user
+
   attr_accessible :dob, :first_name, :grade, :last_name
   validates_presence_of :first_name, :last_name
 

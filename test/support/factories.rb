@@ -55,6 +55,13 @@ FactoryGirl.define do
     classroom
   end
 
+  factory :message do
+    association :from, factory: :person
+    association :to,   factory: :person
+    subject "Test Message"
+    body    "Test Body"
+  end
+
   factory :state do
     name {|n| "State #{n}" }
     abbr {|n| "S#{n}" }

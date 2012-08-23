@@ -22,6 +22,8 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
   end
 
+  resources :messages
+  match "/inbox" => 'messages#index'
 
   resources :pdfs
   resources :student_transfer_commands
