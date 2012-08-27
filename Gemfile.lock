@@ -7,17 +7,17 @@ GIT
       spree_core (~> 1.0)
 
 GIT
+  remote: git://github.com/kristianmandrup/compass-twitter-bootstrap.git
+  revision: c5e4f714a341018cd0c042f858a547c048aad2dd
+  specs:
+    compass_twitter_bootstrap (2.0.3)
+      compass
+
+GIT
   remote: git://github.com/ryanb/nested_form.git
   revision: c1d2f30e18ce9255dc913ed56a315d6a2c64d14f
   specs:
     nested_form (0.2.2)
-
-GIT
-  remote: git://github.com/vwall/compass-twitter-bootstrap.git
-  revision: bb7d88d02e2afe02c78929d0a93139497e05a10a
-  specs:
-    compass_twitter_bootstrap (2.0.3)
-      compass
 
 GIT
   remote: git://github.com/wojtekmach/valid_attribute.git

@@ -1,7 +1,6 @@
 %h2 My Inbox Header
 
-%p
-  Lipsum
+%p= lipsum(100)
 
 #inbox-accordion.accordion.inbox
   .accordion-group
@@ -16,7 +15,7 @@
                 = image_tag message.from.avatar.image.thumb('50x50#').url
             .content
               %p.subject= message.subject
-              = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
+              = link_to "Read Message", message_path(message), "data-toggle" => 'modal', "data-target" => "#read-message-modal"
   .accordion-group
     .accordion-heading
       = link_to 'School Messages (2)', '#school-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
@@ -66,10 +65,7 @@
 = link_to "Send a message", '#send-message-modal', class: 'btn', 'data-toggle' => 'modal'
 
 #read-message-modal.modal.hide
-  %h3= @received_messages.first
-  .image-placeholder
-    Message
-  = link_to "Reply to this message", "#", class: 'btn btn-primary'
+  .modal-body
 
 #send-message-modal.modal.hide
   %h3 Send Message Header
