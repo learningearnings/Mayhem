@@ -7,6 +7,7 @@ class MessagesController < LoggedInController
 
   def show
     @message = current_person.received_messages.find(params[:id])
+    @message.read!
   end
 
   def new

@@ -11,7 +11,7 @@ class Message < ActiveRecord::Base
 
   state_machine :status, initial: :unread do
     event :read! do
-      transition :unread => :read
+      transition [:read, :unread] => :read
     end
     state :read
   end

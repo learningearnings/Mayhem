@@ -9,7 +9,7 @@
     #friend-messages.accordion-body.collapse.in
       .accordion-inner
         - @received_messages.each do |message|
-          .message
+          %div{ class: "message #{message.status}" }
             .image
               - if message.from.avatar.present?
                 = image_tag message.from.avatar.image.thumb('50x50#').url
