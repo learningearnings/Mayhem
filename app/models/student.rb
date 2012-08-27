@@ -48,6 +48,10 @@ class Student < Person
     self.name.gsub(' ', '').underscore 
   end
 
+  def grademates
+    school.students.where(grade: self.grade) - [self]
+  end
+
   private
   def ensure_accounts
     checking_account || Plutus::Asset.create(name: checking_account_name)

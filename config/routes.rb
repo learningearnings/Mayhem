@@ -27,6 +27,7 @@ Leror::Application.routes.draw do
 
   resources :pdfs
   resources :student_transfer_commands
+  resources :student_message_student_commands
   resource :bank
 end
 

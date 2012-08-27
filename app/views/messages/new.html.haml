@@ -1,0 +1,17 @@
+%h3 Send Message Header
+%p= lipsum 100
+= form_for @message do |f|
+  .row
+    .span3
+      .select-message
+        %strong Select Message
+        = f.select :canned_message, options_for_select(Message.canned_messages)
+      .select-recipient
+        %strong Select Who To Send It To
+        = f.select :to_ids, options_from_collection_for_select(@grademates, :id, :name), { }, { multiple: true }
+        .image-placeholder
+          Paginated Friend List
+    .span2
+      %strong Select Image
+      %p images here...
+  = f.submit "Send Message", class: 'btn btn-primary'

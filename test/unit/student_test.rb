@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Person do
+describe Student do
   subject { Student }
 
   it "has the basics down" do
@@ -8,7 +8,6 @@ describe Person do
   end
 
   describe "Validations" do
-
     it "respects coppa rules" do
       p = subject.create(first_name: 'TestFirst', last_name: 'TestLast', grade: 9)
       p.last_name.must_equal 'TestLast'
@@ -17,7 +16,25 @@ describe Person do
       p.last_name.must_equal 'T'
       p.user.email.must_equal 'test_first_test_last@example.com'
     end
-
   end
 
+  describe "#grademates" do
+    before do
+      @student1 = FactoryGirl.build(:student, grade: 4)
+      @student2 = FactoryGirl.build(:student, grade: 4)
+      @student3 = FactoryGirl.build(:student, grade: 5)
+      school = mock "school"
+      @student1.expects(:school).returns(school)
+      students_proxy = mock "students proxy"
+      students_proxy.expects(:where).with(grade: 4).returns([@student1, @student2])
+      school.expects(:students).returns(students_proxy)
+    end
+
+    it "includes the right students" do
+      @student1.grademates.must_equal [@student2]
+    end
+    it "doesn't include the wrong students" do
+      @student1.grademates.wont_include(@student3)
+    end
+  end
 end

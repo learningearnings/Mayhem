@@ -202,6 +202,8 @@ if Rails.env.development? || Rails.env.production?
   @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
   @student2 = FactoryGirl.create(:student)
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+  @student1.activate!
+  @student2.activate!
 
   @message1 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message2 = FactoryGirl.create(:message, from: @student2, to: @student1)
