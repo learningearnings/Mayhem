@@ -211,6 +211,8 @@ if Rails.env.development? || Rails.env.production?
   @message6 = FactoryGirl.create(:message, from: @student2, to: @student1)
 
   # Get better usernames for our students and teachers
+  @user1 = @student1.user
+  @user2 = @student1.user
   @user1.password = @user1.password_confirmation = '123456'
   @user1.email = 'student1@example.com'
   @user1.save
