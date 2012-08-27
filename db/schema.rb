@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823231102) do
+ActiveRecord::Schema.define(:version => 20120824194450) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -73,6 +73,14 @@ ActiveRecord::Schema.define(:version => 20120823231102) do
     t.integer  "school_id"
   end
 
+  create_table "codes", :force => true do |t|
+    t.string   "code"
+    t.boolean  "active",     :default => true
+    t.datetime "used_date"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -88,6 +96,27 @@ ActiveRecord::Schema.define(:version => 20120823231102) do
     t.integer  "to_id"
     t.string   "subject"
     t.text     "body"
+  end
+
+  create_table "otu_codes", :force => true do |t|
+    t.string   "code"
+    t.integer  "person_school_link_id"
+    t.integer  "student_id"
+    t.decimal  "points",                                     :null => false
+    t.datetime "expires_at"
+    t.datetime "redeemed_at"
+    t.boolean  "ebuck",                   :default => false
+    t.boolean  "active",                  :default => true
+    t.integer  "otu_transaction_link_id"
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+  end
+
+  create_table "otu_transaction_links", :force => true do |t|
+    t.integer  "otu_code_id"
+    t.integer  "transaction_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "people", :force => true do |t|
