@@ -212,7 +212,7 @@ if Rails.env.development? || Rails.env.production?
 
   # Get better usernames for our students and teachers
   @user1 = @student1.user
-  @user2 = @student1.user
+  @user2 = @student2.user
   @user1.password = @user1.password_confirmation = '123456'
   @user1.email = 'student1@example.com'
   @user1.save
