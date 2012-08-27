@@ -41,6 +41,11 @@ class CreditManager
     transfer_credits "Reward Purchase", student.checking_account_name, main_account_name, amount
   end
 
+  def transfer_credits_for_wholesale_purchase school, amount
+    return false if school.balance < amount
+    transfer_credits "Wholesale Purchase", school.main_account_name, main_account_name, amount
+  end
+
   def transfer_credits_from_checking_to_savings student, amount
     return false if student.checking_balance < amount
     transfer_credits "Transfer from Checking to Savings", student.checking_account_name, student.savings_account_name, amount

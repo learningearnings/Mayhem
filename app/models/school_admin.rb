@@ -5,15 +5,15 @@ class SchoolAdmin < Person
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def main_account_name(school)
-    "SCHOOL ADMIN#{id} MAIN SCHOOL#{school.id}"
+    "SCHOOL ADMIN#{id}"
   end
 
   def unredeemed_account_name(school)
-    "SCHOOL ADMIN#{id} UNREDEEMED SCHOOL#{school.id}"
+    "SCHOOL ADMIN#{id}"
   end
 
   def undeposited_account_name(school)
-    "SCHOOL ADMIN#{id} UNDEPOSITED SCHOOL#{school.id}"
+    "SCHOOL ADMIN#{id}"
   end
 
   def main_account(school)
@@ -33,12 +33,16 @@ class SchoolAdmin < Person
     Plutus::Account.where "name LIKE '%SCHOOL ADMIN#{id}%'"
   end
 
+  def balance
+    main_account(schools.first).balance
+  end
+
   def name
     first_name + ' ' + last_name
   end
 
   def username
-    self.name.gsub(' ', '').underscore 
+    self.name.gsub(' ', '').underscore
   end
 
   def setup_accounts(school)

@@ -20,6 +20,8 @@ class AccountPersonMapper
     case account_name
     when /^STUDENT/
       Student
+    when /^SCHOOLADMIN/
+      SchoolAdmin
     end
   end
 end

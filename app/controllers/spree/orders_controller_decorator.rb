@@ -51,10 +51,14 @@ Spree::OrdersController.class_eval do
     @order.shipping_method_id = Spree::ShippingMethod.first.id
     @order.save
     @order.next
-    
+
     # Payment
     payment_source_attributes = {}
-    payment_source_attributes["number"] = current_person.checking_account_name
+    if current_person.type == "SchoolAdmin"
+      payment_source_attributes["number"] = current_person.main_account(current_person.schools.first).name
+    else
+      payment_source_attributes["number"] = current_person.checking_account_name
+    end
     payment_source_attributes["month"] = "1"
     payment_source_attributes["year"] = "2100"
     payment_source_attributes["verification_value"] = "111"
@@ -73,8 +77,44 @@ Spree::OrdersController.class_eval do
     # Trigger the purchase
     @order.next
 
+    # Go ahead and find or create the wholesale product in the SchoolAdmin's school store
+    if @order.store == Spree::Store.find_by_name("le")
+      create_school_products
+    end
+
     flash[:notice] = "Bought that stuff..."
     redirect_to "/"
+  end
+
+  def create_school_products
+    if current_person.class.name == "SchoolAdmin"
+      wholesale_product = @order.products.first
+      retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
+      retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
+
+      if Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(current_person.schools.first.id) }.present?
+        retail_product = Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(current_person.schools.first.id) }.first
+        retail_product.count_on_hand += retail_qty
+        retail_product.save
+      else
+        retail_product = Spree::Product.new
+        retail_product.name = wholesale_product.name
+        retail_product.price = retail_price
+        retail_product.description = wholesale_product.description
+        retail_product.available_on = Time.now
+        retail_product.deleted_at = nil
+        retail_product.permalink = ""
+        retail_product.meta_description = ""
+        retail_product.meta_keywords = ""
+        retail_product.tax_category_id = nil
+        retail_product.shipping_category_id = nil
+        retail_product.count_on_hand = retail_qty
+        retail_product.store_ids = [current_person.schools.first.id]
+        retail_product.save
+      end
+    else
+      flash[:alert] = "You are not allowed to purchase products from the Learning Earnings store! Please visit your school store to purchase items."
+    end
   end
 
   private
