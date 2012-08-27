@@ -5,7 +5,7 @@
 #inbox-accordion.accordion.inbox
   .accordion-group
     .accordion-heading
-      = link_to 'Friend Messages (2)', '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+      = link_to "Friend Messages (#{@received_messages.select{|m| m.unread? }.count}", '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
     #friend-messages.accordion-body.collapse.in
       .accordion-inner
         - @received_messages.each do |message|

@@ -13,6 +13,7 @@ class Message < ActiveRecord::Base
     event :read! do
       transition [:read, :unread] => :read
     end
+    state :unread
     state :read
   end
 
