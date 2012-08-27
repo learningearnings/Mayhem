@@ -1,5 +1,4 @@
 class OtuCode < ActiveRecord::Base
-
   attr_accessible :points, :code, :student_id, :person_school_link_id
   has_many :transactions, :through => :otu_transaction_link
 
@@ -13,5 +12,4 @@ class OtuCode < ActiveRecord::Base
     self.update_attribute(:code, _full_code)
     _code.update_attributes(:active => false, :used_date => Time.now)
   end
-
 end
