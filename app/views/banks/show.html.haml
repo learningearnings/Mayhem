@@ -79,25 +79,12 @@
 #checking-history-modal.modal.hide
   %h3 Checking History Header
   %p= lipsum 100
-
-  %table.table.table-bordered
-    %thead
-      %tr
-        %th Source
-        %th Date
-        %th Amount
-    - @recent_checking_amounts.each do |amount|
-      %tr
-        // FIXME: This view is horrible, refactor
-        %td= amount.transaction.description
-        %td= amount.transaction.created_at.to_s(:db)
-        %td= number_to_currency(amount.amount)
+  = render 'ledger_table', amounts: @recent_checking_amounts
 
 #savings-history-modal.modal.hide
   %h3 Savings History Header
   %p= lipsum 100
-  .image-placeholder
-    Savings Account Ledger Paginated
+  = render 'ledger_table', amounts: @recent_savings_amounts
 
 #credit-history-modal.modal.hide
   %h3 Credit History Header

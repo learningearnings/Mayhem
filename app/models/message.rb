@@ -9,6 +9,9 @@ class Message < ActiveRecord::Base
   validates :subject, presence: true
   validates :body,    presence: true
 
+  scope :unread, where(status: 'unread')
+  scope :read,   where(status: 'read')
+
   state_machine :status, initial: :unread do
     event :read! do
       transition [:read, :unread] => :read

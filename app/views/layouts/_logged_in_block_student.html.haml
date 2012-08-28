@@ -14,8 +14,8 @@
     %tbody
       %tr
         - if current_person
-          %td= current_user.person.checking_balance
-          %td= current_user.person.savings_balance
+          %td= current_person.checking_balance
+          %td= current_person.savings_balance
         - else
           %td=number_to_currency(0.00)
           %td=number_to_currency(0.00)
@@ -23,4 +23,4 @@
   %p
     %strong
       Messages:
-    = link_to '2', main_app.inbox_path
+    = link_to current_person.received_messages.unread.count, main_app.inbox_path

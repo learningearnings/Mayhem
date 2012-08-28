@@ -2,7 +2,6 @@ require 'test_helper'
 
 describe PersonDecorator do
   before do
-    ApplicationController.new.set_current_view_context
     # Provide a mock person that responds to the decorator's API interactions properly
     @person  = mock 'Person'
     @savings_account = mock 'Account'
