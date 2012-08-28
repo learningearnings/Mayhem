@@ -91,7 +91,7 @@
         // FIXME: This view is horrible, refactor
         %td= amount.transaction.description
         %td= amount.transaction.created_at.to_s(:db)
-        %td= number_to_currency(amount.amount)
+        %td= amount.amount
 
 #savings-history-modal.modal.hide
   %h3 Savings History Header
