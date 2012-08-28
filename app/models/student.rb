@@ -7,6 +7,10 @@ class Student < Person
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
+  def primary_account
+    checking_account
+  end
+
   def school
     schools.first
   end

@@ -13,7 +13,9 @@ Leror::Application.routes.draw do
 
   root to: 'pages#show', :id => 'home'
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
- 
+  
+  match "/create_print_bucks" => 'banks#create_print_bucks'
+
   ActiveAdmin.routes(self)
   
   namespace :admin do

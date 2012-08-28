@@ -1,0 +1,118 @@
+.row
+  .span8
+    %p= lipsum 200
+
+    .bank-account
+      %h4 My Account
+      .balances
+        %p Checking Balance: #{current_person.checking_balance}
+        %p Savings Balance: #{current_person.savings_balance}
+      .actions
+        = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn', 'data-toggle' => 'modal'
+    = link_to "View Checking History", "#checking-history-modal", class: 'btn', 'data-toggle' => 'modal'
+    = link_to "View Savings History", "#savings-history-modal", class: 'btn', 'data-toggle' => 'modal'
+    = link_to "View Credit History", "#credit-history-modal", class: 'btn', 'data-toggle' => 'modal'
+    .pending-credits
+      %h4 Pending Credits
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th Source
+            %th Date
+            %th{ colspan: 99 } Amount
+        %tbody
+          %tr
+            %td Food Fight Winnings
+            %td 07/05/2012
+            %td 1.42
+            %td= link_to "Claim Credits", "#", class: 'btn'
+          %tr
+            %td Teacher Defined Task
+            %td 07/05/2012
+            %td 25.00
+            %td= link_to "Claim Credits", "#", class: 'btn'
+          %tr
+            %td Concentration
+            %td 07/05/2012
+            %td .27
+            %td Need 0.73 more to claim
+      .actions
+        = link_to "Enter Codes", "#enter-codes-modal", class: 'btn', 'data-toggle' => 'modal'
+  .span4
+    %h3 Rewards Highlights
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        %p= lipsum 100
+        %strong Cost: $3,000
+    %hr
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        %p= lipsum 100
+        %strong Cost: $3,000
+    %hr
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        %p= lipsum 100
+        %strong Cost: $3,000
+    %hr
+    .row
+      .span1
+        .image-placeholder
+      .span3
+        %p= lipsum 100
+        %strong Cost: $3,000
+    %hr
+    = link_to "Redeem Credits", "#", class: 'btn'
+
+#transfer-credits-modal.modal.hide
+  = render 'transfer_credits'
+
+#checking-history-modal.modal.hide
+  %h3 Checking History Header
+  %p= lipsum 100
+
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th Source
+        %th Date
+        %th Amount
+    - @recent_checking_amounts.each do |amount|
+      %tr
+        // FIXME: This view is horrible, refactor
+        %td= amount.transaction.description
+        %td= amount.transaction.created_at.to_s(:db)
+        %td= number_to_currency(amount.amount)
+
+#savings-history-modal.modal.hide
+  %h3 Savings History Header
+  %p= lipsum 100
+  .image-placeholder
+    Savings Account Ledger Paginated
+
+#credit-history-modal.modal.hide
+  %h3 Credit History Header
+  %p= lipsum 100
+  .image-placeholder
+    Credit Ledger Paginated
+
+#enter-codes-modal.modal.hide
+  %h3 Enter Codes Header
+  %p= lipsum 150
+  .row
+    .span3
+      %form
+        %label Enter Code:
+        %input
+        %button.btn Submit
+    .span2
+      %h5 Checking Balance
+      %strong $40,000
+      %h5 Savings Balance
+      %strong $4,000

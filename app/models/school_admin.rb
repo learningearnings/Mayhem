@@ -3,6 +3,10 @@ class SchoolAdmin < Person
   has_many :schools, :through => :person_school_links
   after_create :create_user
 
+  def primary_account
+    main_account(self.schools.first)
+  end
+
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def main_account_name(school)
     "SCHOOL ADMIN#{id} MAIN SCHOOL#{school.id}"

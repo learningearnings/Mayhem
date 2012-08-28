@@ -28,6 +28,10 @@ class CreditManager
     transfer_credits "Revoke Credits for School", school.main_account_name, main_account_name, amount
   end
 
+  def purchase_printed_bucks school, teacher, amount
+    transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account_name(school), teacher.unredeemed_account_name(school), amount
+   end
+
   def issue_credits_to_teacher school, teacher, amount
     transfer_credits "Issue Credits to Teacher", school.main_account_name, teacher.main_account_name(school), amount
   end

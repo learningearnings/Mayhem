@@ -2,6 +2,8 @@ require './test/test_helper'
 
 # Spinach && Database Cleaner.
 require 'database_cleaner'
+require Rails.root.join('features', 'support', 'shared_steps.rb')
+
 DatabaseCleaner.strategy = :transaction
 Spinach.hooks.before_scenario do |scenario_data|
   DatabaseCleaner.start

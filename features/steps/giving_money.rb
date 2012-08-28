@@ -53,6 +53,8 @@ class GivingCredits < Spinach::FeatureSteps
     @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
     @student2 = FactoryGirl.create(:student)
     @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+    @school_admin = FactoryGirl.create(:school_admin)
+    @admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
     @teacher = FactoryGirl.create(:teacher)
     @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
   end
@@ -62,6 +64,7 @@ class GivingCredits < Spinach::FeatureSteps
     cm = CreditManager.new
     cm.issue_credits_to_school(@school, @credits)
     cm.issue_credits_to_teacher(@school, @teacher, @credits)
+    cm.issue_credits_to_teacher(@school, @school_admin, @credits)
   end
 
   And 'I give a student 10 credits' do
