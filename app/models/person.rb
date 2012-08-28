@@ -8,6 +8,7 @@ class Person < ActiveRecord::Base
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
 
   delegate :avatar, to: :user
+  delegate :username, to: :user
 
   attr_accessible :dob, :first_name, :grade, :last_name
   validates_presence_of :first_name, :last_name
@@ -31,6 +32,9 @@ class Person < ActiveRecord::Base
   end
   # End Relationships
 
+  def full_name
+    self.first_name + ' ' + self.last_name
+  end
 
   # Allow sending a school or classroom to a person
   def <<(d)

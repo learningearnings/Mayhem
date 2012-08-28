@@ -1,15 +1,10 @@
 # This will guess the User class
 FactoryGirl.define do
 
-  factory :user do
-    email "user@example.com"
-    password "password"
-    confirmation "password"
-  end
-
   factory :person do
     first_name "Testy"
     last_name "McTesterson"
+    association :user, factory: :spree_user
 
     factory :student, class: Student do
       sequence(:first_name) {|n| "Student #{n}"}
@@ -98,9 +93,9 @@ FactoryGirl.define do
   end
 
   factory :spree_user, class: Spree::User do
-    email "foo@bar.com"
+    sequence(:email) {|n| "foo#{n}@bar.com"}
     password "123456"
     password_confirmation "123456"
-    person
+#    person
   end
 end

@@ -3,6 +3,8 @@
   = text_field_tag 'user[username]'
   %label Password:
   = password_field_tag 'user[password]'
+  %label School ID:
+  = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name)
   .actions
     %button.btn Sign in
     = link_to "Forgot your password?", spree.new_user_password_path('user')

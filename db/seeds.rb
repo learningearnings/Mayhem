@@ -179,21 +179,29 @@ if Rails.env.development? || Rails.env.production?
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin)
-  @school_admin.user.username = 'schooladmin'
+  @school_admin.activate
+  @school_admin_suser = @school_admin.user
+  @school_admin_suser.username = 'schooladmin'
+  @school_admin_suser.save
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
   @school_credits = 20_000
   @credit_manager.issue_credits_to_teacher(@school, @school_admin, @school_credits)
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher)
-  @teacher.user.username = 'teacher'
-  @school_admin.username = 'schooladmin'
+  @teacher.save
+  @teacher.activate
+  @teacher_suser = @teacher.user
+  @teacher_suser.username = 'teacher'
+  @teacher_suser.save
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
 
   # Create a LE Admin
   @le_admin = FactoryGirl.create(:le_admin)
-  @le_admin.user.username = 'leadmin'
+  @le_admin.activate
+  @le_admin.user.destroy
   @spree_admin = Spree::User.find(1)
+  @spree_admin.username = 'leadmin'
   @spree_admin.person = @le_admin
   @spree_admin.save
 
