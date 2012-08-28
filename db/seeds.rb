@@ -202,6 +202,8 @@ if Rails.env.development? || Rails.env.production?
   @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
   @student2 = FactoryGirl.create(:student)
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+  @student1.activate!
+  @student2.activate!
 
   @message1 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message2 = FactoryGirl.create(:message, from: @student2, to: @student1)
@@ -212,7 +214,7 @@ if Rails.env.development? || Rails.env.production?
 
   # Get better usernames for our students and teachers
   @user1 = @student1.user
-  @user2 = @student1.user
+  @user2 = @student2.user
   @user1.password = @user1.password_confirmation = '123456'
   @user1.email = 'student1@example.com'
   @user1.save

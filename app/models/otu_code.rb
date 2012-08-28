@@ -13,5 +13,4 @@ class OtuCode < ActiveRecord::Base
     self.update_attribute(:code, _full_code)
     _code.update_attributes(:active => false, :used_date => Time.now)
   end
-
 end

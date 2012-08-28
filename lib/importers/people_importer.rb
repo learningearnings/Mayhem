@@ -5,7 +5,8 @@ class PeopleImporter < ImporterBase
       first_name: 'userfname',
       last_name: 'userlname',
       dob: 'dateofbirth',
-      grade: 'grade'
+      grade: 'grade',
+      legacy_user_id: 'userID'
     }
   end
 
