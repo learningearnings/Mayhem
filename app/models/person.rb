@@ -32,6 +32,7 @@ class Person < ActiveRecord::Base
   end
   # End Relationships
 
+
   # Allow sending a school or classroom to a person
   def <<(d)
     if d.is_a? School

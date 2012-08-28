@@ -44,9 +44,6 @@ class Student < Person
     savings_account.balance
   end
 
-  def username
-    self.name.gsub(' ', '').underscore 
-  end
 
   def grademates
     school.students.where(grade: self.grade) - [self]

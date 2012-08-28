@@ -9,6 +9,15 @@ Spree::User.class_eval do
   has_one :user_avatar_link
   has_one :avatar, :through => :user_avatar_link
 
+=begin
+  def username
+    if self.person
+      self.person.username
+    else
+      self.email
+    end
+  end
+=end 
 
   # after the redirect for token authentication
   # the token should be killed
