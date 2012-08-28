@@ -2,7 +2,6 @@ require "basic_statuses"
 
 class Person < ActiveRecord::Base
   include BasicStatuses
-  has_many :messages
   has_one  :user, :class_name => Spree::User
   has_many :person_school_links, :inverse_of => :person
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
