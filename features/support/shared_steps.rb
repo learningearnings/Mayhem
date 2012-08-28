@@ -1,5 +1,19 @@
 module SharedSteps
   include Spinach::DSL
+ 
+  Given 'I am logged in as an admin' do
+    visit 'http://1.lvh.me/'
+    fill_in 'user_email', :with => 'school_admin1_mc_testerson@example.com'
+    fill_in 'user_password', :with => 'test123'
+    click_button 'Sign in'
+  end
+
+  Given 'I am logged in as a teacher' do
+    visit 'http://1.lvh.me/' 
+    fill_in 'user_email', :with => 'teacher1_mc_testerson@example.com'
+    fill_in 'user_password', :with => 'test123'
+    click_button 'Sign in'
+  end
 
   Given 'the main account exists' do
     Plutus::Liability.create(name: CreditManager.new.main_account_name)
@@ -38,11 +52,18 @@ module SharedSteps
      save_and_open_page
    end
  
-  Given 'I distribute bucks' do
+  Given 'I distribute printed bucks' do
     fill_in 'point1', :with => '1'
     fill_in 'point5', :with => '1'
     fill_in 'point10', :with => '1'
-    click_button 'Create Bucks'
+    click_button 'Print Bucks'
   end
+
+  Given 'I distribute ebucks' do
+    select 'Student 1 McTesterson', :from => 'student_id'
+    fill_in 'points', :with => '1'
+    click_button 'Create eBucks'
+  end
+
 
 end

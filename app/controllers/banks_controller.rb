@@ -6,7 +6,7 @@ class BanksController < LoggedInController
       @recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).limit(20).joins(:transaction).order({ transaction: :created_at }))
       @recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).limit(20).joins(:transaction).order({ transaction: :created_at }))
      else
-        @recent_account_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.primary_account)).limit(20).joins(:transaction).order({ transaction: :created_at }))
+        @recent_account_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.primary_account).limit(20).joins(:transaction).order({ transaction: :created_at }))
      end
   end
 
@@ -24,7 +24,8 @@ class BanksController < LoggedInController
       person = current_person
     end
     if person.main_account(person.schools.first).balance >= (points1 + points5 + points10)
-      buck_params = {:person_school_link_id => person.person_school_links.first.id, :expires_at => (Time.now + 45.days) }
+      buck_params = {:person_school_link_id => person.person_school_links.first.id, 
+                     :expires_at => (Time.now + 45.days) }
       bucks = []
       @ones.times do
         bucks << OtuCode.create(buck_params.merge :points => BigDecimal.new('1'))
@@ -47,7 +48,23 @@ class BanksController < LoggedInController
   end
 
   def create_ebucks
-    @credit_manager = CreditManager.new
+    if current_person.main_account(current_person.schools.first).balance >= BigDecimal.new(params[:points])
+      @credit_manager = CreditManager.new
+      student = Student.find(params[:student][:id])
+      buck_params = {:person_school_link_id => current_person.person_school_links.first.id, 
+                     :expires_at => (Time.now + 45.days), 
+                     :student_id => student.id, 
+                     :points => BigDecimal.new(params[:points]),
+                     :ebuck => true}
+      buck = OtuCode.create(buck_params)
+      buck.generate_code('AL')
+      @credit_manager.purchase_ebucks(current_person.schools.first, current_person, student, params[:points])
+      flash[:notice] = 'Bucks created!'
+      redirect_to bank_path
+    else
+      flash[:error] = 'You do not have enough bucks.'
+      render :show
+    end
   end
 
 end

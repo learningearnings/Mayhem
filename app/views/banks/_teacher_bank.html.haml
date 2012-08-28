@@ -19,5 +19,12 @@
       = text_field_tag :point5
       = label_tag '$10'
       = text_field_tag :point10
-      = f.submit 'Create Bucks'
+      = f.submit 'Print Bucks'
 
+    = form_for OtuCode.new, :url => create_ebucks_path do |f|
+      = label_tag 'Student'
+      = select("student", "id", Student.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
+      = label_tag :points
+      = text_field_tag :points
+      = f.submit 'Create eBucks'
+ 

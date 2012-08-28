@@ -1,6 +1,6 @@
 class OtuCode < ActiveRecord::Base
 
-  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at
+  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck
   has_many :transactions, :through => :otu_transaction_link
 
   def is_ebuck?

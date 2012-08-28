@@ -1,4 +1,3 @@
-@javascript
 Feature: Teacher Bank
   As a teacher, I want to create printed bucks
 
@@ -10,11 +9,15 @@ Feature: Teacher Bank
 
     Scenario: Create Printed Bucks
       Given I am on the bank page
-      Given I distribute bucks
-      Then show me the page
+      Given I distribute printed bucks
       Then the teacher account should be deducted
       
-
+    Scenario: Create eBucks
+      Then show me the page
+      Given I am on the bank page
+      Given I distribute ebucks
+      Then the teacher account should be deducted
+ 
 
 
 

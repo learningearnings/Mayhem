@@ -15,6 +15,7 @@ Leror::Application.routes.draw do
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
   
   match "/create_print_bucks" => 'banks#create_print_bucks'
+  match "/create_ebucks" => 'banks#create_ebucks'
 
   ActiveAdmin.routes(self)
   
