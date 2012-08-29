@@ -1,0 +1,13 @@
+= form_for @post do |f|
+
+  = f.label :type
+  = f.select :type, options_for_select(@options)
+
+  = f.label :title
+  = f.text_field :title
+
+  = f.label :body
+  = f.cktext_area :body
+
+  %p
+  = f.submit "Submit"

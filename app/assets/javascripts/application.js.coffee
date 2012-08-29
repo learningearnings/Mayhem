@@ -15,3 +15,4 @@
 //= require bootstrap-transition
 //= require jquery.html5-placeholder-shim
 //= require jquery_nested_form
+//= require ckeditor/init

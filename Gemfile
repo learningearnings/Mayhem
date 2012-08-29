@@ -36,6 +36,7 @@ gem 'dragonfly'
 gem 'nested_form', :git => 'git://github.com/ryanb/nested_form.git'
 gem 'simple_form'
 gem 'country_select'
+gem "ckeditor", "3.7.1"
 
 # PDFKit provides an interface to wkhtmltopdf from ruby, and a rack middleware
 gem 'pdfkit'
@@ -77,6 +78,7 @@ group :development, :test do
   gem 'guard-spinach', '~> 0.0.2'
   gem 'unicorn'
   gem 'libnotify'
+  gem 'thin'
 end
 
 group :test do

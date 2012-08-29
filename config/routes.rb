@@ -1,5 +1,7 @@
 Leror::Application.routes.draw do
 
+  mount Ckeditor::Engine => '/ckeditor'
+
   # This line mounts Spree's routes at the root of your application.
   # This means, any requests to URLs such as /products, will go to Spree::ProductsController.
   # If you would like to change where this engine is mounted, simply change the :at option to something different.
@@ -13,12 +15,12 @@ Leror::Application.routes.draw do
 
   root to: 'pages#show', :id => 'home'
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
-  
+
   match "/create_print_bucks" => 'banks#create_print_bucks'
   match "/create_ebucks" => 'banks#create_ebucks'
 
   ActiveAdmin.routes(self)
-  
+
   namespace :admin do
     get :delete_student_school_link, :controller => :students, :action => :delete_school_link
     get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
@@ -32,6 +34,7 @@ Leror::Application.routes.draw do
   resources :student_transfer_commands
   resources :student_message_student_commands
   resource :bank
+  resource :posts
 end
 
 # Any routes we add to Spree go here:
