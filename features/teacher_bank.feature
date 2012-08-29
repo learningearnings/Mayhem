@@ -13,7 +13,6 @@ Feature: Teacher Bank
       Then the teacher account should be deducted
       
     Scenario: Create eBucks
-      Then show me the page
       Given I am on the bank page
       Given I distribute ebucks
       Then the teacher account should be deducted
