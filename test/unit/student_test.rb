@@ -9,7 +9,7 @@ describe Student do
 
   describe "Validations" do
     it "respects coppa rules" do
-      p = subject.create(first_name: 'TestFirst', last_name: 'TestLast', grade: 9)
+      p = subject.create(first_name: 'TestFirst', last_name: 'TestLast', grade: 9,:user => FactoryGirl.create(:spree_user,:email => 'test_first_test_last@example.com'))
       p.last_name.must_equal 'TestLast'
       p.grade = 6
       p.save
