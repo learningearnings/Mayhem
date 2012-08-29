@@ -16,6 +16,7 @@ input, textarea, select {
     width: 180px;
     height: 180px;
     background-color: $primary-background;
+    background-image: image_path('common/whiteboard_with_shadows.png');
   }
   .supplemental {
     position: absolute;
