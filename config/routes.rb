@@ -30,11 +30,11 @@ Leror::Application.routes.draw do
   resources :messages
   match "/inbox" => 'messages#index'
 
+  resources :posts
   resources :pdfs
   resources :student_transfer_commands
   resources :student_message_student_commands
   resource :bank
-  resource :posts
 end
 
 # Any routes we add to Spree go here:

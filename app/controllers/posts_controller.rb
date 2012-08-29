@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :authenticate_user!
+#  before_filter :authenticate_user!
 
   def show
     @post = Post.find(params[:id])
@@ -14,7 +14,7 @@ class PostsController < ApplicationController
     @post = current_user.person.posts.new(params[:post])
     if @post.save
       flash[:notice] = "Your post was saved successfully."
-      redirect_to root_path
+      redirect_to post_path(@post)
     else
       flash[:alert] = "There was an error saving your Post, please check the form and try again."
       render 'new'
