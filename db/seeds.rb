@@ -187,13 +187,16 @@ if Rails.env.development? || Rails.env.production?
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
   @teacher.save
+  @teacher.user.save
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
 
   # Create a LE Admin
   @le_admin = FactoryGirl.create(:le_admin, :user => Spree::User.find(1))
   @le_admin.activate
   @le_admin.username = 'leadmin'
+  @le_admin.user.password = "spree123"
   @le_admin.save
+  @le_admin.user.save
 
   # Give the teacher some credits
   @teacher_credits = 5000
