@@ -59,9 +59,11 @@ class Teacher < Person
   end
 
   def create_user
-    user = Spree::User.create(:email => "#{self.username}@example.com", :password => 'test123', :password_confirmation => 'test123')
-    user.person_id = self.id
-    user.save
+    unless self.user
+      user = Spree::User.create(:email => "#{self.username}@example.com", :password => 'test123', :password_confirmation => 'test123')
+      user.person_id = self.id
+      user.save
+    end
   end
 
 

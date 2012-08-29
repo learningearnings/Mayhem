@@ -193,6 +193,7 @@ if Rails.env.development? || Rails.env.production?
   @le_admin = FactoryGirl.create(:le_admin, :user => Spree::User.find(1))
   @le_admin.activate
   @le_admin.username = 'leadmin'
+  @le_admin.user.password = "spree123"
   @le_admin.save
 
   # Give the teacher some credits
