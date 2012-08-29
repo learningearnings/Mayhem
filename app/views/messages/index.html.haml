@@ -1,22 +1,21 @@
 %h2 My Inbox Header
 
-%p
-  Lipsum
+%p= lipsum(100)
 
 #inbox-accordion.accordion.inbox
   .accordion-group
     .accordion-heading
-      = link_to 'Friend Messages (2)', '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+      = link_to "Friend Messages (#{@received_messages.select{|m| m.unread? }.count}", '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
     #friend-messages.accordion-body.collapse.in
       .accordion-inner
         - @received_messages.each do |message|
-          .message
+          %div{ class: "message #{message.status}" }
             .image
               - if message.from.avatar.present?
                 = image_tag message.from.avatar.image.thumb('50x50#').url
             .content
               %p.subject= message.subject
-              = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
+              = link_to "Read Message", message_path(message), "data-toggle" => 'modal', "data-target" => "#read-message-modal"
   .accordion-group
     .accordion-heading
       = link_to 'School Messages (2)', '#school-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
@@ -63,27 +62,10 @@
             %p.subject= lipsum(50)
             = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
 
-= link_to "Send a message", '#send-message-modal', class: 'btn', 'data-toggle' => 'modal'
+= link_to "Send a message", new_message_path, class: 'btn', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
 
 #read-message-modal.modal.hide
-  %h3= @received_messages.first
-  .image-placeholder
-    Message
-  = link_to "Reply to this message", "#", class: 'btn btn-primary'
+  .modal-body
 
 #send-message-modal.modal.hide
-  %h3 Send Message Header
-  %p= lipsum 100
-  .row
-    .span3
-      .select-message
-        %strong Select Message
-        = select_tag "Select Your Message..."
-      .select-recipient
-        %strong Select Who To Send It To
-        .image-placeholder
-          Paginated Friend List
-    .span2
-      %strong Select Image
-      %p images here...
-  = link_to "Preview Message", "#", class: 'btn btn-primary'
+  .modal-body

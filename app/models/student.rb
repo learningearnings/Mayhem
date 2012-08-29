@@ -7,6 +7,10 @@ class Student < Person
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
+  def primary_account
+    checking_account
+  end
+
   def school
     schools.first
   end
@@ -44,8 +48,9 @@ class Student < Person
     savings_account.balance
   end
 
-  def username
-    self.name.gsub(' ', '').underscore 
+
+  def grademates
+    school.students.where(grade: self.grade) - [self]
   end
 
   private
@@ -54,10 +59,13 @@ class Student < Person
     savings_account  || Plutus::Asset.create(name: savings_account_name)
   end
 
+
   def create_user
-    user = Spree::User.create(:email => "#{self.username}@example.com", :password => 'test123', :password_confirmation => 'test123')
-    user.person_id = self.id
-    user.save
+    unless self.user
+      user = Spree::User.create(:email => "student#{self.id}@example.com", :password => 'test123', :password_confirmation => 'test123')
+      user.person_id = self.id
+      user.save
+    end
   end
 
   def check_coppa

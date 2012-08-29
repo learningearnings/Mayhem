@@ -1,8 +1,4 @@
-class StudentTransferCommand
-  include ActiveModel::Validations
-  include ActiveModel::Naming
-  include ActiveModel::Conversion
-
+class StudentTransferCommand < ActiveModelCommand
   attr_accessor :amount, :direction, :student_id
 
   validates :direction, presence: true
@@ -14,11 +10,6 @@ class StudentTransferCommand
     @amount = BigDecimal(params[:amount]) if params[:amount]
     @direction = params[:direction]
     @student_id = params[:student_id]
-  end
-
-  # This is so that activemodel acts like we want in the form
-  def persisted?
-    false
   end
 
   # The transfer knows what to call on credit manager based on its direction

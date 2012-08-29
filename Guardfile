@@ -16,6 +16,7 @@ guard 'minitest' do
   watch(%r|^app/controllers/([^.#]*)\.rb[^#]*|) { |m| "test/controllers/#{m[1]}_test.rb" }
   watch(%r|^app/helpers/([^.#]*)\.rb[^#]*|)     { |m| "test/helpers/#{m[1]}_test.rb" }
   watch(%r|^app/models/([^.#]*)\.rb[^#]*|)      { |m| "test/unit/#{m[1]}_test.rb" }
+  watch(%r|^app/decorators/([^.#]*)\.rb[^#]*|)  { |m| "test/decorators/#{m[1]}_test.rb" }
 end
 
 guard 'spinach' do

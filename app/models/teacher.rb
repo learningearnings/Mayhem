@@ -2,6 +2,11 @@ class Teacher < Person
 
   has_many :schools, :through => :person_school_links
   validates_presence_of :grade
+  after_create :create_user
+
+  def primary_account
+    main_account(self.schools.first)
+  end
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def main_account_name(school)
@@ -39,6 +44,10 @@ class Teacher < Person
     end
   end
 
+  def username
+    self.name.gsub(' ', '').underscore 
+  end
+
   def name
     first_name + ' ' + last_name
   end
@@ -48,4 +57,12 @@ class Teacher < Person
     unredeemed_account(school)  || Plutus::Asset.create(name: unredeemed_account_name(school))
     undeposited_account(school) || Plutus::Asset.create(name: undeposited_account_name(school))
   end
+
+  def create_user
+    user = Spree::User.create(:email => "#{self.username}@example.com", :password => 'test123', :password_confirmation => 'test123')
+    user.person_id = self.id
+    user.save
+  end
+
+
 end

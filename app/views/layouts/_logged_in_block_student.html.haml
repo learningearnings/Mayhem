@@ -2,7 +2,7 @@
   - if current_user.avatar.present?
     = image_tag current_user.avatar.image.thumb('175x175#').url
 .current-user.supplemental-part
-  %h3= current_user.email
+  %h3= current_person.full_name
   %p= link_to "Edit My Profile", spree.edit_user_path(current_user)
   %p= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
   %h4 Credit Balance
@@ -14,8 +14,8 @@
     %tbody
       %tr
         - if current_person
-          %td= current_user.person.checking_balance
-          %td= current_user.person.savings_balance
+          %td= current_person.checking_balance
+          %td= current_person.savings_balance
         - else
           %td=number_to_currency(0.00)
           %td=number_to_currency(0.00)
@@ -23,4 +23,4 @@
   %p
     %strong
       Messages:
-    = link_to '2', main_app.page_path('logged_in_inbox')
+    = link_to current_person.received_messages.unread.count, main_app.inbox_path

@@ -56,7 +56,8 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-  gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
+  #gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
+  gem "compass_twitter_bootstrap", :git => "git://github.com/kristianmandrup/compass-twitter-bootstrap.git"
 end
 
 # Use unicorn as the app server
@@ -85,6 +86,8 @@ group :test do
   gem 'spinach', '~> 0.5.2'
   gem 'database_cleaner', '~> 0.8.0'
   gem 'spinach-rails', '~> 0.1.7'
+  gem 'launchy'
+  gem 'capybara'
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
   gem 'mocha', '~> 0.12.1'
