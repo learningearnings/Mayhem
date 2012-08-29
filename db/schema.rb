@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828172109) do
+ActiveRecord::Schema.define(:version => 20120828235104) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -190,6 +190,18 @@ ActiveRecord::Schema.define(:version => 20120828172109) do
   end
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
+
+  create_table "posts", :force => true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.string   "status"
+    t.string   "type"
+    t.integer  "person_id"
+    t.integer  "filter_id"
+    t.integer  "published_by"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
