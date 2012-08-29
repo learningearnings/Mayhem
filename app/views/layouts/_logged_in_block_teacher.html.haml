@@ -5,17 +5,21 @@
   %h3= current_user.email
   %p= link_to "Edit My Profile", spree.edit_user_path(current_user)
   %p= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
+  %h4 Credit Balance
   %table.table.table-bordered
     %thead
       %tr
-        %th Credits Available
+        %th Main
+        %th Unredeemed
+        %th Undeposited
     %tbody
-      - if current_person
-        - current_person.balance.each do |b|
-          %tr
-            %td=b
-      - else
-        %tr
+      %tr
+        - if current_person
+          %td= number_to_currency(current_user.person.main_account(current_person.schools.first).balance)
+          %td= number_to_currency(current_user.person.unredeemed_account(current_person.schools.first).balance)
+          %td= number_to_currency(current_user.person.undeposited_account(current_person.schools.first).balance)
+        - else
+          %td=number_to_currency(0.00)
           %td=number_to_currency(0.00)
   %p
     %strong

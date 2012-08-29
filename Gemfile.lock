@@ -398,6 +398,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   cancan
+  capybara
   coffee-rails (~> 3.2.1)
   compass-rails
   compass_twitter_bootstrap!
@@ -415,6 +416,7 @@ DEPENDENCIES
   high_voltage
   jquery-rails
   kaminari
+  launchy
   letter_opener
   libnotify
   minitest (~> 3.2.0)

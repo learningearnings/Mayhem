@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
   delegate :avatar, to: :user
   delegate :username, to: :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id
   validates_presence_of :first_name, :last_name
 
   # Relationships

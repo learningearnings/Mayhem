@@ -2,6 +2,8 @@ class Code < ActiveRecord::Base
   scope :active, where(:status == true)
   after_create :gen_code
 
+  attr_accessible :used_date, :active
+
   def gen_code
     _code = Code.generate_code(self.id)
     self.update_attribute(:code, _code)

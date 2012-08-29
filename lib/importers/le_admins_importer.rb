@@ -1,5 +1,5 @@
 class LeAdminsImporter < ImporterBase
-  
+
   def model_class row=''
     LeAdmin
   end
@@ -10,7 +10,7 @@ class LeAdminsImporter < ImporterBase
       last_name: 'userlname',
     }
   end
-  
+
   def user_header_mapping
     {
       username: 'username',
