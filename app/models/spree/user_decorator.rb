@@ -16,16 +16,17 @@ Spree::User.class_eval do
       nil
     else
       encrypted_password = ::BCrypt::Password.create("#{password}#{self.pepper}", :cost => self.stretches).to_s
-      binding.pry
-      u = Spree::User.where(:username => username,:encrypted_password => encrypted_password).joins(:person).merge(Person.status_active).joins(:schools).merge(School.status_active).where('schools.id = ?',school_id).first.valid_password?
+      u = Spree::User.where(:username => username).joins(:person).merge(Person.status_active).joins(:schools).merge(School.status_active).where('schools.id = ?',school_id).first
       if u.nil?
-        u = Spree::User.where(:username => username,:encrypted_password => encrypted_password).joins(:person).merge(LeAdmin.status_active).first.valid_password?
+        u = Spree::User.where(:username => username).joins(:person).merge(LeAdmin.status_active).first
       end
     end
     if u.nil?
       nil
-    else
+    elsif u.valid_password?(password)
       Spree::User.find(u.id)
+    else
+      nil
     end
   end
 

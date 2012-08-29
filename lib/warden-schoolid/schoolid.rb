@@ -109,7 +109,6 @@ module Warden
       # @see Warden::Strategy::Base#authenticate!
       # @api private
       def authenticate!
-#        binding.pry
         if u = user_class.send(config[:authenticate_method], *required_param_values)
           success!(u)
         else
