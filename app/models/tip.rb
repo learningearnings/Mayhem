@@ -1,2 +1,0 @@
-class Tip < Post
-end
