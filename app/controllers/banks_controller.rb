@@ -11,34 +11,15 @@ class BanksController < LoggedInController
   end
 
   def create_print_bucks
-    @credit_manager = CreditManager.new
-    @ones = params[:point1].to_i
-    points1 = @ones
-    @fives = params[:point5].to_i
-    points5 = @fives * 5
-    @tens = params[:point10].to_i
-    points10 = @tens * 10
+    @bank = Bank.new
+    bucks = {:ones => params[:point1].to_i, :fives => params[:point5].to_i, :tens => params[:point10].to_i}
     if params[:teacher].present? && params[:teacher][:id].present?
       person = Teacher.find(params[:teacher][:id])
     else
       person = current_person
     end
-    if person.main_account(person.schools.first).balance >= (points1 + points5 + points10)
-      buck_params = {:person_school_link_id => person.person_school_links.first.id, 
-                     :expires_at => (Time.now + 45.days) }
-      bucks = []
-      @ones.times do
-        bucks << OtuCode.create(buck_params.merge :points => BigDecimal.new('1'))
-      end
-      @fives.times do
-        bucks << OtuCode.create(buck_params.merge :points => BigDecimal.new('5'))
-      end
-      @tens.times do
-        bucks << OtuCode.create(buck_params.merge :points => BigDecimal.new('10'))
-      end
-      bucks.map{|x| x.generate_code('AL')}
-      points = bucks.map{|x| x.points}.sum
-      @credit_manager.purchase_printed_bucks(person.schools.first, person, points)
+    if person.main_account(person.schools.first).balance >= (bucks[:ones] + (bucks[:fives] * 5) + (bucks[:tens] * 10))
+      @bank.create_print_bucks(person, 'AL', bucks)
       flash[:notice] = 'Bucks created!'
       redirect_to bank_path
     else
@@ -48,17 +29,10 @@ class BanksController < LoggedInController
   end
 
   def create_ebucks
+    @bank = Bank.new
     if current_person.main_account(current_person.schools.first).balance >= BigDecimal.new(params[:points])
-      @credit_manager = CreditManager.new
       student = Student.find(params[:student][:id])
-      buck_params = {:person_school_link_id => current_person.person_school_links.first.id, 
-                     :expires_at => (Time.now + 45.days), 
-                     :student_id => student.id, 
-                     :points => BigDecimal.new(params[:points]),
-                     :ebuck => true}
-      buck = OtuCode.create(buck_params)
-      buck.generate_code('AL')
-      @credit_manager.purchase_ebucks(current_person.schools.first, current_person, student, params[:points])
+      @bank.create_ebucks(current_person, student, 'AL', params[:points])
       flash[:notice] = 'Bucks created!'
       redirect_to bank_path
     else
@@ -66,5 +40,6 @@ class BanksController < LoggedInController
       render :show
     end
   end
+
 
 end

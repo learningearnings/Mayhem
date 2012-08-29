@@ -34,7 +34,6 @@ describe FilterFactory do
     f = ff.find_or_create_filter(fc)
     f.must_be :valid?
     f.wont_be_nil
-#    binding.pry
     f1 = ff.find_or_create_filter(fc)
     f.id.must_equal(f1.id)
   end

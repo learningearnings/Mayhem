@@ -178,29 +178,31 @@ if Rails.env.development? || Rails.env.production?
   @credit_manager.issue_credits_to_school(@school, @school_credits)
 
   # Create a school_admin
-  @school_admin = FactoryGirl.create(:school_admin)
+  @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
+  @school_admin.activate
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
   @school_credits = 20_000
   @credit_manager.issue_credits_to_teacher(@school, @school_admin, @school_credits)
 
   # Create a teacher
-  @teacher = FactoryGirl.create(:teacher)
+  @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
+  @teacher.save
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
 
   # Create a LE Admin
-  @le_admin = FactoryGirl.create(:le_admin)
-  @spree_admin = Spree::User.find(1)
-  @spree_admin.person = @le_admin
-  @spree_admin.save
+  @le_admin = FactoryGirl.create(:le_admin, :user => Spree::User.find(1))
+  @le_admin.activate
+  @le_admin.username = 'leadmin'
+  @le_admin.save
 
   # Give the teacher some credits
   @teacher_credits = 5000
   @credit_manager.issue_credits_to_teacher(@school, @teacher, @teacher_credits)
 
   # Give the school some students
-  @student1 = FactoryGirl.create(:student)
+  @student1 = FactoryGirl.create(:student, :user => FactoryGirl.create(:spree_user,:username => 'student1', :email => 'student1@example.com'))
   @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
-  @student2 = FactoryGirl.create(:student)
+  @student2 = FactoryGirl.create(:student, :user => FactoryGirl.create(:spree_user,:username => 'student2', :email => 'student2@example.com'))
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
   @student1.activate!
   @student2.activate!
@@ -211,16 +213,6 @@ if Rails.env.development? || Rails.env.production?
   @message4 = FactoryGirl.create(:message, from: @student2, to: @student1)
   @message5 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message6 = FactoryGirl.create(:message, from: @student2, to: @student1)
-
-  # Get better usernames for our students and teachers
-  @user1 = @student1.user
-  @user2 = @student2.user
-  @user1.password = @user1.password_confirmation = '123456'
-  @user1.email = 'student1@example.com'
-  @user1.save
-  @user2.password = @user2.password_confirmation = '123456'
-  @user2.email = 'student2@example.com'
-  @user2.save
 
   # Give a student some credits
   @student_credits = 100

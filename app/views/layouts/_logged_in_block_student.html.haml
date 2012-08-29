@@ -2,7 +2,7 @@
   - if current_user.avatar.present?
     = image_tag current_user.avatar.image.thumb('175x175#').url
 .current-user.supplemental-part
-  %h3= current_user.email
+  %h3= current_person.full_name
   %p= link_to "Edit My Profile", spree.edit_user_path(current_user)
   %p= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
   %h4 Credit Balance
