@@ -174,15 +174,15 @@ if Rails.env.development? || Rails.env.production?
   # Prepare a school
   @school = FactoryGirl.create(:school)
   # Issue some credits to the school
-  @school_credits = 20_000
+  @school_credits = 200_000
+  @teacher_credits = 50000
   @credit_manager.issue_credits_to_school(@school, @school_credits)
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
   @school_admin.activate
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
-  @school_credits = 20_000
-  @credit_manager.issue_credits_to_teacher(@school, @school_admin, @school_credits)
+  @credit_manager.issue_credits_to_teacher(@school, @school_admin, @teacher_credits)
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
@@ -198,7 +198,6 @@ if Rails.env.development? || Rails.env.production?
   @le_admin.save
 
   # Give the teacher some credits
-  @teacher_credits = 5000
   @credit_manager.issue_credits_to_teacher(@school, @teacher, @teacher_credits)
 
   # Give the school some students
@@ -217,7 +216,7 @@ if Rails.env.development? || Rails.env.production?
   @message6 = FactoryGirl.create(:message, from: @student2, to: @student1)
 
   # Give a student some credits
-  @student_credits = 100
+  @student_credits = 10000
   @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
 
   # create the default store - le wholesale store
