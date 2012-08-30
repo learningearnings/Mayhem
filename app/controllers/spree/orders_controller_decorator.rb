@@ -103,7 +103,7 @@ Spree::OrdersController.class_eval do
         retail_product.description = wholesale_product.description
         retail_product.available_on = Time.now
         retail_product.deleted_at = nil
-        retail_product.permalink = ""
+        retail_product.permalink = session[:current_school].id.to_s + "-" + wholesale_product.permalink
         retail_product.meta_description = ""
         retail_product.meta_keywords = ""
         retail_product.tax_category_id = nil
