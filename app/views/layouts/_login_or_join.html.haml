@@ -1,12 +1,18 @@
 .supplemental
-  .login.supplemental-part
-    - unless current_user
-      = render 'layouts/login_form'
-  .join.supplemental-part
+  .supplemental-bg
+  .join.join-supplemental-part
     - if current_user && current_user.person
       = render 'layouts/logged_in_block_' + current_user.person.class.to_s.downcase
     - else
-      %h4 Join
-      %p= link_to "Students",  "#", class: 'btn'
-      %p= link_to "Educators", "#", class: 'btn'
-      %p= link_to "Parents",   "#", class: 'btn'
+      %ul.join-links
+        %li
+          %span Join
+        %li
+          %span= link_to "Students", "#", class: 'btn students'
+        %li
+          %span= link_to "Parents", "#", class: 'btn parents'
+        %li
+          %span= link_to "Teachers", "#", class: 'btn teachers'
+  .login.login-supplemental-part
+    - unless current_user
+      = render 'layouts/login_form'

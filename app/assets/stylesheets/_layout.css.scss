@@ -2,7 +2,14 @@
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
 body {
-  font-size: 66.67%;
+  font-size: 62.5%;
+  font-family: 'Sketch Rockwell';
+}
+
+.page-wrapper {
+  background-image: url(asset_path('common/notebook_paper_bg.png', image));
+  background-position: top center;
+  background-repeat: repeat-y;
 }
 
 input, textarea, select {
@@ -10,35 +17,126 @@ input, textarea, select {
 }
 
 .head {
+  overflow: hidden;
   position: relative;
   .logo {
-    display: inline-block;
-    background-color: $primary-background;
+    float: left;
+    margin: 3px 0 0 143px;
     background-image: url(asset_path('common/le_logo.png', image));
     background-repeat: no-repeat;
-    background-position: 20px 20px;
-    a {
-      display: inline-block;
-      width: 180px;
-      height: 180px;
     }
+  .logo-link {
+    display: inline-block;
+    width: 139px;
+    height: 133px;
   }
   .supplemental {
-    position: absolute;
-    right: 0;
-    display: inline-block;
-    .supplemental-part {
-      display: inline-block;
-      vertical-align: top;
-      min-width: 150px;
-      margin-right: 1em;
-      &.join {
-        .btn {
-          width: 100%;
+    position: relative;
+    float: right;
+    overflow: hidden;
+    .join-links {
+      list-style-type: none;
+      margin: 0;
+        li {
+          display: inline;
         }
-      }
+        li:nth-child(1) {
+          font-weight: bold;
+          font-size: 1.4em;
+          color: #1f2870;
+        }
+        li span a {
+          margin-top: 3px;
+        }
     }
   }
+}
+
+.supplemental-bg {
+  background-image: url(asset_path('common/login_bg.png', image));
+  background-repeat: no-repeat;
+  width: 446px;
+  height: 104px;
+  position: absolute;
+  top: 0;
+  left: 300px;
+}
+
+
+.join-supplemental-part {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 350px;
+  label {
+    display: inline;
+  }
+  &.join {
+
+  }
+}
+
+.login-supplemental-part {
+}
+
+
+.login-supplemental-part label {
+  display: inline;
+}
+
+.login.login-supplemental-part {
+  position: relative;
+  top: 55px;
+  padding: 15px 0;
+}
+
+.login-supplemental-part .login-form-fields {
+  list-style-type: none;
+  margin: 0;
+}
+
+.login-supplemental-part .login-form-fields li {
+  display: inline;
+}
+
+.btn.students,
+.btn.paretns,
+.btn.teachers {
+  cursor: pointer;
+}
+
+.btn.students {
+  background-image: url(asset_path('common/join-menu-green-no-text-bg.png', image));
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: 96px;
+  height: 37px;
+}
+
+.btn.parents {
+  background-image: url(asset_path('common/join-menu-orange-no-text-bg.png', image));
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: 96px;
+  height: 37px;
+}
+
+.btn.teachers {
+  background-image: url(asset_path('common/join-menu-blue-no-text-bg.png', image));
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: 96px;
+  height: 37px;
+}
+
+.custom-nav-bar {
+  width: 650px;
+  position: absolute;
+  top: 100px;
+  left: 760px;
 }
 
 .navbar-inner {

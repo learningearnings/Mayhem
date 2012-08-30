@@ -1,10 +1,13 @@
 = form_tag spree.user_session_path do
-  %label User Name:
-  = text_field_tag 'user[username]'
-  %label Password:
-  = password_field_tag 'user[password]'
-  %label School ID:
-  = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name)
-  .actions
-    %button.btn Sign in
-    = link_to "Forgot your password?", spree.new_user_password_path('user')
+  %ul.login-form-fields
+    %li
+      = text_field_tag 'user[username]', nil, :placeholder => 'Username'
+    %li
+    = password_field_tag 'user[password]', nil, :placeholder => 'Password'
+    %li
+    %label.supplemenal-login-form School ID:
+    = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name)
+    %li
+      .actions
+        %button.btn Sign in
+      = link_to "Forgot your password?", spree.new_user_password_path('user')
