@@ -54,8 +54,8 @@ Spree::OrdersController.class_eval do
 
     # Payment
     payment_source_attributes = {}
-    if current_person.type == "SchoolAdmin"
-      payment_source_attributes["number"] = current_person.main_account(current_person.schools.first).name
+    if current_person.is_a? SchoolAdmin
+      payment_source_attributes["number"] = current_person.main_account(current_school).name
     else
       payment_source_attributes["number"] = current_person.checking_account_name
     end
@@ -87,7 +87,7 @@ Spree::OrdersController.class_eval do
   end
 
   def create_school_products
-    if current_person.class.name == "SchoolAdmin"
+    if current_person.is_a? SchoolAdmin
       wholesale_product = @order.products.first
       retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
       retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
@@ -119,5 +119,9 @@ Spree::OrdersController.class_eval do
   private
   def current_person
     current_user.person
+  end
+
+  def current_school
+    ::School.find(session[:current_school_id])
   end
 end

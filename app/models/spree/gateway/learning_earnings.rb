@@ -56,9 +56,11 @@ module Spree
       cm = CreditManager.new
       if person.user.orders.last.store == Spree::Store.find_by_name("le")
         # TODO change this to school session variable
+        # NOTE: Nope, a model shouldn't know about a session -ja
         school = person.schools.first
         cm.transfer_credits_for_wholesale_purchase(school, money/BigDecimal('100.0'))
       else
+        # TODO: This needs to bubble up any errors that it can
         cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
       end
     end
