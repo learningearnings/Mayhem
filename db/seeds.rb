@@ -186,6 +186,7 @@ if Rails.env.development? || Rails.env.production?
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
+  @teacher.activate
   @teacher.save
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
 

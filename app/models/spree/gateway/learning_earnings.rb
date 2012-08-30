@@ -54,7 +54,13 @@ module Spree
     def charge_person(money, credit_card, options)
       person = AccountPersonMapper.new(credit_card.number).find_person
       cm = CreditManager.new
-      cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
+      if person.user.orders.last.store == Spree::Store.find_by_name("le")
+        # TODO change this to school session variable
+        school = person.schools.first
+        cm.transfer_credits_for_wholesale_purchase(school, money/BigDecimal('100.0'))
+      else
+        cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
+      end
     end
   end
 end
