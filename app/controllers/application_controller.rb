@@ -4,6 +4,7 @@ require 'socket'
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
   respond_to :html
+  include UrlHelper
 
   protect_from_forgery
 
