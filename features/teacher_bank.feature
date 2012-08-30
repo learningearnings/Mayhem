@@ -16,7 +16,3 @@ Feature: Teacher Bank
       Given I am on the bank page
       Given I distribute ebucks
       Then the teacher account should be deducted
- 
-
-
-

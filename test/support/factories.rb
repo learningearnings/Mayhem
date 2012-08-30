@@ -94,6 +94,7 @@ FactoryGirl.define do
 
   factory :spree_user, class: Spree::User do
     sequence(:email) {|n| "foo#{n}@bar.com"}
+    sequence(:username) {|n| "foo#{n}"}
     password "123456"
     password_confirmation "123456"
 #    person

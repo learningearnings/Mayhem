@@ -2,7 +2,7 @@ class AdminBank < Spinach::FeatureSteps
   include SharedSteps
 
   Given 'I distribute bucks for a teacher' do
-    select 'Teacher 1 McTesterson', :from => 'teacher_id'
+    select @teacher.name, :from => 'teacher_id'
     fill_in 'point1', :with => '1'
     fill_in 'point5', :with => '1'
     fill_in 'point10', :with => '1'

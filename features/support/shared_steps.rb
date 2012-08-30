@@ -3,15 +3,15 @@ module SharedSteps
  
   Given 'I am logged in as an admin' do
     visit 'http://1.lvh.me/'
-    fill_in 'user_email', :with => 'school_admin1_mc_testerson@example.com'
-    fill_in 'user_password', :with => 'test123'
+    fill_in 'user_username', :with => @school_admin.user.username
+    fill_in 'user_password', :with => '123456'
     click_button 'Sign in'
   end
 
   Given 'I am logged in as a teacher' do
     visit 'http://1.lvh.me/' 
-    fill_in 'user_email', :with => 'teacher1_mc_testerson@example.com'
-    fill_in 'user_password', :with => 'test123'
+    fill_in 'user_username', :with => @teacher.user.username
+    fill_in 'user_password', :with => '123456'
     click_button 'Sign in'
   end
 
@@ -30,7 +30,7 @@ module SharedSteps
     @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
     @school_admin = FactoryGirl.create(:school_admin)
     @admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
-    @teacher = FactoryGirl.create(:teacher)
+    @teacher = FactoryGirl.create(:teacher, first_name: "Teacher", last_name: "Test")
     @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
     [@student1, @student2, @school_admin, @teacher].map{|x| x.activate}
   end
@@ -60,10 +60,8 @@ module SharedSteps
   end
 
   Given 'I distribute ebucks' do
-    select 'Student 1 McTesterson', :from => 'student_id'
+    select @student1.name, :from => 'student_id'
     fill_in 'points', :with => '1'
     click_button 'Create eBucks'
   end
-
-
 end

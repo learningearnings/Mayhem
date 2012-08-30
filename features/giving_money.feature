@@ -1,4 +1,3 @@
-@wip
 Feature: Giving Credits
   As an administrator, I want to give teachers credits
   As an administrator, I want to give students credits
