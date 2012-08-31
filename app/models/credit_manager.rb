@@ -40,8 +40,12 @@ class CreditManager
     transfer_credits "Issue Credits to Teacher", school.main_account_name, teacher.main_account_name(school), amount
   end
 
-  def issue_credits_to_student school, teacher, student, amount
-    transfer_credits "Issue Credits to Student", teacher.main_account_name(school), student.checking_account_name, amount
+  def issue_print_credits_to_student school, teacher, student, amount
+    transfer_credits "Issue Credits to Student", teacher.unredeemed_account_name(school), student.checking_account_name, amount
+  end
+
+  def issue_ecredits_to_student school, teacher, student, amount
+    transfer_credits "Issue Credits to Student", teacher.undeposited_account_name(school), student.checking_account_name, amount
   end
 
   def transfer_credits_for_reward_purchase student, amount

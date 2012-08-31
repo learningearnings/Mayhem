@@ -15,6 +15,13 @@ module SharedSteps
     click_button 'Sign in'
   end
 
+  Given 'I am logged in as a student' do
+    visit 'http://1.lvh.me/' 
+    fill_in 'user_username', :with => @student1.user.username
+    fill_in 'user_password', :with => '123456'
+    click_button 'Sign in'
+  end
+
   Given 'the main account exists' do
     Plutus::Liability.create(name: CreditManager.new.main_account_name)
   end
@@ -46,6 +53,10 @@ module SharedSteps
 
    Given 'I am on the bank page' do
      visit 'http://1.lvh.me/bank'
+   end
+
+   Given 'I am on the messages page' do
+     visit 'http://1.lvh.me/inbox'
    end
 
    Then 'show me the page' do

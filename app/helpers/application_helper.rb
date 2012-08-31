@@ -7,4 +7,8 @@ module ApplicationHelper
       PersonDecorator.decorate(current_user.person)
     end
   end
+
+  def buck_link(buck)
+    link_to 'Redeem Buck', "/bank/redeem_bucks", buck
+  end
 end
