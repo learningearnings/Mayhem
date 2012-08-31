@@ -1,4 +1,5 @@
 class Bank 
+  include ActionView::Helpers::UrlHelper
 
   def initialize(credit_manager=CreditManager.new)
     @credit_manager = credit_manager
@@ -31,6 +32,19 @@ class Bank
     buck = OtuCode.create(buck_params)
     buck.generate_code(prefix)
     @credit_manager.purchase_ebucks(person.schools.first, person, student, points)
+    message = Message.create(:from_id => person.id, 
+                             :to_id => student.id, 
+                             :subject => 'You\'ve been awarded LE Bucks', 
+                             :body => "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}")
+  end
+
+  def claim_bucks(student, otu_code)
+    if otu_code.is_ebuck?
+      @credit_manager.issue_ecredits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+    else
+      @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+    end
+    otu_code.update_attribute(:active, false)
   end
 
 end

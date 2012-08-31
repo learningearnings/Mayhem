@@ -1,5 +1,5 @@
 class Code < ActiveRecord::Base
-  scope :active, where(:status == true)
+  scope :active,  lambda { where("active = ?", true) }
   after_create :gen_code
 
   attr_accessible :used_date, :active
