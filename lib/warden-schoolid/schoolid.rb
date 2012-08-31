@@ -65,7 +65,7 @@ module Warden
       def self.config
         @config ||= {
           :authenticate_method  => :authenticate_with_school_id,
-          :error_message        =>  "Could not login"
+          :error_message        =>  "Username, password or selected school doesn't match"
         }
         yield @config if block_given?
         @config
@@ -110,6 +110,7 @@ module Warden
       # @api private
       def authenticate!
         if u = user_class.send(config[:authenticate_method], *required_param_values)
+          session[:current_school_id] = required_param_values[2]
           success!(u)
         else
           fail!(config[:error_message])

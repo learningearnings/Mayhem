@@ -33,6 +33,11 @@ Run guard to run the tests as you develop:
 
 Then when you change files, tests will run.
 
+To reset your database, create it, run migrations load seeds and samples run:
+    rake le:reload!
+
+that will kill any ruby and psql processes you have running and then db:drop db:create db:migrate db:seed
+
 To load up some sample data, run:
 
     rake db:seed
