@@ -175,8 +175,9 @@ if Rails.env.development? || Rails.env.production?
   @school = FactoryGirl.create(:school)
   # Issue some credits to the school
   @school_credits = 200_000
-  @teacher_credits = 50000
+  @teacher_credits = 50_000
   @credit_manager.issue_credits_to_school(@school, @school_credits)
+  @credit_manager.issue_store_credits_to_school(@school, @school_credits * 2)
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
@@ -220,7 +221,15 @@ if Rails.env.development? || Rails.env.production?
   @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
 
   # create the default store - le wholesale store
-  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le.lvh.me:3000")
+  if Rails.env.development?
+    port = ':3000'
+    host = '.lvh.me'
+  else
+    port = ''
+    host = '.mayhem.lemirror.com'
+  end
+
+  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
 
   Rake::Task['db:load_dir'].reenable
   Rake::Task['db:load_dir'].invoke("samples")

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :subdomain_required
 
+
   # Users are required to access the application
   # using a subdomain
   def subdomain_required

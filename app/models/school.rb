@@ -19,8 +19,15 @@ class School < ActiveRecord::Base
   after_create :ensure_accounts
 
   def create_spree_store
+    if Rails.env.development?
+      port = ':3000'
+      host = '.lvh.me'
+    else
+      port = ''
+      host = '.mayhem.lemirror.com'
+    end
     unless Spree::Store.find_by_code(self.id.to_s)
-      Spree::Store.create(code: self.id.to_s, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.id.to_s}.lvh.me:3000")
+      Spree::Store.create(code: self.id.to_s, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.id.to_s}#{host}#{port}")
     end
   end
 
@@ -51,16 +58,16 @@ class School < ActiveRecord::Base
     "SCHOOL#{id} MAIN"
   end
 
-  def credit_account_name
-    "SCHOOL#{id} CREDIT"
+  def store_account_name
+    "SCHOOL#{id} STORE"
   end
 
   def main_account
     Plutus::Asset.find_by_name main_account_name
   end
 
-  def credit_account
-    Plutus::Asset.find_by_name credit_account_name
+  def store_account
+    Plutus::Asset.find_by_name store_account_name
   end
 
   def balance
@@ -78,6 +85,6 @@ class School < ActiveRecord::Base
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
-    credit_account || Plutus::Asset.create(name: credit_account_name)
+    store_account || Plutus::Asset.create(name: store_account_name)
   end
 end

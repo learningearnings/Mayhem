@@ -7,4 +7,9 @@ module ApplicationHelper
       PersonDecorator.decorate(current_user.person)
     end
   end
+
+  def current_school
+    School.find(session[:current_school_id])
+  end
+
 end
