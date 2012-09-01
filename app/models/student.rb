@@ -19,6 +19,14 @@ class Student < Person
     first_name + ' ' + last_name
   end
 
+  def purchases_account_name
+    checking_account_name
+  end
+
+  def purchases_account
+    checking_account
+  end
+
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def checking_account_name
     "STUDENT#{id} CHECKING"

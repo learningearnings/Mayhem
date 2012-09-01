@@ -8,6 +8,10 @@ module ApplicationHelper
     end
   end
 
+  def current_school
+    School.find(session[:current_school_id])
+  end
+
   def buck_link(buck)
     link_to 'Redeem Buck', "/bank/redeem_bucks", buck
   end

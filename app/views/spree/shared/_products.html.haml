@@ -17,5 +17,6 @@
               = link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url'
             = link_to truncate("#{product.name}", :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name
             .price.selling{:itemprop => "price"}= number_to_currency product.price
+            .quantty{:itemprop => "count_on_hand"}= product.count_on_hand.to_s + " available"
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
