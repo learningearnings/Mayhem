@@ -1,6 +1,5 @@
 # This will guess the User class
 FactoryGirl.define do
-
   factory :person do
     first_name "Testy"
     last_name "McTesterson"
@@ -98,5 +97,26 @@ FactoryGirl.define do
     password "123456"
     password_confirmation "123456"
 #    person
+  end
+
+  factory :question, class: Games::Question do
+    grade 1
+    body "Foo bar baz witchity?"
+    factory :food_fight_question do
+      game_type "FoodFight"
+    end
+  end
+
+  factory :answer, class: Games::Answer do
+    body "Answer!!!"
+    factory :food_fight_answer do
+      game_type "FoodFight"
+    end
+  end
+
+  factory :game_question_answer, class: Games::QuestionAnswer do
+    question
+    answer
+    correct false
   end
 end

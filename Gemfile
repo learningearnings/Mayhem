@@ -80,6 +80,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
   gem 'minitest-reporters', '~> 0.8.0'
   gem 'minitest-matchers', '~> 1.2.0'

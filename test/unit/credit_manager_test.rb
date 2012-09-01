@@ -67,11 +67,18 @@ describe CreditManager do
           @student.expects(:checking_account_name).returns(@student_account_name)
         end
 
-        it "issues credits to a student" do
+        it "issues ecredits to a student" do
           @amount = BigDecimal("500.00")
-          @teacher.expects(:main_account_name).with(@school).returns(@teacher_account_name)
+          @teacher.expects(:undeposited_account_name).with(@school).returns(@teacher_account_name)
           @credit_manager.expects(:transfer_credits).with("Issue Credits to Student", @teacher_account_name, @student_account_name, @amount).once
-          @credit_manager.issue_credits_to_student(@school, @teacher, @student, @amount)
+          @credit_manager.issue_ecredits_to_student(@school, @teacher, @student, @amount)
+        end
+
+        it "issues print credits to a student" do
+          @amount = BigDecimal("500.00")
+          @teacher.expects(:unredeemed_account_name).with(@school).returns(@teacher_account_name)
+          @credit_manager.expects(:transfer_credits).with("Issue Credits to Student", @teacher_account_name, @student_account_name, @amount).once
+          @credit_manager.issue_print_credits_to_student(@school, @teacher, @student, @amount)
         end
 
         it "transfers credits from a student for reward purchase" do
