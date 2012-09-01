@@ -14,6 +14,6 @@ class FoodFightPlayCommandsController < LoggedInController
 
   def on_failure(command)
     flash.now[:error] = "Incorrect answer."
-    render '/games/food_fights/play', locals: { food_fight_play_command: command }
+    render '/games/food_fights/incorrect', locals: { food_fight_play_command: command }
   end
 end

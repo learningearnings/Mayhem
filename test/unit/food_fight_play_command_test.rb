@@ -36,8 +36,10 @@ describe FoodFightPlayCommand do
     answer = {}
     question_answer = mock "QuestionAnswer"
     question_answer.expects(:answer).returns(answer)
-    subject.expects(:question_answers).returns([question_answer])
-    subject.answer_options.must_equal [answer]
+    subject.stubs(:correct_answer).returns(nil)
+    subject.stubs(:chosen_answer).returns(nil)
+    subject.stubs(:question_answers).returns([question_answer])
+    subject.answer_options.must_equal [FoodFightPlayCommand::AnswerOption.new(answer)]
   end
 
   it "knows the correct answer" do

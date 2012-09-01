@@ -30,15 +30,25 @@ class FoodFightPlayCommand < ActiveModelCommand
   end
 
   def answer_options
-    question_answers.map(&:answer)
+    question_answers.map do |qa|
+      answer = qa.answer
+       AnswerOption.new(answer).tap do |ao|
+         ao.chosen  = (answer == chosen_answer)
+         ao.correct = (answer == correct_answer)
+       end
+    end
   end
 
   def correct_answer
-    question_answers.detect{|a| a.correct? }.answer
+    correct_question_answer = question_answers.detect{|a| a.correct? }
+    return nil unless correct_question_answer
+    correct_question_answer.answer
   end
 
   def chosen_answer
-    question_answers.detect{|a| a.id == answer_id}.answer
+    chosen_question_answer = question_answers.detect{|a| a.id == answer_id}
+    return nil unless chosen_question_answer
+    chosen_question_answer.answer
   end
 
   def answer_ids
@@ -53,5 +63,28 @@ class FoodFightPlayCommand < ActiveModelCommand
     return on_success.call(self) if valid? && correct?
     # TODO: Actually execute stuff.
     return on_failure.call(self)
+  end
+
+  class AnswerOption < SimpleDelegator
+    attr_accessor :chosen, :correct
+
+    def chosen?
+      chosen == true
+    end
+
+    def correct?
+      correct == true
+    end
+
+    def incorrectly_chosen?
+      chosen && !correct?
+    end
+
+    def html_class
+      return 'incorrectly-chosen' if incorrectly_chosen?
+      return 'chosen' if chosen?
+      return 'correct' if correct?
+      return ''
+    end
   end
 end
