@@ -80,9 +80,9 @@ input, textarea, select {
 }
 
 .login.login-supplemental-part {
-  position: relative;
-  top: -55px;
-  padding: 15px 0;
+  position: absolute;
+  top: 30px;
+  display: none;
 }
 
 .login-supplemental-part .login-form-fields {
@@ -134,42 +134,65 @@ input, textarea, select {
   position: relative;
 }
 
-.content .post-it-links {
+.content .stickies-nav {
   list-style-type: none;
   margin: 0;
   position: absolute;
   top: 340px;
-  left: 700px;
+  left: 720px;
 }
 
-.content .post-it-links li {
+.content .stickies-nav li {
   display: inline;
 }
 
 
-.btn.students-post-it,
-.btn.parents-post-it,
-.btn.teachers-post-it {
+.btn.students-stickie,
+.btn.parents-stickie,
+.btn.teachers-stickie {
   cursor: pointer;
   padding: 40px 0 0 0;
   background-repeat: no-repeat;
   background-color: transparent;
   border: none;
   box-shadow: none;
-  width: 116px;
-  height: 110px;  
 }
 
-.btn.students-post-it {
-  background-image: url(asset_path('green_nav_stickie_no_text.png', image));
+.btn.students-stickie:hover,
+.btn.parents-stickie:hover,
+.btn.teachers-stickie:hover {
+  background-position: 0;
 }
 
-.btn.parents-post-it {
-  background-image: url(asset_path('orange_stickie_no_text.png', image));
+
+.btn.students-stickie {
+  background-image: url(asset_path('students_green_nav_stickie.png', image));
+  height: 109px;
+  width: 110px;
 }
 
-.btn.teachers-post-it {
-  background-image: url(asset_path('blue_stickie_no_text.png', image));
+.btn.students-stickie:hover {
+  background-image: url(asset_path('students_green_nav_stickie_selected.png', image));
+}
+
+.btn.parents-stickie {
+  background-image: url(asset_path('parents_orange_nav_stickie.png', image));
+  height: 110px;
+  width: 110px;
+}
+
+.btn.parents-stickie:hover {
+  background-image: url(asset_path('parents_orange_nav_stickie_selected.png', image));
+}
+
+.btn.teachers-stickie {
+  background-image: url(asset_path('teachers_blue_nav_stickie.png', image));
+  height: 107px;
+  width: 110px;
+}
+
+.btn.teachers-stickie:hover {
+  background-image: url(asset_path('teachers_blue_nav_stickie_selected.png', image));
 }
 
 .custom-nav-bar {
