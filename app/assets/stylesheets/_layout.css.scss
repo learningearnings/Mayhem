@@ -4,12 +4,10 @@
 body {
   font-size: 62.5%;
   font-family: 'Sketch Rockwell';
-}
-
-.page-wrapper {
   background-image: url(asset_path('common/notebook_paper_bg.png', image));
   background-position: top center;
   background-repeat: repeat-y;
+  
 }
 
 input, textarea, select {
@@ -18,37 +16,38 @@ input, textarea, select {
 
 .head {
   overflow: hidden;
-  position: relative;
-  .logo {
-    float: left;
-    margin: 3px 0 0 143px;
-    background-image: url(asset_path('common/le_logo.png', image));
-    background-repeat: no-repeat;
-    }
-  .logo-link {
-    display: inline-block;
-    width: 139px;
-    height: 133px;
+}
+
+.logo {
+  background-image: url(asset_path('common/le_logo.png', image));
+  background-repeat: no-repeat;
+  width: 140px;
+  float: left;
+  margin-left: 140px;
   }
-  .supplemental {
-    position: relative;
-    float: right;
-    overflow: hidden;
-    .join-links {
-      list-style-type: none;
-      margin: 0;
-        li {
-          display: inline;
-        }
-        li:nth-child(1) {
-          font-weight: bold;
-          font-size: 1.4em;
-          color: #1f2870;
-        }
-        li span a {
-          margin-top: 3px;
-        }
-    }
+  
+.logo-link {
+  display: inline-block;
+  width: 139px;
+  height: 133px;
+}
+.supplemental {
+  overflow: hidden;
+  float: right;
+  .join-links {
+    list-style-type: none;
+    margin: 0;
+      li {
+        display: inline;
+      }
+      li:nth-child(1) {
+        font-weight: bold;
+        font-size: 1.4em;
+        color: #1f2870;
+      }
+      li span a {
+        margin-top: 3px;
+      }
   }
 }
 
@@ -57,17 +56,13 @@ input, textarea, select {
   background-repeat: no-repeat;
   width: 446px;
   height: 104px;
-  position: absolute;
-  top: 0;
-  left: 300px;
+  float: right;
 }
 
 
 .join-supplemental-part {
-  display: inline-block;
-/*  position: absolute; */
-  top: 0;
-  left: 350px;
+  float: right;
+  margin-right: -390px;
   label {
     display: inline;
   }
@@ -86,7 +81,7 @@ input, textarea, select {
 
 .login.login-supplemental-part {
   position: relative;
-  top: 55px;
+  top: -55px;
   padding: 15px 0;
 }
 
@@ -99,44 +94,128 @@ input, textarea, select {
   display: inline;
 }
 
+.login-form-fields input {
+  height: 35px;
+  width: 175px;
+}
+
 .btn.students,
-.btn.paretns,
+.btn.parents,
 .btn.teachers {
   cursor: pointer;
+  padding: 7px 0;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  width: 96px;
+  height: 37px;
+  
 }
 
 .btn.students {
   background-image: url(asset_path('common/join-menu-green-no-text-bg.png', image));
-  background-repeat: no-repeat;
-  background-color: transparent;
-  border: none;
-  width: 96px;
-  height: 37px;
 }
 
 .btn.parents {
   background-image: url(asset_path('common/join-menu-orange-no-text-bg.png', image));
-  background-repeat: no-repeat;
-  background-color: transparent;
-  border: none;
-  width: 96px;
-  height: 37px;
 }
 
 .btn.teachers {
   background-image: url(asset_path('common/join-menu-blue-no-text-bg.png', image));
-  background-repeat: no-repeat;
-  background-color: transparent;
-  border: none;
-  width: 96px;
-  height: 37px;
 }
 
 .custom-nav-bar {
   width: 650px;
+  float: right;
+}
+
+.content .post-it-links {
+  list-style-type: none;
+  margin: 0;
   position: absolute;
-  top: 100px;
-/*  left: 760px; */
+  top: 500px;
+  left: 1000px;
+}
+
+.content .post-it-links li {
+  display: inline;
+}
+
+
+.btn.students-post-it,
+.btn.parents-post-it,
+.btn.teachers-post-it {
+  cursor: pointer;
+  padding: 40px 0 0 0;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  width: 116px;
+  height: 110px;  
+}
+
+.btn.students-post-it {
+  background-image: url(asset_path('green_nav_stickie_no_text.png', image));
+}
+
+.btn.parents-post-it {
+  background-image: url(asset_path('orange_stickie_no_text.png', image));
+}
+
+.btn.teachers-post-it {
+  background-image: url(asset_path('blue_stickie_no_text.png', image));
+}
+
+.custom-nav-bar {
+  width: 650px;
+  float: right;
+}
+
+
+.custom-nav-bar .navbar-inner {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  -webkit-border-radius: none;
+  -moz-border-radius: none;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.nav.primary-nav .home {
+  color: #25860b;
+}
+
+.nav.primary-nav .how-it-works {
+  color: #ea4e08;
+}
+
+.nav.primary-nav .locker {
+  color: #1f2870;
+}
+
+.nav.primary-nav .inbox {
+  color: #000000;
+}
+
+.nav.primary-nav .bank {
+  color: #470bc1;
+}
+
+.nav.primary-nav .play {
+  color: #eb731c;
+}
+
+.nav.primary-nav .rewards {
+  color: #b611b0;
+}
+
+.nav.primary-nav .news {
+  color: #ff2204;
 }
 
 .navbar-inner {
@@ -147,18 +226,88 @@ input, textarea, select {
   min-height: 500px;
 }
 
+.side-art {
+  background-image: url(asset_path('side_doodles.png', image));
+  height: 467px;
+  width: 109px;
+  float: left;
+  margin-left: 83px;
+}
+
+.bacon {
+  background-image: url(asset_path('sir_bacon_francis_shadows.png', image));
+  width: 358px;
+  height: 415px;
+  float: left;
+  margin: 0 0 0 -78px;
+}
+
+.white-board {
+  background-image: url(asset_path('whiteboard_with_shadows.png', image));
+  height: 416px;
+  width: 776px;
+  margin-left: 340px;
+}
+
+.product-image-bursts {
+  background-image: url(asset_path('product_image_with_pins_bursts.png', image));
+  height: 293px;
+  width: 290px;
+  position: absolute;
+  top: 200px;
+  left: 755px;
+}
+
+.kids-credits-cta {
+  background-image: url(asset_path('kids_credits_cta.png', image));
+  height: 200px;
+  width: 304px;
+  position: absolute;
+  top: 200px;
+  left: 1060px;
+}
+
+.star {
+  background-image: url(asset_path('star.png', image));
+  height: 59px;
+  width: 55px;
+  position: absolute;
+  top: 390px;
+  left: 1185px;
+}
+.sir-francis-bacon {
+  background-image: url(asset_path('sir_bacon_francis_arrow_copy.png', image));
+  height: 77px;
+  width: 276px;
+  position: absolute;
+  top: 530px;
+  left: 500px;
+}
+
+
 footer {
   color: $supporting-text-color;
-  .container {
-    position: relative;
+  margin-top: 12px;
+  .span12 {
+    text-align: center;
+    p {
+    font-family: Arial, Sans-Serif; 
+    color: #000000;
+    }
     .secondary-nav {
-      position: absolute;
-      right: 0;
-      top: 0;
       li {
         display: inline-block;
-        margin-right: 1em;
+        padding: 0 1.5em 0 1em;
+        border-right: solid 1px #000000;
+          a { 
+            font-family: Arial, Sans-Serif; 
+            color: #000000;
+          }
       }
+      li:last-child {
+        border-right: none
+      }
+      
     }
   }
 }

@@ -9,10 +9,10 @@
     = javascript_include_tag 'store/all'
     = csrf_meta_tags
   %body
-    .page-wrapper
-      .container
+    .container
+      .row
         = render "layouts/head"
-        .custom-nav-bar
-          = render "layouts/navbar"
+      .row
         = render "layouts/content_container"
+      .row
         = render "layouts/footer"
