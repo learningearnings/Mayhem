@@ -8,7 +8,8 @@ module Games
       # FIXME: Make this...better
       question = Games::Question.first
       food_fight_play_command = FoodFightPlayCommand.new(question_id: question.id)
-      render 'play', locals: { food_fight_play_command: food_fight_play_command }
+      question_statistics = Games::QuestionStatisticsPresenter.new(question)
+      render 'play', locals: { food_fight_play_command: food_fight_play_command, question_statistics: question_statistics }
     end
   end
 end
