@@ -2,9 +2,10 @@ class FoodFightPlayCommand < ActiveModelCommand
   attr_accessor :question_id, :answer_id, :person_id, :on_success, :on_failure
 
   validates :question_id, numericality: true, presence: true
-  validates :answer_id,   numericality: true, presence: true
+  validates :answer_id,   numericality: true,
+                          presence: true,
+                          inclusion: { in: lambda{|o| o.answer_ids } }
   validates :person_id,   numericality: true, presence: true
-  validates :answer_id,   inclusion: { in: lambda{|o| o.answer_ids } }
 
   delegate :body, to: :question, prefix: :question
 
@@ -23,6 +24,10 @@ class FoodFightPlayCommand < ActiveModelCommand
 
   def question_answer_repository
     Games::QuestionAnswer.where(question_id: question_id)
+  end
+
+  def person_answer_repository
+    Games::PersonAnswer
   end
 
   def question_answers
@@ -46,9 +51,12 @@ class FoodFightPlayCommand < ActiveModelCommand
   end
 
   def chosen_answer
-    chosen_question_answer = question_answers.detect{|a| a.id == answer_id}
     return nil unless chosen_question_answer
     chosen_question_answer.answer
+  end
+
+  def chosen_question_answer
+    question_answers.detect{|a| a.answer_id == answer_id}
   end
 
   def answer_ids
@@ -59,9 +67,18 @@ class FoodFightPlayCommand < ActiveModelCommand
     chosen_answer == correct_answer
   end
 
+  def person_answer_args
+    {
+      person_id: person_id,
+      question_answer_id: chosen_question_answer.id,
+      question_id: question_id
+    }
+  end
+
   def execute!
-    return on_success.call(self) if valid? && correct?
-    # TODO: Actually execute stuff.
+    return on_failure.call(self) unless valid?
+    answer = person_answer_repository.create(person_answer_args)
+    return on_success.call(self) if answer.valid? && correct?
     return on_failure.call(self)
   end
 

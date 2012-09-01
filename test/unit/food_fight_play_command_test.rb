@@ -53,17 +53,23 @@ describe FoodFightPlayCommand do
     subject.correct_answer.must_equal answer
   end
 
-  it "knows the chosen answer" do
+  it "knows the chosen question_answer" do
     answer_id = 555
-    answer = mock "Answer"
     chosen_answer = mock "Question Answer"
-    chosen_answer.stubs(:id).returns(answer_id)
-    chosen_answer.expects(:answer).returns(answer)
+    chosen_answer.stubs(:answer_id).returns(answer_id)
     unchosen_answer = mock "Question Answer"
-    unchosen_answer.stubs(:id).returns(1)
+    unchosen_answer.stubs(:answer_id).returns(1)
     question_answers = [chosen_answer, unchosen_answer]
     subject.expects(:question_answers).returns(question_answers)
     subject.answer_id = answer_id
+    subject.chosen_question_answer.must_equal chosen_answer
+  end
+
+  it "knows the chosen answer" do
+    answer = mock "Answer"
+    chosen_answer = mock "Question Answer"
+    chosen_answer.expects(:answer).returns(answer)
+    subject.stubs(:chosen_question_answer).returns(chosen_answer)
     subject.chosen_answer.must_equal answer
   end
 
@@ -78,5 +84,24 @@ describe FoodFightPlayCommand do
     subject.expects(:question).returns(question)
     question.expects(:body).returns("foo")
     subject.question_body.must_equal "foo"
+  end
+
+  it "persists the answer when executed" do
+    person_id = 1
+
+    question_answer = mock "QuestionAnswer"
+    question_answer.expects(:id).returns(2)
+    subject.stubs(:chosen_question_answer).returns(question_answer)
+    person_answer_repository = mock("PersonAnswer")
+    subject.stubs(:person_answer_repository).returns(person_answer_repository)
+    subject.question_id = 3
+    person_answer_args = {
+      person_id: 1,
+      question_answer_id: 2,
+      question_id: 3
+    }
+    subject.stubs(:valid?).returns true
+    person_answer_repository.expects(:create).with(person_answer_args).returns(true)
+    subject.execute!
   end
 end
