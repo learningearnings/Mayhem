@@ -23,7 +23,7 @@ module Games
     end
 
     def person_answer_repository
-      Games::PersonAnswer.where(question_id: @question_id).join(:question_answer)
+      Games::PersonAnswer.where(question_id: @question_id).joins(:question_answer)
     end
   end
 end

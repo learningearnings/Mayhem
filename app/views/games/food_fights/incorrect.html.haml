@@ -7,3 +7,5 @@
       %li{ class: answer.html_class }
         = label_tag :answer_id, answer, value: answer.id
   = link_to "New Question", play_games_food_fight_path, class: 'btn'
+
+= render '/games/food_fights/question_statistics', question_statistics: question_statistics

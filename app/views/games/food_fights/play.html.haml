@@ -11,5 +11,4 @@
     = f.hidden_field :question_id
     = submit_tag "Answer Question"
 
-.question-statistics
-  Here go the question statistics...
+= render 'question_statistics', question_statistics: question_statistics
