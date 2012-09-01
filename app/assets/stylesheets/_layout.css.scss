@@ -130,12 +130,16 @@ input, textarea, select {
   float: right;
 }
 
+.content {
+  position: relative;
+}
+
 .content .post-it-links {
   list-style-type: none;
   margin: 0;
   position: absolute;
-  top: 500px;
-  left: 1000px;
+  top: 340px;
+  left: 700px;
 }
 
 .content .post-it-links li {
@@ -240,6 +244,8 @@ input, textarea, select {
   height: 415px;
   float: left;
   margin: 0 0 0 -78px;
+  position: relative;
+  top: 30px;
 }
 
 .white-board {
@@ -254,8 +260,8 @@ input, textarea, select {
   height: 293px;
   width: 290px;
   position: absolute;
-  top: 200px;
-  left: 755px;
+  top: 30px;
+  left: 465px;
 }
 
 .kids-credits-cta {
@@ -263,8 +269,8 @@ input, textarea, select {
   height: 200px;
   width: 304px;
   position: absolute;
-  top: 200px;
-  left: 1060px;
+  top: 30px;
+  left: 760px;
 }
 
 .star {
@@ -272,16 +278,16 @@ input, textarea, select {
   height: 59px;
   width: 55px;
   position: absolute;
-  top: 390px;
-  left: 1185px;
+  top: 215px;
+  left: 885px;
 }
 .sir-francis-bacon {
   background-image: url(asset_path('sir_bacon_francis_arrow_copy.png', image));
   height: 77px;
   width: 276px;
   position: absolute;
-  top: 530px;
-  left: 500px;
+  top: 390px;
+  left: 205px;
 }
 
 
