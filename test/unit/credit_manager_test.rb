@@ -1,4 +1,5 @@
-require_relative '../test_helper'
+require 'test_helper'
+require_relative '../../app/models/credit_manager'
 
 describe CreditManager do
   before do

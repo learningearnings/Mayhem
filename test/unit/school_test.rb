@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe School do
   subject { School }
@@ -44,5 +44,4 @@ describe School do
     school.addresses.wont_be_empty
     school.addresses.first.must_equal a
   end
-
 end

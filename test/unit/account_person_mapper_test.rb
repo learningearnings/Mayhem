@@ -1,4 +1,5 @@
 require 'test_helper'
+require_relative '../../app/models/account_person_mapper'
 
 describe AccountPersonMapper do
   subject { AccountPersonMapper.new("STUDENT6") }

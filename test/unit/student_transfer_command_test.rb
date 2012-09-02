@@ -1,4 +1,5 @@
 require 'test_helper'
+require_relative '../../app/models/student_transfer_command'
 
 describe StudentTransferCommand do
   subject { StudentTransferCommand.new }

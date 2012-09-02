@@ -1,8 +1,7 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe FilterFactory do
   subject { FilterFactory }
-
 
   it "has the basics down" do
     subject.must_be_kind_of Class
@@ -115,10 +114,4 @@ describe FilterFactory do
     membership = ff.find_filter_membership(teacher)
     membership.must_include f
   end
-
-=begin
-  it "can find grade filter membership" do
-  end
-=end
 end
-

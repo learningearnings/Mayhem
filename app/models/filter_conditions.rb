@@ -2,11 +2,8 @@ require 'school'
 # require 'classroom'
 # require 'state'
 
-
 class FilterConditions
-
   attr :schools, :classrooms, :states, :person_classes, :minimum_grade, :maximum_grade
-
 
   def initialize(d = nil)
     @schools = []
@@ -66,5 +63,4 @@ class FilterConditions
   def to_s
     {:schools => @schools, :classrooms => @classrooms, :person_classes => @person_classes, :states => @states}.to_yaml.to_s
   end
-
 end

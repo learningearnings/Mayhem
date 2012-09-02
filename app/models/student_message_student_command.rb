@@ -1,9 +1,12 @@
+require_relative 'active_model_command'
+require_relative '../validators/array_of_integers_validator'
+
 class StudentMessageStudentCommand < ActiveModelCommand
   attr_accessor :from_id, :to_ids, :canned_message
 
   validates :from_id, numericality: true, presence: true
   validates :to_ids, presence: true, array_of_integers: true
-  validates :canned_message, presence: true, inclusion: { in: Message.canned_messages, message: "must be one of the canned messages" }
+  validates :canned_message, presence: true, inclusion: { in: lambda{ |o| o.canned_messages }, message: "must be one of the canned messages" }
 
   def initialize params={}
     @from_id        = params[:from_id]
@@ -13,6 +16,10 @@ class StudentMessageStudentCommand < ActiveModelCommand
 
   def message_class
     Message
+  end
+
+  def canned_messages
+    message_class.canned_messages
   end
 
   def execute!

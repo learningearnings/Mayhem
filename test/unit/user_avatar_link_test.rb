@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe UserAvatarLink do
   subject { UserAvatarLink }
@@ -18,5 +18,3 @@ describe UserAvatarLink do
 
   end
 end
-
-

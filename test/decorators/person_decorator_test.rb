@@ -1,4 +1,5 @@
-require 'test_helper'
+require 'test_helper_with_rails'
+require_relative '../../app/decorators/person_decorator'
 
 describe PersonDecorator do
   before do
