@@ -7,5 +7,7 @@ module Games
     validates :question_id, presence: true, numericality: true
     validates :answer_id, presence: true, numericality: true
     validates :correct, inclusion: { in: [true, false] }
+
+    scope :correct, where(correct: true)
   end
 end
