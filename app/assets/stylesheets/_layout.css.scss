@@ -1,9 +1,34 @@
 /* apply a natural box layout model to all elements */
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
+/* FONTS */
+
+@font-face {
+  font-family: 'king_cool_kcregular';
+  src: url('king_cool_kc-webfont.eot');
+  src: url('king_cool_kc-webfont.eot?#iefix') format("embedded-opentype"), url('king_cool_kc-webfont.woff') format("woff"), url('king_cool_kc-webfont.ttf') format("truetype"), url('king_cool_kc-webfont.svg#king_cool_kcregular') format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+
+@font-face {
+  font-family: 'sketch_rockwellregular';
+  src: url('sketchrockwell-bold-webfont.eot');
+  src: url('sketchrockwell-bold-webfont.eot?#iefix') format("embedded-opentype"), url('sketchrockwell-bold-webfont.woff') format("woff"), url('sketchrockwell-bold-webfont.ttf') format("truetype"), url('sketchrockwell-bold-webfont.svg#sketch_rockwellregular') format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+
+@font-face {
+  font-family: 'sketch_wallregular';
+  src: url('sketch_wall-webfont.eot');
+  src: url('sketch_wall-webfont.eot?#iefix') format("embedded-opentype"), url('sketch_wall-webfont.woff') format("woff"), url('sketch_wall-webfont.ttf') format("truetype"), url('sketch_wall-webfont.svg#sketch_wallregular') format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
 body {
   font-size: 62.5%;
-  font-family: 'Sketch Rockwell';
+  font-family: 'sketch_rockwellregular';
   background-image: url(asset_path('common/notebook_paper_bg.png', image));
   background-position: top center;
   background-repeat: repeat-y;
@@ -63,7 +88,7 @@ input, textarea, select {
 
 .join-supplemental-part {
   float: right;
-  margin-right: -390px;
+  margin-right: -385px;
   label {
     display: inline;
   }
@@ -127,8 +152,9 @@ input, textarea, select {
 }
 
 .custom-nav-bar {
-  width: 650px;
-  float: right;
+  position: relative;
+  top: -33px;
+  left: 330px;
 }
 
 .content {
@@ -196,12 +222,6 @@ input, textarea, select {
   background-image: url(asset_path('teachers_blue_nav_stickie_selected.png', image));
 }
 
-.custom-nav-bar {
-  width: 650px;
-  float: right;
-}
-
-
 .custom-nav-bar .navbar-inner {
   background-color: transparent;
   background-image: none;
@@ -212,6 +232,7 @@ input, textarea, select {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  font-size: 1.8em;
 }
 
 .nav.primary-nav .home {
