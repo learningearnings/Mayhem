@@ -1,4 +1,4 @@
-require 'test_helper'
+require_relative './test_helper'
 require File.expand_path('../../config/environment', __FILE__)
 require 'action_controller/test_case'
 # Load support files
