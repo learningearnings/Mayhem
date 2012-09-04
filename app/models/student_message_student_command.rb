@@ -25,7 +25,7 @@ class StudentMessageStudentCommand < ActiveModelCommand
   def execute!
     messages = []
     @to_ids.each do |to_id|
-      message = message_class.new from_id: @from_id, to_id: to_id, subject: @canned_message, body: @canned_message
+      message = message_class.new from_id: @from_id, to_id: to_id, subject: @canned_message, body: @canned_message, category: "friend"
       messages << message
     end
     any_invalid = messages.detect{|m| !m.valid? }

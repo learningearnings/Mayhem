@@ -23,6 +23,15 @@ describe Message do
       subject.wont have_valid(:body).when(nil)
       subject.must have_valid(:body).when('foo')
     end
+
+    it 'must have a valid category' do
+      subject.wont have_valid(:category).when(nil)
+      subject.wont have_valid(:category).when('giggity')
+      subject.must have_valid(:category).when('friend')
+      subject.must have_valid(:category).when('school')
+      subject.must have_valid(:category).when('teacher')
+      subject.must have_valid(:category).when('system')
+    end
   end
 
   describe 'state machine' do

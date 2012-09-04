@@ -10,7 +10,6 @@ describe StudentMessageStudentCommand do
   end
 
   describe 'validations' do
-
     it "requires valid from_id" do
       subject.wont have_valid(:from_id).when(nil)
       subject.wont have_valid(:from_id).when('asdf')
