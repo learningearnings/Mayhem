@@ -26,8 +26,8 @@ class School < ActiveRecord::Base
       port = ''
       host = '.mayhem.lemirror.com'
     end
-    unless Spree::Store.find_by_code(self.id.to_s)
-      Spree::Store.create(code: self.id.to_s, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.id.to_s}#{host}#{port}")
+    unless Spree::Store.find_by_code(self.store_subdomain)
+      Spree::Store.create(code: self.store_subdomain, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.store_subdomain}#{host}#{port}")
     end
   end
 
@@ -52,7 +52,6 @@ class School < ActiveRecord::Base
   end
 
   # End Relationships
-
 
   def main_account_name
     "SCHOOL#{id} MAIN"
@@ -81,6 +80,11 @@ class School < ActiveRecord::Base
   def number_of_participating_teachers
     teachers.count
   end
+
+  def store_subdomain
+    self.id.to_s
+  end
+
 
   private
   def ensure_accounts
