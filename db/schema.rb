@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120901223650) do
+ActiveRecord::Schema.define(:version => 20120904203604) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -182,7 +182,10 @@ ActiveRecord::Schema.define(:version => 20120901223650) do
     t.string   "subject"
     t.text     "body"
     t.string   "status"
+    t.string   "category"
   end
+
+  add_index "messages", ["category"], :name => "index_messages_on_category"
 
   create_table "otu_codes", :force => true do |t|
     t.string   "code"

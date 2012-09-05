@@ -1,0 +1,14 @@
+- open_state = open ? 'in' : 'collapse'
+.accordion-group
+  .accordion-heading
+    = link_to "#{title} (#{messages.unread.count})", "##{accordion_id}", class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
+  %div{ id: accordion_id, class: "accordion-body collapse #{open_state}" }
+    .accordion-inner
+      - messages.each do |message|
+        %div{ class: "message #{message.status}" }
+          .image
+            - if message.from.avatar.present?
+              = image_tag message.from.avatar.image.thumb('50x50#').url
+          .content
+            %p.subject= message.subject
+            = link_to "Read Message", message_path(message), "data-toggle" => 'modal', "data-target" => "#read-message-modal"
