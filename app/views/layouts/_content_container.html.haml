@@ -1,5 +1,7 @@
 .container
   = render "layouts/flashes"
+  = breadcrumbs(@taxon)
+  = yield :sidebar
   .body-content
     .row
       .span12= yield
