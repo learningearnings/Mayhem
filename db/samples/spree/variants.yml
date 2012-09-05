@@ -54,91 +54,115 @@ reward_408_v:
   is_master: true
 reward_351_v:
   product: reward_351
-  price: 77
+  price: 11088
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_352_v:
   product: reward_352
-  price: 67
+  price: 335
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_353_v:
   product: reward_353
-  price: 47
+  price: 4700
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_354_v:
   product: reward_354
-  price: 69
+  price: 1035
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_355_v:
   product: reward_355
-  price: 61
+  price: 915
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_357_v:
   product: reward_357
-  price: 87
+  price: 348
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_358_v:
   product: reward_358
-  price: 82
+  price: 328
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_359_v:
   product: reward_359
-  price: 132
+  price: 3168
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_360_v:
   product: reward_360
-  price: 45
+  price: 540
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_361_v:
   product: reward_361
-  price: 35
+  price: 840
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_362_v:
   product: reward_362
-  price: 36
+  price: 432
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_363_v:
   product: reward_363
-  price: 37
+  price: 888
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_364_v:
   product: reward_364
-  price: 65
+  price: 520
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_365_v:
   product: reward_365
-  price: 132
+  price: 1584
   cost_price: 0
   count_on_hand: 10
   is_master: true
 reward_366_v:
   product: reward_366
-  price: 56
+  price: 224
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
+mega_pencils_v:
+  product: mega_pencils
+  price: 3600
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
+friendship_rope_bracelets_v:
+  product: friendship_rope_bracelets
+  price: 7200
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
+reward_371_v:
+  product: reward_371
+  price: 36
+  cost_price: 0
+  count_on_hand: 10
+  is_master: true
+reward_439_v:
+  product: reward_439
+  price: 100
   cost_price: 0
   count_on_hand: 10
   is_master: true
@@ -163,12 +187,6 @@ reward_366_v:
 #reward_370_v:
 #  product: reward_370
 #  price: 86
-#  cost_price: 0
-#  count_on_hand: 10
-#  is_master: true
-#reward_371_v:
-#  product: reward_371
-#  price: 36
 #  cost_price: 0
 #  count_on_hand: 10
 #  is_master: true
@@ -439,12 +457,6 @@ reward_366_v:
 #reward_438_v:
 #  product: reward_438
 #  price: 61
-#  cost_price: 0
-#  count_on_hand: 10
-#  is_master: true
-#reward_439_v:
-#  product: reward_439
-#  price: 100
 #  cost_price: 0
 #  count_on_hand: 10
 #  is_master: true

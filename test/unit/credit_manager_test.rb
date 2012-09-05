@@ -1,4 +1,5 @@
-require_relative '../test_helper'
+require 'test_helper'
+require_relative '../../app/models/credit_manager'
 
 describe CreditManager do
   before do
@@ -67,11 +68,18 @@ describe CreditManager do
           @student.expects(:checking_account_name).returns(@student_account_name)
         end
 
-        it "issues credits to a student" do
+        it "issues ecredits to a student" do
           @amount = BigDecimal("500.00")
-          @teacher.expects(:main_account_name).with(@school).returns(@teacher_account_name)
+          @teacher.expects(:undeposited_account_name).with(@school).returns(@teacher_account_name)
           @credit_manager.expects(:transfer_credits).with("Issue Credits to Student", @teacher_account_name, @student_account_name, @amount).once
-          @credit_manager.issue_credits_to_student(@school, @teacher, @student, @amount)
+          @credit_manager.issue_ecredits_to_student(@school, @teacher, @student, @amount)
+        end
+
+        it "issues print credits to a student" do
+          @amount = BigDecimal("500.00")
+          @teacher.expects(:unredeemed_account_name).with(@school).returns(@teacher_account_name)
+          @credit_manager.expects(:transfer_credits).with("Issue Credits to Student", @teacher_account_name, @student_account_name, @amount).once
+          @credit_manager.issue_print_credits_to_student(@school, @teacher, @student, @amount)
         end
 
         it "transfers credits from a student for reward purchase" do
@@ -81,6 +89,29 @@ describe CreditManager do
           @credit_manager.transfer_credits_for_reward_purchase(@student, @amount)
         end
       end
+    end
+  end
+
+  describe "transferring credits from/to checking/savings" do
+    before do
+      @student = mock "student"
+      @student_checking_account_name = "STUDENT17 CHECKING"
+      @student_savings_account_name = "STUDENT17 SAVING"
+      @student.expects(:checking_account_name).returns(@student_checking_account_name)
+      @student.expects(:savings_account_name).returns(@student_savings_account_name)
+      @amount = BigDecimal('100.00')
+    end
+
+    it "responds to #transfer_credits_from_checking_to_savings" do
+      @student.expects(:checking_balance).returns(@amount)
+      @credit_manager.expects(:transfer_credits).with("Transfer from Checking to Savings", @student_checking_account_name, @student_savings_account_name, @amount).once
+      @credit_manager.transfer_credits_from_checking_to_savings @student, @amount
+    end
+
+    it "responds to #transfer_credits_from_savings_to_checking" do
+      @student.expects(:savings_balance).returns(@amount)
+      @credit_manager.expects(:transfer_credits).with("Transfer from Savings to Checking", @student_savings_account_name, @student_checking_account_name, @amount).once
+      @credit_manager.transfer_credits_from_savings_to_checking @student, @amount
     end
   end
 end

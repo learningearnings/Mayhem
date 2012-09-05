@@ -1,0 +1,14 @@
+= render '/games/food_fights/head'
+
+.food-fight-question
+  %h4= food_fight_play_command.question_body
+  = form_for food_fight_play_command do |f|
+    %ul.answers
+      - food_fight_play_command.answer_options.each do |answer|
+        %li
+          = f.radio_button :answer_id, answer.id
+          = f.label :answer_id, answer, value: answer.id
+    = f.hidden_field :question_id
+    = submit_tag "Answer Question"
+
+= render 'question_statistics', question_statistics: question_statistics

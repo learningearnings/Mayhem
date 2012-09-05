@@ -1,0 +1,24 @@
+%fieldset
+  = form_for [:admin, @teacher] do |f|
+    .label
+      = f.label :first_name
+    = f.text_field :first_name
+
+    .label
+      = f.label :last_name
+    = f.text_field :last_name
+
+    .label
+      = f.label :dob
+    = f.text_field :dob
+   
+    .label
+      = f.label :grade
+    = f.text_field :grade
+
+    .label
+      = f.label :school
+    = select_tag :school, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
+
+    = f.submit 'Submit'
+

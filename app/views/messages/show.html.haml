@@ -1,0 +1,4 @@
+%h3= @message.subject
+.image-placeholder
+  = @message.body.html_safe
+= link_to "Reply to this message", "#", class: 'btn btn-primary'

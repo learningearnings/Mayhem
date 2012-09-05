@@ -1,4 +1,14 @@
 Leror::Application.routes.draw do
+  # Root route
+  root to: 'pages#show', :id => 'home'
+
+  # Administrative routes
+  ActiveAdmin.routes(self)
+  namespace :admin do
+    get :delete_student_school_link, :controller => :students, :action => :delete_school_link
+    get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
+    get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
+  end
 
   # This line mounts Spree's routes at the root of your application.
   # This means, any requests to URLs such as /products, will go to Spree::ProductsController.
@@ -11,70 +21,37 @@ Leror::Application.routes.draw do
   # FIXME: Lock this down before hitting production
   mount Plutus::Engine => "/plutus", :as => "plutus"
 
-  root to: 'pages#show', :id => 'home'
+  # Handle static pages
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
- 
-  ActiveAdmin.routes(self)
+  
+  # Buck routes
+  match "/create_print_bucks" => 'banks#create_print_bucks'
+  match "/create_ebucks" => 'banks#create_ebucks'
+  match "/redeem_bucks" => 'banks#redeem_bucks'
 
-  #devise_for :users
+  # Game routes
+  namespace :games do
+    resource :food_fight do
+      member do
+        get 'play'
+      end
+    end
+  end
+
+  # Messaging routes
+  resources :messages
+  match "/inbox" => 'messages#index'
 
   resources :pdfs
   resource :bank
 
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
+  # Command routes
+  resources :student_transfer_commands, only: [:create]
+  resources :food_fight_play_commands, only: [:create]
+  resources :student_message_student_commands, only: [:create]
+end
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id))(.:format)'
+# Any routes we add to Spree go here:
+Spree::Core::Engine.routes.prepend do
+  match "/get_avatar_results" => 'users#get_avatar_results'
 end

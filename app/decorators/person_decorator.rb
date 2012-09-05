@@ -1,3 +1,5 @@
+require 'draper'
+
 class PersonDecorator < Draper::Base
   decorates :person
 

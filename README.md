@@ -3,6 +3,23 @@ Project Mayhem
 
 Ruby On Rails reimplementation of LearningEarnings.com
 
+### Multi-Domain Spree **** IMPORTANT ****
+
+We're using multi-domain Spree, and that means that every school has it's own domain.
+Currently, we're using the schools id as the domain, so the domain would be (for localhost development)
+
+    1.localhost:3000
+
+This requires that you put 1.localhost in your hosts file.   If your on the Interwebs, then you can use
+the domain lvh.me (local virtual host - resolves to 127.0.0.1) which has a subdomain wildcard so *.lvh.me
+resolves to 127.0.0.1
+
+Everything might not be working right, but development from here on should use the below url:
+
+    lvh.me:3000
+
+The app now will try to redirect you to 1.lvh.me:3000 if you come in without a subdomain.
+
 ### Development
 Fork, then clone the repository to your development environment
 
@@ -15,6 +32,11 @@ Run guard to run the tests as you develop:
     bundle exec guard
 
 Then when you change files, tests will run.
+
+To reset your database, create it, run migrations load seeds and samples run:
+    rake le:reload!
+
+that will kill any ruby and psql processes you have running and then db:drop db:create db:migrate db:seed
 
 To load up some sample data, run:
 
@@ -80,3 +102,17 @@ To Test out:
 Plutus is a General Ledger / Accounting engine that Isotope11 has contributed to and that we use in multiple projects.
 
 Right now, you can hit /plutus (as anyone) to view the chart of accounts, balances, and transactions.  This is basic reporting provided out of the box by plutus, and can be useful.  We must lock this down before going into production
+
+#### Account Names
+* MAIN_ACCOUNT(Liability)
+  LE
+* SCHOOL1 MAIN(Asset)
+* SCHOOL1 CREDIT(Asset)
+* SCHOOL ADMIN1(Asset)
+* TEACHER2 MAIN SCHOOL1(Asset)
+* TEACHER2 UNREDEEMED SCHOOL1(Asset)
+* TEACHER2 UNDEPOSITED SCHOOL1(Asset)
+* STUDENT4 CHECKING(Asset)
+* STUDENT4 SAVINGS(Asset)
+* STUDENT5 CHECKING(Asset)
+* STUDENT5 SAVINGS(Asset)

@@ -47,3 +47,5 @@ screenlog.*
 
 public/system
 public/spree
+
+.DS_Store

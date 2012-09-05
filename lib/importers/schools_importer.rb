@@ -30,7 +30,7 @@ class SchoolsImporter < ImporterBase
     }
   end
 
-  def model_class
+  def model_class row=''
     School
   end
 

@@ -30,7 +30,9 @@ class ImporterBase
 
   def import!
     csv.each do |row|
-      model = model_class.create(attributes_hash(header_mapping, row))
+      model_klass = model_class(row)
+      next unless model_klass
+      model = model_klass.create(attributes_hash(header_mapping, row))
       next unless model.valid?
       handle_associated_many_classes(model, row)
       handle_associated_single_classes(model, row)
@@ -50,7 +52,7 @@ class ImporterBase
   def handle_associated_single_classes model, row
     associated_single_classes.each do |klass|
       headers_hash = headers_hash_for_class(klass)
-      association_method = "build_#{klass.to_s.underscore}".to_sym
+      association_method = "build_#{klass.to_s.demodulize.underscore}".to_sym
       association = model.send(association_method)
       association_attributes = attributes_hash(send(headers_hash), row)
       association.update_attributes(association_attributes)
@@ -58,11 +60,11 @@ class ImporterBase
   end
 
   def headers_hash_for_class klass
-    "#{klass.to_s.underscore}_header_mapping".to_sym
+    "#{klass.to_s.demodulize.underscore}_header_mapping".to_sym
   end
 
   # Overridden in subclassed importers
-  def model_class
+  def model_class row=''
     nil
   end
 

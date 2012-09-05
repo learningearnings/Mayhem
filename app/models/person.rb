@@ -2,10 +2,15 @@ require "basic_statuses"
 
 class Person < ActiveRecord::Base
   include BasicStatuses
-  has_many :messages
-  has_one  :user, :class_name => Spree::User
+  has_one  :user, :class_name => Spree::User, :autosave => true
   has_many :person_school_links, :inverse_of => :person
-  attr_accessible :dob, :first_name, :grade, :last_name
+  has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
+  has_many :received_messages, class_name: "Message", foreign_key: "to_id"
+
+  delegate :avatar, to: :user
+  delegate :username, :username= , to: :user
+
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user
   validates_presence_of :first_name, :last_name
 
   # Relationships
@@ -18,14 +23,17 @@ class Person < ActiveRecord::Base
   end
 
   def schools(status = :status_active)
-    School.joins(:person_school_links).merge(person_school_links(status)).send(status)
+    School.joins(:person_school_links).merge(person_school_links(status)).send(status).order('created_at desc')
   end
 
   def classrooms(status = :status_active)
-#    Classroom.joins(:person_school_classroom_links).merge(person_school_classroom_links(status)).send(status)
     Classroom.joins(:person_school_classroom_links).send(status)
   end
   # End Relationships
+
+  def full_name
+    self.first_name + ' ' + self.last_name
+  end
 
   # Allow sending a school or classroom to a person
   def <<(d)

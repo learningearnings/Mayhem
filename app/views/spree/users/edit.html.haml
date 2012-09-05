@@ -4,9 +4,7 @@
 
 = form_for @user, :url => spree.user_path(@user), :method => :put do |f|
   = render :partial => 'spree/shared/user_form', :locals => { :f => f }
-  - Avatar.all.each do |a|
-    = image_tag a.image.thumb('175x175#').url
-    = a.description
-    = radio_button_tag :avatar_id, a.id
+  #avatar_partial= render :partial => 'spree/users/avatars'
   %p= f.submit t(:update)
 
+= javascript_include_tag "avatar_pager.js"

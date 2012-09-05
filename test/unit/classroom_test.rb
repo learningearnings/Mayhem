@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe Classroom do
   subject { Classroom }
@@ -13,4 +13,3 @@ describe Classroom do
     end
   end
 end
-

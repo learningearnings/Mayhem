@@ -1,4 +1,3 @@
-@wip
 Feature: Giving Credits
   As an administrator, I want to give teachers credits
   As an administrator, I want to give students credits
@@ -71,3 +70,12 @@ Feature: Giving Credits
      Then I should have 100 credits in checking
 
 
+  Scenario: Students transferring credits
+    Given I am a student
+     When I have 100 credits
+      And I transfer 45 credits to savings
+     Then I should have 45 credits in savings
+      And I should have 55 credits in checking
+     When I transfer 35 credits to checking
+     Then I should have 10 credits in savings
+      And I should have 90 credits in checking

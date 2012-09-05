@@ -40,7 +40,7 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   Then 'that teacher should have 1000 credits to give' do
-    @teacher.balance.must_equal BigDecimal('1000')
+    @teacher.main_account(@school).balance.must_equal BigDecimal('1000')
   end
 
   And 'the school should have 9000 credits to give' do
@@ -53,6 +53,8 @@ class GivingCredits < Spinach::FeatureSteps
     @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
     @student2 = FactoryGirl.create(:student)
     @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+    @school_admin = FactoryGirl.create(:school_admin)
+    @admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
     @teacher = FactoryGirl.create(:teacher)
     @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
   end
@@ -62,29 +64,30 @@ class GivingCredits < Spinach::FeatureSteps
     cm = CreditManager.new
     cm.issue_credits_to_school(@school, @credits)
     cm.issue_credits_to_teacher(@school, @teacher, @credits)
+    cm.issue_credits_to_teacher(@school, @school_admin, @credits)
   end
 
   And 'I give a student 10 credits' do
     @student_credits = 10
     cm = CreditManager.new
-    cm.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
   end
 
   Then 'I should have 990 credits' do
-    @teacher.balance.must_equal BigDecimal('990')
+    @teacher.main_account(@school).balance.must_equal BigDecimal('990')
   end
 
   And 'I give 2 students 5 credits each' do
     @student_credits = 5
     cm = CreditManager.new
-    cm.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
-    cm.issue_credits_to_student(@school, @teacher, @student2, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student2, @student_credits)
   end
 
   When 'I have 100 credits' do
     @student_credits = 100
     cm = CreditManager.new
-    cm.issue_credits_to_student(@school, @teacher, @student, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student, @student_credits)
   end
 
   And 'I purchase a reward that cost 5 credits' do
@@ -126,5 +129,31 @@ class GivingCredits < Spinach::FeatureSteps
     @link = FactoryGirl.create(:person_school_link, school: @school, person: @student)
     @teacher = FactoryGirl.create(:teacher)
     @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
+  end
+
+  And 'I transfer 45 credits to savings' do
+    cm = CreditManager.new
+    cm.transfer_credits_from_checking_to_savings(@student, BigDecimal('45'))
+  end
+
+  And 'I transfer 35 credits to checking' do
+    cm = CreditManager.new
+    cm.transfer_credits_from_savings_to_checking(@student, BigDecimal('35'))
+  end
+
+  Then 'I should have 45 credits in savings' do
+    @student.savings_balance.must_equal BigDecimal('45')
+  end
+
+  Then 'I should have 55 credits in checking' do
+    @student.checking_balance.must_equal BigDecimal('55')
+  end
+
+  Then 'I should have 10 credits in savings' do
+    @student.savings_balance.must_equal BigDecimal('10')
+  end
+
+  Then 'I should have 90 credits in checking' do
+    @student.checking_balance.must_equal BigDecimal('90')
   end
 end

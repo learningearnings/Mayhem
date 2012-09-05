@@ -9,7 +9,10 @@
     = javascript_include_tag 'store/all'
     = csrf_meta_tags
   %body
-    = render "layouts/head"
-    = render "layouts/navbar"
-    = render "layouts/content_container"
-    = render "layouts/footer"
+    .container
+      .row
+        = render "layouts/head"
+      .row
+        = render "layouts/content_container"
+      .row
+        = render "layouts/footer"

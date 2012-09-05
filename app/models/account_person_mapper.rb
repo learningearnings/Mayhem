@@ -9,17 +9,27 @@ class AccountPersonMapper
   end
 
   def person_id
-    account_name.gsub(/[^\d]/, '').to_i
+    account_name.gsub(/[^\d]/, '').to_i unless account_name.nil?
+  end
+
+  def school_id
+    account_name.gsub(/[^\d]/, '').to_i unless account_name.nil?
   end
 
   def find_person
-    type.find person_id
+    type.find person_id unless person_id.nil?
+  end
+
+  def find_school
+    type.find school_id unless school_id.nil?
   end
 
   def type
     case account_name
     when /^STUDENT/
       Student
+    when /^SCHOOL/
+      School
     end
   end
 end

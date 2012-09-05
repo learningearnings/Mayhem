@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120814183349) do
+ActiveRecord::Schema.define(:version => 20120904203604) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -73,6 +73,14 @@ ActiveRecord::Schema.define(:version => 20120814183349) do
     t.integer  "school_id"
   end
 
+  create_table "codes", :force => true do |t|
+    t.string   "code"
+    t.boolean  "active",     :default => true
+    t.datetime "used_date"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -81,11 +89,123 @@ ActiveRecord::Schema.define(:version => 20120814183349) do
     t.datetime "updated_at",    :null => false
   end
 
-  create_table "messages", :force => true do |t|
-    t.integer  "message_body_id"
+  create_table "games_answers", :force => true do |t|
+    t.string "game_type"
+    t.string "body"
+  end
+
+  create_table "games_food_fight_items", :force => true do |t|
+    t.string  "name"
+    t.string  "image_uid"
+    t.string  "image_name"
+    t.string  "splat_uid"
+    t.string  "splat_name"
+    t.integer "unlock_count"
+  end
+
+  create_table "games_food_fight_rounds", :force => true do |t|
+    t.string   "abbr"
+    t.string   "description"
+    t.integer  "filter_id"
+    t.integer  "question_group_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+  end
+
+  create_table "games_food_fight_throws", :force => true do |t|
+    t.integer "round_id"
+    t.integer "user_id"
+    t.integer "user_answer_id"
+    t.integer "food_item_id"
+    t.string  "target_type"
+    t.integer "target_id"
+  end
+
+  create_table "games_food_fight_user_statistics", :force => true do |t|
+    t.integer "user_id"
+    t.integer "round_id"
+    t.integer "answered"
+    t.integer "throws"
+    t.integer "correct"
+  end
+
+  create_table "games_person_answers", :force => true do |t|
     t.integer  "person_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer  "question_id"
+    t.integer  "question_answer_id"
+    t.integer  "elapsed_time"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  create_table "games_question_answers", :force => true do |t|
+    t.integer "question_id"
+    t.integer "answer_id"
+    t.boolean "correct"
+    t.string  "status"
+  end
+
+  create_table "games_question_categories", :force => true do |t|
+    t.string "subject"
+    t.string "category"
+    t.string "status"
+  end
+
+  create_table "games_question_groupings", :force => true do |t|
+    t.string  "abbr"
+    t.string  "description"
+    t.integer "teacher_id"
+    t.integer "filter_id"
+    t.string  "status"
+    t.string  "game_type"
+  end
+
+  create_table "games_questions", :force => true do |t|
+    t.string  "type"
+    t.integer "category_id"
+    t.integer "number_of_answers"
+    t.integer "grade"
+    t.string  "body"
+    t.integer "approval_count"
+    t.integer "teacher_id"
+    t.integer "created_by"
+    t.integer "updated_by"
+    t.string  "status"
+    t.string  "game_type"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.integer  "from_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "to_id"
+    t.string   "subject"
+    t.text     "body"
+    t.string   "status"
+    t.string   "category"
+  end
+
+  add_index "messages", ["category"], :name => "index_messages_on_category"
+
+  create_table "otu_codes", :force => true do |t|
+    t.string   "code"
+    t.integer  "person_school_link_id"
+    t.integer  "student_id"
+    t.decimal  "points",                                     :null => false
+    t.datetime "expires_at"
+    t.datetime "redeemed_at"
+    t.boolean  "ebuck",                   :default => false
+    t.boolean  "active",                  :default => true
+    t.integer  "otu_transaction_link_id"
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+  end
+
+  create_table "otu_transaction_links", :force => true do |t|
+    t.integer  "otu_code_id"
+    t.integer  "transaction_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "people", :force => true do |t|
@@ -93,10 +213,11 @@ ActiveRecord::Schema.define(:version => 20120814183349) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "type"
     t.string   "status"
+    t.integer  "legacy_user_id"
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
@@ -442,12 +563,12 @@ ActiveRecord::Schema.define(:version => 20120814183349) do
   add_index "spree_pending_promotions", ["user_id"], :name => "index_spree_pending_promotions_on_user_id"
 
   create_table "spree_preferences", :force => true do |t|
-    t.string   "name",       :limit => 100
-    t.integer  "owner_id",   :limit => 30
-    t.string   "owner_type", :limit => 50
-    t.text     "value",      :limit => 255
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.string   "name"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "key"
     t.string   "value_type"
   end
@@ -717,15 +838,15 @@ ActiveRecord::Schema.define(:version => 20120814183349) do
   end
 
   create_table "spree_users", :force => true do |t|
-    t.string   "encrypted_password",     :limit => 128
-    t.string   "password_salt",          :limit => 128
+    t.string   "encrypted_password"
+    t.string   "password_salt"
     t.string   "email"
     t.string   "remember_token"
     t.string   "persistence_token"
     t.string   "reset_password_token"
     t.string   "perishable_token"
-    t.integer  "sign_in_count",                         :default => 0, :null => false
-    t.integer  "failed_attempts",                       :default => 0, :null => false
+    t.integer  "sign_in_count",                        :default => 0, :null => false
+    t.integer  "failed_attempts",                      :default => 0, :null => false
     t.datetime "last_request_at"
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -734,8 +855,8 @@ ActiveRecord::Schema.define(:version => 20120814183349) do
     t.string   "login"
     t.integer  "ship_address_id"
     t.integer  "bill_address_id"
-    t.datetime "created_at",                                           :null => false
-    t.datetime "updated_at",                                           :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
     t.string   "authentication_token"
     t.string   "unlock_token"
     t.datetime "locked_at"

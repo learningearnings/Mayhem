@@ -1,8 +1,7 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe FilterFactory do
   subject { FilterFactory }
-
 
   it "has the basics down" do
     subject.must_be_kind_of Class
@@ -34,7 +33,6 @@ describe FilterFactory do
     f = ff.find_or_create_filter(fc)
     f.must_be :valid?
     f.wont_be_nil
-#    binding.pry
     f1 = ff.find_or_create_filter(fc)
     f.id.must_equal(f1.id)
   end
@@ -116,10 +114,4 @@ describe FilterFactory do
     membership = ff.find_filter_membership(teacher)
     membership.must_include f
   end
-
-=begin
-  it "can find grade filter membership" do
-  end
-=end
 end
-

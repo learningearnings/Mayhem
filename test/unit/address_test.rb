@@ -1,15 +1,12 @@
-require_relative '../test_helper'
+require 'test_helper_with_rails'
+
 describe Address do
-  subject { Address }
+  subject { Address.new }
 
   describe 'validations' do
     it 'validates on zip codes correctly' do
-      a = subject.new
-      a.zip = 'fooooo'
-      a.wont_be :valid?
-      a.zip = '35205'
-      a.must_be :valid?
+      subject.wont have_valid(:zip).when('foooo')
+      subject.must have_valid(:zip).when('35205')
     end
   end
-
 end

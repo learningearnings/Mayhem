@@ -1,19 +1,19 @@
 # This will guess the User class
 FactoryGirl.define do
-
-  factory :user do
-    email "user@example.com"
-    password "password"
-    confirmation "password"
-  end
-
   factory :person do
     first_name "Testy"
     last_name "McTesterson"
+    association :user, factory: :spree_user
 
     factory :student, class: Student do
       sequence(:first_name) {|n| "Student #{n}"}
       dob nil
+      grade 9
+    end
+
+    factory :school_admin, class: SchoolAdmin do
+      sequence(:first_name) {|n| "SchoolAdmin #{n}"}
+      dob 25.years.ago
       grade 9
     end
 
@@ -22,6 +22,11 @@ FactoryGirl.define do
       dob 25.years.ago
       grade 9
     end
+
+    factory :le_admin, class: LeAdmin do
+      sequence(:first_name) {|n| "LE Admin #{n}"}
+      dob 40.years.ago
+    end
   end
 
   factory :person_school_link do
@@ -29,9 +34,43 @@ FactoryGirl.define do
     school
   end
 
+  factory :student_school_link, class: PersonSchoolLink do
+    association :person, factory: :student
+    school
+  end
+
+  factory :school_admin_school_link, class: PersonSchoolLink do
+    association :person, factory: :school_admin
+    school
+  end
+
   factory :person_school_classroom_link do
     person_school_link
     classroom
+  end
+
+  factory :message do
+    association :from, factory: :person
+    association :to,   factory: :person
+    subject "Test Message"
+    body    "Test Body"
+    category "friend"
+
+    factory :school_message do
+      category "school"
+    end
+
+    factory :system_message do
+      category "system"
+    end
+
+    factory :teacher_message do
+      category "teacher"
+    end
+
+    factory :friend_mesage do
+      category "friend"
+    end
   end
 
   factory :state do
@@ -70,9 +109,31 @@ FactoryGirl.define do
   end
 
   factory :spree_user, class: Spree::User do
-    email "foo@bar.com"
+    sequence(:email) {|n| "foo#{n}@bar.com"}
+    sequence(:username) {|n| "foo#{n}"}
     password "123456"
     password_confirmation "123456"
-    person
+#    person
+  end
+
+  factory :question, class: Games::Question do
+    grade 1
+    body "Foo bar baz witchity?"
+    factory :food_fight_question do
+      game_type "FoodFight"
+    end
+  end
+
+  factory :answer, class: Games::Answer do
+    body "Answer!!!"
+    factory :food_fight_answer do
+      game_type "FoodFight"
+    end
+  end
+
+  factory :game_question_answer, class: Games::QuestionAnswer do
+    question
+    answer
+    correct false
   end
 end

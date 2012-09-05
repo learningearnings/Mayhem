@@ -4,8 +4,6 @@ class School < ActiveRecord::Base
   include BasicStatuses
   has_many :addresses, :as => :addressable
   has_many :classrooms
-  has_many :teachers, :through => :person_school_links, :class_name => 'Teacher'
-  has_many :students, :through => :person_school_links, :class_name => 'Student'
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
@@ -21,8 +19,15 @@ class School < ActiveRecord::Base
   after_create :ensure_accounts
 
   def create_spree_store
-    unless Spree::Store.find_by_code(self.id.to_s)
-      Spree::Store.create(code: self.id.to_s, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.id.to_s}.localhost:3000")
+    if Rails.env.development?
+      port = ':3000'
+      host = '.lvh.me'
+    else
+      port = ''
+      host = '.mayhem.lemirror.com'
+    end
+    unless Spree::Store.find_by_code(self.store_subdomain)
+      Spree::Store.create(code: self.store_subdomain, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.store_subdomain}#{host}#{port}")
     end
   end
 
@@ -42,32 +47,48 @@ class School < ActiveRecord::Base
   def students(status = :status_active)
     Student.joins(:person_school_links).merge(person_school_links(status)).send(status)
   end
-  # End Relationships
+  def active_students
+    (self.students.recent + self.students.logged).uniq
+  end
 
+  # End Relationships
 
   def main_account_name
     "SCHOOL#{id} MAIN"
   end
 
-  def credit_account_name
-    "SCHOOL#{id} CREDIT"
+  def store_account_name
+    "SCHOOL#{id} STORE"
   end
 
   def main_account
     Plutus::Asset.find_by_name main_account_name
   end
 
-  def credit_account
-    Plutus::Asset.find_by_name credit_account_name
+  def store_account
+    Plutus::Asset.find_by_name store_account_name
   end
 
   def balance
     main_account.balance
   end
 
+  def number_of_active_students
+    active_students.count
+  end
+
+  def number_of_participating_teachers
+    teachers.count
+  end
+
+  def store_subdomain
+    self.id.to_s
+  end
+
+
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
-    credit_account || Plutus::Asset.create(name: credit_account_name)
+    store_account || Plutus::Asset.create(name: store_account_name)
   end
 end
