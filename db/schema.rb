@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828235104) do
+ActiveRecord::Schema.define(:version => 20120904203604) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,6 +56,22 @@ ActiveRecord::Schema.define(:version => 20120828235104) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "ckeditor_assets", :force => true do |t|
+    t.string   "data_file_name",                  :null => false
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.integer  "assetable_id"
+    t.string   "assetable_type",    :limit => 30
+    t.string   "type",              :limit => 30
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], :name => "idx_ckeditor_assetable"
+  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], :name => "idx_ckeditor_assetable_type"
+
   create_table "classroom_filter_links", :force => true do |t|
     t.integer  "classroom_id"
     t.integer  "filter_id"
@@ -89,6 +105,91 @@ ActiveRecord::Schema.define(:version => 20120828235104) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "games_answers", :force => true do |t|
+    t.string "game_type"
+    t.string "body"
+  end
+
+  create_table "games_food_fight_items", :force => true do |t|
+    t.string  "name"
+    t.string  "image_uid"
+    t.string  "image_name"
+    t.string  "splat_uid"
+    t.string  "splat_name"
+    t.integer "unlock_count"
+  end
+
+  create_table "games_food_fight_rounds", :force => true do |t|
+    t.string   "abbr"
+    t.string   "description"
+    t.integer  "filter_id"
+    t.integer  "question_group_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+  end
+
+  create_table "games_food_fight_throws", :force => true do |t|
+    t.integer "round_id"
+    t.integer "user_id"
+    t.integer "user_answer_id"
+    t.integer "food_item_id"
+    t.string  "target_type"
+    t.integer "target_id"
+  end
+
+  create_table "games_food_fight_user_statistics", :force => true do |t|
+    t.integer "user_id"
+    t.integer "round_id"
+    t.integer "answered"
+    t.integer "throws"
+    t.integer "correct"
+  end
+
+  create_table "games_person_answers", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "question_id"
+    t.integer  "question_answer_id"
+    t.integer  "elapsed_time"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  create_table "games_question_answers", :force => true do |t|
+    t.integer "question_id"
+    t.integer "answer_id"
+    t.boolean "correct"
+    t.string  "status"
+  end
+
+  create_table "games_question_categories", :force => true do |t|
+    t.string "subject"
+    t.string "category"
+    t.string "status"
+  end
+
+  create_table "games_question_groupings", :force => true do |t|
+    t.string  "abbr"
+    t.string  "description"
+    t.integer "teacher_id"
+    t.integer "filter_id"
+    t.string  "status"
+    t.string  "game_type"
+  end
+
+  create_table "games_questions", :force => true do |t|
+    t.string  "type"
+    t.integer "category_id"
+    t.integer "number_of_answers"
+    t.integer "grade"
+    t.string  "body"
+    t.integer "approval_count"
+    t.integer "teacher_id"
+    t.integer "created_by"
+    t.integer "updated_by"
+    t.string  "status"
+    t.string  "game_type"
+  end
+
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
     t.datetime "created_at", :null => false
@@ -97,7 +198,10 @@ ActiveRecord::Schema.define(:version => 20120828235104) do
     t.string   "subject"
     t.text     "body"
     t.string   "status"
+    t.string   "category"
   end
+
+  add_index "messages", ["category"], :name => "index_messages_on_category"
 
   create_table "otu_codes", :force => true do |t|
     t.string   "code"

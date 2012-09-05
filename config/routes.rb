@@ -1,4 +1,14 @@
 Leror::Application.routes.draw do
+  # Root route
+  root to: 'pages#show', :id => 'home'
+
+  # Administrative routes
+  ActiveAdmin.routes(self)
+  namespace :admin do
+    get :delete_student_school_link, :controller => :students, :action => :delete_school_link
+    get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
+    get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
+  end
 
   mount Ckeditor::Engine => '/ckeditor'
 
@@ -13,9 +23,10 @@ Leror::Application.routes.draw do
   # FIXME: Lock this down before hitting production
   mount Plutus::Engine => "/plutus", :as => "plutus"
 
-  root to: 'pages#show', :id => 'home'
+  # Handle static pages
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
 
+  # Buck routes
   match "/create_print_bucks" => 'banks#create_print_bucks'
   match "/create_ebucks" => 'banks#create_ebucks'
   match "/redeem_bucks" => 'banks#redeem_bucks'
@@ -28,14 +39,27 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
   end
 
+  # Game routes
+  namespace :games do
+    resource :food_fight do
+      member do
+        get 'play'
+      end
+    end
+  end
+
+  # Messaging routes
   resources :messages
   match "/inbox" => 'messages#index'
 
   resources :posts
   resources :pdfs
-  resources :student_transfer_commands
-  resources :student_message_student_commands
   resource :bank
+
+  # Command routes
+  resources :student_transfer_commands, only: [:create]
+  resources :food_fight_play_commands, only: [:create]
+  resources :student_message_student_commands, only: [:create]
 end
 
 # Any routes we add to Spree go here:

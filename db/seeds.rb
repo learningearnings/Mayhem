@@ -173,16 +173,11 @@ if Rails.env.development? || Rails.env.production?
 
   # Prepare a school
   @school = FactoryGirl.create(:school)
-  # Issue some credits to the school
-  @school_credits = 200_000
-  @teacher_credits = 50000
-  @credit_manager.issue_credits_to_school(@school, @school_credits)
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
   @school_admin.activate
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
-  @credit_manager.issue_credits_to_teacher(@school, @school_admin, @teacher_credits)
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
@@ -197,9 +192,6 @@ if Rails.env.development? || Rails.env.production?
   @le_admin.user.password = "spree123"
   @le_admin.save
 
-  # Give the teacher some credits
-  @credit_manager.issue_credits_to_teacher(@school, @teacher, @teacher_credits)
-
   # Give the school some students
   @student1 = FactoryGirl.create(:student, :user => FactoryGirl.create(:spree_user,:username => 'student1', :email => 'student1@example.com'))
   @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
@@ -208,6 +200,22 @@ if Rails.env.development? || Rails.env.production?
   @student1.activate!
   @student2.activate!
 
+  # ======== GIVE OUT SOME CREDITS ======
+  # Issue some credits to the school
+  @school_credits = 200_000
+  @teacher_credits = 50_000
+  @credit_manager.issue_credits_to_school(@school, @school_credits)
+  @credit_manager.issue_store_credits_to_school(@school, @school_credits * 2)
+
+  # Give the teacher some credits
+  @credit_manager.issue_credits_to_teacher(@school, @teacher, @teacher_credits)
+
+  # Give a student some credits
+  @student_credits = 10000
+  @credit_manager.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
+  # ======== /GIVE OUT SOME CREDITS ======
+
+  # ======== MESSAGING ========
   @message1 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message2 = FactoryGirl.create(:message, from: @student2, to: @student1)
   @message3 = FactoryGirl.create(:message, from: @student1, to: @student2)
@@ -215,12 +223,33 @@ if Rails.env.development? || Rails.env.production?
   @message5 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message6 = FactoryGirl.create(:message, from: @student2, to: @student1)
 
-  # Give a student some credits
-  @student_credits = 10000
-  @credit_manager.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
+  # Send some messages from the system to the first student
+  @message7 = FactoryGirl.create(:system_message, from: @student2, to: @student1)
+  # ======== /MESSAGING ========
+
+  # ======== GAMES ========
+  @question1 = FactoryGirl.create(:food_fight_question, body: "Find the least common multiple for each number pair 6 27")
+  @answer1 = FactoryGirl.create(:food_fight_answer, body: "54")
+  @answer2 = FactoryGirl.create(:food_fight_answer, body: "60")
+  @answer3 = FactoryGirl.create(:food_fight_answer, body: "48")
+  @answer4 = FactoryGirl.create(:food_fight_answer, body: "27")
+  @answer1_link = FactoryGirl.create(:game_question_answer, question: @question1, answer: @answer1, correct: true)
+  @answer2_link = FactoryGirl.create(:game_question_answer, question: @question1, answer: @answer2)
+  @answer3_link = FactoryGirl.create(:game_question_answer, question: @question1, answer: @answer3)
+  @answer4_link = FactoryGirl.create(:game_question_answer, question: @question1, answer: @answer4)
+  # ======== /GAMES ========
+
 
   # create the default store - le wholesale store
-  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le.lvh.me:3000")
+  if Rails.env.development?
+    port = ':3000'
+    host = '.lvh.me'
+  else
+    port = ''
+    host = '.mayhem.lemirror.com'
+  end
+
+  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
 
   Rake::Task['db:load_dir'].reenable
   Rake::Task['db:load_dir'].invoke("samples")

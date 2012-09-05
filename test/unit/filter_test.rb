@@ -15,8 +15,5 @@ describe Filter do
     it "wont have a valid maximum_grade" do
       subject.new.wont have_valid(:maximum_grade).when(nil)
     end
-
   end
-
-
 end

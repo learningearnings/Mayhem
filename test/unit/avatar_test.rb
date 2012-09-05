@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe Avatar do
   it "has the basics down" do

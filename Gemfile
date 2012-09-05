@@ -29,6 +29,9 @@ gem 'haml-rails'
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'
 
+# roo handles reading and converting excel files to csv
+gem 'roo'
+
 gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'
@@ -82,6 +85,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
   gem 'minitest-reporters', '~> 0.8.0'
   gem 'minitest-matchers', '~> 1.2.0'

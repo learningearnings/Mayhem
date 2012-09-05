@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe PlutusAmountDecorator do
   it "displays debit amounts properly" do

@@ -13,7 +13,9 @@ class PeopleImporter < ImporterBase
   def user_header_mapping
     {
       username: 'username',
-      email: 'useremail'
+      email: 'useremail',
+      password: 'username',
+      password_confirmation: 'username'
     }
   end
 

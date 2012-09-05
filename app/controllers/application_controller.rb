@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :subdomain_required
 
+
   # Users are required to access the application
   # using a subdomain
   def subdomain_required
@@ -21,6 +22,7 @@ class ApplicationController < ActionController::Base
       token = Devise.friendly_token
       current_user.authentication_token = token
       my_redirect_url = home_host   + "?auth_token=#{token}"
+
       current_user.save
       sign_out(current_user)
       redirect_to my_redirect_url
@@ -36,8 +38,9 @@ class ApplicationController < ActionController::Base
   end
 
   def home_subdomain
-    if current_user && current_user.person && current_user.person.schools.count > 0
-      current_user.person.schools[0].id.to_s
+    if session[:current_school_id]
+      s = School.find(session[:current_school_id])
+      s.store_subdomain if s
     else
       ""
     end
@@ -45,7 +48,7 @@ class ApplicationController < ActionController::Base
 
   def home_host
     return request.protocol + request.host_with_port unless current_user.person
-    if current_user && current_user.person && current_user.person.schools.count > 0
+    if current_user && current_user.person
       # TODO - figure out a better hostname naming scheme
       subdomain = home_subdomain
       if request.host.match /^#{subdomain}\./
@@ -60,6 +63,7 @@ class ApplicationController < ActionController::Base
 
         # If this is a development environment, check to see if the
         # hosts file is setup right
+
         if Rails.env == 'development'
           match_found = false
           begin

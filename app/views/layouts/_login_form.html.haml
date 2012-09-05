@@ -5,9 +5,8 @@
     %li
     = password_field_tag 'user[password]', nil, :placeholder => 'Password'
     %li
-    %label.supplemenal-login-form School ID:
+    %label.supplemenal-login-form @
     = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name)
-    %li
-      .actions
-        %button.btn Sign in
-      = link_to "Forgot your password?", spree.new_user_password_path('user')
+    .actions
+      %button.btn Sign in
+    = link_to "Forgot your password?", spree.new_user_password_path('user')

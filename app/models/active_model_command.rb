@@ -1,3 +1,5 @@
+require 'active_model'
+
 class ActiveModelCommand
   include ActiveModel::Validations
   include ActiveModel::Naming

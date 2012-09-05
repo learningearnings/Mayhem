@@ -102,3 +102,17 @@ To Test out:
 Plutus is a General Ledger / Accounting engine that Isotope11 has contributed to and that we use in multiple projects.
 
 Right now, you can hit /plutus (as anyone) to view the chart of accounts, balances, and transactions.  This is basic reporting provided out of the box by plutus, and can be useful.  We must lock this down before going into production
+
+#### Account Names
+* MAIN_ACCOUNT(Liability)
+  LE
+* SCHOOL1 MAIN(Asset)
+* SCHOOL1 CREDIT(Asset)
+* SCHOOL ADMIN1(Asset)
+* TEACHER2 MAIN SCHOOL1(Asset)
+* TEACHER2 UNREDEEMED SCHOOL1(Asset)
+* TEACHER2 UNDEPOSITED SCHOOL1(Asset)
+* STUDENT4 CHECKING(Asset)
+* STUDENT4 SAVINGS(Asset)
+* STUDENT5 CHECKING(Asset)
+* STUDENT5 SAVINGS(Asset)

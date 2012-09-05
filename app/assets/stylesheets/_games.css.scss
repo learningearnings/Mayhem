@@ -4,3 +4,20 @@
     margin-bottom: 2em;
   }
 }
+
+.food-fight-question {
+  ul.answers {
+    li {
+      list-style-type: none;
+      label {
+        display: inline;
+      }
+      &.incorrectly-chosen {
+        background-color: $incorrectly-chosen-background;
+      }
+      &.correct {
+        background-color: $correct-background;
+      }
+    }
+  }
+}

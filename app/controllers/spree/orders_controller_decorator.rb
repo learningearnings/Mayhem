@@ -55,7 +55,7 @@ Spree::OrdersController.class_eval do
     # Payment
     payment_source_attributes = {}
     if current_person.is_a? SchoolAdmin
-      payment_source_attributes["number"] = current_person.main_account(current_school).name
+      payment_source_attributes["number"] = current_school.store_account_name
     else
       payment_source_attributes["number"] = current_person.checking_account_name
     end
@@ -94,12 +94,13 @@ Spree::OrdersController.class_eval do
 
       if Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(current_person.schools.first.id) }.present?
         retail_product = Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(current_person.schools.first.id) }.first
-        retail_product.count_on_hand += retail_qty
+        retail_product.master.count_on_hand += retail_qty.to_i
+        retail_product.master.save
         retail_product.save
       else
         retail_product = wholesale_product.duplicate
         retail_product.name = wholesale_product.name # need to set this to avoid "COPY OF ..."
-        retail_product.price = retail_price
+        retail_product.master.price = retail_price
         retail_product.description = wholesale_product.description
         retail_product.available_on = Time.now
         retail_product.deleted_at = nil
@@ -107,9 +108,10 @@ Spree::OrdersController.class_eval do
         retail_product.meta_description = ""
         retail_product.meta_keywords = ""
         retail_product.tax_category_id = nil
-        retail_product.count_on_hand = retail_qty
+        retail_product.master.count_on_hand = retail_product.count_on_hand = retail_qty
         retail_product.store_ids = [current_person.schools.first.id]
-        retail_product.save!
+        retail_product.master.save
+        retail_product.save
       end
     else
       flash[:alert] = "You are not allowed to purchase products from the Learning Earnings store! Please visit your school store to purchase items."
