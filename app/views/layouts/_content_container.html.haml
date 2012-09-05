@@ -1,5 +1,7 @@
 .container
   = render "layouts/flashes"
+  - if respond_to? :breadcrumbs
+    = breadcrumbs(@taxon)
   = yield :sidebar
   .body-content
     .row

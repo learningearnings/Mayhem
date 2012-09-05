@@ -385,3 +385,27 @@ footer {
     }
   }
 }
+
+.current-user-avatar {
+  display: inline-block;
+  vertical-align: top;
+}
+.current-user {
+  h3 {
+    margin-bottom: 0;
+  }
+  display: inline-block;
+  .credit-balance, .person-details {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+ul.links {
+  margin: 0;
+  li {
+    list-style-type: none;
+    display: inline-block;
+    padding: .25em .5em;
+  }
+}
