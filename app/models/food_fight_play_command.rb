@@ -1,3 +1,6 @@
+require_relative './active_model_command'
+require 'delegate'
+
 class FoodFightPlayCommand < ActiveModelCommand
   attr_accessor :question_id, :answer_id, :person_id, :on_success, :on_failure
 

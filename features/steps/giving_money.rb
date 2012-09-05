@@ -70,7 +70,7 @@ class GivingCredits < Spinach::FeatureSteps
   And 'I give a student 10 credits' do
     @student_credits = 10
     cm = CreditManager.new
-    cm.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
   end
 
   Then 'I should have 990 credits' do
@@ -80,14 +80,14 @@ class GivingCredits < Spinach::FeatureSteps
   And 'I give 2 students 5 credits each' do
     @student_credits = 5
     cm = CreditManager.new
-    cm.issue_credits_to_student(@school, @teacher, @student1, @student_credits)
-    cm.issue_credits_to_student(@school, @teacher, @student2, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student2, @student_credits)
   end
 
   When 'I have 100 credits' do
     @student_credits = 100
     cm = CreditManager.new
-    cm.issue_credits_to_student(@school, @teacher, @student, @student_credits)
+    cm.issue_ecredits_to_student(@school, @teacher, @student, @student_credits)
   end
 
   And 'I purchase a reward that cost 5 credits' do

@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
 describe Person do
   subject { Person }
@@ -35,8 +35,5 @@ describe Person do
       p.schools.must_include school
       p.classrooms.must_include classroom
     end
-
-
   end
-
 end

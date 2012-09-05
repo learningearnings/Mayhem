@@ -1,3 +1,6 @@
+require_relative 'active_model_command'
+require_relative '../validators/positive_decimal_validator'
+
 class StudentTransferCommand < ActiveModelCommand
   attr_accessor :amount, :direction, :student_id
 

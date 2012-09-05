@@ -3,64 +3,10 @@
 %p= lipsum(100)
 
 #inbox-accordion.accordion.inbox
-  .accordion-group
-    .accordion-heading
-      = link_to "Friend Messages (#{@received_messages.select{|m| m.unread? }.count}", '#friend-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
-    #friend-messages.accordion-body.collapse.in
-      .accordion-inner
-        - @received_messages.each do |message|
-          %div{ class: "message #{message.status}" }
-            .image
-              - if message.from.avatar.present?
-                = image_tag message.from.avatar.image.thumb('50x50#').url
-            .content
-              %p.subject= message.subject
-              = link_to "Read Message", message_path(message), "data-toggle" => 'modal', "data-target" => "#read-message-modal"
-  .accordion-group
-    .accordion-heading
-      = link_to 'School Messages (2)', '#school-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
-    #school-messages.accordion-body.collapse
-      .accordion-inner
-        .message
-          .image= image_tag("http://placekitten.com/50/50")
-          .content
-            %p.subject= lipsum(50)
-            = link_to "Read Message", '#read-message-modal', class: 'btn', "data-toggle" => 'modal'
-        .message
-          .image= image_tag("http://placekitten.com/50/50")
-          .content
-            %p.subject= lipsum(50)
-            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
-  .accordion-group
-    .accordion-heading
-      = link_to 'Teacher Messages (0)', '#teacher-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
-    #teacher-messages.accordion-body.collapse
-      .accordion-inner
-        .message
-          .image= image_tag("http://placekitten.com/50/50")
-          .content
-            %p.subject= lipsum(50)
-            = link_to "Read Message", '#read-message-modal', class: 'btn', "data-toggle" => 'modal'
-        .message
-          .image= image_tag("http://placekitten.com/50/50")
-          .content
-            %p.subject= lipsum(50)
-            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
-  .accordion-group
-    .accordion-heading
-      = link_to 'System Messages (0)', '#system-messages', class: 'accordion-toggle', 'data-parent' => '#inbox-accordion', 'data-toggle' => 'collapse'
-    #system-messages.accordion-body.collapse
-      .accordion-inner
-        .message
-          .image= image_tag("http://placekitten.com/50/50")
-          .content
-            %p.subject= lipsum(50)
-            = link_to "Read Message", '#read-message-modal', class: 'btn', "data-toggle" => 'modal'
-        .message
-          .image= image_tag("http://placekitten.com/50/50")
-          .content
-            %p.subject= lipsum(50)
-            = link_to "Read Message", '#read-message-modal', "data-toggle" => 'modal'
+  = render 'message_group', title: 'Friend Messages',  messages: @received_messages.from_friend,  accordion_id: 'friend-messages',  open: true
+  = render 'message_group', title: 'School Messages',  messages: @received_messages.from_school,  accordion_id: 'school-messages',  open: false
+  = render 'message_group', title: 'Teacher Messages', messages: @received_messages.from_teacher, accordion_id: 'teacher-messages', open: false
+  = render 'message_group', title: 'System Messages',  messages: @received_messages.from_system,  accordion_id: 'system-messages',  open: false
 
 = link_to "Send a message", new_message_path, class: 'btn', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
 

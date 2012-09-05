@@ -54,6 +54,23 @@ FactoryGirl.define do
     association :to,   factory: :person
     subject "Test Message"
     body    "Test Body"
+    category "friend"
+
+    factory :school_message do
+      category "school"
+    end
+
+    factory :system_message do
+      category "system"
+    end
+
+    factory :teacher_message do
+      category "teacher"
+    end
+
+    factory :friend_mesage do
+      category "friend"
+    end
   end
 
   factory :state do

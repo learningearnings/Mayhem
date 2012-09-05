@@ -222,6 +222,9 @@ if Rails.env.development? || Rails.env.production?
   @message4 = FactoryGirl.create(:message, from: @student2, to: @student1)
   @message5 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message6 = FactoryGirl.create(:message, from: @student2, to: @student1)
+
+  # Send some messages from the system to the first student
+  @message7 = FactoryGirl.create(:system_message, from: @student2, to: @student1)
   # ======== /MESSAGING ========
 
   # ======== GAMES ========

@@ -1,4 +1,4 @@
-require './test/test_helper'
+require_relative '../../test/test_helper_with_rails'
 
 # Spinach && Database Cleaner.
 require 'database_cleaner'

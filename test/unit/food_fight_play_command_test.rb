@@ -1,20 +1,33 @@
 require 'test_helper'
+require_relative '../../app/models/food_fight_play_command'
 
 describe FoodFightPlayCommand do
   subject { FoodFightPlayCommand.new }
 
-  it "requires valid question_id" do
-    subject.wont have_valid(:question_id).when(nil)
-    subject.wont have_valid(:question_id).when('asdf')
-    subject.must have_valid(:question_id).when(1)
-  end
+  describe 'validations' do
+    before do
+      subject.stubs(:answer_ids).returns([])
+    end
 
-  it "requires valid answer_id" do
-    subject.stubs(:answer_ids).returns([2,3])
-    subject.wont have_valid(:answer_id).when(nil)
-    subject.wont have_valid(:answer_id).when('asdf')
-    subject.wont have_valid(:answer_id).when(1)
-    subject.must have_valid(:answer_id).when(2)
+    it "requires valid question_id" do
+      subject.wont have_valid(:question_id).when(nil)
+      subject.wont have_valid(:question_id).when('asdf')
+      subject.must have_valid(:question_id).when(1)
+    end
+
+    it "requires valid answer_id" do
+      subject.stubs(:answer_ids).returns([2,3])
+      subject.wont have_valid(:answer_id).when(nil)
+      subject.wont have_valid(:answer_id).when('asdf')
+      subject.wont have_valid(:answer_id).when(1)
+      subject.must have_valid(:answer_id).when(2)
+    end
+
+    it "requires valid person_id" do
+      subject.wont have_valid(:person_id).when(nil)
+      subject.wont have_valid(:person_id).when('asdf')
+      subject.must have_valid(:person_id).when(1)
+    end
   end
 
   it "responds properly to #question_body" do
@@ -73,12 +86,6 @@ describe FoodFightPlayCommand do
     subject.chosen_answer.must_equal answer
   end
 
-  it "requires valid person_id" do
-    subject.wont have_valid(:person_id).when(nil)
-    subject.wont have_valid(:person_id).when('asdf')
-    subject.must have_valid(:person_id).when(1)
-  end
-
   it "responds properly to #question_body" do
     question = mock "Question"
     subject.expects(:question).returns(question)
@@ -87,21 +94,26 @@ describe FoodFightPlayCommand do
   end
 
   it "persists the answer when executed" do
-    person_id = 1
-
     question_answer = mock "QuestionAnswer"
     question_answer.expects(:id).returns(2)
     subject.stubs(:chosen_question_answer).returns(question_answer)
     person_answer_repository = mock("PersonAnswer")
     subject.stubs(:person_answer_repository).returns(person_answer_repository)
     subject.question_id = 3
+    subject.person_id = 1
     person_answer_args = {
       person_id: 1,
       question_answer_id: 2,
       question_id: 3
     }
     subject.stubs(:valid?).returns true
-    person_answer_repository.expects(:create).with(person_answer_args).returns(true)
+    subject.stubs(:correct?).returns true
+    on_success = mock "Callback"
+    on_success.expects(:call).with(subject)
+    subject.stubs(:on_success).returns(on_success)
+    created_answer = mock "PersonAnswer"
+    created_answer.expects(:valid?).returns(true)
+    person_answer_repository.expects(:create).with(person_answer_args).returns(created_answer)
     subject.execute!
   end
 end
