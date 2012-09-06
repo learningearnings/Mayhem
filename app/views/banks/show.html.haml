@@ -1,7 +1,5 @@
 %h2 My Bank Header
 - if current_person.is_a?(Student)
   = render :partial => 'student_bank'
-- elsif current_person.is_a?(Teacher)
-  = render :partial => 'teacher_bank'
 - elsif current_person.is_a?(SchoolAdmin)
   = render :partial => 'school_admin_bank'

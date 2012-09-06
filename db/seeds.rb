@@ -239,6 +239,12 @@ if Rails.env.development? || Rails.env.production?
   @answer4_link = FactoryGirl.create(:game_question_answer, question: @question1, answer: @answer4)
   # ======== /GAMES ========
 
+  # ======== Generate some codes ========
+  100.times do
+    Code.create
+  end
+  # ======== /Generate some codes ========
+
 
   # create the default store - le wholesale store
   if Rails.env.development?

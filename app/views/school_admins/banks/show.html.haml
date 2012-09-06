@@ -1,0 +1,31 @@
+%h2 My Bank Header
+
+.row
+  .span8
+    %p= lipsum 200
+
+    .bank-account
+      %h4 My Account
+      .balances
+        %p Checking Balance: #{current_person.primary_account.balance}
+      .actions
+    = link_to "View Account History", "#checking-history-modal", class: 'btn', 'data-toggle' => 'modal'
+    = link_to "View Credit History", "#credit-history-modal", class: 'btn', 'data-toggle' => 'modal'
+    
+    = form_for OtuCode.new, :url => school_admins_create_print_bucks_path do |f|
+      = label_tag 'Teacher'
+      = select("teacher", "id", Teacher.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
+      = label_tag '$1'
+      = text_field_tag :point1
+      = label_tag '$5'
+      = text_field_tag :point5
+      = label_tag '$10'
+      = text_field_tag :point10
+      = f.submit 'Print Bucks'
+
+    = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
+      = label_tag 'Student'
+      = select("student", "id", Student.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
+      = label_tag :points
+      = text_field_tag :points
+      = f.submit 'Create eBucks'

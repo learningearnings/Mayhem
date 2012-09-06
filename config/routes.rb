@@ -25,8 +25,6 @@ Leror::Application.routes.draw do
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
   
   # Buck routes
-  match "/create_print_bucks" => 'banks#create_print_bucks'
-  match "/create_ebucks" => 'banks#create_ebucks'
   match "/redeem_bucks" => 'banks#redeem_bucks'
 
   # Game routes
@@ -46,6 +44,18 @@ Leror::Application.routes.draw do
 
   resources :pdfs
   resource :bank
+
+  namespace :teachers do
+    resource :bank
+    match "/create_print_bucks" => 'banks#create_print_bucks'
+    match "/create_ebucks" => 'banks#create_ebucks'
+  end
+
+  namespace :school_admins do
+    resource :bank
+    match "/create_print_bucks" => 'banks#create_print_bucks'
+    match "/create_ebucks" => 'banks#create_ebucks'
+  end
 
   # Command routes
   resources :student_transfer_commands, only: [:create]

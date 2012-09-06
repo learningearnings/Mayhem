@@ -1,6 +1,15 @@
+- # FIXME: This is not good, needs to be replaced with something that just knows what to render without these...things
 .navbar
   .fill.navbar-inner
     - if current_user
-      = render 'layouts/logged_in_menu'
+      - if current_person
+        - if current_person.is_a?(Teacher)
+          = render 'layouts/logged_in_menu_teacher'
+        - elsif current_person.is_a?(SchoolAdmin)
+          = render 'layouts/logged_in_menu_schooladmin'
+        - else
+          = render 'layouts/logged_in_menu'
+      - else
+        = render 'layouts/logged_in_menu'
     - else
       = render 'layouts/menu'
