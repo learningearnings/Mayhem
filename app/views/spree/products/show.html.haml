@@ -9,9 +9,6 @@
         #thumbnails
           = render :partial => 'thumbnails', :locals => { :product => @product }
 
-      %div{"data-hook" => "product_properties" }
-        = render :partial => 'properties'
-    
   .span10{ "data-hook" => "product_right_part" }
     %div{ "data-hook" => "product_right_part_wrap" }
       #product-description{ "data-hook" => "product_description" }
