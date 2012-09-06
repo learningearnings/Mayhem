@@ -29,8 +29,8 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_product.master.count_on_hand += @quantity.to_i
       retail_product.master.save
     else
-      retail_price_property = @spree_property_class.find_by_name('retail_price');
-      retail_quantity_property = @spree_property_class.find_by_name('retail_quantity');
+      retail_price_property = spree_property_class.find_by_name('retail_price');
+      retail_quantity_property = spree_property_class.find_by_name('retail_quantity');
 
       retail_product = @master_product.duplicate
       retail_product.name = master_product.name # need to set this to avoid "COPY OF ..."

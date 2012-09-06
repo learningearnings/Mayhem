@@ -74,6 +74,7 @@ describe SchoolStoreProductDistributionCommand do
                         :quantity => 1,
                         :retail_price => 1
                         )
+      cmd.expects(:spree_property_class).returns(mock_spree_property_class).times(2)
       cmd.spree_property_class = mock_spree_property_class
       cmd.execute!
     end
