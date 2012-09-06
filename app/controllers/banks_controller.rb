@@ -7,6 +7,8 @@ class BanksController < LoggedInController
     else
       @recent_account_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.primary_account).limit(20).joins(:transaction).order({ transaction: :created_at }))
      end
+
+    @unredeemed_bucks = current_person.otu_codes.active
   end
 
   def redeem_bucks

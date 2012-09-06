@@ -31,12 +31,12 @@ describe Bank do
     buck = mock "Buck"
     buck_creator = lambda{ |params| return buck }
     buck.expects(:generate_code).with(prefix).at_least_once
-    buck.expects(:points).returns(1)
     subject.stubs(:buck_creator).returns(buck_creator)
     subject.on_success = on_success
 
     on_success.expects(:call)
     credit_manager.expects(:purchase_printed_bucks).with(school, person, 1)
+    # NOTE: We need to also expect that it creates all the bucks
     subject.create_print_bucks(person, school, prefix, bucks)
   end
 

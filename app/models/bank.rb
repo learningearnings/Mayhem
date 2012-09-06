@@ -10,39 +10,30 @@ class Bank
   end
 
   def create_print_bucks(person, school, prefix, bucks={})
-    if person.main_account(school).balance <= (bucks[:ones] + (bucks[:fives] * 5) + (bucks[:tens] * 10))
-      return on_failure.call
-    end
-    buck_params = {:person_school_link => person_school_link(person, school),
-                   :expires_at => (Time.now + 45.days) }
-    buck_array = []
-    bucks[:ones].times do
-      buck_array << create_buck(prefix, 1, buck_params)
-    end
-    bucks[:fives].times do
-      buck_array << create_buck(prefix, 5, buck_params)
-    end
-    bucks[:tens].times do
-      buck_array << create_buck(prefix, 10, buck_params)
-    end
-    points = buck_array.map{|x| x.points}.sum
+    points  = amount_of_bucks(bucks)
+    account = person.main_account(school)
+    return on_failure.call unless account_has_enough_money_for(account, points)
+
+    create_bucks(person, school, prefix, bucks)
     @credit_manager.purchase_printed_bucks(school, person, points)
     return on_success.call
   end
 
   def create_ebucks(person, school, student, prefix, points)
-    return @on_failure.call if person.main_account(school).balance <= points
+    account = person.main_account(school)
+    return @on_failure.call unless account_has_enough_money_for(account, points)
+
     buck_params = {:person_school_link => person_school_link(person, school),
                    :expires_at => (Time.now + 45.days), 
                    :student => student, 
                    :ebuck => true}
     buck = create_buck(prefix, points, buck_params)
     @credit_manager.purchase_ebucks(school, person, student, points)
-    message = message_creator(:from => person, 
-                             :to => student, 
-                             :subject => "You've been awarded LE Bucks", 
-                             :body => "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}",
-                             :category => 'teacher')
+
+    # NOTE: This message sending isn't really the bank's responsibility imo, but i'll
+    # leave it here for now - ja
+    send_message(person, student, buck)
+
     return on_success.call
   end
 
@@ -71,6 +62,16 @@ class Bank
     end
   end
 
+  def send_message(person, student, buck)
+    body = "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
+
+    message_creator(from: person, 
+                    to: student, 
+                    subject: "You've been awarded LE Bucks", 
+                    body: body,
+                    category: 'teacher')
+  end
+
   def create_buck(prefix, points, params)
     buck = buck_creator.call(params.merge(:points => BigDecimal.new(points)))
     buck.generate_code(prefix)
@@ -79,5 +80,27 @@ class Bank
 
   def person_school_link(person, school)
     person.person_school_links.where(school: school).first
+  end
+
+  def create_bucks(person, school, prefix, bucks)
+    buck_params = {:person_school_link => person_school_link(person, school),
+                   :expires_at => (Time.now + 45.days) }
+    bucks[:ones].times do
+      create_buck(prefix, 1, buck_params)
+    end
+    bucks[:fives].times do
+      create_buck(prefix, 5, buck_params)
+    end
+    bucks[:tens].times do
+      create_buck(prefix, 10, buck_params)
+    end
+  end
+
+  def amount_of_bucks(bucks)
+    bucks[:ones] + (bucks[:fives] * 5) + (bucks[:tens] * 10)
+  end
+
+  def account_has_enough_money_for(account, amount)
+    account.balance >= amount
   end
 end
