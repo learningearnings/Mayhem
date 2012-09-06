@@ -88,30 +88,35 @@ Spree::OrdersController.class_eval do
 
   def create_school_products
     if current_person.is_a? SchoolAdmin
-      wholesale_product = @order.products.first
-      retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
-      retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
+      retail_store = Spree::Store.find_by_code(session[:current_school_id].to_s)
 
-      if Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(current_person.schools.first.id) }.present?
-        retail_product = Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(current_person.schools.first.id) }.first
-        retail_product.master.count_on_hand += retail_qty.to_i
-        retail_product.master.save
-        retail_product.save
-      else
-        retail_product = wholesale_product.duplicate
-        retail_product.name = wholesale_product.name # need to set this to avoid "COPY OF ..."
-        retail_product.master.price = retail_price
-        retail_product.description = wholesale_product.description
-        retail_product.available_on = Time.now
-        retail_product.deleted_at = nil
-        retail_product.permalink = session[:current_school_id].to_s + "-" + wholesale_product.permalink
-        retail_product.meta_description = ""
-        retail_product.meta_keywords = ""
-        retail_product.tax_category_id = nil
-        retail_product.master.count_on_hand = retail_product.count_on_hand = retail_qty
-        retail_product.store_ids = [current_person.schools.first.id]
-        retail_product.master.save
-        retail_product.save
+      @order.products.each do |wholesale_product|
+        retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
+        retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
+
+#        if Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(retail_store.id) }.present?
+        if Spree::Product.with_property_value('master_product',wholesale_product.id.to_s).by_store(retail_store.id).exists?
+          retail_product = Spree::Product.all.select{|s| s.name == wholesale_product.name && s.store_ids.include?(retail_store.id) }.first
+          retail_product.master.count_on_hand += retail_qty.to_i
+          retail_product.master.save
+          retail_product.save
+        else
+          retail_product = wholesale_product.duplicate
+          retail_product.name = wholesale_product.name # need to set this to avoid "COPY OF ..."
+          retail_product.master.price = retail_price
+          retail_product.description = wholesale_product.description
+          retail_product.available_on = Time.now
+          retail_product.deleted_at = nil
+          retail_product.permalink = session[:current_school_id].to_s + "-" + wholesale_product.permalink
+          retail_product.meta_description = ""
+          retail_product.meta_keywords = ""
+          retail_product.tax_category_id = nil
+          retail_product.master.count_on_hand = retail_product.count_on_hand = retail_qty
+          retail_product.store_ids = [retail_store.id]
+          retail_product.set_property('master_product',wholesale_product.id.to_s)
+          retail_product.master.save
+          retail_product.save
+        end
       end
     else
       flash[:alert] = "You are not allowed to purchase products from the Learning Earnings store! Please visit your school store to purchase items."
