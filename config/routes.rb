@@ -24,9 +24,6 @@ Leror::Application.routes.draw do
   # Handle static pages
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
   
-  # Buck routes
-  match "/redeem_bucks" => 'banks#redeem_bucks'
-
   # Game routes
   namespace :games do
     resource :food_fight do
@@ -43,7 +40,11 @@ Leror::Application.routes.draw do
   match "/inbox" => 'messages#index'
 
   resources :pdfs
+
+  # Student banking bits
   resource :bank
+  match "/redeem_bucks" => 'banks#redeem_bucks'
+  match "/redeem_bucks/:student_id/:code" => 'banks#redeem_bucks', as: 'redeem_buck'
 
   namespace :teachers do
     resource :bank
