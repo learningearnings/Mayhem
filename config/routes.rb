@@ -38,6 +38,8 @@ Leror::Application.routes.draw do
     end
   end
 
+  match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
+
   # Messaging routes
   resources :messages
   match "/inbox" => 'messages#index'

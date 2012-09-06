@@ -24,6 +24,7 @@
     %ul.links
       %li= link_to "Edit My Profile", spree.edit_user_path(current_user)
       %li= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
+      %li= link_to 'Purchases Report', purchases_report_path
 
     %p
       %strong

@@ -176,6 +176,7 @@ GEM
       haml (~> 3.0)
       railties (~> 3.0)
     has_scope (0.5.1)
+    hashie (1.2.0)
     high_voltage (1.2.0)
     highline (1.6.11)
     hike (1.2.1)
@@ -441,6 +442,7 @@ DEPENDENCIES
   guard-spinach (~> 0.0.2)
   haml-rails
   has_scope
+  hashie
   high_voltage
   jquery-rails
   kaminari

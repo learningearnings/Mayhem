@@ -32,6 +32,9 @@ gem 'whereabouts', '~> 0.9.0'
 # roo handles reading and converting excel files to csv
 gem 'roo'
 
+# Hashie provides lots of nice convenience utilities for working with hashes
+gem 'hashie'
+
 gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'
