@@ -2,9 +2,12 @@ require_relative 'active_model_command'
 
 class SchoolStoreProductDistributionCommand < ActiveModelCommand
 
-  validates_presence_of :master_product, :school, :quanity, :retail_price
-  validates :quanity, :numericality => {:greater_than_or_equal_to => 0}
+  validates_presence_of :master_product, :school, :quantity, :retail_price
+  validates :quantity, :numericality => {:greater_than_or_equal_to => 0}
   validates :retail_price, :numericality => {:greater_than_or_equal_to => 0}
+
+  attr_accessor :master_product, :school, :quantity, :retail_price
+
 
   def initialize params={}
     @master_product = params[:master_product]
