@@ -1,6 +1,7 @@
 module Reports
   class Base
-    def initialize
+    def initialize params
+      @params = params
       @data = []
     end
 
