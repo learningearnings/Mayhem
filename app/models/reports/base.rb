@@ -1,12 +1,13 @@
 module Reports
   class Base
     def initialize params
-      @params = params
       @data = []
     end
 
-    def data_rows
-      @data
+    def data_rows &block
+      @data.each do |datum|
+        block.call(datum)
+      end
     end
 
     def headers

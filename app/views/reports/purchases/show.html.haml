@@ -1,6 +1,7 @@
 %h2 Purchases Report
 
 %h3 Undelivered Purchases for All Dates
+
 %table.table.table-bordered.table-striped.solid-background
   %thead
     %tr
@@ -8,7 +9,7 @@
         %th= header
       %th Deliver
   %tbody
-    - report.data_rows.each do |row|
+    - report.data_rows do |row|
       %tr
         - report.header_keys.each do |key|
           %td= row.send(key)

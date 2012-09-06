@@ -5,10 +5,6 @@ module Reports
       @school = params[:school]
     end
 
-    def orders
-      Spree::Order.where(store_id: @school.store.id)
-    end
-
     def line_items
       Spree::LineItem.includes(:order).where(order: { store_id: @school.store.id })
     end
