@@ -1,6 +1,14 @@
 %h2 Purchases Report
 
-%h3 Undelivered Purchases for All Dates
+.filters.well
+  = form_tag purchases_report_path, method: :get
+  = label_tag :show_dates
+  = select_tag :date_filter, options_for_select(date_filter_options)
+  = label_tag :show_rewards
+  = select_tag :rewards_filter, options_for_select(['Undelivered', 'Delivered'])
+  = label_tag :show_teachers
+  = select_tag :teachers_filter, options_from_collection_for_select(current_school.teachers, :id, :name)
+  = submit_tag 'Go!'
 
 %table.table.table-bordered.table-striped.solid-background
   %thead
