@@ -53,7 +53,10 @@ gem 'state_machine'
 
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
 gem 'spree', '1.1.3'
-gem 'spree_multi_domain', :git =>  "git://github.com/johndavid400/spree-multi-domain.git", :branch => "master"
+#gem 'spree_multi_domain', :git =>  "git://github.com/johndavid400/spree-multi-domain.git", :branch => "master"
+# Hope we can use master again soon, they need to accept PR 15 on
+# spree-multi-domain: https://github.com/spree/spree-multi-domain/pull/15
+gem 'spree_multi_domain', :git =>  "git://github.com/knewter/spree-multi-domain.git"
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
