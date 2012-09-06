@@ -24,3 +24,10 @@ a.info {
     height: 20px;
     overflow: hidden;
 }
+
+table#product-properties{
+  @extend .table;
+  @extend .table-striped;
+  @extend .table-bordered;
+  background-color: white;
+}
