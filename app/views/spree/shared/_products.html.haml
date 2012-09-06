@@ -8,7 +8,7 @@
 - if products.any?
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
-  .span12.row
+  .row
     %ul#products.inline.product-listing{"data-hook" => ""}
       - reset_cycle('default')
       - products.each do |product|

@@ -1,0 +1,3 @@
+categories:
+  name: Categories
+  store_id: <%= Spree::Store.find_by_code('le').id %>

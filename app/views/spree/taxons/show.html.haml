@@ -1,0 +1,13 @@
+%h3.taxon-title= accurate_title
+
+- content_for :sidebar do
+  %div{"data-hook" => "taxon_sidebar_navigation" }
+    = render :partial => 'spree/shared/taxonomies'
+    /= render :partial => 'spree/shared/filters' if @taxon.children.empty?
+
+%div{ "data-hook" => "taxon_products" }
+  = render :partial => 'spree/shared/products', :locals => { :products => @products, :taxon => @taxon }
+
+- unless params[:keyword].present?
+  %div{"data-hook" => "taxon_children" }
+    = render :partial => 'taxon', :collection => @taxon.children
