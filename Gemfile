@@ -32,6 +32,9 @@ gem 'whereabouts', '~> 0.9.0'
 # roo handles reading and converting excel files to csv
 gem 'roo'
 
+# Hashie provides lots of nice convenience utilities for working with hashes
+gem 'hashie'
+
 gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'
@@ -53,7 +56,10 @@ gem 'state_machine'
 
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
 gem 'spree', '1.1.3'
-gem 'spree_multi_domain', :git =>  "git://github.com/johndavid400/spree-multi-domain.git", :branch => "master"
+#gem 'spree_multi_domain', :git =>  "git://github.com/johndavid400/spree-multi-domain.git", :branch => "master"
+# Hope we can use master again soon, they need to accept PR 15 on
+# spree-multi-domain: https://github.com/spree/spree-multi-domain/pull/15
+gem 'spree_multi_domain', :git =>  "git://github.com/knewter/spree-multi-domain.git"
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -75,6 +81,7 @@ end
 group :development, :test do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
+  gem 'rb-inotify', '~> 0.8.8'
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'

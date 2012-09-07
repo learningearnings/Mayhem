@@ -7,37 +7,8 @@ class BanksController < LoggedInController
     else
       @recent_account_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.primary_account).limit(20).joins(:transaction).order({ transaction: :created_at }))
      end
-  end
 
-  def create_print_bucks
-    @bank = Bank.new
-    bucks = {:ones => params[:point1].to_i, :fives => params[:point5].to_i, :tens => params[:point10].to_i}
-    if params[:teacher].present? && params[:teacher][:id].present?
-      person = Teacher.find(params[:teacher][:id])
-    else
-      person = current_person
-    end
-    if person.main_account(person.schools.first).balance >= (bucks[:ones] + (bucks[:fives] * 5) + (bucks[:tens] * 10))
-      @bank.create_print_bucks(person, 'AL', bucks)
-      flash[:notice] = 'Bucks created!'
-      redirect_to bank_path
-    else
-      flash[:error] = 'You do not have enough bucks.'
-      render :show
-    end
-  end
-
-  def create_ebucks
-    @bank = Bank.new
-    if current_person.main_account(current_person.schools.first).balance >= BigDecimal.new(params[:points])
-      student = Student.find(params[:student][:id])
-      @bank.create_ebucks(current_person, student, 'AL', params[:points])
-      flash[:notice] = 'Bucks created!'
-      redirect_to bank_path
-    else
-      flash[:error] = 'You do not have enough bucks.'
-      render :show
-    end
+    @unredeemed_bucks = current_person.otu_codes.active
   end
 
   def redeem_bucks
