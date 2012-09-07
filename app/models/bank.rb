@@ -23,9 +23,9 @@ class Bank
     account = person.main_account(school)
     return @on_failure.call unless account_has_enough_money_for(account, points)
 
-    buck_params = {:person_school_link => person_school_link(person, school),
+    buck_params = {:person_school_link_id => person_school_link(person, school).id,
                    :expires_at => (Time.now + 45.days), 
-                   :student => student, 
+                   :student_id => student.id,
                    :ebuck => true}
     buck = create_buck(prefix, points, buck_params)
     @credit_manager.purchase_ebucks(school, person, student, points)
@@ -50,13 +50,13 @@ class Bank
   end
 
   protected
-  def buck_creator(params)
+  def buck_creator
     lambda do |params|
       OtuCode.create(params)
     end
   end
 
-  def message_creator(params)
+  def message_creator
     lambda do |params|
       Message.create params
     end
@@ -65,8 +65,8 @@ class Bank
   def send_message(person, student, buck)
     body = "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
 
-    message_creator(from: person, 
-                    to: student, 
+    message_creator.call(from: person,
+                    to: student,
                     subject: "You've been awarded LE Bucks", 
                     body: body,
                     category: 'teacher')
@@ -79,11 +79,11 @@ class Bank
   end
 
   def person_school_link(person, school)
-    person.person_school_links.where(school: school).first
+    person.person_school_links.where(school_id: school.id).first
   end
 
   def create_bucks(person, school, prefix, bucks)
-    buck_params = {:person_school_link => person_school_link(person, school),
+    buck_params = {:person_school_link_id => person_school_link(person, school).id,
                    :expires_at => (Time.now + 45.days) }
     bucks[:ones].times do
       create_buck(prefix, 1, buck_params)

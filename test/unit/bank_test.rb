@@ -16,8 +16,10 @@ describe Bank do
     person_school_links = mock "Person School Links collection"
     person.stubs(:person_school_links).returns(person_school_links)
     person_school_link = mock "Person School Link"
+    person_school_link.stubs(:id).returns(2)
     person_school_links.stubs(:where).returns([person_school_link])
     school = mock "School"
+    school.stubs(:id).returns(1)
     account = mock "Account"
     person.expects(:main_account).with(school).returns(account)
     account.expects(:balance).returns(BigDecimal('1000'))
@@ -44,13 +46,15 @@ describe Bank do
     on_success = lambda {}
     person = mock "Person"
     school = mock "School"
+    school.stubs(:id).returns(3)
     student = mock "Student"
-    student.expects(:id).returns(1)
+    student.stubs(:id).returns(1)
     account = mock "Account"
     prefix = "AL"
     person_school_links = mock "Person School Links collection"
     person.stubs(:person_school_links).returns(person_school_links)
     person_school_link = mock "Person School Link"
+    person_school_link.stubs(:id).returns(2)
     person_school_links.stubs(:where).returns([person_school_link])
     person.expects(:main_account).with(school).returns(account)
     account.expects(:balance).returns(BigDecimal('1000'))

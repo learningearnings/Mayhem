@@ -16,6 +16,7 @@ require 'minitest/reporters'
 require 'valid_attribute'
 require 'factory_girl'
 require 'bigdecimal'
+require 'pry'
 
 require 'mocha'
 
