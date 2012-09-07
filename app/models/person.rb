@@ -36,6 +36,10 @@ class Person < ActiveRecord::Base
     self.first_name + ' ' + self.last_name
   end
 
+  def to_s
+    full_name
+  end
+
   # Allow sending a school or classroom to a person
   def <<(d)
     if d.is_a? School

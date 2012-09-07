@@ -8,11 +8,11 @@ Feature: Teacher Bank
     Given I am logged in as a teacher
 
     Scenario: Create Printed Bucks
-      Given I am on the bank page
+      Given I am on the teachers bank page
       Given I distribute printed bucks
       Then the teacher account should be deducted
       
     Scenario: Create eBucks
-      Given I am on the bank page
+      Given I am on the teachers bank page
       Given I distribute ebucks
       Then the teacher account should be deducted

@@ -1,4 +1,6 @@
 class RewardDelivery < ActiveRecord::Base
+  attr_accessible :from_id, :to_id, :reward_id
+
   belongs_to :from, class_name: "Person", foreign_key: :from_id
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
   belongs_to :reward, class_name: "Spree::Product", foreign_key: :reward_id

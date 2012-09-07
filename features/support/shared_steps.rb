@@ -55,6 +55,14 @@ module SharedSteps
      visit 'http://1.lvh.me/bank'
    end
 
+   Given 'I am on the teachers bank page' do
+     visit 'http://1.lvh.me/teachers/bank'
+   end
+
+   Given 'I am on the school admins bank page' do
+     visit 'http://1.lvh.me/school_admins/bank'
+   end
+
    Given 'I am on the messages page' do
      visit 'http://1.lvh.me/inbox'
    end

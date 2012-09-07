@@ -1,15 +1,51 @@
 class OneClickSpreeProductPurchaseCommand
-  def initialize(order, person, school)
+  def initialize(order, person, school, deliverer_id)
     @order  = order
     @person = person
     @school = school
+    @deliverer_id = deliverer_id
   end
 
   def execute!
+    skip_irrelevant_spree_order_steps
+    purchase
 
-    # --- The above code is spree core copied ---
-    # --- Start our customization ---
-    # Cart
+    if can_create_school_products?
+      create_school_products
+    else
+      queue_delivery(@order.products)
+    end
+  end
+
+  protected
+  # Find or create the wholesale product in the SchoolAdmin's school store
+  def create_school_products
+    retail_store = Spree::Store.find_by_code(@school.store_account_name)
+
+    @order.products.each do |wholesale_product|
+      retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
+      retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
+
+      SchoolStoreProductDistributionCommand.new(:master_product => wholesale_product, 
+                                                :school => @school,
+                                                :quantity => retail_qty,
+                                                :retail_price => retail_price).execute!
+    end
+  end
+
+  # Create a RewardDelivery from the teacher to the purchasing student for these
+  # products
+  def queue_delivery(products)
+    products.each do |product|
+      RewardDelivery.create(from_id: @deliverer_id, to_id: @person.id, reward_id: product.id)
+    end
+  end
+
+  def can_create_school_products?
+    @order.store == Spree::Store.find_by_name("le") && @person.is_a?(SchoolAdmin)
+  end
+
+  def skip_irrelevant_spree_order_steps
     @order.next
 
     # Address
@@ -32,6 +68,9 @@ class OneClickSpreeProductPurchaseCommand
     @order.save
     @order.next
 
+  end
+
+  def purchase
     # Payment
     payment_source_attributes = {}
     if @person.is_a? SchoolAdmin
@@ -56,27 +95,5 @@ class OneClickSpreeProductPurchaseCommand
 
     # Trigger the purchase
     @order.next
-
-    # Go ahead and find or create the wholesale product in the SchoolAdmin's school store
-    if @order.store == Spree::Store.find_by_name("le") && @person.is_a?(SchoolAdmin)
-      create_school_products
-    else
-      # Specify the teacher that will be delivering it
-    end
-  end
-
-  protected
-  def create_school_products
-    retail_store = Spree::Store.find_by_code(@school.store_account_name)
-
-    @order.products.each do |wholesale_product|
-      retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
-      retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
-
-      SchoolStoreProductDistributionCommand.new(:master_product => wholesale_product, 
-                                                :school => @school,
-                                                :quantity => retail_qty,
-                                                :retail_price => retail_price).execute!
-    end
   end
 end

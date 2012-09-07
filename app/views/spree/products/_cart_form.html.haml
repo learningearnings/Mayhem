@@ -27,6 +27,8 @@
         .add-to-cart
           - if @product.has_stock? || Spree::Config[:allow_backorders]
             = number_field_tag (@product.has_variants? ? :quantity : "variants[#{@product.master.id}]"), 1, :class => 'title', :in => 1..@product.on_hand
+            = label_tag :deliverer_id, "Delivered By:"
+            = select_tag :deliverer_id, options_from_collection_for_select(current_school.school_admins, :id, :to_s)
             = button_tag :class => 'large primary', :id => 'add-to-cart-button', :type => :submit do
               = t(:add_to_cart)
           - else

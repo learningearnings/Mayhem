@@ -27,7 +27,10 @@ Spree::OrdersController.class_eval do
     fire_event('spree.cart.add')
     fire_event('spree.order.contents_changed')
 
-    OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school).execute!
+    # --- The above code is spree core copied ---
+    # --- Start our customization ---
+
+    OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
     
     flash[:notice] = "Bought that stuff..."
     redirect_to "/"
