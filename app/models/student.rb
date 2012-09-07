@@ -4,6 +4,8 @@ class Student < Person
   after_create :create_user
   validates_presence_of :grade
 
+  has_many :otu_codes
+
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
@@ -17,6 +19,10 @@ class Student < Person
 
   def name
     first_name + ' ' + last_name
+  end
+
+  def to_s
+    name
   end
 
   def purchases_account_name

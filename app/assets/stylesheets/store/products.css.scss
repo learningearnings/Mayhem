@@ -1,20 +1,33 @@
-
 .product-tile {
-    text-align: center;
     min-height: 140px;
     font-size: 1.2em;
     float: left;
     margin-bottom: 10px;
     margin-left: 10px;
-    @extend .span2;
+    @extend .span3;
     @extend .thumbnail;
+    background-color: white;
 }
 
 .product-image {
     height: 100px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.product-details {
+  display: inline-block;
+  max-width: 140px;
 }
 
 a.info {
     height: 20px;
     overflow: hidden;
+}
+
+table#product-properties{
+  @extend .table;
+  @extend .table-striped;
+  @extend .table-bordered;
+  @extend .solid-background;
 }

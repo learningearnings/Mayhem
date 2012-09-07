@@ -65,6 +65,6 @@ Leror::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  Leror::Application.config.session_store :cookie_store, key: '_leror_session', :tld_length => 2
+  config.action_dispatch.tld_length = 2
 
 end

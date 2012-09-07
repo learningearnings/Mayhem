@@ -4,18 +4,21 @@ reward_248:
   description: This reward is an Ipod Touch
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: electronics
 reward_251:
   permalink: reward_251
   name: Dicks Gift Card
   description: This reward is 1 gift card to Dicks Sporting Goods
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: gift_cards
 reward_252:
   permalink: reward_252
   name: American Eagle Gift Card
   description: This reward is 1 $10 American Eagle gift card
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: gift_cards
 reward_348:
   permalink: reward_348
   name: Le Bag!
@@ -28,30 +31,35 @@ reward_283:
   description: This reward is 1 gift card to Target.
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: gift_cards
 reward_285:
   permalink: reward_285
   name: Wet Seal Gift Card
   description: This reward is 1 $5 gift card to Wet Seal.
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: gift_cards
 reward_286:
   permalink: reward_286
   name: Claires Gift Card
   description: This reward is 1 $5 gift card!
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: gift_cards
 reward_287:
   permalink: reward_287
   name: Aeropostale Gift Card
   description: This reward is 1 $10 gift card to Aeropostale!
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: gift_cards
 reward_351:
   permalink: reward_351
   name: Alligator Squirts (collect them all!)
   description: This reward is 1 alligator squirt toy. The toy comes in multiple colors so be sure to collect them all!
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: sticky_things
 reward_352:
   permalink: reward_352
   name: Race Cars (collect them all!)
@@ -64,6 +72,7 @@ reward_353:
   description: This reward is 1 candy bracelet.
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: candy
 reward_354:
   permalink: reward_354
   name: Baby Jungle Animals (collect them all!)
@@ -100,12 +109,14 @@ reward_360:
   description: This reward is 1 package of fun dip.
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: candy
 reward_361:
   permalink: reward_361
   name: Skittles
   description: This reward is 1 package of Skittles.
   available_on: <%= Time.zone.now.to_s(:db) %>
   count_on_hand: 10
+  taxons: candy
 reward_362:
   permalink: reward_362
   name: Funky Star Stickers! (collect them all!)

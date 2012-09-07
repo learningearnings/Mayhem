@@ -31,6 +31,10 @@ class School < ActiveRecord::Base
     end
   end
 
+  def store
+    Spree::Store.where(code: store_subdomain).first
+  end
+
   # Relationships
   def person_school_links(status = :status_active)
     PersonSchoolLink.where(school_id: self.id).send(status)
@@ -84,7 +88,6 @@ class School < ActiveRecord::Base
   def store_subdomain
     self.id.to_s
   end
-
 
   private
   def ensure_accounts

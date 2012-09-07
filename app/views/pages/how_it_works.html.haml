@@ -1,22 +1,26 @@
-.boxes.row
-  .span8
-    #how-it-works-carousel.carousel.slide
-      .carousel-inner
-        .active.item
-          .interactive-presentation.big-box
-            Item 1
-        .item
-          .interactive-presentation.big-box
-            Item 2
-        .item
-          .interactive-presentation.big-box
-            Item 3
-      = link_to "&lsaquo; prev".html_safe, '#how-it-works-carousel', 'data-slide' => 'prev'
-      = link_to "next &rsaquo;".html_safe, '#how-it-works-carousel', 'data-slide' => 'next'
+.row.content
+  .side-art-teachers
+  .bacon
+  .white-board
+    %ul.how-it-works-nav
+      %li
+        %span= link_to "Intro", "#", class:'someclass'
+      %li
+        %span= link_to "Register", "#", class:'someclass'
+      %li
+        %span= link_to "Earn", "#", class:'someclass'
+      %li
+        %span= link_to "Enter", "#", class:'someclass'
+      %li
+        %span= link_to "Buy", "#", class:'someclass'
+      %li
+        %span= link_to "Receive", "#", class:'someclass'
 
-  .span4
-    .parent-section.side-box
-      Call to action
 
-    .educator-section.side-box
-      Call to action
+
+  .sir-francis-bacon
+  %ul.stickies-nav.how-it-works
+    %li
+      %span= link_to "", "#", class: 'btn parents-stickie stickies_nav-parents_orange_nav_stickie'
+    %li
+      %span= link_to "", "#", class: 'btn teachers-stickie stickies_nav-teachers_blue_nav_stickie'

@@ -4,3 +4,6 @@ prop_retail_quantity:
 prop_retail_price:
   name: retail_price
   presentation: Retail Price
+prop_master_product:
+  name: master_product
+  presentation: Master Wholesale Product

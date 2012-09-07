@@ -1,0 +1,40 @@
+categories_taxon:
+  taxonomy: categories
+  parent_id: null
+  position: 1
+  name: Categories
+  permalink: categories
+  lft: 1
+  rgt: 10
+sticky_things:
+  taxonomy: categories
+  parent: categories_taxon
+  position: 1
+  name: Sticky Things
+  permalink: sticky-things
+  lft: 2
+  rgt: 3
+gift_cards:
+  taxonomy: categories
+  parent: categories_taxon
+  position: 2
+  name: Gift Cards
+  permalink: gift-cards
+  lft: 3
+  rgt: 4
+electronics:
+  taxonomy: categories
+  parent: categories_taxon
+  position: 3
+  name: Electronics
+  permalink: electronics
+  lft: 4
+  rgt: 5
+candy:
+  taxonomy: categories
+  parent: categories_taxon
+  position: 4
+  name: Candy
+  permalink: candy
+  lft: 5
+  rgt: 6
