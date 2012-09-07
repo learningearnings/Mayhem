@@ -5,21 +5,21 @@ module SharedSteps
     visit 'http://1.lvh.me/'
     fill_in 'user_username', :with => @school_admin.user.username
     fill_in 'user_password', :with => '123456'
-    click_button 'Sign in'
+    click_button 'Log In'
   end
 
   Given 'I am logged in as a teacher' do
     visit 'http://1.lvh.me/' 
     fill_in 'user_username', :with => @teacher.user.username
     fill_in 'user_password', :with => '123456'
-    click_button 'Sign in'
+    click_button 'Log In'
   end
 
   Given 'I am logged in as a student' do
     visit 'http://1.lvh.me/' 
     fill_in 'user_username', :with => @student1.user.username
     fill_in 'user_password', :with => '123456'
-    click_button 'Sign in'
+    click_button 'Log In'
   end
 
   Given 'the main account exists' do

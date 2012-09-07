@@ -10,6 +10,6 @@
     %label.supplemenal-login-form @
     = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name)
     %li
-      %button.btn.login-button 
+      %button.btn.login-button  Log In
   .forgot-password
     = link_to "Forgot your password?", spree.new_user_password_path('user')

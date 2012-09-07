@@ -140,6 +140,7 @@ input, textarea, select {
 
 .login-form-fields .login-button {
   background-image: url(asset_path('login_button.png', image));
+  text-indent: -9999px;
 }
 
 .forgot-password {

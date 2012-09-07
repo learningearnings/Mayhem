@@ -1,0 +1,33 @@
+= form_for :order, :url => populate_orders_url do |f|
+  #inside-product-cart-form{ "data-hook" => "inside_product_cart_form", itemprop: "offers", itemscope: true, itemtype: "http://schema.org/Offer" }
+    - if @product.has_variants?
+      #product-variants.columns.five.alpha
+        %h6.product-section-title= t(:variants)
+        %ul
+          - has_checked = false
+          - @product.variants.active.each_with_index do |v,index|
+            - next if v.option_values.empty? || (!v.in_stock && !Spree::Config[:show_zero_stock_products])
+            - checked = !has_checked && (v.in_stock || Spree::Config[:allow_backorders])
+            - has_checked = true if checked
+            %li
+              = radio_button_tag "products[#{@product.id}]", v.id, checked, :disabled => !v.in_stock && !Spree::Config[:allow_backorders]
+              %label{ for: ['products', @product.id, v.id].join('_') }
+                %span.variant-description
+                  = variant_options v
+                - if variant_price_diff v
+                  %span.price.diff= variant_price_diff v
+
+    - if @product.price
+      %div{ "data-hook" => "product_price", class: "columns five #{@product.has_variants? ? 'omega' : 'alpha'}" }
+        #product-price
+          %h6.product-section-title= t(:price)
+          %div
+            %span.price.selling{ itemprop:"price" }= number_to_currency @product.price
+
+        .add-to-cart
+          - if @product.has_stock? || Spree::Config[:allow_backorders]
+            = number_field_tag (@product.has_variants? ? :quantity : "variants[#{@product.master.id}]"), 1, :class => 'title', :in => 1..@product.on_hand
+            = button_tag :class => 'large primary', :id => 'add-to-cart-button', :type => :submit do
+              = t(:add_to_cart)
+          - else
+            = content_tag('strong', t(:out_of_stock))
