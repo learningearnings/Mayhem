@@ -31,13 +31,6 @@ Leror::Application.routes.draw do
   match "/create_ebucks" => 'banks#create_ebucks'
   match "/redeem_bucks" => 'banks#redeem_bucks'
 
-  ActiveAdmin.routes(self)
-
-  namespace :admin do
-    get :delete_student_school_link, :controller => :students, :action => :delete_school_link
-    get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
-    get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
-  end
 
   # Game routes
   namespace :games do
