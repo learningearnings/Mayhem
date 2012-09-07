@@ -28,11 +28,8 @@
   
 /* Sprites */
 $stickies_nav-layout:horizontal;
-$stickies_nav_hover-layout:horizontal;
 @import "sprites/stickies_nav/*.png";
-@import "sprites/stickies_nav_hover/*.png";
 @include all-stickies_nav-sprites;
-@include all-stickies_nav_hover-sprites;
 
 body {
   font-size: 62.5%;
@@ -186,7 +183,6 @@ input, textarea, select {
 
 .content {
   position: relative;
-  background-image: url(asset_path('stickies_nav_hover-sfd03b6410e.png', image));    
 }
 
 .content .stickies-nav {
@@ -227,6 +223,8 @@ input, textarea, select {
   color: #f05c1a;
 }
 
+
+
 .btn.students-stickie,
 .btn.parents-stickie,
 .btn.teachers-stickie {
@@ -242,6 +240,10 @@ input, textarea, select {
 .btn.parents-stickie:hover,
 .btn.teachers-stickie:hover {
   background-position: 0;
+  -moz-transition: none;
+  -webkit-transition: none;
+  -o-transition: color 0 ease-in;
+  transition: none;  
 }
 
 
@@ -251,8 +253,7 @@ input, textarea, select {
 }
 
 .btn.students-stickie:hover {
-  background-image: url(asset_path('sprites/stickies_nav_hover-sfd03b6410e.png', image));
-  background-position: -110px 0;
+  background-position: -330px 0;
 }
 
 .btn.parents-stickie {
@@ -261,8 +262,7 @@ input, textarea, select {
 }
 
 .btn.parents-stickie:hover {
-  background-image: url(asset_path('sprites/stickies_nav_hover-sfd03b6410e.png', image));
-  background-position: 0 0;
+  background-position: -110px 0;
 }
 
 .btn.teachers-stickie {
@@ -271,8 +271,7 @@ input, textarea, select {
 }
 
 .btn.teachers-stickie:hover {
-  background-image: url(asset_path('sprites/stickies_nav_hover-sfd03b6410e.png', image));
-  background-position: -220px 0;
+  background-position: -550px 0;
   
 }
 
@@ -469,32 +468,4 @@ footer {
       
     }
   }
-}
-
-.current-user-avatar {
-  display: inline-block;
-  vertical-align: top;
-}
-.current-user {
-  h3 {
-    margin-bottom: 0;
-  }
-  display: inline-block;
-  .credit-balance, .person-details {
-    display: inline-block;
-    vertical-align: top;
-  }
-}
-
-ul.links, ul.inline {
-  margin: 0;
-  li {
-    list-style-type: none;
-    display: inline-block;
-    padding: .25em .5em;
-  }
-}
-
-.solid-background {
-  background-color: white;
 }
