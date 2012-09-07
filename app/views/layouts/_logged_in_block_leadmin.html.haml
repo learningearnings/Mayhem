@@ -11,12 +11,6 @@
           %th Savings
       %tbody
         %tr
-          - if current_person
-            %td= current_user.person.checking_balance
-            %td= current_user.person.savings_balance
-          - else
-            %td=number_to_currency(0.00)
-            %td=number_to_currency(0.00)
   .person-details
     %h3= current_user.email
     %p= link_to "Edit My Profile", spree.edit_user_path(current_user)

@@ -3,11 +3,11 @@
 .filters.well
   = form_tag purchases_report_path, method: :get
   = label_tag :show_dates
-  = select_tag :date_filter, options_for_select(date_filter_options)
+  = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
   = label_tag :show_rewards
-  = select_tag :rewards_filter, options_for_select(['Undelivered', 'Delivered'])
+  = select_tag :rewards_filter, options_for_select(['Undelivered', 'Delivered']), disabled: true
   = label_tag :show_teachers
-  = select_tag :teachers_filter, options_from_collection_for_select(current_school.teachers, :id, :name)
+  = select_tag :teachers_filter, options_from_collection_for_select(current_school.teachers, :id, :name), disabled: true
   = submit_tag 'Go!'
 
 %table.table.table-bordered.table-striped.solid-background
