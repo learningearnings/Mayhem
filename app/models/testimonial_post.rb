@@ -1,0 +1,2 @@
+class TestimonialPost < Post
+end

@@ -56,6 +56,22 @@ ActiveRecord::Schema.define(:version => 20120904203604) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "ckeditor_assets", :force => true do |t|
+    t.string   "data_file_name",                  :null => false
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.integer  "assetable_id"
+    t.string   "assetable_type",    :limit => 30
+    t.string   "type",              :limit => 30
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], :name => "idx_ckeditor_assetable"
+  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], :name => "idx_ckeditor_assetable_type"
+
   create_table "classroom_filter_links", :force => true do |t|
     t.integer  "classroom_id"
     t.integer  "filter_id"
@@ -278,6 +294,18 @@ ActiveRecord::Schema.define(:version => 20120904203604) do
   end
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
+
+  create_table "posts", :force => true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.string   "status"
+    t.string   "type"
+    t.integer  "person_id"
+    t.integer  "filter_id"
+    t.integer  "published_by"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"

@@ -49,3 +49,5 @@ public/system
 public/spree
 
 .DS_Store
+
+app/assets/images/sprites

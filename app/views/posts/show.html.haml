@@ -1,0 +1,5 @@
+%h1= "Posts: #{@post.title.capitalize}"
+
+= @post.body
+%p
+= @post.created_at.strftime("Published on %m/%d/%Y at %I:%M%p")
