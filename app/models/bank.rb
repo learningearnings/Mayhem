@@ -69,7 +69,7 @@ class Bank
   end
 
   def buck_batch_link_creator
-    ->(params) { BuckBatchLink.create }
+    ->(params) { BuckBatchLink.create params }
   end
 
   def send_message(person, student, buck)
