@@ -87,11 +87,7 @@ end
 group :development, :test do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
-<<<<<<< HEAD
-  #gem 'rb-inotify', '~> 0.8.8'
-=======
   gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
->>>>>>> d75d82ae603631ef632329af26445195b825a657
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
