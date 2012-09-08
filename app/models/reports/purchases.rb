@@ -10,8 +10,8 @@ module Reports
 
     def execute!
       # get recent line items from the school
-      line_items.each do |line_item|
-        @data << generate_row(line_item)
+      reward_deliveries.each do |reward_delivery|
+        @data << generate_row(reward_delivery)
       end
     end
 
@@ -21,7 +21,7 @@ module Reports
       [:date_filter, :reward_status_filter, :teachers_filter]
     end
 
-    def line_items
+    def reward_deliveries
       base_scope = reward_delivery_base_scope
       potential_filters.each do |filter|
         filter_option = send(filter)
@@ -90,7 +90,9 @@ module Reports
         grade: person.grade,
         purchased: reward_delivery.created_at.to_s(:db),
         reward: reward_delivery.reward.name,
-        status: "Stock"
+        status: "Stock",
+        reward_delivery_id: reward_delivery.id,
+        delivery_status: reward_delivery.status
       ]
     end
 

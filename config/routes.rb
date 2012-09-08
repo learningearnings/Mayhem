@@ -71,6 +71,7 @@ Leror::Application.routes.draw do
   resources :student_transfer_commands, only: [:create]
   resources :food_fight_play_commands, only: [:create]
   resources :student_message_student_commands, only: [:create]
+  resources :deliver_rewards_commands, only: [:create]
 end
 
 # Any routes we add to Spree go here:
