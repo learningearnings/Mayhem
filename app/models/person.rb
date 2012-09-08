@@ -7,7 +7,7 @@ class Person < ActiveRecord::Base
   has_many :posts
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
-  has_many :classrooms, :through => :person_school_classroom_links
+  #has_many :classrooms, :through => :person_school_classroom_links
   has_many :person_school_links
   has_many :person_school_classroom_links
 
@@ -49,7 +49,7 @@ class Person < ActiveRecord::Base
       PersonSchoolLink.create(:school_id => d.id, :person_id => self.id)
     elsif d.is_a? Classroom
       psl = PersonSchoolLink.find_or_create_by_school_id_and_person_id(d.school_id, self.id)
-      PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl)
+      PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl.id)
     end
   end
 end
