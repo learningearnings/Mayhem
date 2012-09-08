@@ -3,7 +3,9 @@ module Reports
     def initialize params
       super
       @school = params[:school]
-      @date_filter_option = params[:date_filter]
+      @date_filter = params[:date_filter]
+      @reward_status_filter = params[:reward_status_filter]
+      @teachers_filter = params[:teachers_filter]
     end
 
     def execute!
@@ -13,10 +15,10 @@ module Reports
       end
     end
 
-    # Will include date_filter, rewards_filter(delivered, undelivered) and teachers_filter
+    # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter]
+      [:date_filter, :reward_status_filter, :teachers_filter]
     end
 
     def line_items
@@ -30,7 +32,7 @@ module Reports
 
     # This feels all cluttered to me but my brain isn't firing on all cylinders today.
     def date_filter
-      case @date_filter_option
+      case @date_filter
       when 'last_90_days'
         [:where, {created_at: 90.days.ago..1.second.ago}]
       when 'last_60_days'
@@ -54,14 +56,35 @@ module Reports
       end
     end
 
+    def reward_status_filter
+      case @reward_status_filter
+      when 'Undelivered'
+        :pending
+      when 'Delivered'
+        :delivered
+      else
+        nil
+      end
+    end
+
+    def teachers_filter
+      case @teachers_filter
+      when 'everyone'
+        nil
+      else
+        [:where, { from_id: @teachers_filter }]
+      end
+    end
+
     def reward_delivery_base_scope
       RewardDelivery.includes(to: [ :person_school_links ]).where(to: { person_school_links: { school_id: @school.id } })
     end
 
     def generate_row(reward_delivery)
       person = reward_delivery.to
+      deliverer = reward_delivery.from
       Reports::Row[
-        delivery_teacher: "Foo",
+        delivery_teacher: deliverer,
         classroom: "",
         student: [person, "(#{person.user.username})"].join(" "),
         grade: person.grade,
