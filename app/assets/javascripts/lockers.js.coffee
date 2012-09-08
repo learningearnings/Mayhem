@@ -22,11 +22,10 @@ $ ->
         id: id
       },
       (data, textStatus, jqXHR) ->
-        console.log(data)
-        link_id = data.id
         # On success, add the sticker to the locker on-page exactly as it's done
         # on the backend, so that it's a very responsive interface and we don't
         # have to refresh
+        link_id = data.id
         locker = $('.locker_wrapper.editable')
         sticker_div = ich["sticker_template"](
           x: 0
