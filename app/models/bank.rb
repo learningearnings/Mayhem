@@ -53,7 +53,6 @@ class Bank
   def claim_bucks(student, otu_code)
     if otu_code.is_ebuck?
       @credit_manager.issue_ecredits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
-      application
     else
       @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
     end
