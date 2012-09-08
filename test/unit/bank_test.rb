@@ -4,8 +4,9 @@ require_relative '../../app/models/bank'
 # NOTE: This test is not great looking, but I believe that to be a result of Bank
 # doing too many things and exposing its collaborators' APIs too readily.
 describe Bank do
-  subject { Bank.new(credit_manager) }
+  subject { Bank.new(credit_manager, buck_printer) }
   let(:credit_manager) { mock "Credit Manager" }
+  let(:buck_printer) { mock "Buck Printer" }
 
   it "creates print bucks" do
     # NOTE: All the mocks suggest this guy does too much and depends on too many
@@ -31,13 +32,23 @@ describe Bank do
     }
     buck_creator = mock "OtuCode"
     buck = mock "Buck"
+    buck.stubs(:id).returns(1)
     buck_creator = lambda{ |params| return buck }
     buck.expects(:generate_code).with(prefix).at_least_once
+    buck_batch_link_creator = mock "BuckBatchLink"
+    buck_batch_creator = mock "BuckBatch"
+    buck_batch = mock "BuckBatch instance"
+    buck_batch.stubs(:id)
+    buck_batch_creator.stubs(:call).returns(buck_batch)
+
+    buck_batch_link_creator.stubs(:call)
     subject.stubs(:buck_creator).returns(buck_creator)
+    subject.stubs(:buck_batch_link_creator).returns(buck_batch_link_creator)
+    subject.stubs(:buck_batch_creator).returns(buck_batch_creator)
     subject.on_success = on_success
 
     on_success.expects(:call)
-    credit_manager.expects(:purchase_printed_bucks).with(school, person, 1)
+    credit_manager.expects(:purchase_printed_bucks).with(school, person, 1, buck_batch)
     # NOTE: We need to also expect that it creates all the bucks
     subject.create_print_bucks(person, school, prefix, bucks)
   end

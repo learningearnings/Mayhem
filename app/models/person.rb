@@ -23,15 +23,15 @@ class Person < ActiveRecord::Base
   end
 
   def person_school_classroom_links(status = :status_active)
-    MacroReflectionRelationFacade.new(PersonSchoolClassroomLink.joins(:person_school_link).merge(person_school_links(status)).send(status))
+    PersonSchoolClassroomLink.joins(:person_school_link).where(person_school_link: { id: person_school_links(status).map(&:id) }).send(status)
   end
 
   def schools(status = :status_active)
-    School.joins(:person_school_links).merge(person_school_links(status)).send(status).order('created_at desc')
+    School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc')
   end
 
   def classrooms(status = :status_active)
-    Classroom.joins(:person_school_classroom_links).send(status)
+    Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
   # End Relationships
 
@@ -46,11 +46,9 @@ class Person < ActiveRecord::Base
   # Allow sending a school or classroom to a person
   def <<(d)
     if d.is_a? School
-      puts "School #{d.name}"
       PersonSchoolLink.create(:school_id => d.id, :person_id => self.id)
     elsif d.is_a? Classroom
-      psl = PersonSchoolLink.create(:school_id => d.school_id, :person_id => self.id)
-#      self.person_school_links << psl
+      psl = PersonSchoolLink.find_or_create_by_school_id_and_person_id(d.school_id, self.id)
       PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl)
     end
   end

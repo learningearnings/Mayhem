@@ -5,9 +5,9 @@ class Bank
   attr_accessor :on_failure, :on_success
   include ActionView::Helpers::UrlHelper
 
-  def initialize(credit_manager=CreditManager.new)
+  def initialize(credit_manager=CreditManager.new, buck_printer=BuckPrinter.new)
     @credit_manager = credit_manager
-    @buck_printer = BuckPrinter.new
+    @buck_printer = buck_printer
     # Set up no-op callbacks in case we don't want to use them
     @on_failure = lambda{}
     @on_success = lambda{}
@@ -19,13 +19,9 @@ class Bank
     return on_failure.call unless account_has_enough_money_for(account, points)
     
     # creates and returns bucks array
-    _bucks = create_bucks(person, school, prefix, bucks)
+    batch = create_bucks_in_batch(person, school, prefix, bucks)
 
-    # add to batch
-    bb = BuckBatch.create(:name => 'Test')
-    _bucks.map{|x| BuckBatchLink.create(:buck_batch_id => bb.id, :otu_code_id => x.id)}
-
-    @credit_manager.purchase_printed_bucks(school, person, points, bb)
+    @credit_manager.purchase_printed_bucks(school, person, points, batch)
     return on_success.call
   end
 
@@ -61,15 +57,19 @@ class Bank
 
   protected
   def buck_creator
-    lambda do |params|
-      OtuCode.create(params)
-    end
+    ->(params) { OtuCode.create params }
   end
 
   def message_creator
-    lambda do |params|
-      Message.create params
-    end
+    ->(params) { Message.create params }
+  end
+
+  def buck_batch_creator
+    ->(params) { BuckBatch.create params }
+  end
+
+  def buck_batch_link_creator
+    ->(params) { BuckBatchLink.create }
   end
 
   def send_message(person, student, buck)
@@ -111,6 +111,14 @@ class Bank
     #@buck_printer.print_bucks(_bucks)
 
     _bucks
+  end
+
+  def create_bucks_in_batch(person, school, prefix, bucks)
+    _bucks = create_bucks(person, school, prefix, bucks)
+    # add to batch
+    bb = buck_batch_creator.call(:name => 'Test')
+    _bucks.map{|x| buck_batch_link_creator.call(:buck_batch_id => bb.id, :otu_code_id => x.id)}
+    bb
   end
 
   def amount_of_bucks(bucks)
