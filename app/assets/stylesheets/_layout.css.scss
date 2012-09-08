@@ -26,6 +26,10 @@
   font-weight: normal;
   font-style: normal; }
   
+/* Variables */
+$how-to-active-color: #f05c1a; 
+
+  
 /* Sprites */
 $stickies_nav-layout:horizontal;
 @import "sprites/stickies_nav/*.png";
@@ -140,7 +144,6 @@ input, textarea, select {
 
 .login-form-fields .login-button {
   background-image: url(asset_path('login_button.png', image));
-  text-indent: -9999px;
 }
 
 .forgot-password {
@@ -221,9 +224,72 @@ input, textarea, select {
 
 .content .how-it-works-nav li span a:hover {
   text-decoration: none;
-  color: #f05c1a;
+  color: #f05c1a;  
 }
 
+.content .how-it-works-nav li span a:active {
+  color: #f05c1a;    
+}
+
+.content.how-it-works {
+  
+  .intro-slide {
+    background-image: url(asset_path('how_it_works_slide1.png', image));  
+    position: absolute;
+    top: 50px;
+    left: 480px;
+    height: 232px;
+    width: 522px;
+  }
+  .register-slide {
+    background-image: url(asset_path('how_it_works_slide2.png', image));  
+    position: absolute;
+    top: 50px;
+    left: 480px;
+    height: 232px;
+    width: 484px;  
+  }
+  .earn-slide {
+    background-image: url(asset_path('how_it_works_slide3.png', image));  
+    position: absolute;
+    top: 40px;
+    left: 480px;
+    height: 245px;
+    width: 563px;   
+}
+  .enter-slide {
+    background-image: url(asset_path('how_it_works_slide4.png', image));  
+    position: absolute;
+    top: 40px;
+    left: 480px;
+    height: 238px;
+    width: 498px;     
+  }
+  .buy-slide {
+    background-image: url(asset_path('how_it_works_slide5.png', image));  
+    position: absolute;
+    top: 40px;
+    left: 480px;
+    height: 250px;
+    width: 503px;     
+  }
+  .receive-slide {
+    background-image: url(asset_path('how_it_works_slide6.png', image));  
+    position: absolute;
+    top: 40px;
+    left: 480px;
+    height: 227px;
+    width: 554px;      
+  }
+}
+
+.not-selected {
+  color: #312d68;
+}
+
+.selected {
+  color: #f05c1a!important;  
+}
 
 
 .btn.students-stickie,
@@ -246,7 +312,6 @@ input, textarea, select {
   -o-transition: color 0 ease-in;
   transition: none;  
 }
-
 
 .btn.students-stickie {
   height: 109px;
@@ -443,7 +508,6 @@ input, textarea, select {
   left: 205px;
 }
 
-
 footer {
   color: $supporting-text-color;
   margin-top: 12px;
@@ -470,31 +534,9 @@ footer {
     }
   }
 }
-
-.current-user-avatar {
-  display: inline-block;
-  vertical-align: top;
+.visible {
+  display: block;
 }
-.current-user {
-  h3 {
-    margin-bottom: 0;
-  }
-  display: inline-block;
-  .credit-balance, .person-details {
-    display: inline-block;
-    vertical-align: top;
-  }
-}
-
-ul.links, ul.inline {
-  margin: 0;
-  li {
-    list-style-type: none;
-    display: inline-block;
-    padding: .25em .5em;
-  }
-}
-
-.solid-background {
-  background-color: white;
+.hidden {
+  display: none;
 }
