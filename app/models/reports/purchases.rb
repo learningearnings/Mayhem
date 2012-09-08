@@ -20,7 +20,7 @@ module Reports
     end
 
     def line_items
-      base_scope = line_item_base_scope
+      base_scope = reward_delivery_base_scope
       potential_filters.each do |filter|
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
@@ -32,23 +32,23 @@ module Reports
     def date_filter
       case @date_filter_option
       when 'last_90_days'
-        [:where, {order: { completed_at: 90.days.ago..1.second.ago}}]
+        [:where, {created_at: 90.days.ago..1.second.ago}]
       when 'last_60_days'
-        [:where, {order: { completed_at: 60.days.ago..1.second.ago}}]
+        [:where, {created_at: 60.days.ago..1.second.ago}]
       when 'last_7_days'
-        [:where, {order: { completed_at: 7.days.ago..1.second.ago}}]
+        [:where, {created_at: 7.days.ago..1.second.ago}]
       when 'last_month'
         d_begin = Time.now.beginning_of_month - 1.month
         d_end = d_begin.end_of_month
-        [:where, {order: { completed_at: d_begin..d_end}}]
+        [:where, {created_at: d_begin..d_end}]
       when 'this_month'
-        [:where, {order: { completed_at: Time.now.beginning_of_month..Time.now}}]
+        [:where, {created_at: Time.now.beginning_of_month..Time.now}]
       when 'this_week'
-        [:where, {order: { completed_at: Time.now.beginning_of_week..Time.now}}]
+        [:where, {created_at: Time.now.beginning_of_week..Time.now}]
       when 'last_week'
         d_begin = Time.now.beginning_of_week - 1.week
         d_end = d_begin.end_of_week
-        [:where, {order: { completed_at: d_begin..d_end}}]
+        [:where, {created_at: d_begin..d_end}]
       else
         nil
       end
@@ -58,17 +58,15 @@ module Reports
       RewardDelivery.includes(to: [ :person_school_links ]).where(to: { person_school_links: { school_id: @school.id } })
     end
 
-    def generate_row(line_item)
-      order = line_item.order
-      user = order.user
-      person = user.person
+    def generate_row(reward_delivery)
+      person = reward_delivery.to
       Reports::Row[
         delivery_teacher: "Foo",
         classroom: "",
-        student: [person, "(#{user.username})"].join(" "),
+        student: [person, "(#{person.user.username})"].join(" "),
         grade: person.grade,
-        purchased: order.completed_at.to_s(:db),
-        reward: line_item.variant.product.name,
+        purchased: reward_delivery.created_at.to_s(:db),
+        reward: reward_delivery.reward.name,
         status: "Stock"
       ]
     end
