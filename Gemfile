@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+# Helper method
+def linux_only(require_as)
+  RUBY_PLATFORM.include?('linux') && require_as
+end
+
 gem 'rails', '~> 3.2.6'
 gem 'sqlite3'
 gem 'pg', '0.13.2'
@@ -82,7 +87,7 @@ end
 group :development, :test do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
-  gem 'rb-inotify', '~> 0.8.8'
+  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
