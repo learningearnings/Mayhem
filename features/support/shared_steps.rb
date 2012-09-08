@@ -22,7 +22,7 @@ module SharedSteps
     click_button 'Log In'
   end
 
-  Given 'the main account exists' do
+  Given 'the main LE account exists' do
     Plutus::Liability.create(name: CreditManager.new.main_account_name)
   end
 

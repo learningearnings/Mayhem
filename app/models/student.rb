@@ -5,9 +5,12 @@ class Student < Person
   validates_presence_of :grade
 
   has_many :otu_codes
+  has_one :locker, foreign_key: :person_id
 
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
+
+  after_create :create_locker
 
   def primary_account
     checking_account
@@ -86,5 +89,11 @@ class Student < Person
     if self.grade <= 6
       self.last_name = self.last_name[0]
     end
+  end
+
+  def create_locker
+    locker = Locker.new
+    locker.person = self
+    locker.save
   end
 end

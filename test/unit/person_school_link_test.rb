@@ -49,6 +49,7 @@ describe PersonSchoolLink do
       p1.schools.must_include(s)
       s1.students.must_include(p)
     end
+
     it "won't create duplicate links" do
       s = School.new(:name => "Unit Test School - won't create duplicate links")
       p = Student.new(:first_name => 'Unit', :last_name => 'Test', :grade => 1,:user => FactoryGirl.create(:spree_user,:email => 'test_first_test3@example.com'))

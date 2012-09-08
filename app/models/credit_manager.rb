@@ -9,11 +9,16 @@ class CreditManager
     'MAIN_ACCOUNT'
   end
 
+  def main_account
+    Plutus::Account.find_by_name(main_account_name)
+  end
+
   # NOTE: I am confused about why debits and credits are switched here, but to make
   # my tests pass they needed to be.
-  def transfer_credits description, from_account, to_account, amount
+  def transfer_credits description, from_account, to_account, amount, buck_batch=nil
     transaction = @transaction_class.build({
       description: description,
+      commercial_document: buck_batch,
       debits:      [{ account: to_account, amount: amount }],
       credits:     [{ account: from_account,   amount: amount }]
     })
@@ -36,8 +41,8 @@ class CreditManager
     transfer_credits "Revoke Credits for School", school.main_account_name, main_account_name, amount
   end
 
-  def purchase_printed_bucks school, teacher, amount
-    transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account_name(school), teacher.unredeemed_account_name(school), amount
+  def purchase_printed_bucks school, teacher, amount, buck_batch=nil
+    transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account_name(school), teacher.unredeemed_account_name(school), amount, buck_batch
    end
 
   def purchase_ebucks school, teacher, student, amount

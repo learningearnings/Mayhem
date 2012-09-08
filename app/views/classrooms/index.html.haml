@@ -1,0 +1,22 @@
+%h2 Classrooms
+- @classrooms.each do |classroom|
+  %h3= link_to classroom.name, classroom_path(classroom)
+  %p= link_to 'Remove Class', classroom_path(classroom), :method => :delete
+  %table
+    %thead
+      %tr
+        %th Student Name
+    %tbody
+      - classroom.students.each do |student|
+        %tr
+          %td= student.name
+
+= form_for Classroom.new do |f|
+  = f.label :name
+  = f.text_field :name
+  = f.hidden_field :school_id, :value => current_school.id
+  = f.submit 'Create Classroom'
+
+
+
+

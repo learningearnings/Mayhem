@@ -60,7 +60,7 @@ Feature: Giving Credits
      When I have 50 credits in savings
       And I transfer 5 credits to checking
      Then I should have 45 credits in savings 
-      And I should 5 credits in checking
+      And I should have 5 credits in checking
      Then I should have 50 credits total
 
   Scenario: Attempting to spend more credits than available

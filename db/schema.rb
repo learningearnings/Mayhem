@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120907204432) do
+ActiveRecord::Schema.define(:version => 20120907202055) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,21 +56,18 @@ ActiveRecord::Schema.define(:version => 20120907204432) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "ckeditor_assets", :force => true do |t|
-    t.string   "data_file_name",                  :null => false
-    t.string   "data_content_type"
-    t.integer  "data_file_size"
-    t.integer  "assetable_id"
-    t.string   "assetable_type",    :limit => 30
-    t.string   "type",              :limit => 30
-    t.integer  "width"
-    t.integer  "height"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+  create_table "buck_batch_links", :force => true do |t|
+    t.integer  "otu_code_id"
+    t.integer  "buck_batch_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
-  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], :name => "idx_ckeditor_assetable"
-  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], :name => "idx_ckeditor_assetable_type"
+  create_table "buck_batches", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "classroom_filter_links", :force => true do |t|
     t.integer  "classroom_id"
@@ -190,6 +187,21 @@ ActiveRecord::Schema.define(:version => 20120907204432) do
     t.string  "game_type"
   end
 
+  create_table "locker_sticker_links", :force => true do |t|
+    t.integer  "locker_id"
+    t.integer  "sticker_id"
+    t.integer  "x"
+    t.integer  "y"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "lockers", :force => true do |t|
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
     t.datetime "created_at", :null => false
@@ -294,25 +306,6 @@ ActiveRecord::Schema.define(:version => 20120907204432) do
   end
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
-
-  create_table "posts", :force => true do |t|
-    t.string   "title"
-    t.text     "body"
-    t.string   "status"
-    t.string   "type"
-    t.integer  "person_id"
-    t.integer  "filter_id"
-    t.integer  "published_by"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  create_table "reward_deliveries", :force => true do |t|
-    t.integer "from_id"
-    t.integer "to_id"
-    t.integer "reward_id"
-    t.string  "status"
-  end
 
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
@@ -951,6 +944,12 @@ ActiveRecord::Schema.define(:version => 20120907204432) do
   create_table "states", :force => true do |t|
     t.string   "name"
     t.string   "abbr"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "stickers", :force => true do |t|
+    t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

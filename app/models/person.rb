@@ -1,12 +1,15 @@
 require "basic_statuses"
+require 'macro_reflection_relation_facade'
 
 class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
   has_many :posts
-  has_many :person_school_links, :inverse_of => :person
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
+  #has_many :classrooms, :through => :person_school_classroom_links
+  has_many :person_school_links
+  has_many :person_school_classroom_links
 
   delegate :avatar, to: :user
   delegate :username, :username= , to: :user
@@ -16,19 +19,19 @@ class Person < ActiveRecord::Base
 
   # Relationships
   def person_school_links(status = :status_active)
-    PersonSchoolLink.where(person_id: self.id).send(status)
+    MacroReflectionRelationFacade.new(PersonSchoolLink.where(person_id: self.id).send(status))
   end
 
   def person_school_classroom_links(status = :status_active)
-    PersonSchoolClassroomLink.joins(:person_school_link).merge(person_school_links(status)).send(status)
+    PersonSchoolClassroomLink.joins(:person_school_link).where(person_school_link: { id: person_school_links(status).map(&:id) }).send(status)
   end
 
   def schools(status = :status_active)
-    School.joins(:person_school_links).merge(person_school_links(status)).send(status).order('created_at desc')
+    School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc')
   end
 
   def classrooms(status = :status_active)
-    Classroom.joins(:person_school_classroom_links).send(status)
+    Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
   # End Relationships
 
@@ -43,12 +46,10 @@ class Person < ActiveRecord::Base
   # Allow sending a school or classroom to a person
   def <<(d)
     if d.is_a? School
-      puts "School #{d.name}"
       PersonSchoolLink.create(:school_id => d.id, :person_id => self.id)
     elsif d.is_a? Classroom
-      psl = PersonSchoolLink.create(:school_id => d.school_id, :person_id => self.id)
-#      self.person_school_links << psl
-      PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl)
+      psl = PersonSchoolLink.find_or_create_by_school_id_and_person_id(d.school_id, self.id)
+      PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl.id)
     end
   end
 end

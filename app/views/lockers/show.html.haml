@@ -1,0 +1,24 @@
+%h2 My Locker Header
+
+.locker_wrapper
+  = render 'locker_stickers', locker_sticker_links: locker_sticker_links
+
+= link_to 'Decorate My Locker', edit_locker_path, class: 'btn'
+= link_to 'Share My Locker', '#share-locker-modal', class: 'btn', "data-toggle" => 'modal'
+= link_to "Visit My Friend's Locker", '#visit-locker-modal', class: 'btn', "data-toggle" => 'modal'
+
+#share-locker-modal.modal.hide
+  %h3 Share Header
+  %p= lipsum
+  %strong Pick Your Friends:
+  .image-placeholder
+    Paginated Friend List
+  = link_to "Share", "#", class: 'btn btn-primary'
+
+#visit-locker-modal.modal.hide
+  %h3 Visit Locker Header
+  %p= lipsum
+  %strong Pick The Friend's Locker:
+  .image-placeholder
+    Paginated Friend List
+  = link_to "Visit", "#", class: 'btn btn-primary'

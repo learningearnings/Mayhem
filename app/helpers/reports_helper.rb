@@ -2,7 +2,7 @@ module ReportsHelper
   def date_filter_options
     [
       ['Everything', :all],
-      ['Last 90 Dats', :last_90_days],
+      ['Last 90 Days', :last_90_days],
       ['Last 60 Days', :last_60_days],
       ['Last Month', :last_month],
       ['This Month', :this_month],

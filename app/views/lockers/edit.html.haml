@@ -1,0 +1,22 @@
+%h2 Decorate My Locker Header
+
+.locker_edit
+  .locker_wrapper.editable
+    = render 'locker_stickers', locker_sticker_links: locker_sticker_links
+
+  .locker_interface
+    .available_stickers
+      %p Click a sticker to add it to your locker
+      - available_stickers.each do |sticker|
+        .sticker{"data-id" => sticker.id}
+          = image_tag(sticker.image.url)
+
+-# Render a template for our javascript to tie into
+%script#sticker_template{type: 'text/html'}
+  = render 'locker_sticker_template', x: '{{x}}', y: '{{y}}', id: '{{id}}', image_url: '{{image_url}}'
+
+
+-# FIXME: I don't understand why the asset pipeline's jquery.ui stuff isn't accessible :-\  shouldn't be doing this part
+= javascript_include_tag "jquery.ui.core", "jquery.ui.mouse", "jquery.ui.widget", "jquery.ui.draggable"
+
+= javascript_include_tag 'lockers'

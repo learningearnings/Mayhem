@@ -1,0 +1,3 @@
+/ We put a base image on that class in css?
+- locker_sticker_links.each do |locker_sticker_link|
+  = render 'locker_sticker_template', x: locker_sticker_link.x, y: locker_sticker_link.y, id: locker_sticker_link.id, image_url: locker_sticker_link.sticker_image_url

@@ -23,6 +23,10 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
     end
   end
 
+  def person
+    self.person_school_link.person
+  end
+
   ################### Validations ########################
 
   #

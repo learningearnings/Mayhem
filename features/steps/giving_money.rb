@@ -1,18 +1,27 @@
 class GivingCredits < Spinach::FeatureSteps
-  Given 'the main account exists' do
-    Plutus::Liability.create(name: CreditManager.new.main_account_name)
-  end
+  include SharedSteps
 
   When 'a school exists with credits' do
     @school = FactoryGirl.create(:school)
     @credits = 20_000
     cm = CreditManager.new
     cm.issue_credits_to_school(@school, @credits)
+    # Issuing credits to a school draws down the main account to a negative, but
+    # equivalent, balance
+    cm.main_account.balance.must_equal(@credits)
   end
 
-  And 'I take away all of the schools credits' do
+  When 'I take away all of the schools credits' do
     cm = CreditManager.new
     cm.revoke_credits_for_school(@school, @credits)
+  end
+
+  Then 'the main LE account should have the amount of credits taken away' do
+    cm = CreditManager.new
+    # It will equal zero in the case, because it will have already been given a
+    # negative balance when first issuing credits to the school with a zero
+    # balance.
+    cm.main_account.balance.must_equal(0)
   end
 
   Then 'that school should have some credits' do
@@ -37,6 +46,10 @@ class GivingCredits < Spinach::FeatureSteps
 
   Then 'that school should have 10000 credits' do
     @school.balance.must_equal BigDecimal("10000")
+  end
+
+  Then 'the main LE account should have 10000 credits less' do
+    CreditManager.new.main_account.balance.must_equal(BigDecimal('10000'))
   end
 
   Then 'that teacher should have 1000 credits to give' do
@@ -70,6 +83,9 @@ class GivingCredits < Spinach::FeatureSteps
   And 'I give a student 10 credits' do
     @student_credits = 10
     cm = CreditManager.new
+    # Teacher purchases the credits
+    cm.purchase_ebucks(@school, @teacher, @student1, @student_credits)
+    # Student redeems the credits
     cm.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
   end
 
@@ -77,11 +93,27 @@ class GivingCredits < Spinach::FeatureSteps
     @teacher.main_account(@school).balance.must_equal BigDecimal('990')
   end
 
+  And 'the student should have 10 credits in checking' do
+    @student1.checking_account.balance.must_equal BigDecimal('10')
+  end
+
+  And 'the first student should have 5 credits in checking' do
+    @student1.checking_account.balance.must_equal BigDecimal('5')
+  end
+
+  And 'the second student should have 5 credits in checking' do
+    @student2.checking_account.balance.must_equal BigDecimal('5')
+  end
+
   And 'I give 2 students 5 credits each' do
     @student_credits = 5
     cm = CreditManager.new
-    cm.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
-    cm.issue_ecredits_to_student(@school, @teacher, @student2, @student_credits)
+    [@student1, @student2].each do |student|
+      # Teacher purchases the credits
+      cm.purchase_ebucks(@school, @teacher, student, @student_credits)
+      # Student redeems the credits
+      cm.issue_ecredits_to_student(@school, @teacher, student, @student_credits)
+    end
   end
 
   When 'I have 100 credits' do
@@ -93,6 +125,10 @@ class GivingCredits < Spinach::FeatureSteps
   And 'I purchase a reward that cost 5 credits' do
     cm = CreditManager.new
     cm.transfer_credits_for_reward_purchase(@student, BigDecimal('5'))
+  end
+
+  Then 'I should have 95 credits in checking' do
+    @student.checking_account.balance.must_equal BigDecimal('95')
   end
 
   And 'I attempt to purchase a reward that costs 105 credits' do
@@ -123,6 +159,11 @@ class GivingCredits < Spinach::FeatureSteps
     cm.issue_credits_to_school(@school, @credits)
   end
 
+  And 'a teacher is a member of that school' do
+    @teacher = FactoryGirl.create(:teacher)
+    @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
+  end
+
   Given 'I am a student' do
     @school = FactoryGirl.create(:school)
     @student = FactoryGirl.create(:student)
@@ -136,9 +177,19 @@ class GivingCredits < Spinach::FeatureSteps
     cm.transfer_credits_from_checking_to_savings(@student, BigDecimal('45'))
   end
 
+  And 'I transfer 10 credits to savings' do
+    cm = CreditManager.new
+    cm.transfer_credits_from_checking_to_savings(@student, BigDecimal('10'))
+  end
+
   And 'I transfer 35 credits to checking' do
     cm = CreditManager.new
     cm.transfer_credits_from_savings_to_checking(@student, BigDecimal('35'))
+  end
+
+  And 'I transfer 5 credits to checking' do
+    cm = CreditManager.new
+    cm.transfer_credits_from_savings_to_checking(@student, BigDecimal('5'))
   end
 
   Then 'I should have 45 credits in savings' do
@@ -149,11 +200,46 @@ class GivingCredits < Spinach::FeatureSteps
     @student.checking_balance.must_equal BigDecimal('55')
   end
 
+  Then 'I should have 5 credits in checking' do
+    @student.checking_balance.must_equal BigDecimal('5')
+  end
+
+  Then 'I should have 190 credits in checking' do
+    @student.checking_balance.must_equal BigDecimal('190')
+  end
+
   Then 'I should have 10 credits in savings' do
     @student.savings_balance.must_equal BigDecimal('10')
   end
 
   Then 'I should have 90 credits in checking' do
     @student.checking_balance.must_equal BigDecimal('90')
+  end
+
+  Then 'I should have 100 credits in checking' do
+    @student.checking_balance.must_equal BigDecimal('100')
+  end
+
+  Then 'I should have 50 credits total' do
+    (@student.checking_balance + @student.savings_balance).must_equal BigDecimal('50')
+  end
+
+  When 'I have 200 credits in checking' do
+    @student_credits = 200
+    cm = CreditManager.new
+    cm.issue_ecredits_to_student(@school, @teacher, @student, @student_credits)
+  end
+
+  When 'I have 100 credits in checking' do
+    @student_credits = 100
+    cm = CreditManager.new
+    cm.issue_ecredits_to_student(@school, @teacher, @student, @student_credits)
+  end
+
+  When 'I have 50 credits in savings' do
+    @student_credits = 50
+    cm = CreditManager.new
+    cm.issue_ecredits_to_student(@school, @teacher, @student, @student_credits)
+    cm.transfer_credits_from_checking_to_savings(@student, @student_credits)
   end
 end

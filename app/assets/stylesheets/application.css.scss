@@ -6,10 +6,11 @@
 
 // Site styles
 @import 'variables';
+
 @import 'helpers';
 @import 'layout';
 @import 'components';
 @import 'games';
 @import 'store/products';
 @import 'messages';
-
+@import 'lockers';
