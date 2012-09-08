@@ -305,6 +305,7 @@ GEM
       actionpack (~> 3.0)
       activerecord (~> 3.0)
       polyamorous (~> 0.5.0)
+    rb-fsevent (0.9.1)
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
     rdoc (3.12)
@@ -476,6 +477,7 @@ DEPENDENCIES
   rack-cache
   rails (~> 3.2.6)
   ranked-model
+  rb-fsevent (~> 0.9.1)
   rb-inotify (~> 0.8.8)
   responders
   roo

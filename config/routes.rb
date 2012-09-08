@@ -49,6 +49,9 @@ Leror::Application.routes.draw do
   resources :posts
   resources :pdfs
 
+  resources :classrooms
+  match "/add_classroom_student" => 'classrooms#add_student', as: 'new_classroom_student'
+  get :remove_classroom_student, :controller => :classrooms, :action => :remove_student
   # Student banking bits
   resource :bank
   match "/redeem_bucks" => 'banks#redeem_bucks'

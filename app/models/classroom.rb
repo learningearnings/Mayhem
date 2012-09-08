@@ -11,7 +11,7 @@ class Classroom < ActiveRecord::Base
   has_many :classroom_filter_links, :inverse_of => :classrooms
   has_many :filters, :through => :classroom_filter_links
 
-  attr_accessible :name, :status, :school
+  attr_accessible :name, :status, :school_id
   validates_presence_of :name
 
   # Roll our own Relationships (with ARel merge!)

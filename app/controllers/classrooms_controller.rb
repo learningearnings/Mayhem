@@ -1,0 +1,78 @@
+class ClassroomsController < LoggedInController
+
+  def index
+    # FIXME: - Bug in person.classrooms so for now using uniq to get past this.
+    @classrooms = current_person.classrooms.uniq
+  end
+
+  def new
+    @classroom = Classroom.new(params[:classroom])
+  end
+
+  def show
+    @classroom = Classroom.find(params[:id])
+  end
+
+  def remove_student
+    @student = Student.find(params[:student])
+    @school = current_school
+    @classroom = Classroom.find(params[:classroom])
+    if psl = PersonSchoolLink.find_by_school_id_and_person_id(@school.id, @student.id)
+      link = PersonSchoolClassroomLink.find_by_person_school_link_id_and_classroom_id(psl.id, @classroom.id)
+      if link.delete
+        flash[:notice] = "Student removed from classroom."
+        redirect_to classroom_path(@classroom)
+      else
+        flash[:error] = "Student not removed from classroom."
+        render :show
+      end
+    else
+      flash[:error] = "Student not removed from classroom."
+      render :show
+    end
+
+
+  end
+
+  def add_student
+    @student = Student.find(params[:student_id])
+    @classroom = Classroom.find(params[:classroom_id])
+    if @student<<(@classroom)
+      flash[:notice] = "Student added to classroom."
+      redirect_to classroom_path(@classroom)
+    else
+      flash[:error] = "Student not added to classroom."
+      render :show
+    end
+  end
+  
+  def create
+    @classroom = Classroom.new(params[:classroom])
+    if @classroom.save
+      current_person<<@classroom
+      psl = PersonSchoolLink.find_by_person_id_and_school_id(current_person.id, current_school.id)
+      pscl = PersonSchoolClassroomLink.find_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
+      pscl.activate
+      pscl.update_attribute(:owner, true)
+      flash[:notice] = "Classroom Created."
+      redirect_to classroom_path(@classroom)
+    else
+      flash[:error] = "Classroom not created."
+      render :new
+    end
+  end
+
+  def destroy
+    @classroom = Classroom.find(params[:id])
+    if @classroom.destroy
+      pscls = PersonSchoolClassroomLink.find_all_by_classroom_id(@classroom.id)
+      if pscls.present?
+        pscls.map{|x| x.delete}
+      end
+      flash[:notice] = 'Classroom deleted.'
+      redirect_to classrooms_path
+    end
+  end
+
+
+end

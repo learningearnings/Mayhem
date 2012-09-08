@@ -1,0 +1,19 @@
+%h3= @classroom.name
+%table
+  %thead
+    %tr
+      %th Student Name
+      %th Remove
+  %tbody
+    - @classroom.students.each do |student|
+      %tr
+        %td= student.name
+        %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
+
+
+= form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
+  = select_tag :student_id, options_from_collection_for_select(current_school.students.all, :id, :to_s)
+  = hidden_field_tag :classroom_id, @classroom.id
+  = f.submit 'Add Student'
+
+
