@@ -1,10 +1,11 @@
 require "basic_statuses"
+require 'macro_reflection_relation_facade'
 
 class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
   has_many :posts
-  has_many :person_school_links, :inverse_of => :person
+  has_many :person_school_links
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
 
@@ -16,7 +17,7 @@ class Person < ActiveRecord::Base
 
   # Relationships
   def person_school_links(status = :status_active)
-    PersonSchoolLink.where(person_id: self.id).send(status)
+    MacroReflectionRelationFacade.new(PersonSchoolLink.where(person_id: self.id).send(status))
   end
 
   def person_school_classroom_links(status = :status_active)

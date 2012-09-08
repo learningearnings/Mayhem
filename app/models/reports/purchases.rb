@@ -54,8 +54,8 @@ module Reports
       end
     end
 
-    def line_item_base_scope
-      Spree::LineItem.includes(:order).where(order: { store_id: @school.store.id })
+    def reward_delivery_base_scope
+      RewardDelivery.includes(to: [ :person_school_links ]).where(to: { person_school_links: { school_id: @school.id } })
     end
 
     def generate_row(line_item)

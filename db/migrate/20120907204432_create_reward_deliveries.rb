@@ -5,6 +5,7 @@ class CreateRewardDeliveries < ActiveRecord::Migration
       t.integer :to_id
       t.integer :reward_id
       t.string  :status
+      t.timestamps
     end
   end
 end

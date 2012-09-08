@@ -308,10 +308,12 @@ ActiveRecord::Schema.define(:version => 20120907204432) do
   end
 
   create_table "reward_deliveries", :force => true do |t|
-    t.integer "from_id"
-    t.integer "to_id"
-    t.integer "reward_id"
-    t.string  "status"
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.integer  "reward_id"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "school_filter_links", :force => true do |t|
