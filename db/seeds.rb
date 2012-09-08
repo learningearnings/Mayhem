@@ -150,6 +150,7 @@ if existing.nil?
   sm.save
 end
 
+# Generate some avatars
 Dir.foreach('public/avatars/football/college') do |item|
   next if item.match(/^\./)
   a = Avatar.new
@@ -266,4 +267,15 @@ if Rails.env.development? || Rails.env.production?
   @reward = Spree::Product.first
   @reward_delivery  = FactoryGirl.create(:pending_reward_delivery, from: @teacher, to: @student1, reward: @reward)
   # ======= /Make the teacher have a pending reward delivery =======
+
+  # ======== LOCKERS ========
+  # Generate some stickers
+  sticker_dir = "public/avatars/football/college"
+  Dir.foreach(sticker_dir) do |item|
+    next if item.match(/^\./)
+    s = Sticker.new
+    s.image = Rails.root.join("#{sticker_dir}/#{item}")
+    s.save
+  end
+  # ======== /LOCKERS ========
 end

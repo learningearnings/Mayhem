@@ -1,0 +1,31 @@
+.locker_wrapper {
+  background-color: #eee;
+  width: 800px;
+  height: 400px;
+  position: relative;
+  .locker_sticker {
+    position: absolute;
+  }
+}
+
+.locker_edit {
+  .locker_wrapper {
+    display: inline-block;
+  }
+
+  .locker_interface {
+    display: inline-block;
+    width: 200px;
+    height: 400px;
+    overflow: scroll;
+    .available_stickers {
+      .sticker {
+        padding: 1em;
+        cursor: pointer;
+        &:hover {
+          background-color: #eee;
+        }
+      }
+    }
+  }
+}
