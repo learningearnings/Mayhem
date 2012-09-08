@@ -214,7 +214,7 @@ if Rails.env.development? || Rails.env.production?
   @student_credits = 10000
   @credit_manager.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
   # ======== /GIVE OUT SOME CREDITS ======
-
+  
   # ======== MESSAGING ========
   @message1 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message2 = FactoryGirl.create(:message, from: @student2, to: @student1)
@@ -246,6 +246,7 @@ if Rails.env.development? || Rails.env.production?
   # ======== /Generate some codes ========
 
 
+  # ======== STORE SETUP ========
   # create the default store - le wholesale store
   if Rails.env.development?
     port = ':3000'
@@ -259,4 +260,10 @@ if Rails.env.development? || Rails.env.production?
 
   Rake::Task['db:load_dir'].reenable
   Rake::Task['db:load_dir'].invoke("samples")
+  # ======== /STORE SETUP ========
+
+  # ======= Make the teacher have a pending reward delivery =======
+  @reward = Spree::Product.first
+  @reward_delivery  = FactoryGirl.create(:pending_reward_delivery, from: @teacher, to: @student1, reward: @reward)
+  # ======= /Make the teacher have a pending reward delivery =======
 end

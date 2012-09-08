@@ -3,6 +3,7 @@ require 'basic_statuses'
 class PersonSchoolLink < ActiveRecord::Base
   state_machine :status, :initial => :active do
   end
+
   scope :not_this_id, where("id != #{@id}")
   include BasicStatuses
 

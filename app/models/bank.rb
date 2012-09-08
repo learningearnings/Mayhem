@@ -8,6 +8,9 @@ class Bank
   def initialize(credit_manager=CreditManager.new)
     @credit_manager = credit_manager
     @buck_printer = BuckPrinter.new
+    # Set up no-op callbacks in case we don't want to use them
+    @on_failure = lambda{}
+    @on_success = lambda{}
   end
 
   def create_print_bucks(person, school, prefix, bucks={})
@@ -74,10 +77,10 @@ class Bank
     body = "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
 
     message_creator.call(from: person,
-                    to: student,
-                    subject: "You've been awarded LE Bucks", 
-                    body: body,
-                    category: 'teacher')
+                         to: student,
+                         subject: "You've been awarded LE Bucks", 
+                         body: body,
+                         category: 'teacher')
   end
 
   def create_buck(prefix, points, params)

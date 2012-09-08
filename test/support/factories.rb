@@ -73,6 +73,33 @@ FactoryGirl.define do
     end
   end
 
+  factory :reward_delivery do
+    association :from, factory: :person
+    association :to,   factory: :person
+    association :reward, factory: :spree_product
+    status "pending"
+    factory :pending_reward_delivery do
+      status "pending"
+    end
+    factory :delivered_reward_delivery do
+      status "delivered"
+    end
+  end
+
+  factory :spree_product, class: Spree::Product do
+    name "Some Product"
+    available_on "2012-01-01"
+    permalink "some-product"
+    count_on_hand 20
+    price BigDecimal('10')
+  end
+
+  factory :spree_store, class: Spree::Store do
+    name  "Test Store"
+    code  "123"
+    email "foo@example.com"
+  end
+
   factory :state do
     name {|n| "State #{n}" }
     abbr {|n| "S#{n}" }

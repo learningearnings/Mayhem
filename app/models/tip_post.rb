@@ -1,0 +1,2 @@
+class TipPost < Post
+end

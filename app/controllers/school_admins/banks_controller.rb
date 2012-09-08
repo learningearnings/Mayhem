@@ -14,7 +14,7 @@ module SchoolAdmins
 
     protected
     def person
-      @person ||= if params[:teacher]
+      @person ||= if params[:teacher] && params[:teacher][:id].present?
         Teacher.find(params[:teacher][:id])
       else
         current_person

@@ -28,11 +28,8 @@
   
 /* Sprites */
 $stickies_nav-layout:horizontal;
-$stickies_nav_hover-layout:horizontal;
 @import "sprites/stickies_nav/*.png";
-@import "sprites/stickies_nav_hover/*.png";
 @include all-stickies_nav-sprites;
-@include all-stickies_nav_hover-sprites;
 
 body {
   font-size: 62.5%;
@@ -143,6 +140,7 @@ input, textarea, select {
 
 .login-form-fields .login-button {
   background-image: url(asset_path('login_button.png', image));
+  text-indent: -9999px;
 }
 
 .forgot-password {
@@ -186,7 +184,6 @@ input, textarea, select {
 
 .content {
   position: relative;
-  background-image: url(asset_path('stickies_nav_hover-sfd03b6410e.png', image));    
 }
 
 .content .stickies-nav {
@@ -227,6 +224,8 @@ input, textarea, select {
   color: #f05c1a;
 }
 
+
+
 .btn.students-stickie,
 .btn.parents-stickie,
 .btn.teachers-stickie {
@@ -242,6 +241,10 @@ input, textarea, select {
 .btn.parents-stickie:hover,
 .btn.teachers-stickie:hover {
   background-position: 0;
+  -moz-transition: none;
+  -webkit-transition: none;
+  -o-transition: color 0 ease-in;
+  transition: none;  
 }
 
 
@@ -251,8 +254,7 @@ input, textarea, select {
 }
 
 .btn.students-stickie:hover {
-  background-image: url(asset_path('sprites/stickies_nav_hover-sfd03b6410e.png', image));
-  background-position: -110px 0;
+  background-position: -330px 0;
 }
 
 .btn.parents-stickie {
@@ -261,8 +263,7 @@ input, textarea, select {
 }
 
 .btn.parents-stickie:hover {
-  background-image: url(asset_path('sprites/stickies_nav_hover-sfd03b6410e.png', image));
-  background-position: 0 0;
+  background-position: -110px 0;
 }
 
 .btn.teachers-stickie {
@@ -271,8 +272,7 @@ input, textarea, select {
 }
 
 .btn.teachers-stickie:hover {
-  background-image: url(asset_path('sprites/stickies_nav_hover-sfd03b6410e.png', image));
-  background-position: -220px 0;
+  background-position: -550px 0;
   
 }
 

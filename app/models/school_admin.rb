@@ -1,8 +1,6 @@
 class SchoolAdmin < Person
-
   has_many :schools, :through => :person_school_links
   after_create :create_user
-
 
   def purchases_account_name
     nil
@@ -11,9 +9,6 @@ class SchoolAdmin < Person
   def purchases_account
     nil
   end
-
-
-
 
   def primary_account
     main_account(self.schools.first)

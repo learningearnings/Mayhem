@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+# Helper method
+def linux_only(require_as)
+  RUBY_PLATFORM.include?('linux') && require_as
+end
+
 gem 'rails', '~> 3.2.6'
 gem 'sqlite3'
 gem 'pg', '0.13.2'
@@ -42,6 +47,7 @@ gem 'dragonfly'
 gem 'nested_form', :git => 'git://github.com/ryanb/nested_form.git'
 gem 'simple_form'
 gem 'country_select'
+gem "ckeditor", "3.7.1"
 
 # PDFKit provides an interface to wkhtmltopdf from ruby, and a rack middleware
 gem 'pdfkit'
@@ -81,12 +87,17 @@ end
 group :development, :test do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
+<<<<<<< HEAD
   #gem 'rb-inotify', '~> 0.8.8'
+=======
+  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
+>>>>>>> d75d82ae603631ef632329af26445195b825a657
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
   gem 'unicorn'
   gem 'libnotify'
+  gem 'thin'
 end
 
 group :test do

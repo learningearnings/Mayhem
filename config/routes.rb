@@ -10,6 +10,8 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
   end
 
+  mount Ckeditor::Engine => '/ckeditor'
+
   # This line mounts Spree's routes at the root of your application.
   # This means, any requests to URLs such as /products, will go to Spree::ProductsController.
   # If you would like to change where this engine is mounted, simply change the :at option to something different.
@@ -23,7 +25,13 @@ Leror::Application.routes.draw do
 
   # Handle static pages
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
-  
+
+  # Buck routes
+  match "/create_print_bucks" => 'banks#create_print_bucks'
+  match "/create_ebucks" => 'banks#create_ebucks'
+  match "/redeem_bucks" => 'banks#redeem_bucks'
+
+
   # Game routes
   namespace :games do
     resource :food_fight do
@@ -39,6 +47,7 @@ Leror::Application.routes.draw do
   resources :messages
   match "/inbox" => 'messages#index'
 
+  resources :posts
   resources :pdfs
 
   # Student banking bits

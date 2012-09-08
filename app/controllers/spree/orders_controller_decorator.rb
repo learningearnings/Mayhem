@@ -29,81 +29,11 @@ Spree::OrdersController.class_eval do
 
     # --- The above code is spree core copied ---
     # --- Start our customization ---
-    # Cart
-    @order.next
 
-    # Address
-    shipping_address = {}
-    shipping_address[:firstname] = current_person.first_name
-    shipping_address[:lastname] = current_person.last_name
-    shipping_address[:address1] = "6238 Canterbury Road"
-    shipping_address[:city] = "Pinson"
-    shipping_address[:state_name] = "Alabama"
-    shipping_address[:zipcode] = "35126"
-    shipping_address[:phone] = "2052153957"
-    shipping_address[:country] = Spree::Country.find_by_iso "US"
-    @order.ship_address_attributes = shipping_address
-    @order.bill_address_attributes = shipping_address
-    @order.save
-    @order.next
-
-    # Delivery
-    @order.shipping_method_id = Spree::ShippingMethod.first.id
-    @order.save
-    @order.next
-
-    # Payment
-    payment_source_attributes = {}
-    if current_person.is_a? SchoolAdmin
-      payment_source_attributes["number"] = current_school.store_account_name
-    else
-      payment_source_attributes["number"] = current_person.checking_account_name
-    end
-    payment_source_attributes["month"] = "1"
-    payment_source_attributes["year"] = "2100"
-    payment_source_attributes["verification_value"] = "111"
-    payment_source_attributes["first_name"] = current_person.first_name
-    payment_source_attributes["last_name"] = current_person.last_name
-
-    payment_params = {
-      amount: @order.amount,
-      payment_method: Spree::PaymentMethod.where(environment: Rails.env).first,
-      source_attributes: payment_source_attributes
-    }
-    payment = Spree::Payment.new(payment_params, without_protection: true)
-    @order.payments = [payment]
-    @order.save
-
-    # Trigger the purchase
-    @order.next
-
-    # Go ahead and find or create the wholesale product in the SchoolAdmin's school store
-    if @order.store == Spree::Store.find_by_name("le")
-      create_school_products
-    end
-
+    OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
+    
     flash[:notice] = "Bought that stuff..."
     redirect_to "/"
-  end
-
-  def create_school_products
-    if current_person.is_a? SchoolAdmin
-      retail_store = Spree::Store.find_by_code(session[:current_school_id].to_s)
-
-      @order.products.each do |wholesale_product|
-        retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
-        retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
-
-        SchoolStoreProductDistributionCommand.new(:master_product => wholesale_product, 
-                                                  :school => current_school,
-                                                  :quantity => retail_qty,
-                                                  :retail_price => retail_price).execute!
-
-
-      end
-    else
-      flash[:alert] = "You are not allowed to purchase products from the Learning Earnings store! Please visit your school store to purchase items."
-    end
   end
 
   private
