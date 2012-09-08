@@ -16,19 +16,19 @@ class Classroom < ActiveRecord::Base
 
   # Roll our own Relationships (with ARel merge!)
   def person_school_links(status = :status_active)
-    PersonSchoolLink.joins(:person_school_classroom_links).send(status)
+    PersonSchoolLink.joins(:person_school_classroom_links).where(person_school_classroom_links: { classroom_id: id }).send(status)
   end
 
   def students(status = :status_active)
-    Student.joins(:person_school_links).send(status)
+    Student.joins(:person_school_links).where(person_school_links: { id: person_school_links(status) })
   end
 
   def teachers(status = :status_active)
-    Teacher.joins(:person_school_classroom_links).send(status)
+    Teacher.joins(:person_school_links).where(person_school_links: { id: person_school_links(status) })
   end
 
   def owner(status = :status_active)
-    Teacher.joins(:person_school_classroom_links).where(:owner => true).merge(person_school_links(status)).send(status).first
+    Teacher.joins(:person_school_links).joins("INNER JOIN person_school_classroom_links ON person_school_classroom_links.person_school_link_id = person_school_links.id").where(person_school_links: { id: person_school_links(status) }, person_school_classroom_links: { owner: true })
   end
   # END Relationships
 
@@ -36,12 +36,12 @@ class Classroom < ActiveRecord::Base
     person_school_classroom_links.where(:owner => true).each do |link|
       link.owner = false
     end
-    if person_school_classrom_links.where(person_school_link_id => t.id).count < 1
+    if person_school_classroom_links.where(person_school_link_id => t.id).count < 1
       person_school_classroom_links << PersonSchoolClassroomLink(:person_school_link_id => person_school_link.id, 
                                                                  :classroom_id => self.id,
                                                                  :owner => true)
       else
-      person_school_classrom_links.where(person_id => t.id).each do
+      person_school_classroom_links.where(person_id => t.id).each do
         pscl.owner = true
       end
     end

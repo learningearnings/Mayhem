@@ -5,9 +5,11 @@ class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
   has_many :posts
-  has_many :person_school_links
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
+  has_many :classrooms, :through => :person_school_classroom_links
+  has_many :person_school_links
+  has_many :person_school_classroom_links
 
   delegate :avatar, to: :user
   delegate :username, :username= , to: :user
@@ -21,7 +23,7 @@ class Person < ActiveRecord::Base
   end
 
   def person_school_classroom_links(status = :status_active)
-    PersonSchoolClassroomLink.joins(:person_school_link).merge(person_school_links(status)).send(status)
+    MacroReflectionRelationFacade.new(PersonSchoolClassroomLink.joins(:person_school_link).merge(person_school_links(status)).send(status))
   end
 
   def schools(status = :status_active)
