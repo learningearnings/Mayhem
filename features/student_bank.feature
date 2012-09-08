@@ -2,7 +2,7 @@ Feature: Student Bank
   As a student, I want to claim bucks
 
   Background:
-    Given the main account exists
+    Given the main LE account exists
     Given accounts exist
     Given accounts have bucks
     Given I am logged in as a student

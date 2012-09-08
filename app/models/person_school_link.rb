@@ -36,7 +36,6 @@ class PersonSchoolLink < ActiveRecord::Base
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).merge(person_school_classroom_links(status)).send(status)
   end
-
   # End Relationships
 
   def setup_accounts
@@ -46,7 +45,6 @@ class PersonSchoolLink < ActiveRecord::Base
       person.setup_accounts(school)
     end
   end
-
 
   ################### Validations ########################
 

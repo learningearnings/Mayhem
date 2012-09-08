@@ -9,6 +9,10 @@ class CreditManager
     'MAIN_ACCOUNT'
   end
 
+  def main_account
+    Plutus::Account.find_by_name(main_account_name)
+  end
+
   # NOTE: I am confused about why debits and credits are switched here, but to make
   # my tests pass they needed to be.
   def transfer_credits description, from_account, to_account, amount, buck_batch=nil
