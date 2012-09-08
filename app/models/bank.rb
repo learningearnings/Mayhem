@@ -7,6 +7,7 @@ class Bank
 
   def initialize(credit_manager=CreditManager.new)
     @credit_manager = credit_manager
+    @buck_printer = BuckPrinter.new
     # Set up no-op callbacks in case we don't want to use them
     @on_failure = lambda{}
     @on_success = lambda{}
@@ -16,9 +17,15 @@ class Bank
     points  = amount_of_bucks(bucks)
     account = person.main_account(school)
     return on_failure.call unless account_has_enough_money_for(account, points)
+    
+    # creates and returns bucks array
+    _bucks = create_bucks(person, school, prefix, bucks)
 
-    create_bucks(person, school, prefix, bucks)
-    @credit_manager.purchase_printed_bucks(school, person, points)
+    # add to batch
+    bb = BuckBatch.create(:name => 'Test')
+    _bucks.map{|x| BuckBatchLink.create(:buck_batch_id => bb.id, :otu_code_id => x.id)}
+
+    @credit_manager.purchase_printed_bucks(school, person, points, bb)
     return on_success.call
   end
 
@@ -46,6 +53,7 @@ class Bank
   def claim_bucks(student, otu_code)
     if otu_code.is_ebuck?
       @credit_manager.issue_ecredits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+      application
     else
       @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
     end
@@ -88,15 +96,22 @@ class Bank
   def create_bucks(person, school, prefix, bucks)
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
                    :expires_at => (Time.now + 45.days) }
+    _bucks = []
     bucks[:ones].times do
-      create_buck(prefix, 1, buck_params)
+      _bucks << create_buck(prefix, 1, buck_params)
     end
     bucks[:fives].times do
-      create_buck(prefix, 5, buck_params)
+      _bucks << create_buck(prefix, 5, buck_params)
     end
     bucks[:tens].times do
-      create_buck(prefix, 10, buck_params)
+      _bucks << create_buck(prefix, 10, buck_params)
     end
+   
+    # FIX ME 
+    #
+    #@buck_printer.print_bucks(_bucks)
+
+    _bucks
   end
 
   def amount_of_bucks(bucks)

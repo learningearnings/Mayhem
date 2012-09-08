@@ -1,6 +1,8 @@
 class OtuCode < ActiveRecord::Base
   attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck, :student, :person_school_link
-  has_many :transactions, :through => :otu_transaction_link
+  has_many :transactions, :through => :otu_transaction_links
+  has_many :buck_batches, :through => :buck_batch_links
+  has_many :buck_batch_links
 
   scope :active,  lambda { where("active = ?", true) }
 
