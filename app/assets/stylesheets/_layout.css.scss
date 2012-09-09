@@ -499,6 +499,7 @@ input, textarea, select {
   top: 215px;
   left: 885px;
 }
+
 .sir-francis-bacon {
   background-image: url(asset_path('sir_bacon_francis_arrow_copy.png', image));
   height: 77px;
@@ -507,6 +508,88 @@ input, textarea, select {
   top: 390px;
   left: 205px;
 }
+
+.sir-francis-bacon-how-it-works-teachers {
+  background-image: url(asset_path('bacon_francis_how_it_works_teachers.png', image));
+  height: 351px;
+  width: 227px;
+  position: absolute;
+  top: 140px;
+  left: 215px;
+}
+
+.intro-text {
+  background-image: url(asset_path('intro_text_how_it_works_teachers.png', image));
+  height: 113px;
+  width: 212px;
+  position: absolute;
+  top: 8px;
+  left: 205px;
+}
+
+.join-now-how-it-works-teachers {
+  background-image: url(asset_path('join_now_how_it_works_teachers.png', image));  
+  height: 127px;
+  width: 134px;
+  top: 50px;
+  left: 1000px;
+  position: absolute;
+}
+
+.others-say-how-it-works-teachers {
+  background-image: url(asset_path('see_what_others_say_how_it_works_teachers.png', image));
+  height: 131px;
+  width: 134px;
+  top: 190px;
+  left: 1000px;
+  position: absolute;
+}
+
+.attention-teachers {
+  background-image: url(asset_path('attention_teachers.png', image));
+  height: 255px;
+  width: 465px;
+  top: 40px;
+  left: 480px;
+  position: absolute;
+}
+
+.step1-slide {
+  background-image: url(asset_path('step_1.png', image));
+  height: 268px;
+  width: 440px;
+  top: 30px;
+  left: 500px;
+  position: absolute;
+}
+
+.step2-slide {
+  background-image: url(asset_path('step_2.png', image));
+  height: 268px;
+  width: 398px;
+  top: 30px;
+  left: 500px;
+  position: absolute;
+}
+
+.step3-slide {
+  background-image: url(asset_path('step_3.png', image));
+  height: 268px;
+  width: 428px;
+  top: 30px;
+  left: 500px;
+  position: absolute;
+}
+
+.step4-slide {
+  background-image: url(asset_path('step_4.png', image));
+  height: 232px;
+  width: 450px;
+  top: 30px;
+  left: 500px;
+  position: absolute;
+}
+
 
 footer {
   color: $supporting-text-color;
