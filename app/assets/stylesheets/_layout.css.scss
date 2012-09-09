@@ -37,8 +37,8 @@ $stickies_nav-layout:horizontal;
 
 body {
   font-size: 62.5%;
-  font-family: 'sketch_rockwellregular';
-  background-image: url(asset_path('common/notebook_paper_bg.png', image));
+  font-family: 'sketch_rockwellregular';  
+  background-image: url(asset_path('page_bg.png', image));
   background-position: top center;
   background-repeat: repeat-y;
   
@@ -50,6 +50,10 @@ input, textarea, select {
 
 .head {
   overflow: hidden;
+  background-image: url(asset_path('header_bg.png', image));
+  background-position: top center;
+  background-repeat: repeat-y;
+  background-color: #fff;
 }
 
 .logo {
