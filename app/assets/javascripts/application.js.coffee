@@ -17,6 +17,7 @@
 //= require jquery.html5-placeholder-shim
 //= require jquery_nested_form
 //= require ckeditor/init
+//= require jquery.ui.draggable
 
 # Make jquery ajax requests use the csrf token
 $ ->
