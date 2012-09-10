@@ -36,6 +36,11 @@ class Student < Person
     checking_account
   end
 
+  def store_code
+    school.store_subdomain
+  end
+
+
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def checking_account_name
     "STUDENT#{id} CHECKING"
