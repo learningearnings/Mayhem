@@ -107,7 +107,7 @@ GEM
       ffi (~> 1.0, >= 1.0.6)
     choice (0.1.6)
     chunky_png (1.2.6)
-    ckeditor (3.7.1)
+    ckeditor (3.7.3)
       mime-types
       orm_adapter
     cocaine (0.3.0)
@@ -442,7 +442,7 @@ DEPENDENCIES
   activeadmin
   cancan
   capybara
-  ckeditor (= 3.7.1)
+  ckeditor (= 3.7.3)
   coffee-rails (~> 3.2.1)
   compass-rails
   compass_twitter_bootstrap!
