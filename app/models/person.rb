@@ -10,6 +10,8 @@ class Person < ActiveRecord::Base
   #has_many :classrooms, :through => :person_school_classroom_links
   has_many :person_school_links
   has_many :person_school_classroom_links
+  has_many :buck_batches, :through => :person_buck_batch_links
+  has_many :person_buck_batch_links
 
   delegate :avatar, to: :user
   delegate :username, :username= , to: :user

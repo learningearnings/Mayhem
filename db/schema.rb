@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120907202055) do
+ActiveRecord::Schema.define(:version => 20120908163303) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -68,6 +68,22 @@ ActiveRecord::Schema.define(:version => 20120907202055) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "ckeditor_assets", :force => true do |t|
+    t.string   "data_file_name",                  :null => false
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.integer  "assetable_id"
+    t.string   "assetable_type",    :limit => 30
+    t.string   "type",              :limit => 30
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "ckeditor_assets", ["assetable_type", "assetable_id"], :name => "idx_ckeditor_assetable"
+  add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], :name => "idx_ckeditor_assetable_type"
 
   create_table "classroom_filter_links", :force => true do |t|
     t.integer  "classroom_id"
@@ -250,6 +266,13 @@ ActiveRecord::Schema.define(:version => 20120907202055) do
 
   add_index "people", ["type"], :name => "index_people_on_type"
 
+  create_table "person_buck_batch_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "buck_batch_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "person_class_filter_links", :force => true do |t|
     t.integer  "filter_id"
     t.datetime "created_at",                 :null => false
@@ -306,6 +329,27 @@ ActiveRecord::Schema.define(:version => 20120907202055) do
   end
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
+
+  create_table "posts", :force => true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.string   "status"
+    t.string   "type"
+    t.integer  "person_id"
+    t.integer  "filter_id"
+    t.integer  "published_by"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "reward_deliveries", :force => true do |t|
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.integer  "reward_id"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
