@@ -52,6 +52,10 @@ class SchoolAdmin < Person
     first_name + ' ' + last_name
   end
 
+  def store_code
+    'le'
+  end
+
   def setup_accounts(school)
     main_account(school)        || Plutus::Asset.create(name: main_account_name(school))
     unredeemed_account(school)  || Plutus::Asset.create(name: unredeemed_account_name(school))

@@ -4,8 +4,8 @@
     float: left;
     margin-bottom: 10px;
     margin-left: 10px;
-    @extend .span3;
-    @extend .thumbnail;
+    @extend .span3 !optional;
+    @extend .thumbnail !optional;
     background-color: white;
 }
 
@@ -26,8 +26,8 @@ a.info {
 }
 
 table#product-properties{
-  @extend .table;
-  @extend .table-striped;
-  @extend .table-bordered;
-  @extend .solid-background;
+  @extend .table !optional;
+  @extend .table-striped !optional;
+  @extend .table-bordered !optional;
+  @extend .solid-background !optional;
 }

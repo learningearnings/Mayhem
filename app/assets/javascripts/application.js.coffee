@@ -18,6 +18,7 @@
 //= require jquery_nested_form
 //= require ckeditor/init
 //= require jquery.ui.draggable
+//= require jquery.ui.dialog
 
 # Make jquery ajax requests use the csrf token
 $ ->

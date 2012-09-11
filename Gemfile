@@ -48,7 +48,7 @@ gem 'dragonfly'
 gem 'nested_form', :git => 'git://github.com/ryanb/nested_form.git'
 gem 'simple_form'
 gem 'country_select'
-gem "ckeditor", "3.7.1"
+gem "ckeditor", '3.7.3'
 
 # PDFKit provides an interface to wkhtmltopdf from ruby, and a rack middleware
 gem 'pdfkit'
@@ -77,10 +77,10 @@ group :assets do
 end
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'

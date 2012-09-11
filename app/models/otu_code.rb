@@ -3,23 +3,15 @@ class OtuCode < ActiveRecord::Base
   has_many :transactions, :through => :otu_transaction_links
   has_many :buck_batches, :through => :buck_batch_links
   has_many :buck_batch_links
+  belongs_to :student
+  belongs_to :person_school_link
+  has_one :teacher, :through => :person_school_link, :source => :person
+  has_one :school, :through => :person_school_link
 
   scope :active,  lambda { where("active = ?", true) }
 
   def is_ebuck?
-    ebuck
-  end
-
-  def person_school_link
-    PersonSchoolLink.find(self.person_school_link_id)
-  end
-
-  def teacher
-    self.person_school_link.person
-  end
-
-  def school
-    self.person_school_link.school
+    ebuck?
   end
 
   def generate_code(prefix)

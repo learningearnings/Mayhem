@@ -43,6 +43,11 @@ class Person < ActiveRecord::Base
     full_name
   end
 
+  def store_code
+    nil
+  end
+
+
   # Allow sending a school or classroom to a person
   def <<(d)
     if d.is_a? School

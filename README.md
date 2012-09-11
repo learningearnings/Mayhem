@@ -116,3 +116,23 @@ Right now, you can hit /plutus (as anyone) to view the chart of accounts, balanc
 * STUDENT4 SAVINGS(Asset)
 * STUDENT5 CHECKING(Asset)
 * STUDENT5 SAVINGS(Asset)
+
+#### Deploying
+
+##### Staging:
+
+_initial setup:_
+
+    cap staging deploy:setup
+
+_no migrations:_
+
+    cap staging deploy
+
+_with migrations:_
+
+    cap staging deploy:migrations
+
+_roll it back:_
+
+    cap staging deploy:rollback
