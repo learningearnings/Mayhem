@@ -493,6 +493,49 @@ input, textarea, select {
   margin-left: 340px;
 }
 
+.corkboard {
+  background-image: url(asset_path('corkboard_shadows.png', image));
+  height: 384px;
+  width: 621px;
+  margin-left: 340px;
+}
+
+.messaging-inbox {
+  background-image: url(asset_path('messaging_inbox.png', image));
+  height: 241px;
+  width: 364px;  
+  position: absolute;
+  top: 50px;
+  left: 500px;
+}
+
+.teachers-inbox-cta {
+  background-image: url(asset_path('teachers_inbox_cta.png', image));
+  height: 278px;
+  width: 270px;
+  position: absolute;
+  top: 250px;
+  left: 900px;
+}
+
+.parents-inbox-cta {
+  background-image: url(asset_path('parents_inbox_cta.png', image));
+  height: 245px;
+  width: 238px;
+  position: absolute;
+  top: 0;
+  left: 945px;  
+}
+
+.inbox-screenshot {
+  background-image: url(asset_path('inbox_screenshot.png', image));
+  height: 217px;
+  width: 287px;
+  position: absolute;
+  top: 300px;
+  left: 565px;   
+}
+
 .product-image-bursts {
   background-image: url(asset_path('product_image_with_pins_bursts.png', image));
   height: 293px;
