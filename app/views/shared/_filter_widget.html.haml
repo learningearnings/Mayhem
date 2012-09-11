@@ -2,13 +2,13 @@
   =form_tag :class => "form-horizontal" do
     .control-group
       .controls
-        = button_tag "Select State"
+        = link_to "Select State", "#", :class => "btn"
     .control-group
       .controls
-        = button_tag "Select Schools"
+        = link_to "Select Schools", "#", :class => "btn"
     .control-group
       .controls
-        = button_tag "Select Classrooms"
+        = link_to "Select Classrooms", "#", :class => "btn"
     .control-group
       %label.control-label Minimum Grade
       .controls
@@ -18,4 +18,4 @@
         = select_tag "max_grade", options_for_select(School::GRADES)
     .control-group
       .controls
-        = button_tag "Select User Types"
+        = link_to "Select User Types", "#", :class => "btn"
