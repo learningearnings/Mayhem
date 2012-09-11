@@ -1,6 +1,7 @@
 #filter_widget_state_selector.modal.hide.fade
   .modal-header
     %h3 Select States
+    #filter_widget_state_selector_state_list
   .modal-body
     %form.form-horizontal 
       %ul.unstyled
@@ -9,4 +10,4 @@
             .control-group
               %label.control-label= state.name
               .controls
-                =check_box_tag state.name
+                =check_box_tag state.name, state.name, false, :class => "filter_widget_state_checkbox"

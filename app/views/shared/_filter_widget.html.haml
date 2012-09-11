@@ -20,24 +20,33 @@
       .controls
         = link_to "Select User Types", "#", :class => "btn"
 =render "shared/state_selector"
-:plain
-  <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
-  <div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3 id="myModalLabel">Modal header</h3>
-  </div>
-  <div class="modal-body">
-  <p>One fine body…</p>
-  </div>
-  <div class="modal-footer">
-  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-  <button class="btn btn-primary">Save changes</button>
-  </div>
-  </div>
 
 :javascript
   $(document).ready(function() {
-    
+    $('.filter_widget_state_checkbox').live('click', add_state);
+    $('#filter_widget_state_selector_state_list').attr('data-state-list', JSON.stringify([]));
   })
+
+  function add_state(state_obj) {
+    state_list = JSON.parse($('#filter_widget_state_selector_state_list').attr('data-state-list'));
+    picked_state_name = $(this).val();
+    if ($.inArray(picked_state_name, state_list) > -1) { //They had already picked this state
+      state_list = $.removeFromArray(picked_state_name, state_list);
+    } else { //They haven't picked this state yet
+      state_list.push(picked_state_name);
+    }
+    $('#filter_widget_state_selector_state_list').attr('data-state-list', JSON.stringify(state_list));
+    update_states_list();
+  }
+
+  function update_states_list() {
+    state_list = JSON.parse($('#filter_widget_state_selector_state_list').attr('data-state-list'));
+    $('#filter_widget_state_selector_state_list').html(state_list.join(','));
+  }
+  //Define removeFromArray
+  jQuery.removeFromArray = function(value, arr) {
+    return jQuery.grep(arr, function(elem, index) {
+      return elem !== value;
+    });
+  };
 
