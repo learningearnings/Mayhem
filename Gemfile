@@ -6,7 +6,6 @@ def linux_only(require_as)
 end
 
 gem 'rails', '~> 3.2.6'
-gem 'sqlite3'
 gem 'pg', '0.13.2'
 
 gem 'jquery-rails'

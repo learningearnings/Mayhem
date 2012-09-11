@@ -11,6 +11,8 @@ Spree.config do |config|
   config.site_name = "Learning Earnings Store"
   config.auto_capture = true
   config.layout = 'application'
+  config.searcher_class = Spree::Search::Filter
+
 end
 
 module SpreeOverrideEngine

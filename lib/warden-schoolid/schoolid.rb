@@ -111,6 +111,10 @@ module Warden
       def authenticate!
         if u = user_class.send(config[:authenticate_method], *required_param_values)
           session[:current_school_id] = required_param_values[2]
+          factory = FilterFactory.new()
+          if u.person
+            session[:filters] = factory.find_filter_membership(u.person)
+          end
           success!(u)
         else
           fail!(config[:error_message])

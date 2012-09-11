@@ -410,7 +410,6 @@ GEM
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sqlite3 (1.3.6)
     squeel (1.0.11)
       activerecord (~> 3.0)
       activesupport (~> 3.0)
@@ -503,7 +502,6 @@ DEPENDENCIES
   spinach-rails (~> 0.1.7)
   spree (= 1.1.3)
   spree_multi_domain!
-  sqlite3
   squeel
   state_machine
   tconsole

@@ -1,3 +1,4 @@
+
 # See doc/SpreeCheckoutFakery.md to see details on what's going on here.
 Spree::OrdersController.class_eval do
   # Adds a new item to the order (creating a new order if none already exists)
