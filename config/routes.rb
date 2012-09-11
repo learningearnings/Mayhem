@@ -60,6 +60,10 @@ Leror::Application.routes.draw do
   # Lockers
   resource :locker
 
+  resource :teachers
+  match "/teachers/approve_teacher/:id" => 'teachers#approve_teacher', as: 'approve_teacher'
+  match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
+
   namespace :teachers do
     resource :bank
     match "/create_print_bucks" => 'banks#create_print_bucks'

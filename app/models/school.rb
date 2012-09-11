@@ -85,6 +85,10 @@ class School < ActiveRecord::Base
     teachers.count
   end
 
+  def to_s
+    name
+  end
+
   def store_subdomain
     self.id.to_s
   end

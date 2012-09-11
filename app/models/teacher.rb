@@ -1,6 +1,8 @@
 class Teacher < Person
 
   has_many :schools, :through => :person_school_links
+  attr_accessor :username, :password, :password_confirmation, :email
+  attr_accessible :username, :password, :password_confirmation, :email, :gender
   validates_presence_of :grade
   after_create :create_user
 
@@ -44,9 +46,9 @@ class Teacher < Person
     end
   end
 
-  def username
-    self.name.gsub(' ', '').underscore 
-  end
+  #def username
+  #  self.name.gsub(' ', '').underscore 
+  #end
 
   def name
     first_name + ' ' + last_name
@@ -60,7 +62,11 @@ class Teacher < Person
 
   def create_user
     unless self.user
-      user = Spree::User.create(:email => "#{self.username}@example.com", :password => 'test123', :password_confirmation => 'test123')
+      if username.present?
+        user = Spree::User.create(:username => username, :email => email, :password => password, :password_confirmation => password_confirmation)
+      else
+        user = Spree::User.create(:username => username, :email => "#{self.username}@example.com", :password => 'test123', :password_confirmation => 'test123')
+      end
       user.person_id = self.id
       user.save
     end

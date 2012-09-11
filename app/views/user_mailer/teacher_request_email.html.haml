@@ -1,0 +1,16 @@
+%h2 New Teacher Account Request
+
+%p= @teacher.first_name
+%p= @teacher.last_name
+%p= @teacher.email
+%p= @teacher.username
+%p= @teacher.dob
+%p= @teacher.gender
+%p= @teacher.grade
+%p= @teacher.schools.first.name
+
+= link_to 'Approve Teacher Request', approve_teacher_path(@teacher)
+
+| 
+
+= link_to 'Deny Teacher Request', deny_teacher_path(@teacher)

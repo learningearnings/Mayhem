@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908125040) do
+ActiveRecord::Schema.define(:version => 20120911014608) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(:version => 20120908125040) do
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
+    t.string   "gender"
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
