@@ -163,4 +163,19 @@ FactoryGirl.define do
     answer
     correct false
   end
+
+  factory :sticker do
+    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+  end
+
+  factory :locker_sticker_link do
+    locker
+    sticker
+    x 1
+    y 1
+  end
+
+  factory :locker do
+    person
+  end
 end
