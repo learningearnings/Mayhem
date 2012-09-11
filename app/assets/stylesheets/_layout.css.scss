@@ -54,6 +54,7 @@ input, textarea, select {
   background-position: top center;
   background-repeat: repeat-y;
   background-color: #fff;
+  height: 165px;
 }
 
 .logo {
@@ -358,7 +359,17 @@ input, textarea, select {
   font-size: 1.8em;
 }
 
+.navbar .nav li a {
+  height: 50px;
+}
+
 .nav.primary-nav .home {
+  color: #25860b;
+}
+
+.nav.primary-nav .home:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
   color: #25860b;
 }
 
@@ -366,28 +377,70 @@ input, textarea, select {
   color: #ea4e08;
 }
 
+.nav.primary-nav .how-it-works:hover {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ea4e08;  
+}
+
 .nav.primary-nav .locker {
+  color: #1f2870;
+}
+
+.nav.primary-nav .locker:hover {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
   color: #1f2870;
 }
 
 .nav.primary-nav .inbox {
   color: #000000;
+  width: 92px;
+}
+
+.nav.primary-nav .inbox:hover {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
 }
 
 .nav.primary-nav .bank {
   color: #470bc1;
 }
 
+.nav.primary-nav .bank:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470bc1;  
+}
+
 .nav.primary-nav .play {
   color: #eb731c;
+}
+
+.nav.primary-nav .play:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #eb731c;  
 }
 
 .nav.primary-nav .rewards {
   color: #b611b0;
 }
 
+.nav.primary-nav .rewards:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #b611b0;  
+}
+
 .nav.primary-nav .news {
   color: #ff2204;
+}
+
+.nav.primary-nav .news:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ff2204;  
 }
 
 .navbar-inner {
