@@ -117,7 +117,7 @@ $(document).ready(function() {
 		 $(".news").toggleClass("news-selected")	
 	}	
 	 else if(window.location.href.indexOf("") > -1) {
-		 $(".home").toggleClass("inbox-selected")	
+		 $(".home").toggleClass("home-selected")	
 	}	
   
 	
