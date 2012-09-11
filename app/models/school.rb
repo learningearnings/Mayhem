@@ -24,7 +24,7 @@ class School < ActiveRecord::Base
       host = '.lvh.me'
     else
       port = ''
-      host = '.mayhem.lemirror.com'
+      host = '.mayhemstaging.lemirror.com'
     end
     unless Spree::Store.find_by_code(self.store_subdomain)
       Spree::Store.create(code: self.store_subdomain, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.store_subdomain}#{host}#{port}")

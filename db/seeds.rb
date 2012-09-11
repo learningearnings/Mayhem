@@ -254,7 +254,7 @@ if Rails.env.development? || Rails.env.production?
     host = '.lvh.me'
   else
     port = ''
-    host = '.mayhem.lemirror.com'
+    host = '.mayhemstaging.lemirror.com'
   end
 
   @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
