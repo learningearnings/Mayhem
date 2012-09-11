@@ -1,0 +1,21 @@
+.filter_widget
+  =form_tag :class => "form-horizontal" do
+    .control-group
+      .controls
+        = button_tag "Select State"
+    .control-group
+      .controls
+        = button_tag "Select Schools"
+    .control-group
+      .controls
+        = button_tag "Select Classrooms"
+    .control-group
+      %label.control-label Minimum Grade
+      .controls
+        = select_tag "min_grade", options_for_select(School::GRADES)
+      %label.control-label Maximum Grade
+      .controls
+        = select_tag "max_grade", options_for_select(School::GRADES)
+    .control-group
+      .controls
+        = button_tag "Select User Types"

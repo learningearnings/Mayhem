@@ -1,6 +1,7 @@
 Leror::Application.routes.draw do
   # Root route
   root to: 'pages#show', :id => 'home'
+  match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   # Administrative routes
   ActiveAdmin.routes(self)
