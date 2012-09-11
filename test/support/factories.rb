@@ -178,4 +178,12 @@ FactoryGirl.define do
   factory :locker do
     person
   end
+
+  factory :otu_code do
+    code            "test"
+    person_school_link
+    student
+    points          BigDecimal("5")
+    expires_at      Time.now + 5.days
+  end
 end
