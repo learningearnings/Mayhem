@@ -641,6 +641,13 @@ ActiveRecord::Schema.define(:version => 20120911014608) do
 
   add_index "spree_preferences", ["key"], :name => "index_spree_preferences_on_key", :unique => true
 
+  create_table "spree_product_filter_links", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "spree_product_option_types", :force => true do |t|
     t.integer  "position"
     t.integer  "product_id"

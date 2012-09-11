@@ -50,6 +50,12 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_product.set_property('master_product',@master_product.id.to_s)
       retail_product.master.save # The master variant, not the master_product
       retail_product.save
+
+      fc = FilterConditions.new(:schools => [@school.id])
+      factory = FilterFactory.new
+      filter = factory.find_or_create_filter(fc)
+      filter.save
+      SpreeProductFilterLink.create(:filter_id => filter.id, :product_id => retail_product.id)
     end
   end
 end
