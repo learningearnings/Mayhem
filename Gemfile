@@ -84,10 +84,10 @@ gem 'capistrano'
 # To use debugger
 # gem 'debugger'
 
+gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
 group :development, :test do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
-  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
   gem 'rb-fsevent', '~> 0.9.1'
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'

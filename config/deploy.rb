@@ -66,7 +66,7 @@ namespace :deploy do
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; bundle exec rake assets:precompile"
+    run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -140,4 +140,4 @@ def run_rake(cmd)
   run "cd #{current_path}; #{rake} #{cmd}"
 end
 
-# after 'bundle:install', 'deploy:precompile_assets'
+after 'deploy:finalize_update', 'deploy:precompile_assets'
