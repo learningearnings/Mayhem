@@ -19,6 +19,7 @@
 //= require ckeditor/init
 //= require jquery.ui.draggable
 //= require jquery.ui.dialog
+//= require custom
 
 # Make jquery ajax requests use the csrf token
 $ ->
