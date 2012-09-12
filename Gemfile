@@ -6,7 +6,6 @@ def linux_only(require_as)
 end
 
 gem 'rails', '~> 3.2.6'
-gem 'sqlite3'
 gem 'pg', '0.13.2'
 
 gem 'jquery-rails'
@@ -114,3 +113,7 @@ group :test do
   gem 'valid_attribute', git: 'git://github.com/wojtekmach/valid_attribute.git', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
 end
+
+
+#### Only here for staging deploymenbts ###
+gem 'factory_girl_rails'

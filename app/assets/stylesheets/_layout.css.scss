@@ -57,6 +57,12 @@ input, textarea, select {
   height: 165px;
 }
 
+.content-section {
+  padding: 0 35px;
+  position: relative;
+  margin-bottom: 100px;
+}
+
 .logo {
   background-image: url(asset_path('common/le_logo.png', image));
   background-repeat: no-repeat;
@@ -190,11 +196,8 @@ input, textarea, select {
   left: 330px;
 }
 
-.content {
-  position: relative;
-}
 
-.content .stickies-nav {
+.content-section .stickies-nav-home {
   list-style-type: none;
   margin: 0;
   position: absolute;
@@ -202,15 +205,24 @@ input, textarea, select {
   left: 720px;
 }
 
-.content .stickies-nav li {
+.content-section .stickies-nav {
+  list-style-type: none;
+  margin: 0;
+  position: absolute;
+  top: 340px;
+  left: 820px;
+}
+
+
+.content-section .stickies-nav-home li {
   display: inline;
 }
 
-.content .stickies-nav.how-it-works {
-  left: 830px;
+.content-section .stickies-nav li {
+  display: inline;
 }
 
-.content .how-it-works-nav {
+.content-section .how-nav {
   list-style-type: none;
   margin: 0;
   position: absolute;
@@ -222,70 +234,67 @@ input, textarea, select {
   }
 }
 
-.content .how-it-works-nav li span a {
+.content-section .how-nav li span a {
   color: #312d68;
   font-size: 1.6em;
 }
 
-.content .how-it-works-nav li span a:hover {
+.content-section .how-nav li span a:hover {
   text-decoration: none;
   color: #f05c1a;  
 }
 
-.content .how-it-works-nav li span a:active {
+.content-section .how-nav li span a:active {
   color: #f05c1a;    
 }
-
-.content.how-it-works {
   
-  .intro-slide {
-    background-image: url(asset_path('how_it_works_slide1.png', image));  
-    position: absolute;
-    top: 50px;
-    left: 480px;
-    height: 232px;
-    width: 522px;
-  }
-  .register-slide {
-    background-image: url(asset_path('how_it_works_slide2.png', image));  
-    position: absolute;
-    top: 50px;
-    left: 480px;
-    height: 232px;
-    width: 484px;  
-  }
-  .earn-slide {
-    background-image: url(asset_path('how_it_works_slide3.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 245px;
-    width: 563px;   
+.intro-slide {
+  background-image: url(asset_path('how_it_works_slide1.png', image));  
+  position: absolute;
+  top: 50px;
+  left: 480px;
+  height: 232px;
+  width: 522px;
 }
-  .enter-slide {
-    background-image: url(asset_path('how_it_works_slide4.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 238px;
-    width: 498px;     
-  }
-  .buy-slide {
-    background-image: url(asset_path('how_it_works_slide5.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 250px;
-    width: 503px;     
-  }
-  .receive-slide {
-    background-image: url(asset_path('how_it_works_slide6.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 227px;
-    width: 554px;      
-  }
+.register-slide {
+  background-image: url(asset_path('how_it_works_slide2.png', image));  
+  position: absolute;
+  top: 50px;
+  left: 480px;
+  height: 232px;
+  width: 484px;  
+}
+.earn-slide {
+  background-image: url(asset_path('how_it_works_slide3.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 245px;
+  width: 563px;   
+}
+.enter-slide {
+  background-image: url(asset_path('how_it_works_slide4.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 238px;
+  width: 498px;     
+}
+.buy-slide {
+  background-image: url(asset_path('how_it_works_slide5.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 250px;
+  width: 503px;     
+}
+.receive-slide {
+  background-image: url(asset_path('how_it_works_slide6.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 227px;
+  width: 554px;      
 }
 
 .not-selected {
@@ -295,7 +304,6 @@ input, textarea, select {
 .selected {
   color: #f05c1a!important;  
 }
-
 
 .btn.students-stickie,
 .btn.parents-stickie,
@@ -365,9 +373,16 @@ input, textarea, select {
 
 .nav.primary-nav .home {
   color: #25860b;
+  width: 92px
 }
 
 .nav.primary-nav .home:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #25860b;
+}
+
+.home-selected {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #25860b;
@@ -383,6 +398,12 @@ input, textarea, select {
   color: #ea4e08;  
 }
 
+.how-it-works-selected {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ea4e08;  
+}
+
 .nav.primary-nav .locker {
   color: #1f2870;
 }
@@ -392,6 +413,13 @@ input, textarea, select {
   background-repeat: no-repeat;
   color: #1f2870;
 }
+
+.locker-selected {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
+  color: #1f2870;
+}
+
 
 .nav.primary-nav .inbox {
   color: #000000;
@@ -403,11 +431,22 @@ input, textarea, select {
   background-repeat: no-repeat;
 }
 
+.inbox-selected {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
+}
+
 .nav.primary-nav .bank {
   color: #470bc1;
 }
 
 .nav.primary-nav .bank:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470bc1;  
+}
+
+.bank-selected {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #470bc1;  
@@ -423,11 +462,23 @@ input, textarea, select {
   color: #eb731c;  
 }
 
+.play-selected {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #eb731c;  
+}
+
 .nav.primary-nav .rewards {
   color: #b611b0;
 }
 
 .nav.primary-nav .rewards:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #b611b0;  
+}
+
+.rewards-selected {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
   color: #b611b0;  
@@ -443,6 +494,11 @@ input, textarea, select {
   color: #ff2204;  
 }
 
+.news-selected {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ff2204;  
+}
 .navbar-inner {
   border-radius: 0;
 }
@@ -455,24 +511,18 @@ input, textarea, select {
   background-image: url(asset_path('side_doodles.png', image));
   height: 467px;
   width: 109px;
-  float: left;
-  margin-left: 83px;
 }
 
 .side-art-parents {
   background-image: url(asset_path('side_art_parents.png', image));
   height: 561px;
   width: 122px;
-  float: left;
-  margin-left: 83px;
 }
 
 .side-art-teachers {
   background-image: url(asset_path('side_art_teachers.png', image));
   height: 464px;
   width: 108px;
-  float: left;
-  margin-left: 83px;
 }
 
 
@@ -480,24 +530,29 @@ input, textarea, select {
   background-image: url(asset_path('sir_bacon_francis_shadows.png', image));
   width: 358px;
   height: 415px;
-  float: left;
-  margin: 0 0 0 -78px;
-  position: relative;
+  position: absolute;
   top: 30px;
-}
+  left: 90px;
+  z-index: 15;
+ }
 
 .white-board {
   background-image: url(asset_path('whiteboard_with_shadows.png', image));
   height: 416px;
   width: 776px;
-  margin-left: 340px;
+  position: absolute;
+  top: 0;
+  left: 330px;
+  z-index: -10;
 }
 
 .corkboard {
   background-image: url(asset_path('corkboard_shadows.png', image));
   height: 384px;
   width: 621px;
-  margin-left: 340px;
+  position: absolute;
+  top: 0;
+  left: 310px;
 }
 
 .messaging-inbox {
@@ -693,6 +748,47 @@ input, textarea, select {
 /* Pages */
 .privacy-content {
   margin: -8px 0 0 180px;
+}
+
+.content.inbox-not-logged-in {
+  margin-bottom: 100px;
+}
+
+.picaso-pig {
+  background-image: url(asset_path('picaso_pig.png', image));
+  width: 164px;
+  height: 168px;
+  position: absolute;
+  top: 0;
+  left: 130px;
+}
+
+.locker-intro {
+  background-image: url(asset_path('locker.png', image));
+  width: 814px;
+  height: 356px;
+  position: absolute;
+  top: 160px;
+  left: 300px;
+}
+
+.locker-desc {
+  position: absolute;
+  top: 8px;
+  width: 600px;
+  left: 300px;
+    h2 {
+      color: #1f2870;
+    }
+}
+
+/* Primary Nav Selected */
+
+.content.inbox-not-logged-in {
+  .inbox {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;  
+  }
 }
 
 footer {
