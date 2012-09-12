@@ -16,7 +16,7 @@ set :deploy_to,       "/home/deployer/apps/Mayhem"
 set :normalize_asset_timestamps, false
 
 set :user,            "deployer"
-set :group,           "staff"
+set :group,           "deployer"
 set :use_sudo,        false
 
 
