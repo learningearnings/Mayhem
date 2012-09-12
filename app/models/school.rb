@@ -4,6 +4,8 @@ class School < ActiveRecord::Base
   include BasicStatuses
   has_many :addresses, :as => :addressable
   has_many :classrooms
+  has_many :foods, :through => :food_school_links
+  has_many :food_school_links
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
@@ -24,7 +26,7 @@ class School < ActiveRecord::Base
       host = '.lvh.me'
     else
       port = ''
-      host = '.mayhem.lemirror.com'
+      host = '.mayhemstaging.lemirror.com'
     end
     unless Spree::Store.find_by_code(self.store_subdomain)
       Spree::Store.create(code: self.store_subdomain, name: self.name, default: false, email: "theteam@learningearnings.com", domains: "#{self.store_subdomain}#{host}#{port}")

@@ -6,7 +6,6 @@ def linux_only(require_as)
 end
 
 gem 'rails', '~> 3.2.6'
-gem 'sqlite3'
 gem 'pg', '0.13.2'
 
 gem 'jquery-rails'
@@ -88,8 +87,8 @@ gem 'capistrano'
 group :development, :test do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
-  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
   gem 'rb-fsevent', '~> 0.9.1'
+  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
@@ -114,3 +113,7 @@ group :test do
   gem 'valid_attribute', git: 'git://github.com/wojtekmach/valid_attribute.git', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
 end
+
+
+#### Only here for staging deploymenbts ###
+gem 'factory_girl_rails'

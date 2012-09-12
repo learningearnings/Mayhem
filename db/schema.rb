@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120911014608) do
+ActiveRecord::Schema.define(:version => 20120911230708) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -116,6 +116,20 @@ ActiveRecord::Schema.define(:version => 20120911014608) do
     t.string   "nickname"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "food_school_links", :force => true do |t|
+    t.integer  "food_id"
+    t.integer  "school_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "foods", :force => true do |t|
+    t.string   "name"
+    t.string   "image_uid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "games_answers", :force => true do |t|
@@ -640,6 +654,13 @@ ActiveRecord::Schema.define(:version => 20120911014608) do
   end
 
   add_index "spree_preferences", ["key"], :name => "index_spree_preferences_on_key", :unique => true
+
+  create_table "spree_product_filter_links", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "spree_product_option_types", :force => true do |t|
     t.integer  "position"
