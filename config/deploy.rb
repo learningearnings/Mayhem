@@ -8,7 +8,7 @@ require 'capistrano/ext/multistage'
 set :application,     "Mayhem"
 set :scm,             :git
 set :repository,      "git@github.com:learningearnings/Mayhem.git"
-set :branch,          "origin/master"
+set :branch,          "origin/develop"
 set :migrate_target,  :current
 set :ssh_options,     { forward_agent: true }
 set :rails_env,       "production"
