@@ -49,6 +49,10 @@ class CreditManager
     transfer_credits "Teacher#{teacher.id} ebucks for Student#{student.id}", teacher.main_account_name(school), teacher.undeposited_account_name(school), amount
    end
 
+  def transfer_credits_to_teacher school, from_teacher, to_teacher, amount
+    transfer_credits "Transfer Credits to Teacher", from_teacher.main_account_name(school), to_teacher.main_account_name(school), amount
+  end
+
   def issue_credits_to_teacher school, teacher, amount
     transfer_credits "Issue Credits to Teacher", school.main_account_name, teacher.main_account_name(school), amount
   end

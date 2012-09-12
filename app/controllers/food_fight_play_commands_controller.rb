@@ -9,7 +9,7 @@ class FoodFightPlayCommandsController < LoggedInController
   end
 
   def on_success(command)
-    redirect_to play_games_food_fight_path, flash: { success: "Answered successfully." }
+    redirect_to choose_food_games_food_fight_path, flash: { success: "Answered successfully." }
   end
 
   def on_failure(command)

@@ -8,7 +8,7 @@ require 'capistrano/ext/multistage'
 set :application,     "Mayhem"
 set :scm,             :git
 set :repository,      "git@github.com:learningearnings/Mayhem.git"
-set :branch,          "origin/master"
+set :branch,          "origin/develop"
 set :migrate_target,  :current
 set :ssh_options,     { forward_agent: true }
 set :rails_env,       "production"
@@ -66,7 +66,7 @@ namespace :deploy do
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; bundle exec rake assets:precompile"
+    run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -85,12 +85,11 @@ namespace :deploy do
     # save empty folders
     run <<-CMD
       source /home/deployer/.bashrc &&
-      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids #{latest_release}/public/blog &&
+      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids  &&
       mkdir -p #{latest_release}/public &&
       mkdir -p #{latest_release}/tmp &&
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
-      ln -s #{shared_path}/public/blog #{latest_release}/public/blog &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml
     CMD
@@ -141,4 +140,4 @@ def run_rake(cmd)
   run "cd #{current_path}; #{rake} #{cmd}"
 end
 
-after 'bundle:install', 'deploy:precompile_assets'
+after 'deploy:finalize_update', 'deploy:precompile_assets'
