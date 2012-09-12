@@ -83,9 +83,14 @@ Leror::Application.routes.draw do
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
+
 end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
   match "/get_avatar_results" => 'users#get_avatar_results'
+  namespace :admin do
+    resources :rewards
+    match 'remove_reward' => 'rewards#destroy'
+  end
 end
