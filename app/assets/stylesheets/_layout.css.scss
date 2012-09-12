@@ -61,6 +61,7 @@ input, textarea, select {
   padding: 0 35px;
   position: relative;
   margin-bottom: 100px;
+  min-height: 500px;
 }
 
 .logo {
@@ -196,30 +197,20 @@ input, textarea, select {
   left: 330px;
 }
 
-
-.content-section .stickies-nav-home {
-  list-style-type: none;
-  margin: 0;
-  position: absolute;
+.nav-container {
+  border: solid 1px blue;
+  position: relative;
   top: 340px;
-  left: 720px;
-}
-
-.content-section .stickies-nav {
-  list-style-type: none;
-  margin: 0;
-  position: absolute;
-  top: 340px;
-  left: 820px;
-}
-
-
-.content-section .stickies-nav-home li {
-  display: inline;
-}
-
-.content-section .stickies-nav li {
-  display: inline;
+  left: 460px;
+  text-align: right;
+  width: 560px;
+    .stickies-nav {
+      list-style-type: none;
+      margin: 0;
+    }
+    .stickies-nav li {
+      display: inline;
+    }
 }
 
 .content-section .how-nav {
@@ -326,6 +317,17 @@ input, textarea, select {
   transition: none;  
 }
 
+.btn.students-stickie:active,
+.btn.parents-stickie:active,
+.btn.teachers-stickie:active {
+  background-position: 0;
+  -moz-transition: none;
+  -webkit-transition: none;
+  -o-transition: color 0 ease-in;
+  transition: none;  
+}
+
+
 .btn.students-stickie {
   height: 109px;
   width: 110px;
@@ -350,9 +352,14 @@ input, textarea, select {
 }
 
 .btn.teachers-stickie:hover {
-  background-position: -550px 0;
-  
+  background-position: -550px 0;  
 }
+
+.btn.teachers-stickie:active {
+  background-position: -550px 0;  
+}
+
+
 
 .custom-nav-bar .navbar-inner {
   background-color: transparent;
@@ -505,6 +512,12 @@ input, textarea, select {
 
 .body-content {
   min-height: 500px;
+}
+
+.side-art,
+.side-art-parents,
+.side-art-teachers {
+  position: absolute;
 }
 
 .side-art {
