@@ -25,7 +25,7 @@ if env == "production"
   working_directory "/home/deployer/apps/Mayhem/current"
 
   # feel free to point this anywhere accessible on the filesystem
-  user 'deployer', 'staff'
+  user 'deployer', 'deployer'
   shared_path = "/home/deployer/apps/Mayhem/shared"
 
   stderr_path "#{shared_path}/log/unicorn.stderr.log"
