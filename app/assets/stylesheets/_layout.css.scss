@@ -60,7 +60,7 @@ input, textarea, select {
 .content-section {
   padding: 0 35px;
   position: relative;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 }
 
 .logo {
@@ -752,6 +752,34 @@ input, textarea, select {
 
 .content.inbox-not-logged-in {
   margin-bottom: 100px;
+}
+
+.picaso-pig {
+  background-image: url(asset_path('picaso_pig.png', image));
+  width: 164px;
+  height: 168px;
+  position: absolute;
+  top: 0;
+  left: 130px;
+}
+
+.locker-intro {
+  background-image: url(asset_path('locker.png', image));
+  width: 814px;
+  height: 356px;
+  position: absolute;
+  top: 160px;
+  left: 300px;
+}
+
+.locker-desc {
+  position: absolute;
+  top: 8px;
+  width: 600px;
+  left: 300px;
+    h2 {
+      color: #1f2870;
+    }
 }
 
 /* Primary Nav Selected */
