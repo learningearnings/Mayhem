@@ -85,12 +85,11 @@ namespace :deploy do
     # save empty folders
     run <<-CMD
       source /home/deployer/.bashrc &&
-      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids #{latest_release}/public/blog &&
+      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids  &&
       mkdir -p #{latest_release}/public &&
       mkdir -p #{latest_release}/tmp &&
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
-      ln -s #{shared_path}/public/blog #{latest_release}/public/blog &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml
     CMD
@@ -141,4 +140,4 @@ def run_rake(cmd)
   run "cd #{current_path}; #{rake} #{cmd}"
 end
 
-after 'bundle:install', 'deploy:precompile_assets'
+# after 'bundle:install', 'deploy:precompile_assets'
