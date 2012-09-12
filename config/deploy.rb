@@ -16,7 +16,7 @@ set :deploy_to,       "/home/deployer/apps/Mayhem"
 set :normalize_asset_timestamps, false
 
 set :user,            "deployer"
-set :group,           "staff"
+set :group,           "deployer"
 set :use_sudo,        false
 
 
@@ -104,7 +104,7 @@ namespace :deploy do
 
   desc "Zero-downtime restart of Unicorn"
   task :restart, except: { no_release: true } do
-    run "kill -s USR2 `cat /tmp/unicorn.mrarlo.com.pid`"
+    run "kill -s USR2 `cat /tmp/unicorn.mayhemstaging.lemirror.com.pid`"
   end
 
   desc "Start unicorn"
@@ -114,7 +114,7 @@ namespace :deploy do
 
   desc "Stop unicorn"
   task :stop, except: { no_release: true } do
-    run "kill -s QUIT `cat /tmp/unicorn.mrarlo.com.pid`"
+    run "kill -s QUIT `cat /tmp/unicorn.mayhemstaging.lemirror.com.pid`"
   end
 
   namespace :rollback do
