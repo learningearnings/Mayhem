@@ -2,10 +2,9 @@
   = render "layouts/flashes"
   - if respond_to? :breadcrumbs
     = breadcrumbs(@taxon)
-.body-content
-  .row
-    - if (sidebar = yield :sidebar).empty?
-      .span12= yield
-    - else
-      .span3= sidebar
-      .span9= yield
+- if (sidebar = yield :sidebar).empty?
+  .span12.content-section= yield
+  
+- else
+  .span3= sidebar
+  .span9.content-section= yield
