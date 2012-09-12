@@ -41,6 +41,8 @@ Leror::Application.routes.draw do
     end
   end
 
+  post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"
+
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
 
   # Messaging routes

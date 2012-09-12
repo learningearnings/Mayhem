@@ -20,6 +20,8 @@ class School < ActiveRecord::Base
 
   after_create :ensure_accounts
 
+  scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => [states].flatten.map(&:id) ) }
+
   def create_spree_store
     if Rails.env.development?
       port = ':3000'

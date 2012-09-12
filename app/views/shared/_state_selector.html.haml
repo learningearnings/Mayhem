@@ -1,13 +1,17 @@
 #filter_widget_state_selector.modal.hide.fade
-  .modal-header
-    %h3 Select States
-    #filter_widget_state_selector_state_list
-  .modal-body
-    %form.form-horizontal 
-      %ul.unstyled
-        -State.all.each do |state|
-          %li
-            .control-group
-              %label.control-label= state.name
-              .controls
-                =check_box_tag state.name, state.name, false, :class => "filter_widget_state_checkbox"
+  = form_tag filters_filter_schools_by_state_path do
+    .modal-header
+      %h3 Build filter - Select States
+      #filter_widget_state_selector_state_list
+    .modal-body
+      %table.table-striped
+        - State.all.each_slice(3) do |state_pair|
+          %tr.form-horizontal
+            - state_pair.each do |state|
+              %td
+                .control-group
+                  %label.control-label= state.name
+                  .controls
+                    = check_box_tag "states[]", state.id, false, :class => "filter_widget_state_checkbox", "data-state-name" => state.name
+    .modal-footer
+      = submit_tag "Next Step", :class => "btn btn-primary"
