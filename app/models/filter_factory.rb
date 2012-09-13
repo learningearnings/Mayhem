@@ -41,7 +41,7 @@ class FilterFactory
     f = f.joins(:state_filter_links).merge(sfl)
     pcfl = PersonClassFilterLink.where(:person_class => person_classes)
     f = f.joins(:person_class_filter_links).merge(pcfl)
-    f.group('filters.id,filters.minimum_grade, filters.maximum_grade, filters.nickname').first
+    f.group('filters.id,filters.minimum_grade, filters.maximum_grade, filters.nickname, filters.created_at, filters.updated_at').first
   end
 
 
@@ -128,7 +128,7 @@ class FilterFactory
     pcfl_arel = PersonClassFilterLink.arel_table
     pcfl = PersonClassFilterLink.where(pcfl_arel[:person_class].in(person.class.to_s).or(pcfl_arel[:person_class].eq(nil)))
     f = f.joins(:person_class_filter_links).merge(pcfl)
-    f = f.select('filters.id').group('filters.id, filters.minimum_grade, filters.maximum_grade, filters.nickname')
+    f = f.select('filters.id').group('filters.id, filters.minimum_grade, filters.maximum_grade, filters.nickname, filters.created_at, filters.updated_at')
     f.all
   end
 end
