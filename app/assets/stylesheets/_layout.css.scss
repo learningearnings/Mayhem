@@ -822,6 +822,16 @@ input, textarea, select {
   width: 361px;
 }
 
+.games-board {
+  background-image: url(asset_path('games_board.png', image));
+  position: absolute;
+  width: 400px;
+  height: 280px;
+  top: 25px;
+  left: 460px;
+  
+}
+
 .foodfight {
   background-image: url(asset_path('food_fight.gif', image));
   position: absolute;
