@@ -823,3 +823,23 @@ footer {
 .hidden {
   display: none;
 }
+
+.hover_image img{
+    border: 2px solid #ccc;
+}
+.hover_image:hover img{
+    border: 2px solid navy;
+}
+.hover_image.active img{
+    border-color: red; 
+}
+
+.school_hover{
+    border: 2px solid #ccc;
+}
+.school_hover:hover{
+    border: 2px solid navy;
+}
+.school_hover.active{
+    border-color: red; 
+}
