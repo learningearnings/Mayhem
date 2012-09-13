@@ -1,4 +1,3 @@
-//= require jquery
 //= require ICanHaz
 //= require jquery_ujs
 //= require init
@@ -17,6 +16,10 @@
 //= require jquery.html5-placeholder-shim
 //= require jquery_nested_form
 //= require ckeditor/init
+//= require custom
+//= require jquery.ui.core
+//= require jquery.ui.mouse
+//= require jquery.ui.widget
 //= require jquery.ui.draggable
 //= require jquery.ui.dialog
 
