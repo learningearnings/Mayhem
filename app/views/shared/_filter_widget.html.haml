@@ -1,73 +1,39 @@
-.filter_widget
+#filter_widget
   = link_to "Build Filter", "#", :class => "btn", "data-toggle" => "modal", "data-target" => "#filter_widget_state_selector"
-=render "shared/state_selector"
-=render "shared/school_selector"
-=render "shared/classroom_selector"
+  =render "shared/state_selector"
+  =render "shared/school_selector"
+  =render "shared/classroom_selector"
 
 :javascript
   $(document).ready(function() {
+    //Add the click events to state, school, and class room stuff
     $('.filter_widget_state_checkbox').live('click', add_state);
-    $('.filter_widget_school_checkbox').live('click', add_school);
-    $('.filter_widget_class_room_checkbox').live('click', add_class_room);
-    $('#filter_widget_state_selector_state_list').data('data-state-list', []);
-    $('#filter_widget_school_selector_school_list').data('data-school-list', []);
-    $('#filter_widget_class_room_selector_class_room_list').data('data-class-room-list', []);
+
+    //Add the data attributes
+    $('#filter_widget').data('filter-data', {state_list: [], school_list: [], classroom_list: []});
   })
 
+  // Filter data reader
+  function get_filter_data() {
+    return $('#filter_widget').data('filter-data');
+  }
+
+  // Filter data writer
+  function set_filter_data(data) {
+    $('#filter_widget').data('filter-data', data);
+  }
+
+  //This gets called when a state checkbox is checked
   function add_state() {
-    state_list = $('#filter_widget_state_selector_state_list').data('data-state-list');
+    filter_data = get_filter_data();
     picked_state_id = $(this).val();
     picked_state_name = $(this).attr("data-state-name")
-    if ($.inArray(picked_state_id, state_list) > -1) { //They had already picked this state
-      state_list = $.removeFromArray([picked_state_name, picked_state_id], state_list);
+    if ($.inArray(picked_state_id, filter_data.state_list) > -1) { //They had already picked this state
+      filter_data.state_list = $.removeFromArray([picked_state_name, picked_state_id], filter_data.state_list);
     } else { //They haven't picked this state yet
-      state_list.push([picked_state_name, picked_state_id]);
+      filter_data.state_list.push([picked_state_name, picked_state_id]);
     }
-    $('#filter_widget_state_selector_state_list').data('data-state-list', state_list);
-    update_states_list();
-  }
-
-  function add_school() {
-    school_list = JSON.parse($('#filter_widget_school_selector_school_list').attr('data-school-list'));
-    picked_school_name = $(this).val();
-    if ($.inArray(picked_school_name, school_list) > -1) { //They had already picked this school
-      school_list = $.removeFromArray(picked_school_name, school_list);
-    } else { //They haven't picked this school yet
-      school_list.push(picked_school_name);
-    }
-    $('#filter_widget_school_selector_school_list').attr('data-school-list', JSON.stringify(school_list));
-    update_schools_list();
-  }
-
-  function add_class_room() {
-    class_room_list = JSON.parse($('#filter_widget_class_room_selector_class_room_list').attr('data-class-room-list'));
-    picked_class_room_name = $(this).val();
-    if ($.inArray(picked_class_room_name, class_room_list) > -1) { //They had already picked this class_room
-      class_room_list = $.removeFromArray(picked_class_room_name, class_room_list);
-    } else { //They haven't picked this class_room yet
-      class_room_list.push(picked_class_room_name);
-    }
-    $('#filter_widget_class_room_selector_class_room_list').attr('data-class-room-list', JSON.stringify(class_room_list));
-    update_class_rooms_list();
-  }
-
-  function update_states_list() {
-    state_list = $('#filter_widget_state_selector_state_list').data('data-state-list');
-    $('#filter_widget_state_selector_state_list')
-      .html(
-        state_list.map(function(val,i) {
-          return val[0];
-        }).join(', '));
-  }
-
-  function update_schools_list() {
-    schools_list = JSON.parse($('#filter_widget_school_selector_school_list').attr('data-school-list'));
-    $('#filter_widget_school_selector_school_list').html(school_list.join(','));
-  }
-
-  function update_class_rooms_list() {
-    class_rooms_list = JSON.parse($('#filter_widget_class_room_selector_class_room_list').attr('data-class-room-list'));
-    $('#filter_widget_class_room_selector_class_room_list').html(class_rooms_list.join(','));
+    set_filter_data(filter_data);
   }
 
   //Define removeFromArray

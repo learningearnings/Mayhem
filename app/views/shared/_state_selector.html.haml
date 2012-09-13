@@ -1,8 +1,7 @@
 #filter_widget_state_selector.modal.hide.fade
-  = form_tag filters_filter_schools_by_state_path do
+  = form_tag filters_filter_schools_by_state_path, :remote => true do
     .modal-header
       %h3 Build filter - Select States
-      #filter_widget_state_selector_state_list
     .modal-body
       %table.table-striped
         - State.all.each_slice(3) do |state_pair|
@@ -10,7 +9,7 @@
             - state_pair.each do |state|
               %td
                 .control-group
-                  %label.control-label= state.name
+                  %label.control-label= "#{state.name} - #{School.for_states(state).count}"
                   .controls
                     = check_box_tag "states[]", state.id, false, :class => "filter_widget_state_checkbox", "data-state-name" => state.name
     .modal-footer

@@ -1,7 +1,22 @@
 class FiltersController < ApplicationController
+  respond_to :js
 
   def filter_schools_by_state
-    @schools = School.for_states(params[:states].map {|state_id| State.find_by_id state_id.to_i })
-    render :text => @schools.map(&:name).join(", ")
+    if params[:states]
+      @states = params[:states].map { |state_id| State.find_by_id state_id.to_i }
+      @schools = School.for_states(@states)
+    else
+      @schools = []
+    end
+    render :respond_with => [@schools, @states]
+  end
+
+  def filter_classrooms_by_school
+    if params[:schools]
+      @classrooms = Classroom.where(:school_id => params[:schools])
+    else
+      @classrooms = []
+    end
+    render :respond_with => @classrooms
   end
 end

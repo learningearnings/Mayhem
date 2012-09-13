@@ -1,13 +1,8 @@
 #filter_widget_school_selector.modal.hide.fade
-  .modal-header
-    %h3 Select Schools
-    #filter_widget_school_selector_school_list
-  .modal-body
-    %form.form-horizontal 
-      %ul.unstyled
-        -School.all.each do |school|
-          %li
-            .control-group
-              %label.control-label= school.name
-              .controls
-                =check_box_tag school.name, school.name, false, :class => "filter_widget_school_checkbox"
+  = form_tag filters_filter_classrooms_by_school_path, :remote => true, :class => "form-horizontal" do
+    .modal-header
+      %h3 Select Schools
+    .modal-body
+      %table.table-striped#filter_widget_school_table
+    .modal-footer
+      = submit_tag "Next Step", :class => "btn btn-primary"
