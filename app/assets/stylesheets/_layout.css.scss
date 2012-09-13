@@ -197,8 +197,7 @@ input, textarea, select {
   left: 330px;
 }
 
-.nav-container {
-  border: solid 1px blue;
+.nav-container, .nav-container-corkboard {
   position: relative;
   top: 340px;
   left: 460px;
@@ -211,6 +210,11 @@ input, textarea, select {
     .stickies-nav li {
       display: inline;
     }
+}
+
+.nav-container-corkboard {
+  top: 310px;
+  left: 310px;
 }
 
 .content-section .how-nav {
@@ -574,7 +578,7 @@ input, textarea, select {
   width: 364px;  
   position: absolute;
   top: 50px;
-  left: 500px;
+  left: 490px;
 }
 
 .teachers-inbox-cta {
@@ -793,6 +797,24 @@ input, textarea, select {
     h2 {
       color: #1f2870;
     }
+}
+
+.rewards-highlights-small {
+  background-image: url(asset_path('reward_highlights_yellow_notepaper_pin.png', image));
+  position: absolute;
+  top: 0;
+  left: 940px;
+  height: 173px;
+  width: 190px;
+}
+
+.rewards-intro {
+  background-image: url(asset_path('rewards_intro.png', image));
+  position: absolute;
+  top: 50px;
+  left: 490px;
+  height: 241px;
+  width: 361px;
 }
 
 /* Primary Nav Selected */
