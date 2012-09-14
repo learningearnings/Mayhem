@@ -212,6 +212,10 @@ input, textarea, select {
     }
 }
 
+.stickies-nav li a:active {
+  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));  
+}
+
 .nav-container-corkboard {
   top: 310px;
   left: 310px;
@@ -320,17 +324,6 @@ input, textarea, select {
   -o-transition: color 0 ease-in;
   transition: none;  
 }
-
-.btn.students-stickie:active,
-.btn.parents-stickie:active,
-.btn.teachers-stickie:active {
-  background-position: 0;
-  -moz-transition: none;
-  -webkit-transition: none;
-  -o-transition: color 0 ease-in;
-  transition: none;  
-}
-
 
 .btn.students-stickie {
   height: 109px;
