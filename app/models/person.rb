@@ -10,6 +10,22 @@ class Person < ActiveRecord::Base
   #has_many :classrooms, :through => :person_school_classroom_links
   has_many :person_school_links
   has_many :person_school_classroom_links
+  has_many :foods, :through => :person_food_links
+  has_many :person_food_links
+
+  has_many :person_food_school_links
+  
+  def favorite_foods
+   self.person_food_links.order('COUNT(food_id) DESC').group("food_id, id").to_a.uniq(&:food_id).map{|x| x.food}.first(3)
+  end
+
+  def favorite_schools
+   self.person_food_school_links.order('COUNT(school_id) DESC').group("school_id, id").to_a.uniq(&:school_id).map{|x| x.school}.first(3)
+  end
+
+  def food_schools
+    School.joins(:person_food_school_links).where(person_food_school_links: { id: person_food_school_links.map(&:id) })
+  end
 
   delegate :avatar, to: :user
   delegate :username, :username= , to: :user

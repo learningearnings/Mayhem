@@ -1,11 +1,28 @@
 %h2 Choose a food
 
-= form_for FoodSchoolLink.new, :url => throw_food_games_food_fight_path do |f|
-  = @foods.each do |food|
-    = f.label :food
-    = radio_button_tag :food_id, food.id
-    = image_tag food.image.thumb('50x50#').url
- 
-  = f.label :school
-  = select_tag :school_id, options_from_collection_for_select(School.all, :id, :to_s), :include_blank => true
-  = f.submit 'Throw Food'
+= form_for FoodSchoolLink.new, :url => choose_school_games_food_fight_path do |f|
+  #hover_value= hidden_field_tag :food_id 
+  %h4 Favorite Foods
+  %ul
+    - current_person.favorite_foods.each do |food|
+      %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
+  %h4 All Foods
+  %ul
+    - @foods.each do |food|
+      %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
+  = f.submit 'Submit Food'
+
+
+:javascript
+  $(".hover_image img").hover(
+    function() { $(this).addClass("hover"); },
+    function() { $(this).removeClass("hover"); }
+  );
+
+  $(".hover_image").click( function() {
+    $('.hover_image').removeClass("active");
+    $(this).addClass("active");
+    var imageId = $(this).children().attr("id");
+    $("input[id=food_id]").val(imageId)
+  });
+
