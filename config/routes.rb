@@ -37,6 +37,7 @@ Leror::Application.routes.draw do
       member do
         get 'play'
         get 'choose_food'
+        post 'choose_school'
         post 'throw_food'
       end
     end
