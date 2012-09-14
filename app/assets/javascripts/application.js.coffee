@@ -19,6 +19,7 @@
 //= require jquery_nested_form
 //= require ckeditor/init
 //= require custom
+//= require lockers
 
 # Make jquery ajax requests use the csrf token
 $ ->
