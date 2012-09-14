@@ -21,6 +21,7 @@
 //= require custom
 //= require lockers
 
+
 # Make jquery ajax requests use the csrf token
 $ ->
   $.ajaxSetup

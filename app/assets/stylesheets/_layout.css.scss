@@ -875,7 +875,15 @@ input, textarea, select {
   height: 339px;
   top: 0;
   left: 500px;
+}
 
+.testimonial {
+  position: absolute;
+  p {
+    font-size: 60px;
+    color: #f05c1a;
+    margin: 60px 0 0 500px;
+  }
 }
 
 /* Primary Nav Selected */
