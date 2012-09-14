@@ -12,6 +12,8 @@ set :branch,          "origin/develop"
 set :migrate_target,  :current
 set :ssh_options,     { forward_agent: true }
 set :rails_env,       "production"
+### set auto_accept so that if we reload, it doesn't halt because of user input
+set :auto_accept,      "1"
 set :deploy_to,       "/home/deployer/apps/Mayhem"
 set :normalize_asset_timestamps, false
 
@@ -29,6 +31,7 @@ set(:latest_revision)   { capture("cd #{current_path}; git rev-parse --short HEA
 set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEAD@{1}").strip }
 
 default_environment["RAILS_ENV"] = 'production'
+default_environment["AUTO_ACCEPT"] = '1'
 default_run_options[:shell] = 'bash'
 
 namespace :deploy do
@@ -61,6 +64,13 @@ namespace :deploy do
   task :update_code, except: { no_release: true } do
     run "cd #{current_path}; git fetch origin; git reset --hard #{branch}"
     finalize_update
+  end
+
+  desc "Reload the database (deletes everything!!!)."
+  task :reload, except: { no_release: true } do
+#    stop if remote_file_exists?('/tmp/unicorn.mayhemstaging.lemirror.com.pid')
+    run "cd #{latest_release}; bundle exec rake le:reload RAILS_ENV=#{rails_env}"
+    start
   end
 
   desc "Precompile assets"
@@ -135,6 +145,10 @@ namespace :deploy do
     end
   end
 end
+
+#def remote_file_exists?(full_path)
+#  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
+#end
 
 def run_rake(cmd)
   run "cd #{current_path}; #{rake} #{cmd}"
