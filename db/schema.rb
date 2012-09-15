@@ -295,6 +295,13 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
 
   add_index "people", ["type"], :name => "index_people_on_type"
 
+  create_table "person_buck_batch_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "buck_batch_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "person_class_filter_links", :force => true do |t|
     t.integer  "filter_id"
     t.datetime "created_at",                 :null => false
