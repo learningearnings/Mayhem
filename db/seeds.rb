@@ -254,7 +254,7 @@ if Rails.env.development? || Rails.env.production?
     host = '.lvh.me'
   else
     port = ''
-    host = '.mayhem.lemirror.com'
+    host = '.mayhemstaging.lemirror.com'
   end
 
   @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
@@ -276,6 +276,36 @@ if Rails.env.development? || Rails.env.production?
     s = Sticker.new
     s.image = Rails.root.join("#{sticker_dir}/#{item}")
     s.save
+    m = MessageImage.new
+    m.image = Rails.root.join("#{sticker_dir}/#{item}")
+    m.save
   end
   # ======== /LOCKERS ========
+
+
+  # ======== Foods ===========
+  [
+   ["Baked Potato","baked_potato.png"],
+   ["Broccoli and Cheese","broccoli_cheese.png"],
+   ["Cheese Burger ","cheeseburger.png"],
+   ["Cheese","cheese.png"],
+   ["Cherry Pie","cherry_pie.png"],
+   ["Chocolate Milk","chocolate_milk.png"],
+   ["Donut","doughnut.png"],
+   ["Eggs","eggs.png"],
+   ["Fries","fries.png"],
+   ["Hot Dog","hot_dog.png"],
+   ["Ice Cream","ice_cream.png"],
+   ["Pizza","pizza.png"],
+   ["Spagetti","spagetti.png"],
+   ["Toast","toast.png"],
+   ["Tuna","tuna.png"]
+  ].each do |f|
+    food = Food.create(name: f[0])
+    food.image = open("http://www.lemirror1.com/Development/images/games/foodfight/" + f[1]).read
+    food.save
+  end
+  # ======== Foods ===========
+
+
 end

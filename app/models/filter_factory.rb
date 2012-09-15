@@ -41,7 +41,7 @@ class FilterFactory
     f = f.joins(:state_filter_links).merge(sfl)
     pcfl = PersonClassFilterLink.where(:person_class => person_classes)
     f = f.joins(:person_class_filter_links).merge(pcfl)
-    f.group('filters.id').first
+    f.group('filters.id,filters.minimum_grade, filters.maximum_grade, filters.nickname, filters.created_at, filters.updated_at').first
   end
 
 
@@ -110,7 +110,11 @@ class FilterFactory
       s.id
     end
     state_ids = person.schools.collect do |s|
-      s.addresses.first.state.id
+      if s.addresses && s.addresses.first && s.addresses.first.state
+        s.addresses.first.state.id
+      else
+        nil
+      end
     end
     sfl_arel = SchoolFilterLink.arel_table
     sfl = SchoolFilterLink.where(sfl_arel[:school_id].in(school_ids).or(sfl_arel[:school_id].eq(nil)))
@@ -124,7 +128,7 @@ class FilterFactory
     pcfl_arel = PersonClassFilterLink.arel_table
     pcfl = PersonClassFilterLink.where(pcfl_arel[:person_class].in(person.class.to_s).or(pcfl_arel[:person_class].eq(nil)))
     f = f.joins(:person_class_filter_links).merge(pcfl)
-    f = f.select('filters.id').group('filters.id')
+    f = f.select('filters.id').group('filters.id, filters.minimum_grade, filters.maximum_grade, filters.nickname, filters.created_at, filters.updated_at')
     f.all
   end
 end

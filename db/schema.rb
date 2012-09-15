@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908125040) do
+ActiveRecord::Schema.define(:version => 20120915152936) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -118,6 +118,21 @@ ActiveRecord::Schema.define(:version => 20120908125040) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "food_school_links", :force => true do |t|
+    t.integer  "food_id"
+    t.integer  "school_id"
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "foods", :force => true do |t|
+    t.string   "name"
+    t.string   "image_uid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "games_answers", :force => true do |t|
     t.string "game_type"
     t.string "body"
@@ -218,6 +233,19 @@ ActiveRecord::Schema.define(:version => 20120908125040) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "message_image_links", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "message_image_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "message_images", :force => true do |t|
+    t.string   "image_uid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
     t.datetime "created_at", :null => false
@@ -262,6 +290,7 @@ ActiveRecord::Schema.define(:version => 20120908125040) do
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
+    t.string   "gender"
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
@@ -639,6 +668,13 @@ ActiveRecord::Schema.define(:version => 20120908125040) do
   end
 
   add_index "spree_preferences", ["key"], :name => "index_spree_preferences_on_key", :unique => true
+
+  create_table "spree_product_filter_links", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "spree_product_option_types", :force => true do |t|
     t.integer  "position"

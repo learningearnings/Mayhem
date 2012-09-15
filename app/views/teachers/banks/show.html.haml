@@ -14,6 +14,7 @@
     = link_to "View Savings History", "#savings-history-modal", class: 'btn', 'data-toggle' => 'modal'
     = link_to "View Credit History", "#credit-history-modal", class: 'btn', 'data-toggle' => 'modal'
 
+    %h4 Create Print Bucks
     = form_for OtuCode.new, :url => teachers_create_print_bucks_path do |f|
       = label_tag '$1'
       = text_field_tag :point1
@@ -23,9 +24,19 @@
       = text_field_tag :point10
       = f.submit 'Print Bucks'
 
+    %h4 Create E-Bucks
     = form_for OtuCode.new, :url => teachers_create_ebucks_path do |f|
       = label_tag 'Student'
       = select("student", "id", Student.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
       = label_tag :points
       = text_field_tag :points
       = f.submit 'Create eBucks'
+
+    %h4 Transfer Bucks
+    = form_for OtuCode.new, :url => teachers_transfer_bucks_path do |f|
+      = label_tag 'Points'
+      = text_field_tag :points
+      = hidden_field_tag :from_teacher_id, current_person.id
+      = label_tag :to_teacher
+      = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers.reject{|x| x == Teacher.find(current_person.id)}), :id, :to_s), :include_blank => true
+      = f.submit 'Transfer Bucks'

@@ -8,15 +8,17 @@ require 'capistrano/ext/multistage'
 set :application,     "Mayhem"
 set :scm,             :git
 set :repository,      "git@github.com:learningearnings/Mayhem.git"
-set :branch,          "origin/master"
+set :branch,          "origin/develop"
 set :migrate_target,  :current
 set :ssh_options,     { forward_agent: true }
 set :rails_env,       "production"
+### set auto_accept so that if we reload, it doesn't halt because of user input
+set :auto_accept,      "1"
 set :deploy_to,       "/home/deployer/apps/Mayhem"
 set :normalize_asset_timestamps, false
 
 set :user,            "deployer"
-set :group,           "staff"
+set :group,           "deployer"
 set :use_sudo,        false
 
 
@@ -29,6 +31,7 @@ set(:latest_revision)   { capture("cd #{current_path}; git rev-parse --short HEA
 set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEAD@{1}").strip }
 
 default_environment["RAILS_ENV"] = 'production'
+default_environment["AUTO_ACCEPT"] = '1'
 default_run_options[:shell] = 'bash'
 
 namespace :deploy do
@@ -63,10 +66,17 @@ namespace :deploy do
     finalize_update
   end
 
+  desc "Reload the database (deletes everything!!!)."
+  task :reload, except: { no_release: true } do
+#    stop if remote_file_exists?('/tmp/unicorn.mayhemstaging.lemirror.com.pid')
+    run "cd #{latest_release}; bundle exec rake le:reload RAILS_ENV=#{rails_env}"
+    start
+  end
+
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; bundle exec rake assets:precompile"
+    run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -85,12 +95,11 @@ namespace :deploy do
     # save empty folders
     run <<-CMD
       source /home/deployer/.bashrc &&
-      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids #{latest_release}/public/blog &&
+      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids  &&
       mkdir -p #{latest_release}/public &&
       mkdir -p #{latest_release}/tmp &&
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
-      ln -s #{shared_path}/public/blog #{latest_release}/public/blog &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml
     CMD
@@ -104,7 +113,7 @@ namespace :deploy do
 
   desc "Zero-downtime restart of Unicorn"
   task :restart, except: { no_release: true } do
-    run "kill -s USR2 `cat /tmp/unicorn.mrarlo.com.pid`"
+    run "kill -s USR2 `cat /tmp/unicorn.mayhemstaging.lemirror.com.pid`"
   end
 
   desc "Start unicorn"
@@ -114,7 +123,7 @@ namespace :deploy do
 
   desc "Stop unicorn"
   task :stop, except: { no_release: true } do
-    run "kill -s QUIT `cat /tmp/unicorn.mrarlo.com.pid`"
+    run "kill -s QUIT `cat /tmp/unicorn.mayhemstaging.lemirror.com.pid`"
   end
 
   namespace :rollback do
@@ -137,8 +146,12 @@ namespace :deploy do
   end
 end
 
+#def remote_file_exists?(full_path)
+#  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
+#end
+
 def run_rake(cmd)
   run "cd #{current_path}; #{rake} #{cmd}"
 end
 
-after 'bundle:install', 'deploy:precompile_assets'
+after 'deploy:finalize_update', 'deploy:precompile_assets'

@@ -1,6 +1,6 @@
 //= require jquery
-//= require ICanHaz
 //= require jquery_ujs
+//= require ICanHaz
 //= require init
 //= require bootstrap-modal
 //= require bootstrap-dropdown
@@ -17,9 +17,11 @@
 //= require jquery.html5-placeholder-shim
 //= require jquery_nested_form
 //= require ckeditor/init
-//= require jquery.ui.draggable
-//= require jquery.ui.dialog
-
+//= require jquery.ui.core.js
+//= require jquery.ui.mouse.js
+//= require jquery.ui.widget.js
+//= require jquery.ui.draggable.js
+//= require custom
 # Make jquery ajax requests use the csrf token
 $ ->
   $.ajaxSetup

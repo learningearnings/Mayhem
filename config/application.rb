@@ -2,7 +2,6 @@ require File.expand_path('../boot', __FILE__)
 
 # For PDFKit Middleware
 require 'pdfkit'
-
 require 'rails/all'
 
 if defined?(Bundler)
@@ -14,7 +13,7 @@ end
 
 module Leror
   class Application < Rails::Application
-    
+
     config.to_prepare do
       # Load application's model / class decorators
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|
@@ -77,5 +76,11 @@ module Leror
 
     # For generating pdfs from routes in the site
     config.middleware.use PDFKit::Middleware, {}, only: %r[^/pages/pdf]
+
+
+    config.after_initialize do
+      Spree::Config.searcher_class = Spree::Search::Filter
+    end
+
   end
 end

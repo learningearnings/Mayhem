@@ -37,6 +37,9 @@ Leror::Application.routes.draw do
     resource :food_fight do
       member do
         get 'play'
+        get 'choose_food'
+        post 'choose_school'
+        post 'throw_food'
       end
     end
   end
@@ -65,16 +68,22 @@ Leror::Application.routes.draw do
   # Lockers
   resource :locker
 
+  resource :teachers
+  match "/teachers/approve_teacher/:id" => 'teachers#approve_teacher', as: 'approve_teacher'
+  match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
+
   namespace :teachers do
     resource :bank
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
+    match "/transfer_bucks" => 'banks#transfer_bucks'
   end
 
   namespace :school_admins do
     resource :bank
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
+    match "/transfer_bucks" => 'banks#transfer_bucks'
   end
 
   # Command routes

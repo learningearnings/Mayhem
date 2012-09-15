@@ -54,6 +54,14 @@ input, textarea, select {
   background-position: top center;
   background-repeat: repeat-y;
   background-color: #fff;
+  height: 165px;
+}
+
+.content-section {
+  padding: 0 35px;
+  position: relative;
+  margin-bottom: 100px;
+  min-height: 500px;
 }
 
 .logo {
@@ -189,27 +197,31 @@ input, textarea, select {
   left: 330px;
 }
 
-.content {
+.nav-container, .nav-container-corkboard {
   position: relative;
-}
-
-.content .stickies-nav {
-  list-style-type: none;
-  margin: 0;
-  position: absolute;
   top: 340px;
-  left: 720px;
+  left: 460px;
+  text-align: right;
+  width: 560px;
+    .stickies-nav {
+      list-style-type: none;
+      margin: 0;
+    }
+    .stickies-nav li {
+      display: inline;
+    }
 }
 
-.content .stickies-nav li {
-  display: inline;
+.stickies-nav li a:active {
+  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));  
 }
 
-.content .stickies-nav.how-it-works {
-  left: 830px;
+.nav-container-corkboard {
+  top: 310px;
+  left: 310px;
 }
 
-.content .how-it-works-nav {
+.content-section .how-nav {
   list-style-type: none;
   margin: 0;
   position: absolute;
@@ -221,70 +233,67 @@ input, textarea, select {
   }
 }
 
-.content .how-it-works-nav li span a {
+.content-section .how-nav li span a {
   color: #312d68;
   font-size: 1.6em;
 }
 
-.content .how-it-works-nav li span a:hover {
+.content-section .how-nav li span a:hover {
   text-decoration: none;
   color: #f05c1a;  
 }
 
-.content .how-it-works-nav li span a:active {
+.content-section .how-nav li span a:active {
   color: #f05c1a;    
 }
-
-.content.how-it-works {
   
-  .intro-slide {
-    background-image: url(asset_path('how_it_works_slide1.png', image));  
-    position: absolute;
-    top: 50px;
-    left: 480px;
-    height: 232px;
-    width: 522px;
-  }
-  .register-slide {
-    background-image: url(asset_path('how_it_works_slide2.png', image));  
-    position: absolute;
-    top: 50px;
-    left: 480px;
-    height: 232px;
-    width: 484px;  
-  }
-  .earn-slide {
-    background-image: url(asset_path('how_it_works_slide3.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 245px;
-    width: 563px;   
+.intro-slide {
+  background-image: url(asset_path('how_it_works_slide1.png', image));  
+  position: absolute;
+  top: 50px;
+  left: 480px;
+  height: 232px;
+  width: 522px;
 }
-  .enter-slide {
-    background-image: url(asset_path('how_it_works_slide4.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 238px;
-    width: 498px;     
-  }
-  .buy-slide {
-    background-image: url(asset_path('how_it_works_slide5.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 250px;
-    width: 503px;     
-  }
-  .receive-slide {
-    background-image: url(asset_path('how_it_works_slide6.png', image));  
-    position: absolute;
-    top: 40px;
-    left: 480px;
-    height: 227px;
-    width: 554px;      
-  }
+.register-slide {
+  background-image: url(asset_path('how_it_works_slide2.png', image));  
+  position: absolute;
+  top: 50px;
+  left: 480px;
+  height: 232px;
+  width: 484px;  
+}
+.earn-slide {
+  background-image: url(asset_path('how_it_works_slide3.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 245px;
+  width: 563px;   
+}
+.enter-slide {
+  background-image: url(asset_path('how_it_works_slide4.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 238px;
+  width: 498px;     
+}
+.buy-slide {
+  background-image: url(asset_path('how_it_works_slide5.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 250px;
+  width: 503px;     
+}
+.receive-slide {
+  background-image: url(asset_path('how_it_works_slide6.png', image));  
+  position: absolute;
+  top: 40px;
+  left: 480px;
+  height: 227px;
+  width: 554px;      
 }
 
 .not-selected {
@@ -294,7 +303,6 @@ input, textarea, select {
 .selected {
   color: #f05c1a!important;  
 }
-
 
 .btn.students-stickie,
 .btn.parents-stickie,
@@ -341,9 +349,14 @@ input, textarea, select {
 }
 
 .btn.teachers-stickie:hover {
-  background-position: -550px 0;
-  
+  background-position: -550px 0;  
 }
+
+.btn.teachers-stickie:active {
+  background-position: -550px 0;  
+}
+
+
 
 .custom-nav-bar .navbar-inner {
   background-color: transparent;
@@ -358,7 +371,24 @@ input, textarea, select {
   font-size: 1.8em;
 }
 
+.navbar .nav li a {
+  height: 50px;
+}
+
 .nav.primary-nav .home {
+  color: #25860b;
+  width: 92px
+}
+
+.nav.primary-nav .home:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #25860b;
+}
+
+.home-selected {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
   color: #25860b;
 }
 
@@ -366,30 +396,113 @@ input, textarea, select {
   color: #ea4e08;
 }
 
+.nav.primary-nav .how-it-works:hover {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ea4e08;  
+}
+
+.how-it-works-selected {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ea4e08;  
+}
+
 .nav.primary-nav .locker {
   color: #1f2870;
 }
 
+.nav.primary-nav .locker:hover {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
+  color: #1f2870;
+}
+
+.locker-selected {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
+  color: #1f2870;
+}
+
+
 .nav.primary-nav .inbox {
   color: #000000;
+  width: 92px;
+}
+
+.nav.primary-nav .inbox:hover {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
+}
+
+.inbox-selected {
+  background-image: url(asset_path('locker_selected.png', image));
+  background-repeat: no-repeat;
 }
 
 .nav.primary-nav .bank {
   color: #470bc1;
 }
 
+.nav.primary-nav .bank:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470bc1;  
+}
+
+.bank-selected {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470bc1;  
+}
+
 .nav.primary-nav .play {
   color: #eb731c;
+}
+
+.nav.primary-nav .play:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #eb731c;  
+}
+
+.play-selected {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #eb731c;  
 }
 
 .nav.primary-nav .rewards {
   color: #b611b0;
 }
 
+.nav.primary-nav .rewards:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #b611b0;  
+}
+
+.rewards-selected {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #b611b0;  
+}
+
 .nav.primary-nav .news {
   color: #ff2204;
 }
 
+.nav.primary-nav .news:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ff2204;  
+}
+
+.news-selected {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #ff2204;  
+}
 .navbar-inner {
   border-radius: 0;
 }
@@ -398,28 +511,28 @@ input, textarea, select {
   min-height: 500px;
 }
 
+.side-art,
+.side-art-parents,
+.side-art-teachers {
+  position: absolute;
+}
+
 .side-art {
   background-image: url(asset_path('side_doodles.png', image));
   height: 467px;
   width: 109px;
-  float: left;
-  margin-left: 83px;
 }
 
 .side-art-parents {
   background-image: url(asset_path('side_art_parents.png', image));
   height: 561px;
   width: 122px;
-  float: left;
-  margin-left: 83px;
 }
 
 .side-art-teachers {
   background-image: url(asset_path('side_art_teachers.png', image));
   height: 464px;
   width: 108px;
-  float: left;
-  margin-left: 83px;
 }
 
 
@@ -427,17 +540,65 @@ input, textarea, select {
   background-image: url(asset_path('sir_bacon_francis_shadows.png', image));
   width: 358px;
   height: 415px;
-  float: left;
-  margin: 0 0 0 -78px;
-  position: relative;
+  position: absolute;
   top: 30px;
-}
+  left: 90px;
+  z-index: 15;
+ }
 
 .white-board {
   background-image: url(asset_path('whiteboard_with_shadows.png', image));
   height: 416px;
   width: 776px;
-  margin-left: 340px;
+  position: absolute;
+  top: 0;
+  left: 330px;
+  z-index: -10;
+}
+
+.corkboard {
+  background-image: url(asset_path('corkboard_shadows.png', image));
+  height: 384px;
+  width: 621px;
+  position: absolute;
+  top: 0;
+  left: 310px;
+}
+
+.messaging-inbox {
+  background-image: url(asset_path('messaging_inbox.png', image));
+  height: 241px;
+  width: 364px;  
+  position: absolute;
+  top: 50px;
+  left: 490px;
+}
+
+.teachers-inbox-cta {
+  background-image: url(asset_path('teachers_inbox_cta.png', image));
+  height: 185px;
+  width: 180px;
+  position: absolute;
+  top: 200px;
+  left: 930px;
+}
+
+.parents-inbox-cta {
+  background-image: url(asset_path('parents_inbox_cta.png', image));
+  height: 185px;
+  width: 180px;
+  position: absolute;
+  top: 0;
+  left: 945px;  
+}
+
+.inbox-screenshot {
+  background-image: url(asset_path('inbox_screenshot.png', image));
+  height: 217px;
+  width: 287px;
+  position: absolute;
+  top: 300px;
+  left: 565px;   
 }
 
 .product-image-bursts {
@@ -594,9 +755,144 @@ input, textarea, select {
   position: absolute;
 }
 
+.inbox-parents {
+  display: inline-block;
+  height: 100px;
+  width: 180px;
+  margin: 40px 50px 0 0;
+}
+
+.inbox-teachers {
+  display: inline-block;
+  height: 100px;
+  width: 160px;
+  margin: 50px 0 0 20px;
+}
+
 /* Pages */
 .privacy-content {
   margin: -8px 0 0 180px;
+}
+
+.picaso-pig {
+  background-image: url(asset_path('picaso_pig.png', image));
+  width: 164px;
+  height: 168px;
+  position: absolute;
+  top: 0;
+  left: 130px;
+}
+
+.locker-intro {
+  background-image: url(asset_path('locker.png', image));
+  width: 814px;
+  height: 356px;
+  position: absolute;
+  top: 160px;
+  left: 300px;
+}
+
+.locker-desc {
+  position: absolute;
+  top: 8px;
+  width: 600px;
+  left: 300px;
+    h2 {
+      color: #1f2870;
+    }
+}
+
+.rewards-highlights-small {
+  background-image: url(asset_path('reward_highlights_yellow_notepaper_pin.png', image));
+  position: absolute;
+  top: 0;
+  left: 940px;
+  height: 173px;
+  width: 190px;
+}
+
+.reward-of-the-week {
+  background-image: url(asset_path('reward_of_the_week_pig.png', image));
+  position: absolute;
+  top: 200px;
+  left: 940px;
+  height: 205px;
+  width: 190px;  
+}
+
+.rewards-intro {
+  background-image: url(asset_path('rewards_intro.png', image));
+  position: absolute;
+  top: 50px;
+  left: 490px;
+  height: 241px;
+  width: 361px;
+}
+
+.games-board {
+  background-image: url(asset_path('games_board.png', image));
+  position: absolute;
+  width: 400px;
+  height: 280px;
+  top: 25px;
+  left: 460px;
+  
+}
+
+.foodfight {
+  background-image: url(asset_path('food_fight.gif', image));
+  position: absolute;
+  width: 287px;
+  height: 162px;
+  top: 0;
+  left: 700px;
+
+}
+
+.get-it-now {
+  background-image: url(asset_path('get_it_now_lower_price.jpeg', image));
+  position: absolute;
+  width: 460px;
+  height: 120px;
+  top: 0;
+  left: 200px;
+
+}
+
+.concentration {
+  background-image: url(asset_path('concentration.jpeg', image));
+  position: absolute;
+  width: 203px;
+  height: 188px;
+  top: 0;
+  left: 400px;
+}
+
+.boiling-point {
+  background-image: url(asset_path('transparent_thermometer.gif', image));
+  position: absolute;
+  width: 120px;
+  height: 339px;
+  top: 0;
+  left: 500px;
+}
+
+.testimonial {
+  position: absolute;
+  p {
+    font-size: 60px;
+    color: #f05c1a;
+    margin: 60px 0 0 500px;
+  }
+}
+
+/* Primary Nav Selected */
+
+.content.inbox-not-logged-in {
+  .inbox {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;  
+  }
 }
 
 footer {
@@ -630,4 +926,24 @@ footer {
 }
 .hidden {
   display: none;
+}
+
+.hover_image img{
+    border: 2px solid #ccc;
+}
+.hover_image:hover img{
+    border: 2px solid navy;
+}
+.hover_image.active img{
+    border-color: red; 
+}
+
+.school_hover{
+    border: 2px solid #ccc;
+}
+.school_hover:hover{
+    border: 2px solid navy;
+}
+.school_hover.active{
+    border-color: red; 
 }

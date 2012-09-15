@@ -1,0 +1,12 @@
+%h2 Your account has been approved!
+
+%p= @teacher.first_name
+%p= @teacher.last_name
+%p= @teacher.email
+%p= @teacher.username
+%p= @teacher.dob
+%p= @teacher.gender
+%p= @teacher.grade
+%p= @teacher.schools.first.name
+
+= link_to 'Login', '/'

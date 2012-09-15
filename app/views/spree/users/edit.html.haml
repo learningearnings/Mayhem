@@ -3,6 +3,8 @@
 %h2= t(:editing_user)
 
 = form_for @user, :url => spree.user_path(@user), :method => :put do |f|
+  #hover_value= hidden_field_tag :avatar_id
+  %p= f.submit t(:update)
   = render :partial => 'spree/shared/user_form', :locals => { :f => f }
   #avatar_partial= render :partial => 'spree/users/avatars'
   %p= f.submit t(:update)

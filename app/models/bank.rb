@@ -55,6 +55,15 @@ class Bank
     otu_code.update_attribute(:active, false)
   end
 
+  def transfer_teacher_bucks(school, from_teacher, to_teacher, points)
+    account = from_teacher.main_account(school)
+    return @on_failure.call unless account_has_enough_money_for(account, points.to_d)
+
+    @credit_manager.transfer_credits_to_teacher school, from_teacher, to_teacher, points.to_d
+
+    return on_success.call
+  end
+
   protected
   def buck_creator
     ->(params) { OtuCode.create params }
