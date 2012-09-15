@@ -9,5 +9,12 @@ Spree::Product.class_eval do
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})
   end
 
+  def thumb
+    if images.first.present?
+      images.first.attachment.url(:small)
+    else
+      "common/le_logo.png"
+    end
+  end
 
 end

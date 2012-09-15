@@ -2,6 +2,8 @@ require "basic_statuses"
 
 class School < ActiveRecord::Base
   include BasicStatuses
+
+  GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
   has_many :addresses, :as => :addressable
   has_many :classrooms
   has_many :foods, :through => :food_school_links
@@ -19,6 +21,8 @@ class School < ActiveRecord::Base
   validates_uniqueness_of :name
 
   after_create :ensure_accounts
+
+  scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
   def create_spree_store
     if Rails.env.development?

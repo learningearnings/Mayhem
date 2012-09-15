@@ -1,0 +1,21 @@
+$('#filter_widget_school_selector').modal('hide');
+$('#filter_widget_classroom_selector').modal('show');
+$('#filter_widget_classroom_table').html("");
+<% @classrooms.each_slice(3) do |classroom_slice| %>
+  var row_el = $('<tr>');
+  <% classroom_slice.each do |classroom| %>
+    var cell = $("<td>");
+
+    var control_group_div = $("<div>").addClass("control-group");
+    control_group_div.append($("<label>").addClass("control-label").text("<%= "#{classroom.name} - #{classroom.students.count}" %>"));
+
+    var check_box = $("<div>").addClass("controls").append($("<input>").attr("type", "checkbox").addClass("filter_widget_classroom_checkbox").attr("name", "classrooms[]").val("<%= classroom.id %>"));
+    control_group_div.append(check_box);
+
+    cell.append(control_group_div);
+
+    row_el.append(cell);
+  <% end %>
+  var table = $('#filter_widget_classroom_table');
+  table.append(row_el);
+<% end %>

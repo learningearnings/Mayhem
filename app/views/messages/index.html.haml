@@ -2,11 +2,17 @@
 
 %p= lipsum(100)
 
-#inbox-accordion.accordion.inbox
-  = render 'message_group', title: 'Friend Messages',  messages: @received_messages.from_friend,  accordion_id: 'friend-messages',  open: true
-  = render 'message_group', title: 'School Messages',  messages: @received_messages.from_school,  accordion_id: 'school-messages',  open: false
-  = render 'message_group', title: 'Teacher Messages', messages: @received_messages.from_teacher, accordion_id: 'teacher-messages', open: false
-  = render 'message_group', title: 'System Messages',  messages: @received_messages.from_system,  accordion_id: 'system-messages',  open: false
+%ul.nav.primary-nav
+  %li= link_to "Friend Messages",  friend_messages_path
+  %li= link_to "School Messages",  school_messages_path
+  %li= link_to "Teacher Messages", teacher_messages_path
+  %li= link_to "System Messages",  system_messages_path
+
+/#inbox-accordion.accordion.inbox
+/  = render 'message_group', title: 'Friend Messages',  messages: @received_messages.from_friend,  accordion_id: 'friend-messages',  open: true
+/  = render 'message_group', title: 'School Messages',  messages: @received_messages.from_school,  accordion_id: 'school-messages',  open: false
+/  = render 'message_group', title: 'Teacher Messages', messages: @received_messages.from_teacher, accordion_id: 'teacher-messages', open: false
+/  = render 'message_group', title: 'System Messages',  messages: @received_messages.from_system,  accordion_id: 'system-messages',  open: false
 
 = link_to "Send a message", new_message_path, class: 'btn', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
 

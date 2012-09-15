@@ -3,14 +3,15 @@
 = form_for FoodSchoolLink.new, :url => throw_food_games_food_fight_path do |f|
   #hover_value= hidden_field_tag :school_id
   =hidden_field_tag :food_id, params[:food_id]
-  %h4 Favorite Schools
-  - current_person.favorite_schools.each do |school|
-    %ul
-      %div{:id => "#{school.id}", :class => "school_hover"}
-        %li= school.name
+  - if current_person.favorite_schools.present?
+    %h4 Favorite Schools
+    - current_person.favorite_schools.each do |school|
+      %ul
+        %div{:id => "#{school.id}", :class => "school_hover"}
+          %li= school.name
 
   %h4 All Schools
-  - @schools.each do |school|
+  - (@schools - current_person.favorite_schools).each do |school|
     %ul
       %div{:id => "#{school.id}", :class => "school_hover"}
         %li= school.name
