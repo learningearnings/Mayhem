@@ -1,5 +1,9 @@
 class RewardsController < ApplicationController
   before_filter :authenticate_teacher
+  before_filter :foo
+
+  def foo
+  end
 
   def index
     @products = Spree::Product.not_deleted.order(:name)
@@ -62,12 +66,12 @@ class RewardsController < ApplicationController
       i.save
     end
 
-#    filter_factory = FilterFactory.new
-#    filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
-#    filter = filter_factory.find_or_create_filter(filter_condition)
-#    filter.save
-#    @product.filter = filter
-
+    filter_factory = FilterFactory.new
+    filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
+    f = filter_factory.find_or_create_filter(filter_condition)
+    p = SpreeProductFilterLink.new product_id: @product.id, filter_id: f.id
+    p.save
+#    @product.filter = f.id
     #  anything else?
   end
 
