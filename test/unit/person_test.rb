@@ -54,4 +54,13 @@ describe Person do
       assert_equal person.display_name, ""
     end
   end
+
+  describe "Person#display_name=" do
+    it "should create a new display name" do
+      person = FactoryGirl.create(:person)
+      assert_equal person.display_names.count, 0
+      person.display_name= "New Display Name"
+      assert_equal person.display_names.count, 1
+    end
+  end
 end
