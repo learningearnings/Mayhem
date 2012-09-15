@@ -1,0 +1,6 @@
+- @schools.each do |school|
+  %tr
+    %td
+      .control-group
+        %label.control-label= "#{school.name} - #{school.classrooms.count}"
+        %input{:name => "schools[]", :value => school.id, "data-school-name" => school.name, :type => "checkbox"}

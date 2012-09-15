@@ -93,7 +93,7 @@ $(document).ready(function() {
 	  $(this).addClass("selected");	
 	  $(".attention-teachers").css("display", "block");
 	});
-	
+
 	// Primary Nav Selected
 	if(window.location.href.indexOf("how_it_works") > -1) {
 	 $(".how-it-works").toggleClass("how-it-works-selected")

@@ -14,3 +14,9 @@
 @import 'store/products';
 @import 'messages';
 @import 'lockers';
+
+.modal {
+    overflow-y:auto;
+    max-height:90%;
+    margin-top:-45%;
+}
