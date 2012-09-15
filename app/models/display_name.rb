@@ -5,6 +5,7 @@ class DisplayName < ActiveRecord::Base
   belongs_to :approved_by, :class_name => Person
 
   scope :approved, lambda { where(:state => "approved") }
+  scope :requested, lambda { where(:state => "requested") }
 
   state_machine :state, :initial => :requested do
     before_transition :on => :approve do |display_name_record|

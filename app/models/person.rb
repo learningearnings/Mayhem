@@ -12,7 +12,6 @@ class Person < ActiveRecord::Base
   has_many :person_school_classroom_links
   has_many :display_names
 
-  
   def favorite_foods
     links = FoodSchoolLink.find_all_by_person_id(self.id)
     links.sort_by{|x| x.food_id}.uniq{|x| x.food_id}.map{|x| x.food}.first(3)
@@ -42,6 +41,15 @@ class Person < ActiveRecord::Base
   def display_name
     display_name_record = display_names.approved.order("created_at DESC").first
     @display_name ||= display_name_record.nil? ? "" : display_name_record.display_name
+  end
+
+  def requested_display_name
+    display_name_record = display_names.requested.order("created_at DESC").first
+    @requested_display_name ||= display_name_record.nil? ? "" : display_name_record.display_name
+  end
+
+  def display_name= name
+    display_names.create(:display_name => name)
   end
 
   def person_school_classroom_links(status = :status_active)

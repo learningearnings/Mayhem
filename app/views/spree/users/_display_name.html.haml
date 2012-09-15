@@ -1,0 +1,8 @@
+-unless f.object.person.requested_display_name.blank?
+  = f.label "Last Requested Display Name"
+  = f.object.person.requested_display_name
+-unless f.object.display_name.blank?
+  = f.label "Current Display Name"
+  = f.object.display_name
+= f.label :display_name
+= f.text_field :display_name

@@ -7,6 +7,7 @@
   %p= f.submit t(:update)
   = render :partial => 'spree/shared/user_form', :locals => { :f => f }
   #avatar_partial= render :partial => 'spree/users/avatars'
+  = render :partial => "spree/users/display_name", :locals => { :f => f }
   %p= f.submit t(:update)
 
 = javascript_include_tag "avatar_pager.js"
