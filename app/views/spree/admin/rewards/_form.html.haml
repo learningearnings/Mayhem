@@ -27,6 +27,14 @@
     = f.label 'Available on'
     .input= f.text_field :available_on, :class => 'datepicker'
   .clearfix
+    = f.fields_for :images do |i|
+      = i.label :image
+      = i.file_field :attachment_file_name
+  - unless @product.images.empty?
+    .clearfix
+      = f.label :current_image
+      = image_tag @product.thumb
+  .clearfix
     = f.label 'Stores'
     %br
     - Spree::Store.all.each do |store|
