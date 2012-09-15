@@ -11,6 +11,21 @@ class Person < ActiveRecord::Base
   has_many :person_school_links
   has_many :person_school_classroom_links
 
+  
+  def favorite_foods
+    links = FoodSchoolLink.find_all_by_person_id(self.id)
+    links.sort_by{|x| x.food_id}.uniq{|x| x.food_id}.map{|x| x.food}.first(3)
+  end
+
+  def favorite_schools
+    links = FoodSchoolLink.find_all_by_person_id(self.id)
+    links.sort_by{|x| x.school_id}.uniq{|x| x.school_id}.map{|x| x.school}.first(3)
+  end
+
+  def food_schools
+    School.joins(:person_food_school_links).where(person_food_school_links: { id: person_food_school_links.map(&:id) })
+  end
+
   delegate :avatar, to: :user
   delegate :username, :username= , to: :user
 

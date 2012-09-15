@@ -33,7 +33,7 @@
       = f.submit 'Create eBucks'
 
     %h4 Transfer Bucks
-    = form_for OtuCode.new, :url => teachers_transfer_bucks_path do |f|
+    = form_for OtuCode.new, :url => school_admins_transfer_bucks_path do |f|
       = label_tag 'Points'
       = text_field_tag :points
       = label_tag :from_teacher

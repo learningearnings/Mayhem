@@ -2,7 +2,8 @@
 #    -dhw
 
 module Spree::Search
-  class Filter < defined?(Spree::Search::MultiDomain) ? Spree::Search::MultiDomain :  Spree::Core::Search::Base
+#  class Filter < defined?(Spree::Search::MultiDomain) ? Spree::Search::MultiDomain :  Spree::Core::Search::Base
+  class Filter < Spree::Search::MultiDomain
     def initialize(params)
       super
     end

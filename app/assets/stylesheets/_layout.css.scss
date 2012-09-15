@@ -197,8 +197,7 @@ input, textarea, select {
   left: 330px;
 }
 
-.nav-container {
-  border: solid 1px blue;
+.nav-container, .nav-container-corkboard {
   position: relative;
   top: 340px;
   left: 460px;
@@ -211,6 +210,15 @@ input, textarea, select {
     .stickies-nav li {
       display: inline;
     }
+}
+
+.stickies-nav li a:active {
+  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));  
+}
+
+.nav-container-corkboard {
+  top: 310px;
+  left: 310px;
 }
 
 .content-section .how-nav {
@@ -316,17 +324,6 @@ input, textarea, select {
   -o-transition: color 0 ease-in;
   transition: none;  
 }
-
-.btn.students-stickie:active,
-.btn.parents-stickie:active,
-.btn.teachers-stickie:active {
-  background-position: 0;
-  -moz-transition: none;
-  -webkit-transition: none;
-  -o-transition: color 0 ease-in;
-  transition: none;  
-}
-
 
 .btn.students-stickie {
   height: 109px;
@@ -574,22 +571,22 @@ input, textarea, select {
   width: 364px;  
   position: absolute;
   top: 50px;
-  left: 500px;
+  left: 490px;
 }
 
 .teachers-inbox-cta {
   background-image: url(asset_path('teachers_inbox_cta.png', image));
-  height: 278px;
-  width: 270px;
+  height: 185px;
+  width: 180px;
   position: absolute;
-  top: 250px;
-  left: 900px;
+  top: 200px;
+  left: 930px;
 }
 
 .parents-inbox-cta {
   background-image: url(asset_path('parents_inbox_cta.png', image));
-  height: 245px;
-  width: 238px;
+  height: 185px;
+  width: 180px;
   position: absolute;
   top: 0;
   left: 945px;  
@@ -758,13 +755,23 @@ input, textarea, select {
   position: absolute;
 }
 
+.inbox-parents {
+  display: inline-block;
+  height: 100px;
+  width: 180px;
+  margin: 40px 50px 0 0;
+}
+
+.inbox-teachers {
+  display: inline-block;
+  height: 100px;
+  width: 160px;
+  margin: 50px 0 0 20px;
+}
+
 /* Pages */
 .privacy-content {
   margin: -8px 0 0 180px;
-}
-
-.content.inbox-not-logged-in {
-  margin-bottom: 100px;
 }
 
 .picaso-pig {
@@ -793,6 +800,90 @@ input, textarea, select {
     h2 {
       color: #1f2870;
     }
+}
+
+.rewards-highlights-small {
+  background-image: url(asset_path('reward_highlights_yellow_notepaper_pin.png', image));
+  position: absolute;
+  top: 0;
+  left: 940px;
+  height: 173px;
+  width: 190px;
+}
+
+.reward-of-the-week {
+  background-image: url(asset_path('reward_of_the_week_pig.png', image));
+  position: absolute;
+  top: 200px;
+  left: 940px;
+  height: 205px;
+  width: 190px;  
+}
+
+.rewards-intro {
+  background-image: url(asset_path('rewards_intro.png', image));
+  position: absolute;
+  top: 50px;
+  left: 490px;
+  height: 241px;
+  width: 361px;
+}
+
+.games-board {
+  background-image: url(asset_path('games_board.png', image));
+  position: absolute;
+  width: 400px;
+  height: 280px;
+  top: 25px;
+  left: 460px;
+  
+}
+
+.foodfight {
+  background-image: url(asset_path('food_fight.gif', image));
+  position: absolute;
+  width: 287px;
+  height: 162px;
+  top: 0;
+  left: 700px;
+
+}
+
+.get-it-now {
+  background-image: url(asset_path('get_it_now_lower_price.jpeg', image));
+  position: absolute;
+  width: 460px;
+  height: 120px;
+  top: 0;
+  left: 200px;
+
+}
+
+.concentration {
+  background-image: url(asset_path('concentration.jpeg', image));
+  position: absolute;
+  width: 203px;
+  height: 188px;
+  top: 0;
+  left: 400px;
+}
+
+.boiling-point {
+  background-image: url(asset_path('transparent_thermometer.gif', image));
+  position: absolute;
+  width: 120px;
+  height: 339px;
+  top: 0;
+  left: 500px;
+}
+
+.testimonial {
+  position: absolute;
+  p {
+    font-size: 60px;
+    color: #f05c1a;
+    margin: 60px 0 0 500px;
+  }
 }
 
 /* Primary Nav Selected */
@@ -835,4 +926,24 @@ footer {
 }
 .hidden {
   display: none;
+}
+
+.hover_image img{
+    border: 2px solid #ccc;
+}
+.hover_image:hover img{
+    border: 2px solid navy;
+}
+.hover_image.active img{
+    border-color: red; 
+}
+
+.school_hover{
+    border: 2px solid #ccc;
+}
+.school_hover:hover{
+    border: 2px solid navy;
+}
+.school_hover.active{
+    border-color: red; 
 }

@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20120911230708) do
   create_table "food_school_links", :force => true do |t|
     t.integer  "food_id"
     t.integer  "school_id"
+    t.integer  "person_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
