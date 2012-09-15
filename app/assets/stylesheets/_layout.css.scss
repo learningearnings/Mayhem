@@ -212,6 +212,10 @@ input, textarea, select {
     }
 }
 
+.stickies-nav li a:active {
+  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));  
+}
+
 .nav-container-corkboard {
   top: 310px;
   left: 310px;
@@ -320,17 +324,6 @@ input, textarea, select {
   -o-transition: color 0 ease-in;
   transition: none;  
 }
-
-.btn.students-stickie:active,
-.btn.parents-stickie:active,
-.btn.teachers-stickie:active {
-  background-position: 0;
-  -moz-transition: none;
-  -webkit-transition: none;
-  -o-transition: color 0 ease-in;
-  transition: none;  
-}
-
 
 .btn.students-stickie {
   height: 109px;
@@ -583,17 +576,17 @@ input, textarea, select {
 
 .teachers-inbox-cta {
   background-image: url(asset_path('teachers_inbox_cta.png', image));
-  height: 278px;
-  width: 270px;
+  height: 185px;
+  width: 180px;
   position: absolute;
-  top: 250px;
-  left: 900px;
+  top: 200px;
+  left: 930px;
 }
 
 .parents-inbox-cta {
   background-image: url(asset_path('parents_inbox_cta.png', image));
-  height: 245px;
-  width: 238px;
+  height: 185px;
+  width: 180px;
   position: absolute;
   top: 0;
   left: 945px;  
@@ -762,6 +755,20 @@ input, textarea, select {
   position: absolute;
 }
 
+.inbox-parents {
+  display: inline-block;
+  height: 100px;
+  width: 180px;
+  margin: 40px 50px 0 0;
+}
+
+.inbox-teachers {
+  display: inline-block;
+  height: 100px;
+  width: 160px;
+  margin: 50px 0 0 20px;
+}
+
 /* Pages */
 .privacy-content {
   margin: -8px 0 0 180px;
@@ -868,7 +875,15 @@ input, textarea, select {
   height: 339px;
   top: 0;
   left: 500px;
+}
 
+.testimonial {
+  position: absolute;
+  p {
+    font-size: 60px;
+    color: #f05c1a;
+    margin: 60px 0 0 500px;
+  }
 }
 
 /* Primary Nav Selected */
