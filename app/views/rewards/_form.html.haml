@@ -26,6 +26,12 @@
   .clearfix
     = f.label 'Available on'
     .input= f.text_field :available_on, "id" => "datepicker"
+
+  .clearfix
+    = f.fields_for :images do |i|
+      = i.label :image
+      = i.file_field :attachment_file_name
+
   .clearfix
     = f.label 'Stores'
     %br

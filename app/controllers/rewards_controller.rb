@@ -18,6 +18,7 @@ class RewardsController < ApplicationController
   def create
     # create the product reward
     @product = Spree::Product.new
+    @image = @product.master.images.new
     form_data
     if @product.save
       flash[:notice] = "Your reward was created successfully."
@@ -51,6 +52,13 @@ class RewardsController < ApplicationController
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
     @product.store_ids = params[:product][:store_ids]
+    if params[:product][:images]
+      i = @product.master.images.first
+      i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
+      i.attachment_content_type = params[:product][:images][:attachment_file_name].content_type
+      i.attachment = params[:product][:images][:attachment_file_name].tempfile
+      i.save
+    end
     #  anything else?
   end
 
