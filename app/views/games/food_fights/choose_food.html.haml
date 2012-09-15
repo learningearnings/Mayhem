@@ -2,13 +2,14 @@
 
 = form_for FoodSchoolLink.new, :url => choose_school_games_food_fight_path do |f|
   #hover_value= hidden_field_tag :food_id 
-  %h4 Favorite Foods
-  %ul
-    - current_person.favorite_foods.each do |food|
-      %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
+  - if current_person.favorite_foods.present?
+    %h4 Favorite Foods
+    %ul
+      - current_person.favorite_foods.each do |food|
+        %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
   %h4 All Foods
   %ul
-    - @foods.each do |food|
+    - (@foods - current_person.favorite_foods).each do |food|
       %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
   = f.submit 'Submit Food'
 
