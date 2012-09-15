@@ -1,6 +1,7 @@
 Leror::Application.routes.draw do
   # Root route
   root to: 'pages#show', :id => 'home'
+  match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   # Administrative routes
   ActiveAdmin.routes(self)
@@ -42,6 +43,10 @@ Leror::Application.routes.draw do
       end
     end
   end
+
+  post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"
+  post "/filters/filter_classrooms_by_school" => "filters#filter_classrooms_by_school"
+  post "/filters/filter_grades_by_classroom" => "filters#filter_grades_by_classroom"
 
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
 
@@ -94,9 +99,18 @@ Leror::Application.routes.draw do
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
+
+  # rewards for teachers
+  resources :rewards
+  match 'remove_reward' => 'rewards#destroy'
+
 end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
   match "/get_avatar_results" => 'users#get_avatar_results'
+  namespace :admin do
+    resources :rewards
+    match 'remove_reward' => 'rewards#destroy'
+  end
 end

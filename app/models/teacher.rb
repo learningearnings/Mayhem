@@ -65,7 +65,6 @@ class Teacher < Person
       if username.present?
         user = Spree::User.create(:username => username, :email => email, :password => password, :password_confirmation => password_confirmation)
       else
-        binding.pry
         user = Spree::User.create(:username => 'test_user', :email => "test_user@example.com", :password => 'test123', :password_confirmation => 'test123')
       end
       user.person_id = self.id

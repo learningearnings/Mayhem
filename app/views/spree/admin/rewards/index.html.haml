@@ -1,0 +1,23 @@
+%h1 Rewards
+
+= link_to "New Reward", new_admin_reward_path
+%p
+
+%table#listing_products.index
+  %tr
+    %th= t(:image)
+    %th= t(:name)
+    %th= t(:master_price)
+    %th= "School"
+    %th
+  - @products.each do |product|
+    %tr
+      %td= image_tag product.thumb, size: '100x100'
+      %td= link_to product.try(:name), edit_admin_product_path(product)
+      %td= money(product.price) rescue ''
+      %td= product.store_ids
+      %td.actions{"data-hook" => "admin_products_index_row_actions"}
+        = link_to "Edit", edit_admin_reward_path(id: product.id), :class => 'edit' unless product.deleted?
+        |
+        = link_to 'Delete', admin_remove_reward_path(product: product.id), confirm: 'Are you sure?'
+
