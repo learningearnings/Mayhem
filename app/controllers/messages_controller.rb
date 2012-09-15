@@ -5,6 +5,26 @@ class MessagesController < LoggedInController
     @received_messages = current_person.received_messages
   end
 
+  def friend_messages
+    @received_messages = current_person.received_messages
+    @messages = @received_messages.from_friend
+  end
+
+  def school_messages
+    @received_messages = current_person.received_messages
+    @messages = @received_messages.from_school
+  end
+
+  def teacher_messages
+    @received_messages = current_person.received_messages
+    @messages = @received_messages.from_teacher
+  end
+
+  def system_messages
+    @received_messages = current_person.received_messages
+    @messages = @received_messages.from_system
+  end
+
   def show
     @message = current_person.received_messages.find(params[:id])
     @message.read!
