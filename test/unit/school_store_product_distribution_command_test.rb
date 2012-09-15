@@ -31,17 +31,19 @@ describe SchoolStoreProductDistributionCommand do
       mock_store_subdomain = mock "StoreSubdomain"
       mock_products = mock "StoreProducts"
       mock_school = mock "School"
+      mock_school.stubs(:id)
       mock_store = mock "Spree::Store"
       mock_store.expects(:id)
       mock_store.expects(:products).returns(mock_products)
       mock_products.expects(:with_property_value).returns(mock_retail_products)
       mock_retail_products.expects(:exists?).returns(false)
-      mock_master_product.expects(:id).returns(1).times(2)
+      mock_master_product.stubs(:id).returns(1)
       mock_master_product.expects(:taxons).returns("master_taxons")
       mock_master_product.expects(:name).returns("master_product_name")
       mock_master_product.expects(:permalink).returns("master-product-permalink")
       mock_master_product.expects(:duplicate).returns(mock_retail_product)
       mock_master_product.expects(:description).returns("Master Product Description")
+      mock_retail_product.stubs(:id).returns(2)
       mock_retail_product.expects(:name=)
       mock_retail_product.expects(:description=)
       mock_retail_product.expects(:available_on=)
