@@ -1,5 +1,5 @@
 #filter_widget_user_selector.modal.hide
-  = form_tag "javascript: void();", :remote => true, :class => "form-horizontal" do
+  %div.form-horizontal
     .modal-header
       %h3 Select User Types
     .modal-body
@@ -18,4 +18,4 @@
             =check_box_tag "user[]", "student", false, :class => "filter_widget_user_checkbox"
             Student
     .modal-footer
-      = submit_tag "Finish", :class => "btn btn-primary"
+      = submit_tag "Finish", :class => "btn btn-primary", :id => "finish_him"
