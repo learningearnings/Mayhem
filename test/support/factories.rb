@@ -133,7 +133,7 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
-    association :addressable
+    #association :addressable
   end
 
   factory :spree_user, class: Spree::User do

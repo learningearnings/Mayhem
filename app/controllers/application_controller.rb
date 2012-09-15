@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   def home_subdomain
     if session[:current_school_id]
       s = School.find(session[:current_school_id])
-      s.store_subdomain if s
+      s.store_subdomain.downcase if s
     else
       ""
     end
