@@ -276,6 +276,9 @@ if Rails.env.development? || Rails.env.production?
     s = Sticker.new
     s.image = Rails.root.join("#{sticker_dir}/#{item}")
     s.save
+    m = MessageImage.new
+    m.image = Rails.root.join("#{sticker_dir}/#{item}")
+    m.save
   end
   # ======== /LOCKERS ========
 

@@ -1,4 +1,5 @@
 %h3= @message.subject
 .image-placeholder
   = @message.body.html_safe
+  = image_tag(@message.message_images.first.image.thumb('50x50#').url)
 = link_to "Reply to this message", "#", class: 'btn btn-primary'
