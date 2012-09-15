@@ -42,6 +42,9 @@
       = store.name
   .clearfix
     = f.hidden_field :id, value: @product.id
+  .clearfix
+    .input= f.hidden_field :filter, :value => 1
+
 
 
 %p
