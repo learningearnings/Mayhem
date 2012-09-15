@@ -1,4 +1,5 @@
 class RewardsController < ApplicationController
+  before_filter :authenticate_teacher
 
   def index
     @products = Spree::Product.not_deleted.order(:name)
@@ -18,7 +19,13 @@ class RewardsController < ApplicationController
     # create the product reward
     @product = Spree::Product.new
     form_data
-    redirect_to rewards_path
+    if @product.save
+      flash[:notice] = "Your reward was created successfully."
+      redirect_to rewards_path
+    else
+      flash[:error] = "There was an error saving your Reward, please check the form and try again"
+      render 'new'
+    end
   end
 
   def edit
@@ -28,7 +35,13 @@ class RewardsController < ApplicationController
   def update
     @product = Spree::Product.find(params[:id])
     form_data
-    redirect_to rewards_path
+    if @product.save
+      flash[:notice] = "Your reward was updated successfully."
+      redirect_to rewards_path
+    else
+      flash[:error] = "There was an error updating your Reward, please check the form and try again"
+      render 'edit'
+    end
   end
 
   def form_data
@@ -38,15 +51,29 @@ class RewardsController < ApplicationController
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
     @product.store_ids = params[:product][:store_ids]
-#   anything else?
-    @product.save
+    #  anything else?
   end
 
   def destroy
     @product = Spree::Product.find(params[:product])
     @product.deleted_at = Time.now
-    @product.save
+    if @product.save
+      flash[:notice] = "Your reward was deleted successfully."
+    else
+      flash[:error] = "There was an error updating your Reward, please check the form and try again"
+    end
     redirect_to rewards_path
+  end
+
+  private
+
+  def authenticate_teacher
+    if current_user && current_user.person.type == "Teacher"
+      return true
+    else
+      flash[:error] = "You are not allowed to view this page."
+      redirect_to root_path
+    end
   end
 
 end

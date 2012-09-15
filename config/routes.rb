@@ -90,6 +90,7 @@ Leror::Application.routes.draw do
 
   # rewards for teachers
   resources :rewards
+  match 'remove_reward' => 'rewards#destroy'
 
 end
 

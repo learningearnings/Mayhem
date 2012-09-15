@@ -1,4 +1,5 @@
 class Spree::Admin::RewardsController < Spree::Admin::BaseController
+  before_filter :authenticate_leadmin
 
   def index
     # insert code here to gather all products for the current school
@@ -15,7 +16,13 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     # create the product reward
     @product = Spree::Product.new
     form_data
-    redirect_to admin_rewards_path
+    if @product.save
+      flash[:notice] = "Your reward was created successfully."
+      redirect_to admin_rewards_path
+    else
+      flash[:error] = "There was an error saving your Reward, please check the form and try again"
+      render 'new'
+    end
   end
 
   def edit
@@ -25,7 +32,13 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   def update
     @product = Spree::Product.find(params[:id])
     form_data
-    redirect_to admin_rewards_path
+    if @product.save
+      flash[:notice] = "Your reward was updated successfully."
+      redirect_to admin_rewards_path
+    else
+      flash[:error] = "There was an error updating your Reward, please check the form and try again"
+      render 'edit'
+    end
   end
 
   def form_data
@@ -36,14 +49,28 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.available_on = params[:product][:available_on]
     @product.store_ids = params[:product][:store_ids]
 #   anything else?
-    @product.save
   end
 
   def destroy
     @product = Spree::Product.find(params[:product])
     @product.deleted_at = Time.now
-    @product.save
+    if @product.save
+      flash[:notice] = "Your reward was deleted successfully."
+    else
+      flash[:error] = "There was an error updating your Reward, please check the form and try again"
+    end
     redirect_to admin_rewards_path
+  end
+
+  private
+
+  def authenticate_leadmin
+    if current_user && current_user.person.type == "LeAdmin"
+      return true
+    else
+      flash[:error] = "You are not allowed to view this page."
+      redirect_to root_path
+    end
   end
 
 end
