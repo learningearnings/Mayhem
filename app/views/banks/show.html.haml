@@ -24,7 +24,7 @@
         %tbody
           - @unredeemed_bucks.each do |buck|
             %tr
-              %td Need to figure out how to get the source here...
+              %td= buck.teacher
               %td= buck.created_at.to_s(:db)
               %td= number_to_currency(buck.points)
               %td= link_to "Claim Credits", redeem_buck_path(current_person.id, buck.code), class: 'btn'

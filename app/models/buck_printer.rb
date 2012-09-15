@@ -5,8 +5,8 @@ class BuckPrinter
   def initialize()
   end
 
-  def print_bucks(bucks)
-    html = Tilt::HamlTemplate.new('app/views/otu_codes/show.html.haml').render(nil, :bucks => bucks)
+  def print_bucks(bucks, html)
+    #html = Tilt::HamlTemplate.new('app/views/otu_codes/show.html.haml').render(nil, :bucks => bucks)
 
     kit = PDFKit.new(html)
 
@@ -16,8 +16,8 @@ class BuckPrinter
     pdf = kit.to_pdf
     
     # # Save the PDF to a file
-    #send_data(kit.to_pdf, :filename => "labels.pdf", :type => 'application/pdf')
-    file = kit.to_file("/pdf_test.pdf")
+    send_data(kit.to_pdf, :filename => "labels.pdf", :type => 'application/pdf')
+    #file = kit.to_file("/pdf_test.pdf")
 
   end
 

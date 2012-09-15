@@ -6,7 +6,7 @@
     = message.body.html_safe
     - if message.message_images.present?
       = image_tag(message.message_images.first.image.thumb('50x50#').url)
-  = link_to "Reply to this message", "#", class: 'btn btn-primary'
+  = link_to "Reply to this message", reply_message_path(message), class: 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
 
 
 %ul.nav.primary-nav

@@ -56,6 +56,7 @@ Leror::Application.routes.draw do
   match "messages/school_messages" => 'messages#school_messages', :as => 'school_messages'
   match "messages/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
   match "messages/system_messages" => 'messages#system_messages', :as => 'system_messages'
+  match "messages/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   resources :messages
 
   match "/inbox" => 'messages#index'
@@ -80,6 +81,7 @@ Leror::Application.routes.draw do
 
   namespace :teachers do
     resource :bank
+    match "/print_batch/:id" => 'banks#print_batch', :as => 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'
