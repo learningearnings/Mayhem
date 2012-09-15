@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120913172835) do
+ActiveRecord::Schema.define(:version => 20120911230708) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
   create_table "food_school_links", :force => true do |t|
     t.integer  "food_id"
     t.integer  "school_id"
+    t.integer  "person_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -289,20 +290,6 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
   end
 
   add_index "person_class_filter_links", ["filter_id", "person_class"], :name => "index_person_class_filter_links_on_filter_id_and_person_class", :unique => true
-
-  create_table "person_food_links", :force => true do |t|
-    t.integer  "food_id"
-    t.integer  "person_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "person_food_school_links", :force => true do |t|
-    t.integer  "school_id"
-    t.integer  "person_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "person_school_classroom_links", :force => true do |t|
     t.integer  "person_school_link_id"

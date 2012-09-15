@@ -6,7 +6,6 @@ class School < ActiveRecord::Base
   has_many :classrooms
   has_many :foods, :through => :food_school_links
   has_many :food_school_links
-  has_many :person_food_school_links
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links

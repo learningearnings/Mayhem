@@ -268,6 +268,24 @@ if Rails.env.development? || Rails.env.production?
   @reward_delivery  = FactoryGirl.create(:pending_reward_delivery, from: @teacher, to: @student1, reward: @reward)
   # ======= /Make the teacher have a pending reward delivery =======
 
+  # ======== FOODS ==========
+  @foods = []
+  @count = 0
+  @foods << Food.create(:name => 'Tomato')
+  @foods << Food.create(:name => 'Pie')
+  @foods << Food.create(:name => 'Fish Sandwich')
+  food_dir = "public/avatars/football/college"
+  Dir.foreach(food_dir) do |item|
+    unless @count > 2
+      next if item.match(/^\./)
+      food = @foods[@count]
+      food.image = Rails.root.join("#{food_dir}/#{item}")
+      food.save
+      @count += 1
+    end
+  end
+  
+
   # ======== LOCKERS ========
   # Generate some stickers
   sticker_dir = "public/avatars/football/college"
