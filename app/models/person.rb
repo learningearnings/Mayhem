@@ -10,6 +10,7 @@ class Person < ActiveRecord::Base
   #has_many :classrooms, :through => :person_school_classroom_links
   has_many :person_school_links
   has_many :person_school_classroom_links
+  has_many :display_names
 
   
   def favorite_foods
@@ -35,6 +36,12 @@ class Person < ActiveRecord::Base
   # Relationships
   def person_school_links(status = :status_active)
     MacroReflectionRelationFacade.new(PersonSchoolLink.where(person_id: self.id).send(status))
+  end
+
+  #Last approved display name
+  def display_name
+    display_name_record = display_names.approved.order("created_at DESC").first
+    @display_name ||= display_name_record.nil? ? "" : display_name_record.display_name
   end
 
   def person_school_classroom_links(status = :status_active)

@@ -13,7 +13,7 @@ Spree::UsersController.class_eval do
 
   def update
     @user = Spree::User.find(params[:id])
-    if @user.save
+    if @user.update_attributes(params[:user])
       if params[:avatar_id]
         if avatar_link = UserAvatarLink.find_by_user_id(@user.id)
           avatar_link.update_attributes(:avatar_id => params[:avatar_id])
