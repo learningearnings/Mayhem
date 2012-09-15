@@ -12,6 +12,10 @@ class Person < ActiveRecord::Base
   has_many :person_school_classroom_links
   has_many :display_names
 
+  def name
+    "#{first_name} #{last_name}"
+  end
+
   def favorite_foods
     links = FoodSchoolLink.find_all_by_person_id(self.id)
     links.sort_by{|x| x.food_id}.uniq{|x| x.food_id}.map{|x| x.food}.first(3)

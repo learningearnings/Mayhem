@@ -42,10 +42,10 @@ describe Person do
       person = FactoryGirl.create(:person)
       first_display_name  = person.display_names.create(:display_name => "first")
       second_display_name = person.display_names.create(:display_name => "second")
-      third_display_name  = person.display_names.creeate(:display_name => "third")
+      third_display_name  = person.display_names.create(:display_name => "third")
 
       second_display_name.approve!
-      assert_equal person.display_name, second_display_name
+      assert_equal person.display_name, second_display_name.display_name
     end
 
     it "should return a blank string if there are no display names" do
