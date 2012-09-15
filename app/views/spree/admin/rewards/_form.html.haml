@@ -15,6 +15,13 @@
     = f.label 'Name'
     .input= f.text_field :name
   .clearfix
+    = f.label 'Classroom'
+    = select_tag :classroom, options_from_collection_for_select(current_user.person.classrooms, :id, :name)
+  .clearfix
+    = f.label 'Min/Max Grades'
+    = select_tag :min_grade, options_for_select(@grades)
+    = select_tag :max_grade, options_for_select(@grades)
+  .clearfix
     = f.label 'Description'
     .input= f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth'}
   .clearfix
