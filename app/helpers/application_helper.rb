@@ -17,6 +17,6 @@ module ApplicationHelper
   end
 
   def filter_widget
-    render "shared/filter_widget"
+    render "shared/filter/filter_widget"
   end
 end

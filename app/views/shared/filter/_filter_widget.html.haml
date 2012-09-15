@@ -1,11 +1,11 @@
 #filter_widget
   = link_to "Build Filter", "#", :class => "btn", "data-toggle" => "modal", "data-target" => "#filter_widget_state_selector"
   = hidden_field_tag "filter_widget_json", ""
-  =render "shared/state_selector"
-  =render "shared/school_selector"
-  =render "shared/classroom_selector"
-  =render "shared/grade_selector"
-  =render "shared/user_selector"
+  =render "shared/filter/state_selector"
+  =render "shared/filter/school_selector"
+  =render "shared/filter/classroom_selector"
+  =render "shared/filter/grade_selector"
+  =render "shared/filter/user_selector"
 
 :javascript
   $(document).ready(function() {
