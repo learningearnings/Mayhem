@@ -19,8 +19,11 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def edit
-binding.pry
-    @product = Spree::Product.find(params[])
+    @product = Spree::Product.find(params[:id])
+  end
+
+  def update
+    @product = Spree::Product.find(params[:id])
     form_data
     redirect_to admin_rewards_path
   end

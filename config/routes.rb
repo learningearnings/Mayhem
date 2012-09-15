@@ -88,6 +88,9 @@ Leror::Application.routes.draw do
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
 
+  # rewards for teachers
+  resources :rewards
+
 end
 
 # Any routes we add to Spree go here:

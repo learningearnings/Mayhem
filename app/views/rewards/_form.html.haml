@@ -25,7 +25,7 @@
     .input= f.text_field :on_hand
   .clearfix
     = f.label 'Available on'
-    .input= f.text_field :available_on, :class => 'datepicker'
+    .input= f.text_field :available_on, "id" => "datepicker"
   .clearfix
     = f.label 'Stores'
     %br
@@ -39,3 +39,8 @@
 %p
 = button_to :submit
 
+:javascript
+
+  $(function() {
+    $("#datepicker").datepicker();
+  });

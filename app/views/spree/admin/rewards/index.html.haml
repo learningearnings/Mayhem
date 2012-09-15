@@ -17,7 +17,7 @@
     %td= money(product.price) rescue ''
     %td= product.store_ids
     %td.actions{"data-hook" => "admin_products_index_row_actions"}
-      = link_to "Edit", edit_admin_reward_path(product), :class => 'edit' unless product.deleted?
+      = link_to "Edit", edit_admin_reward_path(id: product.id), :class => 'edit' unless product.deleted?
       |
       = link_to 'Delete', admin_remove_reward_path(product: product.id), confirm: 'Are you sure?'
 

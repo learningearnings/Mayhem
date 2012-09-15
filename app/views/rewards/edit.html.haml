@@ -1,0 +1,5 @@
+%h2 Edit Product
+
+= form_for(:product, :url => { :controller => 'rewards', :action => 'update', :method => :post}, :html => { :multipart => true }) do |f| 
+  = render 'form', :f => f
+= link_to "cancel", rewards_path
