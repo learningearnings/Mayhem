@@ -19,7 +19,7 @@ ActiveAdmin.register DisplayName do
     end
     column "Actions" do |display_name|
       link_html = ""
-      link_html += (link_to "Approve", approve_admin_display_name_path(display_name), :method => :put) unless display_name.state == "approved"
+      link_html += (link_to "Approve", approve_admin_display_name_path(display_name), :method => :put) + " " unless display_name.state == "approved"
       link_html += (link_to "Reject", reject_admin_display_name_path(display_name), :method => :put) unless display_name.state == "rejected"
       link_html.html_safe
     end
