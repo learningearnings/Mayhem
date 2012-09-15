@@ -13,6 +13,7 @@ class MessagesController < LoggedInController
   def new
     @message = StudentMessageStudentCommand.new
     @grademates = current_person.grademates
+    @message_images = MessageImage.first(10)
   end
 
   protected

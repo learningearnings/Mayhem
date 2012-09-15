@@ -268,24 +268,6 @@ if Rails.env.development? || Rails.env.production?
   @reward_delivery  = FactoryGirl.create(:pending_reward_delivery, from: @teacher, to: @student1, reward: @reward)
   # ======= /Make the teacher have a pending reward delivery =======
 
-  # ======== FOODS ==========
-  @foods = []
-  @count = 0
-  @foods << Food.create(:name => 'Tomato')
-  @foods << Food.create(:name => 'Pie')
-  @foods << Food.create(:name => 'Fish Sandwich')
-  food_dir = "public/avatars/football/college"
-  Dir.foreach(food_dir) do |item|
-    unless @count > 2
-      next if item.match(/^\./)
-      food = @foods[@count]
-      food.image = Rails.root.join("#{food_dir}/#{item}")
-      food.save
-      @count += 1
-    end
-  end
-  
-
   # ======== LOCKERS ========
   # Generate some stickers
   sticker_dir = "public/avatars/football/college"
@@ -294,6 +276,36 @@ if Rails.env.development? || Rails.env.production?
     s = Sticker.new
     s.image = Rails.root.join("#{sticker_dir}/#{item}")
     s.save
+    m = MessageImage.new
+    m.image = Rails.root.join("#{sticker_dir}/#{item}")
+    m.save
   end
   # ======== /LOCKERS ========
+
+
+  # ======== Foods ===========
+  [
+   ["Baked Potato","baked_potato.png"],
+   ["Broccoli and Cheese","broccoli_cheese.png"],
+   ["Cheese Burger ","cheeseburger.png"],
+   ["Cheese","cheese.png"],
+   ["Cherry Pie","cherry_pie.png"],
+   ["Chocolate Milk","chocolate_milk.png"],
+   ["Donut","doughnut.png"],
+   ["Eggs","eggs.png"],
+   ["Fries","fries.png"],
+   ["Hot Dog","hot_dog.png"],
+   ["Ice Cream","ice_cream.png"],
+   ["Pizza","pizza.png"],
+   ["Spagetti","spagetti.png"],
+   ["Toast","toast.png"],
+   ["Tuna","tuna.png"]
+  ].each do |f|
+    food = Food.create(name: f[0])
+    food.image = open("http://www.lemirror1.com/Development/images/games/foodfight/" + f[1]).read
+    food.save
+  end
+  # ======== Foods ===========
+
+
 end
