@@ -25,6 +25,14 @@ class MessagesController < LoggedInController
     @messages = @received_messages.from_system
   end
 
+  def reply
+    params[:to_ids] = []
+    params[:to_ids] << params[:to_id]
+    @message = StudentMessageStudentCommand.new
+    @old_message = Message.find(params[:message_id])
+    @message_images = MessageImage.first(10)
+  end
+
   def show
     @message = current_person.received_messages.find(params[:id])
     @message.read!

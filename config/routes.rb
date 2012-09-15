@@ -56,6 +56,7 @@ Leror::Application.routes.draw do
   match "messages/school_messages" => 'messages#school_messages', :as => 'school_messages'
   match "messages/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
   match "messages/system_messages" => 'messages#system_messages', :as => 'system_messages'
+  match "messages/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   resources :messages
 
   match "/inbox" => 'messages#index'

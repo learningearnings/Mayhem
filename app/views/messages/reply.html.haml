@@ -1,0 +1,31 @@
+%h2 Message Reply
+= form_for @message, :url => reply_message_path do |f|
+  .row
+    .span3
+      .select-message
+        %strong Select Message
+        = f.select :canned_message, options_for_select(Message.canned_messages)
+    .span2
+      %strong Select Image
+      #hover_value= f.hidden_field :message_image_id
+      = hidden_field_tag :to_id, @old_message.from.id
+      = f.hidden_field :from_id, :value => current_person.id
+      - @message_images.each do |message_image|
+        %div{:id => "#{message_image.id}", :class => "hover_image"}
+          = image_tag(message_image.image.thumb('50x50#').url)
+  = f.submit "Send Message", class: 'btn btn-primary'
+
+
+
+:javascript
+  $(".hover_image").hover(
+    function() { $(this).addClass("hover"); },
+    function() { $(this).removeClass("hover"); }
+  );
+
+  $('.hover_image').click( function() {
+    $('.hover_image').removeClass("active");
+    $(this).addClass('active').siblings().removeClass('active');
+    var imageId = $(this).attr("id");
+    $("input[id=student_message_student_command_message_image_id]").val(imageId)
+  });
