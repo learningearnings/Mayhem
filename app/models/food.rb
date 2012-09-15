@@ -3,7 +3,7 @@ class Food < ActiveRecord::Base
 
   attr_accessible :name, :image_uid
 
-  has_many :food_schools, :through => :food_school_links
+  has_many :schools, :through => :food_school_links
   has_many :food_school_links
 
   def to_s
