@@ -19,4 +19,9 @@ class FiltersController < ApplicationController
     end
     render :respond_with => @classrooms
   end
+
+  def filter_grades_by_classroom
+    @grades = School::GRADES
+    render :respond_with => @grades
+  end
 end

@@ -1,0 +1,21 @@
+#filter_widget_user_selector.modal.hide
+  = form_tag "javascript: void();", :remote => true, :class => "form-horizontal" do
+    .modal-header
+      %h3 Select User Types
+    .modal-body
+      .control-group
+        .controls
+          %label.control-label
+            =check_box_tag "user[]", "parent", false, :class => "filter_widget_user_checkbox"
+            Parent
+          %label.control-label
+            =check_box_tag "user[]", "school_admin", false, :class => "filter_widget_user_checkbox"
+            School Admin
+          %label.control-label
+            =check_box_tag "user[]", "teacher", false, :class => "filter_widget_user_checkbox"
+            Teacher
+          %label.control-label
+            =check_box_tag "user[]", "student", false, :class => "filter_widget_user_checkbox"
+            Student
+    .modal-footer
+      = submit_tag "Finish", :class => "btn btn-primary"

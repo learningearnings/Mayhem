@@ -1,0 +1,26 @@
+$('#filter_widget_classroom_selector').modal('hide');
+$('#filter_widget_grade_selector').modal('show');
+var grade_body = $('#grade_body');
+grade_body.html("");
+
+//Min Grade Select box
+control_group_div = $('<div>').addClass('control-group');
+control_group_div.append($("<label>").addClass("control-label").text("Min Grade"));
+var min_grade_select= $('<select>');
+min_grade_select.attr("id", "filter_widget_min_grade");
+<% @grades.each do |grade| %>
+  min_grade_select.append("<option><%= grade %></option>");
+<% end %>
+control_group_div.append($("<div>").addClass("controls").append(min_grade_select));
+grade_body.append(control_group_div);
+
+//Max Grade Select Box
+control_group_div = $('<div>').addClass('control-group');
+control_group_div.append($("<label>").addClass("control-label").text("Max Grade"));
+var max_grade_select= $('<select>').attr("id", "#filter_widget_max_select");
+max_grade_select.attr("id", "filter_widget_max_grade");
+<% @grades.each do |grade| %>
+  max_grade_select.append("<option><%= grade %></option>");
+<% end %>
+control_group_div.append($("<div>").addClass("controls").append(max_grade_select));
+grade_body.append(control_group_div);

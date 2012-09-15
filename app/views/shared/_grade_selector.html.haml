@@ -1,0 +1,8 @@
+#filter_widget_grade_selector.modal.hide
+  = form_tag "javascript: void();", :onsubmit => "$('#filter_widget_user_selector').modal('show');$('#filter_widget_grade_selector').modal('hide');", :remote => true, :class => "form-horizontal" do
+    .modal-header
+      %h3 Select Grades
+    .modal-body
+      #grade_body
+    .modal-footer
+      = submit_tag "Next Step", :class => "btn btn-primary"

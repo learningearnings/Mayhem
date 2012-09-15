@@ -19,6 +19,7 @@ FactoryGirl.define do
 
     factory :teacher, class: Teacher do
       sequence(:first_name) {|n| "Teacher #{n}"}
+      sequence(:username) {|n| "user #{n}"}
       dob 25.years.ago
       grade 9
     end

@@ -1,13 +1,8 @@
-#filter_widget_class_room_selector.modal.hide.fade
-  .modal-header
-    %h3 Select Class Rooms
-    #filter_widget_class_room_selector_class_room_list
-  .modal-body
-    %form.form-horizontal 
-      %ul.unstyled
-        -Classroom.all.each do |class_room|
-          %li
-            .control-group
-              %label.control-label= class_room.name
-              .controls
-                =check_box_tag class_room.name, class_room.name, false, :class => "filter_widget_class_room_checkbox"
+#filter_widget_classroom_selector.modal.hide
+  = form_tag filters_filter_grades_by_classroom_path, :remote => true, :class => "form-horizontal" do
+    .modal-header
+      %h3 Select Classrooms
+    .modal-body
+      %table.table-striped#filter_widget_classroom_table
+    .modal-footer
+      = submit_tag "Next Step", :class => "btn btn-primary"

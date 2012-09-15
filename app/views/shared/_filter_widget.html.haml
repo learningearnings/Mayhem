@@ -3,37 +3,44 @@
   =render "shared/state_selector"
   =render "shared/school_selector"
   =render "shared/classroom_selector"
+  =render "shared/grade_selector"
+  =render "shared/user_selector"
 
 :javascript
-  $(document).ready(function() {
-    //Add the click events to state, school, and class room stuff
-    $('.filter_widget_state_checkbox').live('click', add_state);
+  //Build filter json
+  function build_filter_json() {
+    var filter_json = {};
+    filter_json["states"]     = [];
+    filter_json["schools"]    = [];
+    filter_json["classrooms"] = [];
+    filter_json["grades"]     = {};
+    filter_json["grades"]["min_grade"] = "";
+    filter_json["grades"]["max_grade"] = "";
+    filter_json["users"]      = [];
 
-    //Add the data attributes
-    $('#filter_widget').data('filter-data', {state_list: [], school_list: [], classroom_list: []});
-  })
+    //This will grab all the selected states and put them in the array
+    $.each($(':checked.filter_widget_state_checkbox'), function(index, value) { filter_json["states"].push($(value).val()); });
+    alert(filter_json["states"]);
 
-  // Filter data reader
-  function get_filter_data() {
-    return $('#filter_widget').data('filter-data');
-  }
+    //This will grab all the selected schools and put them in the array
+    $.each($(':checked.filter_widget_school_checkbox'), function(index, value) { filter_json["schools"].push($(value).val()); });
+    alert(filter_json["schools"]);
 
-  // Filter data writer
-  function set_filter_data(data) {
-    $('#filter_widget').data('filter-data', data);
-  }
+    //Classrooms
+    $.each($(':checked.filter_widget_classroom_checkbox'), function(index, value) { filter_json["classrooms"].push($(value).val()); });
+    alert(filter_json["classrooms"]);
 
-  //This gets called when a state checkbox is checked
-  function add_state() {
-    filter_data = get_filter_data();
-    picked_state_id = $(this).val();
-    picked_state_name = $(this).attr("data-state-name")
-    if ($.inArray(picked_state_id, filter_data.state_list) > -1) { //They had already picked this state
-      filter_data.state_list = $.removeFromArray([picked_state_name, picked_state_id], filter_data.state_list);
-    } else { //They haven't picked this state yet
-      filter_data.state_list.push([picked_state_name, picked_state_id]);
-    }
-    set_filter_data(filter_data);
+    //Grade
+    filter_json["grades"]["min_grade"] = $('#filter_widget_min_grade').val();
+    filter_json["grades"]["max_grade"] = $('#filter_widget_max_grade').val();
+    alert(filter_json["grades"]["min_grade"]);
+    alert(filter_json["grades"]["max_grade"]);
+
+    //Users
+    $.each($(':checked.filter_widget_user_checkbox'), function(index, value) { filter_json["users"].push($(value).val()); });
+    alert(filter_json["users"]);
+
+    return JSON.stringify(filter_json);
   }
 
   //Define removeFromArray
