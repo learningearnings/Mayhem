@@ -38,7 +38,7 @@ class FilterFactory
     cfl = ClassroomFilterLink.where(:classroom_id => classrooms)
     f = f.joins(:classroom_filter_links).merge(cfl)
     stfl = StateFilterLink.where(:state_id => states)
-    f = f.joins(:state_filter_links).merge(sfl)
+    f = f.joins(:state_filter_links).merge(stfl)
     pcfl = PersonClassFilterLink.where(:person_class => person_classes)
     f = f.joins(:person_class_filter_links).merge(pcfl)
     f.group('filters.id,filters.minimum_grade, filters.maximum_grade, filters.nickname, filters.created_at, filters.updated_at').first
@@ -89,6 +89,7 @@ class FilterFactory
     else
       @filter.person_class_filter_links << PersonClassFilterLink.new(:person_class => nil)
     end
+    @filter.save
     @filter
    end
 

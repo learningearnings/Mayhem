@@ -1,9 +1,9 @@
 class Filter < ActiveRecord::Base
   attr_accessible :maximum_grade, :minimum_grade, :nickname
-  has_many :school_filter_links, :inverse_of => :filter
-  has_many :classroom_filter_links, :inverse_of => :filter
-  has_many :state_filter_links, :inverse_of => :filter
-  has_many :person_class_filter_links, :inverse_of => :filter
+  has_many :school_filter_links, :inverse_of => :filter, :autosave => true
+  has_many :classroom_filter_links, :inverse_of => :filter, :autosave => true
+  has_many :state_filter_links, :inverse_of => :filter, :autosave => true
+  has_many :person_class_filter_links, :inverse_of => :filter, :autosave => true
 
   has_many :schools, :through => :school_filter_links, :inverse_of => :school_filter_links
   has_many :classrooms, :through => :classroom_filter_links, :inverse_of => :classroom_filter_links
