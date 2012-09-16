@@ -1,5 +1,9 @@
 class RewardsController < ApplicationController
   before_filter :authenticate_teacher
+  before_filter :foo
+
+  def foo
+  end
 
   def index
     @products = Spree::Product.not_deleted.order(:name)
@@ -13,6 +17,7 @@ class RewardsController < ApplicationController
     # create new spree product with specific options for LE Admin to use
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
+    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
   end
 
   def create
@@ -31,6 +36,7 @@ class RewardsController < ApplicationController
 
   def edit
     @product = Spree::Product.find(params[:id])
+    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
   end
 
   def update
@@ -59,6 +65,13 @@ class RewardsController < ApplicationController
       i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.save
     end
+
+    filter_factory = FilterFactory.new
+    filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
+    f = filter_factory.find_or_create_filter(filter_condition)
+    p = SpreeProductFilterLink.new product_id: @product.id, filter_id: f.id
+    p.save
+#    @product.filter = f.id
     #  anything else?
   end
 

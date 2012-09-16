@@ -1,7 +1,7 @@
 Spree::Product.class_eval do
   attr_accessible :store_ids
 
-  has_one :spree_product_filter_link
+  has_one :spree_product_filter_link, :autosave => true
   has_one :filter, :through => :spree_product_filter_link
 
 
