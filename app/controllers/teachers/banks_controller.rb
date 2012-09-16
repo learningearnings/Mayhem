@@ -17,16 +17,13 @@ module Teachers
 
     def print_batch
       batch = BuckBatch.find(params[:id])
-      buck_printer = BuckPrinter.new
       respond_to do |format|
-        #format.html
         format.pdf {
-          html = render_to_string(:layout => false , :action => "_batch.html.haml")
+          html = render_to_string(layout: false , action: "_batch.html.haml", locals: { batch: batch })
           kit = PDFKit.new(html)
-          #send_data(kit.to_pdf, :filename => "buck_batch#{batch.id}.pdf", :type => 'application/pdf')
-          file = kit.to_file("/buck_batch#{batch.id}.pdf")
-          #buck_printer.print_bucks(batch, html)
+          send_data(kit.to_pdf, :filename => "buck_batch#{batch.id}.pdf", :type => 'application/pdf') and return
         }
+        format.html { render layout: false, action: "_batch.html.haml", locals: { batch: batch } }
       end
 
     end
