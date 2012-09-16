@@ -8,8 +8,6 @@ Spree::User.class_eval do
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
-  has_one :user_avatar_link
-  has_one :avatar, :through => :user_avatar_link
 
   def self.authenticate_with_school_id(username,password,school_id)
     if username.blank? || password.blank? || school_id.blank?

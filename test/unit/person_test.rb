@@ -36,4 +36,18 @@ describe Person do
     p.schools.must_include school
     p.classrooms.must_include classroom
   end
+
+  it "has avatar as the last avatar" do
+    p = FactoryGirl.create(:person)
+    first_avatar = FactoryGirl.create(:avatar)
+    last_avatar =  FactoryGirl.create(:avatar)
+    p.avatar = first_avatar
+    p.avatar = last_avatar
+    p.avatars.count.must_equal 2
+    p.avatars.must_include first_avatar
+    p.avatars.must_include last_avatar
+    p.avatar.must_equal last_avatar
+  end
+
+
 end

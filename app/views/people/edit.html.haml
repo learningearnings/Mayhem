@@ -1,0 +1,11 @@
+= render :partial => 'spree/shared/error_messages', :locals => { :target => @person } 
+
+%h2= t(:editing_person)
+
+= form_for @person,:url => person_path(@person) do |f|
+  #hover_value= hidden_field_tag :avatar_id
+  %p= f.submit t(:update)
+  #avatar_partial= render :partial => 'avatars'
+  %p= f.submit t(:update)
+
+= javascript_include_tag "avatar_pager.js"
