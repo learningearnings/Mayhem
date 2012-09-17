@@ -14,14 +14,20 @@ class School < ActiveRecord::Base
   has_many :filters, :through => :school_filter_links
   after_save :create_spree_store
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
   validates_presence_of :name
   validates_uniqueness_of :name
+  validates_presence_of :addresses
 
   after_create :ensure_accounts
+
+  def address=(newaddress)
+    addresses << newaddress
+  end
+
 
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 

@@ -121,6 +121,7 @@ FactoryGirl.define do
     timezone "Central"
     gmt_offset "6.0"
     distribution_model "Delivery"
+    address
     ad_profile 1
   end
 
@@ -133,6 +134,7 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
+    state_id 1
     #association :addressable
   end
 

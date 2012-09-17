@@ -13,7 +13,7 @@ describe PersonSchoolClassroomLink do
       pscl.wont_be :valid?
     end
     it "is valid with classroom_id and person_school_link_id" do
-      s = School.new(:name => "Unit Test School - is valid with classroom_id and person_school_link_id")
+      s = FactoryGirl.create(:school)
       p = Student.new(:first_name => 'Unit', :last_name => 'Test', :grade => 1,:user => FactoryGirl.create(:spree_user))
       s.must_be :valid?
       p.must_be :valid?
@@ -32,7 +32,7 @@ describe PersonSchoolClassroomLink do
 
   describe "Methods" do
     it "can link people to classrooms" do
-      s = School.new(:name => "Unit Test School - can link people to classrooms")
+      s = FactoryGirl.create(:school)
       p = Student.new(:first_name => 'Unit', :last_name => 'Test', :grade => 1,:user => FactoryGirl.create(:spree_user))
       s.must_be :valid?
       p.must_be :valid?
@@ -55,7 +55,7 @@ describe PersonSchoolClassroomLink do
       c1.students.must_include(p)
     end
     it "won't create duplicate classroom links" do
-      s = School.new(:name => "Unit Test School - won't create duplicate classroom links")
+      s = FactoryGirl.create(:school)
       p = Student.new(:first_name => 'Unit', :last_name => 'Test', :grade => 1,:user => FactoryGirl.create(:spree_user))
       s.must_be :valid?
       p.must_be :valid?
