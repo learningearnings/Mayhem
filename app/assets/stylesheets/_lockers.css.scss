@@ -1,7 +1,7 @@
 .locker_wrapper {
-  background-color: #eee;
-  width: 800px;
-  height: 400px;
+  background-image: asset_url('locker_background.png', image);
+  width: 814px;
+  height: 356px;
   position: relative;
   .locker_sticker {
     position: absolute;
