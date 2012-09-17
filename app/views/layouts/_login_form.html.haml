@@ -3,7 +3,7 @@
     %li
       %span.log-in LOG-IN
     %li
-      = text_field_tag 'user[username]', nil, :placeholder => 'Username'
+      = text_field_tag 'user[username]', nil, :placeholder => 'Username', :class => 'focus-on-me'
     %li
     = password_field_tag 'user[password]', nil, :placeholder => 'Password'
     %li

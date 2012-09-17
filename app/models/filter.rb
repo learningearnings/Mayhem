@@ -9,6 +9,9 @@ class Filter < ActiveRecord::Base
   has_many :classrooms, :through => :classroom_filter_links, :inverse_of => :classroom_filter_links
   has_many :states, :through => :state_filter_links, :inverse_of => :state_filter_links
 
+  has_many :spree_product_filter_links
+  has_many :spree_products, :through => :spree_product_filter_links
+
 #  accepts_nested_attributes_for :school_filter_links, :classroom_filter_links, :state_filter_links, :person_class_filter_links
 
   validates_presence_of :minimum_grade, :maximum_grade
