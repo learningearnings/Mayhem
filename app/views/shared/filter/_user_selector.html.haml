@@ -6,16 +6,16 @@
       .control-group
         .controls
           %label.control-label
-            =check_box_tag "user[]", "parent", false, :class => "filter_widget_user_checkbox"
+            =check_box_tag "user[]", "Parent", false, :class => "filter_widget_user_checkbox"
             Parent
           %label.control-label
-            =check_box_tag "user[]", "school_admin", false, :class => "filter_widget_user_checkbox"
+            =check_box_tag "user[]", "SchoolAdmin", false, :class => "filter_widget_user_checkbox"
             School Admin
           %label.control-label
-            =check_box_tag "user[]", "teacher", false, :class => "filter_widget_user_checkbox"
+            =check_box_tag "user[]", "Teacher", false, :class => "filter_widget_user_checkbox"
             Teacher
           %label.control-label
-            =check_box_tag "user[]", "student", false, :class => "filter_widget_user_checkbox"
+            =check_box_tag "user[]", "Student", false, :class => "filter_widget_user_checkbox"
             Student
     .modal-footer
       = submit_tag "Finish", :class => "btn btn-primary", :id => "finish_him"
