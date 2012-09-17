@@ -1,5 +1,5 @@
 %h2 Message Reply
-= form_for @message, :url => reply_message_path do |f|
+= form_for @message do |f|
   .row
     .span3
       .select-message
@@ -8,14 +8,11 @@
     .span2
       %strong Select Image
       #hover_value= f.hidden_field :message_image_id
-      = hidden_field_tag :to_id, @old_message.from.id
-      = f.hidden_field :from_id, :value => current_person.id
+      = hidden_field_tag "student_message_student_command[to_ids][]", @old_message.from_id
       - @message_images.each do |message_image|
         %div{:id => "#{message_image.id}", :class => "hover_image"}
           = image_tag(message_image.image.thumb('50x50#').url)
   = f.submit "Send Message", class: 'btn btn-primary'
-
-
 
 :javascript
   $(".hover_image").hover(

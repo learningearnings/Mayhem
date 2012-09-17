@@ -2,7 +2,8 @@ class MessagesController < LoggedInController
   layout :layout
 
   def index
-    @received_messages = current_person.received_messages
+    friend_messages
+    render 'friend_messages'
   end
 
   def friend_messages
@@ -26,10 +27,10 @@ class MessagesController < LoggedInController
   end
 
   def reply
-    params[:to_ids] = []
-    params[:to_ids] << params[:to_id]
-    @message = StudentMessageStudentCommand.new
     @old_message = Message.find(params[:message_id])
+    @message = StudentMessageStudentCommand.new
+    @message.to_ids = []
+    @message.to_ids << @old_message.from_id
     @message_images = MessageImage.first(10)
   end
 

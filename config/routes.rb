@@ -55,12 +55,11 @@ Leror::Application.routes.draw do
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
 
   # Messaging routes
-  #get :friend_messages, :controller => :messages, :action => :friend
-  match "messages/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
-  match "messages/school_messages" => 'messages#school_messages', :as => 'school_messages'
-  match "messages/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
-  match "messages/system_messages" => 'messages#system_messages', :as => 'system_messages'
-  match "messages/:message_id/reply" => 'messages#reply', :as => 'reply_message'
+  match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
+  match "inbox/school_messages" => 'messages#school_messages', :as => 'school_messages'
+  match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
+  match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
+  match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   resources :messages
 
   match "/inbox" => 'messages#index'
