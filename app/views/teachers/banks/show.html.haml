@@ -17,7 +17,7 @@
     %h4 Create Print Bucks
     = form_for OtuCode.new, :url => teachers_create_print_bucks_path do |f|
       = label_tag '$1'
-      = text_field_tag :point1
+      = text_field_tag :point1, nil,:class => 'focus-on-me'
       = label_tag '$5'
       = text_field_tag :point5
       = label_tag '$10'
@@ -40,3 +40,7 @@
       = label_tag :to_teacher
       = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers.reject{|x| x == Teacher.find(current_person.id)}), :id, :to_s), :include_blank => true
       = f.submit 'Transfer Bucks'
+
+    %h4 Buck Batches
+    - @buck_batches.each do |batch|
+      = link_to batch.name, teachers_print_batch_path(batch.id, :format => 'pdf')

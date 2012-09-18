@@ -98,6 +98,17 @@ input, textarea, select {
   }
 }
 
+.current-person.supplemental-part {
+  .credit-balance {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .person-details {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
 .supplemental-bg {
   background-image: url(asset_path('common/login_bg.png', image));
   background-repeat: no-repeat;

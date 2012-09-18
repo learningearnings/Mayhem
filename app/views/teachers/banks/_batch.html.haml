@@ -1,0 +1,57 @@
+- buck_image_pdf = Rails.root.join('app', 'assets', 'images', 'buck_blank.jpg')
+- buck_image_html = image_path('buck_blank.jpg')
+- buck_image = params[:format] == 'pdf' ? buck_image_pdf : buck_image_html
+
+%style{type: 'text/css'}
+  :sass
+    body
+      margin: 0mm
+      padding: 0mm
+    .buck
+      position: relative
+      background-image: url(#{buck_image})
+      background-size: 100%
+      display: inline-block
+      background-color: #eee
+      width: 519px
+      height: 218px
+      margin-right: 10px
+      .code
+        position: absolute
+        top: 30%
+        left: 65%
+      .amount
+        position: absolute
+        font-size: 2em
+        color: #999
+      .amount1
+        top: 12%
+        left: 7%
+      .amount2
+        top: 12%
+        right: 6%
+      .amount3
+        bottom: 14%
+        left: 7%
+      .amount4
+        bottom: 14%
+        right: 6%
+      .teacher
+        position: absolute
+        top: 46%
+        left: 25%
+      .expires
+        position: absolute
+        top: 65%
+        left: 50%
+
+.bucks
+  - batch.otu_codes.each do |otu_code|
+    .buck
+      .code= otu_code.code
+      .amount.amount1= otu_code.points.to_i
+      .amount.amount2= otu_code.points.to_i
+      .amount.amount3= otu_code.points.to_i
+      .amount.amount4= otu_code.points.to_i
+      .teacher= otu_code.teacher
+      .expires= otu_code.expires_at.to_date.to_s(:db)

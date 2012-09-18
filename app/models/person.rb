@@ -11,9 +11,23 @@ class Person < ActiveRecord::Base
   has_many :person_school_links
   has_many :person_school_classroom_links
   has_many :display_names
+  has_many :buck_batches, :through => :person_buck_batch_links
+  has_many :person_buck_batch_links
+  has_many :person_avatar_links, :autosave => :true
+  has_many :avatars, :through => :person_avatar_links, :order => 'created_at desc'
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  delegate :email, :to => :user
+
+  def avatar
+    avatars.first
+  end
+
+  def avatar=(new_avatar = nil)
+    avatars << new_avatar if new_avatar
   end
 
   def favorite_foods
@@ -30,10 +44,9 @@ class Person < ActiveRecord::Base
     School.joins(:person_food_school_links).where(person_food_school_links: { id: person_food_school_links.map(&:id) })
   end
 
-  delegate :avatar, to: :user
   delegate :username, :username= , to: :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name
   validates_presence_of :first_name, :last_name
 
   # Relationships

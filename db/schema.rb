@@ -305,6 +305,22 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
 
   add_index "people", ["type"], :name => "index_people_on_type"
 
+  create_table "person_avatar_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "avatar_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "person_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
+
+  create_table "person_buck_batch_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "buck_batch_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "person_class_filter_links", :force => true do |t|
     t.integer  "filter_id"
     t.datetime "created_at",                 :null => false
@@ -1036,15 +1052,6 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-  create_table "user_avatar_links", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "avatar_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "user_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

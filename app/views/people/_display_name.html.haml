@@ -1,6 +1,6 @@
--unless f.object.person.requested_display_name.blank?
+-unless f.object.requested_display_name.blank?
   = f.label "Last Requested Display Name"
-  = f.object.person.requested_display_name
+  = f.object.requested_display_name
 -unless f.object.display_name.blank?
   = f.label "Current Display Name"
   = f.object.display_name

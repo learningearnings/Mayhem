@@ -4,6 +4,7 @@ class School < ActiveRecord::Base
   include BasicStatuses
 
   GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+  GRADE_NAMES = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]
   has_many :addresses, :as => :addressable
   has_many :classrooms
   has_many :foods, :through => :food_school_links
@@ -39,6 +40,14 @@ class School < ActiveRecord::Base
 
   def store
     Spree::Store.where(code: store_subdomain).first
+  end
+
+  def grade_range
+    self.min_grade..self.max_grade
+  end
+
+  def grades
+    self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
   end
 
   # Relationships
