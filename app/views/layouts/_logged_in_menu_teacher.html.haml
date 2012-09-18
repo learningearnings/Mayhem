@@ -1,6 +1,6 @@
 %ul.nav.primary-nav
   %li= link_to('Logout', spree.destroy_user_session_path, :method => :delete)
-  %li= link_to "Home",    main_app.page_path('logged_in_home')
+  %li= link_to "Home",    main_app.teachers_home_path
   %li= link_to "Locker",  main_app.page_path('logged_in_locker')
   %li= link_to "Inbox",   main_app.inbox_path
   %li= link_to "Bank",    main_app.teachers_bank_path
