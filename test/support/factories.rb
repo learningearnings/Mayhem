@@ -176,8 +176,8 @@ FactoryGirl.define do
   end
 
   factory :avatar do
-    image { open('http://learningearnings.com/images/rewardimage/LE_Tote.jpg') }
-#    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+#    image { open('http://learningearnings.com/images/rewardimage/LE_Tote.jpg') }
+    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
     sequence(:description) {|n| "Avatar Description - #{n}"}
     sequence(:image_name) {|n| "Avatar image_name #{n}"}
   end
