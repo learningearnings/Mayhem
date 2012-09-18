@@ -13,11 +13,12 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     @person.avatar = Avatar.find(params[:avatar_id]) if !params[:avatar_id].blank?
-    if @person.update_attributes(params[:student])
-        flash[:notice] = "#{@person.type} Avatar updated."
-        redirect_to main_app.root_path
+    if (!params[:student][:display_name].blank? && params[:student][:display_name] != @person.display_name) &&  @person.update_attributes(params[:student])
+      flash[:notice] = "#{@person.type} profile updated."
+      redirect_to main_app.root_path
     else
-      flash[:notice] = 'Avatar not updated.'
+      @avatars = Avatar.page params[:page]
+      flash[:notice] = "#{@person.type} profile not updated."
       render :edit
     end
   end
