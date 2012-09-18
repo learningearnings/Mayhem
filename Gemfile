@@ -39,6 +39,9 @@ gem 'roo'
 # Hashie provides lots of nice convenience utilities for working with hashes
 gem 'hashie'
 
+# A simple date validator for rails 3
+gem 'date_validator'
+
 gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'

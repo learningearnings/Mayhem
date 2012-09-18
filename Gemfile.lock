@@ -135,6 +135,8 @@ GEM
     country_select (1.0.1)
     daemons (1.1.9)
     database_cleaner (0.8.0)
+    date_validator (0.6.3)
+      activemodel (~> 3.0)
     deface (0.9.1)
       nokogiri (~> 1.5.0)
       rails (~> 3.1)
@@ -461,6 +463,7 @@ DEPENDENCIES
   compass_twitter_bootstrap!
   country_select
   database_cleaner (~> 0.8.0)
+  date_validator
   devise
   dragonfly
   draper

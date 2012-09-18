@@ -9,7 +9,7 @@ describe Classroom do
 
   describe "Validations" do
     it "wont have a valid name" do
-     subject.new.wont have_valid(:name).when(nil)
+      subject.new.wont have_valid(:name).when(nil)
     end
   end
 end
