@@ -48,6 +48,8 @@ Leror::Application.routes.draw do
     end
   end
 
+  resources :auctions
+
   post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"
   post "/filters/filter_classrooms_by_school" => "filters#filter_classrooms_by_school"
   post "/filters/filter_grades_by_classroom" => "filters#filter_grades_by_classroom"

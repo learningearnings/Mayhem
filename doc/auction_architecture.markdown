@@ -33,3 +33,7 @@ It has the following methods:
 ## Command Model
 ### BidOnAuction
 This command will place a bid on an auction for a given person.
+
+## Student Interface
+### Students can see all active auctions from a given link
+This will be /auctions

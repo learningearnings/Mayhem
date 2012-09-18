@@ -9,6 +9,8 @@ class Auction < ActiveRecord::Base
 
   attr_accessible :start_date, :end_date, :current_bid, :auction_type, :product_id, as: :le_admin
 
+  scope :active, where("NOW() BETWEEN start_date AND end_date")
+
   protected
   def set_defaults
     self.current_bid  ||= BigDecimal('0')
