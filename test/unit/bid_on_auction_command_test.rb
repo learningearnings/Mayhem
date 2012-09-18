@@ -75,6 +75,9 @@ describe BidOnAuctionCommand do
       subject.stubs(:bid_creator).returns(bid_creator)
       # Verify that we move money on new bid from person's checking to hold
       credit_manager.expects(:transfer_credits_from_checking_to_hold).with(person, amount)
+      # Verify that we update the auction's current_bid to this amount
+      auction.expects(:current_bid=).with(amount)
+      auction.expects(:save!)
       # Verify that we call the on_success callback
       on_success = mock()
       on_success.expects(:call).with(subject)
@@ -84,10 +87,7 @@ describe BidOnAuctionCommand do
     end
 
     it "calls on_failure if anything goes wrong in #execute" do
-      # Make our transaction just raise
-      def subject.transaction &block
-        raise
-      end
+      subject.expects(:valid?).returns(false)
       on_failure = mock()
       on_failure.expects(:call).with(subject)
       subject.on_failure = on_failure

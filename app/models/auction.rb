@@ -13,7 +13,7 @@ class Auction < ActiveRecord::Base
   scope :active, where("NOW() BETWEEN start_date AND end_date")
 
   def open_bids
-    auction_bids.open
+    auction_bids.where(status: 'open')
   end
 
   protected

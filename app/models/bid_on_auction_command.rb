@@ -11,6 +11,7 @@ class BidOnAuctionCommand < ActiveModelCommand
   validates :credit_manager, presence: true
 
   def initialize params={}
+    params ||= {}
     @person  = params[:person]
     @auction = params[:auction]
     @amount  = params[:amount]
@@ -25,9 +26,14 @@ class BidOnAuctionCommand < ActiveModelCommand
   end
 
   def execute!
+    success = false
+    unless valid?
+      on_failure.call(self)
+      return false
+    end
     # Open a transaction
-    begin
-      transaction do
+    transaction do
+      begin
         open_bids = auction.open_bids
         open_bids.each do |bid|
           # invalidate existing bids
@@ -39,18 +45,31 @@ class BidOnAuctionCommand < ActiveModelCommand
         bid_creator.call(amount: amount, person: person, auction: auction)
         # move money from the bidder's main account into their holding account
         credit_manager.transfer_credits_from_checking_to_hold(person, amount)
+        # updates auction with new current_bid
+        auction.current_bid = amount
+        auction.save!
+        success = true
         # close the transaction successfully
+      rescue StandardError => e
+        success = false
+        raise ActiveRecord::Rollback
       end
-    rescue
-      on_failure.call(self)
-      return false
     end
-
-    on_success.call(self)
+    if success
+      on_success.call(self)
+    else
+      on_failure.call(self)
+    end
   end
 
   def bid_creator
-    lambda{ |attributes| AuctionBid.create(attributes) }
+    lambda do |attributes|
+      bid = auction.auction_bids.build
+      bid.person = attributes[:person]
+      bid.amount = attributes[:amount]
+      bid.save!
+      bid
+    end
   end
 
   def transaction &block

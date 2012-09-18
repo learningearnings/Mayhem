@@ -313,5 +313,7 @@ if Rails.env.development? || Rails.env.production?
   end
   # ======== Foods ===========
 
-
+  # ======== Auctions =========
+  auction = FactoryGirl.create(:auction)
+  # ======== /Auctions =========
 end

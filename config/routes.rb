@@ -108,6 +108,7 @@ Leror::Application.routes.draw do
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
+  resources :bid_on_auction_commands, only: [:create]
 
   # rewards for teachers
   resources :rewards

@@ -2,4 +2,4 @@
 .start_date= auction.start_date
 .end_date= auction.end_date
 .current_bid= number_to_currency(auction.current_bid)
-= link_to "Make a bid", '#'
+= link_to "Make a bid", auction_path(auction)
