@@ -1,4 +1,3 @@
-# This will guess the User class
 FactoryGirl.define do
   factory :person do
     first_name "Testy"
@@ -33,6 +32,11 @@ FactoryGirl.define do
   factory :person_school_link do
     person
     school
+  end
+
+  factory :display_name do
+    sequence(:display_name) { |n| "display_name#{n}" }
+    user
   end
 
   factory :student_school_link, class: PersonSchoolLink do
@@ -121,6 +125,7 @@ FactoryGirl.define do
     timezone "Central"
     gmt_offset "6.0"
     distribution_model "Delivery"
+    address
     ad_profile 1
   end
 
@@ -133,6 +138,7 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
+    state_id 1
     #association :addressable
   end
 
@@ -141,7 +147,7 @@ FactoryGirl.define do
     sequence(:username) {|n| "foo#{n}"}
     password "123456"
     password_confirmation "123456"
-#    person
+    #person
   end
 
   factory :question, class: Games::Question do
@@ -166,11 +172,12 @@ FactoryGirl.define do
   end
 
   factory :sticker do
-    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+#    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+    image { open('http://learningearnings.com/images/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif') }
   end
 
   factory :avatar do
-    image { open('http://learningearnings.com/images/rewardimage/LE_Tote.jpg') }
+    image { open('http://learningearnings.com/images/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif') }
 #    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
     sequence(:description) {|n| "Avatar Description - #{n}"}
     sequence(:image_name) {|n| "Avatar image_name #{n}"}

@@ -17,7 +17,7 @@ describe PersonSchoolLink do
       psl.wont_be :valid?
     end
     it "is valid with school_id and person_id" do
-      s = School.new(:name => "Unit Test School - is valid with school_id and person_id")
+      s = FactoryGirl.create(:school)
       p = Student.new(:first_name => 'Unit', :last_name => 'Test', :grade => 1,:user => FactoryGirl.create(:spree_user,:email => 'test_first_test1@example.com'))
       s.must_be :valid?
       p.must_be :valid?
@@ -30,7 +30,7 @@ describe PersonSchoolLink do
 
   describe "Methods" do
     it "can link persons to schools" do
-      s = School.new(:name => "Unit Test School - can link persons to schools")
+      s = FactoryGirl.create(:school)
       p = Student.new(:first_name => 'Unit', :last_name => 'Test', :grade => 1,:user => FactoryGirl.create(:spree_user,:email => 'test_first_test2@example.com'))
       s.must_be :valid?
       p.must_be :valid?
@@ -51,7 +51,7 @@ describe PersonSchoolLink do
     end
 
     it "won't create duplicate links" do
-      s = School.new(:name => "Unit Test School - won't create duplicate links")
+      s = FactoryGirl.create(:school)
       p = Student.new(:first_name => 'Unit', :last_name => 'Test', :grade => 1,:user => FactoryGirl.create(:spree_user,:email => 'test_first_test3@example.com'))
       s.must_be :valid?
       p.must_be :valid?

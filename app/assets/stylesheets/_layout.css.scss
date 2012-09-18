@@ -958,3 +958,21 @@ footer {
 .school_hover.active{
     border-color: red; 
 }
+
+.bank-intro {
+  position: absolute;
+  p {
+    font-size: 60px;
+    color: #470BC1;
+    margin: 60px 0 0 500px;
+  }
+}
+
+.piggy-bank-small {
+  background-image: url(asset_path('piggy_bank_small.png', image));
+  position: absolute;
+  width: 200px;
+  height: 128px;
+  top: 30px;
+  left: 850px;
+}

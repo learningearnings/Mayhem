@@ -1,9 +1,18 @@
-%h3= @classroom.name
+%h3= "Select Students to add to #{@classroom.name}"
+
+%p 
+  Please Note:
+
+%p You will NOT see students that are already in this classroom.
+%p You can only add students from your school.  
+%p If you don't see your students you may need to first Add Students to My School.
+
 %table
   %thead
     %tr
-      %th Student Name
-      %th Remove
+      - if @classroom.students.present?
+        %th Student Name
+        %th Remove
   %tbody
     - @classroom.students.each do |student|
       %tr
@@ -12,8 +21,11 @@
 
 
 = form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
-  = select_tag :student_id, options_from_collection_for_select((current_school.students.all - @classroom.students), :id, :to_s)
+  = select_tag :student_id, options_from_collection_for_select((current_school.students.all - @classroom.students), :id, :to_s), :class => 'chzn-select'
   = hidden_field_tag :classroom_id, @classroom.id
   = f.submit 'Add Student'
+
+:javascript
+  $(".chzn-select").chosen();
 
 

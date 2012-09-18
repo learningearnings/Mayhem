@@ -1,15 +1,28 @@
 %h2 Classrooms
-- @classrooms.each do |classroom|
-  %h3= link_to classroom.name, classroom_path(classroom)
-  %p= link_to 'Remove Class', classroom_path(classroom), :method => :delete
+- if @classrooms.present?
   %table
     %thead
       %tr
-        %th Student Name
+        %th Class Name
+        %th Remove Classroom
     %tbody
-      - classroom.students.each do |student|
+      - @classrooms.each do |classroom|
         %tr
-          %td= student.name
+          %td= link_to "Edit Classroom #{classroom.name}", classroom_path(classroom), class: 'btn', 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal'
+          %td= link_to 'Remove Class', classroom_path(classroom), :method => :delete
+        - if classroom.students.present?
+          %table
+            %thead
+              %tr
+                %th Student Name
+                %th Remove Student
+            %tbody
+              - classroom.students.each do |student|
+                %tr
+                  %td= student.name
+                  %td= link_to 'Remove', remove_classroom_student_path(:classroom => classroom, :student => student)
+
+
 
 = form_for Classroom.new do |f|
   = f.label :name
@@ -18,5 +31,8 @@
   = f.submit 'Create Classroom'
 
 
+
+#manage_class-modal.modal.hide
+  .modal-body
 
 

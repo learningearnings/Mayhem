@@ -7,6 +7,8 @@ class Address < ActiveRecord::Base
 
   validates_format_of :zip, :with => ZIP_REGEX, :message => 'is invalid'
 
+  validates_presence_of :state_id
+
   def geocode_address
     "#{line1}, #{city} #{state} #{zip}"
   end
