@@ -173,7 +173,7 @@ if Rails.env.development? || Rails.env.production?
   Plutus::Liability.create(name: @credit_manager.main_account_name)
 
   # Prepare a school
-  @school = FactoryGirl.create(:school)
+  @school = FactoryGirl.create(:school, :address => FactoryGirl.create(:address, :state_id => State.find_by_abbr('AL').id))
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
@@ -200,6 +200,12 @@ if Rails.env.development? || Rails.env.production?
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
   @student1.activate!
   @student2.activate!
+
+  @classroom = Classroom.create(:name => 'Test Classroom')
+  @person_school_classroom_link = PersonSchoolClassroomLink.create(:person_school_link_id => @teacher_link.id,
+                                                                   :classroom_id => @classroom.id,
+                                                                   :owner => true)
+
 
   # ======== GIVE OUT SOME CREDITS ======
   # Issue some credits to the school
