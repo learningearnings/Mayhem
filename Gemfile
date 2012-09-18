@@ -10,6 +10,7 @@ gem 'pg', '0.13.2'
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'chosen-rails'
 
 gem 'activeadmin'
 gem 'cancan'
