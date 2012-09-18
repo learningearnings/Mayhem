@@ -18,6 +18,7 @@ glance.
 This is the high level data model for a given auction.  It has the following
 attributes:
 
+(x)
 - `start_date`
 - `end_date`
 - `current_bid`
@@ -30,9 +31,43 @@ It has the following methods:
 - `number_of_bids`
 - `leading_bidder`
 
+### AuctionBid
+This is a data model representing a single person's bid on a given auction.  It
+has the following attributes:
+
+(x)
+- `auction_id`
+- `person_id`
+- `amount`
+- `status`
+- `created_at`
+
+(x)
+Status holds data for a state machine.  Valid states are `open` and `invalid`.
+
+An auction should never have more than one open bid outside of a transaction.
+
 ## Command Model
 ### BidOnAuction
-This command will place a bid on an auction for a given person.
+This command will place a bid on an auction for a given person.  It will also
+refund held money for any students with open bids, and will invalidate those
+bids.
+
+It has the following attributes:
+
+- `person`
+- `auction`
+- `amount`
+
+On execution, it will open a transaction.  Inside of that transaction, it will:
+
+- invalidate any existing bids
+- refund their money out of the holding account
+- create a new bid
+- move money from the persons main account into their holding account
+
+If any of those items fail, it will roll back the transaction and set an
+appropriate error, to be surfaced in the interface.
 
 ## Student Interface
 ### Students can see all active auctions from a given link

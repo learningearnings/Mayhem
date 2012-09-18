@@ -88,4 +88,14 @@ class CreditManager
     return false if student.savings_balance < amount
     transfer_credits "Transfer from Savings to Checking", student.savings_account_name, student.checking_account_name, amount
   end
+
+  def transfer_credits_from_checking_to_hold student, amount
+    return false if student.checking_balance < amount
+    transfer_credits "Transfer from Checking to Hold", student.checking_account_name, student.hold_account_name, amount
+  end
+
+  def transfer_credits_from_hold_to_checking student, amount
+    return false if student.hold_balance < amount
+    transfer_credits "Transfer from Hold to Checking", student.hold_account_name, student.checking_account_name, amount
+  end
 end

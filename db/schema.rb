@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918171546) do
+ActiveRecord::Schema.define(:version => 20120918190318) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -46,6 +46,15 @@ ActiveRecord::Schema.define(:version => 20120918171546) do
   add_index "addresses", ["addressable_id"], :name => "index_addresses_on_addressable_id"
   add_index "addresses", ["addressable_type"], :name => "index_addresses_on_addressable_type"
   add_index "addresses", ["type"], :name => "index_addresses_on_type"
+
+  create_table "auction_bids", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "auction_id"
+    t.decimal  "amount",     :precision => 10, :scale => 2
+    t.string   "status"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
 
   create_table "auctions", :force => true do |t|
     t.datetime "start_date"

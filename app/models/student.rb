@@ -40,7 +40,6 @@ class Student < Person
     school.store_subdomain
   end
 
-
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def checking_account_name
     "STUDENT#{id} CHECKING"
@@ -50,12 +49,20 @@ class Student < Person
     "STUDENT#{id} SAVINGS"
   end
 
+  def hold_account_name
+    "STUDENT#{id} HOLD"
+  end
+
   def checking_account
     Plutus::Asset.find_by_name checking_account_name
   end
 
   def savings_account
     Plutus::Asset.find_by_name savings_account_name
+  end
+
+  def hold_account
+    Plutus::Asset.find_by_name hold_account_name
   end
 
   def balance
