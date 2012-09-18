@@ -5,8 +5,13 @@ class Auction < ActiveRecord::Base
   validates :auction_type, inclusion: { in: ["traditional"] }
   after_initialize :set_defaults
 
+  belongs_to :product, class_name: "Spree::Product", foreign_key: :product_id
+
+  attr_accessible :start_date, :end_date, :current_bid, :auction_type, :product_id, as: :le_admin
+
   protected
   def set_defaults
-    self.current_bid ||= BigDecimal('0')
+    self.current_bid  ||= BigDecimal('0')
+    self.auction_type ||= "traditional"
   end
 end
