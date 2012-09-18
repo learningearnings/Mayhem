@@ -1,4 +1,3 @@
-# This will guess the User class
 FactoryGirl.define do
   factory :person do
     first_name "Testy"
@@ -33,6 +32,11 @@ FactoryGirl.define do
   factory :person_school_link do
     person
     school
+  end
+
+  factory :display_name do
+    sequence(:display_name) { |n| "display_name#{n}" }
+    user
   end
 
   factory :student_school_link, class: PersonSchoolLink do
@@ -143,7 +147,7 @@ FactoryGirl.define do
     sequence(:username) {|n| "foo#{n}"}
     password "123456"
     password_confirmation "123456"
-#    person
+    #person
   end
 
   factory :question, class: Games::Question do

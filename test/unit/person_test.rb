@@ -37,6 +37,33 @@ describe Person do
     p.classrooms.must_include classroom
   end
 
+  describe "Person#display_name" do
+    it "finds the most recent approved display name" do
+      person = FactoryGirl.create(:person)
+      first_display_name  = person.display_names.create(:display_name => "first")
+      second_display_name = person.display_names.create(:display_name => "second")
+      third_display_name  = person.display_names.create(:display_name => "third")
+
+      second_display_name.approve!
+      assert_equal person.display_name, second_display_name.display_name
+    end
+
+    it "should return a blank string if there are no display names" do
+      person = FactoryGirl.create(:person)
+      assert person.display_names.empty?
+      assert_equal person.display_name, ""
+    end
+  end
+
+  describe "Person#display_name=" do
+    it "should create a new display name" do
+      person = FactoryGirl.create(:person)
+      assert_equal person.display_names.count, 0
+      person.display_name= "New Display Name"
+      assert_equal person.display_names.count, 1
+    end
+  end
+
   it "has avatar as the last avatar" do
     p = FactoryGirl.create(:person)
     first_avatar = FactoryGirl.create(:avatar)
@@ -48,6 +75,4 @@ describe Person do
     p.avatars.must_include last_avatar
     p.avatar.must_equal last_avatar
   end
-
-
 end

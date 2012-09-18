@@ -13,7 +13,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     @person.avatar = Avatar.find(params[:avatar_id]) if params[:avatar_id]
-    if @person.save
+    if @person.update_attributes(params[:student])
         flash[:notice] = "#{@person.type} Avatar updated."
         redirect_to main_app.root_path
     else
