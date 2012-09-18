@@ -1,0 +1,7 @@
+%h2 Auctions
+
+- if auctions.any?
+  %p Here are the currently-open auctions.
+  = render auctions
+- else
+  %p There are no auctions currently open, sorry.

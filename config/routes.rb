@@ -48,6 +48,8 @@ Leror::Application.routes.draw do
     end
   end
 
+  resources :auctions
+
   post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"
   post "/filters/filter_classrooms_by_school" => "filters#filter_classrooms_by_school"
   post "/filters/filter_grades_by_classroom" => "filters#filter_grades_by_classroom"
@@ -106,6 +108,7 @@ Leror::Application.routes.draw do
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
+  resources :bid_on_auction_commands, only: [:create]
 
   # rewards for teachers
   resources :rewards

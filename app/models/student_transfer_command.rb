@@ -2,7 +2,7 @@ require_relative 'active_model_command'
 require_relative '../validators/positive_decimal_validator'
 
 class StudentTransferCommand < ActiveModelCommand
-  attr_accessor :amount, :direction, :student_id
+  attr_accessor :amount, :direction, :student_id, :on_success, :on_failure
 
   validates :direction, presence: true
   validates :student_id, presence: true, numericality: true
@@ -13,6 +13,8 @@ class StudentTransferCommand < ActiveModelCommand
     @amount = BigDecimal(params[:amount]) if params[:amount]
     @direction = params[:direction]
     @student_id = params[:student_id]
+    @on_success = lambda{}
+    @on_failure = lambda{}
   end
 
   # The transfer knows what to call on credit manager based on its direction
@@ -36,6 +38,11 @@ class StudentTransferCommand < ActiveModelCommand
   end
 
   def execute!
-    credit_manager.send(transfer_method, student, amount)
+    success = credit_manager.send(transfer_method, student, amount)
+    if success
+      on_success.call()
+    else
+      on_failure.call()
+    end
   end
 end
