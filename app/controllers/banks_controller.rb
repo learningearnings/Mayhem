@@ -11,10 +11,15 @@ class BanksController < LoggedInController
     person = current_person unless person
       
     if otu_code = OtuCode.active.find_by_code(params[:code])
-      @bank = Bank.new
-      @bank.claim_bucks(person, otu_code)
-      flash[:notice] = 'Bucks claimed!'
-      redirect_to bank_path
+      if !otu_code.expired?
+        @bank = Bank.new
+        @bank.claim_bucks(person, otu_code)
+        flash[:notice] = 'Bucks claimed!'
+        redirect_to bank_path
+      else
+        flash[:error] = 'Code Expired.'
+        redirect_to bank_path
+      end
     else
       flash[:error] = 'Invalid Code.'
       render :show

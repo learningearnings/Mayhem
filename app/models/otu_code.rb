@@ -9,6 +9,11 @@ class OtuCode < ActiveRecord::Base
   has_one :school, :through => :person_school_link
 
   scope :active,  lambda { where("active = ?", true) }
+  scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
+
+  def expired?
+    self.created_at > (Time.now + 45.days)
+  end
 
   def is_ebuck?
     ebuck?
