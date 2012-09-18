@@ -10,7 +10,7 @@
   = f.label :username
   = f.text_field :username
   = f.label :dob
-  = f.text_field :dob
+  = f.text_field :dob, :class => 'datepicker'
   = f.label :gender
   = f.select :gender, options_for_select(['Male', 'Female'], :gender), :include_blank => true
   = f.label :grade
@@ -22,3 +22,8 @@
   = f.label :password_confirmation
   = f.password_field :password_confirmation
   = f.submit 'Submit'
+
+:javascript
+  $(function() {
+    $( ".datepicker" ).datepicker();
+  });
