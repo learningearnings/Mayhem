@@ -1,0 +1,22 @@
+%h1 Rewards
+
+= link_to "New Reward", new_reward_path
+%p
+
+%table.table
+  %tr
+    %th= "Image"
+    %th= t(:name)
+    %th= t(:master_price)
+    %th= "Classroom"
+    %th= "Actions"
+  - @products.each do |product|
+    %tr
+      %td= image_tag product.thumb, :size => "100x100" , :itemprop => "image"
+      %td= product.try(:name)
+      %td= money(product.price) rescue ''
+      %td= product.filter.classrooms.collect do |c| c.name end.join(',')
+      %td
+        = link_to "Edit", edit_reward_path(id: product.id), :class => 'edit' unless product.deleted?
+        |
+        = link_to 'Delete', remove_reward_path(product: product.id), confirm: 'Are you sure?'

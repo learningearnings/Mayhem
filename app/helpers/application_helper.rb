@@ -15,4 +15,8 @@ module ApplicationHelper
   def buck_link(buck)
     link_to 'Redeem Buck', "/bank/redeem_bucks", buck
   end
+
+  def filter_widget
+    render "shared/filter/filter_widget"
+  end
 end

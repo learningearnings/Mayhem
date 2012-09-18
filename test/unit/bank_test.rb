@@ -14,6 +14,7 @@ describe Bank do
     on_success = lambda{}
     buck_creator = mock "OtuCode"
     person = mock "Person"
+    person.stubs(:id)
     person_school_links = mock "Person School Links collection"
     person.stubs(:person_school_links).returns(person_school_links)
     person_school_link = mock "Person School Link"

@@ -1,0 +1,58 @@
+%p
+- if @product.errors.any?
+  #error_explanation
+    %h2
+      = pluralize(@product.errors.count, "error")
+      prohibited this product from being saved:
+    %ul
+      - @product.errors.full_messages.each do |msg|
+        %li= msg
+
+%fieldset
+  %legend
+    Product Details
+  .clearfix
+    = f.label 'Name'
+    .input= f.text_field :name, :class => 'focus-on-me'
+  .clearfix
+    = f.label 'Classroom'
+    = select_tag :classroom, options_from_collection_for_select(current_user.person.classrooms, :id, :name)
+  .clearfix
+    = f.label 'Min/Max Grades'
+    = select_tag :min_grade, options_for_select(@grades)
+    = select_tag :max_grade, options_for_select(@grades)
+  .clearfix
+    = f.label 'Description'
+    .input= f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth'}
+  .clearfix
+    = f.label 'Price'
+    .input= f.text_field :price, :value => number_to_currency(@product.price, :unit => '')
+  .clearfix
+    = f.label 'Count on hand'
+    .input= f.text_field :on_hand
+  .clearfix
+    = f.label 'Available on'
+    .input= f.text_field :available_on, :class => 'datepicker'
+  .clearfix
+    = f.fields_for :images do |i|
+      = i.label :image
+      = i.file_field :attachment_file_name
+  - unless @product.images.empty?
+    .clearfix
+      = f.label :current_image
+      = image_tag @product.thumb
+  .clearfix
+    = f.label 'Stores'
+    %br
+    - Spree::Store.all.each do |store|
+      = check_box_tag "product[store_ids][]", store.id, @product.stores.include?(store)
+      = store.name
+  .clearfix
+    = f.hidden_field :id, value: @product.id
+  .clearfix
+    .input= f.hidden_field :filter, :value => 1
+
+
+%p
+= button_to :submit
+

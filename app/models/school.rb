@@ -2,24 +2,34 @@ require "basic_statuses"
 
 class School < ActiveRecord::Base
   include BasicStatuses
+
+  GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+  GRADE_NAMES = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]
   has_many :addresses, :as => :addressable
   has_many :classrooms
   has_many :foods, :through => :food_school_links
   has_many :food_school_links
-  has_many :person_food_school_links
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
   after_save :create_spree_store
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
   validates_presence_of :name
   validates_uniqueness_of :name
+  validates_presence_of :addresses
 
   after_create :ensure_accounts
+
+  def address=(newaddress)
+    addresses << newaddress
+  end
+
+
+  scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
   def create_spree_store
     if Rails.env.development?
@@ -36,6 +46,14 @@ class School < ActiveRecord::Base
 
   def store
     Spree::Store.where(code: store_subdomain).first
+  end
+
+  def grade_range
+    self.min_grade..self.max_grade
+  end
+
+  def grades
+    self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
   end
 
   # Relationships
@@ -93,7 +111,8 @@ class School < ActiveRecord::Base
   end
 
   def store_subdomain
-    self.id.to_s
+    address_state_abbr = addresses.first.try(:state).try(:abbr).to_s
+    "#{address_state_abbr}#{self.id.to_s}"
   end
 
   private

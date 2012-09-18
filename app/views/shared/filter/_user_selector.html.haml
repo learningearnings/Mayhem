@@ -1,0 +1,21 @@
+#filter_widget_user_selector.modal.hide
+  %div.form-horizontal
+    .modal-header
+      %h3 Select User Types
+    .modal-body
+      .control-group
+        .controls
+          %label.control-label
+            =check_box_tag "user[]", "Parent", false, :class => "filter_widget_user_checkbox"
+            Parent
+          %label.control-label
+            =check_box_tag "user[]", "SchoolAdmin", false, :class => "filter_widget_user_checkbox"
+            School Admin
+          %label.control-label
+            =check_box_tag "user[]", "Teacher", false, :class => "filter_widget_user_checkbox"
+            Teacher
+          %label.control-label
+            =check_box_tag "user[]", "Student", false, :class => "filter_widget_user_checkbox"
+            Student
+    .modal-footer
+      = submit_tag "Finish", :class => "btn btn-primary", :id => "finish_him"

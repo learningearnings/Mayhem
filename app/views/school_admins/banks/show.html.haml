@@ -17,7 +17,7 @@
       = label_tag 'Teacher'
       = select("teacher", "id", Teacher.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
       = label_tag '$1'
-      = text_field_tag :point1
+      = text_field_tag :point1,nil,:class => 'focus-on-me'
       = label_tag '$5'
       = text_field_tag :point5
       = label_tag '$10'
@@ -33,7 +33,7 @@
       = f.submit 'Create eBucks'
 
     %h4 Transfer Bucks
-    = form_for OtuCode.new, :url => teachers_transfer_bucks_path do |f|
+    = form_for OtuCode.new, :url => school_admins_transfer_bucks_path do |f|
       = label_tag 'Points'
       = text_field_tag :points
       = label_tag :from_teacher

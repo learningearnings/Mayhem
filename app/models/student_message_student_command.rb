@@ -2,7 +2,7 @@ require_relative 'active_model_command'
 require_relative '../validators/array_of_integers_validator'
 
 class StudentMessageStudentCommand < ActiveModelCommand
-  attr_accessor :from_id, :to_ids, :canned_message
+  attr_accessor :from_id, :to_ids, :canned_message, :message_image_id
 
   validates :from_id, numericality: true, presence: true
   validates :to_ids, presence: true, array_of_integers: true
@@ -12,6 +12,7 @@ class StudentMessageStudentCommand < ActiveModelCommand
     @from_id        = params[:from_id]
     @to_ids         = params[:to_ids]
     @canned_message = params[:canned_message]
+    @message_image_id  = params[:message_image_id]
   end
 
   def message_class
@@ -33,6 +34,7 @@ class StudentMessageStudentCommand < ActiveModelCommand
       return false
     else
       messages.map(&:save)
+      messages.map{|x| MessageImageLink.create(:message_id => x.id, :message_image_id => @message_image_id)} if @message_image_id.present?
       return true
     end
   end

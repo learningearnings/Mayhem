@@ -10,32 +10,63 @@ class Person < ActiveRecord::Base
   #has_many :classrooms, :through => :person_school_classroom_links
   has_many :person_school_links
   has_many :person_school_classroom_links
-  has_many :foods, :through => :person_food_links
-  has_many :person_food_links
+  has_many :display_names
+  has_many :buck_batches, :through => :person_buck_batch_links
+  has_many :person_buck_batch_links
+  has_many :person_avatar_links, :autosave => :true
+  has_many :avatars, :through => :person_avatar_links, :order => 'created_at desc'
 
-  has_many :person_food_school_links
-  
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  delegate :email, :to => :user
+
+  def avatar
+    avatars.first
+  end
+
+  def avatar=(new_avatar = nil)
+    avatars << new_avatar if new_avatar
+  end
+
   def favorite_foods
-   self.person_food_links.order('COUNT(food_id) DESC').group("food_id, id").to_a.uniq(&:food_id).map{|x| x.food}.first(3)
+    links = FoodSchoolLink.find_all_by_person_id(self.id)
+    links.sort_by{|x| x.food_id}.uniq{|x| x.food_id}.map{|x| x.food}.first(3)
   end
 
   def favorite_schools
-   self.person_food_school_links.order('COUNT(school_id) DESC').group("school_id, id").to_a.uniq(&:school_id).map{|x| x.school}.first(3)
+    links = FoodSchoolLink.find_all_by_person_id(self.id)
+    links.sort_by{|x| x.school_id}.uniq{|x| x.school_id}.map{|x| x.school}.first(3)
   end
 
   def food_schools
     School.joins(:person_food_school_links).where(person_food_school_links: { id: person_food_school_links.map(&:id) })
   end
 
-  delegate :avatar, to: :user
   delegate :username, :username= , to: :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name
   validates_presence_of :first_name, :last_name
 
   # Relationships
   def person_school_links(status = :status_active)
     MacroReflectionRelationFacade.new(PersonSchoolLink.where(person_id: self.id).send(status))
+  end
+
+  #Last approved display name
+  def display_name
+    display_name_record = display_names.approved.order("created_at DESC").first
+    @display_name ||= display_name_record.nil? ? "" : display_name_record.display_name
+  end
+
+  def requested_display_name
+    display_name_record = display_names.requested.order("created_at DESC").first
+    @requested_display_name ||= display_name_record.nil? ? "" : display_name_record.display_name
+  end
+
+  def display_name= name
+    display_names.create(:display_name => name)
   end
 
   def person_school_classroom_links(status = :status_active)

@@ -13,7 +13,7 @@
 
 = form_for Classroom.new do |f|
   = f.label :name
-  = f.text_field :name
+  = f.text_field :name, :class => 'focus-on-me'
   = f.hidden_field :school_id, :value => current_school.id
   = f.submit 'Create Classroom'
 

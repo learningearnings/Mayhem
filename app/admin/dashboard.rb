@@ -1,4 +1,5 @@
 ActiveAdmin.register_page "LE Admin Dashboard" do
+#ActiveAdmin::Dashboards.build do
 
   menu :priority => 1, :label => proc{ I18n.t("active_admin.dashboard") }
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120913172835) do
+ActiveRecord::Schema.define(:version => 20120915204648) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -110,6 +110,16 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
     t.datetime "updated_at",                   :null => false
   end
 
+  create_table "display_names", :force => true do |t|
+    t.string   "state"
+    t.string   "display_name"
+    t.datetime "approved_at"
+    t.integer  "actioned_by_id"
+    t.integer  "person_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -121,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
   create_table "food_school_links", :force => true do |t|
     t.integer  "food_id"
     t.integer  "school_id"
+    t.integer  "person_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -232,6 +243,19 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "message_image_links", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "message_image_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "message_images", :force => true do |t|
+    t.string   "image_uid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "messages", :force => true do |t|
     t.integer  "from_id"
     t.datetime "created_at", :null => false
@@ -281,6 +305,22 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
 
   add_index "people", ["type"], :name => "index_people_on_type"
 
+  create_table "person_avatar_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "avatar_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "person_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
+
+  create_table "person_buck_batch_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "buck_batch_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "person_class_filter_links", :force => true do |t|
     t.integer  "filter_id"
     t.datetime "created_at",                 :null => false
@@ -289,20 +329,6 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
   end
 
   add_index "person_class_filter_links", ["filter_id", "person_class"], :name => "index_person_class_filter_links_on_filter_id_and_person_class", :unique => true
-
-  create_table "person_food_links", :force => true do |t|
-    t.integer  "food_id"
-    t.integer  "person_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "person_food_school_links", :force => true do |t|
-    t.integer  "school_id"
-    t.integer  "person_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "person_school_classroom_links", :force => true do |t|
     t.integer  "person_school_link_id"
@@ -1026,15 +1052,6 @@ ActiveRecord::Schema.define(:version => 20120913172835) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-  create_table "user_avatar_links", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "avatar_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "user_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
