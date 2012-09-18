@@ -202,4 +202,17 @@ FactoryGirl.define do
     points          BigDecimal("5")
     expires_at      Time.now + 5.days
   end
+
+  factory :auction do
+    start_date Time.now + 5.days
+    end_date   Time.now + 7.days
+    association :product, factory: :spree_product
+    auction_type "traditional"
+  end
+
+  factory :auction_bid do
+    auction
+    person
+    amount BigDecimal('1')
+  end
 end

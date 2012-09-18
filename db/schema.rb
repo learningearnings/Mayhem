@@ -47,6 +47,25 @@ ActiveRecord::Schema.define(:version => 20120917220348) do
   add_index "addresses", ["addressable_type"], :name => "index_addresses_on_addressable_type"
   add_index "addresses", ["type"], :name => "index_addresses_on_type"
 
+  create_table "auction_bids", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "auction_id"
+    t.decimal  "amount",     :precision => 10, :scale => 2
+    t.string   "status"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  create_table "auctions", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.decimal  "current_bid",  :precision => 10, :scale => 2
+    t.integer  "product_id"
+    t.string   "auction_type"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+  end
+
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"

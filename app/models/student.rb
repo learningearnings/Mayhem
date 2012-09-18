@@ -40,7 +40,6 @@ class Student < Person
     school.store_subdomain
   end
 
-
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def checking_account_name
     "STUDENT#{id} CHECKING"
@@ -50,12 +49,20 @@ class Student < Person
     "STUDENT#{id} SAVINGS"
   end
 
+  def hold_account_name
+    "STUDENT#{id} HOLD"
+  end
+
   def checking_account
     Plutus::Asset.find_by_name checking_account_name
   end
 
   def savings_account
     Plutus::Asset.find_by_name savings_account_name
+  end
+
+  def hold_account
+    Plutus::Asset.find_by_name hold_account_name
   end
 
   def balance
@@ -70,6 +77,9 @@ class Student < Person
     savings_account.balance
   end
 
+  def hold_balance
+    hold_account.balance
+  end
 
   def grademates
     school.students.where(grade: self.grade) - [self]
@@ -79,6 +89,7 @@ class Student < Person
   def ensure_accounts
     checking_account || Plutus::Asset.create(name: checking_account_name)
     savings_account  || Plutus::Asset.create(name: savings_account_name)
+    hold_account     || Plutus::Asset.create(name: hold_account_name)
   end
 
 
