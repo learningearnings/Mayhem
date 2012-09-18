@@ -8,7 +8,7 @@ class RewardsController < ApplicationController
 #    @products = @searcher.retrieve_products
 #    respond_with(@products)
 #    @products = Spree::Product.not_deleted.order(:name)
-    @products = current_user.person.products
+    @products = current_user.person.products.not_deleted.order(:name)
   end
 
   def show
