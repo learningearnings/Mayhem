@@ -52,7 +52,7 @@ module Reports
         d_end = d_begin.end_of_week
         [:where, {created_at: d_begin..d_end}]
       else
-        nil
+        [:scoped]
       end
     end
 
