@@ -5,7 +5,7 @@
   %li= link_to "Bank",    main_app.teachers_bank_path
   %li= link_to "Classrooms",    main_app.classrooms_path
   %li= link_to "Play",    main_app.page_path('logged_in_play')
-  %li= link_to "Rewards", Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: session[:current_school_id])
+  %li= link_to "Rewards", Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain)
   %li= link_to "Wholesale Rewards",Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: 'le') if current_person.is_a?(SchoolAdmin)
   %li= link_to "Create",  main_app.page_path('logged_in_create')
   %li= link_to "News",    main_app.page_path('logged_in_news')
