@@ -35,7 +35,8 @@ ActiveAdmin.register Auction do
       bid_text.html_safe
     end
     column :leader do |auction|
-      auction.current_leader
+      leader = auction.current_leader
+      "#{leader} (#{leader.grade}) #{leader.school}"
     end
     column :actions do |auction|
       link_html = ""
