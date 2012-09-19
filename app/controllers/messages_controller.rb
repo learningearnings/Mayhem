@@ -8,22 +8,26 @@ class MessagesController < LoggedInController
 
   def friend_messages
     @received_messages = current_person.received_messages
-    @messages = @received_messages.from_friend
+    @messages = @received_messages.from_friend.page params[:page]
+
   end
 
   def school_messages
     @received_messages = current_person.received_messages
-    @messages = @received_messages.from_school
+    @messages = @received_messages.from_school.page params[:page]
+
   end
 
   def teacher_messages
     @received_messages = current_person.received_messages
-    @messages = @received_messages.from_teacher
+    @messages = @received_messages.from_teacher.page params[:page]
+
   end
 
   def system_messages
     @received_messages = current_person.received_messages
-    @messages = @received_messages.from_system
+    @messages = @received_messages.from_system.page params[:page]
+
   end
 
   def reply
