@@ -11,12 +11,12 @@ function update_avatar_results(_event){
 
 function get_avatar_results(page){
   var page = page || 1;
-  var url =  '/store/get_avatar_results?page=' +page;
+  var url =  '/people/get_avatar_results?page=' + page;
 
   $.ajax({
     async: true,
     url: url,
-    type: 'POST',
+    type: 'GET',
     dataType: 'text',
     success: function(response){
       $('#avatar_partial').html(response);
