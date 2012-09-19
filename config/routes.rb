@@ -119,6 +119,8 @@ Leror::Application.routes.draw do
   # rewards for teachers
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
+  match "/get_image_results" => 'messages#get_image_results'
+
 end
 
 # Any routes we add to Spree go here:
