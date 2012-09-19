@@ -6,6 +6,8 @@ class AuctionBid < ActiveRecord::Base
   validates :amount, positive_decimal: true
   validates :status, inclusion: { in: ["open", "invalidated"] }
 
+  scope :before, lambda{|time| where("created_at < ?", time) }
+
   state_machine :status, initial: :open do
     event :invalidate! do
       transition [:open] => :invalidated

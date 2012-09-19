@@ -84,6 +84,7 @@ Leror::Application.routes.draw do
   resource :teachers
   match "/teachers/approve_teacher/:id" => 'teachers#approve_teacher', as: 'approve_teacher'
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
+  match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
   namespace :teachers do
     resource :bank

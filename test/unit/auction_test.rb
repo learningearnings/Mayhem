@@ -28,4 +28,11 @@ describe Auction do
       subject.must have_valid(:end_date).when("2012-02-02")
     end
   end
+
+  it "responds to to_s appropriately" do
+    product = mock()
+    product.expects(:name).returns("ipod")
+    subject.stubs(:product).returns(product)
+    subject.to_s.must_equal "Auction for ipod"
+  end
 end

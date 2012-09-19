@@ -7,7 +7,6 @@ class Bank
 
   def initialize(credit_manager=CreditManager.new, buck_printer=BuckPrinter.new)
     @credit_manager = credit_manager
-    #@buck_printer = buck_printer
     # Set up no-op callbacks in case we don't want to use them
     @on_failure = lambda{}
     @on_success = lambda{}

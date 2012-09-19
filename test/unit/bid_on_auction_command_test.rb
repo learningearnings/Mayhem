@@ -2,15 +2,21 @@ require 'test_helper'
 require_relative '../../app/models/bid_on_auction_command'
 
 describe BidOnAuctionCommand do
-  subject{ BidOnAuctionCommand.new(person: person, auction: auction, amount: amount, credit_manager: credit_manager) }
+  subject do
+    command = BidOnAuctionCommand.new(person: person, auction: auction, amount: amount, credit_manager: credit_manager)
+    command.stubs(:message_creator).returns(message_creator)
+    command
+  end
   let(:auction) do
     val = mock()
     val.stubs(:current_bid).returns(BigDecimal('0'))
+    val.stubs(:id).returns(1)
     val
   end
   let(:person){ mock() }
   let(:amount){ BigDecimal('5') }
   let(:credit_manager){ mock }
+  let(:message_creator){ lambda{|params|} }
 
   describe ":validations:" do
     it 'has an auction' do
