@@ -7,6 +7,9 @@ class Student < Person
   has_many :otu_codes
   has_one :locker, foreign_key: :person_id
 
+  attr_accessor :username, :password, :password_confirmation, :email
+  attr_accessible :username, :password, :password_confirmation, :email
+ 
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
@@ -95,7 +98,7 @@ class Student < Person
 
   def create_user
     unless self.user
-      user = Spree::User.create(:email => "student#{self.id}@example.com", :password => 'test123', :password_confirmation => 'test123')
+      user = Spree::User.create(:username => username, :password => password, :password_confirmation => password_confirmation, :email => email)
       user.person_id = self.id
       user.save
     end
