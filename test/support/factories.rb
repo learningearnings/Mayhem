@@ -96,7 +96,7 @@ FactoryGirl.define do
     available_on "2012-01-01"
     permalink "some-product"
     count_on_hand 20
-    price BigDecimal('10')
+    price 10
   end
 
   factory :spree_store, class: Spree::Store do
