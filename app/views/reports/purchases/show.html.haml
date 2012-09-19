@@ -12,6 +12,8 @@
     = select_tag :sort_by, options_for_select(["Default", "Teacher", "Student", "Purchased", "Reward", "Status"], params[:sort_by])
     = submit_tag 'Go!'
 
+%h3= report.filters_in_text
+
 = form_tag DeliverRewardsCommand.new, method: :post do
   %table.table.table-bordered.table-striped.solid-background
     %thead

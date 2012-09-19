@@ -16,6 +16,23 @@ module Reports
       end
     end
 
+    def filters_in_text
+      text = ""
+      if @reward_status_filter
+        case @reward_status_filter
+        when "Everything"
+          text << "All"
+        else
+          text << @reward_status_filter
+        end
+      end
+      text << " Purchases"
+      if date_endpoints
+        text << " from #{date_endpoints[0].to_date.to_s(:db)} to #{date_endpoints[1].to_date.to_s(:db)}"
+      end
+      text
+    end
+
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
@@ -33,27 +50,35 @@ module Reports
 
     # This feels all cluttered to me but my brain isn't firing on all cylinders today.
     def date_filter
+      case date_endpoints
+      when nil
+        [:scoped]
+      else
+        [:where, {created_at: date_endpoints[0]..date_endpoints[1]}]
+      end
+    end
+
+    def date_endpoints
       case @date_filter
       when 'last_90_days'
-        [:where, {created_at: 90.days.ago..1.second.ago}]
+        [90.days.ago, 1.second.ago]
       when 'last_60_days'
-        [:where, {created_at: 60.days.ago..1.second.ago}]
+        [60.days.ago, 1.second.ago]
       when 'last_7_days'
-        [:where, {created_at: 7.days.ago..1.second.ago}]
+        [7.days.ago, 1.second.ago]
       when 'last_month'
         d_begin = Time.now.beginning_of_month - 1.month
         d_end = d_begin.end_of_month
-        [:where, {created_at: d_begin..d_end}]
+        [d_begin, d_end]
       when 'this_month'
-        [:where, {created_at: Time.now.beginning_of_month..Time.now}]
+        [Time.now.beginning_of_month, Time.now]
       when 'this_week'
-        [:where, {created_at: Time.now.beginning_of_week..Time.now}]
+        [Time.now.beginning_of_week, Time.now]
       when 'last_week'
         d_begin = Time.now.beginning_of_week - 1.week
         d_end = d_begin.end_of_week
-        [:where, {created_at: d_begin..d_end}]
-      else
-        [:scoped]
+        [d_begin, d_end]
+      else nil
       end
     end
 
