@@ -6,6 +6,7 @@ module Reports
       @date_filter = params[:date_filter]
       @reward_status_filter = params[:reward_status_filter]
       @teachers_filter = params[:teachers_filter]
+      @sort_by_filter = params[:sort_by]
     end
 
     def execute!
@@ -18,7 +19,7 @@ module Reports
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter, :reward_status_filter, :teachers_filter]
+      [:date_filter, :reward_status_filter, :teachers_filter, :sort_by]
     end
 
     def reward_deliveries
@@ -56,6 +57,23 @@ module Reports
       end
     end
 
+    def sort_by
+      case @sort_by_filter
+      when "Default"
+        [:scoped]
+      when "Teacher"
+        [:order, :from_id]
+      when "Student"
+        [:order, :to_id]
+      when "Purchased"
+        [:order, :created_at]
+      when "Reward"
+        [:order, "spree_products.name"]
+      when "Status"
+        [:order, :status]
+      end
+    end
+
     def reward_status_filter
       case @reward_status_filter
       when 'Undelivered'
@@ -77,7 +95,7 @@ module Reports
     end
 
     def reward_delivery_base_scope
-      RewardDelivery.includes(to: [ :person_school_links ]).where(to: { person_school_links: { school_id: @school.id } })
+      RewardDelivery.includes(to: [ :person_school_links ], reward: []).where(to: { person_school_links: { school_id: @school.id } })
     end
 
     def generate_row(reward_delivery)
@@ -90,7 +108,7 @@ module Reports
         grade: person.grade,
         purchased: reward_delivery.created_at.to_s(:db),
         reward: reward_delivery.reward.name,
-        status: "Stock",
+        status: reward_delivery.status,
         reward_delivery_id: reward_delivery.id,
         delivery_status: reward_delivery.status
       ]
