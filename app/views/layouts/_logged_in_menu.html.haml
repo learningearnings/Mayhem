@@ -4,5 +4,5 @@
   %li= link_to "Inbox",   main_app.inbox_path
   %li= link_to "Bank",    main_app.bank_path
   %li= link_to "Play",    main_app.page_path('logged_in_play')
-  %li= link_to "Rewards", Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: session[:current_school_id])
+  %li= link_to "Rewards", Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain)
   %li= link_to "News",    main_app.page_path('logged_in_news')

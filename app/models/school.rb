@@ -111,7 +111,7 @@ class School < ActiveRecord::Base
   end
 
   def store_subdomain
-    address_state_abbr = addresses.first.try(:state).try(:abbr).to_s
+    address_state_abbr = addresses.first.try(:state).try(:abbr).to_s.downcase
     "#{address_state_abbr}#{self.id.to_s}"
   end
 
