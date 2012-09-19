@@ -15,6 +15,6 @@ Feature: Student Bank
 
     Scenario: Claim eBucks
       Given a teacher has sent me some ebucks
-      Given I am on the messages page
-      Given I click on a buck message
+      Given I am on the teacher messages page
+      When I claim bucks from a buck message
       Then the student account should receive bucks
