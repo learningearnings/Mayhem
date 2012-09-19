@@ -48,6 +48,17 @@ class Auction < ActiveRecord::Base
     auction_bids.last.person
   end
 
+  def top_bid_at(time)
+    auction_bids.before(time).last
+  end
+
+  def bid_difference_since(time)
+    top_bid = top_bid_at(time)
+    return BigDecimal('0') unless top_bid
+    top_bid_amount = top_bid.amount
+    current_bid - top_bid_amount
+  end
+
   protected
   def set_defaults
     self.current_bid  ||= BigDecimal('0')

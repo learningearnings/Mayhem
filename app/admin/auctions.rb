@@ -14,14 +14,26 @@ ActiveAdmin.register Auction do
     end
     column :start_date
     column :end_date
+    column :status
     column :bids do |auction|
       auction.auction_bids.count
     end
     column :bidders do |auction|
       auction.bidders.count
     end
-    column :status
-    column :current_bid
+    column :current_bid do |auction|
+      bid_text = ""
+      auction_session_key = "last_viewed_bid_time_for_auction_#{auction.id}"
+      last_viewed_bid_time = session[auction_session_key]
+      if last_viewed_bid_time
+        difference = auction.bid_difference_since(last_viewed_bid_time)
+        bid_text += "(+ #{difference}) " unless difference == BigDecimal('0')
+      end
+      session[auction_session_key] = Time.zone.now
+
+      bid_text += number_to_currency(auction.current_bid)
+      bid_text.html_safe
+    end
     column :leader do |auction|
       auction.current_leader
     end
