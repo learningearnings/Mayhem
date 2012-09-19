@@ -67,6 +67,10 @@ module SharedSteps
      visit 'http://1.lvh.me/inbox'
    end
 
+   Given 'I am on the teacher messages page' do
+     visit 'http://1.lvh.me/inbox/teacher_messages'
+   end
+
    Then 'show me the page' do
      save_and_open_page
    end
