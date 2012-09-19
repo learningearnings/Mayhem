@@ -201,7 +201,7 @@ if Rails.env.development? || Rails.env.production?
   @student1.activate!
   @student2.activate!
 
-  @classroom = Classroom.create(:name => 'Test Classroom')
+  @classroom = Classroom.create(:name => 'Test Classroom', school: @school)
   @person_school_classroom_link = PersonSchoolClassroomLink.create(:person_school_link_id => @teacher_link.id,
                                                                    :classroom_id => @classroom.id,
                                                                    :owner => true)

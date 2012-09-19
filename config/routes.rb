@@ -60,6 +60,7 @@ Leror::Application.routes.draw do
   post "/filters" => "filters#create"
 
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
+  match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
 
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'

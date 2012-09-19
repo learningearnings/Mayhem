@@ -18,6 +18,9 @@
 @import 'lockers';
 
 .modal {
-  overflow-y:auto;
+  overflow: visible;
   max-height:90%;
+}
+.modal-body {
+  overflow: visible;
 }

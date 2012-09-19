@@ -1,5 +1,4 @@
 class Teacher < Person
-
   has_many :schools, :through => :person_school_links
   attr_accessor :username, :password, :password_confirmation, :email
   attr_accessible :username, :password, :password_confirmation, :email, :gender
