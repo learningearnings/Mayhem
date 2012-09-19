@@ -3,7 +3,11 @@ Leror::Application.routes.draw do
   root to: 'pages#show', :id => 'home'
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
-  resources :people
+  resources :people do
+    collection do
+      get 'get_avatar_results'
+    end
+  end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
@@ -120,7 +124,6 @@ end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
-  match "/get_avatar_results" => 'users#get_avatar_results'
   namespace :admin do
     resources :rewards
     match 'remove_reward' => 'rewards#destroy'
