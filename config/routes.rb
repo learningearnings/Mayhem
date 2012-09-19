@@ -1,6 +1,11 @@
 Leror::Application.routes.draw do
   # Root route
   root to: 'pages#show', :id => 'home'
+
+  # 404 and 500 pages
+  match '/404', :to => 'pages#show', id: '404'
+  match '/500', :to => 'pages#show', id: '500'
+
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resources :people do
