@@ -1,6 +1,7 @@
 ActiveAdmin.register Auction do
   scope :active
   scope :ended
+  scope :upcoming
 
   controller do
     with_role :le_admin
@@ -36,12 +37,12 @@ ActiveAdmin.register Auction do
     end
     column :leader do |auction|
       leader = auction.current_leader
-      "#{leader} (#{leader.grade}) #{leader.school}"
+      "#{leader} (#{leader.grade}) #{leader.school}" if leader
     end
     column :actions do |auction|
       link_html = ""
-      link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " if auction.yet_to_begin?
-      link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.yet_to_begin?
+      link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " if auction.upcoming?
+      link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.upcoming?
       link_html.html_safe
     end
   end

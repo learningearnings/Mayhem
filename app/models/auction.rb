@@ -12,6 +12,7 @@ class Auction < ActiveRecord::Base
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :ended,  where("NOW() >= end_date")
+  scope :upcoming,  where("NOW() < start_date")
 
   def open_bids
     auction_bids.where(status: 'open')
@@ -22,21 +23,21 @@ class Auction < ActiveRecord::Base
   end
 
   def active?
-    !yet_to_begin? && !ended?
+    !upcoming? && !ended?
   end
 
   def ended?
     Time.zone.now > end_date
   end
 
-  def yet_to_begin?
+  def upcoming?
     start_date > Time.zone.now
   end
 
   def status
     return 'active' if active?
     return 'ended' if ended?
-    return 'yet_to_begin' if yet_to_begin?
+    return 'upcoming' if upcoming?
   end
 
   def bidders
