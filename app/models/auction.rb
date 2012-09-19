@@ -11,6 +11,7 @@ class Auction < ActiveRecord::Base
   attr_accessible :start_date, :end_date, :current_bid, :auction_type, :product_id, as: :le_admin
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
+  scope :ended,  where("NOW() >= end_date")
 
   def open_bids
     auction_bids.where(status: 'open')
@@ -18,6 +19,33 @@ class Auction < ActiveRecord::Base
 
   def to_s
     "Auction for #{product.name}"
+  end
+
+  def active?
+    !yet_to_begin? && !ended?
+  end
+
+  def ended?
+    Time.zone.now > end_date
+  end
+
+  def yet_to_begin?
+    start_date > Time.zone.now
+  end
+
+  def status
+    return 'active' if active?
+    return 'ended' if ended?
+    return 'yet_to_begin' if yet_to_begin?
+  end
+
+  def bidders
+    auction_bids.map(&:person).uniq
+  end
+
+  def current_leader
+    return nil unless auction_bids.any?
+    auction_bids.last.person
   end
 
   protected
