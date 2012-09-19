@@ -9,25 +9,21 @@ class MessagesController < LoggedInController
   def friend_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.from_friend.page params[:page]
-
   end
 
   def school_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.from_school.page params[:page]
-
   end
 
   def teacher_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.from_teacher.page params[:page]
-
   end
 
   def system_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.from_system.page params[:page]
-
   end
 
   def reply
@@ -35,7 +31,7 @@ class MessagesController < LoggedInController
     @message = StudentMessageStudentCommand.new
     @message.to_ids = []
     @message.to_ids << @old_message.from_id
-    @message_images = MessageImage.first(10)
+    @message_images = MessageImage.page params[:page]
   end
 
   def show
@@ -46,8 +42,14 @@ class MessagesController < LoggedInController
   def new
     @message = StudentMessageStudentCommand.new
     @grademates = current_person.grademates
-    @message_images = MessageImage.first(10)
+    @message_images = MessageImage.page params[:page]
   end
+
+  def get_image_results
+    @message_images = MessageImage.page params[:page]
+    render partial: '/messages/images'
+  end
+
 
   protected
   # No layout if this is an xhr request
