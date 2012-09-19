@@ -16,6 +16,10 @@ class Auction < ActiveRecord::Base
     auction_bids.where(status: 'open')
   end
 
+  def to_s
+    "Auction for #{product.name}"
+  end
+
   protected
   def set_defaults
     self.current_bid  ||= BigDecimal('0')

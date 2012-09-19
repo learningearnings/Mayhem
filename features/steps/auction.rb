@@ -39,6 +39,8 @@ class Auctions < Spinach::FeatureSteps
     @student_credits = 10000
     @credit_manager.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
     @credit_manager.issue_ecredits_to_student(@school, @teacher, @student2, @student_credits)
+
+    @student1_old_message_count = @student1.received_messages.from_system.count
   end
 
   When 'the first student bids on the auction for $2.00' do
@@ -59,6 +61,10 @@ class Auctions < Spinach::FeatureSteps
 
   Then 'the auction\'s current bid should be $3.00' do
     validate_current_bid('3')
+  end
+
+  Then 'the first student should have a message informing him he\'s been outbid' do
+    @student1.received_messages.from_system.count.must_equal(@student1_old_message_count + 1)
   end
 
   def bid(person, amount)

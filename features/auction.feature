@@ -12,3 +12,4 @@ Feature: Auctions
     Then the auction's current bid should be $2.00
     When the second student bids on the auction for $3.00
     Then the auction's current bid should be $3.00
+    And the first student should have a message informing him he's been outbid
