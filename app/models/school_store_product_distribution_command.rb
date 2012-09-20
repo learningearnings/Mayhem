@@ -59,6 +59,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
 
       SpreeProductFilterLink.create(:filter_id => filter.id, :product_id => retail_product.id)
       SpreeProductPersonLink.create(product_id: retail_product.id, person_id: @person.id)
+      # currently only SchoolAdmin persons can call this method to add products to their school == retail
       retail_product.properties.create(name: "type", presentation: "retail")
     end
   end

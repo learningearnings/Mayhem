@@ -12,6 +12,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product = Spree::Product.new
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
+    @types = [["global","global"],["local","local"],["reward","reward"]]
   end
 
   def create
@@ -49,7 +50,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def after_save
-    @product.properties.create(name: "type", presentation: "local")
+    @product.properties.create(name: "type", presentation: params[:product_type])
     product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
   end
 
