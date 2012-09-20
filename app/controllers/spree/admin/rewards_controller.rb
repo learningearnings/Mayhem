@@ -19,6 +19,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @image = @product.master.images.new
     form_data
     if @product.save
+      after_save
       flash[:notice] = "Your reward was created successfully."
       redirect_to admin_rewards_path
     else
@@ -36,12 +37,18 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product = Spree::Product.find(params[:id])
     form_data
     if @product.save
+      after_save
       flash[:notice] = "Your reward was updated successfully."
       redirect_to admin_rewards_path
     else
       flash[:error] = "There was an error updating your Reward, please check the form and try again"
       render 'edit'
     end
+  end
+
+  def after_save
+    @product.properties.create(name: "type", presentation: "local")
+    product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
   end
 
   def form_data
@@ -58,14 +65,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.save
     end
-
-#    filter_factory = FilterFactory.new
-#    filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
-#    filter = filter_factory.find_or_create_filter(filter_condition)
-#    filter.save
-#    @product.filter = filter
-
-#   anything else?
   end
 
   def destroy

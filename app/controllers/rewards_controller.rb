@@ -19,7 +19,6 @@ class RewardsController < ApplicationController
     # create new spree product with specific options for LE Admin to use
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
-    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
   end
@@ -32,7 +31,7 @@ class RewardsController < ApplicationController
     @grades = @current_school.grades
     form_data
     if @product.save
-      product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
+      after_save
       flash[:notice] = "Your reward was created successfully."
       redirect_to rewards_path
     else
@@ -43,7 +42,6 @@ class RewardsController < ApplicationController
 
   def edit
     @product = Spree::Product.find(params[:id])
-    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
   end
@@ -52,13 +50,18 @@ class RewardsController < ApplicationController
     @product = Spree::Product.find(params[:id])
     form_data
     if @product.save
-      product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
+      after_save
       flash[:notice] = "Your reward was updated successfully."
       redirect_to rewards_path
     else
       flash[:error] = "There was an error updating your Reward, please check the form and try again"
       render 'edit'
     end
+  end
+
+  def after_save
+    @product.properties.create(name: "type", presentation: "local")
+    product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
   end
 
   def form_data

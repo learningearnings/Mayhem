@@ -55,7 +55,11 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       factory = FilterFactory.new
       filter = factory.find_or_create_filter(fc)
       filter.save
+
       SpreeProductFilterLink.create(:filter_id => filter.id, :product_id => retail_product.id)
+      SpreeProductPersonLink.create(product_id: retail_product.id, person_id: @person.id)
+      retail_product.properties.create(name: "type", presentation: "retail")
     end
   end
+
 end

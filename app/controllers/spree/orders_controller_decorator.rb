@@ -32,7 +32,7 @@ Spree::OrdersController.class_eval do
     # --- Start our customization ---
 
     OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-    
+
     flash[:notice] = "Bought that stuff..."
     redirect_to "/"
   end
