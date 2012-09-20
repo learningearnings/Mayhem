@@ -34,6 +34,10 @@ class MessagesController < LoggedInController
     @message_images = MessageImage.page params[:page]
   end
 
+  def admin_message
+    @message = StudentMessageAdminCommand.new
+  end
+
   def show
     @message = current_person.received_messages.find(params[:id])
     @message.read!
