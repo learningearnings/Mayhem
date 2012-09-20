@@ -1,4 +1,5 @@
 require 'basic_statuses'
+require 'macro_reflection_relation_facade'
 
 class PersonSchoolLink < ActiveRecord::Base
   state_machine :status, :initial => :active do
@@ -30,7 +31,7 @@ class PersonSchoolLink < ActiveRecord::Base
 
   # Relationships
   def person_school_classroom_links(status = :status_active)
-    PersonSchoolClassroomLink.where(person_school_link_id: self.id).send(status)
+    MacroReflectionRelationFacade.new(PersonSchoolClassroomLink.where(person_school_link_id: self.id).send(status))
   end
 
   def classrooms(status = :status_active)

@@ -1,4 +1,6 @@
 class Message < ActiveRecord::Base
+
+  paginates_per 4
   attr_accessible :from_id, :to_id, :subject, :body, :category, :from, :to
 
   belongs_to :from, class_name: 'Person', foreign_key: :from_id
@@ -20,6 +22,7 @@ class Message < ActiveRecord::Base
   scope :from_system,  where(category: 'system')
   scope :from_teacher, where(category: 'teacher')
   scope :from_school,  where(category: 'school')
+  scope :for_admin,    where(category: 'le_admin')
 
   state_machine :status, initial: :unread do
     event :read! do
@@ -43,7 +46,8 @@ class Message < ActiveRecord::Base
       "friend",
       "school",
       "teacher",
-      "system"
+      "system",
+      "le_admin"
     ]
   end
 end

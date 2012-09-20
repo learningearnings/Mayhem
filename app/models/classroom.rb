@@ -48,4 +48,8 @@ class Classroom < ActiveRecord::Base
       end
     end
   end
+
+  def to_s
+    name
+  end
 end

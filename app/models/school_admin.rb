@@ -16,15 +16,15 @@ class SchoolAdmin < Person
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def main_account_name(school)
-    "SCHOOL ADMIN#{id}"
+    "SCHOOL ADMIN#{id} MAIN SCHOOL#{school.id}"
   end
 
   def unredeemed_account_name(school)
-    "SCHOOL ADMIN#{id}"
+    "SCHOOL ADMIN#{id} UNREDEEMED SCHOOL#{school.id}"
   end
 
   def undeposited_account_name(school)
-    "SCHOOL ADMIN#{id}"
+    "SCHOOL ADMIN#{id} UNDEPOSITED SCHOOL#{school.id}"
   end
 
   def main_account(school)

@@ -27,6 +27,7 @@ class School < ActiveRecord::Base
   validates_presence_of :addresses
 
   after_create :ensure_accounts
+  after_create :set_default_subdomain
 
   def address=(newaddress)
     addresses << newaddress
@@ -114,14 +115,16 @@ class School < ActiveRecord::Base
     name
   end
 
-  def store_subdomain
-    address_state_abbr = addresses.first.try(:state).try(:abbr).to_s.downcase
-    "#{address_state_abbr}#{self.id.to_s}"
-  end
-
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
     store_account || Plutus::Asset.create(name: store_account_name)
+  end
+
+  def set_default_subdomain
+    if store_subdomain.nil?
+      address_state_abbr = addresses.first.try(:state).try(:abbr).to_s.downcase
+      update_attribute(:store_subdomain, "#{address_state_abbr}#{self.id.to_s}")
+    end
   end
 end
