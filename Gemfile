@@ -8,6 +8,9 @@ end
 gem 'rails', '~> 3.2.6'
 gem 'pg', '0.13.2'
 
+# for importing
+gem 'mysql2'
+
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'chosen-rails'

@@ -49,7 +49,8 @@ class Person < ActiveRecord::Base
 
   delegate :username, :username= , to: :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name, :gender, :salutation
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name, :gender, :salutation, :status, :type,:created_at, :as => :admin
   validates_presence_of :first_name, :last_name
 
   # Relationships

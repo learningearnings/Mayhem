@@ -18,8 +18,12 @@ class School < ActiveRecord::Base
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
+                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
+                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
+
+
   validates_presence_of :name
-  validates_uniqueness_of :name
   validates_presence_of :addresses
 
   after_create :ensure_accounts
