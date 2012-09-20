@@ -8,7 +8,7 @@ class Auction < ActiveRecord::Base
   belongs_to :product, class_name: "Spree::Product", foreign_key: :product_id
   has_many :auction_bids
 
-  attr_accessible :start_date, :end_date, :current_bid, :auction_type, :product_id, as: :le_admin
+  attr_accessible :start_date, :end_date, :current_bid, :auction_type, :product_id, :starting_bid, as: :le_admin
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :ended,  where("NOW() >= end_date")
@@ -63,6 +63,7 @@ class Auction < ActiveRecord::Base
   protected
   def set_defaults
     self.current_bid  ||= BigDecimal('0')
+    self.starting_bid ||= BigDecimal('1')
     self.auction_type ||= "traditional"
   end
 end

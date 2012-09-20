@@ -16,6 +16,9 @@ ActiveAdmin.register Auction do
     column :start_date
     column :end_date
     column :status
+    column :starting_bid do |auction|
+      number_to_currency(auction.starting_bid)
+    end
     column :bids do |auction|
       auction.auction_bids.count
     end
