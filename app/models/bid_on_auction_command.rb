@@ -38,6 +38,10 @@ class BidOnAuctionCommand < ActiveModelCommand
     transaction do
       begin
         open_bids = auction.open_bids
+        if open_bids.empty?
+          # If we're the first bid, we must be greater than or equal to the starting bid
+          raise "must be greater than or equal to starting bid" unless @amount >= @auction.starting_bid
+        end
         open_bids.each{|bid| invalidate_bid(bid) }
         create_new_bid_and_transfer_money
         update_auction_with_current_bid
