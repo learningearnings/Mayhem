@@ -263,6 +263,13 @@ ActiveRecord::Schema.define(:version => 20120920175829) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "message_code_links", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "otu_code_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "message_image_links", :force => true do |t|
     t.integer  "message_id"
     t.integer  "message_image_id"

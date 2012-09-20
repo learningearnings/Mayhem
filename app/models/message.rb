@@ -8,7 +8,9 @@ class Message < ActiveRecord::Base
 
   has_many :message_images, :through => :message_image_links
   has_many :message_image_links
-  
+  has_many :otu_codes, :through => :message_code_links
+  has_many :message_code_links
+
   validates :from_id,  presence: true, numericality: true
   validates :to_id,    presence: true, numericality: true
   validates :subject,  presence: true
@@ -17,6 +19,7 @@ class Message < ActiveRecord::Base
 
   scope :unread,  where(status: 'unread')
   scope :read,    where(status: 'read')
+  scope :not_hidden,  lambda { where("status != ?", 'hidden') }
 
   scope :from_friend,  where(category: 'friend')
   scope :from_system,  where(category: 'system')
@@ -28,11 +31,18 @@ class Message < ActiveRecord::Base
     event :read! do
       transition [:read, :unread] => :read
     end
+    event :hide  do
+      transition :read => :hidden
+    end
     state :unread
     state :read
+    state :hidden
   end
 
   # Describe available canned messages here
+  def unread?
+    self.status == 'unread'
+  end
   def self.canned_messages
     [
       "You're pretty swell, guy.",

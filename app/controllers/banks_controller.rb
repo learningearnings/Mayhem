@@ -7,6 +7,7 @@ class BanksController < LoggedInController
   end
 
   def redeem_bucks
+    @unredeemed_bucks = current_person.otu_codes.active
     person = Student.find_by_id(params[:student_id]) if params[:student_id]
     person = current_person unless person
       
