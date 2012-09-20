@@ -9,7 +9,7 @@ Spree::UserSessionsController.class_eval do
           if current_user.person && current_user.person.is_a?(Student)
             redirect_to '/'
           elsif current_user.person && current_user.person.is_a?(Teacher)
-            redirect_to '/'
+            redirect_to main_app.teachers_home_path
          elsif current_user.person && current_user.person.is_a?(SchoolAdmin)
             redirect_to '/'
           elsif current_user.person && current_user.person.is_a?(LeAdmin)

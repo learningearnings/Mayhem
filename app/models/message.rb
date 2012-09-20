@@ -1,4 +1,6 @@
 class Message < ActiveRecord::Base
+
+  paginates_per 4
   attr_accessible :from_id, :to_id, :subject, :body, :category, :from, :to
 
   belongs_to :from, class_name: 'Person', foreign_key: :from_id

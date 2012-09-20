@@ -6,6 +6,7 @@ module Reports
       @date_filter = params[:date_filter]
       @reward_status_filter = params[:reward_status_filter]
       @teachers_filter = params[:teachers_filter]
+      @sort_by_filter = params[:sort_by]
     end
 
     def execute!
@@ -15,10 +16,27 @@ module Reports
       end
     end
 
+    def filters_in_text
+      text = ""
+      if @reward_status_filter
+        case @reward_status_filter
+        when "Everything"
+          text << "All"
+        else
+          text << @reward_status_filter
+        end
+      end
+      text << " Purchases"
+      if date_endpoints
+        text << " from #{date_endpoints[0].to_date.to_s(:db)} to #{date_endpoints[1].to_date.to_s(:db)}"
+      end
+      text
+    end
+
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter, :reward_status_filter, :teachers_filter]
+      [:date_filter, :reward_status_filter, :teachers_filter, :sort_by]
     end
 
     def reward_deliveries
@@ -32,27 +50,52 @@ module Reports
 
     # This feels all cluttered to me but my brain isn't firing on all cylinders today.
     def date_filter
+      case date_endpoints
+      when nil
+        [:scoped]
+      else
+        [:where, {created_at: date_endpoints[0]..date_endpoints[1]}]
+      end
+    end
+
+    def date_endpoints
       case @date_filter
       when 'last_90_days'
-        [:where, {created_at: 90.days.ago..1.second.ago}]
+        [90.days.ago, 1.second.ago]
       when 'last_60_days'
-        [:where, {created_at: 60.days.ago..1.second.ago}]
+        [60.days.ago, 1.second.ago]
       when 'last_7_days'
-        [:where, {created_at: 7.days.ago..1.second.ago}]
+        [7.days.ago, 1.second.ago]
       when 'last_month'
         d_begin = Time.now.beginning_of_month - 1.month
         d_end = d_begin.end_of_month
-        [:where, {created_at: d_begin..d_end}]
+        [d_begin, d_end]
       when 'this_month'
-        [:where, {created_at: Time.now.beginning_of_month..Time.now}]
+        [Time.now.beginning_of_month, Time.now]
       when 'this_week'
-        [:where, {created_at: Time.now.beginning_of_week..Time.now}]
+        [Time.now.beginning_of_week, Time.now]
       when 'last_week'
         d_begin = Time.now.beginning_of_week - 1.week
         d_end = d_begin.end_of_week
-        [:where, {created_at: d_begin..d_end}]
-      else
-        nil
+        [d_begin, d_end]
+      else nil
+      end
+    end
+
+    def sort_by
+      case @sort_by_filter
+      when "Default"
+        [:scoped]
+      when "Teacher"
+        [:order, :from_id]
+      when "Student"
+        [:order, :to_id]
+      when "Purchased"
+        [:order, :created_at]
+      when "Reward"
+        [:order, "spree_products.name"]
+      when "Status"
+        [:order, :status]
       end
     end
 
@@ -77,7 +120,7 @@ module Reports
     end
 
     def reward_delivery_base_scope
-      RewardDelivery.includes(to: [ :person_school_links ]).where(to: { person_school_links: { school_id: @school.id } })
+      RewardDelivery.includes(to: [ :person_school_links ], reward: []).where(to: { person_school_links: { school_id: @school.id } })
     end
 
     def generate_row(reward_delivery)
@@ -90,7 +133,7 @@ module Reports
         grade: person.grade,
         purchased: reward_delivery.created_at.to_s(:db),
         reward: reward_delivery.reward.name,
-        status: "Stock",
+        status: reward_delivery.status,
         reward_delivery_id: reward_delivery.id,
         delivery_status: reward_delivery.status
       ]
