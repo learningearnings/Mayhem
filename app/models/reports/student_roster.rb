@@ -34,12 +34,12 @@ module Reports
 
     def sort_by_filter(base)
       case @sort_by_filter
-      when "Default"
-        base
       when "First, Last"
         base.sort_by {|person| "#{person.first_name}, #{person.last_name}"}
       when "Last, First"
         base.sort_by {|person| "#{person.last_name}, #{person.first_name}"}
+      else
+        base
       end
     end
 
