@@ -11,6 +11,7 @@ class ClassroomsController < LoggedInController
 
   def show
     @classroom = Classroom.find(params[:id])
+    render layout: false
   end
 
   def remove_student
