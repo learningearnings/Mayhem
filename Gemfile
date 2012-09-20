@@ -25,6 +25,10 @@ gem 'has_scope'
 gem 'responders'
 gem 'kaminari'
 
+# Add native postgres data type suport to activerecord.  Rails 4
+# forward-compatible afaik, pretty sure the author's patch made it to rails 4
+gem 'postgres_ext'
+
 # Draper provides decorators to help keep your views dry and low on logic
 gem 'draper'
 

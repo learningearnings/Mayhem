@@ -15,6 +15,7 @@ class Person < ActiveRecord::Base
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true
   has_many :avatars, :through => :person_avatar_links, :order => 'created_at desc'
+  has_many :interactions
 
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
