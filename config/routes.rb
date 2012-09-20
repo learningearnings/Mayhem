@@ -3,11 +3,7 @@ Leror::Application.routes.draw do
   root to: 'pages#show', :id => 'home'
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
-  resources :people do
-    collection do
-      get 'get_avatar_results'
-    end
-  end
+  resources :people
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
@@ -68,6 +64,7 @@ Leror::Application.routes.draw do
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
+  match "inbox/admin_message" => 'messages#admin_message', :as => 'admin_message'
   resources :messages
 
   match "/inbox" => 'messages#index'
@@ -111,6 +108,7 @@ Leror::Application.routes.draw do
   resources :student_transfer_commands, only: [:create]
   resources :food_fight_play_commands, only: [:create]
   resources :student_message_student_commands, only: [:create]
+  resources :student_message_admin_commands, only: [:create]
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
@@ -125,6 +123,7 @@ end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
+  match "/get_avatar_results" => 'users#get_avatar_results'
   namespace :admin do
     resources :rewards
     match 'remove_reward' => 'rewards#destroy'

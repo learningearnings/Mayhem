@@ -1,0 +1,12 @@
+%h2 Admin Message
+= form_for @message do |f|
+  .row
+    .span3
+      .select-message
+        = f.label :subject
+        = f.text_field :subject
+        = f.label :body
+        = f.text_area :body
+  = f.submit "Send Message", class: 'btn btn-primary'
+
+
