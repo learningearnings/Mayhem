@@ -12,11 +12,9 @@ Spree::Product.class_eval do
   end
 
   def thumb
-    if images.first.present?
-      images.first.attachment.url(:small)
-    else
-      "common/le_logo.png"
-    end
+    images.first.attachment.url(:small)
+  rescue
+    "common/le_logo.png"
   end
 
 end
