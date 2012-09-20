@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918190318) do
+ActiveRecord::Schema.define(:version => 20120920175829) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20120918190318) do
     t.string   "auction_type"
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
+    t.decimal  "starting_bid", :precision => 10, :scale => 2
   end
 
   create_table "avatars", :force => true do |t|
@@ -262,6 +263,13 @@ ActiveRecord::Schema.define(:version => 20120918190318) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "message_code_links", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "otu_code_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "message_image_links", :force => true do |t|
     t.integer  "message_id"
     t.integer  "message_image_id"
@@ -445,6 +453,7 @@ ActiveRecord::Schema.define(:version => 20120918190318) do
     t.integer  "ad_profile"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.string   "store_subdomain"
   end
 
   create_table "spree_activators", :force => true do |t|

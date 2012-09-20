@@ -56,6 +56,7 @@ Leror::Application.routes.draw do
   post "/filters" => "filters#create"
 
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
+  match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
 
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
@@ -63,6 +64,7 @@ Leror::Application.routes.draw do
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
+  match "inbox/admin_message" => 'messages#admin_message', :as => 'admin_message'
   resources :messages
 
   match "/inbox" => 'messages#index'
@@ -106,6 +108,7 @@ Leror::Application.routes.draw do
   resources :student_transfer_commands, only: [:create]
   resources :food_fight_play_commands, only: [:create]
   resources :student_message_student_commands, only: [:create]
+  resources :student_message_admin_commands, only: [:create]
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
@@ -114,6 +117,7 @@ Leror::Application.routes.draw do
   # rewards for teachers
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
+  match "/get_image_results" => 'messages#get_image_results'
 
 end
 

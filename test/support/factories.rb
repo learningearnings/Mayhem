@@ -106,8 +106,8 @@ FactoryGirl.define do
   end
 
   factory :state do
-    name {|n| "State #{n}" }
-    abbr {|n| "S#{n}" }
+    sequence(:name) {|n| "State #{n}" }
+    sequence(:abbr) {|n| "S#{n}" }
   end
 
   factory :school do
