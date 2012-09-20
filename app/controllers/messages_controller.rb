@@ -9,21 +9,25 @@ class MessagesController < LoggedInController
   def friend_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.not_hidden.from_friend.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def school_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.not_hidden.from_school.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def teacher_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.not_hidden.from_teacher.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def system_messages
     @received_messages = current_person.received_messages
     @messages = @received_messages.not_hidden.from_system.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def reply

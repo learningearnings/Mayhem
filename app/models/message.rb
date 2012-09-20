@@ -40,6 +40,9 @@ class Message < ActiveRecord::Base
   end
 
   # Describe available canned messages here
+  def unread?
+    self.status == 'unread'
+  end
   def self.canned_messages
     [
       "You're pretty swell, guy.",
