@@ -14,6 +14,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
     @school         = params[:school]
     @quantity       = params[:quantity]
     @retail_price   = params[:retail_price]
+    @person         = params[:person]
   end
 
   def spree_property_class

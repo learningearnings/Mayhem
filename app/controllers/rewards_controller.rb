@@ -59,11 +59,6 @@ class RewardsController < ApplicationController
     end
   end
 
-  def after_save
-    @product.properties.create(name: "type", presentation: "local")
-    product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
-  end
-
   def form_data
     @product.name = params[:product][:name]
     @product.description = params[:product][:description]
@@ -86,6 +81,11 @@ class RewardsController < ApplicationController
     link.filter_id = filter.id
     @product.spree_product_filter_link = link
     session[:filters] = filter_factory.find_filter_membership(current_user.person)
+  end
+
+  def after_save
+    @product.properties.create(name: "type", presentation: "local")
+    product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
   end
 
   def destroy
