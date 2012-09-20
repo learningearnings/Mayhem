@@ -1,20 +1,22 @@
-# import from old models to new models
+#  migrate from old models to new models
 
+# Couldn't figure out a way to get this connection information 
+# out of the classes in this file
 
 class OldState < ActiveRecord::Base
   establish_connection({:adapter => 'mysql2',
-                         :database =>'Snapshot',
-                         :username =>'import',
-                         :password => 'i82much'})
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
   self.table_name = 'tbl_states'
   self.primary_key = 'stateID'
 end
 
 class OldSchool < ActiveRecord::Base
   establish_connection({:adapter => 'mysql2',
-                         :database =>'Snapshot',
-                         :username =>'import',
-                         :password => 'i82much'})
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
   self.table_name = 'tbl_schools'
   self.primary_key = 'schoolID'
 
@@ -28,9 +30,9 @@ end
 
 class OldUser < ActiveRecord::Base
   establish_connection({:adapter => 'mysql2',
-                         :database =>'Snapshot',
-                         :username =>'import',
-                         :password => 'i82much'})
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
   self.table_name = 'tbl_users'
   self.primary_key = 'userID'
   belongs_to :school, :class_name => OldSchool,:foreign_key => :schoolID,  :inverse_of => :old_users
@@ -38,9 +40,9 @@ end
 
 class OldClassroom < ActiveRecord::Base
   establish_connection({:adapter => 'mysql2',
-                         :database =>'Snapshot',
-                         :username =>'import',
-                         :password => 'i82much'})
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
   self.table_name = 'tbl_classrooms'
   self.primary_key = 'classroomID'
   belongs_to :teacher, :class_name => OldUser, :foreign_key => :userID
@@ -51,16 +53,13 @@ end
 
 class OldClassroomDetail < ActiveRecord::Base
   establish_connection({:adapter => 'mysql2',
-                         :database =>'Snapshot',
-                         :username =>'import',
-                         :password => 'i82much'})
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
   self.table_name = 'tbl_classroomdetails'
   self.primary_key = 'classroomdetailID'
   belongs_to :old_classroom, :foreign_key => :classroomID,  :inverse_of => :students
 end
-
-
-
 
 
 class OldSchoolImporter
@@ -161,11 +160,11 @@ class OldSchoolImporter
 
   def import_classrooms(new_school,old_school)
     last_created_at = new_school.created_at
-    puts "   --> #{old_school.classrooms.count} Classrooms to import"
+    puts "   --> #{old_school.classrooms.count} Classrooms to import for #{new_school.name}"
     start_time = Time.now
-    classrooms = users = errors  = 0
+
+    total_errors = total_users = classrooms = users = errors  = 0
     old_school.classrooms.each do |c|
-      classrooms = classrooms + 1
       # Add the classroom
       new_c = Classroom.new();
       begin
@@ -179,22 +178,49 @@ class OldSchoolImporter
                                 :created_at => c.classroomcreated
                               },:as => :admin)
       new_c.save
+#      puts "Importing -> #{new_c.name}"
       # Add the teacher to the classroom
+      p = Person.find_by_legacy_user_id(c.userID)
+      add_person_to_classroom(p,new_c)
+      users = errors = 0
       c.classroom_details.each do |cd|
         # Add the student to the classroom
-        psl = PersonSchoolLink.where('person_id = ? and school_id = ?',Person.find_by_legacy_user_id(cd.userID),new_school.id).first
-        if !psl
-          binding.pry
-        end
-        pscl = PersonSchoolClassroomLink.new(:person_school_link_id => psl.id,
-                                             :classroom_id => new_c.id)
-        pscl.save
+        p = Person.find_by_legacy_user_id(cd.userID)
+        add_person_to_classroom(p,new_c)
+        users = users + 1
       end
+#      puts " ----> Imported -> #{users} users for Classroom \"#{new_c.name}\""
+      classrooms = classrooms + 1
+      total_users = total_users + users
+      total_errors = total_errors + errors
     end
     end_time = Time.now
     elapsed_time = end_time - start_time
-    puts "   --> #{classrooms} Classrooms #{users} Users Imported, #{errors} Errors  (#{elapsed_time} seconds)"
+    puts "   --> #{classrooms} Classrooms #{total_users} Users Imported, #{total_errors} Errors  (#{elapsed_time} seconds)"
   end
+  def add_person_to_classroom (person, classroom)
+    return nil if !person || !classroom
+    psl = PersonSchoolLink.where('person_id = ? and school_id = ?',person.id,classroom.school_id).first
+    if !psl  # Student must have moved on...
+      return false
+    end
+    pscl = PersonSchoolClassroomLink.where('person_school_link_id = ? and classroom_id = ?',psl.id,classroom.id).first
+    if pscl
+#          puts "found classroom a link for school link #{psl.id} and classroom #{new_c.id} --- Skipping"
+#          binding.pry
+      return false
+    end
+    pscl = PersonSchoolClassroomLink.new(:person_school_link_id => psl.id,
+                                         :classroom_id => classroom.id)
+    if(person.type != 'Student')
+      pscl.owner = true
+    end
+    if !pscl.save
+      return false
+    end
+    return true
+  end
+
 
 
 end

@@ -15,28 +15,32 @@ namespace :import do
           p = Person.find_by_legacy_user_id(u.id)
           if p
             p.person_school_links.each do |l| l.destroy end
-            p.user.destroy
-            p.locker.destroy
-             if p.respond_to? checking_account
+            if p.respond_to? :locker
+              p.locker.destroy
+            end
+             if p.respond_to? :checking_account
               p.checking_account.destroy
             end
-            if p.respond_to? savings_account
+            if p.respond_to? :savings_account
               p.savings_account.destroy
             end
-            if p.respond_to? hold_account
+            if p.respond_to? :hold_account
               p.hold_account.destroy
             end
-            if p.respond_to? checking_account
+            if p.respond_to? :checking_account
               p.checking_account.destroy
             end
-            if p.respond_to? main_account
+            if p.respond_to? :main_account
               p.main_account.destroy
             end
-            if p.respond_to? unredeemed_account
+            if p.respond_to? :unredeemed_account
               p.unredeemed_account.destroy
             end
-            if p.respond_to? undeposited_account
+            if p.respond_to? :undeposited_account
               p.undeposited_account.destroy
+            end
+            if p.respond_to? :user
+              p.user.destroy
             end
             p.destroy
           end
@@ -59,6 +63,14 @@ namespace :import do
         s.save
       end
     end
-#    osi.import_classrooms(ns,s)
+
+    School.where('ad_profile >  1').each do |ns|
+      s = OldSchool.find(ns.ad_profile)
+      if s
+        osi.import_classrooms(ns,s)
+      else
+        puts "Could not find old school for #{ns.name}"
+      end
+    end
   end
 end
