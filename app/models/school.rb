@@ -29,12 +29,12 @@ class School < ActiveRecord::Base
   after_create :ensure_accounts
   after_create :set_default_subdomain
 
+
+  scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
+
   def address=(newaddress)
     addresses << newaddress
   end
-
-
-  scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
   def create_spree_store
     if Rails.env.development?

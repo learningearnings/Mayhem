@@ -13,6 +13,12 @@ class Student < Person
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
+  scope :for_grade, lambda { |grade_string|
+    # Map the grade string to the 0..12 interpretation
+    grade_index = School::GRADES.index(grade_string)
+    where(grade: grade_index)
+  }
+
   after_create :create_locker
 
   def primary_account
