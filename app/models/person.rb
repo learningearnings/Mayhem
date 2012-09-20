@@ -85,6 +85,11 @@ class Person < ActiveRecord::Base
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
   # End Relationships
+  
+  # Only return the classrooms for the given school
+  def classrooms_for_school(school)
+    classrooms.select{|c| c.school == school}
+  end
 
   def full_name
     self.first_name + ' ' + self.last_name
