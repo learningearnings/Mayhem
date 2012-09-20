@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920175829) do
+ActiveRecord::Schema.define(:version => 20120920211831) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -246,6 +246,17 @@ ActiveRecord::Schema.define(:version => 20120920175829) do
     t.integer "updated_by"
     t.string  "status"
     t.string  "game_type"
+  end
+
+  create_table "interactions", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "page"
+    t.inet     "ip_address"
+    t.date     "date"
+    t.integer  "elapsed_milliseconds"
+    t.integer  "memory_usage_kb"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   create_table "locker_sticker_links", :force => true do |t|

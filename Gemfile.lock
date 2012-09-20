@@ -282,11 +282,15 @@ GEM
       mime-types
     pdfkit (0.5.2)
     pg (0.13.2)
+    pg_array_parser (0.0.7)
     plutus (0.7.2)
       rails (~> 3.1)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
+    postgres_ext (0.0.7)
+      activerecord (~> 3.2.0)
+      pg_array_parser (~> 0.0.3)
     pry (0.9.10)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -495,6 +499,7 @@ DEPENDENCIES
   pdfkit
   pg (= 0.13.2)
   plutus
+  postgres_ext
   pry (~> 0.9.10)
   rack-cache
   rails (~> 3.2.6)
