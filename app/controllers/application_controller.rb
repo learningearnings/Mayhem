@@ -97,6 +97,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Override this anywhere you need to actually know how to get a current_person
+  # - i.e. when logged in :)
+  def current_person
+    nil
+  end
+
   def track_interaction
     start_time = Time.now
     interaction = Interaction.new ip_address: request.ip
