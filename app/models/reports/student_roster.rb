@@ -51,12 +51,7 @@ module Reports
       # weak and this won't be big
       hash = {}
       classrooms.each do |classroom|
-        students = classroom.students
-        if students.any?
-          hash[classroom] = students
-        else
-          hash[classroom] = []
-        end
+        hash[classroom] = classroom.students
       end
       hash
     end
