@@ -2,12 +2,17 @@
 require 'importers/db_schools_importer'
 
 namespace :import do
+  desc 'reset the import'
+  task :reset => :environment do
+    OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
+  end
+
   desc 'import the legacy schools data'
   task :schools => :environment do
     osi = OldSchoolImporter.new
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
-    if Rails.env.development?
+    if Rails.env.development? && false
       puts "Development environment detected ---- Resetting..."
       OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
       OldSchool.school_subset.each do |s|
@@ -66,8 +71,14 @@ namespace :import do
 
     School.where('ad_profile >  1').each do |ns|
       s = OldSchool.find(ns.ad_profile)
+      puts "-------------------Classrooms for #{ns.name} #{ns.id}"
       if s
-        osi.import_classrooms(ns,s)
+        ActiveRecord::Base.transaction do
+          osi.import_classrooms(ns,s)
+          s.old_users.each do |old_student|
+            osi.import_points(s,old_student,ns)
+          end
+        end
       else
         puts "Could not find old school for #{ns.name}"
       end

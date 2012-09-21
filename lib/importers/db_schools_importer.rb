@@ -1,6 +1,6 @@
 #  migrate from old models to new models
 
-# Couldn't figure out a way to get this connection information 
+# Couldn't figure out a way to get this connection information
 # out of the classes in this file
 
 class OldState < ActiveRecord::Base
@@ -21,7 +21,7 @@ class OldSchool < ActiveRecord::Base
   self.primary_key = 'schoolID'
 
 #  scope :school_subset,  where(:schoolID => [91,215,229,221,98,830,483,412,96,633,873,538,121,94,277]).where('status_id = 200 and ad_profile < 21')
-  scope :school_subset,  where(:schoolID => [98,215,229]).where('ad_profile < 20')
+  scope :school_subset,  where(:schoolID => [98,215,229,221,98,830,483,]).where('status_id = 200 and ad_profile < 20')
 
   belongs_to :state, :class_name => OldState
   has_many :old_users, :foreign_key => :schoolID
@@ -36,6 +36,7 @@ class OldUser < ActiveRecord::Base
   self.table_name = 'tbl_users'
   self.primary_key = 'userID'
   belongs_to :school, :class_name => OldSchool,:foreign_key => :schoolID,  :inverse_of => :old_users
+  has_many :old_points, :foreign_key => :userID
 end
 
 class OldClassroom < ActiveRecord::Base
@@ -60,6 +61,41 @@ class OldClassroomDetail < ActiveRecord::Base
   self.primary_key = 'classroomdetailID'
   belongs_to :old_classroom, :foreign_key => :classroomID,  :inverse_of => :students
 end
+
+
+class OldPoint < ActiveRecord::Base
+  establish_connection({:adapter => 'mysql2',
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
+  self.table_name = 'tbl_points'
+  self.primary_key = 'pointID'
+  belongs_to :old_user, :class_name => 'OldUser', :foreign_key => :userID
+  belongs_to :old_otu_code, :foreign_key => 'otucodeID', :class_name => 'OldOtuCode'
+end
+
+class OldOtuCode < ActiveRecord::Base
+  establish_connection({:adapter => 'mysql2',
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
+  self.table_name = 'tbl_otucodes'
+  self.primary_key = 'otucodeID'
+  belongs_to :old_user, :class_name => 'OldUser', :foreign_key => :userID
+  has_one :old_point, :foreign_key => :pointID, :class_name => 'OldPoint'
+end
+
+class OldRewards < ActiveRecord::Base
+  establish_connection({:adapter => 'mysql2',
+  :database =>'Snapshot',
+  :username =>'import',
+  :password => 'i82much'})
+  self.table_name = 'tbl_otucodes'
+  self.primary_key = 'otucodeID'
+  belongs_to :old_user, :class_name => 'OldUser', :foreign_key => :userID
+  has_one :old_point, :foreign_key => :pointID, :class_name => 'OldPoint'
+end
+
 
 
 class OldSchoolImporter
@@ -105,6 +141,23 @@ class OldSchoolImporter
   end
 
   def import_users(new_school, old_school)
+    users = errors  = 0
+    start_time = Time.now
+#      old_school.old_users.where(:status_id => 200).each do |u|
+    old_school.old_users.each do |u|
+      if create_user(u,new_school)
+        users = users + 1
+      else
+        errors = errors + 1
+      end
+    end
+    end_time = Time.now
+    elapsed_time = (end_time - start_time).round(2)
+    userspersec = (users / elapsed_time).round(2)
+    puts "   > #{users} Users Imported, #{errors} Errors  (#{elapsed_time} seconds) #{userspersec} per sec"
+  end
+
+  def create_user(old_user, new_school = nil)
     oldusertypes = ['', # Should be no zeros...
                     'Student',
                      'Teacher',
@@ -112,60 +165,55 @@ class OldSchoolImporter
                      nil,
                      'SchoolAdmin'
                     ]
-    users = errors  = 0
-    start_time = Time.now
-#      old_school.old_users.where(:status_id => 200).each do |u|
-    old_school.old_users.each do |u|
       nu = Person.new
       begin
-        u.dateofbirth = Date.parse(u.dateofbirth.to_s)
+        old_user.dateofbirth = Date.parse(old_user.dateofbirth.to_s)
       rescue
-        u.dateofbirth = nil
+        old_user.dateofbirth = nil
       end
       begin
-        u.usercreated = Date.parse(u.usercreated)
+        old_user.usercreated = Date.parse(old_user.usercreated)
       rescue
-        u.usercreated = Date.parse('20100701 00:00:00')
+        old_user.usercreated = Date.parse('20100701 00:00:00')
       end
-      nu.assign_attributes({:first_name => u.userfname,
-                             :last_name => u.userlname,
-                             :gender => u.usergender,
-                             :salutation => u.usersalutation,
-                             :user => Spree::User.new(:username => u.username,
-                                                      :password => u.recoverypassword || u.username,
+      nu.assign_attributes({:first_name => old_user.userfname,
+                             :last_name => old_user.userlname,
+                             :gender => old_user.usergender,
+                             :salutation => old_user.usersalutation,
+                             :user => Spree::User.new(:username => old_user.username,
+                                                      :password => old_user.recoverypassword || old_user.username,
 #TODO - don't require email
-                                                      :email => u.useremail || "david+x#{u.userID}@learningearnings.com"
+                                                      :email => old_user.useremail || "david+x#{old_user.userID}@learningearnings.com"
                                                       ),
-                             :dob => u.dateofbirth,
-                             :legacy_user_id => u.userID,
-                             :grade => u.grade,
-                             :status => u.status_id == 200 ? 'active' : 'inactive',
-                             :created_at => u.usercreated,
-                             :type => oldusertypes[u.usertypeID]
+                             :dob => old_user.dateofbirth,
+                             :legacy_user_id => old_user.userID,
+                             :grade => old_user.grade,
+                             :status => old_user.status_id == 200 ? 'active' : 'inactive',
+                             :created_at => old_user.usercreated,
+                             :type => oldusertypes[old_user.usertypeID]
                            }, :as => :admin)
-      if nu.save(:validate => false)
-        users = users + 1
+      if nu.save
         psl = PersonSchoolLink.new(:person_id => nu.id, :school_id => new_school.id, :status => 'active')
-        psl.save(:validate => false)
+        psl.save
+        retval = nu
       else
-        errors = errors + 1
-#          binding.pry
+        retval = false
       end
-    end
-    end_time = Time.now
-    elapsed_time = (end_time - start_time).round(2)
-    userspersec = (users / elapsed_time).round(2)
-    puts "   > #{users} Users Imported, #{errors} Errors  (#{elapsed_time} seconds) #{userspersec} per sec" 
+    retval
   end
+
+
 
   def import_classrooms(new_school,old_school)
     last_created_at = new_school.created_at
-    puts "   --> #{old_school.classrooms.count} Classrooms to import for #{new_school.name}"
+    puts "  --> #{old_school.classrooms.count} Classrooms to import for #{new_school.name}"
     start_time = Time.now
 
     total_errors = total_users = classrooms = users = errors  = 0
     old_school.classrooms.each do |c|
       # Add the classroom
+      new_c = Classroom.where('school_id = ? and name = ?',new_school.id, c.classroomtitle).first
+      next if new_c
       new_c = Classroom.new();
       begin
         c.classroomcreated = last_created_at = Date.parse(c.classroomcreated.to_s)
@@ -178,8 +226,6 @@ class OldSchoolImporter
                                 :created_at => c.classroomcreated
                               },:as => :admin)
       new_c.save
-#      puts "Importing -> #{new_c.name}"
-      # Add the teacher to the classroom
       p = Person.find_by_legacy_user_id(c.userID)
       add_person_to_classroom(p,new_c)
       users = errors = 0
@@ -189,7 +235,6 @@ class OldSchoolImporter
         add_person_to_classroom(p,new_c)
         users = users + 1
       end
-#      puts " ----> Imported -> #{users} users for Classroom \"#{new_c.name}\""
       classrooms = classrooms + 1
       total_users = total_users + users
       total_errors = total_errors + errors
@@ -206,8 +251,6 @@ class OldSchoolImporter
     end
     pscl = PersonSchoolClassroomLink.where('person_school_link_id = ? and classroom_id = ?',psl.id,classroom.id).first
     if pscl
-#          puts "found classroom a link for school link #{psl.id} and classroom #{new_c.id} --- Skipping"
-#          binding.pry
       return false
     end
     pscl = PersonSchoolClassroomLink.new(:person_school_link_id => psl.id,
@@ -221,6 +264,32 @@ class OldSchoolImporter
     return true
   end
 
+  def import_products
+  end
 
+
+  def import_points(old_school, old_student, new_school)
+    new_student = Student.find_by_legacy_user_id(old_student.userID)
+    student_income = [2,4,10,12]
+    cm = CreditManager.new
+    found_teachers = {}
+    OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => [2,4,10,12]).each do |op|
+      if student_income.index(op.pointactionID)
+        teacher = found_teachers[op.teacherID]
+        unless teacher
+          teacher = Person.find_by_legacy_user_id(op.teacherID)
+          if teacher
+            found_teachers[op.teacherID] = teacher
+            cm.issue_credits_to_student new_school, teacher, new_student, op.points
+          else
+            puts "Couldn't find teacherID #{op.teacherID} for #{op.pointID}"
+#            binding.pry
+            next
+          end
+        end
+      end
+    end
+
+  end
 
 end
