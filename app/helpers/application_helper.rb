@@ -7,6 +7,14 @@ module ApplicationHelper
       PersonDecorator.decorate(current_user.person)
     end
   end
+  
+  def active_if(visitor_type)
+    # We don't set visitor_type for students, but we want the helper to be sensible
+    visitor_type = '' if visitor_type == 'student'
+    if params[:visitor_type].to_s == visitor_type
+      'active'
+    end
+  end
 
   def current_school
     School.find(session[:current_school_id])

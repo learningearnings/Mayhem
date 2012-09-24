@@ -315,59 +315,48 @@ input, textarea, select {
   color: #f05c1a!important;  
 }
 
-.btn.students-stickie,
-.btn.parents-stickie,
-.btn.teachers-stickie {
+.students-stickie,
+.parents-stickie,
+.teachers-stickie {
+  display: inline-block;
   cursor: pointer;
   padding: 40px 0 0 0;
   background-repeat: no-repeat;
   background-color: transparent;
   border: none;
   box-shadow: none;
+  &:hover {
+    background-position: 0;
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: color 0 ease-in;
+    transition: none;
+  }
 }
 
-.btn.students-stickie:hover,
-.btn.parents-stickie:hover,
-.btn.teachers-stickie:hover {
-  background-position: 0;
-  -moz-transition: none;
-  -webkit-transition: none;
-  -o-transition: color 0 ease-in;
-  transition: none;  
-}
-
-.btn.students-stickie {
+.students-stickie {
   height: 109px;
   width: 110px;
+  &:hover, &.active {
+    background-position: -330px 0;
+  }
 }
 
-.btn.students-stickie:hover {
-  background-position: -330px 0;
-}
-
-.btn.parents-stickie {
+.parents-stickie {
   height: 110px;
   width: 110px;
+  &:hover, &.active {
+    background-position: -110px 0;
+  }
 }
 
-.btn.parents-stickie:hover {
-  background-position: -110px 0;
-}
-
-.btn.teachers-stickie {
+.teachers-stickie {
   height: 107px;
   width: 110px;
+  &:hover, &.active {
+    background-position: -550px 0;  
+  }
 }
-
-.btn.teachers-stickie:hover {
-  background-position: -550px 0;  
-}
-
-.btn.teachers-stickie:active {
-  background-position: -550px 0;  
-}
-
-
 
 .custom-nav-bar .navbar-inner {
   background-color: transparent;
