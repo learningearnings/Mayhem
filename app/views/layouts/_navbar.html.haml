@@ -12,4 +12,10 @@
       - else
         = render 'layouts/logged_in_menu'
     - else
-      = render 'layouts/menu'
+      - case params[:visitor_type]
+        - when 'teacher'
+          = render 'layouts/menu_teacher'
+        - when 'parent'
+          = render 'layouts/menu_parent'
+        - else
+          = render 'layouts/menu'

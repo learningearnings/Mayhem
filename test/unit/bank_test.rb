@@ -71,6 +71,7 @@ describe Bank do
     person.expects(:main_account).with(school).returns(account)
     account.expects(:balance).returns(BigDecimal('1000'))
     buck = mock "Buck"
+    buck.expects(:id)
     buck.expects(:code).returns(2)
     buck_creator = lambda{ |params| return buck }
     message_creator = lambda{ |params| return true }

@@ -8,11 +8,11 @@
         %li
           %span JOIN
         %li
-          %span= link_to "Students", main_app.page_path("not_logged_in_students"), class: 'btn students'
+          %span= link_to "Students", main_app.root_path, class: 'btn students'
         %li
-          %span= link_to "Parents", main_app.page_path("not_logged_in_parents"), class: 'btn parents'
+          %span= link_to "Parents", main_app.parent_page_path("home"), class: 'btn parents'
         %li
-          %span= link_to "Teachers", main_app.page_path("not_logged_in_teachers"), class: 'btn teachers'
+          %span= link_to "Teachers", main_app.teacher_page_path("home"), class: 'btn teachers'
   .login.login-supplemental-part
     - unless current_user
       = render 'layouts/login_form'
