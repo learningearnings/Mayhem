@@ -333,12 +333,13 @@ ActiveRecord::Schema.define(:version => 20120920211831) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
+    t.string   "salutation",     :limit => 10
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"

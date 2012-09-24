@@ -1,0 +1,8 @@
+.nav-container
+  %ul.stickies-nav
+    %li
+      %span= link_to "", root_path, class: "students-stickie stickies_nav-students_green_nav_stickie #{active_if('student')}"
+    %li
+      %span= link_to "", parent_page_path('home'), class: "parents-stickie stickies_nav-parents_orange_nav_stickie #{active_if('parent')}"
+    %li
+      %span= link_to "", teacher_page_path('home'), class: "teachers-stickie stickies_nav-teachers_blue_nav_stickie #{active_if('teacher')}"

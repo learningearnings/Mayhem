@@ -1,4 +1,4 @@
-class TeachersController < ApplicationController
+class TeachersController < LoggedInController
 
   def new
     @teacher = Teacher.new

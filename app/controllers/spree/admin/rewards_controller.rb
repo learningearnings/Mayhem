@@ -10,7 +10,9 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     # create new spree product with specific options for LE Admin to use
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
-    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
+    @current_school = School.find(session[:current_school_id])
+    @grades = @current_school.grades
+    @types = [["global","global"],["local","local"],["reward","reward"]]
   end
 
   def create
@@ -19,6 +21,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @image = @product.master.images.new
     form_data
     if @product.save
+      after_save
       flash[:notice] = "Your reward was created successfully."
       redirect_to admin_rewards_path
     else
@@ -29,19 +32,41 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def edit
     @product = Spree::Product.find(params[:id])
-    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
+    @current_school = School.find(session[:current_school_id])
+    @grades = @current_school.grades
+    if @product.has_property_type?
+      @type = @product.properties.select{|s| s.name == "type" }.first.presentation
+      @types = [[@type, @type]]
+      ["global", "local", "reward"].each do |product_type|
+        @types.push([product_type, product_type]) unless product_type == @type
+      end
+    else
+      @types = [["global","global"],["local","local"],["reward","reward"]]
+    end
   end
 
   def update
     @product = Spree::Product.find(params[:id])
     form_data
     if @product.save
+      after_save
       flash[:notice] = "Your reward was updated successfully."
       redirect_to admin_rewards_path
     else
       flash[:error] = "There was an error updating your Reward, please check the form and try again"
       render 'edit'
     end
+  end
+
+  def after_save
+    if @product.has_property_type?
+      property = @product.properties.select{|p| p.name == "type"}.first
+      property.presentation = params[:product_type]
+      property.save
+    else
+      @product.properties.create(name: "type", presentation: params[:product_type])
+    end
+    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
   end
 
   def form_data
@@ -58,14 +83,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.save
     end
-
-#    filter_factory = FilterFactory.new
-#    filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
-#    filter = filter_factory.find_or_create_filter(filter_condition)
-#    filter.save
-#    @product.filter = filter
-
-#   anything else?
   end
 
   def destroy
