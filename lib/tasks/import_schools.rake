@@ -12,6 +12,7 @@ namespace :import do
     osi = OldSchoolImporter.new
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
+    OldReward.connection.execute("update tbl_rewards set partnerID = 0")
     if Rails.env.development? && false
       puts "Development environment detected ---- Resetting..."
       OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
@@ -69,6 +70,7 @@ namespace :import do
       end
     end
 
+    imported_points = 0
     School.where('ad_profile >  1').each do |ns|
       s = OldSchool.find(ns.ad_profile)
       puts "-------------------Classrooms for #{ns.name} #{ns.id}"
@@ -76,12 +78,14 @@ namespace :import do
         ActiveRecord::Base.transaction do
           osi.import_classrooms(ns,s)
           s.old_users.each do |old_student|
-            osi.import_points(s,old_student,ns)
+            imported_points = imported_points + osi.import_points(s,old_student,ns)
           end
         end
       else
         puts "Could not find old school for #{ns.name}"
       end
+      puts "Imported #{imported_points} credits for #{ns.name}"
+      imported_points = 0
     end
   end
 end

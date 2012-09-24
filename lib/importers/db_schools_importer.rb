@@ -1,103 +1,5 @@
 #  migrate from old models to new models
 
-# Couldn't figure out a way to get this connection information
-# out of the classes in this file
-
-class OldState < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_states'
-  self.primary_key = 'stateID'
-end
-
-class OldSchool < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_schools'
-  self.primary_key = 'schoolID'
-
-#  scope :school_subset,  where(:schoolID => [91,215,229,221,98,830,483,412,96,633,873,538,121,94,277]).where('status_id = 200 and ad_profile < 21')
-  scope :school_subset,  where(:schoolID => [98,215,229,221,98,830,483,]).where('status_id = 200 and ad_profile < 20')
-
-  belongs_to :state, :class_name => OldState
-  has_many :old_users, :foreign_key => :schoolID
-  has_many :classrooms, :foreign_key => :schoolID, :class_name => 'OldClassroom'
-end
-
-class OldUser < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_users'
-  self.primary_key = 'userID'
-  belongs_to :school, :class_name => OldSchool,:foreign_key => :schoolID,  :inverse_of => :old_users
-  has_many :old_points, :foreign_key => :userID
-end
-
-class OldClassroom < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_classrooms'
-  self.primary_key = 'classroomID'
-  belongs_to :teacher, :class_name => OldUser, :foreign_key => :userID
-  has_many :classroom_details, :class_name => 'OldClassroomDetail', :foreign_key => :classroomID
-  has_many :students, :class_name => OldUser, :foreign_key => :userID
-  belongs_to :school, :class_name => OldSchool,:foreign_key => :schoolID,  :inverse_of => :old_users
-end
-
-class OldClassroomDetail < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_classroomdetails'
-  self.primary_key = 'classroomdetailID'
-  belongs_to :old_classroom, :foreign_key => :classroomID,  :inverse_of => :students
-end
-
-
-class OldPoint < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_points'
-  self.primary_key = 'pointID'
-  belongs_to :old_user, :class_name => 'OldUser', :foreign_key => :userID
-  belongs_to :old_otu_code, :foreign_key => 'otucodeID', :class_name => 'OldOtuCode'
-end
-
-class OldOtuCode < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_otucodes'
-  self.primary_key = 'otucodeID'
-  belongs_to :old_user, :class_name => 'OldUser', :foreign_key => :userID
-  has_one :old_point, :foreign_key => :pointID, :class_name => 'OldPoint'
-end
-
-class OldRewards < ActiveRecord::Base
-  establish_connection({:adapter => 'mysql2',
-  :database =>'Snapshot',
-  :username =>'import',
-  :password => 'i82much'})
-  self.table_name = 'tbl_otucodes'
-  self.primary_key = 'otucodeID'
-  belongs_to :old_user, :class_name => 'OldUser', :foreign_key => :userID
-  has_one :old_point, :foreign_key => :pointID, :class_name => 'OldPoint'
-end
-
-
-
 class OldSchoolImporter
   def initalize
   end
@@ -202,8 +104,6 @@ class OldSchoolImporter
     retval
   end
 
-
-
   def import_classrooms(new_school,old_school)
     last_created_at = new_school.created_at
     puts "  --> #{old_school.classrooms.count} Classrooms to import for #{new_school.name}"
@@ -270,26 +170,42 @@ class OldSchoolImporter
 
   def import_points(old_school, old_student, new_school)
     new_student = Student.find_by_legacy_user_id(old_student.userID)
+    imported_points = 0
     student_income = [2,4,10,12]
     cm = CreditManager.new
     found_teachers = {}
-    OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => [2,4,10,12]).each do |op|
-      if student_income.index(op.pointactionID)
-        teacher = found_teachers[op.teacherID]
-        unless teacher
-          teacher = Person.find_by_legacy_user_id(op.teacherID)
-          if teacher
-            found_teachers[op.teacherID] = teacher
-            cm.issue_credits_to_student new_school, teacher, new_student, op.points
-          else
-            puts "Couldn't find teacherID #{op.teacherID} for #{op.pointID}"
-#            binding.pry
-            next
-          end
+    OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => student_income ).each do |op|
+      teacher = found_teachers[op.teacherID]
+      unless teacher
+        teacher = Person.find_by_legacy_user_id(op.teacherID)
+        if teacher
+          found_teachers[op.teacherID] = teacher
+          imported_points = imported_points + op.points
+          cm.issue_credits_to_student new_school, teacher, new_student, op.points
+        else
+          puts "Couldn't find teacherID #{op.teacherID} for #{op.pointID}"
+          #            binding.pry
+          next
         end
       end
     end
+    imported_points
+  end
 
+  def import_reward old_reward_id, new_school
+    old_reward = OldReward.find(old_reward_id)
+    new_reward = nil
+    if old_reward.partner_id > 0
+      store = Spree::Store.find_by_code new_school.store_subdomain 
+
+      new_reward = CreateStoreProduct.new(:name => old_reward.rewardtitle,
+                                          :description => old_reward.rewarddesc,
+                                           :store_code => new_school.store_subdomain,
+                                           :quantity => old_reward.numberofrewards,
+                                           :retail_price => old_reward.rewardpoints,
+                                           :available_on => Time.now(),
+                                           :image => old_reward.rewardimage) if store
+    end
   end
 
 end
