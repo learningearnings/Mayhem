@@ -8,6 +8,9 @@ end
 gem 'rails', '~> 3.2.6'
 gem 'pg', '0.13.2'
 
+# for importing
+gem 'mysql2'
+
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'chosen-rails'
@@ -21,6 +24,10 @@ gem 'therubyracer'
 gem 'has_scope'
 gem 'responders'
 gem 'kaminari'
+
+# Add native postgres data type suport to activerecord.  Rails 4
+# forward-compatible afaik, pretty sure the author's patch made it to rails 4
+gem 'postgres_ext'
 
 # Draper provides decorators to help keep your views dry and low on logic
 gem 'draper'

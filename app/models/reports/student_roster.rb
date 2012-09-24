@@ -1,9 +1,14 @@
+# NOTE: this is an array-based report, as opposed to an ActiveRelation-based
+# report like the Purchases Report.  This is less elegant, but should be
+# sufficiently fast to not matter afaik.  Metrics will tell. -ja
 module Reports
   class StudentRoster < Reports::Base
     def initialize params
       super
-      @person = params[:person]
-      @school = params[:school]
+      @person         = params[:person]
+      @school         = params[:school]
+      @classroom      = params[:classroom]
+      @grade_filter   = params[:grade_filter]
       @sort_by_filter = params[:sort_by]
     end
 
@@ -26,7 +31,7 @@ module Reports
       base_hash = student_classroom_base_hash
       potential_filters.each do |filter|
         student_classroom_base_hash.each_pair do |classroom, students|
-          base_hash[classroom] = send(filter, students)
+          base_hash[classroom] = send(filter, students) || []
         end
       end
       base_hash
@@ -34,24 +39,36 @@ module Reports
 
     def sort_by_filter(base)
       case @sort_by_filter
-      when "Default"
-        base
       when "First, Last"
-        base.sort_by {|person| "#{person.first_name}, #{person.last_name}"}
+        base.sort_by {|student| "#{student.first_name}, #{student.last_name}"}
       when "Last, First"
-        base.sort_by {|person| "#{person.last_name}, #{person.first_name}"}
+        base.sort_by {|student| "#{student.last_name}, #{student.first_name}"}
+      when "Username"
+        base.sort_by {|student| student.user.username }
+      when "Grade"
+        base.sort_by {|student| student.grade }
+      else
+        base
       end
     end
 
     def student_classroom_base_hash
-      # First, get teacher's classrooms
-      classrooms = @person.classrooms
+      # First, get teacher's classrooms for this school
+      if @classroom
+        classrooms = [@classroom]
+      else
+        classrooms = @person.classrooms_for_school(@school)
+      end
 
       # NOTE: I'm doing this in memory rather than sql, because my sql-fu is
       # weak and this won't be big
       hash = {}
       classrooms.each do |classroom|
-        hash[classroom] = classroom.students
+        students = classroom.students
+        if @grade_filter && @grade_filter != 'all'
+          students = students.for_grade(@grade_filter)
+        end
+        hash[classroom] = students
       end
       hash
     end
@@ -59,14 +76,18 @@ module Reports
     def generate_row(classroom, student)
       Reports::Row[
         classroom: classroom,
-        student: student
+        grade:     student.grade,
+        student:   student,
+        username:  student.user.username
       ]
     end
 
     def headers
       {
         classroom: "Classroom",
-        student: "Student"
+        grade:     "Grade",
+        student:   "Student",
+        username:  "Username"
       }
     end
   end

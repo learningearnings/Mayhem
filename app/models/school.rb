@@ -18,18 +18,23 @@ class School < ActiveRecord::Base
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
+                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
+                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
+
+
   validates_presence_of :name
-  validates_uniqueness_of :name
   validates_presence_of :addresses
 
   after_create :ensure_accounts
+  after_create :set_default_subdomain
+
+
+  scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
   def address=(newaddress)
     addresses << newaddress
   end
-
-
-  scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
   def create_spree_store
     if Rails.env.development?
@@ -110,14 +115,16 @@ class School < ActiveRecord::Base
     name
   end
 
-  def store_subdomain
-    address_state_abbr = addresses.first.try(:state).try(:abbr).to_s.downcase
-    "#{address_state_abbr}#{self.id.to_s}"
-  end
-
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
     store_account || Plutus::Asset.create(name: store_account_name)
+  end
+
+  def set_default_subdomain
+    if store_subdomain.nil?
+      address_state_abbr = addresses.first.try(:state).try(:abbr).to_s.downcase
+      update_attribute(:store_subdomain, "#{address_state_abbr}#{self.id.to_s}")
+    end
   end
 end
