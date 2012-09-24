@@ -1,13 +1,13 @@
 = paginate @messages
 - @messages.each do |message|
   %h3= message.subject
-  .image-placeholder
+  .message-body
     = message.body.html_safe
     - if message.message_images.present?
       = image_tag(message.message_images.first.image.thumb('50x50#').url)
   = link_to "Reply to this message", reply_message_path(message, refurl: url_for(params)), class: 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
 = paginate @messages
-= link_to "Send a message", new_message_path, class: 'btn', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
+
 
 #read-message-modal.modal.hide
   .modal-body

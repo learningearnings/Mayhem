@@ -1,4 +1,4 @@
-class PeopleController < ApplicationController
+class PeopleController < LoggedInController
   def edit
     @avatars = Avatar.page params[:page]
     @person = Person.find(params[:id])

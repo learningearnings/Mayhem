@@ -1,4 +1,4 @@
-class RewardsController < ApplicationController
+class RewardsController < LoggedInController
   before_filter :authenticate_teacher
 
   def index
