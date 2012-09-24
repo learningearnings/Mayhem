@@ -34,6 +34,15 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product = Spree::Product.find(params[:id])
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
+    if @product.has_property_type?
+      @type = @product.properties.select{|s| s.name == "type" }.first.presentation
+      @types = [[@type, @type]]
+      ["global", "local", "reward"].each do |product_type|
+        @types.push([product_type, product_type]) unless product_type == @type
+      end
+    else
+      @types = [["global","global"],["local","local"],["reward","reward"]]
+    end
   end
 
   def update
@@ -50,8 +59,14 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def after_save
-    @product.properties.create(name: "type", presentation: params[:product_type])
-    product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
+    if @product.has_property_type?
+      property = @product.properties.select{|p| p.name == "type"}.first
+      property.presentation = params[:product_type]
+      property.save
+    else
+      @product.properties.create(name: "type", presentation: params[:product_type])
+    end
+    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
   end
 
   def form_data

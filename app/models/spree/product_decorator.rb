@@ -17,4 +17,8 @@ Spree::Product.class_eval do
     "common/le_logo.png"
   end
 
+  def has_property_type?
+    properties.select{|s| s.name == "type" }.present?
+  end
+
 end
