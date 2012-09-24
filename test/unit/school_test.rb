@@ -49,13 +49,7 @@ describe School do
     it "should be state+id if there is a state" do
       school = FactoryGirl.create(:school)
       school.addresses << FactoryGirl.create(:address)
-      assert_equal school.store_subdomain, "#{school.addresses.first.state.abbr}#{school.id}"
-    end
-
-    it "should be id if there is no state" do
-      school = FactoryGirl.create(:school)
-      school.addresses.destroy_all
-      assert_equal school.store_subdomain, "#{school.id}"
+      assert_equal school.store_subdomain, "#{school.addresses.first.state.abbr}#{school.id}".downcase
     end
   end
 end

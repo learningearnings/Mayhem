@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :subdomain_required
-
+  around_filter :track_interaction
 
   # Users are required to access the application
   # using a subdomain
@@ -97,4 +97,23 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Override this anywhere you need to actually know how to get a current_person
+  # - i.e. when logged in :)
+  def current_person
+    nil
+  end
+
+  def track_interaction
+    start_time = Time.now
+    interaction = Interaction.new ip_address: request.ip
+    if current_person
+      interaction.person = current_person
+    end
+    yield
+    end_time = Time.now
+    interaction.elapsed_milliseconds = end_time - start_time
+    interaction.page = request.path
+    # NOTE: Don't know how to get memory usage in here yet
+    interaction.save
+  end
 end

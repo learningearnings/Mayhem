@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120915204648) do
+ActiveRecord::Schema.define(:version => 20120920211831) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -46,6 +46,26 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
   add_index "addresses", ["addressable_id"], :name => "index_addresses_on_addressable_id"
   add_index "addresses", ["addressable_type"], :name => "index_addresses_on_addressable_type"
   add_index "addresses", ["type"], :name => "index_addresses_on_type"
+
+  create_table "auction_bids", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "auction_id"
+    t.decimal  "amount",     :precision => 10, :scale => 2
+    t.string   "status"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  create_table "auctions", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.decimal  "current_bid",  :precision => 10, :scale => 2
+    t.integer  "product_id"
+    t.string   "auction_type"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+    t.decimal  "starting_bid", :precision => 10, :scale => 2
+  end
 
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
@@ -228,6 +248,17 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
     t.string  "game_type"
   end
 
+  create_table "interactions", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "page"
+    t.inet     "ip_address"
+    t.date     "date"
+    t.integer  "elapsed_milliseconds"
+    t.integer  "memory_usage_kb"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
   create_table "locker_sticker_links", :force => true do |t|
     t.integer  "locker_id"
     t.integer  "sticker_id"
@@ -241,6 +272,13 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
     t.integer  "person_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "message_code_links", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "otu_code_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "message_image_links", :force => true do |t|
@@ -295,12 +333,13 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
+    t.string   "salutation",     :limit => 10
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
@@ -426,6 +465,7 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
     t.integer  "ad_profile"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.string   "store_subdomain"
   end
 
   create_table "spree_activators", :force => true do |t|
@@ -708,6 +748,13 @@ ActiveRecord::Schema.define(:version => 20120915204648) do
     t.integer  "option_type_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "spree_product_person_links", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "spree_product_properties", :force => true do |t|

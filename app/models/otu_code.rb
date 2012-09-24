@@ -7,8 +7,15 @@ class OtuCode < ActiveRecord::Base
   belongs_to :person_school_link
   has_one :teacher, :through => :person_school_link, :source => :person
   has_one :school, :through => :person_school_link
+  has_many :messages, :through => :message_code_links
+  has_many :message_code_links
 
   scope :active,  lambda { where("active = ?", true) }
+  scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
+
+  def expired?
+    self.created_at > (Time.now + 45.days)
+  end
 
   def is_ebuck?
     ebuck?

@@ -21,7 +21,9 @@
 //= require jquery.ui.mouse.js
 //= require jquery.ui.widget.js
 //= require jquery.ui.draggable.js
+//= require chosen-jquery
 //= require custom
+//= require jquery.ui.datepicker
 # Make jquery ajax requests use the csrf token
 $ ->
   $.ajaxSetup

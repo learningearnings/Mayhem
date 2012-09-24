@@ -14,12 +14,10 @@
     .span2
       %strong Select Image
       #hover_value= f.hidden_field :message_image_id
-      - @message_images.each do |message_image|
-        %div{:id => "#{message_image.id}", :class => "hover_image"}
-          = image_tag(message_image.image.thumb('50x50#').url)
+      #image_partial= render :partial => 'images'
   = f.submit "Send Message", class: 'btn btn-primary'
 
-
+= javascript_include_tag "image_pager.js"
 
 :javascript
   $(".hover_image").hover(

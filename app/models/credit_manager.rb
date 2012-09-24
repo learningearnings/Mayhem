@@ -69,6 +69,11 @@ class CreditManager
     transfer_credits "Issue Credits to Student", teacher.undeposited_account_name(school), student.checking_account_name, amount
   end
 
+  def transfer_credits_for_local_purchase student, teacher, amount
+    return false if student.balance < amount
+    transfer_credits "Reward Purchase", student.checking_account_name, teacher.main_account_name(student.school), amount
+  end
+
   def transfer_credits_for_reward_purchase student, amount
     return false if student.balance < amount
     transfer_credits "Reward Purchase", student.checking_account_name, main_account_name, amount
@@ -87,5 +92,15 @@ class CreditManager
   def transfer_credits_from_savings_to_checking student, amount
     return false if student.savings_balance < amount
     transfer_credits "Transfer from Savings to Checking", student.savings_account_name, student.checking_account_name, amount
+  end
+
+  def transfer_credits_from_checking_to_hold student, amount
+    return false if student.checking_balance < amount
+    transfer_credits "Transfer from Checking to Hold", student.checking_account_name, student.hold_account_name, amount
+  end
+
+  def transfer_credits_from_hold_to_checking student, amount
+    return false if student.hold_balance < amount
+    transfer_credits "Transfer from Hold to Checking", student.hold_account_name, student.checking_account_name, amount
   end
 end

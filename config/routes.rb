@@ -50,12 +50,15 @@ Leror::Application.routes.draw do
     end
   end
 
+  resources :auctions
+
   post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"
   post "/filters/filter_classrooms_by_school" => "filters#filter_classrooms_by_school"
   post "/filters/filter_grades_by_classroom" => "filters#filter_grades_by_classroom"
   post "/filters" => "filters#create"
 
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
+  match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
 
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
@@ -63,6 +66,7 @@ Leror::Application.routes.draw do
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
+  match "inbox/admin_message" => 'messages#admin_message', :as => 'admin_message'
   resources :messages
 
   match "/inbox" => 'messages#index'
@@ -84,10 +88,12 @@ Leror::Application.routes.draw do
   resource :teachers
   match "/teachers/approve_teacher/:id" => 'teachers#approve_teacher', as: 'approve_teacher'
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
+  match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
   namespace :teachers do
     resource :bank
-    match "/print_batch/:id" => 'banks#print_batch', :as => 'print_batch'
+    match "home" => "home#show", as: 'home'
+    match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'
@@ -104,13 +110,16 @@ Leror::Application.routes.draw do
   resources :student_transfer_commands, only: [:create]
   resources :food_fight_play_commands, only: [:create]
   resources :student_message_student_commands, only: [:create]
+  resources :student_message_admin_commands, only: [:create]
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
+  resources :bid_on_auction_commands, only: [:create]
 
   # rewards for teachers
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
+  match "/get_image_results" => 'messages#get_image_results'
 
 end
 

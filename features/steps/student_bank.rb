@@ -27,8 +27,7 @@ class StudentBank < Spinach::FeatureSteps
     bank.create_ebucks(@teacher, @school, @student1, 'AL', 5)
   end
 
-  Given 'I click on a buck message' do
-    click_link 'Read Message'
+  Given 'I claim bucks from a buck message' do
     click_link 'Claim Bucks'
   end
 end

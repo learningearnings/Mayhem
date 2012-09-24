@@ -7,7 +7,6 @@ class Bank
 
   def initialize(credit_manager=CreditManager.new, buck_printer=BuckPrinter.new)
     @credit_manager = credit_manager
-    #@buck_printer = buck_printer
     # Set up no-op callbacks in case we don't want to use them
     @on_failure = lambda{}
     @on_success = lambda{}
@@ -56,6 +55,10 @@ class Bank
     else
       @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
     end
+    if otu_code.messages.present?
+      otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.') 
+      otu_code.messages.first.hide!
+    end
     otu_code.update_attribute(:active, false)
   end
 
@@ -73,8 +76,12 @@ class Bank
     ->(params) { OtuCode.create params }
   end
 
-  def message_creator
-    ->(params) { Message.create params }
+  def message_creator(message_params)
+    otu_code_id = message_params[:buck_id]
+    message_params.delete(:buck_id)
+    
+    @message = Message.create(message_params)
+    MessageCodeLink.create(:otu_code_id => otu_code_id, :message_id => @message.id)
   end
 
   def buck_batch_creator
@@ -88,11 +95,14 @@ class Bank
   def send_message(person, student, buck)
     body = "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
 
-    message_creator.call(from: person,
+    message_params = {from: person,
                          to: student,
                          subject: "You've been awarded LE Bucks", 
                          body: body,
-                         category: 'teacher')
+                         category: 'teacher',
+                         buck_id: buck.id}
+    
+    message_creator(message_params)
   end
 
   def create_buck(prefix, points, params)

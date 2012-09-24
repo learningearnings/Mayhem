@@ -96,7 +96,7 @@ FactoryGirl.define do
     available_on "2012-01-01"
     permalink "some-product"
     count_on_hand 20
-    price BigDecimal('10')
+    price 10
   end
 
   factory :spree_store, class: Spree::Store do
@@ -106,8 +106,8 @@ FactoryGirl.define do
   end
 
   factory :state do
-    name {|n| "State #{n}" }
-    abbr {|n| "S#{n}" }
+    sequence(:name) {|n| "State #{n}" }
+    sequence(:abbr) {|n| "S#{n}" }
   end
 
   factory :school do
@@ -173,11 +173,12 @@ FactoryGirl.define do
 
   factory :sticker do
     image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+#    image { open('http://learningearnings.com/images/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif') }
   end
 
   factory :avatar do
-    image { open('http://learningearnings.com/images/rewardimage/LE_Tote.jpg') }
-#    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+#    image { open('http://learningearnings.com/images/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif') }
+    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
     sequence(:description) {|n| "Avatar Description - #{n}"}
     sequence(:image_name) {|n| "Avatar image_name #{n}"}
   end
@@ -200,5 +201,18 @@ FactoryGirl.define do
     student
     points          BigDecimal("5")
     expires_at      Time.now + 5.days
+  end
+
+  factory :auction do
+    start_date Time.now + 5.days
+    end_date   Time.now + 7.days
+    association :product, factory: :spree_product
+    auction_type "traditional"
+  end
+
+  factory :auction_bid do
+    auction
+    person
+    amount BigDecimal('1')
   end
 end

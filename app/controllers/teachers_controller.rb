@@ -30,11 +30,25 @@ class TeachersController < ApplicationController
       @teacher = Teacher.find(params[:id])
       @teacher.user.destroy
       @teacher.destroy
+      UserMailer.teacher_deny_email(@teacher).deliver
       flash[:notice] = "Teacher account denied."
     else
       flash[:error] = "Teacher account already active."
     end
     redirect_to '/'
+  end
+
+  def silent_teacher_deny
+    unless @teacher.active?
+      @teacher = Teacher.find(params[:id])
+      @teacher.user.destroy
+      @teacher.destroy
+      flash[:notice] = "Teacher account silently denied."
+    else
+      flash[:error] = "Teacher account already active."
+    end
+    redirect_to '/'
+
   end
 
 end

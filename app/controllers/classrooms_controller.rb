@@ -11,6 +11,7 @@ class ClassroomsController < LoggedInController
 
   def show
     @classroom = Classroom.find(params[:id])
+    render layout: false
   end
 
   def remove_student
@@ -21,7 +22,8 @@ class ClassroomsController < LoggedInController
       link = PersonSchoolClassroomLink.find_by_person_school_link_id_and_classroom_id(psl.id, @classroom.id)
       if link.delete
         flash[:notice] = "Student removed from classroom."
-        redirect_to classroom_path(@classroom)
+        #redirect_to classroom_path(@classroom)
+        redirect_to classrooms_path
       else
         flash[:error] = "Student not removed from classroom."
         render :show
@@ -39,7 +41,8 @@ class ClassroomsController < LoggedInController
     @classroom = Classroom.find(params[:classroom_id])
     if @student<<(@classroom)
       flash[:notice] = "Student added to classroom."
-      redirect_to classroom_path(@classroom)
+      #redirect_to classroom_path(@classroom)
+      redirect_to classrooms_path
     else
       flash[:error] = "Student not added to classroom."
       render :show
@@ -48,6 +51,7 @@ class ClassroomsController < LoggedInController
   
   def create
     @classroom = Classroom.new(params[:classroom])
+    @classroom.school_id = current_school.id
     if @classroom.save
       current_person<<@classroom
       psl = PersonSchoolLink.find_by_person_id_and_school_id(current_person.id, current_school.id)
@@ -55,7 +59,7 @@ class ClassroomsController < LoggedInController
       pscl.activate
       pscl.update_attribute(:owner, true)
       flash[:notice] = "Classroom Created."
-      redirect_to classroom_path(@classroom)
+      redirect_to classrooms_path
     else
       flash[:error] = "Classroom not created."
       render :new

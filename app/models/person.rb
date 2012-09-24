@@ -15,6 +15,10 @@ class Person < ActiveRecord::Base
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true
   has_many :avatars, :through => :person_avatar_links, :order => 'created_at desc'
+  has_many :interactions
+
+  has_many :spree_product_person_links
+  has_many :products, :through => :spree_product_person_links
 
   def name
     "#{first_name} #{last_name}"
@@ -46,7 +50,8 @@ class Person < ActiveRecord::Base
 
   delegate :username, :username= , to: :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name, :gender, :salutation
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name, :gender, :salutation, :status, :type,:created_at, :as => :admin
   validates_presence_of :first_name, :last_name
 
   # Relationships
@@ -81,6 +86,11 @@ class Person < ActiveRecord::Base
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
   # End Relationships
+  
+  # Only return the classrooms for the given school
+  def classrooms_for_school(school)
+    classrooms.select{|c| c.school == school}
+  end
 
   def full_name
     self.first_name + ' ' + self.last_name

@@ -1,17 +1,14 @@
 class RewardsController < ApplicationController
   before_filter :authenticate_teacher
-  before_filter :foo
-
-  def foo
-  end
 
   def index
-    with_filters_params = params
-    with_filters_params[:filters] = session[:filters] || [1]
-    @searcher = Spree::Config.searcher_class.new(with_filters_params)
-    @products = @searcher.retrieve_products
-    respond_with(@products)
+#    with_filters_params = params
+#    with_filters_params[:filters] = session[:filters] || [1]
+#    @searcher = Spree::Config.searcher_class.new(with_filters_params)
+#    @products = @searcher.retrieve_products
+#    respond_with(@products)
 #    @products = Spree::Product.not_deleted.order(:name)
+    @products = current_user.person.products.not_deleted.order(:name)
   end
 
   def show
@@ -35,6 +32,7 @@ class RewardsController < ApplicationController
     @grades = @current_school.grades
     form_data
     if @product.save
+      product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
       flash[:notice] = "Your reward was created successfully."
       redirect_to rewards_path
     else
@@ -54,6 +52,7 @@ class RewardsController < ApplicationController
     @product = Spree::Product.find(params[:id])
     form_data
     if @product.save
+      product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
       flash[:notice] = "Your reward was updated successfully."
       redirect_to rewards_path
     else
@@ -69,6 +68,7 @@ class RewardsController < ApplicationController
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
     @product.store_ids = params[:product][:store_ids]
+
     if params[:product][:images]
       i = @product.master.images.first
       i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
@@ -76,7 +76,6 @@ class RewardsController < ApplicationController
       i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.save
     end
-
     filter_factory = FilterFactory.new
     filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
     filter = filter_factory.find_or_create_filter(filter_condition)
@@ -84,10 +83,6 @@ class RewardsController < ApplicationController
     link.filter_id = filter.id
     @product.spree_product_filter_link = link
     session[:filters] = filter_factory.find_filter_membership(current_user.person)
-#    p = SpreeProductFilterLink.new product_id: @product.id, filter_id: f.id
-#    p.save
-#    @product.filter = f.id
-    #  anything else?
   end
 
   def destroy
