@@ -10,7 +10,9 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     # create new spree product with specific options for LE Admin to use
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
-    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
+    @current_school = School.find(session[:current_school_id])
+    @grades = @current_school.grades
+    @types = [["global","global"],["local","local"],["reward","reward"]]
   end
 
   def create
@@ -30,7 +32,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def edit
     @product = Spree::Product.find(params[:id])
-    @grades = [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10],[11,11],[12,12]]
+    @current_school = School.find(session[:current_school_id])
+    @grades = @current_school.grades
   end
 
   def update
@@ -47,7 +50,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def after_save
-    @product.properties.create(name: "type", presentation: "local")
+    @product.properties.create(name: "type", presentation: params[:product_type])
     product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
   end
 
