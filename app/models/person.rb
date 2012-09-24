@@ -86,7 +86,7 @@ class Person < ActiveRecord::Base
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
   # End Relationships
-  
+
   # Only return the classrooms for the given school
   def classrooms_for_school(school)
     classrooms.select{|c| c.school == school}
@@ -104,6 +104,25 @@ class Person < ActiveRecord::Base
     nil
   end
 
+  def rewards
+    rewards = []
+    user.orders.each do |order|
+      order.line_items.each do |item|
+        rewards.push(item) unless item.product.is_charity_reward?
+      end
+    end
+    rewards
+  end
+
+  def charities
+    charities = []
+    user.orders.each do |order|
+      order.line_items.each do |item|
+        charities.push(item) if item.product.is_charity_reward?
+      end
+    end
+    charities
+  end
 
   # Allow sending a school or classroom to a person
   def <<(d)

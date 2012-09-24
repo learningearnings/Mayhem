@@ -19,7 +19,7 @@
     .input= f.text_field :name
   .clearfix
     = f.label 'Classroom'
-    = select_tag :classroom, options_from_collection_for_select(current_user.person.classrooms, :id, :name)
+    = select_tag :classroom, options_from_collection_for_select(@classrooms, :id, :name)
   .clearfix
     = f.label 'Min/Max Grades'
     = select_tag :min_grade, options_for_select(@grades)

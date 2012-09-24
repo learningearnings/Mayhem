@@ -21,4 +21,8 @@ Spree::Product.class_eval do
     properties.select{|s| s.name == "type" }.present?
   end
 
+  def is_charity_reward?
+    properties.select{|s| s.name == "type" && s.presentation == "charity"}.present?
+  end
+
 end
