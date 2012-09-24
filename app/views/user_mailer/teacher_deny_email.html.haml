@@ -1,2 +1,12 @@
-%h2 Your account has been denied!
+%p= "Hey #{@teacher.name},"
+%p Thanks for signing up for a LearningEarnings teacher account but we couldn't approve your account.  This could have happened for several reasons. (We have <b>lots</b> of students trying to signup as teachers.)
+%ul
+  %li You didn't use your school designated E-Mail address
+  %li There was foul language in your username, name, or email address
+  %li Your account looks very similar to another account
+  %li Something else made us think you're a student
+%p
+  "We'd really like to get things cleared up and get you registered.  Send an E-Mail to admin@learningearnings.com and let us know we made a mistake. You're almost guaranteed to be approved if you send that E-Mail from your school designated email address.  You could also have another teacher at your school send the E-Mail for you."
+%p Thanks!
+%p The Team admin@learningearnings.com
 
