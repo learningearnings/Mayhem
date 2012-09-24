@@ -14,6 +14,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
     @school         = params[:school]
     @quantity       = params[:quantity]
     @retail_price   = params[:retail_price]
+    @person         = params[:person]
   end
 
   def spree_property_class
@@ -54,8 +55,12 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       fc = FilterConditions.new(:schools => [@school.id])
       factory = FilterFactory.new
       filter = factory.find_or_create_filter(fc)
-      filter.save
+
       SpreeProductFilterLink.create(:filter_id => filter.id, :product_id => retail_product.id)
+      SpreeProductPersonLink.create(product_id: retail_product.id, person_id: @person.id)
+      # currently only SchoolAdmin persons can call this method to add products to their school == retail
+      retail_product.properties.create(name: "type", presentation: "retail")
     end
   end
+
 end

@@ -12,6 +12,9 @@
   %legend
     Product Details
   .clearfix
+    = f.label 'Product Type'
+    = select_tag :product_type, options_for_select(@types)
+  .clearfix
     = f.label 'Name'
     .input= f.text_field :name
   .clearfix

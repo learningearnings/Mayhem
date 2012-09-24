@@ -26,9 +26,10 @@ class OneClickSpreeProductPurchaseCommand
       retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
       retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
 
-      SchoolStoreProductDistributionCommand.new(:master_product => wholesale_product, 
+      SchoolStoreProductDistributionCommand.new(:master_product => wholesale_product,
                                                 :school => @school,
                                                 :quantity => retail_qty,
+                                                :person => @person,
                                                 :retail_price => retail_price).execute!
     end
   end
