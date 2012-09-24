@@ -1,4 +1,7 @@
 require 'csv'
+require 'iconv'
+require 'roo'
+
 
 # Class from which all data importers descend.
 class ImporterBase
@@ -13,7 +16,11 @@ class ImporterBase
   # @param [String] file_path
   # @return [ImporterBase]
   def initialize file_path
-    @file_path = file_path
+    if file_path.include?('.xls')
+      @file_path = convert(file_path)
+    elsif file_path.include?('.csv')
+      @file_path = file_path
+    end
     @headers   = csv.shift
   end
 
@@ -24,8 +31,17 @@ class ImporterBase
     @csv ||= CSV.open(file_path)
   end
 
+  def convert(file_path)
+    begin
+      file_basename = File.basename(file_path, ".xls")
+      xls = Excel.new(file_path)
+      xls.to_csv("/tmp/#{file_basename}.csv")
+      file_path = "/tmp/#{file_basename}.csv"
+    end
+  end
+
   def index_for_header header
-    headers.index(header)
+    @headers.index(header)
   end
 
   def import!

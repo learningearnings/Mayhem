@@ -1,12 +1,11 @@
-%h2 Your account has been approved!
+%p= "Hey #{@teacher.name}," 
 
-%p= @teacher.first_name
-%p= @teacher.last_name
-%p= @teacher.email
-%p= @teacher.username
-%p= @teacher.dob
-%p= @teacher.gender
-%p= @teacher.grade
-%p= @teacher.schools.first.name
-
-= link_to 'Login', '/'
+%p We setup your teacher account and the last step is to verify this is your correct email address.</span></p>
+%p You're almost there! You just need to
+= link_to 'Click Here', '/'
+%p to activate your account!"
+%br
+%p You can also just copy and paste this link into your browser to activate also:
+%br
+%br
+%p If you need us we're here to help, just contact admin@learningearnings.com.

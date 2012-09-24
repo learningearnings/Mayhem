@@ -6,17 +6,18 @@ class StudentsImporter < PeopleImporter
 
   def header_mapping
     {
-      first_name: 'FName',
-      last_name: 'LName',
-      grade: 'GR',
+      first_name: 'First',
+      last_name: 'Last',
+      grade: 'Grade',
+      gender: 'Gender'
     }
   end
 
   def user_header_mapping
     {
-      username: 'UF_Network_Login',
-      password: 'UF_Network_Password',
-      password_confirmation: 'UF_Network_Password'
+      username: 'Username',
+      password: 'Password'
+      #password_confirmation: 'UF_Network_Password'
     }
   end
 end
