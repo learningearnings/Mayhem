@@ -14,18 +14,47 @@
   }
 
   .locker_interface {
-    display: inline-block;
-    width: 200px;
-    height: 400px;
+    display: block;
+    width: 804px;
+    height: 160px;
+    margin-left: 130px;
     overflow: scroll;
+    background-color: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -moz-box-shadow:    1px 2px 8px 3px #ccc;
+    -webkit-box-shadow: 1px 2px 8px 3px #ccc;
+    box-shadow:         1px 2px 8px 3px #ccc;
     .available_stickers {
-      .sticker {
+      p {
         padding: 1em;
+      }
+      .sticker {
+        display: inline-block;
         cursor: pointer;
+        border: 3px solid #fff;
         &:hover {
-          background-color: #eee;
+          border: solid 3px #B87953;
         }
       }
     }
+  }
+}
+
+.locker_show {
+  margin-left: 130px;
+}
+
+.locker_buttons {
+  background-color: #fff;
+  text-align: center;
+  width: 804px;
+  padding: 2em 1em;
+  -moz-box-shadow:    1px 2px 8px 3px #ccc;
+  -webkit-box-shadow: 1px 2px 8px 3px #ccc;
+  box-shadow:         1px 2px 8px 3px #ccc;
+  
+  a {
+    margin: 0 2em;
   }
 }

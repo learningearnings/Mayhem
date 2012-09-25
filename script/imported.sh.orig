@@ -1,0 +1,17 @@
+#!/bin/bash
+PGRESTORE=`which pg_restore`
+echo $0
+if [ -z "$PGRESTORE" ]; then 
+    echo "You need to install pg_restore to continue"
+    exit 1
+fi
+echo "Removing all your existing spree images .. You won't miss them
+     "
+rm -rf public/spree/products/*
+echo -n "Uncompressing...."
+echo `tail -n +18 $0 | base64 -d | tar zxv | wc -l` files extracted
+echo "Loading the learning_earning_development database..."
+gzip -dc imported.pg.db.gz | pg_restore -O --dbname=learning_earning_development --clean
+echo "Finished!"
+exit 0
+#==============
