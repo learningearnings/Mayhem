@@ -1,12 +1,14 @@
-%h2 Admin Message
-= form_for @message do |f|
-  .row
-    .span3
+.span8
+  .admin-message-content
+    %h2 Admin Message
+    = form_for @message do |f|
       .select-message
         = f.label :subject
         = f.text_field :subject
         = f.label :body
         = f.text_area :body
-  = f.submit "Send Message", class: 'btn btn-primary'
-
+        
+      = f.submit "Send Message", class: 'btn btn-primary'
+.span3
+  = render 'boxes_nav'
 

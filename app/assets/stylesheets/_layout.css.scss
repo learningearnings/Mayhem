@@ -979,7 +979,7 @@ footer {
   }
 }
 
-.friend-messages-content {
+.inbox-messages-content {
   margin-left: 100px;
   h3 {
     max-width: 600px;
@@ -995,6 +995,19 @@ footer {
   }
   a {
     margin-top: 1em;
+  }
+}
+
+.admin-message-content {
+  margin-left: 100px;
+  form {
+    background-color: #fff;
+    max-width: 600px;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;
+    padding: 2em;  
+
   }
 }
 
