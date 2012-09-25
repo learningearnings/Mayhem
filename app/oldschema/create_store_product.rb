@@ -15,6 +15,7 @@ class CreateStoreProduct < ActiveModelCommand
     @quantity         = params[:quantity]
     @retail_price     = params[:retail_price]
     @available_on     = params[:available_on]
+    @deleted_at       = params[:deleted_at]
     @image            = params[:image]
     @filter           = params[:filter]
   end
@@ -38,19 +39,20 @@ class CreateStoreProduct < ActiveModelCommand
     product.price = @retail_price
     product.store_ids = store.id
     product.available_on = @available_on
+    product.deleted_at = @deleted_at if @deleted_at
     product.count_on_hand = 100  #TODO - better quantity stuff
     new_image = open('http://learningearnings.com/images/rewardimage/' + @image)
-    new_spree_image = spree_image_class.create({:viewable_id => product.master.id,
-                                                 :viewable_type => 'Spree::Variant',
-                                                 :alt => "position 1",
-                                                 :attachment => new_image,
-                                                 :position => 1})
+    new_spree_image = spree_image_class.new({:viewable_id => product.master.id,
+                                              :viewable_type => 'Spree::Variant',
+                                              :alt => "position 1",
+                                              :position => 1})
     new_spree_image.attachment_file_name = @image
+    new_spree_image.attachment = new_image
     product.master.images << new_spree_image
 
     if @filter.nil?
       filter_factory = FilterFactory.new
-      filter_condition = FilterConditions.new schools: [@school]
+      filter_condition = FilterConditions.new schools: [@school], states: [@school.addresses[0].state.id]
       @filter = filter_factory.find_or_create_filter(filter_condition)
     end
     link = product.spree_product_filter_link || SpreeProductFilterLink.new(:product_id => product.id, :filter_id => @filter.id)
