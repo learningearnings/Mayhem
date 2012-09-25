@@ -1055,3 +1055,45 @@ footer {
   p {
   }
 }
+
+.messages-container {
+  margin: 0 0 0 40%;
+  background-color: none;
+  text-align: center;
+  .alert {
+    text-align: center;
+    background-color: rgba(255,255,255, 0);
+    border: none;
+    background-image: url(asset_path('message-blue.png', image));    
+    background-repeat: no-repeat;
+    width: 254px;
+    height: 259px;
+    p {
+      margin: 45px 0 0 15px;
+      color: #333366;
+      width: 205px;
+      text-align: left;
+      font-family: verdana;
+      font-weight: 400;
+      text-shadow: none;
+      -webkit-transform: rotate(6deg);
+      -moz-transform: rotate(6deg);
+      -ms-transform: rotate(6deg);
+      -o-transform: rotate(6deg);
+    }
+    .close {
+      margin-top: 20px;
+      color: #ee5b1a;
+      opacity: .9;
+      text-shadow: none;
+      height: 25px;
+      width: 25px;
+      border: solid 2px #ee5b1a;
+      -moz-border-radius: 35px;
+      -webkit-border-radius: 35px;
+      -o-border-radius: 35px;
+      -ms-border-radius: 35px;
+      border-radius: 35px;
+    }
+  }
+}
