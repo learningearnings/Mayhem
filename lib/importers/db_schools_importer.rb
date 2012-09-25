@@ -8,6 +8,7 @@ class OldSchoolImporter
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
+    non_display_reward_categories = [1000,1002]
   end
   def reset
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
@@ -286,6 +287,7 @@ class OldSchoolImporter
                                         :school => new_school,
                                         :quantity => old_reward.numberofrewards,
                                         :retail_price => old_reward.rewardpoints,
+                                        :deleted_at => non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now() : nil,
                                         :available_on => Time.now(),
                                         :image => old_reward.rewardimagepath).execute! if store
     @new_school_rewards["#{old_reward_id}:#{new_school.store_subdomain}"] = new_reward
