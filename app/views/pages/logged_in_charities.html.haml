@@ -4,9 +4,8 @@
   - if current_user.person.charities.present?
     - current_user.person.charities.each do |item|
       - if item.product.name
-        = image_tag item.product.thumb, :size => "100x100" , :itemprop => "image"
+        = render 'shared/certificates/haiti_certificate', :item => item
         %p
-        = item.product.name
   - else
     %center
       %h4

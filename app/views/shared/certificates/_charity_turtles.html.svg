@@ -5,6 +5,8 @@
 	<text transform="matrix(1 0 0 1 121.0205 481.5039)" fill="#007673" font-family="times" font-size="42">THANK YOU FOR CARING</text>
 </g>
 <text transform="matrix(1 0 0 1 106.0981 326.9707)"><tspan x="0" y="0" font-family="times" font-size="29">in recognition of your generosity towards</tspan><tspan x="4.319" y="34.8" font-family="times" font-size="29">the cause of helping to save Sea Turtles.</tspan></text>
+<text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" ><tspan><%= current_person.name %></tspan></text>
+<text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" ><tspan><%= current_school.name %></tspan></text>
 <g>
 	<g>
 		<path fill="#8DC63F" d="M338.481,96.426c18.775,0,33.995-15.221,33.995-33.996s-15.22-33.996-33.995-33.996

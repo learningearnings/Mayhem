@@ -12,7 +12,6 @@ class RewardsController < LoggedInController
   end
 
   def show
-    @product = Spree::Product.find(params[:id])
   end
 
   def new
