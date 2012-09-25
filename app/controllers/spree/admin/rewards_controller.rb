@@ -85,6 +85,12 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.save
     end
+    if params[:product][:svg]
+      i = @product
+      i.svg_file_name = params[:product][:svg][:svg_file_name].original_filename
+      i.svg = params[:product][:svg][:svg_file_name].tempfile
+      i.save
+    end
   end
 
   def destroy

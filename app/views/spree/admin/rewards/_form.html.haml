@@ -45,6 +45,10 @@
       = f.label :current_image
       = image_tag @product.thumb
   .clearfix
+    = f.fields_for :svg do |i|
+      = i.label :svg
+      = i.file_field :svg_file_name
+  .clearfix
     = f.label 'Stores'
     %br
     - Spree::Store.all.each do |store|
