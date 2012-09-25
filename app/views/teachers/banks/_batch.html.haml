@@ -10,13 +10,15 @@
       font-size: 70%
     .buck
       position: relative
-      background-image: url(#{buck_image})
-      background-size: 100%
+      //background-image: url(#{buck_image})
+      //background-size: 100%
       display: inline-block
-      background-color: #eee
+      //background-color: #eee
       width: 300px
       height: 126px
       margin-right: 10px
+      .background-image
+        width: 100%
       .code
         width: 30%
         text-align: center
@@ -55,6 +57,7 @@
 .bucks
   - batch.otu_codes.each do |otu_code|
     .buck
+      %img.background-image{ src: buck_image }
       .code= otu_code.code
       .amount.amount1= otu_code.points.to_i
       .amount.amount2= otu_code.points.to_i
