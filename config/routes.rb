@@ -60,6 +60,7 @@ Leror::Application.routes.draw do
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
   match '/reports/activity' => 'reports/activity#show', as: 'activity_report'
+  match '/reports/student_credit_history' => 'reports/student_credit_history#show', as: 'student_credit_history_report'
 
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
