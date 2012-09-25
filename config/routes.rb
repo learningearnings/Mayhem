@@ -29,6 +29,8 @@ Leror::Application.routes.draw do
   mount Plutus::Engine => "/plutus", :as => "plutus"
 
   # Handle static pages
+  match "/pages/teachers/*id" => 'pages#show', :as => :teacher_page, :format => false, visitor_type: 'teacher'
+  match "/pages/parents/*id" => 'pages#show', :as => :parent_page, :format => false, visitor_type: 'parent'
   match "/pages/*id" => 'pages#show', :as => :page, :format => false
 
   # Buck routes

@@ -7,7 +7,7 @@ $(document).ready(function() {
   $(".step1-slide, .step2-slide, .step3-slide, .step4-slide").css('display', 'none');
 
 	// How it works - not logged in
-  	$(".register").click(function(){
+  $(".register").click(function(){
 	  $(".intro-slide, .earn-slide, .enter-slide, .buy-slide, .receive-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -15,7 +15,7 @@ $(document).ready(function() {
 	  $(".register-slide").css("display", "block");
 	});
 
-  	$(".earn").click(function(){
+  $(".earn").click(function(){
 	  $(".intro-slide, .register-slide, .enter-slide, .buy-slide, .receive-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	  $(".earn-slide").css("display", "block");
 	});
 
-  	$(".enter").click(function(){
+  $(".enter").click(function(){
 	  $(".intro-slide, .register-slide, .earn-slide, .buy-slide, .receive-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -31,7 +31,7 @@ $(document).ready(function() {
 	  $(".enter-slide").css("display", "block");
 	});
 
-  	$(".buy").click(function(){
+  $(".buy").click(function(){
 	  $(".intro-slide, .register-slide, .earn-slide, .enter-slide, .receive-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -39,7 +39,7 @@ $(document).ready(function() {
 	  $(".buy-slide").css("display", "block");
 	});
 
-  	$(".receive").click(function(){
+  $(".receive").click(function(){
 	  $(".intro-slide, .register-slide, .earn-slide, .enter-slide, .buy-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -47,7 +47,7 @@ $(document).ready(function() {
 	  $(".receive-slide").css("display", "block");
 	});
 
-  	$(".intro").click(function(){
+  $(".intro").click(function(){
 	  $(".receive-slide, .register-slide, .earn-slide, .enter-slide, .buy-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -56,7 +56,7 @@ $(document).ready(function() {
 	});
 
 	// How it works - teachers not logged in
-  	$(".step-1").click(function(){
+  $(".step-1").click(function(){
 	  $(".attention-teachers, .step2-slide, .step3-slide, .step4-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -64,7 +64,7 @@ $(document).ready(function() {
 	  $(".step1-slide").css("display", "block");
 	});
 
-  	$(".step-2").click(function(){
+  $(".step-2").click(function(){
 	  $(".attention-teachers, .step1-slide, .step3-slide, .step4-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -72,7 +72,7 @@ $(document).ready(function() {
 	  $(".step2-slide").css("display", "block");
 	});
 
-  	$(".step-3").click(function(){
+  $(".step-3").click(function(){
 	  $(".attention-teachers, .step1-slide, .step2-slide, .step4-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -80,7 +80,7 @@ $(document).ready(function() {
 	  $(".step3-slide").css("display", "block");
 	});
 
-  	$(".step-4").click(function(){
+  $(".step-4").click(function(){
 	  $(".attention-teachers, .step1-slide, .step2-slide, .step3-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -88,7 +88,7 @@ $(document).ready(function() {
 	  $(".step4-slide").css("display", "block");
 	});
 
-  	$(".attention").click(function(){
+  $(".attention").click(function(){
 	  $(".step4-slide, .step1-slide, .step2-slide, .step3-slide").css('display', 'none');
 
 	  $(".selected").removeClass("selected")
@@ -96,30 +96,28 @@ $(document).ready(function() {
 	  $(".attention-teachers").css("display", "block");
 	});
 
+  function highlightNavigation(path_part, nav_selector){
+	  if(window.location.href.indexOf(path_part) > -1) {
+	    $('.home').removeClass('home-selected');
+	    $("." + nav_selector).toggleClass(nav_selector + "-selected");
+	  }
+	}
 	// Primary Nav Selected
-	if(window.location.href.indexOf("how_it_works") > -1) {
-	 $(".how-it-works").toggleClass("how-it-works-selected")
-	 }
-	 else if(window.location.href.indexOf("not_logged_in_locker") > -1) {
-		 $(".locker").toggleClass("locker-selected")
-	}
-	 else if(window.location.href.indexOf("not_logged_in_inbox") > -1) {
-		 $(".inbox").toggleClass("inbox-selected")
-	}
-	 else if(window.location.href.indexOf("not_logged_in_bank") > -1) {
-		 $(".bank").toggleClass("bank-selected")
-	}
-	 else if(window.location.href.indexOf("not_logged_in_play") > -1) {
-		 $(".play").toggleClass("play-selected")
-	}
-	 else if(window.location.href.indexOf("not_logged_in_rewards") > -1) {
-		 $(".rewards").toggleClass("rewards-selected")
-	}
-	 else if(window.location.href.indexOf("news") > -1) {
-		 $(".news").toggleClass("news-selected")
-	}
-	 else if(window.location.href.indexOf("") > -1) {
-		 $(".home").toggleClass("home-selected")
-	}
-
+  highlightNavigation('', 'home');
+  highlightNavigation('how_it_works', 'how-it-works');
+  highlightNavigation('locker', 'locker');
+  highlightNavigation('inbox', 'inbox');
+  highlightNavigation('testimonials', 'testimonials');
+  highlightNavigation('bank', 'bank');
+  highlightNavigation('play', 'play');
+  highlightNavigation('rewards', 'rewards');
+  highlightNavigation('news', 'news');
+  
+  highlightNavigation('friend-message', 'friend-message')
+  highlightNavigation('friend-message', 'school-message')
+  highlightNavigation('friend-message', 'teacher-message')
+  highlightNavigation('friend-message', 'system-message')
+  highlightNavigation('friend-message', 'admin-message')
+  
 });
+

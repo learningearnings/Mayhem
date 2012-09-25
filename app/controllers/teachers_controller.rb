@@ -1,4 +1,4 @@
-class TeachersController < ApplicationController
+class TeachersController < LoggedInController
 
   def new
     @teacher = Teacher.new
@@ -26,11 +26,11 @@ class TeachersController < ApplicationController
   end
 
   def deny_teacher
+    @teacher = Teacher.find(params[:id])
     unless @teacher.active?
-      @teacher = Teacher.find(params[:id])
+      UserMailer.teacher_deny_email(@teacher).deliver
       @teacher.user.destroy
       @teacher.destroy
-      UserMailer.teacher_deny_email(@teacher).deliver
       flash[:notice] = "Teacher account denied."
     else
       flash[:error] = "Teacher account already active."

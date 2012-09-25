@@ -67,10 +67,10 @@
 }
 
 ul.nav-group{
+  margin: 0;
+  padding: 0;
   li{
     list-style-type: none;
-    display: inline-block;
-    padding: .25em;
-    margin-right: 1em;
+    margin: .5em 0;
   }
 }

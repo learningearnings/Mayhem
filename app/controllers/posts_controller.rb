@@ -1,4 +1,4 @@
-class PostsController < ApplicationController
+class PostsController < LoggedInController
 #  before_filter :authenticate_user!
 
   def show
