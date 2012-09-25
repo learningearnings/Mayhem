@@ -5,7 +5,9 @@ Spree::Asset.all.each do |asset|
   filename = asset.attachment_file_name
   puts "-- Processing image: #{filename}\r"
   if filename.gsub(/^http/)
-    asset.attachment = open(filename)
+    image = open(filename)
+    def image.original_filename; base_uri.path.split('/').last; end
+    asset.attachment = image
     asset.save
   end
 end

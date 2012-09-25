@@ -42,12 +42,13 @@ class CreateStoreProduct < ActiveModelCommand
     product.deleted_at = @deleted_at if @deleted_at
     product.count_on_hand = 100  #TODO - better quantity stuff
     new_image = open('http://learningearnings.com/images/rewardimage/' + @image)
+    def new_image.original_filename; base_uri.path.split('/').last; end
     new_spree_image = spree_image_class.new({:viewable_id => product.master.id,
                                               :viewable_type => 'Spree::Variant',
                                               :alt => "position 1",
                                               :position => 1})
-    new_spree_image.attachment_file_name = @image
     new_spree_image.attachment = new_image
+    new_spree_image.save
     product.master.images << new_spree_image
 
     if @filter.nil?

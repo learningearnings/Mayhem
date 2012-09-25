@@ -23,6 +23,7 @@ namespace :le do
   task :reload! do
     system('killall -9 --verbose --older-than 20s ruby')
     system('killall -9 --verbose --older-than 20s psql')
+    system('rm -rf public/spree/products/*')
     Rake::Task['db:drop'].invoke
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
