@@ -965,3 +965,62 @@ footer {
   top: 30px;
   left: 850px;
 }
+
+.nav-group {
+  li {
+    a { 
+      font-size: 1.6em;
+      &:hover, &.active {
+        text-decoration: none;
+        color: #ee5b1a;
+      }
+      
+    }
+  }
+}
+
+.inbox-messages-content {
+  margin-left: 100px;
+  h3 {
+    max-width: 600px;
+  }
+  .message-body {
+    min-height: 8em;
+    background-color: #FFF;
+    padding: 1em;
+    max-width: 600px;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;
+  }
+  a {
+    margin-top: 1em;
+  }
+}
+
+.admin-message-content {
+  margin-left: 100px;
+  form {
+    background-color: #fff;
+    max-width: 600px;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;
+    padding: 2em;  
+
+  }
+}
+
+.boxes-nav-container {
+  position: relative;
+  top: 20px;
+  right: 50px;
+  background-color: white;
+  padding: 1em;
+  min-height: 500px;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;
+  
+}
+
