@@ -54,6 +54,10 @@ Spree::User.class_eval do
     self.save
   end
 
+ protected
+   def email_required?
+     false 
+   end
 
 
 end
