@@ -60,10 +60,9 @@ class FilterFactory
 
     @filter.minimum_grade = minimum_grade
     @filter.maximum_grade = maximum_grade
-
     if conditions && conditions.schools && conditions.schools.count > 0
       conditions.schools.each do |s|
-        @filter.school_filter_links << SchoolFilterLink.new(:school_id => s)
+        @filter.school_filter_links << SchoolFilterLink.new(:school_id => s.id)
       end
     else
       @filter.school_filter_links << SchoolFilterLink.new(:school_id => nil)
