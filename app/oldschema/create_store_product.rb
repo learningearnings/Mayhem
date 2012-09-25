@@ -18,6 +18,7 @@ class CreateStoreProduct < ActiveModelCommand
     @deleted_at       = params[:deleted_at]
     @image            = params[:image]
     @filter           = params[:filter]
+    @reward_type      = params[:reward_type] # global, local, charity, wholesale
   end
 
   def spree_image_class
@@ -27,6 +28,10 @@ class CreateStoreProduct < ActiveModelCommand
   def spree_store_class
     Spree::Store
   end
+
+
+  # TODO Properties - Smarter reward creation
+  #
 
 
   def execute!
