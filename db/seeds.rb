@@ -266,12 +266,12 @@ if Rails.env.development? || Rails.env.production?
   @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
 
   Rake::Task['db:load_dir'].reenable
-  Rake::Task['db:load_dir'].invoke("samples")
+  #Rake::Task['db:load_dir'].invoke("samples")
   # ======== /STORE SETUP ========
 
   # ======= Make the teacher have a pending reward delivery =======
-  @reward = Spree::Product.first
-  @reward_delivery  = FactoryGirl.create(:pending_reward_delivery, from: @teacher, to: @student1, reward: @reward)
+  #@reward = Spree::Product.first
+  #@reward_delivery  = FactoryGirl.create(:pending_reward_delivery, from: @teacher, to: @student1, reward: @reward)
   # ======= /Make the teacher have a pending reward delivery =======
 
   # ======== LOCKERS ========
@@ -308,7 +308,8 @@ if Rails.env.development? || Rails.env.production?
    ["Tuna","tuna.png"]
   ].each do |f|
     food = Food.create(name: f[0])
-    food.image = open("http://www.lemirror1.com/Development/images/games/foodfight/" + f[1]).read
+    #food.image = open("http://www.lemirror1.com/Development/images/games/foodfight/" + f[1]).read
+    food.image = open(Rails.root.join('app', 'assets', 'images', 'common', 'le_logo.png')).read
     food.save
   end
   # ======== Foods ===========

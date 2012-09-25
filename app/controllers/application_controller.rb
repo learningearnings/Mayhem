@@ -111,7 +111,7 @@ class ApplicationController < ActionController::Base
     end
     yield
     end_time = Time.now
-    interaction.elapsed_milliseconds = end_time - start_time
+    interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
     interaction.page = request.path
     # NOTE: Don't know how to get memory usage in here yet
     interaction.save
