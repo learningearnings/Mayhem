@@ -92,18 +92,26 @@ Leror::Application.routes.draw do
 
   namespace :teachers do
     resource :bank
+    resource :dashboard
     match "home" => "home#show", as: 'home'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'
+    match "/new_student" => 'dashboards#new_student'
+    match "/create_student" => 'dashboards#create_student'
   end
 
   namespace :school_admins do
     resource :bank
+    resource :dashboard
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'
+    match "/new_student" => 'dashboards#new_student'
+    match "/create_student" => 'dashboards#create_student'
+    match "/new_teacher" => 'dashboards#new_teacher'
+    match "/create_teacher" => 'dashboards#create_teacher'
   end
 
   # Command routes
