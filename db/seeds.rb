@@ -266,7 +266,7 @@ if Rails.env.development? || Rails.env.production?
   @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
 
   Rake::Task['db:load_dir'].reenable
-  #Rake::Task['db:load_dir'].invoke("samples")
+  Rake::Task['db:load_dir'].invoke("samples")
   # ======== /STORE SETUP ========
 
   # ======= Make the teacher have a pending reward delivery =======
