@@ -13,6 +13,7 @@ class LockersController < LoggedInController
   def share
     @message = StudentShareLockerMessageCommand.new
     @grademates = current_person.grademates
+    render layout: false
   end
 
   def shared

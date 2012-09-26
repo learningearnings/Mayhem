@@ -92,7 +92,7 @@ Leror::Application.routes.draw do
   # Lockers
   resource :locker do
     member do
-      match 'share' => 'lockers#share', as: 'share_locker'
+      match 'share' => 'lockers#share', as: 'share'
     end
   end
   match "/lockers/:id" => 'lockers#shared', as: 'shared_locker'
