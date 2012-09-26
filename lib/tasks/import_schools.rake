@@ -1,15 +1,16 @@
 # lib/tasks/import.rake
-require 'importers/db_schools_importer'
 
 namespace :import do
   desc 'reset the import'
   task :reset => :environment do
+    require 'importers/db_schools_importer'
     osi = OldSchoolImporter.new
     osi.reset
   end
 
   desc 'import the legacy schools\' data'
   task :schools => :environment do
+    require 'importers/db_schools_importer'
     osi = OldSchoolImporter.new
     if Rails.env.development? && false
       puts "Development environment detected ---- Resetting..."

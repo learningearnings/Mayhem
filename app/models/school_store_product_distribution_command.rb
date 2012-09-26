@@ -7,6 +7,8 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
   validates :retail_price, :numericality => {:greater_than_or_equal_to => 0}
 
   attr_accessor :master_product, :school, :quantity, :retail_price, :spree_property_class
+  attr_accessor :spree_product_filter_link_class, :spree_product_person_link_class
+  attr_accessor :filter_conditions_class, :filter_factory_class
 
 
   def initialize params={}
@@ -18,7 +20,23 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
   end
 
   def spree_property_class
-    Spree::Property
+    @spree_property_class || Spree::Property
+  end
+
+  def spree_product_filter_link_class
+    @spree_product_filter_link_class || ::SpreeProductFilterLink
+  end
+
+  def spree_product_person_link_class
+    @spree_product_person_link_class || ::SpreeProductPersonLink
+  end
+
+  def filter_conditions_class
+    @filter_conditions_class || ::FilterConditions
+  end
+
+  def filter_factory_class
+    @filter_factory_class || ::FilterFactory
   end
 
   def execute!
@@ -52,15 +70,16 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_product.master.save # The master variant, not the master_product
       retail_product.save
 
-      fc = FilterConditions.new(:schools => [@school.id])
-      factory = FilterFactory.new
+      fc = filter_conditions_class.new(:schools => [@school.id])
+      factory = filter_factory_class.new
       filter = factory.find_or_create_filter(fc)
 
-      SpreeProductFilterLink.create(:filter_id => filter.id, :product_id => retail_product.id)
-      SpreeProductPersonLink.create(product_id: retail_product.id, person_id: @person.id)
+      spree_product_filter_link_class.create(:filter_id => filter.id, :product_id => retail_product.id)
+      spree_product_person_link_class.create(product_id: retail_product.id, person_id: @person.id)
       # currently only SchoolAdmin persons can call this method to add products to their school == retail
       retail_product.properties.create(name: "type", presentation: "retail")
     end
+    retail_product
   end
 
 end
