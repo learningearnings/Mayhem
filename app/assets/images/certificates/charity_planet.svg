@@ -14,8 +14,8 @@
 	</image>
 	<text transform="matrix(1 0 0 1 96.2305 167.8096)"><tspan x="0" y="0" font-family="times" font-size="29">LearningEarnings.com is proud to present</tspan><tspan x="50.687" y="34.8" font-family="times" font-size="29">this Certificate of Appreciation to</tspan></text>
 	<text transform="matrix(1 0 0 1 105.2422 322.6045)"><tspan x="0" y="0" font-family="times" font-size="29">in recognition of your generosity towards</tspan><tspan x="132.702" y="34.799" font-family="times" font-size="29">saving our planet.</tspan></text>
-	<text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" ><tspan><%= current_person.name %></tspan></text>
-	<text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" ><tspan><%= current_school.name %></tspan></text>
+	<text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" ><tspan>name_val</tspan></text>
+	<text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" ><tspan>school_val</tspan></text>
 	<line fill="none" stroke="#000000" x1="156.677" y1="264.939" x2="519.69" y2="264.939"/>
 	<g>
 		<g>
