@@ -1,4 +1,4 @@
-require_relative '../models/active_model_command'
+require_relative '../../../app/models/active_model_command'
 
 class CreateStoreProduct < ActiveModelCommand
 
@@ -95,7 +95,7 @@ class CreateStoreProduct < ActiveModelCommand
     product.available_on = @available_on
     product.deleted_at = @deleted_at if @deleted_at
     product.count_on_hand = 100  #TODO - better quantity stuff
-    product.properties.create(name: "type", @reward_type)
+#    product.properties.create(name: "type", @reward_type)
 
     new_image = open('http://learningearnings.com/images/rewardimage/' + @image)
     def new_image.original_filename; base_uri.path.split('/').last; end
@@ -116,7 +116,7 @@ class CreateStoreProduct < ActiveModelCommand
     link.filter_id = @filter.id
     product.spree_product_filter_link = link
 
-    product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: reward_owner.id)
+    product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id)
     product.save
     product
   end

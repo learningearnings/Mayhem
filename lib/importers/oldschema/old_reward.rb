@@ -3,7 +3,6 @@ class OldReward < ActiveRecord::Base
   self.table_name = 'tbl_rewards'
   self.primary_key = 'rewardID'
   has_one :old_point, :foreign_key => :pointID, :class_name => 'OldPoint'
-  has_many :old_reward_details, :foreign_key => :rewardID, :class_name => OldRewardDetail
-  has_many :old_reward_locals, :foreign_key => :rewardID, :class_name => OldRewardLocal
+  has_many :old_reward_details, :foreign_key => :rewardID, :class_name => "OldRewardDetail"
 end
 
