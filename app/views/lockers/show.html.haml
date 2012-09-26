@@ -6,15 +6,10 @@
   .locker_buttons
     = link_to 'Decorate My Locker', edit_locker_path, class: 'btn'
     = link_to 'Share My Locker', share_locker_path, class: 'btn', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
-    = link_to "Visit My Friend's Locker", '#visit-locker-modal', class: 'btn', "data-toggle" => 'modal'
+    = link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
 
   #share-locker-modal.modal.hide
     .modal-body
 
   #visit-locker-modal.modal.hide
-    %h3 Visit Locker Header
-    %p= lipsum
-    %strong Pick The Friend's Locker:
-    .image-placeholder
-      Paginated Friend List
-    = link_to "Visit", "#", class: 'btn btn-primary'
+    .modal-body
