@@ -1058,7 +1058,7 @@ footer {
 }
 
 .messages-container {
-  margin: 0 0 0 40%;
+/*  margin: 0 0 0 40%; */
   background-color: none;
   text-align: center;
   .alert {
@@ -1097,6 +1097,12 @@ footer {
       border-radius: 35px;
     }
   }
+}
+
+.flash-message {
+    position: absolute;
+    left: 300px;
+    z-index: 17;
 }
 
 .pending-credits {
