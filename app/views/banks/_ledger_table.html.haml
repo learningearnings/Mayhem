@@ -1,3 +1,5 @@
+= paginate amounts
+
 %table.table.table-bordered
   %thead
     %tr
@@ -6,7 +8,6 @@
       %th Amount
   - amounts.each do |amount|
     %tr
-      // FIXME: This view is horrible, refactor
       %td= amount.transaction.description
       %td= amount.transaction.created_at.to_s(:db)
       %td= amount.amount

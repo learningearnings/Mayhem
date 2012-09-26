@@ -69,37 +69,15 @@
     %h3 Checking History
     %p= lipsum 100
 
-    %table.table.table-bordered
-      %thead
-        %tr
-          %th Source
-          %th Date
-          %th Amount
-      - if @recent_checking_amounts.present?
-        - @recent_checking_amounts.each do |amount|
-          %tr
-            // FIXME: This view is horrible, refactor
-            %td= amount.transaction.description
-            %td= amount.transaction.created_at.to_s(:db)
-            %td= amount.amount
+    #checking-history
+      = render 'ledger_table', amounts: @recent_checking_amounts
 
   #savings-history-modal.modal.hide
     %h3 Savings History
     %p= lipsum 100
 
-    %table.table.table-bordered
-      %thead
-        %tr
-          %th Source
-          %th Date
-          %th Amount
-      - if @recent_savings_amounts.present?
-        - @recent_savings_amounts.each do |amount|
-          %tr
-            // FIXME: This view is horrible, refactor
-            %td= amount.transaction.description
-            %td= amount.transaction.created_at.to_s(:db)
-            %td= amount.amount
+    #savings-history
+      = render 'ledger_table', amounts: @recent_savings_amounts
 
   #enter-codes-modal.modal.hide
     %h3 Enter Codes
@@ -116,3 +94,5 @@
         %strong #{current_person.checking_balance}
         %h5 Savings Balance
         %strong #{current_person.savings_balance}
+
+= javascript_include_tag 'transaction_pager'

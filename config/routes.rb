@@ -80,7 +80,12 @@ Leror::Application.routes.draw do
   match "/add_classroom_student" => 'classrooms#add_student', as: 'new_classroom_student'
   get :remove_classroom_student, :controller => :classrooms, :action => :remove_student
   # Student banking bits
-  resource :bank
+  resource :bank do
+    member do
+      match 'checking_transactions'
+      match 'savings_transactions'
+    end
+  end
   match "/redeem_bucks" => 'banks#redeem_bucks'
   match "/redeem_bucks/:student_id/:code" => 'banks#redeem_bucks', as: 'redeem_buck'
 
@@ -130,7 +135,6 @@ Leror::Application.routes.draw do
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
   match "/get_image_results" => 'messages#get_image_results'
-
 end
 
 # Any routes we add to Spree go here:
