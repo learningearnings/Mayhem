@@ -1,13 +1,11 @@
 class BanksController < LoggedInController
-  def show
-    @recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).joins(:transaction).order({ transaction: :created_at }).page(1).per(10))
-    @recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at }).page(1).per(10))
+  before_filter :load_recent_bucks, only: [:show, :redeem_bucks]
+  before_filter :load_unredeemed_bucks, only: [:show, :redeem_bucks]
 
-    @unredeemed_bucks = current_person.otu_codes.active
+  def show
   end
 
   def redeem_bucks
-    @unredeemed_bucks = current_person.otu_codes.active
     person = Student.find_by_id(params[:student_id]) if params[:student_id]
     person = current_person unless person
       
@@ -35,5 +33,15 @@ class BanksController < LoggedInController
   def savings_transactions
     recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at }).page(params[:page]).per(10))
     render partial: 'ledger_table', locals: { amounts: recent_savings_amounts }
+  end
+
+  protected
+  def load_recent_bucks
+    @recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).joins(:transaction).order({ transaction: :created_at }).page(1).per(10))
+    @recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at }).page(1).per(10))
+  end
+
+  def load_unredeemed_bucks
+    @unredeemed_bucks = current_person.otu_codes.active
   end
 end
