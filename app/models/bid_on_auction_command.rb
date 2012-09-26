@@ -2,8 +2,11 @@ require_relative 'active_model_command'
 require_relative '../validators/positive_decimal_validator'
 require_relative '../validators/greater_than_validator'
 require 'action_view'
+require 'active_record/errors'
 
 class BidOnAuctionCommand < ActiveModelCommand
+  class FailedToCreateAuctionBid < StandardError; end
+
   include ActionView::Helpers::UrlHelper
   attr_accessor :person, :auction, :amount, :credit_manager, :on_success, :on_failure
 
@@ -72,7 +75,8 @@ class BidOnAuctionCommand < ActiveModelCommand
     # create a new bid
     bid_creator.call(amount: amount, person: person, auction: auction)
     # move money from the bidder's main account into their holding account
-    credit_manager.transfer_credits_from_checking_to_hold(person, amount)
+    success = credit_manager.transfer_credits_from_checking_to_hold(person, amount)
+    raise FailedToCreateAuctionBid unless success
   end
 
   def update_auction_with_current_bid

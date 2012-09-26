@@ -5,6 +5,13 @@ describe BidOnAuctionCommand do
   subject do
     command = BidOnAuctionCommand.new(person: person, auction: auction, amount: amount, credit_manager: credit_manager)
     command.stubs(:message_creator).returns(message_creator)
+    # Make our transaction just execute stuff at present
+    def command.transaction &block
+      begin
+        yield
+      rescue ActiveRecord::Rollback
+      end
+    end
     command
   end
   let(:auction) do
@@ -56,49 +63,63 @@ describe BidOnAuctionCommand do
   end
 
   describe "execution" do
-    it "interacts with its collaborators properly on #execute!" do
-      # Fail if we don't open a transaction
-      # (Since we're mocking out the transaction method, we aren't testing this
-      # here yet)
-      
-      # Make our transaction just execute stuff at present
-      def subject.transaction &block
-        yield
+    describe "success" do
+      it "interacts with its collaborators properly on #execute!" do
+        person1 = mock
+        bid1 = mock()
+        bid1.stubs(:person).returns(person1)
+        bid1amount = BigDecimal('1')
+        bid1.expects(:amount).returns(bid1amount)
+        auction.stubs(:open_bids).returns([bid1])
+        # Verify that we invalidate existing bids
+        bid1.expects(:invalidate!)
+        # Verify that we refund money on existing bids
+        credit_manager.expects(:transfer_credits_from_hold_to_checking).with(person1, bid1amount)
+        # Verify that we create a new bid
+        bid_creator = mock()
+        bid_creator.expects(:call).with(amount: amount, person: person, auction: auction)
+        subject.stubs(:bid_creator).returns(bid_creator)
+        # Verify that we move money on new bid from person's checking to hold
+        credit_manager.expects(:transfer_credits_from_checking_to_hold).with(person, amount).returns(true)
+        # Verify that we update the auction's current_bid to this amount
+        auction.expects(:current_bid=).with(amount)
+        auction.expects(:save!)
+        # Verify that we call the on_success callback
+        on_success = mock()
+        on_success.expects(:call).with(subject)
+        subject.on_success = on_success
+        
+        subject.execute!
       end
-      person1 = mock
-      bid1 = mock()
-      bid1.stubs(:person).returns(person1)
-      bid1amount = BigDecimal('1')
-      bid1.expects(:amount).returns(bid1amount)
-      auction.stubs(:open_bids).returns([bid1])
-      # Verify that we invalidate existing bids
-      bid1.expects(:invalidate!)
-      # Verify that we refund money on existing bids
-      credit_manager.expects(:transfer_credits_from_hold_to_checking).with(person1, bid1amount)
-      # Verify that we create a new bid
-      bid_creator = mock()
-      bid_creator.expects(:call).with(amount: amount, person: person, auction: auction)
-      subject.stubs(:bid_creator).returns(bid_creator)
-      # Verify that we move money on new bid from person's checking to hold
-      credit_manager.expects(:transfer_credits_from_checking_to_hold).with(person, amount)
-      # Verify that we update the auction's current_bid to this amount
-      auction.expects(:current_bid=).with(amount)
-      auction.expects(:save!)
-      # Verify that we call the on_success callback
-      on_success = mock()
-      on_success.expects(:call).with(subject)
-      subject.on_success = on_success
-      
-      subject.execute!
+
+      it "calls on_failure if anything goes wrong in #execute" do
+        subject.expects(:valid?).returns(false)
+        on_failure = mock()
+        on_failure.expects(:call).with(subject)
+        subject.on_failure = on_failure
+
+        subject.execute!
+      end
     end
 
-    it "calls on_failure if anything goes wrong in #execute" do
-      subject.expects(:valid?).returns(false)
-      on_failure = mock()
-      on_failure.expects(:call).with(subject)
-      subject.on_failure = on_failure
-
-      subject.execute!
+    describe "failure due to insufficient funds" do
+      it 'calls on_failure' do
+        person1 = mock
+        auction.stubs(:open_bids).returns([])
+        auction.stubs(:starting_bid).returns(BigDecimal('1'))
+        # Verify that we create a new bid
+        bid_creator = mock()
+        bid_creator.expects(:call).with(amount: amount, person: person, auction: auction)
+        subject.stubs(:bid_creator).returns(bid_creator)
+        # Fail to move money on new bid from person's checking to hold
+        credit_manager.expects(:transfer_credits_from_checking_to_hold).with(person, amount).returns(false)
+        # Verify that we call the on_failure callback
+        on_failure = mock()
+        on_failure.expects(:call).with(subject)
+        subject.on_failure = on_failure
+        
+        subject.execute!
+      end
     end
   end
 end
