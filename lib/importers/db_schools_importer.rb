@@ -10,6 +10,7 @@ require_relative 'oldschema/old_point.rb'
 require_relative 'oldschema/old_reward_detail.rb'
 require_relative 'oldschema/old_reward.rb'
 require_relative 'oldschema/old_reward_local.rb'
+require_relative 'oldschema/old_reward_global.rb'
 require_relative 'oldschema/old_redeemed.rb'
 
 
@@ -20,6 +21,7 @@ class OldSchoolImporter
     puts "Running some sql to fixup the MySQL db"
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
+    OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
     @non_display_reward_categories = [1000,1002]
@@ -301,16 +303,25 @@ class OldSchoolImporter
   def get_reward old_point, new_school
     return if old_point.nil?
     old_reward_id = old_point.rewardID
-    product = @new_school_rewards["#{old_reward_id}:#{new_school.store_subdomain}"]
+    reward_selector = "R#{old_reward_id}"
+    reward_selector = "L#{old_point.old_redeemed.old_reward_local.id}" if (old_point.old_reward && old_point.old_reward.rewardcategoryID == 1002) # Local and School Rewards
+    reward_type = 'unknown - ' + old_point.old_reward.rewardtitle
+    reward_type = 'local'  if old_point.old_reward.rewardcategoryID == 1002
+    reward_type = 'global' if old_point.old_reward.old_reward_globals.count > 0 || [1000,1001].index(old_point.old_reward.rewardcategoryID)
+    reward_type = 'wholesale' if old_point.old_reward.old_reward_details.count > 0
+    reward_type = 'charity' if old_point.old_reward.rewardcategoryID == 12  # this must come last - some charities mistakenly in globals
+#    puts reward_type + ' - ' + reward_selector
+    product = @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"]
     return product if product
     old_reward = OldReward.find(old_reward_id)
     store = Spree::Store.find_by_code new_school.store_subdomain
-    if old_reward.rewardcategoryID == 1002
+    if reward_type == 'local'
       reward_local = old_point.old_redeemed.old_reward_local
       owner = Person.find_by_legacy_user_id(reward_local.userID)
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
                                           :school => new_school,
+                                          :reward_type => reward_type,
                                           :quantity => reward_local.quantity,
                                           :retail_price => reward_local.points,
                                           :deleted_at => nil,
@@ -321,13 +332,15 @@ class OldSchoolImporter
       new_reward = CreateStoreProduct.new(:name => old_reward.rewardtitle,
                                           :description => old_reward.rewarddesc,
                                           :school => new_school,
+                                          :reward_type => reward_type,
                                           :quantity => old_reward.numberofrewards,
                                           :retail_price => old_reward.rewardpoints,
                                           :deleted_at => @non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now : nil,
+                                          :reward_owner => owner,
                                           :available_on => Time.now(),
                                           :image => old_reward.rewardimagepath).execute! if store
     end
-    @new_school_rewards["#{old_reward_id}:#{new_school.store_subdomain}"] = new_reward
-    puts "New reward #{new_reward.id} for #{new_reward.name}"
+    @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] = new_reward
+    puts "New reward #{new_reward.id} for #{new_reward.name} - #{reward_type} - #{new_reward.permalink}"
   end
 end

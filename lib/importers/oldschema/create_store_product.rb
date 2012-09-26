@@ -60,12 +60,14 @@ class CreateStoreProduct < ActiveModelCommand
     return if store.nil?
     if @reward_type == 'reward'
       le_store = spree_store_class.find_by_code('le')
-      master_product = le_store.products.find_by_permalink(@name.parameterize)
+      wholesale_product = le_store.products.find_by_permalink(@name.parameterize)
       # do the copy and return the product if master_product
-      if master_product
-        retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
-        retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
-        product = school_store_product_distribution_command_class.new(:master_product => master_product,
+      if wholesale_product
+        retail_price_property = spree_property_class.find_by_name('retail_price');
+        retail_quantity_property = spree_property_class.find_by_name('retail_quantity');
+        retail_price = retail_product.product_properties.where(:property_id => retail_price_property.id).first
+        retail_price = retail_product.product_properties.where(:property_id => retail_price_property.id).first
+        product = school_store_product_distribution_command_class.new(:master_product => wholesale_product,
                                                                       :school => @school,
                                                                       :quantity => retail_qty,
                                                                       :person => @reward_owner,
@@ -78,7 +80,8 @@ class CreateStoreProduct < ActiveModelCommand
     if @reward_type == 'global'
       product = spree_product_class.find_by_permalink(@name.parameterize)
       if product
-        product.store_ids << store.id
+        product.stores << store
+        product.save
         return product
       else
         @reward_owner = le_admin_class.first
@@ -91,7 +94,7 @@ class CreateStoreProduct < ActiveModelCommand
     product.permalink = @name.parameterize
     product.price = @retail_price
     product.master.price = @retail_price
-    product.store_ids << store.id
+    product.stores << store
     product.available_on = @available_on
     product.deleted_at = @deleted_at if @deleted_at
     product.count_on_hand = 100  #TODO - better quantity stuff
@@ -116,7 +119,7 @@ class CreateStoreProduct < ActiveModelCommand
     link.filter_id = @filter.id
     product.spree_product_filter_link = link
 
-    product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id)
+    product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id) if product && @reward_owner
     product.save
     product
   end
