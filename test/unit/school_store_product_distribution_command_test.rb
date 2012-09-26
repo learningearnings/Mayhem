@@ -24,6 +24,17 @@ describe SchoolStoreProductDistributionCommand do
       mock_retail_products = mock "MasterProductCopies"
       mock_retail_product_master_variant = mock "RetailProductMasterVariant"
       mock_spree_property_class = mock "Spree::Property"
+      mock_spree_product_filter_link_class = "SpreeProductFilterLink"
+      mock_spree_product_person_link_class = "SpreeProductPersonLink"
+      mock_filter_conditions_class = "FilterConditions"
+      mock_filter_factory_class = "FilterFactoryClass"
+      mock_filter_factory = "FilterFactory"
+      mock_filter = "Filter"
+      mock_filter_conditions_class.stubs(:new)
+      mock_filter_factory_class.stubs(:new).returns()
+      mock_filter_factory_class.
+      mock_filter_factory_class.stubs(:find_or_create_filter).returns(mock_filter)
+      mock_filter.
       mock_retail_price_property = mock "retail_price_property"
       mock_retail_quantity_property = mock "retail_quantity_property"
       mock_retail_product_relation = mock "retail_product_relation"
@@ -32,6 +43,8 @@ describe SchoolStoreProductDistributionCommand do
       mock_products = mock "StoreProducts"
       mock_school = mock "School"
       mock_school.stubs(:id)
+      mock_person = mock "Person"
+      mock_person.stubs(:id)
       mock_store = mock "Spree::Store"
       mock_store.expects(:id)
       mock_store.expects(:products).returns(mock_products)
@@ -73,11 +86,16 @@ describe SchoolStoreProductDistributionCommand do
       mock_store_subdomain.expects(:+).returns("something")
       cmd = subject.new(:master_product => mock_master_product,
                         :school => mock_school,
+                        :person => mock_person,
                         :quantity => 1,
                         :retail_price => 1
                         )
       cmd.expects(:spree_property_class).returns(mock_spree_property_class).times(2)
       cmd.spree_property_class = mock_spree_property_class
+      cmd.spree_product_filter_link_class = mock_spree_product_filter_link_class
+      cmd.spree_product_person_link_class = mock_spree_product_person_link_class
+      cmd.filter_conditions_class = mock_filter_conditions_class
+      cmd.filter_factory_class = mock_filter_factory_class
       cmd.execute!
     end
 
@@ -89,6 +107,10 @@ describe SchoolStoreProductDistributionCommand do
       mock_products = mock "StoreProducts"
       mock_school = mock "School"
       mock_store = mock "Spree::Store"
+      mock_spree_product_filter_link_class = "SpreeProductFilterLink"
+      mock_spree_product_person_link_class = "SpreeProductPersonLink"
+      mock_filter_conditions_class = "FilterConditions"
+      mock_filter_factory_class = "FilterFactory"
       mock_school.expects(:store).returns(mock_store)
       mock_store.expects(:products).returns(mock_products).times(2)
       mock_products.expects(:with_property_value).returns(mock_retail_products).times(2)
@@ -107,6 +129,10 @@ describe SchoolStoreProductDistributionCommand do
                         :quantity => 1,
                         :retail_price => 1
                         )
+      cmd.spree_product_filter_link_class = mock_spree_product_filter_link_class
+      cmd.spree_product_person_link_class = mock_spree_product_person_link_class
+      cmd.filter_conditions_class = mock_filter_conditions_class
+      cmd.filter_factory_class = mock_filter_factory_class
       cmd.execute!
     end
   end

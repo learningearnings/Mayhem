@@ -12,7 +12,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product = Spree::Product.new
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
-    @types = [["global","global"],["local","local"],["reward","reward"]]
+    @types = [["global","global"],["local","local"],["charity","charity"]]
+    @classrooms = @current_school.classrooms
   end
 
   def create
@@ -34,14 +35,15 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product = Spree::Product.find(params[:id])
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
+    @classrooms = @current_school.classrooms
     if @product.has_property_type?
       @type = @product.properties.select{|s| s.name == "type" }.first.presentation
       @types = [[@type, @type]]
-      ["global", "local", "reward"].each do |product_type|
+      ["global", "local", "charity"].each do |product_type|
         @types.push([product_type, product_type]) unless product_type == @type
       end
     else
-      @types = [["global","global"],["local","local"],["reward","reward"]]
+      @types = [["global","global"],["local","local"],["charity","charity"]]
     end
   end
 
@@ -81,6 +83,12 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
       i.attachment_content_type = params[:product][:images][:attachment_file_name].content_type
       i.attachment = params[:product][:images][:attachment_file_name].tempfile
+      i.save
+    end
+    if params[:product][:svg]
+      i = @product
+      i.svg_file_name = params[:product][:svg][:svg_file_name].original_filename
+      i.svg = params[:product][:svg][:svg_file_name].tempfile
       i.save
     end
   end

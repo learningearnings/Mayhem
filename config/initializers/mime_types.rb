@@ -4,3 +4,5 @@
 # Mime::Type.register "text/richtext", :rtf
 # Mime::Type.register_alias "text/html", :iphone
 Mime::Type.register_alias "application/pdf", :pdf
+Mime::Type.register "image/svg+xml", :svg
+#Mime::Type.register "application/xhtml+xml", :svg

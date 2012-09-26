@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920211831) do
+ActiveRecord::Schema.define(:version => 20120925204142) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -780,6 +780,7 @@ ActiveRecord::Schema.define(:version => 20120920211831) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.integer  "count_on_hand",        :default => 0,  :null => false
+    t.string   "svg_file_name"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"

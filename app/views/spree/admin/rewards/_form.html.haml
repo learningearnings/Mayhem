@@ -19,7 +19,7 @@
     .input= f.text_field :name
   .clearfix
     = f.label 'Classroom'
-    = select_tag :classroom, options_from_collection_for_select(current_user.person.classrooms, :id, :name)
+    = select_tag :classroom, options_from_collection_for_select(@classrooms, :id, :name)
   .clearfix
     = f.label 'Min/Max Grades'
     = select_tag :min_grade, options_for_select(@grades)
@@ -36,14 +36,23 @@
   .clearfix
     = f.label 'Available on'
     .input= f.text_field :available_on, :class => 'datepicker'
+  - unless @product.images.empty?
+    .clearfix
+      = image_tag @product.thumb
+      %p
+      = f.label :current_image
   .clearfix
     = f.fields_for :images do |i|
       = i.label :image
       = i.file_field :attachment_file_name
-  - unless @product.images.empty?
+  .clearfix
+    = f.fields_for :svg do |i|
+      = i.label :svg
+      = i.file_field :svg_file_name
+  - if @product.svg_file_name
     .clearfix
-      = f.label :current_image
-      = image_tag @product.thumb
+      = f.label :current_svg
+      = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
   .clearfix
     = f.label 'Stores'
     %br

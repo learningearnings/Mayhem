@@ -5,6 +5,23 @@
   position: relative;
   .locker_sticker {
     position: absolute;
+    &:hover {
+      .remove {
+        display: block;
+      }
+    }
+    .remove {
+      display: none;
+      background-color: white;
+      padding: 5px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+      &:hover {
+        background-color: #eee;
+      }
+    }
   }
 }
 

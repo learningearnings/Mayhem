@@ -12,7 +12,6 @@ class RewardsController < LoggedInController
   end
 
   def show
-    @product = Spree::Product.find(params[:id])
   end
 
   def new
@@ -53,7 +52,7 @@ class RewardsController < LoggedInController
       after_save
       flash[:notice] = "Your reward was updated successfully."
       redirect_to rewards_path
-    else
+   else
       flash[:error] = "There was an error updating your Reward, please check the form and try again"
       render 'edit'
     end

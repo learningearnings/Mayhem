@@ -32,7 +32,7 @@ class Message < ActiveRecord::Base
       transition [:read, :unread] => :read
     end
     event :hide  do
-      transition :read => :hidden
+      transition [:read, :unread] => :hidden
     end
     state :unread
     state :read
