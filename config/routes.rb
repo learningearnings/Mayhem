@@ -90,7 +90,12 @@ Leror::Application.routes.draw do
   match "/redeem_bucks/:student_id/:code" => 'banks#redeem_bucks', as: 'redeem_buck'
 
   # Lockers
-  resource :locker
+  resource :locker do
+    member do
+      match 'share' => 'lockers#share', as: 'share_locker'
+    end
+  end
+  match "/lockers/:id" => 'lockers#shared', as: 'shared_locker'
 
   resource :teachers
   match "/teachers/approve_teacher/:id" => 'teachers#approve_teacher', as: 'approve_teacher'
@@ -126,6 +131,7 @@ Leror::Application.routes.draw do
   resources :food_fight_play_commands, only: [:create]
   resources :student_message_student_commands, only: [:create]
   resources :student_message_admin_commands, only: [:create]
+  resources :student_share_locker_message_commands, only: [:create]
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
   resources :add_locker_sticker_to_locker_commands, only: [:create]
