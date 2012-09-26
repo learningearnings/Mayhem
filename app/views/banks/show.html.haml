@@ -11,8 +11,8 @@
           %p Savings Balance: #{current_person.savings_balance}
         .actions
           = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn', 'data-toggle' => 'modal'
-      = link_to "View Checking History", "#checking-history-modal", class: 'btn', 'data-toggle' => 'modal'
-      = link_to "View Savings History", "#savings-history-modal", class: 'btn', 'data-toggle' => 'modal'
+          = link_to "View Checking History", "#checking-history-modal", class: 'btn', 'data-toggle' => 'modal'
+          = link_to "View Savings History", "#savings-history-modal", class: 'btn', 'data-toggle' => 'modal'
       .pending-credits
         %h4 Pending Credits
         %table.table.table-bordered.solid-background
@@ -31,36 +31,37 @@
         .actions
           = link_to "Enter Codes", "#enter-codes-modal", class: 'btn', 'data-toggle' => 'modal'
     .span4
-      %h3 Rewards Highlights
-      .row
-        .span1
-          .image-placeholder
-        .span3
-          %p= lipsum 100
-          %strong Cost: $3,000
-      %hr
-      .row
-        .span1
-          .image-placeholder
-        .span3
-          %p= lipsum 100
-          %strong Cost: $3,000
-      %hr
-      .row
-        .span1
-          .image-placeholder
-        .span3
-          %p= lipsum 100
-          %strong Cost: $3,000
-      %hr
-      .row
-        .span1
-          .image-placeholder
-        .span3
-          %p= lipsum 100
-          %strong Cost: $3,000
-      %hr
-      = link_to "Redeem Credits", "#", class: 'btn'
+      .reward-highlights
+        %h3 Rewards Highlights
+        .row
+          .span1
+            .image-placeholder
+          .span3
+            %p= lipsum 100
+            %strong Cost: $3,000
+        %hr
+        .row
+          .span1
+            .image-placeholder
+          .span3
+            %p= lipsum 100
+            %strong Cost: $3,000
+        %hr
+        .row
+          .span1
+            .image-placeholder
+          .span3
+            %p= lipsum 100
+            %strong Cost: $3,000
+        %hr
+        .row
+          .span1
+            .image-placeholder
+          .span3
+            %p= lipsum 100
+            %strong Cost: $3,000
+        %hr
+        = link_to "Redeem Credits", "#", class: 'btn'
 
   #transfer-credits-modal.modal.hide
     = render 'transfer_credits'

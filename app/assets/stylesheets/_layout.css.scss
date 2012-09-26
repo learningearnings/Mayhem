@@ -1044,6 +1044,7 @@ footer {
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
   box-shadow:         1px 2px 5px 1px #ccc;  
+  padding: 1em;
 }
 
 .reward-highlights-sidebar {
@@ -1096,4 +1097,13 @@ footer {
       border-radius: 35px;
     }
   }
+}
+
+.pending-credits {
+  margin-top: 2em;
+  padding: 1em; 
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;    
 }
