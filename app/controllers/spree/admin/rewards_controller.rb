@@ -3,7 +3,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def index
     # insert code here to gather all products for the current school
-    @products = Spree::Product.not_deleted.order(:name)
+    @products = Spree::Product.not_deleted.order(:name).select{|p| p.properties.select{|s| s.presentation == "charity" || s.presentation == "global" || s.presentation == "wholesale" }.present? }
   end
 
   def new
@@ -12,7 +12,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product = Spree::Product.new
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
-    @types = [["global","global"],["local","local"],["charity","charity"]]
+    @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     @classrooms = @current_school.classrooms
   end
 
@@ -39,11 +39,11 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     if @product.has_property_type?
       @type = @product.properties.select{|s| s.name == "type" }.first.presentation
       @types = [[@type, @type]]
-      ["global", "local", "charity"].each do |product_type|
+      ["wholesale", "global", "charity"].each do |product_type|
         @types.push([product_type, product_type]) unless product_type == @type
       end
     else
-      @types = [["global","global"],["local","local"],["charity","charity"]]
+      @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     end
   end
 
@@ -62,6 +62,18 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def after_save
     if @product.has_property_type?
+      if @product.store_ids.include?(Spree::Store.find_by_name("le").id)
+        unless @product.has_retail_properties?
+          retail_price_property = @product.properties.create name: "retail_price", presentation: "retail_price"
+          retail_qty_property = @product.properties.create(name: "retail_quantity", presentation: "retail_quantity")
+          price_product_property.value = retail_price_property.product_properties.first
+          price_product_property.value = params[:retail_price]
+          price_product_property.save
+          qty_product_property.value = retail_qty_property.product_properties.first
+          qty_product_property.value = params[:retail_price]
+          qty_product_property.save
+        end
+      end
       property = @product.properties.select{|p| p.name == "type"}.first
       property.presentation = params[:product_type]
       property.save
@@ -77,7 +89,12 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
-    @product.store_ids = params[:product][:store_ids]
+    if params[:product][:store_ids].include?(Spree::Store.find_by_name("le").id.to_s)
+      # then product must be a wholesale type to be sold in the LE store, remove other store ids.
+      @product.store_ids = ["#{Spree::Store.find_by_name("le").id}"]
+    else
+      @product.store_ids = params[:product][:store_ids]
+    end
     if params[:product][:images]
       i = @product.master.images.first
       i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename

@@ -22,6 +22,10 @@ Spree::Product.class_eval do
     properties.select{|s| s.name == "type" }.present?
   end
 
+  def has_retail_properties?
+    properties.select{|s| s.name == "retail_price" || s.name == "retail_quantity" }.present?
+  end
+
   def is_charity_reward?
     properties.select{|s| s.name == "type" && s.presentation == "charity"}.present?
   end

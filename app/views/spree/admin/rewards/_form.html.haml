@@ -34,6 +34,12 @@
     = f.label 'Count on hand'
     .input= f.text_field :on_hand
   .clearfix
+    = f.label 'Retail Qty'
+    .input= text_field_tag :retail_qty
+  .clearfix
+    = f.label 'Retail Price'
+    .input= text_field_tag :retail_price
+  .clearfix
     = f.label 'Available on'
     .input= f.text_field :available_on, :class => 'datepicker'
   - unless @product.images.empty?
