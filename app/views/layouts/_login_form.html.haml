@@ -8,8 +8,11 @@
     = password_field_tag 'user[password]', nil, :placeholder => 'Password'
     %li
     %label.supplemenal-login-form @
-    = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name)
+    = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name), :class => 'chzn-select'
     %li
       %button.btn.login-button
   .forgot-password
     = link_to "Forgot your password?", spree.new_user_password_path('user')
+
+:javascript
+  $(".chzn-select").chosen();

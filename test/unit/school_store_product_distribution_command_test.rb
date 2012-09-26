@@ -24,17 +24,17 @@ describe SchoolStoreProductDistributionCommand do
       mock_retail_products = mock "MasterProductCopies"
       mock_retail_product_master_variant = mock "RetailProductMasterVariant"
       mock_spree_property_class = mock "Spree::Property"
-      mock_spree_product_filter_link_class = "SpreeProductFilterLink"
-      mock_spree_product_person_link_class = "SpreeProductPersonLink"
+      mock_spree_product_filter_link_class = mock "SpreeProductFilterLink"
+      mock_spree_product_person_link_class = mock "SpreeProductPersonLink"
       mock_filter_conditions_class = "FilterConditions"
       mock_filter_factory_class = "FilterFactoryClass"
       mock_filter_factory = "FilterFactory"
-      mock_filter = "Filter"
+      mock_filter = mock "Filter"
+      mock_filter.stubs(:id).returns(1)
+      mock_filter_factory_class = mock "FilterFactory"
       mock_filter_conditions_class.stubs(:new)
-      mock_filter_factory_class.stubs(:new).returns()
-      mock_filter_factory_class.
-      mock_filter_factory_class.stubs(:find_or_create_filter).returns(mock_filter)
-      mock_filter.
+      mock_filter_factory_class.stubs(:new).returns(mock_filter_factory)
+      mock_filter_factory.stubs(:find_or_create_filter).returns(mock_filter)
       mock_retail_price_property = mock "retail_price_property"
       mock_retail_quantity_property = mock "retail_quantity_property"
       mock_retail_product_relation = mock "retail_product_relation"
@@ -44,7 +44,8 @@ describe SchoolStoreProductDistributionCommand do
       mock_school = mock "School"
       mock_school.stubs(:id)
       mock_person = mock "Person"
-      mock_person.stubs(:id)
+      person_id = mock
+      mock_person.stubs(:id).returns(person_id)
       mock_store = mock "Spree::Store"
       mock_store.expects(:id)
       mock_store.expects(:products).returns(mock_products)
@@ -56,7 +57,10 @@ describe SchoolStoreProductDistributionCommand do
       mock_master_product.expects(:permalink).returns("master-product-permalink")
       mock_master_product.expects(:duplicate).returns(mock_retail_product)
       mock_master_product.expects(:description).returns("Master Product Description")
-      mock_retail_product.stubs(:id).returns(2)
+      product_id = mock
+      mock_retail_product.stubs(:id).returns(product_id)
+      mock_retail_product.stubs(:properties).returns(mock_retail_product_properties)
+      mock_retail_product_properties.expects(:create).with(name: 'type', presentation: 'retail')
       mock_retail_product.expects(:name=)
       mock_retail_product.expects(:description=)
       mock_retail_product.expects(:available_on=)
@@ -81,6 +85,8 @@ describe SchoolStoreProductDistributionCommand do
 
       mock_spree_property_class.expects(:find_by_name).returns(mock_retail_price_property)
       mock_spree_property_class.expects(:find_by_name).returns(mock_retail_quantity_property)
+      mock_spree_product_filter_link_class.expects(:create)
+      mock_spree_product_person_link_class.expects(:create).with(person_id: person_id, product_id: product_id)
       mock_school.expects(:store).returns(mock_store)
       mock_school.expects(:store_subdomain).returns(mock_store_subdomain)
       mock_store_subdomain.expects(:+).returns("something")
