@@ -4,7 +4,7 @@
   - if current_user.person.charities.present?
     - current_user.person.charities.each do |item|
       - if item.product.name
-        = render 'shared/certificates/haiti_certificate', :item => item
+        = open(item.product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
         %p
   - else
     %center
