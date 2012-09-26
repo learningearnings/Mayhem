@@ -27,7 +27,7 @@
     %h4 Create E-Bucks
     = form_for OtuCode.new, :url => teachers_create_ebucks_path do |f|
       = label_tag 'Student'
-      = select("student", "id", Student.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
+      = select("student", "id", current_school.students.collect {|p| [ p.name, p.id ] }, { :include_blank => true }, { class: 'chzn-select' })
       = label_tag :points
       = text_field_tag :points
       = f.submit 'Create eBucks'
@@ -44,3 +44,6 @@
     %h4 Buck Batches
     - @buck_batches.each do |batch|
       = link_to batch.name, teachers_print_batch_path(batch.id, :format => 'pdf')
+
+:javascript
+  $(".chzn-select").chosen();
