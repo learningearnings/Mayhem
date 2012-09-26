@@ -1,7 +1,7 @@
 class BanksController < LoggedInController
   def show
-    @recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).limit(20).joins(:transaction).order({ transaction: :created_at }))
-    @recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).limit(20).joins(:transaction).order({ transaction: :created_at }))
+    @recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).joins(:transaction).order({ transaction: :created_at }).page(1).per(10))
+    @recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at }).page(1).per(10))
 
     @unredeemed_bucks = current_person.otu_codes.active
   end
@@ -25,5 +25,15 @@ class BanksController < LoggedInController
       flash[:error] = 'Invalid Code.'
       render :show
     end
+  end
+
+  def checking_transactions
+    recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).joins(:transaction).order({ transaction: :created_at }).page(params[:page]).per(10))
+    render partial: 'ledger_table', locals: { amounts: recent_checking_amounts }
+  end
+
+  def savings_transactions
+    recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at }).page(params[:page]).per(10))
+    render partial: 'ledger_table', locals: { amounts: recent_savings_amounts }
   end
 end

@@ -80,7 +80,12 @@ Leror::Application.routes.draw do
   match "/add_classroom_student" => 'classrooms#add_student', as: 'new_classroom_student'
   get :remove_classroom_student, :controller => :classrooms, :action => :remove_student
   # Student banking bits
-  resource :bank
+  resource :bank do
+    member do
+      match 'checking_transactions'
+      match 'savings_transactions'
+    end
+  end
   match "/redeem_bucks" => 'banks#redeem_bucks'
   match "/redeem_bucks/:student_id/:code" => 'banks#redeem_bucks', as: 'redeem_buck'
 
@@ -94,18 +99,26 @@ Leror::Application.routes.draw do
 
   namespace :teachers do
     resource :bank
+    resource :dashboard
     match "home" => "home#show", as: 'home'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'
+    match "/new_student" => 'dashboards#new_student'
+    match "/create_student" => 'dashboards#create_student'
   end
 
   namespace :school_admins do
     resource :bank
+    resource :dashboard
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'
+    match "/new_student" => 'dashboards#new_student'
+    match "/create_student" => 'dashboards#create_student'
+    match "/new_teacher" => 'dashboards#new_teacher'
+    match "/create_teacher" => 'dashboards#create_teacher'
   end
 
   # Command routes
@@ -122,7 +135,6 @@ Leror::Application.routes.draw do
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
   match "/get_image_results" => 'messages#get_image_results'
-
 end
 
 # Any routes we add to Spree go here:

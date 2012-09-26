@@ -6,7 +6,9 @@ module Reports
       else
         classroom = nil
       end
-      report = Reports::StudentCreditHistory.new params.merge(school: current_school, person: current_person, classroom: classroom)
+      # If no student_filter_type, select 'all_at_school'
+      params[:student_filter_type] ||= 'all_at_school'
+      report = Reports::StudentCreditHistory.new params.merge(school: current_school, person: current_person, classroom: classroom, student_filter_type: params[:student_filter_type])
       report.execute!
       render 'show', locals: {
         report: report,

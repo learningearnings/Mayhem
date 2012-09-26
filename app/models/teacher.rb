@@ -45,12 +45,13 @@ class Teacher < Person
     end
   end
 
-  #def username
-  #  self.name.gsub(' ', '').underscore 
-  #end
-
   def name
     first_name + ' ' + last_name
+  end
+
+  # Don't love that bizlogic is right here, but hey...
+  def students_ive_given_ebucks_to
+    Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL").where(otu_codes: { teacher: { id: id } })
   end
 
   def setup_accounts(school)
@@ -70,6 +71,4 @@ class Teacher < Person
       user.save
     end
   end
-
-
 end

@@ -1,3 +1,4 @@
 - flash.each do |key, message|
-  %div{ class: "alert #{key}" }
+  %div{ class: "alert #{key} flash-message"}
+    %a.close{"data-dismiss" => "alert", :href => "#"} ×
     %p= message

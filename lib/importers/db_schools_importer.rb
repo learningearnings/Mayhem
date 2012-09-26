@@ -1,4 +1,18 @@
 #  migrate from old models to new models
+require_relative 'oldschema/create_store_product.rb'
+require_relative 'oldschema/old_state.rb'
+require_relative 'oldschema/old_school.rb'
+require_relative 'oldschema/old_user.rb'
+require_relative 'oldschema/old_classroom_detail.rb'
+require_relative 'oldschema/old_classroom.rb'
+require_relative 'oldschema/old_otu_code.rb'
+require_relative 'oldschema/old_point.rb'
+require_relative 'oldschema/old_reward_detail.rb'
+require_relative 'oldschema/old_reward.rb'
+require_relative 'oldschema/old_reward_local.rb'
+require_relative 'oldschema/old_redeemed.rb'
+
+
 
 class OldSchoolImporter
   def initialize
@@ -8,7 +22,15 @@ class OldSchoolImporter
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
-    non_display_reward_categories = [1000,1002]
+    @non_display_reward_categories = [1000,1002]
+    @reward_types = [5 => 'reward',
+                     2 => 'reward',
+                     3 => 'reward',
+                     12 => 'charity',
+                     1000 => 'global',
+                     1001 => 'global',
+                     1002 => 'local']
+    
   end
   def reset
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
@@ -269,27 +291,42 @@ class OldSchoolImporter
         cm.issue_credits_to_student new_school, teacher, new_student, op.points
 #        binding.pry if old_student.userID == 120435
       elsif reward_purchases.index(op.pointactionID) && op.rewardauctionID == 0
-        new_reward = get_reward(op.rewardID, new_school)
+        new_reward = get_reward(op, new_school)
         cm.transfer_credits_for_reward_purchase new_student, op.points.abs
       end
     end
     imported_points
   end
 
-  def get_reward old_reward_id, new_school
-    return if old_reward_id < 1
+  def get_reward old_point, new_school
+    return if old_point.nil?
+    old_reward_id = old_point.rewardID
     product = @new_school_rewards["#{old_reward_id}:#{new_school.store_subdomain}"]
     return product if product
     old_reward = OldReward.find(old_reward_id)
     store = Spree::Store.find_by_code new_school.store_subdomain
-    new_reward = CreateStoreProduct.new(:name => old_reward.rewardtitle,
-                                        :description => old_reward.rewarddesc,
-                                        :school => new_school,
-                                        :quantity => old_reward.numberofrewards,
-                                        :retail_price => old_reward.rewardpoints,
-                                        :deleted_at => non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now() : nil,
-                                        :available_on => Time.now(),
-                                        :image => old_reward.rewardimagepath).execute! if store
+    if old_reward.rewardcategoryID == 1002
+      reward_local = old_point.old_redeemed.old_reward_local
+      owner = Person.find_by_legacy_user_id(reward_local.userID)
+      new_reward = CreateStoreProduct.new(:name => reward_local.name,
+                                          :description => reward_local.body,
+                                          :school => new_school,
+                                          :quantity => reward_local.quantity,
+                                          :retail_price => reward_local.points,
+                                          :deleted_at => nil,
+                                          :available_on => Time.now(),
+                                          :reward_owner => owner,
+                                          :image => old_reward.rewardimagepath).execute! if store
+    else
+      new_reward = CreateStoreProduct.new(:name => old_reward.rewardtitle,
+                                          :description => old_reward.rewarddesc,
+                                          :school => new_school,
+                                          :quantity => old_reward.numberofrewards,
+                                          :retail_price => old_reward.rewardpoints,
+                                          :deleted_at => @non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now : nil,
+                                          :available_on => Time.now(),
+                                          :image => old_reward.rewardimagepath).execute! if store
+    end
     @new_school_rewards["#{old_reward_id}:#{new_school.store_subdomain}"] = new_reward
     puts "New reward #{new_reward.id} for #{new_reward.name}"
   end

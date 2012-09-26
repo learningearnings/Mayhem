@@ -9,6 +9,7 @@ module Reports
       @school         = params[:school]
       @classroom      = params[:classroom]
       @sort_by_filter = params[:sort_by]
+      @student_filter_type = params[:student_filter_type]
     end
 
     def execute!
@@ -46,17 +47,29 @@ module Reports
     end
 
     def students_bucket
-      # First, get teacher's classrooms for this school
-      if @classroom
-        bucket = @classroom
-      else
-        bucket = @school
+      case @student_filter_type
+      when 'all_at_school'
+        bucket = @school.students
+      when 'students_ive_given_bucks_to'
+        bucket = @person.students_ive_given_ebucks_to
+      when 'all_my_classrooms'
+        bucket = []
+        @person.classrooms_for_school(@school).each do |classroom|
+          bucket += classroom.students
+        end
+        bucket.uniq!
+      when 'classroom'
+        # First, get teacher's classrooms for this school
+        if @classroom
+          bucket = @classroom.students
+        else
+          bucket = @school.students
+        end
       end
 
       # NOTE: I'm doing this in memory rather than sql, because my sql-fu is
       # weak and this won't be big
-      students = bucket.students
-      students
+      bucket
     end
 
     def generate_row(student)
