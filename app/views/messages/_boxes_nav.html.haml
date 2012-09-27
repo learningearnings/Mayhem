@@ -2,10 +2,10 @@
   %h3 Messages:
   %hr
   %ul.nav-group
-    %li= link_to "Friend Messages", friend_messages_path, :class => 'friend-message active'
-    %li= link_to "School Messages",  school_messages_path, :class => 'school-message'
-    %li= link_to "Teacher Messages", teacher_messages_path, :class => 'teacher-message'
-    %li= link_to "System Messages",  system_messages_path, :class => 'system-message'
+    %li= inbox_link_for("Friend Messages", @received_messages.from_friend, friend_messages_path, 'friend-message')
+    %li= inbox_link_for("School Messages", @received_messages.from_school, school_messages_path, 'school-message')
+    %li= inbox_link_for("Teacher Messages", @received_messages.from_teacher, teacher_messages_path, 'teacher-message')
+    %li= inbox_link_for("System Messages", @received_messages.from_system, system_messages_path, 'system-message')
     %li= link_to 'Send Admin a Message', admin_message_path, :class => 'admin-message'
     %br
 
