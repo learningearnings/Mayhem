@@ -1,6 +1,11 @@
-= render auction
+.auctions-content
+  .span8
+    .auctions
+      .auction-item
 
-= form_for bid do |f|
-  = text_field_tag :amount
-  = hidden_field_tag :auction_id, auction.id
-  = f.submit "Make bid"
+        = render auction
+
+        = form_for bid do |f|
+          = text_field_tag :amount
+          = hidden_field_tag :auction_id, auction.id
+          = f.submit "Make bid"
