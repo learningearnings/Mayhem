@@ -50,11 +50,15 @@
   .clearfix
     = f.fields_for :images do |i|
       = i.label :image
+      %br
       = i.file_field :attachment_file_name
+      %p
   .clearfix#svg
     = f.fields_for :svg do |i|
       = i.label :svg
+      %br
       = i.file_field :svg_file_name
+      %p
   - if @product.svg_file_name
     .clearfix
       = f.label :current_svg
