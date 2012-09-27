@@ -3,7 +3,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def index
     # insert code here to gather all products for the current school
-    @products = Spree::Product.not_deleted.order(:name)
+    @products = Spree::Product.not_deleted.order(:name).select{|p| p.properties.select{|s| s.presentation == "charity" || s.presentation == "global" || s.presentation == "wholesale" }.present? }
   end
 
   def new
@@ -12,7 +12,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product = Spree::Product.new
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
-    @types = [["global","global"],["local","local"],["charity","charity"]]
+    @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     @classrooms = @current_school.classrooms
   end
 
@@ -39,11 +39,11 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     if @product.has_property_type?
       @type = @product.properties.select{|s| s.name == "type" }.first.presentation
       @types = [[@type, @type]]
-      ["global", "local", "charity"].each do |product_type|
+      ["wholesale", "global", "charity"].each do |product_type|
         @types.push([product_type, product_type]) unless product_type == @type
       end
     else
-      @types = [["global","global"],["local","local"],["charity","charity"]]
+      @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     end
   end
 
@@ -60,24 +60,24 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     end
   end
 
-  def after_save
-    if @product.has_property_type?
-      property = @product.properties.select{|p| p.name == "type"}.first
-      property.presentation = params[:product_type]
-      property.save
-    else
-      @product.properties.create(name: "type", presentation: params[:product_type])
-    end
-    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
-  end
-
   def form_data
     @product.name = params[:product][:name]
     @product.description = params[:product][:description]
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
-    @product.store_ids = params[:product][:store_ids]
+
+    if params[:product_type] == "wholesale"
+      @product.store_ids = ["#{Spree::Store.find_by_name("le").id}"]
+    else
+      # TODO insert code here to handle removing wholesale properties if type of product is changed during update
+      store_id_array = []
+      Spree::Store.all.each do |store|
+        store_id_array.push(store.id) unless store.name == "le"
+      end
+      @product.store_ids = store_id_array
+    end
+
     if params[:product][:images]
       i = @product.master.images.first
       i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
@@ -91,6 +91,31 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       i.svg = params[:product][:svg][:svg_file_name].tempfile
       i.save
     end
+  end
+
+  def after_save
+    if @product.has_property_type?
+      property = @product.properties.select{|p| p.name == "type"}.first
+      property.presentation = params[:product_type]
+      property.save
+    else
+      @product.properties.create(name: "type", presentation: params[:product_type])
+    end
+    create_wholesale_properties if @product.requires_wholesale_properties?
+    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
+  end
+
+  def create_wholesale_properties
+    # create retail price property
+    retail_price_property = @product.properties.create name: "retail_price", presentation: "retail_price"
+    price_product_property = retail_price_property.product_properties.first
+    price_product_property.value = params[:retail_price]
+    price_product_property.save
+    # create retail qty property
+    retail_qty_property = @product.properties.create(name: "retail_quantity", presentation: "retail_quantity")
+    qty_product_property = retail_qty_property.product_properties.first
+    qty_product_property.value = params[:retail_qty]
+    qty_product_property.save
   end
 
   def destroy
