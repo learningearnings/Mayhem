@@ -15,6 +15,8 @@ class FoodFightPlayCommand < ActiveModelCommand
   def initialize params={}
     @question_id = params[:question_id]
     @answer_id   = params[:answer_id].to_i
+    @on_success = lambda{|a|}
+    @on_failure = lambda{|a|}
   end
 
   def question_repository
@@ -31,6 +33,10 @@ class FoodFightPlayCommand < ActiveModelCommand
 
   def person_answer_repository
     Games::PersonAnswer
+  end
+
+  def game_credit_class
+    GameCredit
   end
 
   def question_answers
@@ -78,11 +84,19 @@ class FoodFightPlayCommand < ActiveModelCommand
     }
   end
 
+  def game_credits
+    BigDecimal('0.2')
+  end
+
   def execute!
     return on_failure.call(self) unless valid?
     answer = person_answer_repository.create(person_answer_args)
-    return on_success.call(self) if answer.valid? && correct?
-    return on_failure.call(self)
+    unless answer.valid? && correct?
+      return on_failure.call(self)
+    end
+    credit = game_credit_class.new('FF', person_id)
+    credit.increment!(game_credits)
+    return on_success.call(self)
   end
 
   class AnswerOption < SimpleDelegator

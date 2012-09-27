@@ -1,0 +1,5 @@
+%h2 View your friend's lockers
+
+%ul.friend-lockers
+  - @grademates.each do |friend|
+    %li= link_to(friend, shared_locker_path(friend.id))

@@ -37,4 +37,15 @@ $ ->
         make_draggable(sticker_div)
     )
 
+  $('.locker_wrapper .locker_sticker .remove').click (event) ->
+    locker_sticker = $(event.target).closest('.locker_sticker')
+    id = locker_sticker.data().id
+    $.post('/remove_locker_sticker_from_locker_commands',
+      {
+        id: id
+      },
+      (data, textStatus, jqXHR) ->
+        locker_sticker.remove()
+    )
+
   make_draggable('.locker_wrapper.editable .locker_sticker')

@@ -96,6 +96,13 @@ describe FoodFightPlayCommand do
   it "persists the answer when executed" do
     question_answer = mock "QuestionAnswer"
     question_answer.expects(:id).returns(2)
+    game_credit_class = mock "GameCredit class"
+    credit = mock "GameCredit"
+    game_credit_class.expects(:new).returns(credit)
+    game_credits = mock "Credit amount"
+    subject.expects(:game_credits).returns(game_credits)
+    subject.expects(:game_credit_class).returns(game_credit_class)
+    credit.expects(:increment!).with(game_credits)
     subject.stubs(:chosen_question_answer).returns(question_answer)
     person_answer_repository = mock("PersonAnswer")
     subject.stubs(:person_answer_repository).returns(person_answer_repository)
