@@ -13,6 +13,7 @@
           = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn', 'data-toggle' => 'modal'
           = link_to "View Checking History", "#checking-history-modal", class: 'btn', 'data-toggle' => 'modal'
           = link_to "View Savings History", "#savings-history-modal", class: 'btn', 'data-toggle' => 'modal'
+
       .pending-credits
         %h4 Pending Credits
         %table.table.table-bordered.solid-background
@@ -24,12 +25,13 @@
           %tbody
             - @unredeemed_bucks.each do |buck|
               %tr
-                %td= buck.teacher
+                %td= buck.source_string
                 %td= buck.created_at.to_s(:db)
                 %td= number_to_currency(buck.points)
                 %td= link_to "Claim Credits", redeem_buck_path(current_person.id, buck.code), class: 'btn'
         .actions
           = link_to "Enter Codes", "#enter-codes-modal", class: 'btn', 'data-toggle' => 'modal'
+
     .span4
       .reward-highlights
         %h3 Rewards Highlights

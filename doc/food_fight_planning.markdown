@@ -35,8 +35,6 @@ This allows the user to choose the school to throw some eggs at.  It's a
 paginated-by-initial-letter list of schools.  Picking a school saves the throw
 record and redirects to FoodFight#play
 
-#### FoodFight#
-
 ### Tables
 - Games::Question (x)
   - type:string

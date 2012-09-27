@@ -51,7 +51,11 @@ class Bank
   # FIXME: This doesn't sound like a responsibility of the bank
   def claim_bucks(student, otu_code)
     if otu_code.is_ebuck?
-      @credit_manager.issue_ecredits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+      if otu_code.teacher.present?
+        @credit_manager.issue_ecredits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+      else
+        @credit_manager.issue_game_credits_to_student(otu_code.source_string, student, otu_code.points)
+      end
     else
       @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
     end
@@ -59,7 +63,7 @@ class Bank
       otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.') 
       otu_code.messages.first.hide!
     end
-    otu_code.update_attribute(:active, false)
+    otu_code.mark_redeemed!
   end
 
   def transfer_teacher_bucks(school, from_teacher, to_teacher, points)
