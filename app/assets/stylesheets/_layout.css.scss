@@ -1150,4 +1150,27 @@ footer {
   overflow: hidden;
 }
 
-
+.auctions-content {
+  h2 {
+    margin-left: 130px;
+  }
+  .auctions {
+    padding: 1em;
+    background-color: #fff;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;    
+    overflow: hidden; 
+    margin-left: 100px;
+    .auction-item {
+      font-size: 1.5em;
+      .start_date, .end_date {
+        color: #666;
+      }
+      .current_bid {
+        color: #ee5b1a;
+        margin-bottom: 1em;
+      }
+    }
+  }
+}
