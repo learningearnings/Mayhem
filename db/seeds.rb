@@ -171,6 +171,8 @@ if Rails.env.development? || Rails.env.production?
 
   # Create the main liability account for LE
   Plutus::Liability.create(name: @credit_manager.main_account_name)
+  # Create the game liability account for LE
+  Plutus::Liability.create(name: @credit_manager.game_account_name)
 
   # Prepare a school
   @school = FactoryGirl.create(:school, :address => FactoryGirl.create(:address, :state_id => State.find_by_abbr('AL').id))

@@ -6,6 +6,7 @@ describe GameCredit do
     @chain = mock 'activerelation chain'
     @code = mock 'new or found otu code'
     OtuCode.expects(:ebuck).returns(@chain)
+    @chain.expects(:active).returns(@chain)
     @chain.expects(:where).with("code LIKE ?", 'FF%').returns(@chain)
   end
 

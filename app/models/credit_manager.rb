@@ -13,6 +13,14 @@ class CreditManager
     Plutus::Account.find_by_name(main_account_name)
   end
 
+  def game_account_name
+    'GAME_ACCOUNT'
+  end
+
+  def game_account
+    Plutus::Account.find_by_name(game_account_name)
+  end
+
   # NOTE: I am confused about why debits and credits are switched here, but to make
   # my tests pass they needed to be.
   def transfer_credits description, from_account, to_account, amount, buck_batch=nil
@@ -67,6 +75,10 @@ class CreditManager
 
   def issue_ecredits_to_student school, teacher, student, amount
     transfer_credits "Issue Credits to Student", teacher.undeposited_account_name(school), student.checking_account_name, amount
+  end
+
+  def issue_game_credits_to_student game_string, student, amount
+    transfer_credits "Credits Earned for #{game_string}", game_account_name, student.checking_account_name, amount
   end
 
   def transfer_credits_for_local_purchase student, teacher, amount

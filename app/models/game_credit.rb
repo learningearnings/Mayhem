@@ -2,7 +2,7 @@ class GameCredit
   attr_reader :otu_code
 
   def initialize prefix, student_id
-    @otu_code = OtuCode.ebuck.where("code LIKE ?", prefix.upcase + '%').where(student_id: student_id).first
+    @otu_code = OtuCode.ebuck.active.where("code LIKE ?", prefix.upcase + '%').where(student_id: student_id).first
     if @otu_code.nil?
       @otu_code = OtuCode.new
       @otu_code.ebuck = true

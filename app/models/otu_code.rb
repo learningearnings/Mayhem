@@ -10,7 +10,7 @@ class OtuCode < ActiveRecord::Base
   has_many :messages, :through => :message_code_links
   has_many :message_code_links
 
-  scope :active,  lambda { where("active = ?", true) }
+  scope :active, where("active = ?", true)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
 
@@ -32,19 +32,31 @@ class OtuCode < ActiveRecord::Base
   def source_string
     if teacher
       teacher.to_s
+    elsif is_game?
+      source_string_for_game
     else
-      source_string_for_game(prefix)
+      ''
     end
+  end
+
+  def is_game?
+    source_string_for_game.present?
   end
 
   def prefix
     code[0..1]
   end
 
-  def source_string_for_game(prefix)
+  def source_string_for_game
     games = {
       FF: 'Food Fight'
     }
     games[prefix.to_sym]
+  end
+
+  def mark_redeemed!
+    self.active = false
+    self.redeemed_at = Time.zone.now
+    self.save
   end
 end
