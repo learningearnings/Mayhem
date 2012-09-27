@@ -545,6 +545,16 @@ input, textarea, select {
   left: 90px;
   z-index: 15;
  }
+ 
+.bacon-smiling-intro {
+  background-image: url(asset_path('pig_smiling_intro.png', image));
+  width: 275px;
+  height: 344px;
+  position: absolute;
+  top: 30px;
+  left: 160px;
+  z-index: 15;
+}
 
 .white-board {
   background-image: url(asset_path('whiteboard_with_shadows.png', image));
@@ -948,7 +958,7 @@ footer {
     border-color: red; 
 }
 
-.bank-intro {
+.bank-intro, .coming-soon-intro {
   position: absolute;
   p {
     font-size: 60px;
@@ -1130,4 +1140,14 @@ footer {
 .games {
   margin-left: 120px;
 }
+
+.coming-soon-container {
+  padding: 1em;
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;    
+  overflow: hidden;
+}
+
 
