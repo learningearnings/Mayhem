@@ -12,13 +12,16 @@ class CreateStoreProduct < ActiveModelCommand
     @name             = params[:name]
     @description      = params[:description]
     @school           = params[:school]
+    @legacy_selector  = params[:legacy_selector]
     @quantity         = params[:quantity]
+    @price            = params[:price]
     @retail_price     = params[:retail_price]
+    @retail_quantity  = params[:retail_quantity]
     @available_on     = params[:available_on]
     @deleted_at       = params[:deleted_at]
     @image            = params[:image]
     @filter           = params[:filter]
-    @reward_type      = params[:reward_type] || 'reward' # global, local, charity, reward
+    @reward_type      = params[:reward_type] || 'retail' # global, local, charity, retail, wholesale
     @reward_owner     = params[:reward_owner] || @school.school_admins.first
   end
 
@@ -58,15 +61,15 @@ class CreateStoreProduct < ActiveModelCommand
   def execute!
     store = spree_store_class.find_by_code(@school.store_subdomain)
     return if store.nil?
-    if @reward_type == 'reward'
+    if @reward_type == 'wholesale'
       le_store = spree_store_class.find_by_code('le')
-      wholesale_product = le_store.products.find_by_permalink(@name.parameterize)
+      wholesale_product = le_store.products.with_property_value('legacy_selector',@legacy_selector).first
       # do the copy and return the product if master_product
+#      puts "#{@legacy_selector} Not found - must create" if !wholesale_product
       if wholesale_product
-        retail_price_property = spree_property_class.find_by_name('retail_price');
-        retail_quantity_property = spree_property_class.find_by_name('retail_quantity');
-        retail_price = retail_product.product_properties.where(:property_id => retail_price_property.id).first
-        retail_price = retail_product.product_properties.where(:property_id => retail_price_property.id).first
+        wholesale_product = spree_product_class.find(wholesale_product.id)
+        retail_price = wholesale_product.property('retail_price').to_f
+        retail_qty = wholesale_product.property('retail_quantity').to_i
         product = school_store_product_distribution_command_class.new(:master_product => wholesale_product,
                                                                       :school => @school,
                                                                       :quantity => retail_qty,
@@ -77,28 +80,39 @@ class CreateStoreProduct < ActiveModelCommand
       end
     end
 
-    if @reward_type == 'global'
-      product = spree_product_class.find_by_permalink(@name.parameterize)
+    if @reward_type == 'global' || @reward_type == 'charity'
+      product = spree_product_class.with_property_value('legacy_selector',@legacy_selector).first
       if product
+        product = spree_product_class.find(product.id)
         product.stores << store
         product.save
         return product
       else
+#        puts "#{@legacy_selector} Not found - must create"
         @reward_owner = le_admin_class.first
       end
     end
 
     product = spree_product_class.new
+
+
     product.name = @name
     product.description = @description
     product.permalink = @name.parameterize
-    product.price = @retail_price
+    product.price = @price
     product.master.price = @retail_price
-    product.stores << store
+    if @reward_type == 'wholesale' || @reward_type == 'global' || @reward_type == 'charity'
+      product.stores << le_store if le_store
+    else
+      product.stores << store
+    end
+    if @reward_type == 'global' || @reward_type == 'charity'
+      product.stores << store
+    end
+
     product.available_on = @available_on
     product.deleted_at = @deleted_at if @deleted_at
     product.count_on_hand = 100  #TODO - better quantity stuff
-#    product.properties.create(name: "type", @reward_type)
 
     new_image = open('http://learningearnings.com/images/rewardimage/' + @image)
     def new_image.original_filename; base_uri.path.split('/').last; end
@@ -121,11 +135,26 @@ class CreateStoreProduct < ActiveModelCommand
 
     product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id) if product && @reward_owner
     product.save
+
+    if @reward_type == 'wholesale'
+      product.set_property('retail_price',@retail_price)
+      product.set_property('retail_quantity',@retail_quantity)
+    end
+    product.set_property("product_type", @reward_type)
+    product.set_property("legacy_selector", @legacy_selector)
+    product.save
+
+    if @reward_type == 'wholesale'
+      retail_price = product.property('retail_price').to_f
+      retail_qty = product.property('retail_quantity').to_i
+      retail_product = school_store_product_distribution_command_class.new(:master_product => product,
+                                                                    :school => @school,
+                                                                    :quantity => retail_qty,
+                                                                    :person => @reward_owner,
+                                                                    :retail_price => retail_price
+                                                                    ).execute!
+      product = retail_product if retail_product
+    end
     product
   end
-
-
-
-
-
 end

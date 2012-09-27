@@ -32,7 +32,7 @@ class OldSchoolImporter
                      1000 => 'global',
                      1001 => 'global',
                      1002 => 'local']
-    
+
   end
   def reset
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
@@ -320,6 +320,7 @@ class OldSchoolImporter
       owner = Person.find_by_legacy_user_id(reward_local.userID)
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
+                                          :legacy_selector => reward_selector,
                                           :school => new_school,
                                           :reward_type => reward_type,
                                           :quantity => reward_local.quantity,
@@ -329,16 +330,28 @@ class OldSchoolImporter
                                           :reward_owner => owner,
                                           :image => old_reward.rewardimagepath).execute! if store
     else
-      new_reward = CreateStoreProduct.new(:name => old_reward.rewardtitle,
-                                          :description => old_reward.rewarddesc,
-                                          :school => new_school,
-                                          :reward_type => reward_type,
-                                          :quantity => old_reward.numberofrewards,
-                                          :retail_price => old_reward.rewardpoints,
-                                          :deleted_at => @non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now : nil,
-                                          :reward_owner => owner,
-                                          :available_on => Time.now(),
-                                          :image => old_reward.rewardimagepath).execute! if store
+      if reward_type == 'wholesale'
+        owner = new_school.school_admins.first || new_school.teachers.first || LeAdmin.first
+      elsif reward_type == 'charity'
+        owner = LeAdmin.first
+      end
+      params = {:name => old_reward.rewardtitle,
+        :description => old_reward.rewarddesc,
+        :legacy_selector => reward_selector,
+        :school => new_school,
+        :reward_type => reward_type,
+        :quantity => old_reward.numberofrewards,
+        :price => old_reward.rewardpoints,
+        :deleted_at => @non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now : nil,
+        :reward_owner => owner,
+        :available_on => Time.now(),
+        :image => old_reward.rewardimagepath}
+
+      if reward_type == 'wholesale'
+        params[:retail_quantity] = old_point.old_reward.shipmentmin
+        params[:retail_price] = (old_reward.shipmentmin * old_reward.rewardpoints)
+      end
+      new_reward = CreateStoreProduct.new(params).execute! if store
     end
     @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] = new_reward
     puts "New reward #{new_reward.id} for #{new_reward.name} - #{reward_type} - #{new_reward.permalink}"

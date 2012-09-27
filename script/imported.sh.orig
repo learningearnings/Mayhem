@@ -8,8 +8,9 @@ fi
 echo "Removing all your existing spree images .. You won't miss them
      "
 rm -rf public/spree/products/*
+rm -rf public/system/*
 echo -n "Uncompressing...."
-echo `tail -n +18 $0 | base64 -d | tar zxv | wc -l` files extracted
+echo `tail -n +19 $0 | base64 -d | tar zxv | wc -l` files extracted
 echo "Loading the learning_earning_development database..."
 gzip -dc imported.pg.db.gz | pg_restore -O --dbname=learning_earning_development --clean
 echo "Finished!"
