@@ -33,12 +33,12 @@
   .clearfix
     = f.label 'Count on hand'
     .input= f.text_field :on_hand
-  .clearfix
+  .clearfix#quantity
     = f.label 'Retail Qty'
-    .input= text_field_tag :retail_qty
-  .clearfix
+    .input= text_field_tag :retail_qty, @product.retail_quantity
+  .clearfix#price
     = f.label 'Retail Price'
-    .input= text_field_tag :retail_price
+    .input= text_field_tag :retail_price, @product.retail_price
   .clearfix
     = f.label 'Available on'
     .input= f.text_field :available_on, :class => 'datepicker'
@@ -51,7 +51,7 @@
     = f.fields_for :images do |i|
       = i.label :image
       = i.file_field :attachment_file_name
-  .clearfix
+  .clearfix#svg
     = f.fields_for :svg do |i|
       = i.label :svg
       = i.file_field :svg_file_name
@@ -60,12 +60,6 @@
       = f.label :current_svg
       = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
   .clearfix
-    = f.label 'Stores'
-    %br
-    - Spree::Store.all.each do |store|
-      = check_box_tag "product[store_ids][]", store.id, @product.stores.include?(store)
-      = store.name
-  .clearfix
     = f.hidden_field :id, value: @product.id
   .clearfix
     .input= f.hidden_field :filter, :value => 1
@@ -73,4 +67,23 @@
 
 %p
 = button_to :submit
+
+:javascript
+  $('select#product_type').change(function() {
+    if ($('select#product_type option:selected').val() == "wholesale"){
+      $('#svg').hide();
+      $('#price').show();
+      $('#quantity').show();
+    }
+    else if ($('select#product_type option:selected').val() == "charity"){
+      $('#price').hide();
+      $('#quantity').hide();
+      $('#svg').show();
+    }
+    else {
+      $('#svg').hide();
+      $('#price').hide();
+      $('#quantity').hide();
+    }
+  });
 

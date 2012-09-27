@@ -60,41 +60,24 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     end
   end
 
-  def after_save
-    if @product.has_property_type?
-      if @product.store_ids.include?(Spree::Store.find_by_name("le").id)
-        unless @product.has_retail_properties?
-          retail_price_property = @product.properties.create name: "retail_price", presentation: "retail_price"
-          retail_qty_property = @product.properties.create(name: "retail_quantity", presentation: "retail_quantity")
-          price_product_property.value = retail_price_property.product_properties.first
-          price_product_property.value = params[:retail_price]
-          price_product_property.save
-          qty_product_property.value = retail_qty_property.product_properties.first
-          qty_product_property.value = params[:retail_price]
-          qty_product_property.save
-        end
-      end
-      property = @product.properties.select{|p| p.name == "type"}.first
-      property.presentation = params[:product_type]
-      property.save
-    else
-      @product.properties.create(name: "type", presentation: params[:product_type])
-    end
-    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
-  end
-
   def form_data
     @product.name = params[:product][:name]
     @product.description = params[:product][:description]
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
-    if params[:product][:store_ids].include?(Spree::Store.find_by_name("le").id.to_s)
-      # then product must be a wholesale type to be sold in the LE store, remove other store ids.
+
+    if params[:product_type] == "wholesale"
       @product.store_ids = ["#{Spree::Store.find_by_name("le").id}"]
     else
-      @product.store_ids = params[:product][:store_ids]
+      # TODO insert code here to handle removing wholesale properties if type of product is changed during update
+      store_id_array = []
+      Spree::Store.all.each do |store|
+        store_id_array.push(store.id) unless store.name == "le"
+      end
+      @product.store_ids = store_id_array
     end
+
     if params[:product][:images]
       i = @product.master.images.first
       i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
@@ -108,6 +91,31 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       i.svg = params[:product][:svg][:svg_file_name].tempfile
       i.save
     end
+  end
+
+  def after_save
+    if @product.has_property_type?
+      property = @product.properties.select{|p| p.name == "type"}.first
+      property.presentation = params[:product_type]
+      property.save
+    else
+      @product.properties.create(name: "type", presentation: params[:product_type])
+    end
+    create_wholesale_properties if @product.requires_wholesale_properties?
+    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
+  end
+
+  def create_wholesale_properties
+    # create retail price property
+    retail_price_property = @product.properties.create name: "retail_price", presentation: "retail_price"
+    price_product_property = retail_price_property.product_properties.first
+    price_product_property.value = params[:retail_price]
+    price_product_property.save
+    # create retail qty property
+    retail_qty_property = @product.properties.create(name: "retail_quantity", presentation: "retail_quantity")
+    qty_product_property = retail_qty_property.product_properties.first
+    qty_product_property.value = params[:retail_qty]
+    qty_product_property.save
   end
 
   def destroy

@@ -26,8 +26,24 @@ Spree::Product.class_eval do
     properties.select{|s| s.name == "retail_price" || s.name == "retail_quantity" }.present?
   end
 
+  def has_no_retail_properties?
+    !has_retail_properties?
+  end
+
   def is_charity_reward?
     properties.select{|s| s.name == "type" && s.presentation == "charity"}.present?
+  end
+
+  def requires_wholesale_properties?
+    store_ids.include?(Spree::Store.find_by_name("le").id) && has_no_retail_properties?
+  end
+
+  def retail_quantity
+    properties.find_by_name("retail_quantity").product_properties.first.value rescue ''
+  end
+
+  def retail_price
+    properties.find_by_name("retail_price").product_properties.first.value rescue ''
   end
 
 end
