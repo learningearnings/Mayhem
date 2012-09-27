@@ -12,6 +12,7 @@ class OtuCode < ActiveRecord::Base
 
   scope :active,  lambda { where("active = ?", true) }
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
+  scope :ebuck, where(ebuck: true)
 
   def expired?
     self.created_at > (Time.now + 45.days)
