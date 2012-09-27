@@ -23,8 +23,8 @@ class OneClickSpreeProductPurchaseCommand
     retail_store = Spree::Store.find_by_code(@school.store_account_name)
 
     @order.products.each do |wholesale_product|
-      retail_price = wholesale_product.product_properties.select{|s| s.property.name == "retail_price" }.first.value
-      retail_qty = wholesale_product.product_properties.select{|s| s.property.name == "retail_quantity" }.first.value
+      retail_price = wholesale_product.property("retail_price") || 100000
+      retail_qty = wholesale_product.property("retail_quantity") || 0
 
       SchoolStoreProductDistributionCommand.new(:master_product => wholesale_product,
                                                 :school => @school,

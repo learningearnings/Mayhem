@@ -10,4 +10,7 @@ prop_master_product:
 prop_product_type:
   name: product_type
   presentation: Product Type
+prop_legacy_selector:
+  name: legacy_selector
+  presentation: LE Legacy ID
 
