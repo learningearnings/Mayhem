@@ -114,15 +114,6 @@ class CreateStoreProduct < ActiveModelCommand
     product.deleted_at = @deleted_at if @deleted_at
     product.count_on_hand = 100  #TODO - better quantity stuff
 
-    new_image = open('http://learningearnings.com/images/rewardimage/' + @image)
-    def new_image.original_filename; base_uri.path.split('/').last; end
-    new_spree_image = spree_image_class.new({:viewable_id => product.master.id,
-                                              :viewable_type => 'Spree::Variant',
-                                              :alt => "position 1",
-                                              :position => 1})
-    new_spree_image.attachment = new_image
-    new_spree_image.save
-    product.master.images << new_spree_image
 
     if @filter.nil?
       filter_factory = FilterFactory.new
@@ -131,7 +122,7 @@ class CreateStoreProduct < ActiveModelCommand
     end
     link = product.spree_product_filter_link || spree_product_filter_link_class.new(:product_id => product.id, :filter_id => @filter.id)
     link.filter_id = @filter.id
-    product.spree_product_filter_link = link
+    product.spree_product_filter_link = link unless @reward_type == 'wholesale'
 
     product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id) if product && @reward_owner
     product.save
@@ -144,6 +135,16 @@ class CreateStoreProduct < ActiveModelCommand
     product.set_property("legacy_selector", @legacy_selector)
     product.save
 
+    new_image = open('http://learningearnings.com/images/rewardimage/' + @image)
+    def new_image.original_filename; base_uri.path.split('/').last; end
+    new_spree_image = spree_image_class.new({:viewable_id => product.master.id,
+                                              :viewable_type => 'Spree::Variant',
+                                              :alt => "position 1",
+                                              :position => 1})
+    new_spree_image.attachment = new_image
+    new_spree_image.save
+    product.master.images << new_spree_image
+    product.save
     if @reward_type == 'wholesale'
       retail_price = product.property('retail_price').to_f
       retail_qty = product.property('retail_quantity').to_i

@@ -39,6 +39,10 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
     @filter_factory_class || ::FilterFactory
   end
 
+  def spree_image_class
+    @spree_image_class || Spree::Image
+  end
+
   def execute!
     retail_store = @school.store || return
     if retail_store.products.with_property_value('master_product',@master_product.id.to_s).exists?
@@ -50,8 +54,8 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
     else
       retail_price_property = spree_property_class.find_by_name('retail_price');
       retail_quantity_property = spree_property_class.find_by_name('retail_quantity');
-
-      retail_product = @master_product.duplicate
+#      retail_product = @master_product.duplicate
+      retail_product = Spree::Product.new()
       retail_product.name = master_product.name # need to set this to avoid "COPY OF ..."
       retail_product.master.price = @retail_price
       retail_product.description = @master_product.description
@@ -59,16 +63,23 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_product.deleted_at = nil
       retail_product.permalink = @school.store_subdomain + "-" + @master_product.permalink
       retail_product.master.count_on_hand = @quantity
-      retail_product.product_properties.where(:property_id => retail_price_property.id).each do |p| p.destroy end
-      retail_product.product_properties.where(:property_id => retail_quantity_property.id).each do |p| p.destroy end
       ### TODO - Is this legit?
       retail_product.taxons = @master_product.taxons
+      new_image = open(@master_product.master.images[0].attachment.path)
+#      def new_image.original_filename; base_uri.path.split('/').last; end
+      new_spree_image = spree_image_class.new({:viewable_id => retail_product.master.id,
+                                                :viewable_type => 'Spree::Variant',
+                                                :alt => "position 1",
+                                                :position => 1})
+      new_spree_image.attachment = new_image
+      new_spree_image.save
+      retail_product.master.images << new_spree_image
 
       retail_product.count_on_hand = @quantity
       retail_product.store_ids = [retail_store.id]
-      retail_product.set_property('master_product',@master_product.id.to_s)
-      retail_product.master.save # The master variant, not the master_product
+#      retail_product.master.save # The master variant, not the master_product
       retail_product.save
+      retail_product.set_property('master_product',@master_product.id.to_s)
 
       fc = filter_conditions_class.new(:schools => [@school.id])
       factory = filter_factory_class.new

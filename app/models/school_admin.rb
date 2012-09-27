@@ -16,15 +16,15 @@ class SchoolAdmin < Person
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def main_account_name(school)
-    "SCHOOL ADMIN#{id} MAIN SCHOOL#{school.id}"
+    "TEACHER#{id} MAIN SCHOOL#{school.id}"
   end
 
   def unredeemed_account_name(school)
-    "SCHOOL ADMIN#{id} UNREDEEMED SCHOOL#{school.id}"
+    "TEACHER#{id} UNREDEEMED SCHOOL#{school.id}"
   end
 
   def undeposited_account_name(school)
-    "SCHOOL ADMIN#{id} UNDEPOSITED SCHOOL#{school.id}"
+    "TEACHER#{id} UNDEPOSITED SCHOOL#{school.id}"
   end
 
   def main_account(school)
@@ -41,7 +41,7 @@ class SchoolAdmin < Person
 
   def accounts
     # FIXME: I hate this -ja
-    Plutus::Account.where "name LIKE '%SCHOOL ADMIN#{id}%'"
+    Plutus::Account.where "name LIKE '%TEACHER#{id}%'"
   end
 
   def balance
