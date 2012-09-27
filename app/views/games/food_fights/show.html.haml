@@ -8,6 +8,5 @@
 
 %h4 Top players at your school
 %ul.top-food-throwers
-  %li Josh Adams
-  %li Joshua Adams
-  %li J. Adams
+  - leaderboard.each do |row|
+    %li #{row.person} - #{row.score}

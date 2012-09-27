@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 require_relative '../../app/models/bank'
 
 # NOTE: This test is not great looking, but I believe that to be a result of Bank
