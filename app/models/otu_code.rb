@@ -29,4 +29,22 @@ class OtuCode < ActiveRecord::Base
     _code.update_attributes(:active => false, :used_date => Time.now)
   end
 
+  def source_string
+    if teacher
+      teacher.to_s
+    else
+      source_string_for_game(prefix)
+    end
+  end
+
+  def prefix
+    code[0..1]
+  end
+
+  def source_string_for_game(prefix)
+    games = {
+      FF: 'Food Fight'
+    }
+    games[prefix.to_sym]
+  end
 end

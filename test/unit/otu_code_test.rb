@@ -1,40 +1,59 @@
-require 'test_helper'
-require_relative '../../app/models/otu_code.rb'
+require 'test_helper_with_rails'
 
 describe OtuCode do
-  describe "OTUCode#person_school_link" do
+  describe "#person_school_link" do
     before do
       @person_school_link = FactoryGirl.create(:person_school_link)
       @otu_code           = FactoryGirl.create(:otu_code, :person_school_link_id => @person_school_link.id)
     end
 
-    it "should return the linked person school link" do
-      assert_equal @otu_code.person_school_link, @person_school_link
+    it "has a person_school_link" do
+      @otu_code.person_school_link.must_equal @person_school_link
     end
 
-    describe "OtuCode#teacher" do
-      it "should return person_school_link#person" do
-        assert @otu_code.teacher, @person_school_link.person
+    describe "#teacher" do
+      it "defers to person_school_link#person" do
+        @otu_code.teacher.must_equal @person_school_link.person
       end
     end
 
-    describe "OtuCode#school" do
-      it "should return person_school_link#school" do
-        assert @otu_code.school, @person_school_link.school
+    describe "#school" do
+      it "defers to person_school_link#school" do
+        @otu_code.school.must_equal @person_school_link.school
       end
     end
   end
 
-  describe "OtuCode#is_ebuck?" do
+  describe "#is_ebuck?" do
     before do
       @otu_code = OtuCode.new :ebuck => true
     end
 
-    it "should return the correct boolean value" do
-      assert @otu_code.is_ebuck?
+    it "returns the correct boolean value" do
+      @otu_code.is_ebuck?.must_equal true
       @otu_code.ebuck = false
-      assert_equal @otu_code.is_ebuck?, false
+      @otu_code.is_ebuck?.must_equal false
+    end
+  end
+
+  describe "source_string" do
+    describe "when given by a teacher" do
+      before do
+        @person_school_link = FactoryGirl.create(:person_school_link)
+        @otu_code           = FactoryGirl.create(:otu_code, :person_school_link_id => @person_school_link.id)
+      end
+
+      it "returns the teacher's to_s" do
+        @otu_code.source_string.must_equal @person_school_link.person.to_s
+      end
     end
 
+    describe "when given by a game" do
+      it "returns the game's name" do
+        @otu_code = OtuCode.new :ebuck => true
+        @otu_code.code = 'FFasdf'
+        @otu_code.source_string.must_equal 'Food Fight'
+      end
+    end
   end
 end
