@@ -91,10 +91,12 @@ class FoodFightPlayCommand < ActiveModelCommand
   def execute!
     return on_failure.call(self) unless valid?
     answer = person_answer_repository.create(person_answer_args)
+    unless answer.valid? && correct?
+      return on_failure.call(self)
+    end
     credit = game_credit_class.new('FF', person_id)
     credit.increment!(game_credits)
-    return on_success.call(self) if answer.valid? && correct?
-    return on_failure.call(self)
+    return on_success.call(self)
   end
 
   class AnswerOption < SimpleDelegator
