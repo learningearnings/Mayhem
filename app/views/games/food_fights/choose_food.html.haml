@@ -4,26 +4,20 @@
   #hover_value= hidden_field_tag :food_id 
   - if current_person.favorite_foods.present?
     %h4 Favorite Foods
-    %ul
+    %ul.foods
       - current_person.favorite_foods.each do |food|
-        %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
+        %li.food= image_tag food.image.thumb('50x50#').url, :id => food.id
   %h4 All Foods
-  %ul
+  %ul.foods
     - (@foods - current_person.favorite_foods).each do |food|
-      %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
+      %li.food= image_tag food.image.thumb('50x50#').url, :id => food.id
   = f.submit 'Submit Food'
 
 
 :javascript
-  $(".hover_image img").hover(
-    function() { $(this).addClass("hover"); },
-    function() { $(this).removeClass("hover"); }
-  );
-
-  $(".hover_image").click( function() {
-    $('.hover_image').removeClass("active");
-    $(this).addClass("active");
-    var imageId = $(this).children().attr("id");
+  $('.food').click( function() {
+    $('.food').removeClass('active');
+    $(this).addClass('active');
+    var imageId = $('img', this).attr("id");
     $("input[id=food_id]").val(imageId)
   });
-
