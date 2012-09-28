@@ -1194,3 +1194,31 @@ footer {
 .homepage-products-container {
   margin-left: 130px;
 }
+
+.person-details {
+  h3 {
+    line-height: 16px;
+  }
+  .links {
+    list-style-type: none;
+    background-color: rgba(139,197,62,.5);
+    padding: .5em;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 5px #888;
+    -moz-box-shadow: 0 0 5px #888;
+    box-shadow: 2px 2px 2px #CCC;
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    margin: 0 0 2em 0;
+    
+    li {
+      display: inline;
+      margin-left: 1em;
+      a { color: #fff; }
+    }
+  }
+}
+
+
+
