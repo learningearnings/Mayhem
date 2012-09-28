@@ -5,7 +5,11 @@ Leror::Application.routes.draw do
 
   resource :home
 
-  resources :people
+  resources :people do
+    collection do
+      match "/get_avatar_results" => 'people#get_avatar_results'
+    end
+  end
 
   resource :games, controller: "games/base", only: [:show]
 
@@ -153,7 +157,6 @@ end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
-  match "/get_avatar_results" => 'users#get_avatar_results'
   namespace :admin do
     resources :rewards
     match 'remove_reward' => 'rewards#destroy'
