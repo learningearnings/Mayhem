@@ -37,30 +37,30 @@ describe Person do
     p.classrooms.must_include classroom
   end
 
-  describe "Person#display_name" do
-    it "finds the most recent approved display name" do
+  describe "Person#moniker" do
+    it "finds the most recent approved moniker" do
       person = FactoryGirl.create(:person)
-      first_display_name  = person.display_names.create(:display_name => "first")
-      second_display_name = person.display_names.create(:display_name => "second")
-      third_display_name  = person.display_names.create(:display_name => "third")
+      first_moniker  = person.monikers.create(:moniker => "first")
+      second_moniker = person.monikers.create(:moniker => "second")
+      third_moniker  = person.monikers.create(:moniker => "third")
 
-      second_display_name.approve!
-      assert_equal person.display_name, second_display_name.display_name
+      second_moniker.approve!
+      assert_equal person.moniker, second_moniker.moniker
     end
 
-    it "should return a blank string if there are no display names" do
+    it "should return a blank string if there are no monikers" do
       person = FactoryGirl.create(:person)
-      assert person.display_names.empty?
-      assert_equal person.display_name, ""
+      assert person.monikers.empty?
+      assert_equal person.moniker, ""
     end
   end
 
-  describe "Person#display_name=" do
-    it "should create a new display name" do
+  describe "Person#moniker=" do
+    it "should create a new moniker" do
       person = FactoryGirl.create(:person)
-      assert_equal person.display_names.count, 0
-      person.display_name= "New Display Name"
-      assert_equal person.display_names.count, 1
+      assert_equal person.monikers.count, 0
+      person.moniker= "New Moniker"
+      assert_equal person.monikers.count, 1
     end
   end
 

@@ -1,8 +1,8 @@
-class CreateDisplayNames < ActiveRecord::Migration
+class CreateMonikers < ActiveRecord::Migration
   def change
-    create_table :display_names do |t|
+    create_table :monikers do |t|
       t.string :state
-      t.string :display_name
+      t.string :moniker
       t.datetime :approved_at
       t.integer :approved_by_id
       t.integer :person_id

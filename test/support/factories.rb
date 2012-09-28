@@ -34,8 +34,8 @@ FactoryGirl.define do
     school
   end
 
-  factory :display_name do
-    sequence(:display_name) { |n| "display_name#{n}" }
+  factory :moniker do
+    sequence(:moniker) { |n| "moniker#{n}" }
     user
   end
 

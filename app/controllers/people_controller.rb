@@ -13,7 +13,7 @@ class PeopleController < LoggedInController
   def update
     @person = Person.find(params[:id])
     @person.avatar = Avatar.find(params[:avatar_id]) if !params[:avatar_id].blank?
-    if (!params[:student][:display_name].blank? && params[:student][:display_name] != @person.display_name) &&  @person.update_attributes(params[:student])
+    if (!params[:student][:moniker].blank? && params[:student][:moniker] != @person.moniker) &&  @person.update_attributes(params[:student])
       flash[:notice] = "#{@person.type} profile updated."
       redirect_to main_app.root_path
     else
