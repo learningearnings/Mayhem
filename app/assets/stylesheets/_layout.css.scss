@@ -1196,6 +1196,7 @@ footer {
 }
 
 .person-details {
+  margin-right: 1em;
   h3 {
     line-height: 16px;
   }
@@ -1227,4 +1228,8 @@ footer {
 .current-person-avatar.supplemental-part {
   position: absolute; 
   margin-left: -130px;
+}
+
+.bg-white {
+  background-color: #fff;
 }
