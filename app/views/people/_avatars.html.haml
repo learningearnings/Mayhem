@@ -1,9 +1,10 @@
-= paginate @avatars
-
-- @avatars.each do |a|
-  %div{:id => "#{a.id}", :class => "hover_image"}
-    = image_tag(a.image.thumb('50x50#').url)
-  = a.description
+.avatars
+  = paginate @avatars
+  - @avatars.each do |a|
+    .avatar
+      %div{:id => "#{a.id}", :class => "hover_image"}
+        = image_tag(a.image.thumb('50x50#').url)
+      .description= a.description
 
 :javascript
   $(".hover_image").hover(
