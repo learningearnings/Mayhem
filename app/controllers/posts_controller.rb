@@ -20,5 +20,4 @@ class PostsController < LoggedInController
       render 'new'
     end
   end
-
 end

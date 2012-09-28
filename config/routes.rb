@@ -7,6 +7,8 @@ Leror::Application.routes.draw do
 
   resources :people
 
+  resources :news_posts, controller: "news", only: [:index, :show]
+
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
   # Administrative routes

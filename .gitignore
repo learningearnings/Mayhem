@@ -51,3 +51,5 @@ public/spree
 .DS_Store
 
 app/assets/images/sprites
+
+public/ckeditor_assets
