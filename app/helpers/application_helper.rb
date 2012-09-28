@@ -27,4 +27,8 @@ module ApplicationHelper
   def filter_widget
     render "shared/filter/filter_widget"
   end
+
+  def image_processor
+    ::Dragonfly[:images]
+  end
 end
