@@ -3,7 +3,7 @@ Spree::User.class_eval do
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :display_name
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker
 
   belongs_to :person
   has_many :person_school_links, :through => :person
@@ -28,12 +28,12 @@ Spree::User.class_eval do
     end
   end
 
-  def display_name
-    person.display_name
+  def moniker
+    person.moniker
   end
 
-  def display_name= name
-    person.display_name= name
+  def moniker= name
+    person.moniker= name
   end
 
 

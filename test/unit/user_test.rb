@@ -7,16 +7,16 @@ describe Spree::User do
     @user.stubs(:person).returns(@person)
   end
 
-  describe "User#display_name" do
-    it "should return the users persons display name" do
-      assert_equal @user.display_name, @user.person.display_name
+  describe "User#moniker" do
+    it "should return the users persons moniker" do
+      assert_equal @user.moniker, @user.person.moniker
     end
   end
 
-  describe "User#display_name=" do
-    it "should call display_name= on the person" do
-      @person.expects(:display_name=).once
-      @user.display_name = "New Display Name"
+  describe "User#moniker=" do
+    it "should call moniker= on the person" do
+      @person.expects(:moniker=).once
+      @user.moniker = "New Moniker"
     end
   end
 end
