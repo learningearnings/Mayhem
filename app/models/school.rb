@@ -30,6 +30,12 @@ class School < ActiveRecord::Base
   after_create :set_default_subdomain
 
 
+  def initialize
+    super
+    @school_main_account = nil
+    @school_store_account = nil
+  end
+
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
   def address=(newaddress)
@@ -92,11 +98,15 @@ class School < ActiveRecord::Base
   end
 
   def main_account
-    Plutus::Asset.find_by_name main_account_name
+    return @school_main_account if @school_main_account
+    @school_main_account = Plutus::Asset.find_by_name main_account_name
+    @school_main_account
   end
 
   def store_account
-    Plutus::Asset.find_by_name store_account_name
+    return @school_store_account if @school_store_account
+    @school_store_accountPlutus::Asset.find_by_name store_account_name
+    @school_store_account
   end
 
   def balance
