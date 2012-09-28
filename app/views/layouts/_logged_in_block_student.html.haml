@@ -18,7 +18,3 @@
     %ul.links
       %li= link_to "Edit My Profile", main_app.edit_person_path(current_person)
       %li= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
-    %p
-      %strong
-        Messages:
-      = link_to current_person.received_messages.unread.count, main_app.inbox_path

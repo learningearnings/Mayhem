@@ -1,0 +1,22 @@
+.row
+  .span8
+    .news-header
+      %h2 News
+
+.row
+  .news-items-container
+    .span6
+      - posts.each do |post|
+        .news-item.row
+          .span6
+            %h4= post.title
+            = post.body.html_safe
+    .span3
+      .press-releases-container
+        %h3 Press Releases
+        .press-releases
+          - press_releases.each do |post|
+            .press-release.row
+              .span3
+                %h4= post.title
+                = post.body.html_safe
