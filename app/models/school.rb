@@ -105,7 +105,7 @@ class School < ActiveRecord::Base
 
   def store_account
     return @school_store_account if @school_store_account
-    @school_store_accountPlutus::Asset.find_by_name store_account_name
+    @school_store_account = Plutus::Asset.find_by_name store_account_name
     @school_store_account
   end
 
