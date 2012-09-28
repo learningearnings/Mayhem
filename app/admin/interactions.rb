@@ -1,6 +1,4 @@
 ActiveAdmin.register Interaction do
-  config.filters = false
-
   index do
     column :id
     column :person do |interaction|
