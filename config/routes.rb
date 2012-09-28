@@ -7,6 +7,8 @@ Leror::Application.routes.draw do
 
   resources :people
 
+  resource :games, controller: "games/base", only: [:show]
+
   resources :news_posts, controller: "news", only: [:index, :show]
 
   match '/admin' => redirect('/admin/le_admin_dashboard')

@@ -116,4 +116,11 @@ class ApplicationController < ActionController::Base
     # NOTE: Don't know how to get memory usage in here yet
     interaction.save
   end
+
+  def get_reward_highlights
+    with_filters_params = params
+    with_filters_params[:filters] = session[:filters] || [1]
+    searcher = Spree::Config.searcher_class.new(with_filters_params)
+    searcher.retrieve_products
+  end
 end

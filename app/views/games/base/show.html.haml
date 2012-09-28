@@ -1,6 +1,6 @@
 .row.play-header-container
-  .span8
-    %h2 Play Header
+  .span10
+    %h2 Play
 
     .primary-image
       Image
@@ -28,8 +28,7 @@
         %p= lipsum(200)
         = link_to "Play Now", "#", class: 'btn'
 
-  = render_reward_highlights(@products[0..1])
-  .row
-    .span4
-      %h3 Suggest a Game Callout
-      .image-placeholder
+  .span4
+    = render_reward_highlights(@products[0..1])
+    %h3 Suggest a Game Callout
+    .image-placeholder
