@@ -1,7 +1,8 @@
 %ul.nav.primary-nav
   %li= link_to "Home",      main_app.page_path('logged_in_home')
   %li= link_to "Locker",    main_app.locker_path
-  %li= link_to "Inbox",     main_app.inbox_path
+  %li
+    = link_to inbox_label_with_message_count("Inbox", current_person.received_messages), main_app.inbox_path
   %li= link_to "Bank",      main_app.bank_path
   %li= link_to "Play",      main_app.page_path('logged_in_play')
   %li= link_to "Charities", main_app.page_path('logged_in_charities')

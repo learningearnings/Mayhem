@@ -81,6 +81,5 @@ module Leror
     config.after_initialize do
       Spree::Config.searcher_class = Spree::Search::Filter
     end
-
   end
 end
