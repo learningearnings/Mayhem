@@ -22,16 +22,24 @@ Spree::Product.class_eval do
     properties.select{|s| s.name == "type" }.present?
   end
 
+  def is_charity_reward?
+    properties.select{|s| s.name == "type" && s.presentation == "charity"}.present?
+  end
+
+  def is_global_reward?
+    properties.select{|s| s.name == "type" && s.presentation == "global"}.present?
+  end
+
+  def is_wholesale_reward?
+    properties.select{|s| s.name == "type" && s.presentation == "wholesale"}.present?
+  end
+
   def has_retail_properties?
     properties.select{|s| s.name == "retail_price" || s.name == "retail_quantity" }.present?
   end
 
   def has_no_retail_properties?
     !has_retail_properties?
-  end
-
-  def is_charity_reward?
-    properties.select{|s| s.name == "type" && s.presentation == "charity"}.present?
   end
 
   def requires_wholesale_properties?

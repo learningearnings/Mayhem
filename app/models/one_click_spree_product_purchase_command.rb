@@ -15,6 +15,10 @@ class OneClickSpreeProductPurchaseCommand
     else
       queue_delivery(@order.products)
     end
+
+    unless @order.products.first.is_wholesale_reward? || @order.products.first.is_global_reward?
+      mark_as_shipped
+    end
   end
 
   protected
@@ -48,17 +52,26 @@ class OneClickSpreeProductPurchaseCommand
 
   def skip_irrelevant_spree_order_steps
     @order.next
-
     # Address
-    shipping_address = {}
-    shipping_address[:firstname] = @person.first_name
-    shipping_address[:lastname] = @person.last_name
-    shipping_address[:address1] = "6238 Canterbury Road"
-    shipping_address[:city] = "Pinson"
-    shipping_address[:state_name] = "Alabama"
-    shipping_address[:zipcode] = "35126"
-    shipping_address[:phone] = "2052153957"
-    shipping_address[:country] = Spree::Country.find_by_iso "US"
+      shipping_address = {}
+      shipping_address[:firstname] = @person.first_name
+      shipping_address[:lastname] = @person.last_name
+    if @order.products.first.is_wholesale_reward? || @order.products.first.is_global_reward?
+      shipping_address[:address1] = @school.addresses.first.line1
+      shipping_address[:address2] = @school.addresses.first.line2
+      shipping_address[:city] = @school.addresses.first.city
+      shipping_address[:state_name] = @school.addresses.first.state.name
+      shipping_address[:zipcode] = @school.addresses.first.zip
+      shipping_address[:phone] = @school.school_phone
+      shipping_address[:country] = Spree::Country.find_by_iso "US"
+    else
+      shipping_address[:address1] = "6238 Canterbury Road"
+      shipping_address[:city] = "Pinson"
+      shipping_address[:state_name] = "Alabama"
+      shipping_address[:zipcode] = "35126"
+      shipping_address[:phone] = "2052153957"
+      shipping_address[:country] = Spree::Country.find_by_iso "US"
+    end
     @order.ship_address_attributes = shipping_address
     @order.bill_address_attributes = shipping_address
     @order.save
@@ -68,7 +81,13 @@ class OneClickSpreeProductPurchaseCommand
     @order.shipping_method_id = Spree::ShippingMethod.first.id
     @order.save
     @order.next
+  end
 
+  def mark_as_shipped
+    @shipment = @order.shipment
+    @shipment.ready
+    @shipment.reload
+    @shipment.ship
   end
 
   def purchase
