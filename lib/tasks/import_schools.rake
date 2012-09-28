@@ -27,7 +27,7 @@ namespace :import do
       end
     end
 
-    imported_points = 0
+    imported_purchases = imported_points = 0
     osi.imported_schools.each do |ns|
       s = OldSchool.find(ns.ad_profile)
       puts "-------------------Classrooms for #{ns.name} #{ns.id}"
@@ -35,13 +35,16 @@ namespace :import do
         ActiveRecord::Base.transaction do
           osi.import_classrooms(ns,s)
           s.old_users.each do |old_student|
-            imported_points = imported_points + osi.import_points(s,old_student,ns)
+            points_and_rewards = osi.import_points(s,old_student,ns)
+            imported_points = imported_points + points_and_rewards[0]
+            imported_purchases = imported_purchases + points_and_rewards[1]
           end
         end
       else
         puts "Could not find old school for #{ns.name}"
       end
-      puts "Imported #{imported_points} credits for #{ns.name}"
+      puts "   --> Imported #{imported_points} credits for #{ns.name}"
+      puts "   --> Imported #{imported_purchases} purchases for #{ns.name}"
       imported_points = 0
     end
   end
