@@ -6,17 +6,7 @@ Spree::UserSessionsController.class_eval do
       respond_to do |format|
         format.html {
           flash.notice = t(:logged_in_succesfully)
-          if current_user.person && current_user.person.is_a?(Student)
-            redirect_to '/'
-          elsif current_user.person && current_user.person.is_a?(Teacher)
-            redirect_to main_app.teachers_home_path
-         elsif current_user.person && current_user.person.is_a?(SchoolAdmin)
-            redirect_to '/'
-          elsif current_user.person && current_user.person.is_a?(LeAdmin)
-            redirect_to  "/admin/le_admin_dashboard"
-          elsif !current_user.person
-            redirect_to '/store/admin'
-          end
+          redirect_to main_app.home_path
         }
         format.js {
           user = resource.record

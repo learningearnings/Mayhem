@@ -1,8 +1,7 @@
 .row
   .bank_content
     .span6
-      %h2 My Bank Header
-      %p= lipsum 200
+      %h2 My Bank
 
       .bank-account
         %h4 My Account
@@ -35,35 +34,17 @@
     .span4
       .reward-highlights
         %h3 Rewards Highlights
-        .row
-          .span1
-            .image-placeholder
-          .span3
-            %p= lipsum 100
-            %strong Cost: $3,000
-        %hr
-        .row
-          .span1
-            .image-placeholder
-          .span3
-            %p= lipsum 100
-            %strong Cost: $3,000
-        %hr
-        .row
-          .span1
-            .image-placeholder
-          .span3
-            %p= lipsum 100
-            %strong Cost: $3,000
-        %hr
-        .row
-          .span1
-            .image-placeholder
-          .span3
-            %p= lipsum 100
-            %strong Cost: $3,000
-        %hr
-        = link_to "Redeem Credits", "#", class: 'btn'
+        -@products[0..3].each do |product|
+          .row
+            .span1
+              .product-image
+                - product_image_path = Rails.root.join('public', product.thumb[1..-1].split('?')[0]).to_s
+                = link_to image_tag(image_processor.fetch_file(product_image_path).thumb('80x80#').url), spree.product_path(product)
+            .span3
+              .product-details
+                = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :class => 'info', :itemprop => "name", :title => product.name
+                .price.selling{:itemprop => "price"}= number_to_currency product.price
+          %hr
 
   #transfer-credits-modal.modal.hide
     = render 'transfer_credits'

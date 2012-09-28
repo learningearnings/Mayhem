@@ -1,0 +1,2 @@
+class PressRelease < Post
+end

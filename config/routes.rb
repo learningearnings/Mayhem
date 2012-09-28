@@ -3,7 +3,11 @@ Leror::Application.routes.draw do
   root to: 'pages#show', :id => 'home'
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
+  resource :home
+
   resources :people
+
+  resources :news_posts, controller: "news", only: [:index, :show]
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 

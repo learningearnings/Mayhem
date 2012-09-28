@@ -3,6 +3,10 @@ class BanksController < LoggedInController
   before_filter :load_unredeemed_bucks, only: [:show, :redeem_bucks]
 
   def show
+    with_filters_params = params
+    with_filters_params[:filters] = session[:filters] || [1]
+    @searcher = Spree::Config.searcher_class.new(with_filters_params)
+    @products = @searcher.retrieve_products
   end
 
   def redeem_bucks

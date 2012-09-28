@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
   #has_many :classrooms, :through => :person_school_classroom_links
   has_many :person_school_links
   has_many :person_school_classroom_links
-  has_many :display_names
+  has_many :monikers
   has_many :buck_batches, :through => :person_buck_batch_links
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true
@@ -50,8 +50,8 @@ class Person < ActiveRecord::Base
 
   delegate :username, :username= , to: :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name, :gender, :salutation
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :display_name, :gender, :salutation, :status, :type,:created_at, :as => :admin
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status, :type,:created_at, :as => :admin
   validates_presence_of :first_name, :last_name
 
   # Relationships
@@ -59,19 +59,19 @@ class Person < ActiveRecord::Base
     MacroReflectionRelationFacade.new(PersonSchoolLink.where(person_id: self.id).send(status))
   end
 
-  #Last approved display name
-  def display_name
-    display_name_record = display_names.approved.order("created_at DESC").first
-    @display_name ||= display_name_record.nil? ? "" : display_name_record.display_name
+  #Last approved moniker name
+  def moniker
+    moniker_record = monikers.approved.order("created_at DESC").first
+    @moniker ||= moniker_record.nil? ? "" : moniker_record.moniker
   end
 
-  def requested_display_name
-    display_name_record = display_names.requested.order("created_at DESC").first
-    @requested_display_name ||= display_name_record.nil? ? "" : display_name_record.display_name
+  def requested_moniker
+    moniker_record = monikers.requested.order("created_at DESC").first
+    @requested_moniker ||= moniker_record.nil? ? "" : moniker_record.moniker
   end
 
-  def display_name= name
-    display_names.create(:display_name => name)
+  def moniker= name
+    monikers.create(:moniker => name)
   end
 
   def person_school_classroom_links(status = :status_active)
