@@ -21,6 +21,11 @@ class Student < Person
 
   after_create :create_locker
 
+  def initialize
+    super
+    @student_checking_account = @student_savings_account = @student_hold_account = nil
+  end
+
   def primary_account
     checking_account
   end
@@ -63,15 +68,21 @@ class Student < Person
   end
 
   def checking_account
-    Plutus::Asset.find_by_name checking_account_name
+    return @student_checking_account if @student_checking_account
+    @student_checking_account = Plutus::Asset.find_by_name checking_account_name
+    @student_checking_account
   end
 
   def savings_account
-    Plutus::Asset.find_by_name savings_account_name
+    return @student_savings_account if @student_savings_account
+    @student_savings_account = Plutus::Asset.find_by_name savings_account_name
+    @student_savings_account
   end
 
   def hold_account
-    Plutus::Asset.find_by_name hold_account_name
+    return @student_hold_account if @student_hold_account
+    @student_hold_account = Plutus::Asset.find_by_name hold_account_name
+    @student_hold_account
   end
 
   def balance

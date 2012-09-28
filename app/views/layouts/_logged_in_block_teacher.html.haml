@@ -3,8 +3,10 @@
     = image_tag current_person.avatar.image.thumb('175x175#').url
 .current-person.supplemental-part
   .credit-balance
-    %h4 Credit Balance
     %table.table.table-bordered
+      %thead
+        %tr 
+          %th Credit Balance
       %thead
         %tr
           %th Main
@@ -24,8 +26,3 @@
     %ul.links
       %li= link_to "Edit My Profile", main_app.edit_person_path(current_person)
       %li= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
-
-    %p
-      %strong
-        Messages:
-      = link_to '2', main_app.page_path('logged_in_inbox')

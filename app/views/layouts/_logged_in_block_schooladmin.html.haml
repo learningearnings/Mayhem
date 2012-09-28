@@ -3,8 +3,10 @@
     = image_tag current_person.avatar.image.thumb('175x175#').url
 .current-person.supplemental-part
   .credit-balance
-    %h4 Credit Balance
     %table.table.table-bordered
+      %thead
+        %tr 
+          %th Credit Balance
       %thead
         %tr
           %th Credits

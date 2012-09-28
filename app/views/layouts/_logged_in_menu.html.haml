@@ -4,7 +4,7 @@
   %li
     = link_to inbox_label_with_message_count("Inbox", current_person.received_messages), main_app.inbox_path
   %li= link_to "Bank",      main_app.bank_path
-  %li= link_to "Play",      main_app.page_path('logged_in_play')
+  %li= link_to "Play",      main_app.games_path
   %li= link_to "Charities", main_app.page_path('logged_in_charities')
   %li= link_to "Rewards",   Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain)
-  %li= link_to "News",      main_app.page_path('logged_in_news')
+  %li= link_to "News",      main_app.news_posts_path

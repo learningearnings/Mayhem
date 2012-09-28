@@ -5,6 +5,13 @@ class Teacher < Person
   validates_presence_of :grade
   after_create :create_user
 
+  def initialize
+    super
+    @teacher_main_account = []
+    @teacher_undredeemed_account = []
+    @teacher_undeposited_account = []
+  end
+
   def primary_account
     main_account(self.schools.first)
   end
@@ -23,15 +30,24 @@ class Teacher < Person
   end
 
   def main_account(school)
-    Plutus::Asset.find_by_name main_account_name(school)
+    @teacher_main_account ||= []
+    return @teacher_main_account[school.id] if @teacher_main_account[school.id]
+    @teacher_main_account[school.id] = Plutus::Asset.find_by_name main_account_name(school)
+    @teacher_main_account[school.id]
   end
 
   def unredeemed_account(school)
-    Plutus::Asset.find_by_name unredeemed_account_name(school)
+    @teacher_unredeemed_account ||= []
+    return @teacher_unredeemed_account[school.id] if @teacher_unredeemed_account[school.id]
+    @teacher_unredeemed_account[school.id] = Plutus::Asset.find_by_name unredeemed_account_name(school)
+    @teacher_unredeemed_account[school.id]
   end
 
   def undeposited_account(school)
-    Plutus::Asset.find_by_name undeposited_account_name(school)
+    @teacher_undeposited_account ||= []
+    return @teacher_undeposited_account[school.id] if @teacher_undeposited_account[school.id]
+    @teacher_undeposited_account[school.id] = Plutus::Asset.find_by_name undeposited_account_name(school)
+    @teacher_undeposited_account[school.id]
   end
 
   def accounts
@@ -55,9 +71,9 @@ class Teacher < Person
   end
 
   def setup_accounts(school)
-    main_account(school)        || Plutus::Asset.create(name: main_account_name(school))
-    unredeemed_account(school)  || Plutus::Asset.create(name: unredeemed_account_name(school))
-    undeposited_account(school) || Plutus::Asset.create(name: undeposited_account_name(school))
+    Plutus::Asset.find_by_name(main_account_name(school)) || Plutus::Asset.create(name: main_account_name(school))
+    Plutus::Asset.find_by_name(unredeemed_account_name(school)) || Plutus::Asset.create(name: unredeemed_account_name(school))
+    Plutus::Asset.find_by_name(undeposited_account_name(school)) || Plutus::Asset.create(name: undeposited_account_name(school))
   end
 
   def create_user

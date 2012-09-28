@@ -60,7 +60,7 @@ body {
     
     background-size: 1px, 2px, auto, auto 20px;
     background-repeat: repeat-y, repeat-y, no-repeat, repeat;
-    background-position: 90% 0px, 21.3% 0px, 0px 0px, 0px 0px;
+    background-position: 90% 0px, 15.3% 0px, 0px 0px, 0px 0px;
 }
 
 
@@ -1150,11 +1150,11 @@ footer {
 }
 
 .play-header-container {
-  margin-left: 18%;
+  margin-left: 8%;
 }
 
 .games {
-  margin-left: 120px;
+  margin-left: 8%;
 }
 
 .coming-soon-container {
@@ -1193,4 +1193,38 @@ footer {
 
 .homepage-products-container {
   margin-left: 130px;
+}
+
+.person-details {
+  h3 {
+    line-height: 16px;
+  }
+  .links {
+    list-style-type: none;
+    background-color: rgba(80,149,204,.8);
+    padding: .5em;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 5px #888;
+    -moz-box-shadow: 0 0 5px #888;
+    box-shadow: 2px 2px 2px #CCC;
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    margin: 0 0 2em 0;
+    
+    li {
+      display: inline;
+      margin-left: 1em;
+      a { color: #fff; }
+    }
+  }
+}
+
+.credit-balance {
+  float: right;
+}
+
+.current-person-avatar.supplemental-part {
+  position: absolute; 
+  margin-left: -130px;
 }

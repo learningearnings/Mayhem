@@ -1,5 +1,5 @@
-class DisplayName < ActiveRecord::Base
-  attr_accessible :approved_at, :approved_by, :display_name, :person_id, :state
+class Moniker < ActiveRecord::Base
+  attr_accessible :approved_at, :approved_by, :moniker, :person_id, :state
 
   belongs_to :person
   belongs_to :actioned_by, :class_name => Person
@@ -11,8 +11,8 @@ class DisplayName < ActiveRecord::Base
   scope :rejected, lambda { where(:state => "rejected") }
 
   state_machine :state, :initial => :requested do
-    before_transition :on => :approve do |display_name_record|
-      display_name_record.approved_at = Time.now
+    before_transition :on => :approve do |moniker_record|
+      moniker_record.approved_at = Time.now
     end
     event :approve do
       transition all => [:approved]
@@ -23,10 +23,10 @@ class DisplayName < ActiveRecord::Base
   end
 
   def most_recent_request?
-    person.display_names.order("created_at DESC").limit(1).first == self
+    person.monikers.order("created_at DESC").limit(1).first == self
   end
 
-  #Sets the user that approved the display name
+  #Sets the user that approved the moniker
   def approve_with_user approving_user
     #Probably is a way to do this in one call, couldn't figure it out
     self.update_attribute(:actioned_by, approving_user)
@@ -41,7 +41,7 @@ class DisplayName < ActiveRecord::Base
 
   private
   def auto_approve
-    if DisplayName.approved.where(:display_name => self.display_name).count > 0
+    if Moniker.approved.where(:moniker => self.moniker).count > 0
       self.approve!
     end
   end
