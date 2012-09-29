@@ -30,5 +30,4 @@
 
   .span4
     = render_reward_highlights(@products[0..1])
-    %h3 Suggest a Game Callout
-    .image-placeholder
+    %h3= link_to('Suggest a Game', admin_message_path(subject: "I have a game suggestion!"))

@@ -1,32 +1,5 @@
 .avatars {
   .avatar {
-    position: relative;
-    vertical-align: top;
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    background-color: white;
-    border: 1px solid #ddd;
-    margin-right: 1em;
-    margin-bottom: 1em;
-    cursor: pointer;
-    @include box-shadow(rgba(black, 0.4) 0 0 5px);
-    &:hover {
-      @include box-shadow(rgba(black, 0.6) 0 0 5px);
-    }
-    &.active {
-      border-color: red;
-    }
-    .image_wrapper {
-      text-align: center;
-    }
-    .description {
-      position: absolute;
-      text-align: center;
-      bottom: 0;
-      background-color: #eee;
-      min-height: 40px;
-      width: 100%;
-    }
+    @extend .hover-picker;
   }
 }

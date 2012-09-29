@@ -21,3 +21,9 @@
     }
   }
 }
+
+.foods {
+  .food {
+    @extend .hover-picker;
+  }
+}

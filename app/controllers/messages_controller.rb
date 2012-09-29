@@ -1,6 +1,6 @@
 class MessagesController < LoggedInController
   layout :layout
-  before_filter :get_received_messages, only: [:index, :friend_messages, :school_messages, :teacher_messages, :system_messages]
+  before_filter :get_received_messages
 
   def index
     redirect_to friend_messages_path
@@ -36,6 +36,7 @@ class MessagesController < LoggedInController
 
   def admin_message
     @message = StudentMessageAdminCommand.new
+    @message.subject = params[:subject]
   end
 
   def show
