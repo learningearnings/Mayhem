@@ -4,7 +4,13 @@ class CreditManager
     @transaction_class = options[:transaction_class] || Plutus::Transaction
     @le_main_account = nil
     @le_game_account = nil
+    @transaction_time_stamp = nil
   end
+
+  def transaction_time_stamp=(timestamp)
+    @transaction_time_stamp = timestamp
+  end
+
 
   # TODO: What do we call this account?
   def main_account_name
@@ -36,6 +42,7 @@ class CreditManager
       debits:      [{ account: to_account, amount: amount }],
       credits:     [{ account: from_account,   amount: amount }]
     })
+    transaction.created_at = @transaction_time_stamp if @transaction_time_stamp
     transaction.save
     transaction
   end
