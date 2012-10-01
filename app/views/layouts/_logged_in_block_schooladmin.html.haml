@@ -6,12 +6,12 @@
     %table.table.table-bordered
       %thead
         %tr 
-          %th Credit Balance
+          %th.bg-white{:colspan => "2"} Credit Balance
       %thead
         %tr
-          %th Credits
-          %th Unredeemed
-          %th Undeposited
+          %th.bg-white Credits
+          %th.bg-white Unredeemed
+          %th.bg-white Undeposited
       %tbody
         %tr
           - if current_person
@@ -19,8 +19,8 @@
             %td= number_to_currency(current_person.unredeemed_account(current_person.schools.first).balance)
             %td= number_to_currency(current_person.undeposited_account(current_person.schools.first).balance)
           - else
-            %td=number_to_currency(0.00)
-            %td=number_to_currency(0.00)
+            %td.bg-white=number_to_currency(0.00)
+            %td.bg-white=number_to_currency(0.00)
     %table.table.table-bordered
       %thead
         %tr

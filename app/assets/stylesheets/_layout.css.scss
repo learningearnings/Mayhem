@@ -59,20 +59,39 @@ body {
     
 	  /* gradients - second red border, first red border, top white space, blue lines */
 	  
-    background-image:  -webkit-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)),                                   -webkit-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -webkit-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -webkit-repeating-linear-gradient(white 0px, white 18px, #A6D8FF 0px, white 20px);
+	  background-image:  -webkit-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)),                                   -webkit-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -webkit-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -webkit-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+
+   background-image:  -moz-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -moz-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -moz-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -moz-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+   
+   background-image:  -ms-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -ms-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -ms-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -ms-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+
+   background-image:  -o-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -o-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -o-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -o-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
     
-    background-image:  -moz-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -moz-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -moz-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -moz-repeating-linear-gradient(white 0px, white 18px, #A6D8FF 0px, white 20px);
-    background-image:  -ms-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -ms-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -ms-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -ms-repeating-linear-gradient(white 0px, white 18px, #A6D8FF 0px, white 20px);
+   background-image:  linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
     
-    background-image:  -o-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -o-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -o-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -o-repeating-linear-gradient(white 0px, white 18px, #A6D8FF 0px, white 20px);
-    
-    background-image:  linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), repeating-linear-gradient(white 0px, white 18px, #A6D8FF 0px, white 20px);
-    
-    background-size: 1px, 2px, auto, auto 20px;
+    background-size: 1px, 2px, auto, auto 31px;
     background-repeat: repeat-y, repeat-y, no-repeat, repeat;
-    background-position: 90% 0px, 15.3% 0px, 0px 0px, 0px 0px;
+    background-position: 87.1% 0px, 12.9% 0px, 0px 0px, 0px 0px;
 }
 
+.container {
+    /* gradients - second red border, first red border, top white space, blue lines */
+	  
+	  background-image:  -webkit-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)),                                   -webkit-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -webkit-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -webkit-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+
+  background-image:  -moz-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -moz-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -moz-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -moz-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+  
+  background-image:  -ms-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -ms-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -ms-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -ms-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+
+  background-image:  -o-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -o-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -o-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -o-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+   
+  background-image:  linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+   
+   background-size: 1px, 2px, auto, auto 31px;
+   background-repeat: repeat-y, repeat-y, no-repeat, repeat;
+   background-position: 100% 0px, 120px 0px, 0px 0px, 0px 0px;
+	z-index: 0;
+}
 
 input, textarea, select {
   height: 26px; /* Fix for box-sizing in twitter bootstrap */
@@ -80,11 +99,10 @@ input, textarea, select {
 
 .head {
   overflow: hidden;
-  height: 165px;
+  position: relative;
 }
 
 .content-section {
-  padding: 0 35px;
   position: relative;
   margin-bottom: 100px;
   min-height: 500px;
@@ -94,8 +112,7 @@ input, textarea, select {
   background-image: url(asset_path('common/le_logo.png', image));
   background-repeat: no-repeat;
   width: 140px;
-  float: left;
-  margin-left: 140px;
+  margin: 20px 0 0 108px;
   }
   
 .logo-link {
@@ -105,8 +122,11 @@ input, textarea, select {
 }
 .supplemental {
   overflow: hidden;
-  float: right;
+  position: absolute;
+  top: 0;
+  right: 0;
   height: 140px;
+  width: 700px;
   .join-links {
     list-style-type: none;
     margin: 0;
@@ -401,6 +421,14 @@ input, textarea, select {
   height: 50px;
 }
 
+.navbar .nav {
+  position: static;
+  right: 0;
+  float: none;
+  display: block;
+  margin: 0;
+}
+
 .nav.primary-nav .home {
   color: #25860b;
   width: 92px
@@ -572,6 +600,16 @@ input, textarea, select {
   z-index: 15;
  }
  
+.bacon-small {
+  background-image: url(asset_path('sir_francis_bacon_shadows_small.png', image));
+  width: 170px;
+  height: 230px;
+  position: absolute;
+  top: 30px;
+  left: 90px;
+  z-index: 15;  
+}
+ 
 .bacon-smiling-intro {
   background-image: url(asset_path('pig_smiling_intro.png', image));
   width: 275px;
@@ -589,7 +627,6 @@ input, textarea, select {
   position: absolute;
   top: 0;
   left: 330px;
-  z-index: -10;
 }
 
 .corkboard {
@@ -1206,6 +1243,7 @@ footer {
 }
 
 .person-details {
+  margin-right: 1em;
   h3 {
     line-height: 16px;
   }
@@ -1237,4 +1275,31 @@ footer {
 .current-person-avatar.supplemental-part {
   position: absolute; 
   margin-left: -130px;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.student-logged-in-content {
+  .bacon-small {
+    background-image: url(asset_path('sir_francis_bacon_shadows_small.png', image));
+    width: 170px;
+    height: 230px;
+    position: absolute;
+    top: 150px;
+    left: 130px;
+    z-index: 15;  
+  }
+  .corkboard {
+    left: 130px;
+  }
+  .whats-new {
+    background-image: url(asset_path('whats_new_notepaper.png', image));
+    position: absolute;
+    width: 364px;
+    height: 239px;
+    top: 25px;
+    left: 310px;
+  }
 }
