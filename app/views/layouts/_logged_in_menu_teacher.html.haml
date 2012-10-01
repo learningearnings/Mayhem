@@ -1,9 +1,9 @@
 %ul.nav.primary-nav
-  %li= link_to "Home",        main_app.home_path
+  %li= link_to "Home",        main_app.home_path, class: 'home'
   %li= link_to "Lounge",      "#"
   %li= link_to "Inbox",       main_app.inbox_path
-  %li= link_to "Bank",        main_app.teachers_bank_path
-  %li= link_to "Students",    main_app.classrooms_path
-  %li= link_to "Rewards",     Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain)
-  %li= link_to "Reports",     "#"
-  %li= link_to "News",        main_app.page_path('logged_in_news')
+  %li= link_to "Bank",        main_app.teachers_bank_path, class: 'bank'
+  %li= link_to "Students",    main_app.classrooms_path, class: 'classrooms'
+  %li= link_to "Rewards",     Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain), class: 'rewards'
+  %li= link_to "Reports",     main_app.teachers_reports_path, class: 'reports'
+  %li= link_to "News",        main_app.news_posts_path, class: 'news'
