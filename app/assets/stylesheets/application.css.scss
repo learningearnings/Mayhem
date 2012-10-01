@@ -18,11 +18,5 @@
 @import 'lockers';
 @import 'reports';
 @import 'people';
+@import 'overrides';
 
-.modal {
-  overflow: visible;
-  max-height:90%;
-}
-.modal-body {
-  overflow: visible;
-}
