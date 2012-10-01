@@ -310,8 +310,8 @@ if Rails.env.development? || Rails.env.production?
    ["Tuna","tuna.png"]
   ].each do |f|
     food = Food.create(name: f[0])
-    #food.image = open("http://www.lemirror1.com/Development/images/games/foodfight/" + f[1]).read
-    food.image = open(Rails.root.join('app', 'assets', 'images', 'common', 'le_logo.png')).read
+    food.image = open("http://www.lemirror1.com/Development/images/games/foodfight/" + f[1]).read
+    #food.image = open(Rails.root.join('app', 'assets', 'images', 'common', 'le_logo.png')).read
     food.save
   end
   # ======== Foods ===========
