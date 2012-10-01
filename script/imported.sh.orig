@@ -8,8 +8,30 @@ fi
 echo "Removing all your existing images .. You won't miss them"
 rm -rf public/spree/products/*
 rm -rf public/system/dragonfly/*
-echo -n "Uncompressing...."
+echo -n "Fetching and Uncompressing...."
 hostname=`hostname`
+wget -q http://mayhemstaging.lemirror.com/system/xaa
+wget -q http://mayhemstaging.lemirror.com/system/xab
+wget -q http://mayhemstaging.lemirror.com/system/xac
+wget -q http://mayhemstaging.lemirror.com/system/xad
+wget -q http://mayhemstaging.lemirror.com/system/xae
+wget -q http://mayhemstaging.lemirror.com/system/xaf
+wget -q http://mayhemstaging.lemirror.com/system/xag
+wget -q http://mayhemstaging.lemirror.com/system/xah
+wget -q http://mayhemstaging.lemirror.com/system/xai
+wget -q http://mayhemstaging.lemirror.com/system/xaj
+wget -q http://mayhemstaging.lemirror.com/system/xak
+wget -q http://mayhemstaging.lemirror.com/system/xal
+wget -q http://mayhemstaging.lemirror.com/system/xam
+wget -q http://mayhemstaging.lemirror.com/system/xan
+wget -q http://mayhemstaging.lemirror.com/system/xao
+wget -q http://mayhemstaging.lemirror.com/system/xap
+wget -q http://mayhemstaging.lemirror.com/system/xaq
+wget -q http://mayhemstaging.lemirror.com/system/xar
+wget -q http://mayhemstaging.lemirror.com/system/xas
+wget -q http://mayhemstaging.lemirror.com/system/xat
+cat xaa xab xac xad xae xaf xag xah xai xaj xak xal xam xan xao xap xaq xar xas xat | base64 -d > images.tgz
+rm xaa xab xac xad xae xaf xag xah xai xaj xak xal xam xan xao xap xaq xar xas xat
 curl -s http://mayhemstaging.lemirror.com/system/images.tgz | gzip -dc | tar -xv
 echo "Loading the learning_earning_development database..."
 if [ "$hostname" == "mayhemstaging.lemirror.com" ]; then
