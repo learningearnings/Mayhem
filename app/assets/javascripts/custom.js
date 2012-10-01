@@ -103,15 +103,16 @@ $(document).ready(function() {
 	  }
 	}
 	// Primary Nav Selected
-  highlightNavigation('', 'home');
-  highlightNavigation('how_it_works', 'how-it-works');
-  highlightNavigation('locker', 'locker');
-  highlightNavigation('inbox', 'inbox');
-  highlightNavigation('testimonials', 'testimonials');
-  highlightNavigation('bank', 'bank');
-  highlightNavigation('play', 'play');
-  highlightNavigation('games', 'play');
+  highlightNavigation('',        'home');
+  highlightNavigation('locker',  'locker');
+  highlightNavigation('inbox',   'inbox');
+  highlightNavigation('bank',    'bank');
+  highlightNavigation('play',    'play');
+  highlightNavigation('games',   'play');
   highlightNavigation('rewards', 'rewards');
-  highlightNavigation('news', 'news');
+  highlightNavigation('store',   'rewards');
+  highlightNavigation('news',    'news');
+  highlightNavigation('how_it_works', 'how-it-works');
+  highlightNavigation('testimonials', 'testimonials');
 });
 
