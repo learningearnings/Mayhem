@@ -107,6 +107,15 @@ input, textarea, select {
   position: relative;
   margin-bottom: 100px;
   min-height: 800px;
+  .modal { 
+    padding: 2em;
+    border: solid 8px #8BC53E;
+  }
+}
+
+.modal-backdrop {
+  background-color: #312D68;
+  opacity: 0.8;
 }
 
 .logo {
@@ -1359,4 +1368,5 @@ footer {
     left: 775px;  
   }
 }
+
 
