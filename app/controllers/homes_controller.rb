@@ -1,5 +1,8 @@
-class HomesController < LoggedInController
+class HomesController < ApplicationController
   def show
+    if !current_user
+      redirect_to '/pages/home' and return
+    end
     if !current_user.person
       redirect_to '/store/admin' and return
     end
