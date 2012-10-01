@@ -165,5 +165,6 @@ Spree::Core::Engine.routes.prepend do
   namespace :admin do
     resources :rewards
     match 'remove_reward' => 'rewards#destroy'
+    resources :shipments
   end
 end
