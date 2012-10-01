@@ -107,15 +107,6 @@ input, textarea, select {
   position: relative;
   margin-bottom: 100px;
   min-height: 800px;
-  .modal { 
-    padding: 2em;
-    border: solid 8px #8BC53E;
-  }
-}
-
-.modal-backdrop {
-  background-color: #312D68;
-  opacity: 0.8;
 }
 
 .logo {
@@ -1368,5 +1359,26 @@ footer {
     left: 775px;  
   }
 }
+
+.reward-content {
+  margin-left: 130px;
+  
+  .product-image {
+    float: left;
+    min-height: 300px;
+    margin-right: 10px;
+  }
+  .product-item {
+    padding: 1em;
+    max-width: 90%;
+    background-color: #fff;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;    
+    
+  }
+}
+
+
 
 
