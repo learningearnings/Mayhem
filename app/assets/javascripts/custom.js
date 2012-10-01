@@ -110,14 +110,8 @@ $(document).ready(function() {
   highlightNavigation('testimonials', 'testimonials');
   highlightNavigation('bank', 'bank');
   highlightNavigation('play', 'play');
+  highlightNavigation('games', 'play');
   highlightNavigation('rewards', 'rewards');
   highlightNavigation('news', 'news');
-  
-  highlightNavigation('friend-message', 'friend-message')
-  highlightNavigation('friend-message', 'school-message')
-  highlightNavigation('friend-message', 'teacher-message')
-  highlightNavigation('friend-message', 'system-message')
-  highlightNavigation('friend-message', 'admin-message')
-  
 });
 
