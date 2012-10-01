@@ -1,7 +1,7 @@
 #!/bin/bash
 PGRESTORE=`which pg_restore`
 echo $0
-if [ -z "$PGRESTORE" ]; then 
+if [ -z "$PGRESTORE" ]; then
     echo "You need to install pg_restore to continue"
     exit 1
 fi
@@ -11,9 +11,9 @@ rm -rf public/system/dragonfly/*
 echo -n "Uncompressing...."
 hostname=`hostname`
 curl -s http://mayhemstaging.lemirror.com/system/images.tgz | gzip -dc | tar -xv
-mv public/system/dragonfly/development public/system/dragonfly/production
 echo "Loading the learning_earning_development database..."
 if [ "$hostname" == "mayhemstaging.lemirror.com" ]; then
+   mv public/system/dragonfly/development public/system/dragonfly/production
    curl -s http://mayhemstaging.lemirror.com/system/imported.pg.db.gz | gzip -dc | pg_restore -O --username=deployer --dbname=learning_earning_development --clean
    echo "update spree_stores set domains = replace(domains,'lvh.me:3000','mayhemstaging.lemirror.com');" | psql -d learning_earning_development
 else
