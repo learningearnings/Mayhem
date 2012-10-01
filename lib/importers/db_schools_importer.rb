@@ -12,7 +12,7 @@ class OldSchoolImporter
     OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
-    @non_display_reward_categories = [1000,1002]
+    @non_display_reward_categories = [1000,1001,1002]
     @reward_types = [5 => 'reward',
                      2 => 'reward',
                      3 => 'reward',
@@ -21,13 +21,19 @@ class OldSchoolImporter
                      1001 => 'global',
                      1002 => 'local']
     @cm = CreditManager.new
-
+    @first_leadmin = LeAdmin.first
   end
 
   def reset_school_cache
-    @new_school_rewards = Hash.new
-    @found_teachers = []
-    @found_teacher_school_links = []
+    @new_school_rewards = {}
+    @found_teachers = {}
+    @found_students = {}
+    @found_student_school_links = {}
+    @found_teacher_school_links = {}
+    @otucode_batches = {}
+    @earliest_date = nil
+    @teacher_points = {}
+    @school_points = 0
   end
 
 
@@ -217,13 +223,15 @@ class OldSchoolImporter
                                 :created_at => c.classroomcreated
                               },:as => :admin)
       new_c.save
-      p = Person.find_by_legacy_user_id(c.userID)
-      add_person_to_classroom(p,new_c)
+      p = find_teacher c.userID
+      next unless p
+      add_person_to_classroom(p,new_c, new_school)
       users = errors = 0
       c.classroom_details.each do |cd|
         # Add the student to the classroom
-        p = Person.find_by_legacy_user_id(cd.userID)
-        add_person_to_classroom(p,new_c)
+        p = find_student cd.userID 
+        next unless p
+        add_person_to_classroom(p,new_c, new_school)
         users = users + 1
       end
       classrooms = classrooms + 1
@@ -235,12 +243,9 @@ class OldSchoolImporter
     userspersec = (total_users / elapsed_time).round(2)
     puts "   --> #{classrooms} Classrooms #{total_users} Users Imported, #{total_errors} Errors  (#{elapsed_time} secs) #{userspersec} per sec"
   end
-  def add_person_to_classroom (person, classroom)
+  def add_person_to_classroom person, classroom, school
     return nil if !person || !classroom
-    psl = PersonSchoolLink.where('person_id = ? and school_id = ?',person.id,classroom.school_id).first
-    if !psl  # Student must have moved on...
-      return false
-    end
+    psl = find_student_school_link person,school
     pscl = PersonSchoolClassroomLink.where('person_school_link_id = ? and classroom_id = ?',psl.id,classroom.id).first
     if pscl
       return false
@@ -267,36 +272,22 @@ class OldSchoolImporter
     pointactions = [1,2,4,10,12]
     new_student = nil
     OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => pointactions ).order('pointID asc').each do |op|
-      new_student = Student.find_by_legacy_user_id(old_student.userID)
+      new_student = find_student old_student.userID unless new_student
+      @earliest_date = op.pointtimestamp unless @earliest_date &&  @earliest_date < op.pointtimestamp
       unless new_student
         new_person = Person.find_by_legacy_user_id(old_student.userID)
         if new_person
           puts "Missing student but found Person \"#{new_person.to_s}\" of type \"#{new_person.type}\" for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.school.school}"
         else
           puts "Missing student for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.school.school}"
-      end
+        end
         return [0,0];
       end
       if student_income.index(op.pointactionID) && op.old_otu_code
-        teacher = @found_teachers[op.old_otu_code.issuinguserID]
-        if teacher.nil?
-          teacher = Person.find_by_legacy_user_id(op.old_otu_code.issuinguserID)
-          if teacher.nil?
-            puts "Couldn't find teacherID #{op.old_otu_code.issuinguserID} for #{op.pointID}"
-            #            binding.pry
-            next
-          else
-            @found_teachers[op.old_otu_code.issuinguserID] = teacher
-          end
-        end
-        tsl = @found_teacher_school_links[op.old_otu_code.issuinguserID]
-        unless tsl
-          tsl = teacher.person_school_links.where(:school_id => new_school.id).first
-          if(!tsl)
-            tsl = PersonSchoolLink.create(:person_id => teacher.id, :school_id => new_school.id, :status => 'active') # should it be active????
-          end
-          @found_teacher_school_links[op.old_otu_code.issuinguserID] = tsl
-        end
+        teacher = find_teacher op.old_otu_code.issuinguserID
+        next unless teacher
+        tsl = find_teacher_school_link teacher, new_school
+        next unless tsl
         oc = oc = OtuCode.new(:points => op.points,
                               :expires_at => op.old_otu_code.OTUcodeexpires,
                               :student_id => new_student.id, 
@@ -307,8 +298,12 @@ class OldSchoolImporter
         imported_points = imported_points + op.points.abs
         imported_points_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
-        transaction = @cm.issue_credits_to_school new_school, op.points
-        transaction = @cm.issue_credits_to_teacher new_school, teacher, op.points
+        @teacher_points[teacher.legacy_user_id] ||= 0
+        @school_points += op.points.abs
+        @teacher_points[teacher.legacy_user_id] += op.points.abs
+        @school_points
+#        transaction = @cm.issue_credits_to_school new_school, op.points
+#        transaction = @cm.issue_credits_to_teacher new_school, teacher, op.points
         transaction = @cm.issue_credits_to_student new_school, teacher, new_student, op.points
         @cm.transaction_time_stamp = nil
       elsif reward_purchases.index(op.pointactionID) && op.rewardauctionID == 0
@@ -327,9 +322,63 @@ class OldSchoolImporter
     [imported_points,imported_purchases,imported_points_count, imported_purchases_count]
   end
 
+  def make_school_and_teacher_entries new_school
+    @cm.transaction_time_stamp = @earliest_date
+    transaction = @cm.issue_credits_to_school new_school, @school_points;
+    @teacher_points.each_pair do |legacy_user_id,points|
+      teacher = find_teacher legacy_user_id
+      transaction = @cm.issue_credits_to_teacher new_school, find_teacher(legacy_user_id), points if teacher
+      puts "Couldn't find teacher for legacy user id #{legacy_user_id}" unless teacher
+    end
+  end
+
+
 
   def import_buck_batches old_school, new_school
-
+    rows = 0
+    OldOtuCode.where(:schoolID => old_school.schoolID).where(:ebuck => 0).where('OTUcodeexpires > ?',Time.now()).each do |c|
+#    OldOtuCode.where(:schoolID => old_school.schoolID).where(:ebuck => 0).each do |c|
+      next unless c.old_teacher_award && c.old_teacher_award.old_file_download
+      old_batch_id = c.old_teacher_award.old_file_download.filedownloadid
+      batch = @otucode_batches[old_batch_id]
+      if c.redeeminguserID > 0
+        student = find_student c.redeeminguserID
+        next unless student
+        new_student_id = student.id
+      else
+        new_student_id = nil
+      end
+      teacher = find_teacher c.issuinguserID
+      next unless teacher
+      tsl = find_teacher_school_link teacher,new_school
+      next unless tsl
+      unless batch
+        batch_name = teacher.first_name  + ' ' + teacher.last_name + ' ' +
+          "Created " + c.old_teacher_award.AwardDate.to_s
+        if c.old_teacher_award.TeacherID != c.old_teacher_award.createdby
+          creating_teacher = find_teacher c.old_teacher_award.createdby
+          batch_name = batch_name + " by #{creating_teacher.userfname} #{creating_teacher.userlname}" if creating_teacher
+        end
+        buck_batch = BuckBatch.new( :name => batch_name )
+        buck_batch.created_at = c.old_teacher_award.old_file_download.creation_date
+        buck_batch.people << teacher
+        buck_batch.save
+        puts "Buck Batch for " + batch_name
+        @otucode_batches[old_batch_id] = buck_batch
+        batch = buck_batch
+      end
+      oc = oc = OtuCode.new(:points => c.otucodepoint,
+                            :expires_at => c.OTUcodeexpires,
+                            :student_id => new_student_id,
+                            :person_school_link_id => tsl.id,
+                            :ebuck => c.ebuck)
+      oc.created_at = c.OTUcodeDate
+      oc.save
+      batch.otu_codes << oc
+      batch.save
+      rows += 1
+    end
+    rows
   end
 
 
@@ -351,7 +400,7 @@ class OldSchoolImporter
     store = Spree::Store.find_by_code new_school.store_subdomain
     if reward_type == 'local'
       reward_local = old_point.old_redeemed.old_reward_local
-      owner = Person.find_by_legacy_user_id(reward_local.userID)
+      owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
                                           :legacy_selector => reward_selector,
@@ -361,13 +410,13 @@ class OldSchoolImporter
                                           :retail_price => reward_local.points,
                                           :deleted_at => nil,
                                           :available_on => Time.now(),
-                                          :reward_owner => owner,
+                                          :reward_owner => owner || new_school.school_admins.first || @first_leadmin,
                                           :image => reward_local.old_reward_image.imagepath).execute! if store
     else
       if reward_type == 'wholesale'
-        owner = new_school.school_admins.first || new_school.teachers.first || LeAdmin.first
+        owner = new_school.school_admins.first || new_school.teachers.first || @first_leadmin
       elsif reward_type == 'charity'
-        owner = LeAdmin.first
+        owner = @first_leadmin
       end
       params = {:name => old_reward.rewardtitle,
         :description => old_reward.rewarddesc,
@@ -390,4 +439,58 @@ class OldSchoolImporter
     @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] = new_reward
     puts "New reward #{new_reward.id} for #{new_reward.name} - #{reward_type} - #{new_reward.permalink}"
   end
+
+  def find_teacher legacy_teacher_id
+    teacher = @found_teachers[legacy_teacher_id]
+    if teacher.nil?
+      teacher = Person.find_by_legacy_user_id(legacy_teacher_id)
+      if teacher.nil?
+        puts "Couldn't find teacherID #{legacy_teacher_id}"
+        #            binding.pry
+      else
+        @found_teachers[legacy_teacher_id] = teacher
+      end
+    end
+    teacher
+  end
+
+  def find_student legacy_student_id
+    student = @found_students[legacy_student_id]
+    if student.nil?
+      student = Person.find_by_legacy_user_id(legacy_student_id)
+      if student.nil?
+        old_student = OldUser.find(legacy_student_id)
+        puts "Couldn't find userID #{legacy_student_id}" unless old_student
+        puts "Couldn't find userID #{legacy_student_id} but user #{old_student.userfname} #{old_student.userlname} exists for schoolid #{old_student.schoolID} - #{old_student.old_school.school}" if old_student
+        #            binding.pry
+        return false
+      end
+      @found_students[legacy_student_id] = student
+    end
+      student
+  end
+
+  def find_student_school_link person, school
+    psl = @found_student_school_links[person.id]
+    return psl if psl
+    psl = PersonSchoolLink.where('person_id = ? and school_id = ?',person.id,school.id).first
+    unless psl  # Student must have changed schools
+      psl = PersonSchoolLink.create(person_id: person.id, school_id: school.id)
+    end
+    @found_student_school_links[person.id] = psl
+  end
+
+
+  def find_teacher_school_link teacher, new_school
+    tsl = @found_teacher_school_links[teacher.legacy_user_id]
+    unless tsl
+      tsl = teacher.person_school_links.where(:school_id => new_school.id).first
+      if(!tsl)
+        tsl = PersonSchoolLink.create(:person_id => teacher.id, :school_id => new_school.id, :status => 'active') # should it be active????
+      end
+      @found_teacher_school_links[teacher.legacy_user_id] = tsl
+    end
+    tsl
+  end
+
 end
