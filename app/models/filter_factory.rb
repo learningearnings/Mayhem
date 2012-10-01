@@ -133,6 +133,6 @@ class FilterFactory
     pcfl = PersonClassFilterLink.where(pcfl_arel[:person_class].in(person.class.to_s).or(pcfl_arel[:person_class].eq(nil)))
     f = f.joins(:person_class_filter_links).merge(pcfl)
     f = f.select('filters.id').group('filters.id, filters.minimum_grade, filters.maximum_grade, filters.nickname, filters.created_at, filters.updated_at')
-    f.all | [1] # Everyone gets the all inclusive filter 
+    f.all | [Filter.find(1)] # Everyone gets the all inclusive filter 
   end
 end
