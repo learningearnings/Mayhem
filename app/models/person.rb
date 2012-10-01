@@ -13,8 +13,8 @@ class Person < ActiveRecord::Base
   has_many :monikers
   has_many :buck_batches, :through => :person_buck_batch_links
   has_many :person_buck_batch_links
-  has_many :person_avatar_links, :autosave => :true
-  has_many :avatars, :through => :person_avatar_links, :order => 'created_at desc'
+  has_many :person_avatar_links, :autosave => :true, :order => 'created_at desc'
+  has_many :avatars, :through => :person_avatar_links
   has_many :interactions
 
   has_many :spree_product_person_links
