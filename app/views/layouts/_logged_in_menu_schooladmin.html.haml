@@ -1,9 +1,7 @@
 %ul.nav.primary-nav
   %li= link_to "Home",               main_app.page_path('logged_in_home')
-  %li= link_to "Lounge",             main_app.page_path('logged_in_locker')
   %li= link_to "Inbox",              main_app.inbox_path
   %li= link_to "Bank",               main_app.school_admins_bank_path
-  %li= link_to "Students",           main_app.page_path('logged_in_play')
   %li= link_to "Rewards",            Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain)
   %li= link_to "Wholesale Rewards",  Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: 'le')
   %li= link_to "Reports",            "#"
