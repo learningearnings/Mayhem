@@ -118,6 +118,7 @@ Leror::Application.routes.draw do
   end
 
   namespace :teachers do
+    resources :reports
     resource :bank
     resource :dashboard
     match "home" => "home#show", as: 'home'

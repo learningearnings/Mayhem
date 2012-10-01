@@ -2,9 +2,7 @@
 - @messages.each do |message|
   .message
     .from
-      .avatar
-        - if message.from.avatar.present?
-          = image_tag message.from.avatar.image.thumb('135x135#').url
+      .avatar= avatar_for(message.from)
       .name= message.from
     %h3= message.subject
     .message-body

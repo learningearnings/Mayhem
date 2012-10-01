@@ -7,8 +7,7 @@
       - messages.each do |message|
         %div{ class: "message #{message.status}" }
           .image
-            - if message.from.avatar.present?
-              = image_tag message.from.avatar.image.thumb('50x50#').url
+            = avatar_for(message.from)
           .content
             %p.subject= message.subject
             = link_to "Read Message", message_path(message), "data-toggle" => 'modal', "data-target" => "#read-message-modal"
