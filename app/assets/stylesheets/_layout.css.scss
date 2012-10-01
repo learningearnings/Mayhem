@@ -178,7 +178,7 @@ input, textarea, select {
 
 .login-supplemental-part {
   position: absolute;
-  margin: 45px 0 0 30px;
+  margin: 45px 0 0 175px;
 }
 
 
@@ -1302,4 +1302,13 @@ footer {
     top: 25px;
     left: 310px;
   }
+}
+
+.featured-activity {
+  background-image: url(asset_path('featured_activity.png', image));
+  position: absolute;
+  width: 256px;
+  height: 262px;
+  top: 25px;
+  left: 310px;
 }
