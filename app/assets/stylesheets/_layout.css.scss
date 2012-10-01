@@ -1309,6 +1309,15 @@ footer {
   position: absolute;
   width: 256px;
   height: 262px;
-  top: 25px;
+  top: 280px;
   left: 310px;
+}
+
+.play-games {
+  background-image: url(asset_path('play_games.png', image));
+  position: absolute;
+  width: 213px;
+  height: 247px;
+  top: 305px;
+  left: 530px;
 }
