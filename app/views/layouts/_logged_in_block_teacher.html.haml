@@ -6,7 +6,7 @@
     %table.table.table-bordered
       %thead
         %tr 
-          %th.bg-white{:colspan => "2"} Credit Balance
+          %th.bg-white{:colspan => "3"} Credit Balance
       %thead
         %tr
           %th.bg-white Main
@@ -14,13 +14,9 @@
           %th.bg-white Undeposited
       %tbody
         %tr
-          - if current_person
-            %td= number_to_currency(current_person.main_account(current_school).balance)
-            %td= number_to_currency(current_person.unredeemed_account(current_school).balance)
-            %td= number_to_currency(current_person.undeposited_account(current_school).balance)
-          - else
-            %td.bg-white=number_to_currency(0.00)
-            %td.bg-white=number_to_currency(0.00)
+          %td.bg-white= number_to_currency(current_person.main_account(current_school).balance)
+          %td.bg-white= number_to_currency(current_person.unredeemed_account(current_school).balance)
+          %td.bg-white= number_to_currency(current_person.undeposited_account(current_school).balance)
   .person-details
     %h3= current_person.name
     %ul.links
