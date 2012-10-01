@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
                         ) && home_host
       token = Devise.friendly_token
       current_user.authentication_token = token
-      my_redirect_url = home_host   + "?auth_token=#{token}"
+      my_redirect_url = home_host   + "/home/?auth_token=#{token}"
 
       current_user.save
       sign_out(current_user)

@@ -113,6 +113,10 @@ Leror::Application.routes.draw do
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
   match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
+  namespace :students do
+    match "home" => "home#show", as: 'home'
+  end
+
   namespace :teachers do
     resource :bank
     resource :dashboard
