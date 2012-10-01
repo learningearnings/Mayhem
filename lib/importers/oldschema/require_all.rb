@@ -13,3 +13,6 @@ require_relative 'old_local_reward_category.rb'
 require_relative 'old_reward_global.rb'
 require_relative 'old_redeemed.rb'
 require_relative 'old_reward_image.rb'
+require_relative 'old_teacher_award.rb'
+require_relative 'old_file_download.rb'
+

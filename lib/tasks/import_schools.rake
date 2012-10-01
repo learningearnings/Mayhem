@@ -37,6 +37,7 @@ namespace :import do
         rowcount = 0;
         rowspersec = 0;
         start_time = Time.now
+        rowcount += osi.import_buck_batches(s,ns)
         s.old_users.each do |old_student|
 #          next if !OldPoint.exists?(:userID => old_student.userID)
           ActiveRecord::Base.transaction do
@@ -49,6 +50,7 @@ namespace :import do
           elapsed_time = end_time - start_time
           rowspersec = ((rowcount) / elapsed_time).round(2)
         end
+        osi.make_school_and_teacher_entries ns
       else
         puts "Could not find old school for #{ns.name}"
       end
