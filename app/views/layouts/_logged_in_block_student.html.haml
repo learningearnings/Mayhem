@@ -1,6 +1,5 @@
 .current-person-avatar.supplemental-part
-  - if current_person.avatar.present?
-    = image_tag current_person.avatar.image.thumb('135x135#').url
+  = avatar_for(current_person, '80x80#')
 .current-person.supplemental-part
   .credit-balance
     %table.table.table-bordered

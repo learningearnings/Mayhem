@@ -35,4 +35,14 @@ module ApplicationHelper
   def render_reward_highlights products
     render 'shared/rewards_highlights', products: products
   end
+
+  def avatar_for(person, geometry='50x50#')
+    avatar_img = if person.avatar.present?
+                   person.avatar.image
+                 else
+                   default_avatar_path = Rails.root.join('app/assets/images/default_avatar.png').to_s
+                   image_processor.fetch_file(default_avatar_path)
+                 end
+    image_tag(avatar_img.thumb(geometry).url)
+  end
 end
