@@ -77,15 +77,15 @@ body {
 .container {
     /* gradients - second red border, first red border, top white space, blue lines */
 	  
-	  background-image:  -webkit-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)),                                   -webkit-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -webkit-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -webkit-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+	  background-image:  -webkit-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)),                                   -webkit-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -webkit-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -webkit-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
 
-  background-image:  -moz-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -moz-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -moz-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -moz-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+  background-image:  -moz-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -moz-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -moz-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -moz-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
   
-  background-image:  -ms-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -ms-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -ms-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -ms-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+  background-image:  -ms-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -ms-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -ms-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -ms-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
 
-  background-image:  -o-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -o-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -o-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -o-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+  background-image:  -o-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -o-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -o-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -o-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
    
-  background-image:  linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+  background-image:  linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
    
    background-size: 1px, 2px, auto, auto 31px;
    background-repeat: repeat-y, repeat-y, no-repeat, repeat;
@@ -105,7 +105,7 @@ input, textarea, select {
 .content-section {
   position: relative;
   margin-bottom: 100px;
-  min-height: 500px;
+  min-height: 800px;
 }
 
 .logo {
@@ -1321,3 +1321,44 @@ footer {
   top: 305px;
   left: 530px;
 }
+
+.honor-roll {
+  background-image: url(asset_path('honor_roll.png', image));
+  position: absolute;
+  width: 585px;
+  height: 272px;
+  top: 555px;
+  left: 140px;  
+}
+
+.student-logged-in-sidebar {
+  .reward-highlights {
+    background-image: url(asset_path('reward_highlights_with_tape.png', image));
+    position: absolute;
+    width: 294px;
+    height: 262px;
+    top: 0;
+    left: 775px;    
+  }
+  .our-sponsors {
+    background-image: url(asset_path('our_sponsors.png', image));
+    position: absolute;
+    width: 291px;
+    height: 251px;
+    top: 270px;
+    left: 775px;  
+  }
+  .poll-of-the-day {
+    background-image: url(asset_path('poll_of_the_day.png', image));
+    position: absolute;
+    width: 296px;
+    height: 268px;
+    top: 515px;
+    left: 775px;  
+  }
+}
+
+
+
+
+
