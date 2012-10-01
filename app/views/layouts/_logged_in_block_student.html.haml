@@ -6,15 +6,15 @@
     %table.table.table-bordered
       %thead
         %tr 
-          %th Credit Balance
+          %th.bg-white{:colspan => "2"} Credit Balance
       %thead
         %tr
-          %th Checking
-          %th Savings
+          %th.bg-white Checking
+          %th.bg-white Savings
       %tbody
         %tr
-          %td= current_person.checking_balance
-          %td= current_person.savings_balance
+          %td.bg-white= current_person.checking_balance
+          %td.bg-white= current_person.savings_balance
   .person-details
     %h3= current_person.full_name
     %ul.links

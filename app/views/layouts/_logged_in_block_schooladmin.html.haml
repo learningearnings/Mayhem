@@ -6,37 +6,29 @@
     %table.table.table-bordered
       %thead
         %tr 
-          %th Credit Balance
+          %th.bg-white{:colspan => "3"} Credit Balance
       %thead
         %tr
-          %th Credits
-          %th Unredeemed
-          %th Undeposited
+          %th.bg-white Credits
+          %th.bg-white Unredeemed
+          %th.bg-white Undeposited
       %tbody
         %tr
-          - if current_person
-            %td= number_to_currency(current_person.main_account(current_person.schools.first).balance)
-            %td= number_to_currency(current_person.unredeemed_account(current_person.schools.first).balance)
-            %td= number_to_currency(current_person.undeposited_account(current_person.schools.first).balance)
-          - else
-            %td=number_to_currency(0.00)
-            %td=number_to_currency(0.00)
+          %td= number_to_currency(current_person.main_account(current_person.schools.first).balance)
+          %td= number_to_currency(current_person.unredeemed_account(current_person.schools.first).balance)
+          %td= number_to_currency(current_person.undeposited_account(current_person.schools.first).balance)
     %table.table.table-bordered
       %thead
         %tr
           %th{colspan: "3", align: 'center'} Store Credits
       %tbody
         %tr
-          - if current_person
-            %td{colspan: "3", align: 'center'}= number_to_currency(current_school.store_account.balance)
-          - else
-            %td{colspan: "3", align: 'center'}=number_to_currency(0.00)
+          %td{colspan: "3", align: 'center'}= number_to_currency(current_school.store_account.balance)
   .person-details
     %h3= current_user.email
     %ul.links
       %li= link_to "Edit My Profile", main_app.edit_person_path(current_person)
       %li= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
-      %li= link_to 'Purchases Report', main_app.purchases_report_path
     %p
       %strong
         Messages:
