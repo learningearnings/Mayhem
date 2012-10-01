@@ -12,7 +12,6 @@ class Teacher < Person
     @teacher_undeposited_account = []
   end
 
-
   def primary_account
     main_account(self.schools.first)
   end
@@ -72,9 +71,9 @@ class Teacher < Person
   end
 
   def setup_accounts(school)
-    Plutus::Asset.find_by_name main_account_name(school) || Plutus::Asset.create(name: main_account_name(school))
-    Plutus::Asset.find_by_name unredeemed_account_name(school)|| Plutus::Asset.create(name: unredeemed_account_name(school))
-    Plutus::Asset.find_by_name undeposited_account_name(school)|| Plutus::Asset.create(name: undeposited_account_name(school))
+    Plutus::Asset.find_by_name(main_account_name(school)) || Plutus::Asset.create(name: main_account_name(school))
+    Plutus::Asset.find_by_name(unredeemed_account_name(school)) || Plutus::Asset.create(name: unredeemed_account_name(school))
+    Plutus::Asset.find_by_name(undeposited_account_name(school)) || Plutus::Asset.create(name: undeposited_account_name(school))
   end
 
   def create_user

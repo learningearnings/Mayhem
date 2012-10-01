@@ -73,6 +73,9 @@
 = button_to :submit
 
 :javascript
+  $(document).ready(function() {
+    $('#svg').hide();
+  });
   $('select#product_type').change(function() {
     if ($('select#product_type option:selected').val() == "wholesale"){
       $('#svg').hide();
@@ -90,4 +93,5 @@
       $('#quantity').hide();
     }
   });
+
 

@@ -32,20 +32,29 @@ namespace :import do
       s = OldSchool.find(ns.ad_profile)
       puts "-------------------Classrooms for #{ns.name} #{ns.id}"
       if s
-        ActiveRecord::Base.transaction do
-          osi.import_classrooms(ns,s)
-          s.old_users.each do |old_student|
-            points_and_rewards = osi.import_points(s,old_student,ns)
+        osi.reset_school_cache
+        osi.import_classrooms(ns,s)
+        rowcount = 0;
+        rowspersec = 0;
+        start_time = Time.now
+        s.old_users.each do |old_student|
+#          next if !OldPoint.exists?(:userID => old_student.userID)
+          ActiveRecord::Base.transaction do
+            points_and_rewards = osi.import_points(s,old_student,ns,rowspersec)
             imported_points = imported_points + points_and_rewards[0]
             imported_purchases = imported_purchases + points_and_rewards[1]
+            rowcount += ((points_and_rewards[2]||0) + (points_and_rewards[3]||0))
           end
+          end_time = Time.now
+          elapsed_time = end_time - start_time
+          rowspersec = ((rowcount) / elapsed_time).round(2)
         end
       else
         puts "Could not find old school for #{ns.name}"
       end
       puts "   --> Imported #{imported_points} credits for #{ns.name}"
       puts "   --> Imported #{imported_purchases} purchases for #{ns.name}"
-      imported_points = 0
+      imported_purchases = imported_points = 0
     end
   end
 end

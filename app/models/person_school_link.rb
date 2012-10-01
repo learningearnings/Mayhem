@@ -40,9 +40,7 @@ class PersonSchoolLink < ActiveRecord::Base
   # End Relationships
 
   def setup_accounts
-    if person.is_a?(Teacher)
-      person.setup_accounts(school)
-    elsif person.is_a?(SchoolAdmin)
+    if person.is_a?(Teacher) || person.is_a?(SchoolAdmin)
       person.setup_accounts(school)
     end
   end

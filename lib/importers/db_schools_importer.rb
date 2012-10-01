@@ -5,7 +5,7 @@ require_relative 'oldschema/require_all.rb'
 
 class OldSchoolImporter
   def initialize
-    @new_school_rewards = Hash.new
+    reset_school_cache
     puts "Running some sql to fixup the MySQL db"
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
@@ -20,8 +20,18 @@ class OldSchoolImporter
                      1000 => 'global',
                      1001 => 'global',
                      1002 => 'local']
+    @cm = CreditManager.new
 
   end
+
+  def reset_school_cache
+    @new_school_rewards = Hash.new
+    @found_teachers = []
+    @found_teacher_school_links = []
+  end
+
+
+
   def reset
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
 =begin
@@ -191,10 +201,10 @@ class OldSchoolImporter
     start_time = Time.now
 
     total_errors = total_users = classrooms = users = errors  = 0
-    old_school.classrooms.each do |c|
+    old_school.classrooms.order('classroomID').each do |c|
       # Add the classroom
-      new_c = Classroom.where('school_id = ? and name = ?',new_school.id, c.classroomtitle).first
-      next if new_c
+#      new_c = Classroom.where('school_id = ? and name = ?',new_school.id, c.classroomtitle).first
+#      next if new_c
       new_c = Classroom.new();
       begin
         c.classroomcreated = last_created_at = Date.parse(c.classroomcreated.to_s)
@@ -250,21 +260,25 @@ class OldSchoolImporter
   end
 
 
-  def import_points(old_school, old_student, new_school)
-    new_student = Student.find_by_legacy_user_id(old_student.userID)
-    unless new_student
-      puts "Missing student for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.school.school}"
-      return [0,0];
-    end
+  def import_points(old_school, old_student, new_school, rowspersec)
     imported_purchases = imported_points = imported_points_count = imported_purchases_count = 0
     student_income = [2,4,10,12]
     reward_purchases = [1]
     pointactions = [1,2,4,10,12]
-    cm = CreditManager.new
-    found_teachers = []
+    new_student = nil
     OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => pointactions ).order('pointID asc').each do |op|
+      new_student = Student.find_by_legacy_user_id(old_student.userID)
+      unless new_student
+        new_person = Person.find_by_legacy_user_id(old_student.userID)
+        if new_person
+          puts "Missing student but found Person \"#{new_person.to_s}\" of type \"#{new_person.type}\" for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.school.school}"
+        else
+          puts "Missing student for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.school.school}"
+      end
+        return [0,0];
+      end
       if student_income.index(op.pointactionID) && op.old_otu_code
-        teacher = found_teachers[op.old_otu_code.issuinguserID]
+        teacher = @found_teachers[op.old_otu_code.issuinguserID]
         if teacher.nil?
           teacher = Person.find_by_legacy_user_id(op.old_otu_code.issuinguserID)
           if teacher.nil?
@@ -272,64 +286,67 @@ class OldSchoolImporter
             #            binding.pry
             next
           else
-            found_teachers[op.old_otu_code.issuinguserID] = teacher
+            @found_teachers[op.old_otu_code.issuinguserID] = teacher
           end
         end
-        tsl = teacher.person_school_links.where(:school_id => new_school.id).first
-        if(!tsl)
-          tsl = PersonSchoolLink.create(:person_id => teacher.id, :school_id => new_school.id, :status => 'active') # should it be active????
+        tsl = @found_teacher_school_links[op.old_otu_code.issuinguserID]
+        unless tsl
+          tsl = teacher.person_school_links.where(:school_id => new_school.id).first
+          if(!tsl)
+            tsl = PersonSchoolLink.create(:person_id => teacher.id, :school_id => new_school.id, :status => 'active') # should it be active????
+          end
+          @found_teacher_school_links[op.old_otu_code.issuinguserID] = tsl
         end
         oc = oc = OtuCode.new(:points => op.points,
                               :expires_at => op.old_otu_code.OTUcodeexpires,
                               :student_id => new_student.id, 
-                              :person_school_link_id => teacher.person_school_links.first, 
+                              :person_school_link_id => tsl.id, 
                               :ebuck => op.old_otu_code.ebuck)
         oc.created_at = op.old_otu_code.OTUcodeDate
         oc.save
         imported_points = imported_points + op.points.abs
         imported_points_count += 1
-#        binding.pry if old_student.userID == 120435
-        transaction = cm.issue_credits_to_school new_school, op.points
-        transaction.created_at = op.pointtimestamp if transaction
-        transaction.save if transaction
-        transaction = cm.issue_credits_to_teacher new_school, teacher, op.points
-        transaction.created_at = op.pointtimestamp if transaction
-        transaction.save if transaction
-        transaction = cm.issue_credits_to_student new_school, teacher, new_student, op.points
-        transaction.created_at = op.pointtimestamp if transaction
-        transaction.save if transaction
-        
-#        binding.pry if old_student.userID == 120435
+        @cm.transaction_time_stamp = op.pointtimestamp
+        transaction = @cm.issue_credits_to_school new_school, op.points
+        transaction = @cm.issue_credits_to_teacher new_school, teacher, op.points
+        transaction = @cm.issue_credits_to_student new_school, teacher, new_student, op.points
+        @cm.transaction_time_stamp = nil
       elsif reward_purchases.index(op.pointactionID) && op.rewardauctionID == 0
         new_reward = get_reward(op, new_school)
         imported_purchases = imported_purchases + op.points.abs
         imported_purchases_count += 1
-        transaction = cm.transfer_credits "Reward Purchase", new_student.checking_account_name, cm.main_account_name, op.points.abs
-        if transaction 
-          transaction.created_at = op.pointtimestamp if transaction
-          transaction.save
-        else
+        @cm.transaction_time_stamp = op.pointtimestamp
+        transaction = @cm.transfer_credits "Reward Purchase", new_student.checking_account_name, @cm.main_account_name, op.points.abs
+        @cm.transaction_time_stamp = nil
+        unless transaction
           puts "Attempt to purchase #{op.old_reward.rewardtitle} for #{op.points} by #{new_student.full_name} #{op.pointID} #{new_student.legacy_user_id}"
         end
       end
-      print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})\r"
     end
-    [imported_points,imported_purchases]
+    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
+    [imported_points,imported_purchases,imported_points_count, imported_purchases_count]
   end
+
+
+  def import_buck_batches old_school, new_school
+
+  end
+
+
 
   def get_reward old_point, new_school
     return if old_point.nil?
     old_reward_id = old_point.rewardID
     reward_selector = "R#{old_reward_id}"
     reward_selector = "L#{old_point.old_redeemed.old_reward_local.id}" if (old_point.old_reward && old_point.old_reward.rewardcategoryID == 1002) # Local and School Rewards
+#    puts reward_type + ' - ' + reward_selector
+    product = @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"]
+    return product if product
     reward_type = 'unknown - ' + old_point.old_reward.rewardtitle
     reward_type = 'local'  if old_point.old_reward.rewardcategoryID == 1002
     reward_type = 'global' if old_point.old_reward.old_reward_globals.count > 0 || [1000,1001].index(old_point.old_reward.rewardcategoryID)
     reward_type = 'wholesale' if old_point.old_reward.old_reward_details.count > 0
     reward_type = 'charity' if old_point.old_reward.rewardcategoryID == 12  # this must come last - some charities mistakenly in globals
-#    puts reward_type + ' - ' + reward_selector
-    product = @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"]
-    return product if product
     old_reward = OldReward.find(old_reward_id)
     store = Spree::Store.find_by_code new_school.store_subdomain
     if reward_type == 'local'

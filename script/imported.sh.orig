@@ -5,14 +5,19 @@ if [ -z "$PGRESTORE" ]; then
     echo "You need to install pg_restore to continue"
     exit 1
 fi
-echo "Removing all your existing spree images .. You won't miss them
-     "
+echo "Removing all your existing images .. You won't miss them"
 rm -rf public/spree/products/*
-rm -rf public/system/*
+rm -rf public/system/dragonfly/*
 echo -n "Uncompressing...."
-echo `tail -n +19 $0 | base64 -d | tar zxv | wc -l` files extracted
+hostname=`hostname`
+curl -s http://mayhemstaging.lemirror.com/system/images.tgz | gzip -dc | tar -xv
+mv public/system/dragonfly/development public/system/dragonfly/production
 echo "Loading the learning_earning_development database..."
-gzip -dc imported.pg.db.gz | pg_restore -O --dbname=learning_earning_development --clean
+if [ "$hostname" == "mayhemstaging.lemirror.com" ]; then
+   curl -s http://mayhemstaging.lemirror.com/system/imported.pg.db.gz | gzip -dc | pg_restore -O --username=deployer --dbname=learning_earning_development --clean
+   echo "update spree_stores set domains = replace(domains,'lvh.me:3000','mayhemstaging.lemirror.com');" | psql -d learning_earning_development
+else
+   curl -s http://mayhemstaging.lemirror.com/system/imported.pg.db.gz | gzip -dc | pg_restore -O --dbname=learning_earning_development --clean
+fi
 echo "Finished!"
 exit 0
-#==============

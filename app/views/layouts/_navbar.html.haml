@@ -3,10 +3,10 @@
   .fill.navbar-inner
     - if current_user
       - if current_person
-        - if current_person.is_a?(Teacher)
-          = render 'layouts/logged_in_menu_teacher'
-        - elsif current_person.is_a?(SchoolAdmin)
+        - if current_person.is_a?(SchoolAdmin)
           = render 'layouts/logged_in_menu_schooladmin'
+        - elsif current_person.is_a?(Teacher)
+          = render 'layouts/logged_in_menu_teacher'
         - else
           = render 'layouts/logged_in_menu'
       - else

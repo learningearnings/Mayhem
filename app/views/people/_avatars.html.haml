@@ -1,19 +1,15 @@
-= paginate @avatars
-
-- @avatars.each do |a|
-  %div{:id => "#{a.id}", :class => "hover_image"}
-    = image_tag(a.image.thumb('50x50#').url)
-  = a.description
+.avatars
+  = paginate @avatars
+  - @avatars.each do |a|
+    .avatar
+      .image_wrapper{:id => a.id}
+        = image_tag(a.image.thumb('50x50#').url)
+      .description= a.description
 
 :javascript
-  $(".hover_image").hover(
-    function() { $(this).addClass("hover"); },
-    function() { $(this).removeClass("hover"); }
-  );
-
-  $('.hover_image').click( function() {
-    $('.hover_image').removeClass("active");
-    $(this).addClass('active').siblings().removeClass('active');
-    var imageId = $(this).attr("id");
+  $('.avatar').click( function() {
+    $('.avatar').removeClass('active');
+    $(this).addClass('active');
+    var imageId = $('.image_wrapper', this).attr("id");
     $("input[id=avatar_id]").val(imageId)
   });
