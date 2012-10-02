@@ -163,8 +163,9 @@ end
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
   namespace :admin do
+    match "le_ship_order" => "le_shipments#ship"
     resources :rewards
     match 'remove_reward' => 'rewards#destroy'
-    resources :shipments
+    resources :le_shipments
   end
 end
