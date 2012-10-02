@@ -119,8 +119,9 @@ Leror::Application.routes.draw do
 
   namespace :teachers do
     resources :reports
-    resource :bank
-    resource :dashboard
+    resource  :bank
+    resource  :dashboard
+    resource  :lounge
     match "home" => "home#show", as: 'home'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
@@ -128,6 +129,13 @@ Leror::Application.routes.draw do
     match "/transfer_bucks" => 'banks#transfer_bucks'
     match "/new_student" => 'dashboards#new_student'
     match "/create_student" => 'dashboards#create_student'
+
+    # Messaging routes
+    match "inbox/peer_messages" => 'messages#peer_messages', :as => 'peer_messages'
+    match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
+    match "inbox/admin_message" => 'messages#admin_message', :as => 'admin_message'
+    match "/inbox" => 'messages#index'
+    resources :messages
   end
 
   namespace :school_admins do
@@ -147,6 +155,7 @@ Leror::Application.routes.draw do
   resources :food_fight_play_commands, only: [:create]
   resources :student_message_student_commands, only: [:create]
   resources :student_message_admin_commands, only: [:create]
+  resources :teacher_message_admin_commands, only: [:create]
   resources :student_share_locker_message_commands, only: [:create]
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]

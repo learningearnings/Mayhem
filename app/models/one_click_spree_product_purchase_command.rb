@@ -87,6 +87,7 @@ class OneClickSpreeProductPurchaseCommand
     @shipment = @order.shipment
     @shipment.ready
     @shipment.reload
+    binding.pry
     @shipment.ship
   end
 

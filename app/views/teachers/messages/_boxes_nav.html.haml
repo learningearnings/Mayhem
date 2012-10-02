@@ -1,0 +1,8 @@
+.boxes-nav-container
+  %h3 Messages:
+  %hr
+  %ul.nav-group
+    %li= inbox_link_for("Peer Messages",   @received_messages.from_teacher, teachers_peer_messages_path,   'peer-message')
+    %li= inbox_link_for("System Messages", @received_messages.from_system,  teachers_system_messages_path, 'system-message')
+    %li= link_to 'Send Admin a Message', teachers_admin_message_path, :class => 'admin-message'
+    %br
