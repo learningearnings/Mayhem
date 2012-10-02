@@ -3,20 +3,21 @@
     = image_tag current_person.avatar.image.thumb('175x175#').url
 .current-person.supplemental-part
   .credit-balance
-    %table.table.table-bordered
+    %table.table
       %thead
         %tr 
-          %th.bg-white{:colspan => "3"} Credit Balance
-      %thead
-        %tr
-          %th.bg-white Main
-          %th.bg-white Unredeemed
-          %th.bg-white Undeposited
+          %th.cb-heading-primary{:colspan => "3"} Credit Balance
       %tbody
         %tr
-          %td.bg-white= number_to_currency(current_person.main_account(current_school).balance)
-          %td.bg-white= number_to_currency(current_person.unredeemed_account(current_school).balance)
-          %td.bg-white= number_to_currency(current_person.undeposited_account(current_school).balance)
+          %td.table-bordered-tl.cb-heading Main
+          %td.table-bordered-tr.cb-value= number_to_currency(current_person.main_account(current_school).balance)
+        %tr
+          %td.table-bordered-ml.cb-heading Unredeemed
+          %td.table-bordered-mr.cb-value= number_to_currency(current_person.unredeemed_account(current_school).balance)
+        %tr
+          %td.table-bordered-bl.cb-heading Undeposited
+          %td.table-bordered-br.cb-value= number_to_currency(current_person.undeposited_account(current_school).balance)
+          
   .person-details
     %h3= current_person.name
     %ul.links

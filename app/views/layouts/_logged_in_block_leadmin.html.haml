@@ -3,13 +3,14 @@
     = image_tag current_person.avatar.image.thumb('175x175#').url
 .current-person.supplemental-part
   .credit-balance
-    %table.table.table-bordered
+    %table.table
       %thead
         %tr 
-          %th.bg-white{:colspan => "2"} Credit Balance
+          %th.cb-heading-primary{:colspan => "2"} Credit Balance
         %tr
-          %th.bg-white Checking
-          %th.bg-white Savings
+          %td.table-bordered-tl.cb-heading Checking
+        %tr
+          %td.table-bordered-br.cb-heading Savings
       %tbody
         %tr
   .person-details
