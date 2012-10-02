@@ -76,6 +76,7 @@ class CreateStoreProduct < ActiveModelCommand
                                                                       :person => @reward_owner,
                                                                       :retail_price => retail_price
                                                                       ).execute!
+        product.set_property('legacy_selector',@legacy_selector)
         return product
       end
     end
