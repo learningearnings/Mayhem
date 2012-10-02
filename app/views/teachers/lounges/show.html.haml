@@ -1,0 +1,22 @@
+.row
+  .span8
+    .news-header
+      %h2 Lounge
+
+.row
+  .tips-container
+    .span6
+      - tips.each do |post|
+        .tip-post.row
+          .span6
+            %h4= post.title
+            = post.body.html_safe
+    .span3
+      .testimonials-container
+        %h3 Testimonials
+        .testimonial-postss
+          - testimonials.each do |post|
+            .testimonial-post.row
+              .span3
+                %h4= post.title
+                = post.body.html_safe

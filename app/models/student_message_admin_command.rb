@@ -20,12 +20,10 @@ class StudentMessageAdminCommand < ActiveModelCommand
   def execute!
     messages = []
     message = message_class.new to_id: @to_id, from_id: @from_id, subject: @subject, body: @body, category: "le_admin"
-    messages << message
-    any_invalid = messages.detect{|m| !m.valid? }
-    if any_invalid
+    if !message.valid?
       return false
     else
-      messages.map(&:save)
+      message.save
       return true
     end
   end
