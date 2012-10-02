@@ -1,20 +1,15 @@
-%h2 My Bank Header
+%h2 The Bank
+
+%p Teachers have enough to worry about, which is why we made LE Credits the easiest and simplest way to reward students for a job well done.  Below you'll find everything you need to manager your classroom's LE funds.
+%p.credits-available
+  %strong
+    Credits Available: 
+  = number_to_currency(current_person.main_account(current_school).balance)
 
 .row
   .span8
-    %p= lipsum 200
-
-    .bank-account
-      %h4 My Account
-      .balances
-        %p Checking Balance: #{current_person.primary_account.balance}
-      .actions
-        = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn', 'data-toggle' => 'modal'
-    = link_to "View Checking History", "#checking-history-modal", class: 'btn', 'data-toggle' => 'modal'
-    = link_to "View Savings History", "#savings-history-modal", class: 'btn', 'data-toggle' => 'modal'
-    = link_to "View Credit History", "#credit-history-modal", class: 'btn', 'data-toggle' => 'modal'
-
-    %h4 Create Print Bucks
+    %h3 Distribute Credits
+    %h4 Print Physical Credits
     = form_for OtuCode.new, :url => teachers_create_print_bucks_path do |f|
       = label_tag '$1'
       = text_field_tag :point1, nil,:class => 'focus-on-me'
@@ -22,26 +17,26 @@
       = text_field_tag :point5
       = label_tag '$10'
       = text_field_tag :point10
-      = f.submit 'Print Bucks'
+      = f.submit 'Print These Credits'
 
-    %h4 Create E-Bucks
+    %h4 Create E-Credits
     = form_for OtuCode.new, :url => teachers_create_ebucks_path do |f|
       = label_tag 'Student'
       = select("student", "id", current_school.students.collect {|p| [ p.name, p.id ] }, { :include_blank => true }, { class: 'chzn-select' })
       = label_tag :points
       = text_field_tag :points
-      = f.submit 'Create eBucks'
+      = f.submit 'Send These Credits'
 
-    %h4 Transfer Bucks
+    %h4 Transfer Credits
     = form_for OtuCode.new, :url => teachers_transfer_bucks_path do |f|
       = label_tag 'Points'
       = text_field_tag :points
       = hidden_field_tag :from_teacher_id, current_person.id
       = label_tag :to_teacher
       = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers.reject{|x| x == Teacher.find(current_person.id)} + current_school.school_admins), :id, :to_s), :include_blank => true
-      = f.submit 'Transfer Bucks'
+      = f.submit 'Transfer Credits'
 
-    %h4 Buck Batches
+    %h4 Credit Batches
     - @buck_batches.each do |batch|
       = link_to batch.name, teachers_print_batch_path(batch.id, :format => 'pdf')
 

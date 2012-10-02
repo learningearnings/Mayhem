@@ -139,7 +139,8 @@ class Bank
   def create_bucks_in_batch(person, school, prefix, bucks)
     _bucks = create_bucks(person, school, prefix, bucks)
     # add to batch
-    bb = buck_batch_creator.call(:name => 'Test')
+    batch_name = person.to_s + " Created " + Date.today.to_s
+    bb = buck_batch_creator.call(:name => batch_name)
     _bucks.map{|x| buck_batch_link_creator.call(:buck_batch_id => bb.id, :otu_code_id => x.id)}
     create_person_buck_batch_link(person, bb)
     bb
