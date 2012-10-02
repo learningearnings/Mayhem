@@ -2,18 +2,17 @@
   = avatar_for(current_person, '80x80#')
 .current-person.supplemental-part
   .credit-balance
-    %table.table.table-bordered
+    %table.table
       %thead
         %tr 
-          %th.bg-white{:colspan => "2"} Credit Balance
-      %thead
-        %tr
-          %th.bg-white Checking
-          %th.bg-white Savings
+          %th.cb-heading-primary{:colspan => "2"} Credit Balance
       %tbody
         %tr
-          %td.bg-white= current_person.checking_balance
-          %td.bg-white= current_person.savings_balance
+          %td.table-bordered-tl.cb-heading Checking
+          %td.table-bordered-tr.cb-value= current_person.checking_balance
+        %tr
+          %td.table-bordered-bl.cb-heading Savings
+          %td.table-bordered-br.cb-value= current_person.savings_balance
   .person-details
     %h3= current_person.full_name
     %ul.links

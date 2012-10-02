@@ -32,7 +32,8 @@ class OldSchoolImporter
     @found_teacher_school_links = {}
     @otucode_batches = {}
     @earliest_date = nil
-    @teacher_points = {}
+    @teacher_undeposited_points = {}
+    @teacher_unredeemed_points = {}
     @school_points = 0
   end
 
@@ -267,9 +268,10 @@ class OldSchoolImporter
 
   def import_points(old_school, old_student, new_school, rowspersec)
     imported_purchases = imported_points = imported_points_count = imported_purchases_count = 0
+    student_transfer = [14,16]
     student_income = [2,4,10,12]
     reward_purchases = [1]
-    pointactions = [1,2,4,10,12]
+    pointactions = [1,2,4,10,12,14,16]
     new_student = nil
     OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => pointactions ).order('pointID asc').each do |op|
       new_student = find_student old_student.userID unless new_student
@@ -277,7 +279,7 @@ class OldSchoolImporter
       unless new_student
         new_person = Person.find_by_legacy_user_id(old_student.userID)
         if new_person
-          puts "Missing student but found Person \"#{new_person.to_s}\" of type \"#{new_person.type}\" for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.school.school}"
+          puts "Missing student but found Person \"#{new_person.to_s}\" of type \"#{new_person.type}\" for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.old_school.school}"
         else
           puts "Missing student for tbl_users.userID = #{old_student.userID} - #{old_student.username}, #{old_student.school.school}"
         end
@@ -298,16 +300,23 @@ class OldSchoolImporter
         imported_points = imported_points + op.points.abs
         imported_points_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
-        @teacher_points[teacher.legacy_user_id] ||= 0
+        @teacher_undeposited_points[teacher.legacy_user_id] ||= 0
+        @teacher_unredeemed_points[teacher.legacy_user_id] ||= 0
         @school_points += op.points.abs
-        @teacher_points[teacher.legacy_user_id] += op.points.abs
         @school_points
 #        transaction = @cm.issue_credits_to_school new_school, op.points
 #        transaction = @cm.issue_credits_to_teacher new_school, teacher, op.points
-        transaction = @cm.issue_credits_to_student new_school, teacher, new_student, op.points
+#        transaction = @cm.issue_credits_to_student new_school, teacher, new_student, op.points.abs
+        if op.old_otu_code.ebuck
+          @cm.issue_ecredits_to_student new_school, teacher, new_student, op.points.abs
+          @teacher_undeposited_points[teacher.legacy_user_id] += op.points.abs
+        else
+          @cm.issue_print_credits_to_student new_school, teacher, new_student, op.points.abs
+          @teacher_unredeemed_points[teacher.legacy_user_id] += op.points.abs
+        end
         @cm.transaction_time_stamp = nil
       elsif reward_purchases.index(op.pointactionID) && op.rewardauctionID == 0
-        new_reward = get_reward(op, new_school)
+        new_reward = get_reward(op.old_reward, op, new_school)
         imported_purchases = imported_purchases + op.points.abs
         imported_purchases_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
@@ -316,6 +325,14 @@ class OldSchoolImporter
         unless transaction
           puts "Attempt to purchase #{op.old_reward.rewardtitle} for #{op.points} by #{new_student.full_name} #{op.pointID} #{new_student.legacy_user_id}"
         end
+      elsif student_transfer.index(op.pointactionID)
+        @cm.transaction_time_stamp = op.pointtimestamp
+        if op.pointactionID == 14    # 14 Checking -> Savings
+          @cm.transfer_credits_from_checking_to_savings new_student, op.points.abs
+        elsif op.pointactionID == 16 # 16 Savings -> Checking
+          @cm.transfer_credits_from_savings_to_checking new_student, op.points.abs
+        end
+        @cm.transaction_time_stamp = nil
       end
     end
     print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
@@ -325,9 +342,14 @@ class OldSchoolImporter
   def make_school_and_teacher_entries new_school
     @cm.transaction_time_stamp = @earliest_date
     transaction = @cm.issue_credits_to_school new_school, @school_points;
-    @teacher_points.each_pair do |legacy_user_id,points|
+    @teacher_unredeemed_points.each_pair do |legacy_user_id,points|
       teacher = find_teacher legacy_user_id
-      transaction = @cm.issue_credits_to_teacher new_school, find_teacher(legacy_user_id), points if teacher
+      transaction = @cm.transfer_credits "Import Teacher Unredeeemed",new_school.main_account, teacher.unredeemed_account(new_school), points.abs if teacher
+      puts "Couldn't find teacher for legacy user id #{legacy_user_id}" unless teacher
+    end
+    @teacher_undeposited_points.each_pair do |legacy_user_id,points|
+      teacher = find_teacher legacy_user_id
+      transaction = @cm.transfer_credits "Import Teacher Undeposited",new_school.main_account, teacher.undeposited_account(new_school), points.abs if teacher
       puts "Couldn't find teacher for legacy user id #{legacy_user_id}" unless teacher
     end
   end
@@ -382,23 +404,41 @@ class OldSchoolImporter
   end
 
 
+  def update_quantities old_school, new_school
+    puts "Updating quantities for #{old_school.school}"
+    OldRewardDetail.where(:schoolID => old_school.schoolID).where('rewardquantity > ?', 0).each do |rd|
+      old_reward = rd.old_reward
+      reward = get_reward old_reward,nil,new_school
+      if reward
+        puts " ----> updating count_on_hand from #{reward.master.count_on_hand} to #{rd.rewardquantity}"
+        reward.master.count_on_hand = rd.rewardquantity
+      else
+        puts "Could not find reward for #{old_reward.rewardtitle}"
+      end
+    end
 
-  def get_reward old_point, new_school
-    return if old_point.nil?
-    old_reward_id = old_point.rewardID
+
+  end
+
+
+
+  def get_reward old_reward, old_point, new_school
+    return if old_point.nil? && old_reward.nil?
+    old_reward = old_point.old_reward if old_reward.nil?
+    old_reward_id = old_reward.rewardID
     reward_selector = "R#{old_reward_id}"
-    reward_selector = "L#{old_point.old_redeemed.old_reward_local.id}" if (old_point.old_reward && old_point.old_reward.rewardcategoryID == 1002) # Local and School Rewards
+    reward_selector = "L#{old_point.old_redeemed.old_reward_local.id}" if (old_point && old_reward && old_reward.rewardcategoryID == 1002) # Local and School Rewards
 #    puts reward_type + ' - ' + reward_selector
     product = @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"]
     return product if product
-    reward_type = 'unknown - ' + old_point.old_reward.rewardtitle
-    reward_type = 'local'  if old_point.old_reward.rewardcategoryID == 1002
-    reward_type = 'global' if old_point.old_reward.old_reward_globals.count > 0 || [1000,1001].index(old_point.old_reward.rewardcategoryID)
-    reward_type = 'wholesale' if old_point.old_reward.old_reward_details.count > 0
-    reward_type = 'charity' if old_point.old_reward.rewardcategoryID == 12  # this must come last - some charities mistakenly in globals
-    old_reward = OldReward.find(old_reward_id)
+    reward_type = 'unknown - ' + old_reward.rewardtitle
+    reward_type = 'local'  if old_reward.rewardcategoryID == 1002
+    reward_type = 'global' if old_reward.old_reward_globals.count > 0 || [1000,1001].index(old_reward.rewardcategoryID)
+    reward_type = 'wholesale' if old_reward.old_reward_details.count > 0
+    reward_type = 'charity' if old_reward.rewardcategoryID == 12  # this must come last - some charities mistakenly in globals
+#    old_reward = OldReward.find(old_reward_id)
     store = Spree::Store.find_by_code new_school.store_subdomain
-    if reward_type == 'local'
+    if reward_type == 'local' && old_point
       reward_local = old_point.old_redeemed.old_reward_local
       owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
@@ -423,7 +463,7 @@ class OldSchoolImporter
         :legacy_selector => reward_selector,
         :school => new_school,
         :reward_type => reward_type,
-        :quantity => old_reward.numberofrewards,
+        :quantity => 0,
         :price => old_reward.rewardpoints,
         :deleted_at => @non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now : nil,
         :reward_owner => owner,
@@ -431,13 +471,15 @@ class OldSchoolImporter
         :image => 'images/rewardimage/' + old_reward.rewardimagepath}
 
       if reward_type == 'wholesale'
-        params[:retail_quantity] = old_point.old_reward.shipmentmin
+        params[:retail_quantity] = old_reward.shipmentmin
         params[:retail_price] = (old_reward.shipmentmin * old_reward.rewardpoints)
       end
       new_reward = CreateStoreProduct.new(params).execute! if store
     end
     @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] = new_reward
-    puts "New reward #{new_reward.id} for #{new_reward.name} - #{reward_type} - #{new_reward.permalink}"
+    print "New reward #{new_reward.id} for #{new_reward.name} - #{reward_type} - #{new_reward.permalink}"
+    puts if old_point
+    new_reward
   end
 
   def find_teacher legacy_teacher_id
@@ -457,11 +499,11 @@ class OldSchoolImporter
   def find_student legacy_student_id
     student = @found_students[legacy_student_id]
     if student.nil?
-      student = Person.find_by_legacy_user_id(legacy_student_id)
+      student = Student.find_by_legacy_user_id(legacy_student_id)
       if student.nil?
         old_student = OldUser.find(legacy_student_id)
-        puts "Couldn't find userID #{legacy_student_id}" unless old_student
-        puts "Couldn't find userID #{legacy_student_id} but user #{old_student.userfname} #{old_student.userlname} exists for schoolid #{old_student.schoolID} - #{old_student.old_school.school}" if old_student
+        puts "Couldn't find Student userID #{legacy_student_id}" unless old_student
+        puts "Couldn't find Student userID #{legacy_student_id} but user #{old_student.userfname} #{old_student.userlname} exists for schoolid #{old_student.schoolID} - #{old_student.old_school.school}" if old_student
         #            binding.pry
         return false
       end

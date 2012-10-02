@@ -51,6 +51,7 @@ namespace :import do
           rowspersec = ((rowcount) / elapsed_time).round(2)
         end
         osi.make_school_and_teacher_entries ns
+        osi.update_quantities(s,ns)
       else
         puts "Could not find old school for #{ns.name}"
       end
