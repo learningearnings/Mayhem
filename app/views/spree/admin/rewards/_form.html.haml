@@ -30,7 +30,7 @@
   .clearfix
     = f.label 'Price'
     .input= f.text_field :price, :value => number_to_currency(@product.price, :unit => '')
-  .clearfix
+  .clearfix#on_hand
     = f.label 'Count on hand'
     .input= f.text_field :on_hand
   .clearfix#quantity
@@ -81,16 +81,20 @@
       $('#svg').hide();
       $('#price').show();
       $('#quantity').show();
+      $('#on_hand').show();
     }
     else if ($('select#product_type option:selected').val() == "charity"){
       $('#price').hide();
       $('#quantity').hide();
       $('#svg').show();
+      $('#on_hand').hide();
+      $('#product_on_hand').attr("value", "99999");
     }
     else {
       $('#svg').hide();
       $('#price').hide();
       $('#quantity').hide();
+      $('#on_hand').show();
     }
   });
 

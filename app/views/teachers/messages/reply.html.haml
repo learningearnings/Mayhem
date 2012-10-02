@@ -1,0 +1,10 @@
+.span4
+  %h3 Reply To Peer
+  = form_for message do |f|
+    .select-message
+      = f.label :subject
+      = f.text_field :subject
+      = f.label :body
+      = f.text_area :body
+      = hidden_field_tag "teacher_message_peer_command[to_ids][]", old_message.from_id
+      = f.submit "Send Message", class: 'btn btn-primary'
