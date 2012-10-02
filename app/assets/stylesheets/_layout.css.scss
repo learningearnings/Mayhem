@@ -1198,11 +1198,11 @@ footer {
 }
 
 .play-header-container {
-  margin-left: 8%;
+  margin-left: 10.1em;
 }
 
 .games {
-  margin-left: 8%;
+  margin-left: 10.1em;
 }
 
 .coming-soon-container {
@@ -1431,4 +1431,22 @@ footer {
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
     box-shadow:         1px 2px 5px 1px #ccc;    
   }
+}
+
+.games-image-container {
+  padding: 15px 10px;
+  box-shadow: rgba(76, 76, 76, 0.33) 0px 0px 12px 3px;
+  -webkit-box-shadow: rgba(76, 76, 76, 0.33) 0px 0px 12px 3px;
+  -moz-box-shadow: rgba(76, 76, 76, 0.33) 0px 0px 12px 3px;
+  background-color: white;
+  width: 920px;
+  height: 405px;  
+  background-color: #fff; 
+  margin-bottom: 2em; 
+}
+.games-image {
+  background-image: url(asset_path('games.png', image));
+  width: 900px;
+  height: 375px;
+  border: solid 1px #c9c9c9;
 }
