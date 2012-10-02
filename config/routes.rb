@@ -137,6 +137,7 @@ Leror::Application.routes.draw do
     match "inbox/classroom_message" => 'messages#classroom_message', :as => 'classroom_message'
     match "inbox/peer_message" => 'messages#peer_message', :as => 'peer_message'
     match "/inbox" => 'messages#index'
+    match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
     resources :messages
   end
 

@@ -39,6 +39,13 @@ module Teachers
       @message.read!
     end
 
+    def reply
+      old_message = Message.find(params[:message_id])
+      message = TeacherMessagePeerCommand.new
+      peers = current_person.peers_at(current_school)
+      render locals: { peers: peers, message: message, old_message: old_message }
+    end
+
     protected
     # No layout if this is an xhr request
     def layout

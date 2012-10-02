@@ -89,6 +89,6 @@ class Teacher < Person
   end
 
   def peers_at(school)
-    school.teachers - self
+    school.teachers - [self]
   end
 end
