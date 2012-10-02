@@ -17,9 +17,21 @@ module Teachers
       @messages.map{|x| x.read!}
     end
 
+    def peer_message
+      peers = current_person.peers_at(current_school)
+      message = TeacherMessagePeerCommand.new
+      render locals: { peers: peers, message: message }
+    end
+
     def admin_message
       @message = TeacherMessageAdminCommand.new
       @message.subject = params[:subject]
+    end
+
+    def classroom_message
+      message = TeacherMessageClassroomCommand.new
+      classrooms = current_person.classrooms_for_school(current_school)
+      render locals: { message: message, classrooms: classrooms }
     end
 
     def show
