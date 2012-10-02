@@ -1,13 +1,9 @@
 .reward-highlights
-  %h3 Rewards Highlights
   - products.each do |product|
-    .row
-      .span1
-        .product-image
-          - product_image_path = Rails.root.join('public', product.thumb[1..-1].split('?')[0]).to_s
-          = link_to image_tag(image_processor.fetch_file(product_image_path).thumb('80x80#').url), spree.product_path(product)
-      .span3
-        .product-details
-          = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :class => 'info', :itemprop => "name", :title => product.name
-          .price.selling{:itemprop => "price"}= number_to_currency product.price
-    %hr
+    .product
+      .product-image
+        - product_image_path = Rails.root.join('public', product.thumb[1..-1].split('?')[0]).to_s
+        = link_to image_tag(image_processor.fetch_file(product_image_path).thumb('80x80#').url), spree.product_path(product)
+      .product-details
+        = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :class => 'info', :itemprop => "name", :title => product.name
+        .price.selling{:itemprop => "price"}= number_to_currency product.price

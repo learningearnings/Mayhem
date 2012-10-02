@@ -1374,6 +1374,8 @@ footer {
     height: 262px;
     top: 0;
     left: 775px;    
+    padding-top: 70px;
+    padding-left: 50px;
   }
   .our-sponsors {
     background-image: url(asset_path('our_sponsors.png', image));
@@ -1393,6 +1395,26 @@ footer {
   }
 }
 
+.reward-highlights {
+  .product {
+    .product-image {
+      display: inline-block;
+    }
+    .product-details {
+      display: inline-block;
+      a.info {
+        font-family: 'sketch_rockwellregular';  
+        font-size: 1.35em;
+        font-weight: bold;
+      }
+      .selling.price {
+        font-size: 1.35em;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
 .reward-content {
   margin-left: 130px;
   
@@ -1408,10 +1430,5 @@ footer {
     -moz-box-shadow:    1px 2px 5px 1px #ccc;
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
     box-shadow:         1px 2px 5px 1px #ccc;    
-    
   }
 }
-
-
-
-
