@@ -19,23 +19,23 @@ Spree::Product.class_eval do
   end
 
   def has_property_type?
-    properties.select{|s| s.name == "type" }.present?
+    self.property("reward_type")
   end
 
   def is_charity_reward?
-    properties.select{|s| s.name == "type" && s.presentation == "charity"}.present?
+    self.property("reward_type") == "charity"
   end
 
   def is_global_reward?
-    properties.select{|s| s.name == "type" && s.presentation == "global"}.present?
+    self.property("reward_type") == "charity"
   end
 
   def is_wholesale_reward?
-    properties.select{|s| s.name == "type" && s.presentation == "wholesale"}.present?
+    self.property("reward_type") == "wholesale"
   end
 
   def has_retail_properties?
-    properties.select{|s| s.name == "retail_price" || s.name == "retail_quantity" }.present?
+    self.property("retail_price") || self.property("retail_quantity")
   end
 
   def has_no_retail_properties?
@@ -47,11 +47,18 @@ Spree::Product.class_eval do
   end
 
   def retail_quantity
-    properties.find_by_name("retail_quantity").product_properties.first.value rescue ''
+    self.property("retail_quantity")
   end
 
   def retail_price
-    properties.find_by_name("retail_price").product_properties.first.value rescue ''
+    self.property("retail_price")
+  end
+
+  def remove_property property_name
+    pid = properties.find_by_name(product_name)
+    return false if pid.nil?
+    pp = product_properties.find_by_property_id(pid.id)
+    pp.destroy if pp
   end
 
 end

@@ -83,7 +83,7 @@ class RewardsController < LoggedInController
   end
 
   def after_save
-    @product.properties.create(name: "type", presentation: "local")
+    @product.property("reward_type","local")
     product_person_link = SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
   end
 

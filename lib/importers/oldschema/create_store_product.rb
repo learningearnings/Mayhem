@@ -116,23 +116,28 @@ class CreateStoreProduct < ActiveModelCommand
     product.count_on_hand = 100  #TODO - better quantity stuff
 
 
-    if @filter.nil?
+    if @filter.nil? && @reward_type == "wholesale"
       filter_factory = FilterFactory.new
-      filter_condition = FilterConditions.new schools: [@school], states: [@school.addresses[0].state.id]
+      filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
+      @filter = filter_factory.find_or_create_filter(filter_condition)
+    else
+      filter_factory = FilterFactory.new
+      filter_condition = FilterConditions.new schools: [@school], states: [@school.addresses[0].state]
       @filter = filter_factory.find_or_create_filter(filter_condition)
     end
     link = product.spree_product_filter_link || spree_product_filter_link_class.new(:product_id => product.id, :filter_id => @filter.id)
     link.filter_id = @filter.id
-    product.spree_product_filter_link = link unless @reward_type == 'wholesale'
+    product.spree_product_filter_link = link
 
     product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id) if product && @reward_owner
     product.save
 
     if @reward_type == 'wholesale'
+      product.master.price = @retail_price * @retail_quantity
       product.set_property('retail_price',@retail_price)
       product.set_property('retail_quantity',@retail_quantity)
     end
-    product.set_property("product_type", @reward_type)
+    product.set_property("reward_type", @reward_type)
     product.set_property("legacy_selector", @legacy_selector)
     product.save
     image_url = 'http://learningearnings.com/' + @image
