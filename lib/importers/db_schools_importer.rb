@@ -24,6 +24,10 @@ class OldSchoolImporter
                      1002 => 'local']
     @cm = CreditManager.new
     @first_leadmin = LeAdmin.first
+    @cached_avatars = {}
+    Avatar.all.each do |a|
+      @cached_avatars[a.image_name] = a if a.image_name
+    end
   end
 
   def reset_school_cache
@@ -192,6 +196,7 @@ class OldSchoolImporter
                            :status => old_user.status_id == 200 ? 'active' : 'inactive',
                            :created_at => old_user.usercreated
                          }, :as => :admin)
+    add_person_avatar old_user,nu
     if nu.save
       if new_school
         psl = PersonSchoolLink.new(:person_id => nu.id, :school_id => new_school.id, :status => 'active')
@@ -206,6 +211,21 @@ class OldSchoolImporter
     end
     retval
   end
+
+  def add_person_avatar old_user, new_user
+    if old_user.old_user_avatars && old_user.old_avatars && old_user.avatar && old_user.avatar.imagetype == 'File'
+      old_filename = old_user.avatar.imagelocation.split('/').last
+      a = @cached_avatars[old_filename]
+      return unless a
+      new_user.avatar = a
+      unless old_user.displayname.blank?
+        new_moniker = Moniker.new(moniker: old_user.displayname)
+        new_moniker.approve
+        new_user.monikers << new_moniker
+      end
+    end
+  end
+
 
   def import_classrooms(new_school,old_school)
     last_created_at = new_school.created_at
@@ -420,7 +440,7 @@ class OldSchoolImporter
           "Created " + c.old_teacher_award.AwardDate.to_s
         if c.old_teacher_award.TeacherID != c.old_teacher_award.createdby
           creating_teacher = find_teacher c.old_teacher_award.createdby
-          batch_name = batch_name + " by #{creating_teacher.userfname} #{creating_teacher.userlname}" if creating_teacher
+          batch_name = batch_name + " by #{creating_teacher.first_name} #{creating_teacher.last_name}" if creating_teacher
         end
         buck_batch = BuckBatch.new( :name => batch_name )
         buck_batch.created_at = c.old_teacher_award.old_file_download.creation_date

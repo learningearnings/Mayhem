@@ -71,7 +71,8 @@ class Person < ActiveRecord::Base
   end
 
   def moniker= name
-    monikers.create(:moniker => name)
+#    monikers.create(:moniker => name)
+    monikers.new(:moniker => name)
   end
 
   def person_school_classroom_links(status = :status_active)
