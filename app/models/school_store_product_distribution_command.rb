@@ -8,8 +8,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
 
   attr_accessor :master_product, :school, :quantity, :retail_price, :spree_property_class
   attr_accessor :spree_product_filter_link_class, :spree_product_person_link_class
-  attr_accessor :filter_conditions_class, :filter_factory_class
-
+  attr_accessor :filter_conditions_class, :filter_factory_class, :spree_product_class, :spree_image_class
 
   def initialize params={}
     @master_product = params[:master_product]
@@ -43,6 +42,10 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
     @spree_image_class || Spree::Image
   end
 
+  def spree_product_class
+    @spree_product_class || Spree::Product
+  end
+
   def execute!
     retail_store = @school.store || return
     if retail_store.products.with_property_value('master_product',@master_product.id.to_s).exists?
@@ -55,7 +58,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_price_property = spree_property_class.find_by_name('retail_price');
       retail_quantity_property = spree_property_class.find_by_name('retail_quantity');
 #      retail_product = @master_product.duplicate
-      retail_product = Spree::Product.new()
+      retail_product = spree_product_class.new()
       retail_product.name = master_product.name # need to set this to avoid "COPY OF ..."
       retail_product.master.price = @retail_price
       retail_product.description = @master_product.description
