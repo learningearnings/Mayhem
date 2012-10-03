@@ -69,7 +69,9 @@ describe Person do
     first_avatar = FactoryGirl.create(:avatar)
     last_avatar =  FactoryGirl.create(:avatar)
     p.avatar = first_avatar
+    p.save
     p.avatar = last_avatar
+    p.save
     p.avatars.count.must_equal 2
     p.avatars.must_include first_avatar
     p.avatars.must_include last_avatar

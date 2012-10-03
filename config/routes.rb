@@ -134,7 +134,10 @@ Leror::Application.routes.draw do
     match "inbox/peer_messages" => 'messages#peer_messages', :as => 'peer_messages'
     match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
     match "inbox/admin_message" => 'messages#admin_message', :as => 'admin_message'
+    match "inbox/classroom_message" => 'messages#classroom_message', :as => 'classroom_message'
+    match "inbox/peer_message" => 'messages#peer_message', :as => 'peer_message'
     match "/inbox" => 'messages#index'
+    match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
     resources :messages
   end
 
@@ -155,7 +158,9 @@ Leror::Application.routes.draw do
   resources :food_fight_play_commands, only: [:create]
   resources :student_message_student_commands, only: [:create]
   resources :student_message_admin_commands, only: [:create]
+  resources :teacher_message_peer_commands, only: [:create]
   resources :teacher_message_admin_commands, only: [:create]
+  resources :teacher_message_classroom_commands, only: [:create]
   resources :student_share_locker_message_commands, only: [:create]
   resources :deliver_rewards_commands, only: [:create]
   resources :update_locker_sticker_link_positions_commands, only: [:create]
@@ -172,7 +177,9 @@ end
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
   namespace :admin do
+    match "le_ship_order" => "le_shipments#ship"
     resources :rewards
     match 'remove_reward' => 'rewards#destroy'
+    resources :le_shipments
   end
 end

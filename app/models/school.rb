@@ -12,7 +12,6 @@ class School < ActiveRecord::Base
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
-  after_save :create_spree_store
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
@@ -26,15 +25,9 @@ class School < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :addresses
 
+  after_save :create_spree_store
   after_create :ensure_accounts
   after_create :set_default_subdomain
-
-
-  def initialize
-    super
-    @school_main_account = nil
-    @school_store_account = nil
-  end
 
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
@@ -98,15 +91,11 @@ class School < ActiveRecord::Base
   end
 
   def main_account
-    return @school_main_account if @school_main_account
-    @school_main_account = Plutus::Asset.find_by_name main_account_name
-    @school_main_account
+    @school_main_account ||= Plutus::Asset.find_by_name main_account_name
   end
 
   def store_account
-    return @school_store_account if @school_store_account
-    @school_store_account = Plutus::Asset.find_by_name store_account_name
-    @school_store_account
+    @school_store_account ||= Plutus::Asset.find_by_name store_account_name
   end
 
   def balance

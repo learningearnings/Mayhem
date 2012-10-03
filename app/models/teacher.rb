@@ -87,4 +87,8 @@ class Teacher < Person
       user.save
     end
   end
+
+  def peers_at(school)
+    school.teachers - [self]
+  end
 end

@@ -97,6 +97,13 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       i.svg = params[:product][:svg][:svg_file_name].tempfile
       i.save
     end
+
+#    filter_factory = FilterFactory.new
+#    filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
+#    filter = filter_factory.find_or_create_filter(filter_condition)
+#    filter.save
+#    @product.filter = filter
+
   end
 
   def after_save

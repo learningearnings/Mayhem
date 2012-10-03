@@ -15,10 +15,7 @@ class PeopleController < LoggedInController
     @person.avatar = Avatar.find(params[:avatar_id]) if !params[:avatar_id].blank?
     # If the moniker is either blank or is the existing moniker, don't update
     # it.
-    if (params[:student][:moniker].blank? || params[:student][:moniker] == @person.moniker)
-      params[:student].delete(:moniker)
-    end
-    if @person.update_attributes(params[:student])
+    if @person.update_attributes(moniker: params[:moniker])
       flash[:notice] = "#{@person.type} profile updated."
       redirect_to main_app.root_path
     else

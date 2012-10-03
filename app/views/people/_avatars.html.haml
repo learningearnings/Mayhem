@@ -4,7 +4,6 @@
     .avatar
       .image_wrapper{:id => a.id}
         = image_tag(a.image.thumb('50x50#').url)
-      .description= a.description
 
 :javascript
   $('.avatar').click( function() {

@@ -1,0 +1,53 @@
+%h1 Shipping
+
+%table.table.table-bordered.table-striped
+  %tr
+    %th Order Number
+    %th Shipment State
+    %th Payment State
+    %th User Email
+    %th Actions
+  - @shipments.each do |order|
+    %tr
+      %td.order-number= order.number
+      %td= order.shipment_state
+      %td= order.payment_state
+      %td= order.email
+      %td= link_to("Ship", "#", :id => "#{order.id}", :class => "ship")
+
+#shipping_options
+  = form_tag (admin_le_ship_order_path) do
+    #order
+    %p
+    = label_tag :tracking_number
+    = text_field_tag :tracking_number
+    %p
+    = label_tag 'Shipping Method' 
+    = select_tag :shipping_method, options_from_collection_for_select(Spree::ShippingMethod.all, 'id', 'name'), :include_blank => true
+    %p
+    = hidden_field_tag :order_id, :id => "order_id"
+    = submit_tag
+    = link_to "Cancel", '#', class: 'cancel'
+
+:javascript
+  $(document).ready(function() {
+    $('#shipping_options').hide();
+  });
+  $('.cancel').click(function() {
+    $('#shipping_options').hide();
+  });
+  $(".ship").click(function(e) {
+    $('#shipping_options').show();
+    var order_id = $(this).parent().siblings('.order-number').html();
+    $('#order').html(order_id);
+    $('#order_id').val(order_id);
+  });
+  $(document).click(function(e) {
+    var target = $(e.target);
+    if(target.hasClass('ship')){
+      return false;
+    }
+    if(target.closest('#shipping_options').length == 0){
+      $('#shipping_options').hide();
+    }
+  });
