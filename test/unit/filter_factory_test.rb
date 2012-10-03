@@ -3,6 +3,11 @@ require 'test_helper_with_rails'
 describe FilterFactory do
   subject { FilterFactory }
 
+  before do
+    @all_inclusive = mock("all inclusive filter")
+    Filter.stubs(:find).with(1).returns(@all_inclusive)
+  end
+
   it "has the basics down" do
     subject.must_be_kind_of Class
   end

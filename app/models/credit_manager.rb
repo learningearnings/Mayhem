@@ -2,6 +2,7 @@
 class CreditManager
   def initialize options={}
     @transaction_class = options[:transaction_class] || Plutus::Transaction
+    @account_class = options[:account_class] || Plutus::Account
     @le_main_account = nil
     @le_game_account = nil
     @transaction_time_stamp = nil
@@ -11,16 +12,13 @@ class CreditManager
     @transaction_time_stamp = timestamp
   end
 
-
   # TODO: What do we call this account?
   def main_account_name
     'MAIN_ACCOUNT'
   end
 
   def main_account
-    return @le_main_account if @le_main_account
-    @le_main_account = Plutus::Account.find_by_name(main_account_name)
-    @le_main_account
+    @le_main_account ||= @account_class.find_by_name(main_account_name)
   end
 
   def game_account_name
@@ -28,9 +26,7 @@ class CreditManager
   end
 
   def game_account
-    return @le_game_account if @le_game_account
-    @le_game_account = Plutus::Account.find_by_name(game_account_name)
-    @le_game_account
+    @le_game_account ||= @account_class.find_by_name(game_account_name)
   end
 
   # NOTE: I am confused about why debits and credits are switched here, but to make

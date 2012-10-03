@@ -10,6 +10,8 @@ class OldSchoolImporter
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
     OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
     OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
+    OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
+    OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
     @non_display_reward_categories = [1000,1001,1002]
@@ -52,7 +54,7 @@ class OldSchoolImporter
             end
              if p.respond_to? :checking_account
               p.checking_account.destroy
-            end
+           end
             if p.respond_to? :savings_account
               p.savings_account.destroy
             end
@@ -133,7 +135,7 @@ class OldSchoolImporter
 
     if !ns.save
       # TODO What to do here?
-      binding.pry
+      # binding.pry
     end
     ns
   end
@@ -186,17 +188,20 @@ class OldSchoolImporter
                                                     ),
                            :dob => old_user.dateofbirth,
                            :legacy_user_id => old_user.userID,
-                           :grade => old_user.grade,
+                           :grade => old_user.grade || 0,
                            :status => old_user.status_id == 200 ? 'active' : 'inactive',
                            :created_at => old_user.usercreated
                          }, :as => :admin)
-    if nu.save(:validate => false)
+    if nu.save
       if new_school
         psl = PersonSchoolLink.new(:person_id => nu.id, :school_id => new_school.id, :status => 'active')
-        psl.save
+        if !psl.save
+          puts "Problem (#{psl.errors.messages}) Saving Person School Link #{old_user.userID} - #{old_user.username} - #{old_user.userfname} #{old_user.userlname}"
+        end
       end
       retval = nu
     else
+      puts "Problem (#{nu.errors.messages}) Saving User #{old_user.userID} - #{old_user.username} - #{old_user.userfname} #{old_user.userlname}"
       retval = nil
     end
     retval
@@ -257,6 +262,7 @@ class OldSchoolImporter
       pscl.owner = true
     end
     if !pscl.save
+      puts "Problem saving person school classroom link"
       return false
     end
     return true
@@ -269,9 +275,11 @@ class OldSchoolImporter
   def import_points(old_school, old_student, new_school, rowspersec)
     imported_purchases = imported_points = imported_points_count = imported_purchases_count = 0
     student_transfer = [14,16]
+    student_interest = [20]
+    student_winning = [18,19]
     student_income = [2,4,10,12]
     reward_purchases = [1]
-    pointactions = [1,2,4,10,12,14,16]
+    pointactions = [1,2,4,10,12,14,16,18,19,20]
     new_student = nil
     OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => pointactions ).order('pointID asc').each do |op|
       new_student = find_student old_student.userID unless new_student
@@ -285,35 +293,45 @@ class OldSchoolImporter
         end
         return [0,0];
       end
-      if student_income.index(op.pointactionID) && op.old_otu_code
-        teacher = find_teacher op.old_otu_code.issuinguserID
+      if old_student.userID == 197242
+#        puts op.to_yaml
+      end
+      if student_income.index(op.pointactionID)
+        teacher = find_teacher op.old_otu_code.issuinguserID if op.old_otu_code
+        teacher = find_teacher op.teacherID if !op.old_otu_code
+        teacher = new_school.school_admins.first || new_school.teachers.first || LeAdmin.first if teacher.nil?
         next unless teacher
         tsl = find_teacher_school_link teacher, new_school
         next unless tsl
-        oc = oc = OtuCode.new(:points => op.points,
-                              :expires_at => op.old_otu_code.OTUcodeexpires,
-                              :student_id => new_student.id, 
-                              :person_school_link_id => tsl.id, 
-                              :ebuck => op.old_otu_code.ebuck)
-        oc.created_at = op.old_otu_code.OTUcodeDate
-        oc.save
+        if !op.old_otu_code.blank?
+          oc = oc = OtuCode.new(:points => op.points,
+                                :expires_at => op.old_otu_code.OTUcodeexpires,
+                                :student_id => new_student.id, 
+                                :person_school_link_id => tsl.id, 
+                                :ebuck => op.old_otu_code.ebuck)
+          oc.created_at = op.old_otu_code.OTUcodeDate
+          if !oc.save
+            puts "Error #{oc.errors.messages} saving otucode"
+          end
+        end
         imported_points = imported_points + op.points.abs
         imported_points_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
         @teacher_undeposited_points[teacher.legacy_user_id] ||= 0
         @teacher_unredeemed_points[teacher.legacy_user_id] ||= 0
         @school_points += op.points.abs
-        @school_points
+#        @school_points
 #        transaction = @cm.issue_credits_to_school new_school, op.points
 #        transaction = @cm.issue_credits_to_teacher new_school, teacher, op.points
 #        transaction = @cm.issue_credits_to_student new_school, teacher, new_student, op.points.abs
-        if op.old_otu_code.ebuck
-          @cm.issue_ecredits_to_student new_school, teacher, new_student, op.points.abs
+        if op.old_otu_code.blank? || op.old_otu_code.ebuck
+          transaction = @cm.issue_ecredits_to_student new_school, teacher, new_student, op.points.abs
           @teacher_undeposited_points[teacher.legacy_user_id] += op.points.abs
         else
-          @cm.issue_print_credits_to_student new_school, teacher, new_student, op.points.abs
+          transaction = @cm.issue_print_credits_to_student new_school, teacher, new_student, op.points.abs
           @teacher_unredeemed_points[teacher.legacy_user_id] += op.points.abs
         end
+        puts "#{transaction.errors.messages}"  if !transaction.valid?
         @cm.transaction_time_stamp = nil
       elsif reward_purchases.index(op.pointactionID) && op.rewardauctionID == 0
         new_reward = get_reward(op.old_reward, op, new_school)
@@ -325,14 +343,37 @@ class OldSchoolImporter
         unless transaction
           puts "Attempt to purchase #{op.old_reward.rewardtitle} for #{op.points} by #{new_student.full_name} #{op.pointID} #{new_student.legacy_user_id}"
         end
+        puts "#{transaction.errors.messages}"  if !transaction.valid?
       elsif student_transfer.index(op.pointactionID)
+        imported_points_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
         if op.pointactionID == 14    # 14 Checking -> Savings
-          @cm.transfer_credits_from_checking_to_savings new_student, op.points.abs
+          transaction = @cm.transfer_credits "Transfer from Checking to Savings", new_student.checking_account, new_student.savings_account, op.points.abs
         elsif op.pointactionID == 16 # 16 Savings -> Checking
-          @cm.transfer_credits_from_savings_to_checking new_student, op.points.abs
+          transaction = @cm.transfer_credits "Transfer from Savings to Checking", new_student.savings_account, new_student.checking_account, op.points.abs
         end
+        puts "#{transaction.errors.messages}"  if !transaction.valid?
         @cm.transaction_time_stamp = nil
+      elsif student_winning.index(op.pointactionID)
+        imported_points_count += 1
+        imported_points = imported_points + op.points.abs
+        @cm.transaction_time_stamp = op.pointtimestamp
+        if op.pointactionID == 18    # 18 - Foodfight
+          transaction = @cm.issue_game_credits_to_student 'Food Fight',new_student, op.points.abs
+        elsif op.pointactionID == 19 # 19 - Concentration
+          transaction = @cm.issue_game_credits_to_student 'Concentration',new_student, op.points.abs
+        end
+        puts "#{transaction.errors.messages}"  if !transaction.valid?
+        @cm.transaction_time_stamp = nil
+      elsif student_interest.index(op.pointactionID)
+        imported_points_count += 1
+        imported_points = imported_points + op.points.abs
+        @cm.transaction_time_stamp = op.pointtimestamp
+        transaction = @cm.transfer_credits "Interest from Savings",  @cm.main_account_name,new_student.savings_account, op.points.abs
+        puts "#{transaction.errors.messages}"  if !transaction.valid?
+        @cm.transaction_time_stamp = nil
+      elsif op.pointactionID != 1
+        puts "Unknown - unprocessed!!! #{op.to_yaml} "
       end
     end
     print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
@@ -472,7 +513,7 @@ class OldSchoolImporter
 
       if reward_type == 'wholesale'
         params[:retail_quantity] = old_reward.shipmentmin
-        params[:retail_price] = (old_reward.shipmentmin * old_reward.rewardpoints)
+        params[:retail_price] = old_reward.rewardpoints
       end
       new_reward = CreateStoreProduct.new(params).execute! if store
     end

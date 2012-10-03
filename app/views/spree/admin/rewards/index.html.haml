@@ -8,14 +8,22 @@
     %th= t(:image)
     %th= t(:name)
     %th= t(:master_price)
-    %th= "School"
+    %th= "Stores"
     %th
   - @products.each do |product|
     %tr
       %td= image_tag product.thumb, size: '100x100'
-      %td= link_to product.try(:name), edit_admin_product_path(product)
-      %td= money(product.price) rescue ''
-      %td= product.store_ids
+      %td
+        = link_to product.try(:name), edit_admin_product_path(product)
+        - if product.property("retail_price")
+          %div
+            Retail Price:
+            = product.property("retail_price") + " Credits"
+          %div
+            Retail Quantity:
+            = product.property("retail_quantity") + " shipped at one time"
+      %td= number_to_currency product.price rescue ''
+      %td= product.store_ids.count
       %td.actions{"data-hook" => "admin_products_index_row_actions"}
         = link_to "Edit", edit_admin_reward_path(id: product.id), :class => 'edit' unless product.deleted?
         |

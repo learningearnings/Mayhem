@@ -2,8 +2,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :authenticate_leadmin
 
   def index
-    # insert code here to gather all products for the current school
-    @products = Spree::Product.not_deleted.order(:name).select{|p| p.properties.select{|s| s.presentation == "charity" || s.presentation == "global" || s.presentation == "wholesale" }.present? }
+    @products = Spree::Product.not_deleted.with_property("reward_type").where("#{Spree::ProductProperty.table_name}.value" => ['charity','wholesale','global']).order(:name)
   end
 
   def new
@@ -37,7 +36,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @grades = @current_school.grades
     @classrooms = @current_school.classrooms
     if @product.has_property_type?
-      @type = @product.properties.select{|s| s.name == "type" }.first.presentation
+      @type = @product.property("reward_type")
       @types = [[@type, @type]]
       ["wholesale", "global", "charity"].each do |product_type|
         @types.push([product_type, product_type]) unless product_type == @type
@@ -69,8 +68,15 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
     if params[:product_type] == "wholesale"
       @product.store_ids = ["#{Spree::Store.find_by_name("le").id}"]
+      filter_factory = FilterFactory.new
+      filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
+      @filter = filter_factory.find_or_create_filter(filter_condition)
     else
       # TODO insert code here to handle removing wholesale properties if type of product is changed during update
+      @product.remove_property "retail_price"
+      @product.remove_property "retail_quantity"
+      @product.remove_property "master_product"
+
       store_id_array = []
       Spree::Store.all.each do |store|
         store_id_array.push(store.id) unless store.name == "le"
@@ -106,7 +112,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       property.presentation = params[:product_type]
       property.save
     else
-      @product.properties.create(name: "type", presentation: params[:product_type])
+      @product.set_property("reward_type", params[:product_type])
     end
     create_wholesale_properties if @product.requires_wholesale_properties?
     SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person

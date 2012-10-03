@@ -30,9 +30,9 @@ wget -q http://mayhemstaging.lemirror.com/system/xaq
 wget -q http://mayhemstaging.lemirror.com/system/xar
 wget -q http://mayhemstaging.lemirror.com/system/xas
 wget -q http://mayhemstaging.lemirror.com/system/xat
-cat xaa xab xac xad xae xaf xag xah xai xaj xak xal xam xan xao xap xaq xar xas xat | base64 -d > images.tgz
+cat xaa xab xac xad xae xaf xag xah xai xaj xak xal xam xan xao xap xaq xar xas xat | base64 --decode > images.tgz
 rm xaa xab xac xad xae xaf xag xah xai xaj xak xal xam xan xao xap xaq xar xas xat
-curl -s http://mayhemstaging.lemirror.com/system/images.tgz | gzip -dc | tar -xv
+tar -xvzf images.tgz
 echo "Loading the learning_earning_development database..."
 if [ "$hostname" == "mayhemstaging.lemirror.com" ]; then
    mv public/system/dragonfly/development public/system/dragonfly/production
