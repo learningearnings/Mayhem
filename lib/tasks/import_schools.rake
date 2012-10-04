@@ -59,5 +59,6 @@ namespace :import do
       puts "   --> Imported #{imported_purchases} purchases for #{ns.name}"
       imported_purchases = imported_points = 0
     end
+    osi.update_wholesale_quantities
   end
 end
