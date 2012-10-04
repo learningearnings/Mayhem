@@ -569,25 +569,28 @@ input, textarea, select {
 .side-art,
 .side-art-parents,
 .side-art-teachers {
-  position: absolute;
+  display: inline-block;
 }
 
 .side-art {
   background-image: url(asset_path('side_doodles.png', image));
   height: 467px;
   width: 109px;
+  margin-right: 2em;
 }
 
 .side-art-parents {
   background-image: url(asset_path('side_art_parents.png', image));
   height: 561px;
   width: 122px;
+  margin-left: 1em;
 }
 
 .side-art-teachers {
   background-image: url(asset_path('side_art_teachers.png', image));
   height: 464px;
   width: 108px;
+  margin-right: 2.1em;
 }
 
 
@@ -1110,7 +1113,7 @@ footer {
 }
 
 .bank_content {
-  margin-left: 130px;
+  
 }
 
 .bank-account {
@@ -1452,7 +1455,50 @@ footer {
 }
 
 .main-content-wrapper {
-  margin-left: 130px;
+  padding: 2em;
+  display: inline-block;
+  vertical-align: top;
+  width:87%;
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;    
+  
+  .primary-content {
+    width: 62%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .secondary-content {
+    width: 37%;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 2em;
+    
+  }
+  p {
+    font-size: 1.5em;
+  }
+}
+
+.main-content-wrapper-no-bg {
+  padding: 2em;
+  display: inline-block;
+  vertical-align: top;
+  width:87%;
+  
+  .primary-content {
+    width: 62%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .secondary-content {
+    width: 37%;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 2em;
+    
+  }
   p {
     font-size: 1.5em;
   }

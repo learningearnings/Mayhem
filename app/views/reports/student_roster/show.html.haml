@@ -1,23 +1,25 @@
-%h2 Student Roster Report
+.side-art-teachers
+.reports-container
+  %h2 Student Roster Report
 
-.filters.well
-  = form_tag student_roster_report_path, method: :get do
-    = label_tag :sort_by
-    = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username", "Grade"], params[:sort_by])
-    = label_tag :classroom
-    = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
-    = label_tag :grade
-    - # NOTE: So this grades array has its values in the reverse order from what Rails wants.  Cheating to flip them. Robby encouraged me.  -ja
-    = select_tag :grade_filter, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(grades, :first, :last, params[:grade_filter])
-    = submit_tag 'Go!'
+  .filters.well
+    = form_tag student_roster_report_path, method: :get do
+      = label_tag :sort_by
+      = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username", "Grade"], params[:sort_by])
+      = label_tag :classroom
+      = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
+      = label_tag :grade
+      - # NOTE: So this grades array has its values in the reverse order from what Rails wants.  Cheating to flip them. Robby encouraged me.  -ja
+      = select_tag :grade_filter, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(grades, :first, :last, params[:grade_filter])
+      = submit_tag 'Go!'
 
-%table.table.table-bordered.table-striped.solid-background
-  %thead
-    %tr
-      - report.header_strings.each do |header|
-        %th= header
-  %tbody
-    - report.data_rows do |row|
+  %table.table.table-bordered.table-striped.solid-background
+    %thead
       %tr
-        - report.header_keys.each do |key|
-          %td= row.send(key)
+        - report.header_strings.each do |header|
+          %th= header
+    %tbody
+      - report.data_rows do |row|
+        %tr
+          - report.header_keys.each do |key|
+            %td= row.send(key)

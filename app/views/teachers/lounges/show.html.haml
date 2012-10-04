@@ -1,20 +1,21 @@
+.side-art-teachers
 .main-content-wrapper
-  %h2 Lounge
 
-  .row
+  .primary-content
+    %h2 Lounge
     .tips-container
-      .span6
+      .tip
         - tips.each do |post|
-          .tip-post.row
-            .span6
+          .tip-post
+            .tip-title
               %h4= post.title
               = post.body.html_safe
-      .span3
-        .testimonials-container
-          %h3 Testimonials
-          .testimonial-postss
-            - testimonials.each do |post|
-              .testimonial-post.row
-                .span3
-                  %h4= post.title
-                  = post.body.html_safe
+  .secondary-content
+    .testimonials-container
+      %h3 Testimonials
+      .testimonial-postss
+        - testimonials.each do |post|
+          .testimonial-post.row
+            .span3
+              %h4= post.title
+              = post.body.html_safe

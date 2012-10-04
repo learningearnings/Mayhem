@@ -1,34 +1,36 @@
-%h2 Purchases Report
+.side-art-teachers
+.reports-container
+  %h2 Purchases Report
 
-.filters.well
-  = form_tag purchases_report_path, method: :get do
-    = label_tag :show_dates
-    = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
-    = label_tag :show_rewards
-    = select_tag :reward_status_filter, options_for_select(['Everything', 'Undelivered', 'Delivered'], params[:reward_status_filter])
-    = label_tag :show_teachers
-    = select_tag :teachers_filter, "<option value='everyone'>Everyone</option>".html_safe + options_from_collection_for_select(current_school.teachers + current_school.school_admins, :id, :name, params[:teachers_filter])
-    = label_tag :sort_by
-    = select_tag :sort_by, options_for_select(["Default", "Teacher", "Student", "Purchased", "Reward", "Status"], params[:sort_by])
-    = submit_tag 'Go!'
+  .filters.well
+    = form_tag purchases_report_path, method: :get do
+      = label_tag :show_dates
+      = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
+      = label_tag :show_rewards
+      = select_tag :reward_status_filter, options_for_select(['Everything', 'Undelivered', 'Delivered'], params[:reward_status_filter])
+      = label_tag :show_teachers
+      = select_tag :teachers_filter, "<option value='everyone'>Everyone</option>".html_safe + options_from_collection_for_select(current_school.teachers + current_school.school_admins, :id, :name, params[:teachers_filter])
+      = label_tag :sort_by
+      = select_tag :sort_by, options_for_select(["Default", "Teacher", "Student", "Purchased", "Reward", "Status"], params[:sort_by])
+      = submit_tag 'Go!'
 
-%h3= report.filters_in_text
+  %h3= report.filters_in_text
 
-= form_tag DeliverRewardsCommand.new, method: :post do
-  %table.table.table-bordered.table-striped.solid-background
-    %thead
-      %tr
-        - report.header_strings.each do |header|
-          %th= header
-        %th Deliver
-    %tbody
-      - report.data_rows do |row|
+  = form_tag DeliverRewardsCommand.new, method: :post do
+    %table.table.table-bordered.table-striped.solid-background
+      %thead
         %tr
-          - report.header_keys.each do |key|
-            %td= row.send(key)
-          %td
-            - unless row.delivery_status == 'delivered'
-              = check_box_tag "reward_deliveries[]", row.reward_delivery_id
-  - report.potential_filters.each do |filter_key|
-    = hidden_field_tag "filters[#{filter_key}]", params[filter_key]
-  = submit_tag 'Mark Rewards Delivered'
+          - report.header_strings.each do |header|
+            %th= header
+          %th Deliver
+      %tbody
+        - report.data_rows do |row|
+          %tr
+            - report.header_keys.each do |key|
+              %td= row.send(key)
+            %td
+              - unless row.delivery_status == 'delivered'
+                = check_box_tag "reward_deliveries[]", row.reward_delivery_id
+    - report.potential_filters.each do |filter_key|
+      = hidden_field_tag "filters[#{filter_key}]", params[filter_key]
+    = submit_tag 'Mark Rewards Delivered'
