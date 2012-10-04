@@ -572,7 +572,7 @@ input, textarea, select {
   display: inline-block;
 }
 
-.side-art {
+.side-art-students {
   background-image: url(asset_path('side_doodles.png', image));
   height: 467px;
   width: 109px;
@@ -1192,7 +1192,7 @@ footer {
 }
 
 .news-header {
-  margin-left: 130px;
+
 }
 
 .news-items-container {
@@ -1502,4 +1502,9 @@ footer {
   p {
     font-size: 1.5em;
   }
+}
+
+.content-container {
+  max-width: 1170px;
+  min-width: 1060px;
 }

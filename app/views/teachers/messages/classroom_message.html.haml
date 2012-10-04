@@ -1,16 +1,20 @@
-.span8
-  .classroom-message-content
-    %h2 Classroom Message
-    = form_for message do |f|
-      .select-message
-        = f.label :classroom
-        = f.select :to_classroom_id, classrooms.map{|c| [c.name, c.id] }
-        = f.label :subject
-        = f.text_field :subject
-        = f.label :body
-        = f.text_area :body
+.content-container
+  .side-art
+    .side-art-teachers
+  .main-content-wrapper-no-bg
+    .primary-content
+      .classroom-message-content
+        %h2 Classroom Message
+        = form_for message do |f|
+          .select-message
+            = f.label :classroom
+            = f.select :to_classroom_id, classrooms.map{|c| [c.name, c.id] }
+            = f.label :subject
+            = f.text_field :subject
+            = f.label :body
+            = f.text_area :body
         
-      = f.submit "Send Message", class: 'btn btn-primary'
+          = f.submit "Send Message", class: 'btn btn-primary'
 
-.span3
-  = render 'boxes_nav'
+    .secondary-content
+      = render 'boxes_nav'
