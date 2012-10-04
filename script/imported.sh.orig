@@ -10,6 +10,7 @@ rm -rf public/spree/products/*
 rm -rf public/system/dragonfly/*
 echo -n "Fetching and Uncompressing...."
 hostname=`hostname`
+rm xa? 2> /dev/null
 wget -q http://mayhemstaging.lemirror.com/system/xaa
 wget -q http://mayhemstaging.lemirror.com/system/xab
 wget -q http://mayhemstaging.lemirror.com/system/xac
