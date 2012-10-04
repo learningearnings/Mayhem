@@ -59,14 +59,14 @@ class CreateStoreProduct < ActiveModelCommand
 
 
   def execute!
-    store = spree_store_class.find_by_code(@school.store_subdomain)
-    return if store.nil?
+    store = spree_store_class.find_by_code(@school.store_subdomain) if @school
+    return if store.nil? && @school
     if @reward_type == 'wholesale'
       le_store = spree_store_class.find_by_code('le')
       wholesale_product = le_store.products.with_property_value('legacy_selector',@legacy_selector).first
       # do the copy and return the product if master_product
 #      puts "#{@legacy_selector} Not found - must create" if !wholesale_product
-      if wholesale_product
+      if wholesale_product && @school
         wholesale_product = spree_product_class.find(wholesale_product.id)
         retail_price = wholesale_product.property('retail_price').to_f
         retail_qty = wholesale_product.property('retail_quantity').to_i
@@ -78,6 +78,8 @@ class CreateStoreProduct < ActiveModelCommand
                                                                       ).execute!
         product.set_property('legacy_selector',@legacy_selector)
         return product
+      elsif wholesale_product && @school.nil?
+        return Spree::Product.find(wholesale_product.id)
       end
     end
 
@@ -122,7 +124,7 @@ class CreateStoreProduct < ActiveModelCommand
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
       @filter = filter_factory.find_or_create_filter(filter_condition)
-    else
+    elsif @school
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new schools: [@school], states: [@school.addresses[0].state]
       @filter = filter_factory.find_or_create_filter(filter_condition)
@@ -132,7 +134,12 @@ class CreateStoreProduct < ActiveModelCommand
     product.spree_product_filter_link = link
 
     product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id) if product && @reward_owner
-    product.save
+    if !product.save
+      puts "#{product.errors.messages}"
+      if product.errors.messages[:permalink]
+        product.permalink = @legacy_selector + '-' + @name.parameterize
+      end
+    end
 
     if @reward_type == 'wholesale'
       product.master.price = @retail_price * @retail_quantity
@@ -141,9 +148,10 @@ class CreateStoreProduct < ActiveModelCommand
     end
     product.set_property("reward_type", @reward_type)
     product.set_property("legacy_selector", @legacy_selector)
-    product.save
+    if !product.save
+      puts "#{product.errors.messages}"
+    end
     image_url = 'http://learningearnings.com/' + @image
-#    puts image_url
     begin
       new_image = open('http://learningearnings.com/' + @image)
       if(new_image.base_uri.nil?) # couldn't fetch image
@@ -163,7 +171,10 @@ class CreateStoreProduct < ActiveModelCommand
     new_spree_image.save
     product.master.images << new_spree_image
     product.save
-    if @reward_type == 'wholesale'
+    if !product.save
+      puts "#{product.errors.messages}"
+    end
+    if @reward_type == 'wholesale' && @school
       retail_price = product.property('retail_price').to_f
       retail_qty = product.property('retail_quantity').to_i
       retail_product = school_store_product_distribution_command_class.new(:master_product => product,
