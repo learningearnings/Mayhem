@@ -23,7 +23,6 @@
 //= require jquery.ui.draggable.js
 //= require chosen-jquery
 //= require custom
-//= require transaction_pager
 //= require jquery.ui.datepicker
 # Make jquery ajax requests use the csrf token
 $ ->
