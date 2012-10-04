@@ -1066,9 +1066,7 @@ footer {
     background-color: #FFF;
     padding: 1em;
     max-width: 600px;
-    -moz-box-shadow:    1px 2px 5px 1px #ccc;
-    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-    box-shadow:         1px 2px 5px 1px #ccc;
+    border: solid 1px #E1E1E1;
   }
   a {
     margin-top: 1em;
@@ -1508,3 +1506,42 @@ footer {
   max-width: 1170px;
   min-width: 1060px;
 }
+
+.message {
+  margin-bottom: 2em;
+  background-color: white;
+  padding: 1em 1em 1.3em 1em;
+  max-width: 600px;
+  -moz-box-shadow: 1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #CCC;
+  box-shadow: 1px 2px 5px 1px #CCC;
+  border: solid 1px #C9C9C9;
+  .avatar {
+    float: left;
+  }
+  .name {
+    float: left;
+    margin-left: 1em;
+    font-weight: bold;
+    color: #470BC1;
+  }
+  h3 {
+    margin-top: 2em;
+    color: #EB731C;
+  }
+  .btn.btn-primary {
+      background: rgba(37, 134, 11, .8);
+      padding: .5em;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      -webkit-box-shadow: 0 0 5px #888;
+      -moz-box-shadow: 0 0 5px #888;
+      box-shadow: 2px 2px 2px #CCC;
+      -webkit-transform: rotate(-3deg);
+      -moz-transform: rotate(-3deg);
+      -o-transform: rotate(-3deg);
+      font-family: Sketch Rockwell;
+      font-size: 1.3em;
+      text-shadow: 1px 1px 2px #333;
+  }
+}
+
