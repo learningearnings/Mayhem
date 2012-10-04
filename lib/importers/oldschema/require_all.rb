@@ -15,4 +15,5 @@ require_relative 'old_redeemed.rb'
 require_relative 'old_reward_image.rb'
 require_relative 'old_teacher_award.rb'
 require_relative 'old_file_download.rb'
-
+require_relative 'old_user_avatar.rb'
+require_relative 'old_avatar.rb'

@@ -114,7 +114,9 @@ class CreateStoreProduct < ActiveModelCommand
     product.available_on = @available_on
     product.deleted_at = @deleted_at if @deleted_at
     product.count_on_hand = 100  #TODO - better quantity stuff
-
+    if @reward_type == 'charity'
+      product.master.count_on_hand = 100000  #Charities have a nearly unlimited supply
+    end
 
     if @filter.nil? && @reward_type == "wholesale"
       filter_factory = FilterFactory.new

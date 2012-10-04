@@ -71,6 +71,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
       @filter = filter_factory.find_or_create_filter(filter_condition)
+      @product.set_property("retail_price",params[:retail_price])
+      @product.set_property("retail_quantity",params[:retail_quantity])
     else
       # TODO insert code here to handle removing wholesale properties if type of product is changed during update
       @product.remove_property "retail_price"

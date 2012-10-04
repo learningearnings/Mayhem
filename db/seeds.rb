@@ -206,6 +206,7 @@ end
   avatar_image = open('http://lemirror1.com/Development/images/avatars/' + ai)
   def avatar_image.original_filename; base_uri.path.split('/').last; end
   a.image = avatar_image.read
+  a.image_name = avatar_image.original_filename
   a.description = "Avatar"
   a.save
 end

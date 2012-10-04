@@ -60,6 +60,7 @@ describe Person do
       person = FactoryGirl.create(:person)
       assert_equal person.monikers.count, 0
       person.moniker= "New Moniker"
+      person.save
       assert_equal person.monikers.count, 1
     end
   end
