@@ -1,17 +1,20 @@
-.row
-  .span8
-    .news-header
-      %h2 News
+.content-container
+  .side-art
+    .side-art-teachers
+  .main-content-wrapper
+    .primary-content
+      .news-header
+        %h2 News
 
-.row
-  .news-items-container
-    .span6
-      - posts.each do |post|
-        .news-item.row
+      .row
+        .news-items-container
           .span6
-            %h4= post.title
-            = post.body.html_safe
-    .span3
+            - posts.each do |post|
+              .news-item.row
+                .span6
+                  %h4= post.title
+                  = post.body.html_safe
+    .secondary-content
       .press-releases-container
         %h3 Press Releases
         .press-releases

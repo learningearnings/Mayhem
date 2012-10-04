@@ -1,22 +1,25 @@
-.side-art-teachers
-.reports-container
-  %h2 Activity Report
+.content-container
+  .side-art
+    .side-art-teachers
+  .main-content-wrapper
+    .primary-content
+      %h2 Activity Report
 
-  .filters.well
-    = form_tag activity_report_path, method: :get do
-      = label_tag :show_dates
-      = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
-      = label_tag :sort_by
-      = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
-      = submit_tag 'Go!'
+      .filters.well
+        = form_tag activity_report_path, method: :get do
+          = label_tag :show_dates
+          = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
+          = label_tag :sort_by
+          = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
+          = submit_tag 'Go!'
 
-  %table.table.table-bordered.table-striped.solid-background
-    %thead
-      %tr
-        - report.header_strings.each do |header|
-          %th= header
-    %tbody
-      - report.data_rows do |row|
-        %tr
-          - report.header_keys.each do |key|
-            %td= row.send(key)
+      %table.table.table-bordered.table-striped.solid-background
+        %thead
+          %tr
+            - report.header_strings.each do |header|
+              %th= header
+        %tbody
+          - report.data_rows do |row|
+            %tr
+              - report.header_keys.each do |key|
+                %td= row.send(key)
