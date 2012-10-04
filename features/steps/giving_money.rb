@@ -25,10 +25,12 @@ class GivingCredits < Spinach::FeatureSteps
   end
 
   Then 'that school should have some credits' do
+    refresh_school_accounts(@school)
     @school.balance.wont_equal 0
   end
 
   Then 'that school should have 0 credits' do
+    refresh_school_accounts(@school)
     @school.balance.must_equal 0
   end
 
@@ -125,6 +127,7 @@ class GivingCredits < Spinach::FeatureSteps
   And 'I purchase a reward that cost 5 credits' do
     cm = CreditManager.new
     cm.transfer_credits_for_reward_purchase(@student, BigDecimal('5'))
+    refresh_student_accounts(@student)
   end
 
   Then 'I should have 95 credits in checking' do
@@ -175,21 +178,25 @@ class GivingCredits < Spinach::FeatureSteps
   And 'I transfer 45 credits to savings' do
     cm = CreditManager.new
     cm.transfer_credits_from_checking_to_savings(@student, BigDecimal('45'))
+    refresh_student_accounts(@student)
   end
 
   And 'I transfer 10 credits to savings' do
     cm = CreditManager.new
     cm.transfer_credits_from_checking_to_savings(@student, BigDecimal('10'))
+    refresh_student_accounts(@student)
   end
 
   And 'I transfer 35 credits to checking' do
     cm = CreditManager.new
     cm.transfer_credits_from_savings_to_checking(@student, BigDecimal('35'))
+    refresh_student_accounts(@student)
   end
 
   And 'I transfer 5 credits to checking' do
     cm = CreditManager.new
     cm.transfer_credits_from_savings_to_checking(@student, BigDecimal('5'))
+    refresh_student_accounts(@student)
   end
 
   Then 'I should have 45 credits in savings' do
@@ -241,5 +248,16 @@ class GivingCredits < Spinach::FeatureSteps
     cm = CreditManager.new
     cm.issue_ecredits_to_student(@school, @teacher, @student, @student_credits)
     cm.transfer_credits_from_checking_to_savings(@student, @student_credits)
+    refresh_student_accounts(@student)
+  end
+
+  # This is necessary due to the account caching that's now in place
+  def refresh_student_accounts student
+    student.checking_account.reload
+    student.savings_account.reload
+  end
+
+  def refresh_school_accounts school
+    school.main_account.reload
   end
 end

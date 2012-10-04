@@ -5,6 +5,7 @@ Feature: Student Bank
     Given the main LE account exists
     Given accounts exist
     Given accounts have bucks
+    Given the default filter exists
     Given I am logged in as a student
 
     Scenario: Claim Printed Bucks

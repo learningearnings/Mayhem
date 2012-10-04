@@ -5,6 +5,7 @@ Feature: Admin Bank
     Given the main LE account exists
     Given accounts exist
     Given accounts have bucks
+    Given the default filter exists
     Given I am logged in as an admin
     Given I am on the school admins bank page
 
@@ -16,4 +17,4 @@ Feature: Admin Bank
  
     Scenario: Create eBucks
       Given I distribute ebucks
-      Then the admin account should be deducted
+      Then the admin account should be deducted for ebucks
