@@ -330,7 +330,7 @@ class OldSchoolImporter
                                 :person_school_link_id => tsl.id, 
                                 :ebuck => op.old_otu_code.ebuck)
           oc.created_at = op.old_otu_code.OTUcodeDate
-          if !oc.save
+          if !oc.mark_redeemed!
             puts "Error #{oc.errors.messages} saving otucode"
           end
         end
@@ -473,24 +473,37 @@ class OldSchoolImporter
       if reward
         puts " ----> updating count_on_hand from #{reward.master.count_on_hand} to #{rd.rewardquantity}"
         reward.master.count_on_hand = rd.rewardquantity
+        reward.save
       else
         puts "Could not find reward for #{old_reward.rewardtitle}"
       end
     end
+  end
 
-
+  def update_wholesale_quantities
+    puts "Updating quantities for le store"
+    OldReward.all.each do |r|
+      next if r.old_reward_details.count < 1
+      reward = get_reward r
+      if reward
+        puts " ----> updating count_on_hand from #{reward.master.count_on_hand} to #{r.numberofrewards}"
+        reward.master.count_on_hand = r.numberofrewards
+        reward.save
+      else
+        puts "Could not find reward for #{r.rewardtitle}"
+      end
+    end
   end
 
 
-
-  def get_reward old_reward, old_point, new_school
+  def get_reward old_reward, old_point = nil, new_school = nil
     return if old_point.nil? && old_reward.nil?
     old_reward = old_point.old_reward if old_reward.nil?
     old_reward_id = old_reward.rewardID
     reward_selector = "R#{old_reward_id}"
     reward_selector = "L#{old_point.old_redeemed.old_reward_local.id}" if (old_point && old_reward && old_reward.rewardcategoryID == 1002) # Local and School Rewards
 #    puts reward_type + ' - ' + reward_selector
-    product = @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"]
+    product = @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] if new_school
     return product if product
     reward_type = 'unknown - ' + old_reward.rewardtitle
     reward_type = 'local'  if old_reward.rewardcategoryID == 1002
@@ -498,7 +511,8 @@ class OldSchoolImporter
     reward_type = 'wholesale' if old_reward.old_reward_details.count > 0
     reward_type = 'charity' if old_reward.rewardcategoryID == 12  # this must come last - some charities mistakenly in globals
 #    old_reward = OldReward.find(old_reward_id)
-    store = Spree::Store.find_by_code new_school.store_subdomain
+    store = Spree::Store.find_by_code new_school.store_subdomain if new_school
+    store = Spree::Store.find_by_code 'le' if new_school.nil?
     if reward_type == 'local' && old_point
       reward_local = old_point.old_redeemed.old_reward_local
       owner = find_teacher reward_local.userID
@@ -513,9 +527,14 @@ class OldSchoolImporter
                                           :available_on => Time.now(),
                                           :reward_owner => owner || new_school.school_admins.first || @first_leadmin,
                                           :image => reward_local.old_reward_image.imagepath).execute! if store
+      puts "Error ------------> Didn't create reward - 1" if new_reward.nil?
     else
       if reward_type == 'wholesale'
-        owner = new_school.school_admins.first || new_school.teachers.first || @first_leadmin
+        if new_school
+          owner = new_school.school_admins.first || new_school.teachers.first || @first_leadmin
+        else
+          owner = @first_leadmin
+        end
       elsif reward_type == 'charity'
         owner = @first_leadmin
       end
@@ -536,9 +555,12 @@ class OldSchoolImporter
         params[:retail_price] = old_reward.rewardpoints
       end
       new_reward = CreateStoreProduct.new(params).execute! if store
+      puts "No store!!!!!" if store.nil?
+      puts "Didn't create reward - 2" if new_reward.nil?
     end
-    @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] = new_reward
-    print "New reward #{new_reward.id} for #{new_reward.name} - #{reward_type} - #{new_reward.permalink}"
+    @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] = new_reward if new_school
+    print "New reward #{new_reward.id} for #{new_reward.name} - #{reward_type} - #{new_reward.permalink}" if new_reward
+    print "No new reward!!!!! for #{old_reward.rewardtitle} - #{old_reward.id} - #{reward_type} and " if !new_reward
     puts if old_point
     new_reward
   end
