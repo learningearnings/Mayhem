@@ -102,7 +102,7 @@ class CreditManager
   end
 
   def transfer_store_credits_for_wholesale_purchase school, amount
-    return false if school.balance < amount
+    return false if school.store_account.balance < amount
     transfer_credits "Wholesale Purchase", school.store_account, main_account, amount
   end
 

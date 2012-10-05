@@ -54,21 +54,21 @@ module Spree
     def charge_account(money, credit_card, options)
       cm = CreditManager.new
       o = Spree::Order.find_by_number(options[:order_id])
-      binding.pry
       if o.store == Spree::Store.find_by_name("le") # purchasing a wholesale product as a school_admin
         # TODO change this to school session variable
         # NOTE: Nope, a model shouldn't know about a session -ja
         school = AccountPersonMapper.new(credit_card.number).find_school
-        cm.transfer_store_credits_for_wholesale_purchase(school, money/BigDecimal('100.0'))
+        transaction = cm.transfer_store_credits_for_wholesale_purchase(school, money/BigDecimal('100.0'))
       elsif o.products.first.person.is_a?(Teacher) # purchasing a local product as a student
         # TODO: This needs to bubble up any errors that it can
         person = AccountPersonMapper.new(credit_card.number).find_person
-        cm.transfer_credits_for_local_purchase(person, o.products.first.person, money/BigDecimal('100.0'))
+        transaction = cm.transfer_credits_for_local_purchase(person, o.products.first.person, money/BigDecimal('100.0'))
       else # purchasing a product from a school store as a student
         # TODO: This needs to bubble up any errors that it can
         person = AccountPersonMapper.new(credit_card.number).find_person
-        cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
+        transaction = cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
       end
+      transaction
     end
   end
 end
