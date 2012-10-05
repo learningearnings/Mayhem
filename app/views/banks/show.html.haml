@@ -1,6 +1,8 @@
-.row
-  .bank_content
-    .span6
+.content-container
+  .side-art
+    .side-art-students
+  .main-content-wrapper
+    .primary-content    
       %h2 My Bank
 
       .bank-account
@@ -31,7 +33,7 @@
         .actions
           = link_to "Enter Codes", "#enter-codes-modal", class: 'btn', 'data-toggle' => 'modal'
 
-    .span4
+    .secondary-content
       = render_reward_highlights(@products[0..3])
 
   #transfer-credits-modal.modal.hide

@@ -1,14 +1,18 @@
-%h2 Charities
+.content-container
+  .side-art
+    .side-art-teachers
+  .main-content-wrapper
+    .primary-content
 
-.row
-  - if current_user.person.charities.present?
-    - current_user.person.charities.each do |item|
-      - if item.product.name
-        = open(item.product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
-        %p
-  - else
-    %center
-      %h4
-        Please visit
-        = link_to "Rewards", Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain)
-        to purchase a Charity support certificate.
+      %h2 Charities
+      - if current_user.person.charities.present?
+        - current_user.person.charities.each do |item|
+          - if item.product.name
+            = open(item.product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
+            %p
+      - else
+        %center
+          %h4
+            Please visit
+            = link_to "Rewards", Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain)
+            to purchase a Charity support certificate.
