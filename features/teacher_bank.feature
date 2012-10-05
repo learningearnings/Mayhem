@@ -5,6 +5,7 @@ Feature: Teacher Bank
     Given the main LE account exists
     Given accounts exist
     Given accounts have bucks
+    Given the default filter exists
     Given I am logged in as a teacher
 
     Scenario: Create Printed Bucks
@@ -15,4 +16,4 @@ Feature: Teacher Bank
     Scenario: Create eBucks
       Given I am on the teachers bank page
       Given I distribute ebucks
-      Then the teacher account should be deducted
+      Then the teacher account should be deducted for ebucks

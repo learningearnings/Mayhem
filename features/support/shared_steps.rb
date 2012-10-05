@@ -1,5 +1,10 @@
 module SharedSteps
   include Spinach::DSL
+
+  Given 'the default filter exists' do
+    filter = Filter.create 
+    Filter.stubs(:find).with(1).returns filter
+  end
  
   Given 'I am logged in as an admin' do
     visit 'http://1.lvh.me/'
@@ -79,12 +84,12 @@ module SharedSteps
     fill_in 'point1', :with => '1'
     fill_in 'point5', :with => '1'
     fill_in 'point10', :with => '1'
-    click_button 'Print Bucks'
+    click_button 'Print These Credits'
   end
 
   Given 'I distribute ebucks' do
     select @student1.name, :from => 'student_id'
-    fill_in 'points', :with => '1'
-    click_button 'Create eBucks'
+    fill_in 'points', :with => '16'
+    click_button 'Send These Credits'
   end
 end
