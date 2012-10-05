@@ -6,7 +6,6 @@ en:
   only_logged_in_students_can_purchase: "Only logged in students can purchase from this store"
   active_admin:
     dashboard: "LE Dashboard"
-  active_admin:
     dashboard_welcome:
       welcome: "Welcome to Active Admin. This is the default dashboard page."
       call_to_action: "To add dashboard sections, checkout 'app/admin/dashboards.rb'"
