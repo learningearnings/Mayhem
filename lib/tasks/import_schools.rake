@@ -9,17 +9,22 @@ namespace :import do
   end
 
   desc 'import the legacy schools\' data'
-  task :schools => :environment do
+  task :schools, [:worker] => :environment do |tsk, w|
     require 'importers/db_schools_importer'
+    worker = w[:worker] if !w[:worker].blank?
+    worker = nil if w[:worker].blank?
+    puts "worker is #{worker} and w was #{w}"
     osi = OldSchoolImporter.new
     if Rails.env.development? && false
       puts "Development environment detected ---- Resetting..."
       osi.reset
     end
     puts "---> Importing Schools"
-    osi.importable_schools.all.each do |s|
+    osi.importable_schools(worker).all.each do |s|
       ActiveRecord::Base.transaction do
         ns = osi.import_school(s)
+        ns.legacy_school_id = s.schoolID
+        ns.save
         puts ns.id.to_s + ' ' + ns.name + "  le SchoolID-#{s.schoolID} #{s.old_users.count} Users"
         osi.import_users(ns,s)
         s.ad_profile = 20
@@ -28,10 +33,10 @@ namespace :import do
     end
 
     imported_purchases = imported_points = 0
-    osi.imported_schools.each do |ns|
-      s = OldSchool.find(ns.ad_profile)
+    osi.importable_schools(worker).all.each do |s|
+      ns = School.find_by_legacy_school_id(s.schoolID)
       puts "-------------------Classrooms for #{ns.name} #{ns.id}"
-      if s
+      if s && ns
         osi.reset_school_cache
         osi.import_classrooms(ns,s)
         rowcount = 0;

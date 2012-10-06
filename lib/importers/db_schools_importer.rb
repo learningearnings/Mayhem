@@ -93,9 +93,19 @@ class OldSchoolImporter
 =end
   end
 
-  def importable_schools
+  def importable_schools worker = nil
     if Rails.env.development?
-      OldSchool.school_subset.order('schoolID asc')
+      if worker.nil?
+        OldSchool.school_subset.order('schoolID asc')
+      elsif worker.to_i == 1
+        OldSchool.school_subset1.order('schoolID asc')
+      elsif worker.to_i == 2
+        OldSchool.school_subset2.order('schoolID asc')
+      elsif worker.to_i == 3
+        OldSchool.school_subset3.order('schoolID asc')
+      elsif worker.to_i == 4
+        OldSchool.school_subset4.order('schoolID asc')
+      end
     else
       OldSchool.order('schoolID asc')
     end
@@ -396,7 +406,7 @@ class OldSchoolImporter
         puts "Unknown - unprocessed!!! #{op.to_yaml} "
       end
     end
-    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
+    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec                             \r" if new_student
     [imported_points,imported_purchases,imported_points_count, imported_purchases_count]
   end
 
