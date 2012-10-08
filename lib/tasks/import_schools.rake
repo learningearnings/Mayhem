@@ -23,6 +23,7 @@ namespace :import do
     osi.importable_schools(worker).all.each do |s|
       ActiveRecord::Base.transaction do
         ns = osi.import_school(s)
+        next if ns.legacy_school_id == s.schoolID
         ns.legacy_school_id = s.schoolID
         ns.save
         puts ns.id.to_s + ' ' + ns.name + "  le SchoolID-#{s.schoolID} #{s.old_users.count} Users"
