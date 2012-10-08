@@ -255,11 +255,11 @@ input, textarea, select {
 .custom-nav-bar {
   position: relative;
   top: -33px;
-  left: 330px;
+  float: right;
 }
 
 .nav-container, .nav-container-corkboard {
-  position: relative;
+  position: absolute;
   top: 340px;
   left: 460px;
   text-align: right;
