@@ -10,12 +10,6 @@
         %tr
           %td.table-bordered-tl.cb-heading Main
           %td.table-bordered-tr.cb-value= number_to_currency(current_person.main_account(current_school).balance)
-        %tr
-          %td.table-bordered-ml.cb-heading Unredeemed
-          %td.table-bordered-mr.cb-value= number_to_currency(current_person.unredeemed_account(current_school).balance)
-        %tr
-          %td.table-bordered-bl.cb-heading Undeposited
-          %td.table-bordered-br.cb-value= number_to_currency(current_person.undeposited_account(current_school).balance)
           
   .person-details
     %h3= current_person.name
