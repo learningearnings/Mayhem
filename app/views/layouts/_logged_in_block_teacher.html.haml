@@ -8,8 +8,8 @@
           %th.cb-heading-primary{:colspan => "3"} Credit Balance
       %tbody
         %tr
-          %td.table-bordered-tl.cb-heading Main
-          %td.table-bordered-tr.cb-value= number_to_currency(current_person.main_account(current_school).balance)
+          %td.table-bordered-tl.table-bordered-bl.cb-heading Main
+          %td.table-bordered-tr.table-bordered-br.cb-value= number_to_currency(current_person.main_account(current_school).balance)
           
   .person-details
     %h3= current_person.name
