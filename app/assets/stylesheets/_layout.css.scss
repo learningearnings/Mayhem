@@ -569,25 +569,28 @@ input, textarea, select {
 .side-art,
 .side-art-parents,
 .side-art-teachers {
-  position: absolute;
+  display: inline-block;
 }
 
-.side-art {
+.side-art-students {
   background-image: url(asset_path('side_doodles.png', image));
   height: 467px;
   width: 109px;
+  margin-right: 2em;
 }
 
 .side-art-parents {
   background-image: url(asset_path('side_art_parents.png', image));
   height: 561px;
   width: 122px;
+  margin-left: 1em;
 }
 
 .side-art-teachers {
   background-image: url(asset_path('side_art_teachers.png', image));
   height: 464px;
   width: 108px;
+  margin-right: 2.1em;
 }
 
 
@@ -1054,7 +1057,6 @@ footer {
 }
 
 .inbox-messages-content {
-  margin-left: 100px;
   h3 {
     max-width: 600px;
   }
@@ -1063,9 +1065,7 @@ footer {
     background-color: #FFF;
     padding: 1em;
     max-width: 600px;
-    -moz-box-shadow:    1px 2px 5px 1px #ccc;
-    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-    box-shadow:         1px 2px 5px 1px #ccc;
+    border: solid 1px #E1E1E1;
   }
   a {
     margin-top: 1em;
@@ -1073,7 +1073,6 @@ footer {
 }
 
 .admin-message-content {
-  margin-left: 100px;
   form {
     background-color: #fff;
     max-width: 600px;
@@ -1089,9 +1088,6 @@ footer {
 }
 
 .boxes-nav-container {
-  position: relative;
-  top: 20px;
-  right: 50px;
   background-color: white;
   padding: 1em;
   min-height: 500px;
@@ -1110,7 +1106,7 @@ footer {
 }
 
 .bank_content {
-  margin-left: 130px;
+  
 }
 
 .bank-account {
@@ -1189,7 +1185,7 @@ footer {
 }
 
 .news-header {
-  margin-left: 130px;
+
 }
 
 .news-items-container {
@@ -1452,8 +1448,95 @@ footer {
 }
 
 .main-content-wrapper {
-  margin-left: 130px;
+  padding: 2em;
+  display: inline-block;
+  vertical-align: top;
+  width:87%;
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;    
+  
+  .primary-content {
+    width: 62%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .secondary-content {
+    width: 37%;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 2em;
+    
+  }
   p {
     font-size: 1.5em;
   }
 }
+
+.main-content-wrapper-no-bg {
+  padding: 2em;
+  display: inline-block;
+  vertical-align: top;
+  width:87%;
+  
+  .primary-content {
+    width: 62%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .secondary-content {
+    width: 37%;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 2em;
+    
+  }
+  p {
+    font-size: 1.5em;
+  }
+}
+
+.content-container {
+  max-width: 1170px;
+  min-width: 1060px;
+}
+
+.message {
+  margin-bottom: 2em;
+  background-color: white;
+  padding: 1em 1em 1.3em 1em;
+  max-width: 600px;
+  -moz-box-shadow: 1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #CCC;
+  box-shadow: 1px 2px 5px 1px #CCC;
+  border: solid 1px #C9C9C9;
+  .avatar {
+    float: left;
+  }
+  .name {
+    float: left;
+    margin-left: 1em;
+    font-weight: bold;
+    color: #470BC1;
+  }
+  h3 {
+    margin-top: 2em;
+    color: #EB731C;
+  }
+  .btn.btn-primary {
+      background: rgba(37, 134, 11, .8);
+      padding: .5em;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      -webkit-box-shadow: 0 0 5px #888;
+      -moz-box-shadow: 0 0 5px #888;
+      box-shadow: 2px 2px 2px #CCC;
+      -webkit-transform: rotate(-3deg);
+      -moz-transform: rotate(-3deg);
+      -o-transform: rotate(-3deg);
+      font-family: Sketch Rockwell;
+      font-size: 1.3em;
+      text-shadow: 1px 1px 2px #333;
+  }
+}
+
