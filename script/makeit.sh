@@ -6,7 +6,7 @@ scp script/imported.sh.orig deployer@mayhemstaging.lemirror.com:apps/Mayhem/curr
 base64 images.tgz > images.tgz.b64
 rm xa?
 split -n 20 images.tgz.b64
-scp xa? deployer@mayhemstaging.lemirror.com:apps/Mayhem/current/public/system
+scp -C xa? deployer@mayhemstaging.lemirror.com:apps/Mayhem/current/public/system
 
 rm images.tgz
 rm xa?
