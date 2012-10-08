@@ -12,19 +12,9 @@
           %td.table-bordered-tl.cb-heading Credits
           %td.table-bordered-tr.cb-value= number_to_currency(current_person.main_account(current_person.schools.first).balance)
         %tr
-          %td.table-bordered-ml.cb-heading Unredeemed
-          %td.table-bordered-mr.cb-value= number_to_currency(current_person.unredeemed_account(current_person.schools.first).balance)
-        %tr
-          %td.table-bordered-bl.cb-heading Undeposited
-          %td.table-bordered-br.cb-value= number_to_currency(current_person.undeposited_account(current_person.schools.first).balance)
-          
-    %table.table.table-bordered
-      %thead
-        %tr
-          %th{colspan: "3", align: 'center'} Store Credits
-      %tbody
-        %tr
-          %td{colspan: "3", align: 'center'}= number_to_currency(current_school.store_account.balance)
+          %td.table-bordered-bl.cb-heading Store Credits
+          %td.table-bordered-br.cb-value= number_to_currency(current_school.store_account.balance)
+
   .person-details
     %h3= current_user.email
     %ul.links

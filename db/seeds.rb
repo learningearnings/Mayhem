@@ -148,6 +148,14 @@ if existing.nil?
   sm.calculator = c
   sm.shipping_category = sc
   sm.save
+
+  sc = Spree::ShippingCategory.new(name: 'Mailed')
+  sm = Spree::ShippingMethod.new(name: 'Shipped To School',zone_id: 2, match_none: false, match_one: false)
+  c = Spree::Calculator::FlatRate.new()
+  sm.calculator = c
+  sm.shipping_category = sc
+  sm.save
+
 end
 
 # Generate some avatars

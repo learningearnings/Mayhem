@@ -13,7 +13,6 @@ Spree::OrdersController.class_eval do
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
   def populate
     @order = current_order(true)
-
     params[:products].each do |product_id,variant_id|
       quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
       quantity = params[:quantity][variant_id].to_i if params[:quantity].is_a?(Hash)
@@ -31,10 +30,13 @@ Spree::OrdersController.class_eval do
     # --- The above code is spree core copied ---
     # --- Start our customization ---
 
-    OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-
-    flash[:notice] = "Bought that stuff..."
-    redirect_to "/"
+    if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
+      respond_with(@order) { |format| format.html { redirect_to cart_path } }
+    else
+      OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
+      flash[:notice] = "Bought that stuff..."
+      redirect_to "/"
+    end
   end
 
   private

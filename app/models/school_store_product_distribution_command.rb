@@ -66,6 +66,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_product.deleted_at = nil
       retail_product.permalink = @school.store_subdomain + "-" + @master_product.permalink
       retail_product.master.count_on_hand = @quantity
+      retail_product.shipping_category = Spree::ShippingCategory.find_by_name('In Classroom')
       ### TODO - Is this legit?
       retail_product.taxons = @master_product.taxons
       new_image = open(@master_product.master.images[0].attachment.path)

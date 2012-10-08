@@ -5,6 +5,7 @@
     %th Order Number
     %th Shipment State
     %th Payment State
+    %th Items
     %th User Email
     %th Actions
   - @shipments.each do |order|
@@ -12,6 +13,7 @@
       %td.order-number= order.number
       %td= order.shipment_state
       %td= order.payment_state
+      %td= order.line_items.count
       %td= order.email
       %td= link_to("Ship", "#", :id => "#{order.id}", :class => "ship")
 

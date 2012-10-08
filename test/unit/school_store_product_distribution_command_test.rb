@@ -82,6 +82,7 @@ describe SchoolStoreProductDistributionCommand do
       mock_retail_product.expects(:available_on=)
       mock_retail_product.expects(:deleted_at=)
       mock_retail_product.expects(:permalink=)
+      mock_retail_product.expects(:shipping_category=)
       mock_retail_product.expects(:master).returns(mock_retail_product_master_variant).times(3)
       mock_retail_product.expects(:taxons=)
       mock_retail_product.expects(:count_on_hand=)

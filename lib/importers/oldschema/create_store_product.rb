@@ -141,6 +141,13 @@ class CreateStoreProduct < ActiveModelCommand
       end
     end
 
+    if(@reward_type == 'wholesale' || @reward_type == 'global')
+      product.shipping_category = Spree::ShippingCategory.find_by_name('Mailed')
+    else
+      # TODO something different for Charities?
+      product.shipping_category = Spree::ShippingCategory.find_by_name('In Classroom')
+    end
+
     if @reward_type == 'wholesale'
       product.master.price = @retail_price * @retail_quantity
       product.set_property('retail_price',@retail_price)

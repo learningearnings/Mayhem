@@ -108,6 +108,7 @@ group :development, :test do
   gem 'unicorn'
   gem 'libnotify'
   gem 'thin'
+  gem 'rack-bug', git: 'https://github.com/brynary/rack-bug.git', branch: 'rails3'
 end
 
 group :test do

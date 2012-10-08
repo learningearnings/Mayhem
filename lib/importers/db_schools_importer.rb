@@ -93,9 +93,19 @@ class OldSchoolImporter
 =end
   end
 
-  def importable_schools
+  def importable_schools worker = nil
     if Rails.env.development?
-      OldSchool.school_subset.order('schoolID asc')
+      if worker.to_i == 1
+        OldSchool.school_subset1.order('schoolID asc')
+      elsif worker.to_i == 2
+        OldSchool.school_subset2.order('schoolID asc')
+      elsif worker.to_i == 3
+        OldSchool.school_subset3.order('schoolID asc')
+      elsif worker.to_i == 4
+        OldSchool.school_subset4.order('schoolID asc')
+      else
+        OldSchool.school_subset.order('schoolID asc')
+      end
     else
       OldSchool.order('schoolID asc')
     end
@@ -106,6 +116,8 @@ class OldSchoolImporter
   end
 
   def import_school(s)
+    ns = School.find_by_legacy_school_id(s.schoolID)
+    return ns if ns
     schoolstate = State.find_by_abbr(s.state ? s.state.StateAbbr || 'AL' : 'AL').id
     ns = School.new()
     begin
@@ -148,7 +160,7 @@ class OldSchoolImporter
     users = errors  = 0
     start_time = Time.now
 #      old_school.old_users.where(:status_id => 200).each do |u|
-    old_school.old_users.each do |u|
+    old_school.old_users.includes(:old_avatar).each do |u|
       if create_user(u,new_school)
         users = users + 1
       else
@@ -213,7 +225,7 @@ class OldSchoolImporter
   end
 
   def add_person_avatar old_user, new_user
-    if old_user.old_user_avatars && old_user.old_avatars && old_user.avatar && old_user.avatar.imagetype == 'File'
+    if old_user.old_avatar && old_user.avatar.imagetype == 'File'
       old_filename = old_user.avatar.imagelocation.split('/').last
       a = @cached_avatars[old_filename]
       return unless a
@@ -272,10 +284,10 @@ class OldSchoolImporter
   def add_person_to_classroom person, classroom, school
     return nil if !person || !classroom
     psl = find_student_school_link person,school
-    pscl = PersonSchoolClassroomLink.where('person_school_link_id = ? and classroom_id = ?',psl.id,classroom.id).first
-    if pscl
-      return false
-    end
+#    pscl = PersonSchoolClassroomLink.where('person_school_link_id = ? and classroom_id = ?',psl.id,classroom.id).first
+#    if pscl
+#      return false
+#    end
     pscl = PersonSchoolClassroomLink.new(:person_school_link_id => psl.id,
                                          :classroom_id => classroom.id)
     if(person.type != 'Student')
@@ -301,7 +313,7 @@ class OldSchoolImporter
     reward_purchases = [1]
     pointactions = [1,2,4,10,12,14,16,18,19,20]
     new_student = nil
-    OldPoint.includes(:old_otu_code).where(:userID => old_student.userID).where(:pointactionID => pointactions ).order('pointID asc').each do |op|
+    OldPoint.includes([:old_otu_code,:old_reward]).where(:userID => old_student.userID).where(:pointactionID => pointactions ).each do |op|
       new_student = find_student old_student.userID unless new_student
       @earliest_date = op.pointtimestamp unless @earliest_date &&  @earliest_date < op.pointtimestamp
       unless new_student
@@ -396,7 +408,7 @@ class OldSchoolImporter
         puts "Unknown - unprocessed!!! #{op.to_yaml} "
       end
     end
-    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
+    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec                             \r" if new_student
     [imported_points,imported_purchases,imported_points_count, imported_purchases_count]
   end
 
@@ -419,7 +431,7 @@ class OldSchoolImporter
 
   def import_buck_batches old_school, new_school
     rows = 0
-    OldOtuCode.where(:schoolID => old_school.schoolID).where(:ebuck => 0).where('OTUcodeexpires > ?',Time.now()).each do |c|
+    OldOtuCode.where(:schoolID => old_school.schoolID).where(:ebuck => 0).where('OTUcodeexpires > ?',Time.now()).includes(:old_teacher_award).each do |c|
 #    OldOtuCode.where(:schoolID => old_school.schoolID).where(:ebuck => 0).each do |c|
       next unless c.old_teacher_award && c.old_teacher_award.old_file_download
       old_batch_id = c.old_teacher_award.old_file_download.filedownloadid
@@ -472,7 +484,7 @@ class OldSchoolImporter
       reward = get_reward old_reward,nil,new_school
       if reward
         puts " ----> updating count_on_hand from #{reward.master.count_on_hand} to #{rd.rewardquantity}"
-        reward.master.count_on_hand = rd.rewardquantity
+        reward.master.count_on_hand = rd.rewardquantity < 0 ? 0 : rd.rewardquantity
         reward.save
       else
         puts "Could not find reward for #{old_reward.rewardtitle}"

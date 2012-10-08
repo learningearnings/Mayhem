@@ -5,4 +5,4 @@
       .select-recipient
         %strong Select Who To Share It With
         = f.select :to_ids, options_from_collection_for_select(@grademates, :id, :name), { }, { multiple: true }
-  = f.submit "Share Locker", class: 'btn btn-primary'
+  = f.submit "Share Locker", class: 'btn childish-button'
