@@ -157,18 +157,18 @@ input, textarea, select {
 }
 
 .supplemental-bg {
-  background-image: url(asset_path('common/login_bg.png', image));
+  background-image: url(asset_path('header-bg-large.png', image));
   background-repeat: no-repeat;
-  width: 531px;
-  height: 103px;
+  width: 687px;
+  height: 147px;
   float: right;
-  margin-right: 25px;
+  margin: -35px 25px 0 0;
 }
 
 
 .join-supplemental-part {
-  float: right;
-  margin-right: -510px;
+  position: absolute;
+  right: 50px;
   label {
     display: inline;
   }
@@ -179,7 +179,7 @@ input, textarea, select {
 
 .login-supplemental-part {
   position: absolute;
-  margin: 45px 0 0 175px;
+  margin: 45px 0 0 40px;
 }
 
 
@@ -203,13 +203,17 @@ input, textarea, select {
 
 .login-form-fields input {
   height: 25px;
-  width: 100px;
+  width: 130px;
   font-size: 1em;
 }
 
 .login-form-fields select {
   height: 25px;
   width: 104px;
+}
+
+.chzn-container  {
+  width: 175px!important;
 }
 
 .login-form-fields .login-button {
