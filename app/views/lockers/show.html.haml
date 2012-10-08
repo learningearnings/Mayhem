@@ -8,9 +8,9 @@
       .locker_wrapper
         = render 'locker_stickers', locker_sticker_links: locker_sticker_links
       .locker_buttons
-        = link_to 'Decorate My Locker', edit_locker_path, class: 'btn'
-        = link_to 'Share My Locker', share_locker_path, class: 'btn', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
-        = link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
+        = link_to 'Decorate My Locker', edit_locker_path, class: 'btn decorate-locker'
+        = link_to 'Share My Locker', share_locker_path, class: 'btn share-locker', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
+        = link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn visit-locker', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
 
       #share-locker-modal.modal.hide
         .modal-body
