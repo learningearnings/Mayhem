@@ -105,6 +105,7 @@ $(document).ready(function() {
 	// Primary Nav Selected
   highlightNavigation('',        'home');
   highlightNavigation('locker',  'locker');
+  highlightNavigation('charities', 'charities')
   highlightNavigation('inbox',   'inbox');
   highlightNavigation('bank',    'bank');
   highlightNavigation('play',    'play');

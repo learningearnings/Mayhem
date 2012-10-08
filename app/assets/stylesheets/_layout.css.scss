@@ -484,7 +484,7 @@ input, textarea, select {
 
 
 .nav.primary-nav .inbox {
-  color: #000000;
+  color: #ff2204;
   width: 92px;
 }
 
@@ -528,6 +528,22 @@ input, textarea, select {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #eb731c;  
+}
+
+.nav.primary-nav .charities {
+  color: #470bc1;
+}
+
+.nav.primary-nav .charities:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #b611b0;  
+}
+
+.charities-selected {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #b611b0;  
 }
 
 .nav.primary-nav .rewards {
