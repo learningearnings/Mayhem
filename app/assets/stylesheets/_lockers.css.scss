@@ -67,6 +67,17 @@
   margin-left: 130px;
 }
 
+.childish-button{
+  background: rgba(37, 134, 11, 0.8);
+  padding: .5em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  @include box-shadow(2px 2px 2px #666);
+  @include rotate(-3deg);
+  font-size: 1.3em;
+  text-shadow: 1px 1px 2px #333;
+  color: #fff;
+}
+
 .locker_buttons {
   width: 804px;
   padding: 2em 1em;
@@ -76,59 +87,23 @@
   }
   .decorate-locker {
     background: rgba(37, 134, 11, 0.8);
-    padding: .5em;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    -webkit-box-shadow: 0 0 5px #888;
-    -moz-box-shadow: 0 0 5px #888;
-    box-shadow: 2px 2px 2px #666;
-    -webkit-transform: rotate(-3deg);
-    -moz-transform: rotate(-3deg);
-    -o-transform: rotate(-3deg);
-    font-family: Sketch Rockwell;
-    font-size: 1.3em;
-    text-shadow: 1px 1px 2px #333;
-    color: #fff;
+    @include rotate(-3deg);
     &:hover {
-    background: rgba(37, 134, 11, 1);
+      background: rgba(37, 134, 11, 1);
     }
-    
   }
   .share-locker {
     background: rgba(238, 91, 26, 0.8);
-    padding: .5em;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    -webkit-box-shadow: 0 0 5px #888;
-    -moz-box-shadow: 0 0 5px #888;
-    box-shadow: 2px 2px 2px #666;
-    -webkit-transform: rotate(3deg);
-    -moz-transform: rotate(3deg);
-    -o-transform: rotate(3deg);
-    font-family: Sketch Rockwell;
-    font-size: 1.3em;
-    text-shadow: 1px 1px 2px #333;
-    color: #fff;
+    @include rotate(3deg);
     &:hover {
-    background: rgba(238, 91, 26, 1);
+      background: rgba(238, 91, 26, 1);
     }
-    
   }
   .visit-locker {
     background: rgba(182, 17, 176, 0.8);
-    padding: .5em;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    -webkit-box-shadow: 0 0 5px #888;
-    -moz-box-shadow: 0 0 5px #888;
-    box-shadow: 2px 2px 2px #666;
-    -webkit-transform: rotate(-1.8deg);
-    -moz-transform: rotate(-1.8deg);
-    -o-transform: rotate(-1.8deg);
-    font-family: Sketch Rockwell;
-    font-size: 1.3em;
-    text-shadow: 1px 1px 2px #333;
-    color: #fff;
+    @include rotate(1.8deg);
     &:hover {
-    background: rgba(182, 17, 176, 1);
+      background: rgba(182, 17, 176, 1);
     }
-    
   }
 }

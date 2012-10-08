@@ -11,7 +11,7 @@ Currently, we're using the schools id as the domain, so the domain would be (for
     1.localhost:3000
 
 This requires that you put 1.localhost in your hosts file.   If your on the Interwebs, then you can use
-the domain lvh.me (local virtual host - resolves to 127.0.0.1) which has a subdomain wildcard so *.lvh.me
+the domain lvh.me (local virtual host - resolves to 127.0.0.1) which has a subdomain wildcard so `*.lvh.me`
 resolves to 127.0.0.1
 
 Everything might not be working right, but development from here on should use the below url:
@@ -104,7 +104,7 @@ Plutus is a General Ledger / Accounting engine that Isotope11 has contributed to
 Right now, you can hit /plutus (as anyone) to view the chart of accounts, balances, and transactions.  This is basic reporting provided out of the box by plutus, and can be useful.  We must lock this down before going into production
 
 #### Account Names
-* MAIN_ACCOUNT(Liability)
+* MAIN\_ACCOUNT(Liability)
   LE
 * SCHOOL1 MAIN(Asset)
 * SCHOOL1 CREDIT(Asset)
@@ -136,3 +136,11 @@ _with migrations:_
 _roll it back:_
 
     cap staging deploy:rollback
+
+### Rack Bug
+To use rack-bug, first visit this page in your browser and drag the link from
+the page content into your bookmarks toolbar:
+
+    http://RAILS_APP/__rack_bug__/bookmarklet.html
+
+Then visit the site in dev mode and click the bookmarklet.  Use the password: "Seriouslythoughthisisadebugkey"
