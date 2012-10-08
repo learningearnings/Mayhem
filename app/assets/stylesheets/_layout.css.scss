@@ -1543,3 +1543,16 @@ footer {
   }
 }
 
+.distribute-credits {
+  label {
+    display: inline-block;
+  }
+  input {
+    width: 50px;
+    height: 25px;
+    margin-right: 10px;
+  }
+  input[type="submit"] {
+    width: auto;
+  }
+}
