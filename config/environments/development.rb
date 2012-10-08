@@ -43,5 +43,7 @@ Leror::Application.configure do
 ## for testing longer domains like mahyem.lvh.me:3000
 ##  config.action_dispatch.tld_length = 2
 
+  config.middleware.use "Rack::Bug",
+    :secret_key => "Seriouslythoughthisisadebugkey"
 
 end

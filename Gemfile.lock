@@ -25,6 +25,14 @@ GIT
   specs:
     valid_attribute (1.2.0)
 
+GIT
+  remote: https://github.com/brynary/rack-bug.git
+  revision: 1e6d33664fb21a5f08836e5d8a9d7bfcc47c8d81
+  branch: rails3
+  specs:
+    rack-bug (0.3.0)
+      rack (>= 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -503,6 +511,7 @@ DEPENDENCIES
   plutus
   postgres_ext
   pry (~> 0.9.10)
+  rack-bug!
   rack-cache
   rails (~> 3.2.6)
   ranked-model

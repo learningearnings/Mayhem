@@ -8,7 +8,7 @@
 
     %h3 Auction
     %p= lipsum
-    = link_to "Play Now", games_food_fight_path, class: 'btn'
+    = link_to "Play Now", auctions_path, class: 'btn childish-button'
 
 .games.row
   .span6
@@ -17,9 +17,9 @@
         .image-placeholder
           image
       .span4
-        %h4 Auctions
-        %p Bid on cool stuff!
-        = link_to "Play Now", auctions_path, class: 'btn'
+        %h4 Food Fight
+        %p Answer questions, throw food, win credits!
+        = link_to "Play Now", games_food_fight_path, class: 'btn childish-button'
     .game.row
       .span2
         .image-placeholder
@@ -27,7 +27,7 @@
       .span4
         %h4 Number Muncher
         %p= lipsum(200)
-        = link_to "Play Now", "#", class: 'btn'
+        = link_to "Play Now", "#", class: 'btn childish-button'
 
   .span4
     = render_reward_highlights(@products[0..1])
