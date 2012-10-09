@@ -487,18 +487,36 @@ input, textarea, select {
 
 .nav.primary-nav .inbox {
   color: #ff2204;
-  width: 92px;
 }
 
 .nav.primary-nav .inbox:hover {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
+  color: #ff2204;
 }
 
 .inbox-selected {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
+  color: #ff2204;
 }
+
+.nav.primary-nav .restock {
+  color: #EB731C
+}
+
+.nav.primary-nav .restock:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #EB731C
+}
+
+.restock-selected {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #EB731C
+}
+
 
 .nav.primary-nav .bank {
   color: #470bc1;
@@ -1558,6 +1576,12 @@ footer {
     width: 62%;
     display: inline-block;
     vertical-align: top;
+    .select-message {
+      textarea {
+        width: 575px;
+        height: 265px;
+      }
+    }
   }
   .secondary-content {
     width: 37%;
@@ -1626,9 +1650,4 @@ footer {
   input[type="submit"] {
     width: auto;
   }
-}
-
-#teacher_message_classroom_command_body {
-  width: 575px;
-  height: 265px;
 }
