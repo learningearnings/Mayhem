@@ -1,5 +1,12 @@
 ActiveAdmin.register Teacher do
 
+  filter :first_name_or_last_name, :as => :string
+  filter :last_name
+  filter :schools_name_contains
+  filter :status, :as => :check_boxes, :collection => proc { Teacher.new().status_paths.to_states.each do |s| s.to_s end }
+  filter :grade, :as => :check_boxes, :collection => School::GRADE_NAMES
+  filter :created_at, :as => :date_range
+
   form :partial => "form"
 
   show do
