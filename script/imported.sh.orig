@@ -37,8 +37,8 @@ tar -xvzf images.tgz
 echo "Loading the learning_earning_development database..."
 if [ "$hostname" == "mayhemstaging.lemirror.com" ]; then
    mv public/system/dragonfly/development public/system/dragonfly/production
-   curl -s http://mayhemstaging.lemirror.com/system/imported.pg.db.gz | gzip -dc | pg_restore -O --username=deployer --dbname=learning_earning_development --clean
-   echo "update spree_stores set domains = replace(domains,'lvh.me:3000','mayhemstaging.lemirror.com');" | psql -d learning_earning_development
+   curl -s http://mayhemstaging.lemirror.com/system/imported.pg.db.gz | gzip -dc | pg_restore -O --username=Production --host=198.58.101.138 --dbname=learning_earning_development --clean
+   echo "update spree_stores set domains = replace(domains,'lvh.me:3000','mayhemstaging.lemirror.com');" | psql --username=Production --host=198.58.101.138 -d learning_earning_development
 else
    curl -s http://mayhemstaging.lemirror.com/system/imported.pg.db.gz | gzip -dc | pg_restore -O --dbname=learning_earning_development --clean
 fi
