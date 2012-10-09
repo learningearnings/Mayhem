@@ -422,8 +422,11 @@ input, textarea, select {
 }
 
 .navbar .nav li a {
-  height: 50px;
+  padding: .5em 1.3em 1.3em 1em;
+
 }
+
+
 
 .navbar .nav {
   position: static;
@@ -435,7 +438,6 @@ input, textarea, select {
 
 .nav.primary-nav .home {
   color: #25860b;
-  width: 92px
 }
 
 .nav.primary-nav .home:hover {
@@ -560,6 +562,59 @@ input, textarea, select {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
   color: #b611b0;  
+}
+
+.nav.primary-nav .reports {
+  color: #470BC1;
+}
+
+.nav.primary-nav .reports:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470BC1;  
+}
+
+.reports-selected {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470BC1; 
+}
+
+.nav.primary-nav .classrooms {
+  color: #EA4E08;
+}
+
+.nav.primary-nav .classrooms:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #EA4E08;  
+}
+
+.classrooms-selected {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #EA4E08; 
+}
+
+
+.nav.primary-nav .lounge {
+  color: #EB731C;
+}
+
+.nav.primary-nav .lounge:hover {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #EB731C;  
+}
+
+.lounge-selected {
+  background-image: url(asset_path('rewards_selected.png', image));
+  background-repeat: no-repeat;
+  color: #EB731C; 
+}
+
+.nav.primary-nav .news {
+  color: #ff2204;
 }
 
 .nav.primary-nav .news {
