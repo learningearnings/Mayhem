@@ -1,5 +1,13 @@
 ActiveAdmin.register Student do
 
+#  filter :first_name_or_last_name, :as => :string
+  filter :first_name
+  filter :last_name
+  filter :status, :as => :check_boxes, :collection => proc { Teacher.new().status_paths.to_states.each do |s| s.to_s end }
+  filter :grade, :as => :check_boxes, :collection => School::GRADE_NAMES
+  filter :gender, :as => :check_boxes, :collection => ['Male','Female']
+  filter :created_at, :as => :date_range
+
   form :partial => "form"
 
   show do

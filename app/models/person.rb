@@ -80,7 +80,7 @@ class Person < ActiveRecord::Base
   end
 
   def schools(status = :status_active)
-    School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc')
+    MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc'))
   end
 
   def classrooms(status = :status_active)
