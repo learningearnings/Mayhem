@@ -2,39 +2,43 @@
   .side-art
     .side-art-teachers
   .main-content-wrapper
-    .primary-content
+    .primary-content-fw
       %h2 Student Credit History Report
 
-      .filters.well
-        = form_tag student_credit_history_report_path, method: :get do
-          = label_tag :sort_by
-          = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
-          .filter-chooser
-            .filter
-              = radio_button_tag :student_filter_type, :all_at_school, params[:student_filter_type] == 'all_at_school'
-              = label_tag "All students at #{current_school}"
-            .filter
-              = radio_button_tag :student_filter_type, :students_ive_given_bucks_to, params[:student_filter_type] == 'students_ive_given_bucks_to'
+      .filter
+        %h4 Filter By
+        .all-students
+          = radio_button_tag :student_filter_type, :all_at_school, params[:student_filter_type] == 'all_at_school'
+          = label_tag "All students at #{current_school}"
+        .given-credits
+          = radio_button_tag :student_filter_type, :students_ive_given_bucks_to, params[:student_filter_type] == 'students_ive_given_bucks_to'
 
-              = label_tag "Students I've given credits to"
-            .filter
-              = radio_button_tag :student_filter_type, :all_my_classrooms, params[:student_filter_type] == 'all_my_classrooms'
+          = label_tag "Students I've given credits to"
+        .all-classrooms
+          = radio_button_tag :student_filter_type, :all_my_classrooms, params[:student_filter_type] == 'all_my_classrooms'
 
-              = label_tag "All my classrooms"
-            .filter
-              = radio_button_tag :student_filter_type, :classroom, params[:student_filter_type] == 'classroom'
+          = label_tag "All my classrooms"
+        .classroom
+          = radio_button_tag :student_filter_type, :classroom, params[:student_filter_type] == 'classroom'
 
-              = label_tag "Classroom"
-              = select_tag :classroom, options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
+          = label_tag "Classroom"
+          = select_tag :classroom, options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
           = submit_tag 'Go!'
+          
+      .sorting
+        = form_tag student_credit_history_report_path, method: :get do
+          %h4 Sort By
+          = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
+      
 
-      %table.table.table-bordered.table-striped.solid-background
-        %thead
-          %tr
-            - report.header_strings.each do |header|
-              %th= header
-        %tbody
-          - report.data_rows do |row|
+      .report
+        %table.table.table-bordered.table-striped.solid-background
+          %thead
             %tr
-              - report.header_keys.each do |key|
-                %td= row.send(key)
+              - report.header_strings.each do |header|
+                %th= header
+          %tbody
+            - report.data_rows do |row|
+              %tr
+                - report.header_keys.each do |key|
+                  %td= row.send(key)

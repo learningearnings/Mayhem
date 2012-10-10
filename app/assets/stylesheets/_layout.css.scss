@@ -1655,6 +1655,9 @@ footer {
   }
 }
 
+.grade,
+.classroom-roster,
+.grade-filter,
 .filter-dates,
 .filter-rewards,
 .filter-teachers,
@@ -1675,7 +1678,21 @@ footer {
     color: #fff;
     font-weight: bold;
   }
+  input[type="radio"] {
+    display: inline-block;
+    margin-bottom: .5em;
+  }
+  .all-students,
+  .given-credits,
+  .all-classrooms,
+  .classroom {
+    label {
+      margin-left: .5em;
+      display: inline-block;
+    }
+  }
 }
+
 
 .sorting {
   background-color: #EB731C;
@@ -1692,7 +1709,11 @@ footer {
   }
 }
 
-.report table thead tr th {
-  background-color: #5cc5e8;
-  color: #470BC1;
+.report {
+  margin-top: 1em;
+  
+  table thead tr th {
+    background-color: #5cc5e8;
+    color: #470BC1;
+  }
 }

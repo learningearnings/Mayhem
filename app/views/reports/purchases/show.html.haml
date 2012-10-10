@@ -7,6 +7,7 @@
 
       .filters
         .filter
+          %h4 Filter By
           = form_tag purchases_report_path, method: :get do
             .filter-dates
               = label_tag :show_dates
@@ -18,8 +19,8 @@
               = label_tag :show_teachers
               = select_tag :teachers_filter, "<option value='everyone'>Everyone</option>".html_safe + options_from_collection_for_select(current_school.teachers + current_school.school_admins, :id, :name, params[:teachers_filter])
         .sorting
+          %h4 Sort By
           .sort-by
-            = label_tag :sort_by
             = select_tag :sort_by, options_for_select(["Default", "Teacher", "Student", "Purchased", "Reward", "Status"], params[:sort_by])
             = submit_tag 'Go!'
       

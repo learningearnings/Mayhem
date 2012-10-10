@@ -2,24 +2,28 @@
   .side-art
     .side-art-teachers
   .main-content-wrapper
-    .primary-content
+    .primary-content-fw
       %h2 Activity Report
 
-      .filters.well
+      .filter
+        %h4 Filter
         = form_tag activity_report_path, method: :get do
           = label_tag :show_dates
           = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
-          = label_tag :sort_by
-          = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
-          = submit_tag 'Go!'
+          
+      .sorting
+        %h4 Sort By
+        = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
+        = submit_tag 'Go!'
 
-      %table.table.table-bordered.table-striped.solid-background
-        %thead
-          %tr
-            - report.header_strings.each do |header|
-              %th= header
-        %tbody
-          - report.data_rows do |row|
+      .report
+        %table.table.table-bordered.table-striped.solid-background
+          %thead
             %tr
-              - report.header_keys.each do |key|
-                %td= row.send(key)
+              - report.header_strings.each do |header|
+                %th= header
+          %tbody
+            - report.data_rows do |row|
+              %tr
+                - report.header_keys.each do |key|
+                  %td= row.send(key)
