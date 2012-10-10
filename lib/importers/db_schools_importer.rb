@@ -1,19 +1,9 @@
 #  migrate from old models to new models
 require_relative 'oldschema/require_all.rb'
 
-
-
 class OldSchoolImporter
   def initialize
     reset_school_cache
-    puts "Running some sql to fixup the MySQL db"
-    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
-    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
-    OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
-    OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
-    OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
-    OldReward.connection.execute("update tbl_rewards set partnerID = 0")
-    OldUser.connection.execute("update tbl_users set virtual_bal = 0")
     @non_display_reward_categories = [1000,1001,1002]
     @reward_types = [5 => 'reward',
                      2 => 'reward',
@@ -43,54 +33,20 @@ class OldSchoolImporter
     @school_points = 0
   end
 
-
+  def fixup
+    puts "Running some sql to fixup the MySQL db"
+    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where month(usercreated) = 0")
+    OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
+    OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
+    OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
+    OldReward.connection.execute("update tbl_rewards set partnerID = 0")
+    OldUser.connection("update tbl_users set verificationdate = '20100701' where month(verificationDate) = 0 and year(verificationDate) > 0;")
+    Olduser.connection("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
+    OldUser.connection.execute("update tbl_users set virtual_bal = 0")
+  end
 
   def reset
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
-=begin
-      OldSchool.school_subset.each do |s|
-        s.old_users.each do |u|
-          p = Person.find_by_legacy_user_id(u.id)
-          if p
-            p.person_school_links.each do |l| l.destroy end
-            if p.respond_to? :locker
-              p.locker.destroy
-            end
-             if p.respond_to? :checking_account
-              p.checking_account.destroy
-           end
-            if p.respond_to? :savings_account
-              p.savings_account.destroy
-            end
-            if p.respond_to? :hold_account
-              p.hold_account.destroy
-            end
-            if p.respond_to? :checking_account
-              p.checking_account.destroy
-            end
-            if p.respond_to? :main_account
-              p.main_account.destroy
-            end
-            if p.respond_to? :unredeemed_account
-              p.unredeemed_account.destroy
-            end
-            if p.respond_to? :undeposited_account
-              p.undeposited_account.destroy
-            end
-            if p.respond_to? :user
-              p.user.destroy
-            end
-            p.destroy
-          end
-        end
-        s.ad_profile = 1
-        s.save
-        ns = School.find_by_ad_profile(s.id)
-        if ns
-          ns.destroy
-        end
-      end
-=end
   end
 
   def importable_schools school = nil
@@ -274,18 +230,22 @@ class OldSchoolImporter
   end
   def add_person_to_classroom person, classroom, school
     return nil if !person || !classroom
-    psl = find_student_school_link person,school
+    if person.is_a? Teacher
+      psl = find_teacher_school_link person,school
+    else
+      psl = find_student_school_link person,school
+    end
 #    pscl = PersonSchoolClassroomLink.where('person_school_link_id = ? and classroom_id = ?',psl.id,classroom.id).first
 #    if pscl
 #      return false
 #    end
     pscl = PersonSchoolClassroomLink.new(:person_school_link_id => psl.id,
                                          :classroom_id => classroom.id)
-    if(person.type != 'Student')
+    if(person.is_a? Teacher)
       pscl.owner = true
     end
     if !pscl.save
-      puts "Problem saving person school classroom link"
+      puts "Problem #{pscl.errors.messages} saving person school classroom link for #{person.id}-#{person.name} legacy-#{person.legacy_user_id} classroom = #{classroom.id}-#{classroom.name}"
       return false
     end
     return true
@@ -587,7 +547,11 @@ class OldSchoolImporter
     if student.nil?
       student = Student.find_by_legacy_user_id(legacy_student_id)
       if student.nil?
-        old_student = OldUser.find(legacy_student_id)
+        begin
+          old_student = OldUser.find(legacy_student_id)
+        rescue
+          old_student = nil
+        end
         puts "Couldn't find Student userID #{legacy_student_id}" unless old_student
         puts "Couldn't find Student userID #{legacy_student_id} but user #{old_student.userfname} #{old_student.userlname} exists for schoolid #{old_student.schoolID} - #{old_student.old_school.school}" if old_student
         #            binding.pry

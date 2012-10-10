@@ -1,16 +1,8 @@
-- content_for :sidebar do
-  %div{ "data-hook" => "homepage_sidebar_navigation" }
-    - if "products" == @current_controller && @taxon
-      = render :partial => 'spree/shared/filters'
-    - else
-      = render :partial => 'spree/shared/taxonomies'
-
-- if params[:keywords]
-  %div{ "data-hook" => "search_results" }
-    - if @products.empty?
-      %h6.search-results-title= t(:no_products_found)
-    - else
-      = render :partial => 'spree/shared/products', :locals => { :products => @products, :taxon => @taxon }
-- else
-  %div{"data-hook" => "homepage_products" }
-    = render :partial => 'spree/shared/products', :locals => { :products => @products, :taxon => @taxon }
+.content-container
+  .side-art
+    .side-art-teachers
+  .main-content-wrapper
+    .full-content
+      %h2 Products
+      %div{"data-hook" => "homepage_products"}
+        = render :partial => 'spree/shared/products', :locals => { :products => @products }

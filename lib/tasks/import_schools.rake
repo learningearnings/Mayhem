@@ -8,20 +8,29 @@ namespace :import do
     osi.reset
   end
 
+  desc 'Fixup MySQL data "problems"'
+  task :fixup => :environment do
+    require 'importers/db_schools_importer'
+    osi = OldSchoolImporter.new
+    osi.fixup
+  end
+
+
+
   desc 'import the legacy schools\' data'
   task :schools, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'
-    school = _school_in[:school_in] if !_school_in[:school_in].blank?
-    school = nil if _school_in[:school_in].blank?
-    puts "_school_in is #{_school_in} and school was #{school}"
+    schools = _school_in[:school_in].split('-') if !_school_in[:school_in].blank?
+    schools = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and schools was #{schools}"
     osi = OldSchoolImporter.new
     if Rails.env.development? && false
       puts "Development environment detected ---- Resetting..."
       osi.reset
     end
     puts "---> Importing Schools"
-    osi.importable_schools(school).all.each do |s|
-      ActiveRecord::Base.transaction do
+    osi.importable_schools(schools).each do |s|
+#      ActiveRecord::Base.transaction do
         ns = osi.import_school(s)
         next if ns.legacy_school_id == s.schoolID
         ns.legacy_school_id = s.schoolID
@@ -30,18 +39,18 @@ namespace :import do
         osi.import_users(ns,s)
         s.ad_profile = 20
         s.save
-      end
+#      end
     end
   end
 
   task :classrooms, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'
-    school = _school_in[:school_in] if !_school_in[:school_in].blank?
-    school = nil if _school_in[:school_in].blank?
-    puts "_school_in is #{_school_in} and school was #{school}"
+    schools = _school_in[:school_in].split('-') if !_school_in[:school_in].blank?
+    schools = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and schools was #{schools}"
     imported_purchases = imported_points = 0
     osi = OldSchoolImporter.new
-    osi.importable_schools(school).where('ad_profile > 19').all.each do |s|
+    osi.importable_schools(schools).where('ad_profile > 19').all.each do |s|
       ns = School.find_by_legacy_school_id(s.schoolID)
       puts "-------------------Classrooms for #{ns.name} #{ns.id}"
       if s && ns
@@ -56,12 +65,12 @@ namespace :import do
 
   task :transactions, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'
-    school = _school_in[:school_in] if !_school_in[:school_in].blank?
-    school = nil if _school_in[:school_in].blank?
-    puts "_school_in is #{_school_in} and school was #{school}"
+    schools = _school_in[:school_in].split('-') if !_school_in[:school_in].blank?
+    schools = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and schools was #{schools}"
     imported_purchases = imported_points = 0
     osi = OldSchoolImporter.new
-    osi.importable_schools(school).where('ad_profile > 19').all.each do |s|
+    osi.importable_schools(schools).where('ad_profile > 19').all.each do |s|
       ns = School.find_by_legacy_school_id(s.schoolID)
       if s && ns
         osi.reset_school_cache
@@ -70,12 +79,12 @@ namespace :import do
         start_time = Time.now
         rowcount += osi.import_buck_batches(s,ns)
         s.old_users.each do |old_student|
-          ActiveRecord::Base.transaction do
+#          ActiveRecord::Base.transaction do
             points_and_rewards = osi.import_points(s,old_student,ns,rowspersec)
             imported_points = imported_points + points_and_rewards[0]
             imported_purchases = imported_purchases + points_and_rewards[1]
             rowcount += ((points_and_rewards[2]||0) + (points_and_rewards[3]||0))
-          end
+#          end
           end_time = Time.now
           elapsed_time = end_time - start_time
           rowspersec = ((rowcount) / elapsed_time).round(2)
