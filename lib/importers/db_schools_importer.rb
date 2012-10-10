@@ -35,7 +35,7 @@ class OldSchoolImporter
 
   def fixup
     puts "Running some sql to fixup the MySQL db"
-    OldSchool.connection.execute("update tbl_users set usercreated = str_to_date(concat(YEAR(usercreated),',',10,day(usercreated)),'%Y,%m,%d') where month(usercreated) = 0")
+    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where month(usercreated) = 0")
     OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
     OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
     OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
