@@ -9,7 +9,7 @@ namespace :import do
   end
 
   desc 'Fixup MySQL data "problems"'
-  task :reset => :environment do
+  task :fixup => :environment do
     require 'importers/db_schools_importer'
     osi = OldSchoolImporter.new
     osi.fixup
