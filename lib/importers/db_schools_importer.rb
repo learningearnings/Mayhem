@@ -40,6 +40,8 @@ class OldSchoolImporter
     OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
     OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
+    OldUser.connection("update tbl_users set verificationdate = '20100701' where month(verificationDate) = 0 and year(verificationDate) > 0;")
+    Olduser.connection("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
   end
 
@@ -228,18 +230,22 @@ class OldSchoolImporter
   end
   def add_person_to_classroom person, classroom, school
     return nil if !person || !classroom
-    psl = find_student_school_link person,school
+    if person.is_a? Teacher
+      psl = find_teacher_school_link person,school
+    else
+      psl = find_student_school_link person,school
+    end
 #    pscl = PersonSchoolClassroomLink.where('person_school_link_id = ? and classroom_id = ?',psl.id,classroom.id).first
 #    if pscl
 #      return false
 #    end
     pscl = PersonSchoolClassroomLink.new(:person_school_link_id => psl.id,
                                          :classroom_id => classroom.id)
-    if(person.type != 'Student')
+    if(person.is_a? Teacher)
       pscl.owner = true
     end
     if !pscl.save
-      puts "Problem saving person school classroom link"
+      puts "Problem #{pscl.errors.messages} saving person school classroom link"
       return false
     end
     return true

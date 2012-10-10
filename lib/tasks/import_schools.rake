@@ -30,7 +30,7 @@ namespace :import do
     end
     puts "---> Importing Schools"
     osi.importable_schools(schools).each do |s|
-      ActiveRecord::Base.transaction do
+#      ActiveRecord::Base.transaction do
         ns = osi.import_school(s)
         next if ns.legacy_school_id == s.schoolID
         ns.legacy_school_id = s.schoolID
@@ -39,7 +39,7 @@ namespace :import do
         osi.import_users(ns,s)
         s.ad_profile = 20
         s.save
-      end
+#      end
     end
   end
 
@@ -79,12 +79,12 @@ namespace :import do
         start_time = Time.now
         rowcount += osi.import_buck_batches(s,ns)
         s.old_users.each do |old_student|
-          ActiveRecord::Base.transaction do
+#          ActiveRecord::Base.transaction do
             points_and_rewards = osi.import_points(s,old_student,ns,rowspersec)
             imported_points = imported_points + points_and_rewards[0]
             imported_purchases = imported_purchases + points_and_rewards[1]
             rowcount += ((points_and_rewards[2]||0) + (points_and_rewards[3]||0))
-          end
+#          end
           end_time = Time.now
           elapsed_time = end_time - start_time
           rowspersec = ((rowcount) / elapsed_time).round(2)
