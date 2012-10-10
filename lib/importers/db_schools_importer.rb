@@ -587,7 +587,11 @@ class OldSchoolImporter
     if student.nil?
       student = Student.find_by_legacy_user_id(legacy_student_id)
       if student.nil?
-        old_student = OldUser.find(legacy_student_id)
+        begin
+          old_student = OldUser.find(legacy_student_id)
+        rescue
+          old_student = nil
+        end
         puts "Couldn't find Student userID #{legacy_student_id}" unless old_student
         puts "Couldn't find Student userID #{legacy_student_id} but user #{old_student.userfname} #{old_student.userlname} exists for schoolid #{old_student.schoolID} - #{old_student.old_school.school}" if old_student
         #            binding.pry
