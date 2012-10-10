@@ -111,6 +111,7 @@ $(document).ready(function() {
   highlightNavigation('play',    'play');
   highlightNavigation('games',   'play');
   highlightNavigation('rewards', 'rewards');
+  highlightNavigation('restock', 'restock');
   highlightNavigation('store',   'rewards');
   highlightNavigation('news',    'news');
   highlightNavigation('how_it_works', 'how-it-works');

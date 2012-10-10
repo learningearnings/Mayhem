@@ -1,3 +1,9 @@
-%div{"data-hook" => "homepage_products"}
-  = render :partial => 'spree/shared/products', :locals => { :products => @products }
+.content-container
+  .side-art
+    .side-art-teachers
+  .main-content-wrapper
+    .primary-content
+      %h2 Products
+      %div{"data-hook" => "homepage_products"}
+        = render :partial => 'spree/shared/products', :locals => { :products => @products }
 

@@ -1181,7 +1181,7 @@ footer {
 
 .boxes-nav-container {
   background-color: white;
-  padding: 1em;
+  padding: 1em 1em 1em 2em;
   min-height: 500px;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
@@ -1571,6 +1571,9 @@ footer {
   display: inline-block;
   vertical-align: top;
   width:87%;
+  .primary-content-fw {
+    width: 90%;
+  }
   
   .primary-content {
     width: 62%;
@@ -1649,5 +1652,68 @@ footer {
   }
   input[type="submit"] {
     width: auto;
+  }
+}
+
+.grade,
+.classroom-roster,
+.grade-filter,
+.filter-dates,
+.filter-rewards,
+.filter-teachers,
+.sort-by {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.filter {
+  background-color: #8bc53e;
+  border-radius: 6px;
+  padding: 1em 0 1em 1em;
+  border: 1px solid #5EBE45;
+  form {
+    margin: 0;
+  }
+  label {
+    color: #fff;
+    font-weight: bold;
+  }
+  input[type="radio"] {
+    display: inline-block;
+    margin-bottom: .5em;
+  }
+  .all-students,
+  .given-credits,
+  .all-classrooms,
+  .classroom {
+    label {
+      margin-left: .5em;
+      display: inline-block;
+    }
+  }
+}
+
+
+.sorting {
+  background-color: #EB731C;
+  border-radius: 6px;
+  padding: 1em 0 1em 1em;
+  margin: 1em 0;
+  border: solid 1px #DB3C07;
+  form {
+    margin: 0;
+  }
+  label {
+    color: #fff;
+    font-weight: bold;
+  }
+}
+
+.report {
+  margin-top: 1em;
+  
+  table thead tr th {
+    background-color: #5cc5e8;
+    color: #470BC1;
   }
 }
