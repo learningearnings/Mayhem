@@ -1,8 +1,6 @@
 #  migrate from old models to new models
 require_relative 'oldschema/require_all.rb'
 
-
-
 class OldSchoolImporter
   def initialize
     reset_school_cache
@@ -37,8 +35,7 @@ class OldSchoolImporter
 
   def fixup
     puts "Running some sql to fixup the MySQL db"
-    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
-    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
+    OldSchool.connection.execute("update tbl_users set usercreated = str_to_date(concat(YEAR(usercreated),',',10,day(usercreated)),'%Y,%m,%d') where month(usercreated) = 0")
     OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
     OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
     OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
@@ -48,50 +45,6 @@ class OldSchoolImporter
 
   def reset
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
-=begin
-      OldSchool.school_subset.each do |s|
-        s.old_users.each do |u|
-          p = Person.find_by_legacy_user_id(u.id)
-          if p
-            p.person_school_links.each do |l| l.destroy end
-            if p.respond_to? :locker
-              p.locker.destroy
-            end
-             if p.respond_to? :checking_account
-              p.checking_account.destroy
-           end
-            if p.respond_to? :savings_account
-              p.savings_account.destroy
-            end
-            if p.respond_to? :hold_account
-              p.hold_account.destroy
-            end
-            if p.respond_to? :checking_account
-              p.checking_account.destroy
-            end
-            if p.respond_to? :main_account
-              p.main_account.destroy
-            end
-            if p.respond_to? :unredeemed_account
-              p.unredeemed_account.destroy
-            end
-            if p.respond_to? :undeposited_account
-              p.undeposited_account.destroy
-            end
-            if p.respond_to? :user
-              p.user.destroy
-            end
-            p.destroy
-          end
-        end
-        s.ad_profile = 1
-        s.save
-        ns = School.find_by_ad_profile(s.id)
-        if ns
-          ns.destroy
-        end
-      end
-=end
   end
 
   def importable_schools school = nil
