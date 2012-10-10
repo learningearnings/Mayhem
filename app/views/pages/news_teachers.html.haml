@@ -1,19 +1,13 @@
-.news-content.boxes.row
-  .span11
-    .row
-      .span2
-        &nbsp;
-      .span6
-        %h2 News
-  .span11
-    .row
-      .span2
-        &nbsp;
-      .span7
-        - 3.times do
-          .news-item
-            .headline
-              %h3 Headline
-            .content
-              %p= lipsum
-      .span2
+.content-container
+  .side-art
+    .side-art-teachers
+  .main-content-wrapper-no-bg
+    .primary-content
+      %h2 News
+      - 3.times do
+        .news-item
+          .headline
+            %h3 Headline
+          .content
+            %p= lipsum
+

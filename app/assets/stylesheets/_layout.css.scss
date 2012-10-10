@@ -468,6 +468,23 @@ input, textarea, select {
   color: #ea4e08;  
 }
 
+.nav.primary-nav .testimonials {
+  color: #B611B0;
+}
+
+.nav.primary-nav .testimonials:hover {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #B611B0;  
+}
+
+.testimonials-selected {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #B611B0;  
+}
+
+
 .nav.primary-nav .locker {
   color: #1f2870;
 }
@@ -667,11 +684,26 @@ input, textarea, select {
   margin-right: 2em;
 }
 
+.side-art-students-float {
+  background-image: url(asset_path('side_doodles.png', image));
+  height: 467px;
+  width: 109px;
+  float: left;
+}
+
+
 .side-art-parents {
   background-image: url(asset_path('side_art_parents.png', image));
   height: 561px;
   width: 122px;
   margin-left: 1em;
+}
+
+.side-art-parents-float {
+  background-image: url(asset_path('side_art_parents.png', image));
+  height: 561px;
+  width: 122px;
+  float: left;
 }
 
 .side-art-teachers {
@@ -1115,6 +1147,7 @@ footer {
 
 .bank-intro, .coming-soon-intro {
   position: absolute;
+  top: 0;
   p {
     font-size: 60px;
     color: #470BC1;
@@ -1554,6 +1587,7 @@ footer {
     width: 62%;
     display: inline-block;
     vertical-align: top;
+    overflow: hidden;
   }
   .secondary-content {
     width: 37%;
@@ -1717,4 +1751,8 @@ footer {
     background-color: #5cc5e8;
     color: #470BC1;
   }
+}
+
+.clear {
+  clear: both;
 }
