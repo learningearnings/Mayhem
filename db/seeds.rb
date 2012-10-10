@@ -334,7 +334,7 @@ if Rails.env.development? || Rails.env.production?
     host = '.mayhemstaging.lemirror.com'
   end
 
-  @store = Spree::Store.create(code: "le", name: "le", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
+  @store = Spree::Store.create(code: "le", name: "Learning Earnings Wholesale", default: true, email: "theteam@learningearnings.com", domains: "le#{host}#{port}")
 
   Rake::Task['db:load_dir'].reenable
   Rake::Task['db:load_dir'].invoke("samples")

@@ -245,7 +245,7 @@ class OldSchoolImporter
       pscl.owner = true
     end
     if !pscl.save
-      puts "Problem #{pscl.errors.messages} saving person school classroom link"
+      puts "Problem #{pscl.errors.messages} saving person school classroom link for #{person.id}-#{person.name} legacy-#{person.legacy_user_id} classroom = #{classroom.id}-#{classroom.name}"
       return false
     end
     return true

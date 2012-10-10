@@ -1549,6 +1549,11 @@ footer {
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
   box-shadow:         1px 2px 5px 1px #ccc;    
   
+  .full-content {
+    width: 99%;
+    display: inline-block;
+    vertical-align: top;
+  }
   .primary-content {
     width: 62%;
     display: inline-block;

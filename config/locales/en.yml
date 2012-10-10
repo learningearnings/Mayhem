@@ -3,7 +3,13 @@
 
 en:
   add_to_cart: "Buy this"
+  shopping_cart: "School Store Restocking Order"
+  sa_your_cart_is_empty: "You don't have a current restocking order"
+  sa_continue_shopping: "Shop for Rewards"
   only_logged_in_students_can_purchase: "Only logged in students can purchase from this store"
+  sa_restock_intro:  This is your school store restocking order.   Now Learning Earnings lets you pick the rewards for your school based
+                     on what motivates your students the most.   Click "Shop for Rewards" below to pick the rewards that are school and 
+                     age appropriate for your students.
   active_admin:
     dashboard: "LE Dashboard"
     dashboard_welcome:
