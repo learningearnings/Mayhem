@@ -20,16 +20,16 @@ namespace :import do
   desc 'import the legacy schools\' data'
   task :schools, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'
-    school = _school_in[:school_in] if !_school_in[:school_in].blank?
-    school = nil if _school_in[:school_in].blank?
-    puts "_school_in is #{_school_in} and school was #{school}"
+    schools = _school_in[:school_in].split('-') if !_school_in[:school_in].blank?
+    schools = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and schools was #{schools}"
     osi = OldSchoolImporter.new
     if Rails.env.development? && false
       puts "Development environment detected ---- Resetting..."
       osi.reset
     end
     puts "---> Importing Schools"
-    osi.importable_schools(school).all.each do |s|
+    osi.importable_schools(schools).each do |s|
       ActiveRecord::Base.transaction do
         ns = osi.import_school(s)
         next if ns.legacy_school_id == s.schoolID
