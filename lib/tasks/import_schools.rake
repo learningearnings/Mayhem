@@ -8,6 +8,15 @@ namespace :import do
     osi.reset
   end
 
+  desc 'Fixup MySQL data "problems"'
+  task :reset => :environment do
+    require 'importers/db_schools_importer'
+    osi = OldSchoolImporter.new
+    osi.fixup
+  end
+
+
+
   desc 'import the legacy schools\' data'
   task :schools, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'

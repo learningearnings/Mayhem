@@ -6,14 +6,6 @@ require_relative 'oldschema/require_all.rb'
 class OldSchoolImporter
   def initialize
     reset_school_cache
-    puts "Running some sql to fixup the MySQL db"
-    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
-    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
-    OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
-    OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
-    OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
-    OldReward.connection.execute("update tbl_rewards set partnerID = 0")
-    OldUser.connection.execute("update tbl_users set virtual_bal = 0")
     @non_display_reward_categories = [1000,1001,1002]
     @reward_types = [5 => 'reward',
                      2 => 'reward',
@@ -43,7 +35,16 @@ class OldSchoolImporter
     @school_points = 0
   end
 
-
+  def fixup
+    puts "Running some sql to fixup the MySQL db"
+    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100010'")
+    OldSchool.connection.execute("update tbl_users set usercreated = '20100701' where date(usercreated) = '20100011'")
+    OldReward.connection.execute("update tbl_rewards set rewardcategoryid = 12 where rewardid in (418,419)")
+    OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
+    OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
+    OldReward.connection.execute("update tbl_rewards set partnerID = 0")
+    OldUser.connection.execute("update tbl_users set virtual_bal = 0")
+  end
 
   def reset
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
