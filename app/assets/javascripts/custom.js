@@ -108,10 +108,13 @@ $(document).ready(function() {
   highlightNavigation('charities', 'charities')
   highlightNavigation('inbox',   'inbox');
   highlightNavigation('bank',    'bank');
+  highlightNavigation('classrooms',    'classrooms');
+  highlightNavigation('lounge',    'lounge');
   highlightNavigation('play',    'play');
   highlightNavigation('games',   'play');
   highlightNavigation('rewards', 'rewards');
-  highlightNavigation('restock', 'restock');
+  highlightNavigation('reports', 'reports');
+  highlightNavigation('store', 'restock');
   highlightNavigation('store',   'rewards');
   highlightNavigation('news',    'news');
   highlightNavigation('how_it_works', 'how-it-works');
