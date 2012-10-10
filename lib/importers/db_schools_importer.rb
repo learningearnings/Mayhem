@@ -49,7 +49,7 @@ class OldSchoolImporter
 
   def importable_schools school = nil
     if school
-      OldSchool.find(school)
+      OldSchool.where(:schoolID => school)
     else
       OldSchool.school_subset
     end

@@ -45,12 +45,12 @@ namespace :import do
 
   task :classrooms, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'
-    school = _school_in[:school_in] if !_school_in[:school_in].blank?
-    school = nil if _school_in[:school_in].blank?
-    puts "_school_in is #{_school_in} and school was #{school}"
+    schools = _school_in[:school_in].split('-') if !_school_in[:school_in].blank?
+    schools = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and schools was #{schools}"
     imported_purchases = imported_points = 0
     osi = OldSchoolImporter.new
-    osi.importable_schools(school).where('ad_profile > 19').all.each do |s|
+    osi.importable_schools(schools).where('ad_profile > 19').all.each do |s|
       ns = School.find_by_legacy_school_id(s.schoolID)
       puts "-------------------Classrooms for #{ns.name} #{ns.id}"
       if s && ns
@@ -65,12 +65,12 @@ namespace :import do
 
   task :transactions, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'
-    school = _school_in[:school_in] if !_school_in[:school_in].blank?
-    school = nil if _school_in[:school_in].blank?
-    puts "_school_in is #{_school_in} and school was #{school}"
+    schools = _school_in[:school_in].split('-') if !_school_in[:school_in].blank?
+    schools = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and schools was #{schools}"
     imported_purchases = imported_points = 0
     osi = OldSchoolImporter.new
-    osi.importable_schools(school).where('ad_profile > 19').all.each do |s|
+    osi.importable_schools(schools).where('ad_profile > 19').all.each do |s|
       ns = School.find_by_legacy_school_id(s.schoolID)
       if s && ns
         osi.reset_school_cache
