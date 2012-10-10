@@ -93,21 +93,11 @@ class OldSchoolImporter
 =end
   end
 
-  def importable_schools worker = nil
-    if Rails.env.development?
-      if worker.to_i == 1
-        OldSchool.school_subset1.order('schoolID asc')
-      elsif worker.to_i == 2
-        OldSchool.school_subset2.order('schoolID asc')
-      elsif worker.to_i == 3
-        OldSchool.school_subset3.order('schoolID asc')
-      elsif worker.to_i == 4
-        OldSchool.school_subset4.order('schoolID asc')
-      else
-        OldSchool.school_subset.order('schoolID asc')
-      end
+  def importable_schools school = nil
+    if school
+      OldSchool.where(:schoolID => school)
     else
-      OldSchool.order('schoolID asc')
+      OldSchool.school_subset
     end
   end
 
@@ -280,6 +270,7 @@ class OldSchoolImporter
     elapsed_time = end_time - start_time
     userspersec = (total_users / elapsed_time).round(2)
     puts "   --> #{classrooms} Classrooms #{total_users} Users Imported, #{total_errors} Errors  (#{elapsed_time} secs) #{userspersec} per sec"
+    return total_users
   end
   def add_person_to_classroom person, classroom, school
     return nil if !person || !classroom
@@ -408,7 +399,7 @@ class OldSchoolImporter
         puts "Unknown - unprocessed!!! #{op.to_yaml} "
       end
     end
-    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec                             \r" if new_student
+    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
     [imported_points,imported_purchases,imported_points_count, imported_purchases_count]
   end
 

@@ -9,18 +9,18 @@ namespace :import do
   end
 
   desc 'import the legacy schools\' data'
-  task :schools, [:worker] => :environment do |tsk, w|
+  task :schools, [:school_in] => :environment do |tsk, _school_in|
     require 'importers/db_schools_importer'
-    worker = w[:worker] if !w[:worker].blank?
-    worker = nil if w[:worker].blank?
-    puts "worker is #{worker} and w was #{w}"
+    school = _school_in[:school_in] if !_school_in[:school_in].blank?
+    school = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and school was #{school}"
     osi = OldSchoolImporter.new
     if Rails.env.development? && false
       puts "Development environment detected ---- Resetting..."
       osi.reset
     end
     puts "---> Importing Schools"
-    osi.importable_schools(worker).all.each do |s|
+    osi.importable_schools(school).all.each do |s|
       ActiveRecord::Base.transaction do
         ns = osi.import_school(s)
         next if ns.legacy_school_id == s.schoolID
@@ -32,20 +32,44 @@ namespace :import do
         s.save
       end
     end
+  end
 
+  task :classrooms, [:school_in] => :environment do |tsk, _school_in|
+    require 'importers/db_schools_importer'
+    school = _school_in[:school_in] if !_school_in[:school_in].blank?
+    school = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and school was #{school}"
     imported_purchases = imported_points = 0
-    osi.importable_schools(worker).all.each do |s|
+    osi = OldSchoolImporter.new
+    osi.importable_schools(school).where('ad_profile > 19').all.each do |s|
       ns = School.find_by_legacy_school_id(s.schoolID)
       puts "-------------------Classrooms for #{ns.name} #{ns.id}"
       if s && ns
         osi.reset_school_cache
         osi.import_classrooms(ns,s)
+      else
+        puts "Could not find old school for #{ns.name}"
+      end
+    end
+  end
+
+
+  task :transactions, [:school_in] => :environment do |tsk, _school_in|
+    require 'importers/db_schools_importer'
+    school = _school_in[:school_in] if !_school_in[:school_in].blank?
+    school = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and school was #{school}"
+    imported_purchases = imported_points = 0
+    osi = OldSchoolImporter.new
+    osi.importable_schools(school).where('ad_profile > 19').all.each do |s|
+      ns = School.find_by_legacy_school_id(s.schoolID)
+      if s && ns
+        osi.reset_school_cache
         rowcount = 0;
         rowspersec = 0;
         start_time = Time.now
         rowcount += osi.import_buck_batches(s,ns)
         s.old_users.each do |old_student|
-#          next if !OldPoint.exists?(:userID => old_student.userID)
           ActiveRecord::Base.transaction do
             points_and_rewards = osi.import_points(s,old_student,ns,rowspersec)
             imported_points = imported_points + points_and_rewards[0]
@@ -65,6 +89,13 @@ namespace :import do
       puts "   --> Imported #{imported_purchases} purchases for #{ns.name}"
       imported_purchases = imported_points = 0
     end
+  end
+
+  # run this after everything else
+  task :quantities => :environment do
+    osi = OldSchoolImporter.new
     osi.update_wholesale_quantities
   end
+
+
 end
