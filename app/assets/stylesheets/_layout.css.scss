@@ -47,7 +47,7 @@ span.log-in,
 span.join,
 .forgot-password,
 .bank-intro,
-.childish-button
+.awesome-button
 {
   font-family: 'sketch_rockwellregular';  
 }
@@ -1546,7 +1546,6 @@ footer {
 }
 
 .reward-content {
-  margin-left: 130px;
   
   .product-image {
     float: left;
@@ -1561,6 +1560,23 @@ footer {
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
     box-shadow:         1px 2px 5px 1px #ccc;    
   }
+
+}
+
+.add-to-cart {
+  input {
+    height: 2em;
+    width: 4em;
+  }
+}
+
+#main-image {
+  padding: .5em;
+  border: solid 1px #ccc;
+}
+
+#product-description {
+  font-size: 1.5em;
 }
 
 .games-image-container {
@@ -1787,4 +1803,16 @@ hr {
     p {
         font-size: 2.2em;
   }
+}
+
+.product-details {
+  padding-left: .5em;
+  a {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+}
+
+.pagination ul {
+  box-shadow: none;
 }
