@@ -3,13 +3,43 @@
 
 en:
   add_to_cart: "Buy this"
-  shopping_cart: "School Store Restocking Order"
+  shopping_cart: "School Store Restocking"
   sa_your_cart_is_empty: "You don't have a current restocking order"
   sa_continue_shopping: "Shop for Rewards"
   only_logged_in_students_can_purchase: "Only logged in students can purchase from this store"
-  sa_restock_intro:  This is your school store restocking order.   Now Learning Earnings lets you pick the rewards for your school based
+  school_store_is_for_students: "This is the School Store for %{school}.  Only logged in students from %{school} can purchase items from this store with their LE Credits"
+  sa_restock_intro:  This is your school store restocking page.   Now Learning Earnings lets you pick the rewards for your school based
                      on what motivates your students the most.   Click "Shop for Rewards" below to pick the rewards that are school and 
                      age appropriate for your students.
+  pending_shipments: "You have unshipped orders:"
+  time:
+    formats:
+      default: "%a, %e-%b %Y %I:%M %p"
+  date:
+    formats:
+      default: "%a, %e-%b %Y"
+  subtotal: "Yo - Subtotal"
+  restock:
+    index:
+      subtotal: Restock Subtotal
+      continue_shopping: Continue Restocking
+      checkout: Transmit this Order
+  lestore:
+    spree:
+      products:
+        index:
+          products:  Restock the LE store for %{school}
+          products_message: &scst1
+                            These are the items that you can purchase for your school store
+                            These items won't appear for students to purchaes until they're shipped
+                            to your school.  Only the items you purchase will appear for students
+                            to purchase with their LE Credits.
+  schoolstore:
+    spree:
+      products:
+        index:
+          products:  Stuff you can Buy!
+          products_message: Use your LE Credits to buy these things
   active_admin:
     dashboard: "LE Dashboard"
     dashboard_welcome:

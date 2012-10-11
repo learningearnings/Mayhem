@@ -60,6 +60,9 @@ Leror::Application.routes.draw do
     end
   end
 
+  match "/restock" => 'restock#index'
+
+
   resources :auctions
 
   post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"

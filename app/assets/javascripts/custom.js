@@ -1,5 +1,8 @@
 
 $(document).ready(function() {
+  var pathArray = window.location.hostname.split( '.' );
+  var current_subdomain = pathArray[0];
+  var already_selected = 0;
   $('.focus-on-me').focus();
   $(".intro").addClass("selected");
   $(".attention").addClass("selected");
@@ -96,14 +99,16 @@ $(document).ready(function() {
 	  $(".attention-teachers").css("display", "block");
 	});
 
-  function highlightNavigation(path_part, nav_selector){
-	  if(window.location.href.indexOf(path_part) > -1) {
-	    $('.home').removeClass('home-selected');
-	    $("." + nav_selector).toggleClass(nav_selector + "-selected");
-	  }
-	}
+  function highlightNavigation(path_part, nav_selector,subdomain){
+      if((subdomain != undefined && subdomain != current_subdomain) || already_selected) {
+          return;
+      }
+      if(window.location.href.indexOf(path_part) > -1) {
+	  $("." + nav_selector).toggleClass(nav_selector + "-selected");
+          already_selected = 1;
+      }
+  }
 	// Primary Nav Selected
-  highlightNavigation('',        'home');
   highlightNavigation('locker',  'locker');
   highlightNavigation('charities', 'charities')
   highlightNavigation('inbox',   'inbox');
@@ -112,9 +117,11 @@ $(document).ready(function() {
   highlightNavigation('games',   'play');
   highlightNavigation('rewards', 'rewards');
   highlightNavigation('restock', 'restock');
+  highlightNavigation('store',   'restock', 'le');
   highlightNavigation('store',   'rewards');
   highlightNavigation('news',    'news');
   highlightNavigation('how_it_works', 'how-it-works');
   highlightNavigation('testimonials', 'testimonials');
+  highlightNavigation('',        'home');
 });
 

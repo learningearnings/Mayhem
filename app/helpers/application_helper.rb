@@ -20,6 +20,21 @@ module ApplicationHelper
     School.find(session[:current_school_id])
   end
 
+  def current_school_name
+    school = nil
+    if session && session[:current_school_id] && current_user
+      school = School.find(session[:current_school_id])
+    end
+    if school.nil? && current_user
+      school = current_user.person.schools.first
+    end
+    if school.nil? && request.subdomain
+      school = School.find_by_store_subdomain(request.subdomain)
+    end
+    school.nil? ? "Unknown School" : school.name
+  end
+
+
   def buck_link(buck)
     link_to 'Redeem Buck', "/bank/redeem_bucks", buck
   end
@@ -31,6 +46,15 @@ module ApplicationHelper
   def image_processor
     ::Dragonfly[:images]
   end
+
+  def store_type
+    if request && request.subdomain == 'le'
+      'lestore'
+    else
+      'schoolstore'
+    end
+  end
+
 
   def render_reward_highlights products
     render 'shared/rewards_highlights', products: products

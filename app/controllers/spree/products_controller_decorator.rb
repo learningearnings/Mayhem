@@ -1,4 +1,5 @@
 Spree::ProductsController.class_eval do
+  before_filter :authenticate_user!
 
   def index
     params[:filters] = session[:filters]
