@@ -52,6 +52,22 @@ span.join,
   font-family: 'sketch_rockwellregular';  
 }
 
+h1 {
+  color: #25860B;
+}
+
+h2 {
+  color: #470BC1;
+}
+
+h3 {
+  color: #EA4E08;
+}
+
+h4 {
+ color: #08C;
+}
+
 html, body { height: 100%; }
 body {
     margin: 0;
@@ -468,6 +484,23 @@ input, textarea, select {
   color: #ea4e08;  
 }
 
+.nav.primary-nav .testimonials {
+  color: #B611B0;
+}
+
+.nav.primary-nav .testimonials:hover {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #B611B0;  
+}
+
+.testimonials-selected {
+  background-image: url(asset_path('how_it_works_selected.png', image));
+  background-repeat: no-repeat;
+  color: #B611B0;  
+}
+
+
 .nav.primary-nav .locker {
   color: #1f2870;
 }
@@ -635,10 +668,6 @@ input, textarea, select {
   color: #ff2204;
 }
 
-.nav.primary-nav .news {
-  color: #ff2204;
-}
-
 .nav.primary-nav .news:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
@@ -671,11 +700,26 @@ input, textarea, select {
   margin-right: 2em;
 }
 
+.side-art-students-float {
+  background-image: url(asset_path('side_doodles.png', image));
+  height: 467px;
+  width: 109px;
+  float: left;
+}
+
+
 .side-art-parents {
   background-image: url(asset_path('side_art_parents.png', image));
   height: 561px;
   width: 122px;
   margin-left: 1em;
+}
+
+.side-art-parents-float {
+  background-image: url(asset_path('side_art_parents.png', image));
+  height: 561px;
+  width: 122px;
+  float: left;
 }
 
 .side-art-teachers {
@@ -1119,6 +1163,7 @@ footer {
 
 .bank-intro, .coming-soon-intro {
   position: absolute;
+  top: 0;
   p {
     font-size: 60px;
     color: #470BC1;
@@ -1197,9 +1242,6 @@ footer {
   }
 }
 
-.bank_content {
-  
-}
 
 .bank-account {
   background-color: #fff;
@@ -1558,6 +1600,7 @@ footer {
     width: 62%;
     display: inline-block;
     vertical-align: top;
+    overflow: hidden;
   }
   .secondary-content {
     width: 37%;
@@ -1569,6 +1612,14 @@ footer {
   p {
     font-size: 1.5em;
   }
+  .bank_content {
+    p {
+      font-size: 1.8em;
+      line-height: 140%;
+    }
+
+  }
+  
 }
 
 .main-content-wrapper-no-bg {
@@ -1725,4 +1776,15 @@ footer {
 
 .currency {
     text-align: right;
+}
+
+hr {
+    margin: 0;
+    border-top: 1px solid #e1e1e1;
+}
+
+.bank-content {
+    p {
+        font-size: 2.2em;
+  }
 }
