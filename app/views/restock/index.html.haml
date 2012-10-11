@@ -7,7 +7,7 @@
       %h1= t(:shopping_cart)
       %p= t(:sa_restock_intro)
       = render :partial => "pending_shipments", :object => @pending_shipments if @pending_shipments.count > 0
-      - if @order.line_items.empty?
+      - if @order.nil? || @order.line_items.empty?
         %div{"data-hook" => "empty_cart"}
           %p= t(:sa_your_cart_is_empty)
           %p= link_to t(:sa_continue_shopping), spree.root_path, :class => 'button continue'
