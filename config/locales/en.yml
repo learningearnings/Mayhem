@@ -11,7 +11,8 @@ en:
   sa_restock_intro:  This is your school store restocking page.   Now Learning Earnings lets you pick the rewards for your school based
                      on what motivates your students the most.   Click "Shop for Rewards" below to pick the rewards that are school and 
                      age appropriate for your students.
-  pending_shipments: "You have unshipped orders:"
+  pending_shipments: "You have Pending Shipments:"
+  transmit_notice: "Learning Earnings has been notified of your order.   You may still update this order until the order moves into the \"Pending Shipments\" list above"
   time:
     formats:
       default: "%a, %e-%b %Y %I:%M %p"
@@ -31,7 +32,7 @@ en:
           products:  Restock the LE store for %{school}
           products_message: &scst1
                             These are the items that you can purchase for your school store
-                            These items won't appear for students to purchaes until they're shipped
+                            These items won't appear for students to purchase until they're shipped
                             to your school.  Only the items you purchase will appear for students
                             to purchase with their LE Credits.
   schoolstore:

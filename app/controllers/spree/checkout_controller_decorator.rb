@@ -1,5 +1,5 @@
 Spree::CheckoutController.class_eval do
-
+  before_filter :we_dont_ever_checkout
 
 
   def before_payment
@@ -41,14 +41,16 @@ Spree::CheckoutController.class_eval do
   end
 
 
-  def before_address
+  def xx_before_address
     @order.next
     @person = current_person
     @school = current_school
     # Address
+
     shipping_address = {}
     shipping_address[:firstname] = @person.first_name
     shipping_address[:lastname] = @person.last_name
+    shipping_address[:company] = @school.name
     shipping_address[:address1] = @school.addresses.first.line1
     shipping_address[:address2] = @school.addresses.first.line2
     shipping_address[:city] = @school.addresses.first.city
@@ -84,7 +86,12 @@ Spree::CheckoutController.class_eval do
     @order.next
     @order.save
     @order.next
-    redirect_to Spree::Core::Engine.routes.url_helpers.cart_url(host: request.host,port: request.port,subdomain: 'le')
+    redirect_to main_app.restock_url
+  end
+
+  def we_dont_ever_checkout
+    flash[:notice] = t('transmit_notice')
+    redirect_to main_app.restock_path
   end
 
   private

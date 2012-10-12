@@ -15,7 +15,13 @@
       %td= order.payment_state
       %td= order.line_items.count
       %td= order.email
-      %td= link_to("Ship", "#", :id => "#{order.id}", :class => "ship")
+      %td
+        .btn-group
+          = link_to("Print", "#", :id => "#{order.id}", :class => "btn print")
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = link_to("Edit", "#", :id => "#{order.id}", :class => "btn edit")
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = link_to("Ship", "#", :id => "#{order.id}", :class => "btn ship")
 
 #shipping_options
   = form_tag (admin_le_ship_order_path) do

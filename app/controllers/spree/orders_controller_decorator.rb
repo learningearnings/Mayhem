@@ -1,4 +1,3 @@
-
 # See doc/SpreeCheckoutFakery.md to see details on what's going on here.
 Spree::OrdersController.class_eval do
   # Adds a new item to the order (creating a new order if none already exists)
@@ -31,13 +30,19 @@ Spree::OrdersController.class_eval do
     # --- Start our customization ---
 
     if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
-      respond_with(@order) { |format| format.html { redirect_to cart_path } }
+      respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
     else
       OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
       flash[:notice] = "Bought that stuff..."
       redirect_to "/"
     end
   end
+
+
+  def after_save_new_order
+    @current_order.special_instructions = {school_id: current_school.id}.to_yaml
+  end
+
 
   private
   def current_person
