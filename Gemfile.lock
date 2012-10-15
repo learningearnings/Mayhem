@@ -111,7 +111,7 @@ GEM
       sass (>= 3.1)
     builder (3.0.3)
     cancan (1.6.7)
-    capistrano (2.13.4)
+    capistrano (2.13.3)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -480,7 +480,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   cancan
-  capistrano
+  capistrano (= 2.13.3)
   capybara
   chosen-rails
   ckeditor (= 3.7.3)
