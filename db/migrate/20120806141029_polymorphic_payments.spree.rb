@@ -13,17 +13,17 @@ class PolymorphicPayments < ActiveRecord::Migration
     end
     execute "UPDATE payments SET payable_type = 'Order'"
 
-    Spree::Creditcard.table_name = 'creditcards'
+    Spree::CreditCard.table_name = 'creditcards'
 
-    Spree::Creditcard.all.each do |creditcard|
+    Spree::CreditCard.all.each do |creditcard|
       if checkout = Checkout.find_by_id(creditcard.checkout_id) and checkout.order
         if payment = checkout.order.payments.first
-          execute "UPDATE payments SET source_type = 'Creditcard', source_id = #{creditcard.id} WHERE id = #{payment.id}"
+          execute "UPDATE payments SET source_type = 'Spree::CreditCard', source_id = #{creditcard.id} WHERE id = #{payment.id}"
         end
       end
     end
 
-    Spree::Creditcard.table_name = 'spree_creditcards'
+    Spree::CreditCard.table_name = 'spree_creditcards'
 
     remove_column :creditcards, :checkout_id
   end
