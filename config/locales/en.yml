@@ -19,12 +19,13 @@ en:
   date:
     formats:
       default: "%a, %e-%b %Y"
-  subtotal: "Yo - Subtotal"
+  subtotal: "Subtotal"
   restock:
     index:
       subtotal: Restock Subtotal
       continue_shopping: Continue Restocking
-      checkout: Transmit this Order
+      transmit: Transmit this Order
+      transmit_again: Re-transmit this order
   lestore:
     spree:
       products:

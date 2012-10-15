@@ -1,0 +1,25 @@
+- content_for :head do
+  = stylesheet_link_tag 'store/admin/print', :media => 'print'
+
+%h2= "Order # #{@order.number}"
+.adr
+  %h4= t(:ship_address)
+  %div= @address.company
+  %div= "c/o #{@address.firstname} #{@address.lastname}"
+  %div= @address.address1
+  %div= @address.address2 if @address.address2
+  %div= "#{@address.city}, #{@address.state_text}, #{@address.zipcode}"
+%hr
+%table{:class => 'table table-condensed'}
+  %thead
+    %tr
+      %th Product ID
+      %th Title
+      %th Items
+      %th Price
+    - @order.line_items.each do |li|
+      %tr
+        %td= li.product.id
+        %td= li.product.name
+        %td= li.quantity
+        %td= li.price

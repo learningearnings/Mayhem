@@ -25,7 +25,8 @@
               .links.columns.sixteen.alpha.omega{"data-hook" => "cart_buttons"}
                 = button_tag :class => 'primary', :id => 'update-button' do
                   = t(:update)
-                = link_to t('.checkout'), spree.checkout_path, :class => 'button checkout primary', :id => 'checkout-link'
+                = link_to t('.transmit'), spree.checkout_path(:state => 'transmitted'), :class => 'button checkout primary', :id => 'checkout-link' if @order.state == 'cart'
+                = link_to t('.transmit_again'), spree.checkout_path(:state => 'transmitted'), :class => 'button checkout primary', :id => 'checkout-link' if @order.state == 'transmitted'
         #empty-cart{"data-hook" => ""}
           = form_tag spree.empty_cart_path, :method => :put do
             %p#clear_cart_link{"data-hook" => ""}

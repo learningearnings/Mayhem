@@ -39,6 +39,26 @@ Spree::OrdersController.class_eval do
   end
 
 
+  def update
+    @order = current_order
+    if @order.update_attributes(params[:order])
+      @order.line_items = @order.line_items.select {|li| li.quantity > 0 }
+      fire_event('spree.order.contents_changed')
+      flash[:notice] = "Restock order updated"
+    else
+      flash[:notice] = "Restock NOT order updated"
+    end
+    respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
+  end
+
+
+  def new
+    @order = Order.create
+    respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
+  end
+
+
+
   def after_save_new_order
     @current_order.special_instructions = {school_id: current_school.id}.to_yaml
   end
