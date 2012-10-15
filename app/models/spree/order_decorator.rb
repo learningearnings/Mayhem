@@ -1,5 +1,19 @@
 Spree::Order.class_eval do
 
+  def restock_items!
+    line_items.each do |line_item|
+      Spree::InventoryUnit.decrease(self, line_item.variant, line_item.quantity)
+    end
+  end
+
+
+  def unstock_items!
+    line_items.each do |line_item|
+      Spree::InventoryUnit.increase(self, line_item.variant, line_item.quantity)
+    end
+  end
+
+
 checkout_flow do
     go_to_state :transmitted
     go_to_state :printed

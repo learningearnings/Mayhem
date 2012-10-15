@@ -19,6 +19,6 @@
             .product-details
               = link_to truncate("#{product.name}", :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name
               .price.selling{:itemprop => "price"}= number_to_currency product.price
-              .quantity{:itemprop => "count_on_hand"}= product.count_on_hand.to_s + " available"
+              .quantity{:itemprop => "on_hand"}= product.on_hand.to_s + " available"
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products

@@ -85,6 +85,7 @@ class OneClickSpreeProductPurchaseCommand
   def mark_as_shipped
     @order.create_shipment!
     @shipment = @order.shipment
+#    @order.restock_items!  #shipment below will pull them out again
     @order.save
     while @order.state != 'shipped'
       current_status = @order.state
@@ -101,6 +102,7 @@ class OneClickSpreeProductPurchaseCommand
 
   def purchase
     # Payment
+    @order.restock_items!   #shipping will pull them out again
     payment_source_attributes = {}
     payment_source_attributes["number"] = @person.checking_account_name
 
