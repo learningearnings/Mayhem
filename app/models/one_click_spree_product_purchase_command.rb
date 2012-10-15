@@ -51,12 +51,22 @@ class OneClickSpreeProductPurchaseCommand
   end
 
   def skip_irrelevant_spree_order_steps
-    @order.next
     # Address
+    @deliverer = Teacher.find(@deliverer_id)
+    @deliverer = @person unless @deliverer
+    addr = Spree::Address.where(:firstname => @deliverer.name)
+      .where(:lastname => @person.name)
+      .where(:company => @school.name)
+      .where(:address1 => @school.addresses.first.line1)
+      .where(:city => @school.addresses.first.city).first
+    if addr
+      @order.ship_address = addr
+      @order.bill_address = addr
+    else
       shipping_address = {}
-      shipping_address[:firstname] = @person.first_name
-      shipping_address[:lastname] = @person.last_name
-    if @order.products.first.is_wholesale_reward? || @order.products.first.is_global_reward?
+      shipping_address[:company] = @school.name
+      shipping_address[:firstname] = @deliverer.name
+      shipping_address[:lastname] = @person.name
       shipping_address[:address1] = @school.addresses.first.line1
       shipping_address[:address2] = @school.addresses.first.line2
       shipping_address[:city] = @school.addresses.first.city
@@ -64,40 +74,36 @@ class OneClickSpreeProductPurchaseCommand
       shipping_address[:zipcode] = @school.addresses.first.zip
       shipping_address[:phone] = @school.school_phone
       shipping_address[:country] = Spree::Country.find_by_iso "US"
-    else
-      shipping_address[:address1] = "6238 Canterbury Road"
-      shipping_address[:city] = "Pinson"
-      shipping_address[:state_name] = "Alabama"
-      shipping_address[:zipcode] = "35126"
-      shipping_address[:phone] = "2052153957"
-      shipping_address[:country] = Spree::Country.find_by_iso "US"
+      @order.ship_address_attributes = shipping_address
+      @order.bill_address_attributes = shipping_address
     end
-    @order.ship_address_attributes = shipping_address
-    @order.bill_address_attributes = shipping_address
-    @order.save
-    @order.next
 
     # Delivery
-    @order.shipping_method_id = Spree::ShippingMethod.first.id
-    @order.save
-    @order.next
+    @order.shipping_method_id = @order.line_items.first.product.shipping_category.shipping_methods.first
   end
 
   def mark_as_shipped
+    @order.create_shipment!
     @shipment = @order.shipment
+    @order.save
+    while @order.state != 'shipped'
+      current_status = @order.state
+      @order.save
+      @order.next
+      break if @order.state == current_status
+    end
     @shipment.ready
     @shipment.reload
     @shipment.ship
+    @shipment.save
+    @order.save
   end
 
   def purchase
     # Payment
     payment_source_attributes = {}
-    if @person.is_a? SchoolAdmin
-      payment_source_attributes["number"] = @school.store_account_name
-    else
-      payment_source_attributes["number"] = @person.checking_account_name
-    end
+    payment_source_attributes["number"] = @person.checking_account_name
+
     payment_source_attributes["month"] = "1"
     payment_source_attributes["year"] = "2100"
     payment_source_attributes["verification_value"] = "111"
@@ -111,9 +117,12 @@ class OneClickSpreeProductPurchaseCommand
     }
     payment = Spree::Payment.new(payment_params, without_protection: true)
     @order.payments = [payment]
+    while @order.state != 'transmitted'
+      current_status = @order.state
+      @order.save
+      @order.next
+      break if @order.state == current_status
+    end
     @order.save
-
-    # Trigger the purchase
-    @order.next
   end
 end
