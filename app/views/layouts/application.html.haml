@@ -6,10 +6,17 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body
-    .container
-      .row
+    
+    .header
+      
+    .container-940
+      .head
         = render "layouts/head"
-      .row
-        = render "layouts/content_container"
-      .row
-        = render "layouts/footer"
+      = render "layouts/content_container"
+      = render "layouts/footer"
+          
+    .container-1170
+      .content-container
+        .side-art
+          .side-art-students
+      

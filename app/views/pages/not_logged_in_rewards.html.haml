@@ -1,18 +1,14 @@
-.content-container
-  .side-art
-    .side-art-students
-  .main-content-wrapper-no-bg
-    .primary-content
-      .bacon
-      .corkboard
-      .rewards-highlights-small
-      .reward-of-the-week
-      .rewards-intro
-      .nav-container-corkboard
-        %ul.stickies-nav
-          %li
-            %span= link_to "", '#', class: 'students-stickie stickies_nav-students_green_nav_stickie active'
-          %li
-            %span= link_to "", parent_page_path("not_logged_in_rewards"), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
-          %li
-            %span= link_to "", teacher_page_path("not_logged_in_rewards"), class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie'
+.bacon
+.corkboard
+  .rewards-intro
+.rewards-highlights-small
+.reward-of-the-week
+
+.nav-container-corkboard
+  %ul.stickies-nav
+    %li
+      %span= link_to "", '#', class: 'students-stickie stickies_nav-students_green_nav_stickie active'
+    %li
+      %span= link_to "", parent_page_path("not_logged_in_rewards"), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
+    %li
+      %span= link_to "", teacher_page_path("not_logged_in_rewards"), class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie'

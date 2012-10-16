@@ -47,6 +47,7 @@ span.log-in,
 span.join,
 .forgot-password,
 .bank-intro,
+.primary-nav
 .awesome-button
 {
   font-family: 'sketch_rockwellregular';  
@@ -74,41 +75,31 @@ body {
     padding: 0;
     height: 100%;
     min-width: 960px;
-    
-	  /* gradients - second red border, first red border, top white space, blue lines */
-	  
-	  background-image:  -webkit-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)),                                   -webkit-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -webkit-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -webkit-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-
-   background-image:  -moz-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -moz-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -moz-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -moz-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-   
-   background-image:  -ms-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -ms-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -ms-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -ms-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-
-   background-image:  -o-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -o-linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), -o-linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), -o-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-    
-   background-image:  linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), linear-gradient(left, rgba(255,85,91, .0), rgba(255,85,91, .0)), linear-gradient(top, white 0px, white 130px, rgba(255,255,255,0) 70px), repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-    
-    background-size: 1px, 2px, auto, auto 31px;
-    background-repeat: repeat-y, repeat-y, no-repeat, repeat;
-    background-position: 87.1% 0px, 12.9% 0px, 0px 0px, 0px 0px;
+    background-image: url(asset_path('notebook_bg_lines.png', image));
 }
 
-.container {
-    /* gradients - second red border, first red border, top white space, blue lines */
-	  
-	  background-image:  -webkit-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)),                                   -webkit-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -webkit-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -webkit-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+.container-full {
+  height: 100%;
+}
 
-  background-image:  -moz-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -moz-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -moz-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -moz-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-  
-  background-image:  -ms-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -ms-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -ms-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -ms-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
+.container-1170 {
+  width: 1170px;
+  margin: 1em auto 0 auto;
+  padding: 3em 0 0 0;
+}
 
-  background-image:  -o-linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), -o-linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), -o-linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), -o-repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-   
-  background-image:  linear-gradient(left, rgba(255,85,91, .2), rgba(255,85,91, .2)), linear-gradient(left, rgba(255,85,91, .3), rgba(255,85,91, .3)), linear-gradient(top, white 0px, white 140px, rgba(255,255,255,0) 70px), repeating-linear-gradient(white 0px, white 30px, #A6D8FF 31px, white 20px);
-   
-   background-size: 1px, 2px, auto, auto 31px;
-   background-repeat: repeat-y, repeat-y, no-repeat, repeat;
-   background-position: 100% 0px, 120px 0px, 0px 0px, 0px 0px;
-	z-index: 0;
+.container-940 {
+  width: 940px;
+  border-left: solid 1px pink;
+  border-right: solid 1px pink;
+  min-height: 1000px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -470px;
+}
+
+.notebook-vertical-rule {
 }
 
 input, textarea, select {
@@ -116,7 +107,12 @@ input, textarea, select {
 }
 
 .head {
-  position: relative;
+  width: 940px;
+}
+
+.header {
+  height: 140px;  
+  background-color: #fff;
 }
 
 .content-section {
@@ -125,12 +121,20 @@ input, textarea, select {
   min-height: 800px;
 }
 
+.content-940 {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 3em 0 0 0;
+  min-height: 650px;
+}
+
 .logo {
   background-image: url(asset_path('common/le_logo.png', image));
   background-repeat: no-repeat;
-  width: 140px;
-  margin: 20px 0 0 108px;
-  }
+  margin: 8px 0 0 -15px;
+  float: left;
+}
   
 .logo-link {
   display: inline-block;
@@ -138,10 +142,7 @@ input, textarea, select {
   height: 133px;
 }
 .supplemental {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 140px;
+  float: right;
   width: 700px;
   .join-links {
     list-style-type: none;
@@ -270,16 +271,29 @@ input, textarea, select {
 
 .custom-nav-bar {
   position: relative;
-  top: -33px;
+  top: 20px;
   float: right;
+  .primary-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+      li {
+        display: inline;
+        a {
+          text-decoration: none;
+          padding: 15px;
+          font-size: 1.7em;
+          font-family: 'sketch_rockwellregular';  
+        }
+      }
+  }
 }
+
 
 .nav-container, .nav-container-corkboard {
   position: absolute;
   top: 340px;
-  left: 460px;
-  text-align: right;
-  width: 560px;
+  left: 400px;
     .stickies-nav {
       list-style-type: none;
       margin: 0;
@@ -289,24 +303,28 @@ input, textarea, select {
     }
 }
 
+.nav-container {
+  top: 380px;
+  left: 500px;
+}
+
 .stickies-nav li a:active {
   background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));  
 }
 
-.nav-container-corkboard {
-  top: 310px;
-  left: 310px;
-}
 
-.content-section .how-nav {
+.content-940 .how-nav {
   list-style-type: none;
   margin: 0;
   position: absolute;
-  top: 300px;
-  left: 500px;
+  top: 340px;
+  left: 320px;
   li {
     display: inline;
     margin: 0 12px;
+    a {
+      font-family: 'sketch_rockwellregular';
+    }
   }
 }
 
@@ -323,52 +341,57 @@ input, textarea, select {
 .content-section .how-nav li span a:active {
   color: #f05c1a;    
 }
+
+.slides {
+  top: 100px;
+  left: 280px;
+}
   
 .intro-slide {
   background-image: url(asset_path('how_it_works_slide1.png', image));  
   position: absolute;
-  top: 50px;
-  left: 480px;
+  top: 100px;
+  left: 280px;
   height: 232px;
   width: 522px;
 }
 .register-slide {
   background-image: url(asset_path('how_it_works_slide2.png', image));  
   position: absolute;
-  top: 50px;
-  left: 480px;
+  top: 100px;
+  left: 280px;
   height: 232px;
   width: 484px;  
 }
 .earn-slide {
   background-image: url(asset_path('how_it_works_slide3.png', image));  
   position: absolute;
-  top: 40px;
-  left: 480px;
+  top: 90px;
+  left: 280px;
   height: 245px;
   width: 563px;   
 }
 .enter-slide {
   background-image: url(asset_path('how_it_works_slide4.png', image));  
   position: absolute;
-  top: 40px;
-  left: 480px;
+  top: 90px;
+  left: 280px;
   height: 238px;
   width: 498px;     
 }
 .buy-slide {
   background-image: url(asset_path('how_it_works_slide5.png', image));  
   position: absolute;
-  top: 40px;
-  left: 480px;
+  top: 90px;
+  left: 280px;
   height: 250px;
   width: 503px;     
 }
 .receive-slide {
   background-image: url(asset_path('how_it_works_slide6.png', image));  
   position: absolute;
-  top: 40px;
-  left: 480px;
+  top: 90px;
+  left: 280px;
   height: 227px;
   width: 554px;      
 }
@@ -434,14 +457,12 @@ input, textarea, select {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
-  font-size: 1.8em;
 }
 
 .navbar .nav li a {
-  padding: .5em 1.3em 1.3em 1em;
-
+  padding: 1.3em 1.3em 1.7em 1em;
+  font-size: 13px;
 }
-
 
 
 .navbar .nav {
@@ -456,7 +477,7 @@ input, textarea, select {
   color: #25860b;
 }
 
-.nav.primary-nav .home:hover {
+.primary-nav .home:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #25860b;
@@ -468,11 +489,11 @@ input, textarea, select {
   color: #25860b;
 }
 
-.nav.primary-nav .how-it-works {
+.primary-nav .how-it-works {
   color: #ea4e08;
 }
 
-.nav.primary-nav .how-it-works:hover {
+.primary-nav .how-it-works:hover {
   background-image: url(asset_path('how_it_works_selected.png', image));
   background-repeat: no-repeat;
   color: #ea4e08;  
@@ -484,11 +505,11 @@ input, textarea, select {
   color: #ea4e08;  
 }
 
-.nav.primary-nav .testimonials {
+.primary-nav .testimonials {
   color: #B611B0;
 }
 
-.nav.primary-nav .testimonials:hover {
+.primary-nav .testimonials:hover {
   background-image: url(asset_path('how_it_works_selected.png', image));
   background-repeat: no-repeat;
   color: #B611B0;  
@@ -500,12 +521,11 @@ input, textarea, select {
   color: #B611B0;  
 }
 
-
-.nav.primary-nav .locker {
+.primary-nav .locker {
   color: #1f2870;
 }
 
-.nav.primary-nav .locker:hover {
+.primary-nav .locker:hover {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #1f2870;
@@ -517,28 +537,27 @@ input, textarea, select {
   color: #1f2870;
 }
 
-
-.nav.primary-nav .inbox {
+.primary-nav .inbox {
   color: #ff2204;
 }
 
-.nav.primary-nav .inbox:hover {
-  background-image: url(asset_path('locker_selected.png', image));
+.primary-nav .inbox:hover {
+  background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #ff2204;
 }
 
 .inbox-selected {
-  background-image: url(asset_path('locker_selected.png', image));
+  background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #ff2204;
 }
 
-.nav.primary-nav .restock {
+.primary-nav .restock {
   color: #EB731C
 }
 
-.nav.primary-nav .restock:hover {
+.primary-nav .restock:hover {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C
@@ -550,12 +569,11 @@ input, textarea, select {
   color: #EB731C
 }
 
-
-.nav.primary-nav .bank {
+.primary-nav .bank {
   color: #470bc1;
 }
 
-.nav.primary-nav .bank:hover {
+.primary-nav .bank:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #470bc1;  
@@ -567,11 +585,11 @@ input, textarea, select {
   color: #470bc1;  
 }
 
-.nav.primary-nav .play {
+.primary-nav .play {
   color: #eb731c;
 }
 
-.nav.primary-nav .play:hover {
+.primary-nav .play:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #eb731c;  
@@ -583,11 +601,11 @@ input, textarea, select {
   color: #eb731c;  
 }
 
-.nav.primary-nav .charities {
+.primary-nav .charities {
   color: #470bc1;
 }
 
-.nav.primary-nav .charities:hover {
+.primary-nav .charities:hover {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
   color: #b611b0;  
@@ -599,27 +617,27 @@ input, textarea, select {
   color: #b611b0;  
 }
 
-.nav.primary-nav .rewards {
+.primary-nav .rewards {
   color: #b611b0;
 }
 
-.nav.primary-nav .rewards:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+.primary-nav .rewards:hover {
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #b611b0;  
 }
 
 .rewards-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #b611b0;  
 }
 
-.nav.primary-nav .reports {
+.primary-nav .reports {
   color: #470BC1;
 }
 
-.nav.primary-nav .reports:hover {
+.primary-nav .reports:hover {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
   color: #470BC1;  
@@ -631,11 +649,11 @@ input, textarea, select {
   color: #470BC1; 
 }
 
-.nav.primary-nav .classrooms {
+.primary-nav .classrooms {
   color: #EA4E08;
 }
 
-.nav.primary-nav .classrooms:hover {
+.primary-nav .classrooms:hover {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08;  
@@ -648,11 +666,11 @@ input, textarea, select {
 }
 
 
-.nav.primary-nav .lounge {
+.primary-nav .lounge {
   color: #EB731C;
 }
 
-.nav.primary-nav .lounge:hover {
+.primary-nav .lounge:hover {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C;  
@@ -664,11 +682,11 @@ input, textarea, select {
   color: #EB731C; 
 }
 
-.nav.primary-nav .news {
+.primary-nav .news {
   color: #ff2204;
 }
 
-.nav.primary-nav .news:hover {
+.primary-nav .news:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #ff2204;  
@@ -734,10 +752,10 @@ input, textarea, select {
   background-image: url(asset_path('sir_bacon_francis_shadows.png', image));
   width: 358px;
   height: 415px;
-  position: absolute;
-  top: 30px;
-  left: 90px;
-  z-index: 15;
+  float: left;
+  margin-left: -80px;
+  position: relative;
+  z-index: 5;
  }
  
 .bacon-small {
@@ -754,9 +772,9 @@ input, textarea, select {
   background-image: url(asset_path('pig_smiling_intro.png', image));
   width: 275px;
   height: 344px;
-  position: absolute;
-  top: 30px;
-  left: 160px;
+  position: relative;
+  top: 140px;
+  float: left;
   z-index: 15;
 }
 
@@ -764,18 +782,17 @@ input, textarea, select {
   background-image: url(asset_path('whiteboard_with_shadows.png', image));
   height: 416px;
   width: 776px;
-  position: absolute;
-  top: 0;
-  left: 330px;
+  margin-left: 130px;
+  position: relative
 }
 
 .corkboard {
   background-image: url(asset_path('corkboard_shadows.png', image));
   height: 384px;
   width: 621px;
-  position: absolute;
+  position: relative;
   top: 0;
-  left: 310px;
+  left: 140px;
 }
 
 .messaging-inbox {
@@ -783,8 +800,8 @@ input, textarea, select {
   height: 241px;
   width: 364px;  
   position: absolute;
-  top: 50px;
-  left: 490px;
+  top: 30px;
+  left: 180px;
 }
 
 .teachers-inbox-cta {
@@ -792,8 +809,8 @@ input, textarea, select {
   height: 185px;
   width: 180px;
   position: absolute;
-  top: 200px;
-  left: 930px;
+  top: 307px;
+  left: 730px;
 }
 
 .parents-inbox-cta {
@@ -801,8 +818,8 @@ input, textarea, select {
   height: 185px;
   width: 180px;
   position: absolute;
-  top: 0;
-  left: 945px;  
+  top: 325px;
+  left: 545px;  
 }
 
 .inbox-screenshot {
@@ -810,8 +827,8 @@ input, textarea, select {
   height: 217px;
   width: 287px;
   position: absolute;
-  top: 300px;
-  left: 565px;   
+  top: 320px;
+  left: 275px;   
 }
 
 .product-image-bursts {
@@ -819,8 +836,9 @@ input, textarea, select {
   height: 293px;
   width: 290px;
   position: absolute;
-  top: 30px;
-  left: 465px;
+  top: 75px;
+  left: 250px;
+  z-index: 0;
 }
 
 .kids-credits-cta {
@@ -828,8 +846,8 @@ input, textarea, select {
   height: 200px;
   width: 304px;
   position: absolute;
-  top: 30px;
-  left: 760px;
+  top: 70px;
+  left: 550px;
 }
 
 .kids-image {
@@ -838,7 +856,7 @@ input, textarea, select {
   width: 254px;
   position: absolute;
   top: 50px;
-  left: 465px;
+  left: 130px;
 }
 
 .parents-copy {
@@ -847,7 +865,7 @@ input, textarea, select {
   width: 340px;
   position: absolute;
   top: 50px;
-  left: 720px;
+  left: 385px;
 }
 
 .teachers-copy {
@@ -856,7 +874,7 @@ input, textarea, select {
   width: 325px;
   position: absolute;
   top: 50px;
-  left: 720px;
+  left: 385px;
 }
 
 .hands-image {
@@ -865,7 +883,7 @@ input, textarea, select {
   width: 276px;
   position: absolute;
   top: 50px;
-  left: 465px;
+  left: 120px;
 }
 
 
@@ -874,8 +892,8 @@ input, textarea, select {
   height: 59px;
   width: 55px;
   position: absolute;
-  top: 215px;
-  left: 885px;
+  top: 275px;
+  left: 675px;
 }
 
 .sir-francis-bacon {
@@ -883,17 +901,16 @@ input, textarea, select {
   height: 77px;
   width: 276px;
   position: absolute;
-  top: 390px;
-  left: 205px;
+  top: 420px;
 }
 
 .sir-francis-bacon-how-it-works-teachers {
   background-image: url(asset_path('bacon_francis_how_it_works_teachers.png', image));
   height: 351px;
   width: 227px;
-  position: absolute;
-  top: 140px;
-  left: 215px;
+  position: relative;
+  float: left;
+  top: 130px;
 }
 
 .intro-text {
@@ -901,8 +918,8 @@ input, textarea, select {
   height: 113px;
   width: 212px;
   position: absolute;
-  top: 8px;
-  left: 205px;
+  top: 35px;
+  left: 0;
 }
 
 .join-now-how-it-works-teachers {
@@ -928,7 +945,7 @@ input, textarea, select {
   height: 255px;
   width: 465px;
   top: 40px;
-  left: 480px;
+  left: 160px;
   position: absolute;
 }
 
@@ -937,7 +954,7 @@ input, textarea, select {
   height: 268px;
   width: 440px;
   top: 30px;
-  left: 500px;
+  left: 160px;
   position: absolute;
 }
 
@@ -946,7 +963,7 @@ input, textarea, select {
   height: 268px;
   width: 398px;
   top: 30px;
-  left: 500px;
+  left: 160px;
   position: absolute;
 }
 
@@ -955,7 +972,7 @@ input, textarea, select {
   height: 268px;
   width: 428px;
   top: 30px;
-  left: 500px;
+  left: 160px;
   position: absolute;
 }
 
@@ -964,7 +981,7 @@ input, textarea, select {
   height: 232px;
   width: 450px;
   top: 30px;
-  left: 500px;
+  left: 160px;
   position: absolute;
 }
 
@@ -991,9 +1008,10 @@ input, textarea, select {
   background-image: url(asset_path('picaso_pig.png', image));
   width: 164px;
   height: 168px;
-  position: absolute;
+  position: relative;
+  float: left;
   top: 0;
-  left: 130px;
+  left: 10px;
 }
 
 .locker-intro {
@@ -1002,14 +1020,14 @@ input, textarea, select {
   height: 356px;
   position: absolute;
   top: 160px;
-  left: 300px;
+  left: 130px;
 }
 
 .locker-desc {
   position: absolute;
-  top: 8px;
+  top: 20px;
   width: 600px;
-  left: 300px;
+  left: 200px;
     h2 {
       color: #1f2870;
     }
@@ -1018,8 +1036,8 @@ input, textarea, select {
 .rewards-highlights-small {
   background-image: url(asset_path('reward_highlights_yellow_notepaper_pin.png', image));
   position: absolute;
-  top: 0;
-  left: 940px;
+  top: 60px;
+  left: 740px;
   height: 173px;
   width: 190px;
 }
@@ -1027,8 +1045,8 @@ input, textarea, select {
 .reward-of-the-week {
   background-image: url(asset_path('reward_of_the_week_pig.png', image));
   position: absolute;
-  top: 200px;
-  left: 940px;
+  top: 240px;
+  left: 740px;
   height: 205px;
   width: 190px;  
 }
@@ -1037,7 +1055,7 @@ input, textarea, select {
   background-image: url(asset_path('rewards_intro.png', image));
   position: absolute;
   top: 50px;
-  left: 490px;
+  left: 160px;
   height: 241px;
   width: 361px;
 }
@@ -1048,7 +1066,7 @@ input, textarea, select {
   width: 400px;
   height: 280px;
   top: 25px;
-  left: 460px;
+  left: 160px;
   
 }
 
@@ -1095,7 +1113,8 @@ input, textarea, select {
   p {
     font-size: 60px;
     color: #f05c1a;
-    margin: 60px 0 0 500px;
+    margin: 60px 0 0 220px;
+    font-family: 'sketch_rockwellregular';
   }
 }
 
@@ -1108,32 +1127,30 @@ input, textarea, select {
   }
 }
 
-footer {
+.foot {
   color: $supporting-text-color;
-  margin-top: 12px;
-  .span12 {
-    text-align: center;
-    p {
-    font-family: Arial, Sans-Serif; 
-    color: #000000;
+  text-align: center;
+  p {
+      font-family: Arial, Sans-Serif; 
+      color: #000000;
+      }
+  .secondary-nav {
+    list-style-type: none;
+    li {
+      display: inline-block;
+      padding: 0 1.5em 0 1em;
+      border-right: solid 1px #000000;
+        a {
+         font-family: Arial, Sans-Serif; 
+         color: #000000; 
+        }
     }
-    .secondary-nav {
-      li {
-        display: inline-block;
-        padding: 0 1.5em 0 1em;
-        border-right: solid 1px #000000;
-          a { 
-            font-family: Arial, Sans-Serif; 
-            color: #000000;
-          }
-      }
-      li:last-child {
-        border-right: none
-      }
-      
+    li:last-child {
+      border-right: none;
     }
   }
 }
+
 .visible {
   display: block;
 }
@@ -1167,7 +1184,7 @@ footer {
   p {
     font-size: 60px;
     color: #470BC1;
-    margin: 60px 0 0 500px;
+    margin: 60px 0 0 180px;
   }
 }
 
@@ -1177,7 +1194,7 @@ footer {
   width: 200px;
   height: 128px;
   top: 30px;
-  left: 850px;
+  left: 530px;
 }
 
 .nav-group {
@@ -1456,7 +1473,7 @@ footer {
     z-index: 15;  
   }
   .corkboard {
-    left: 130px;
+    left: 120px;
   }
   .whats-new {
     background-image: url(asset_path('whats_new_notepaper.png', image));
@@ -1673,6 +1690,7 @@ footer {
 .content-container {
   max-width: 1170px;
   min-width: 1060px;
+  overflow: hidden;
 }
 
 .message {
@@ -1697,7 +1715,7 @@ footer {
     margin-top: 2em;
     color: #EB731C;
   }
-  .btn.btn-primary {
+  .btn.primary-button {
       background: rgba(37, 134, 11, .8);
       padding: .5em;
       border: 2px solid rgba(255, 255, 255, 0.5);
@@ -1711,6 +1729,27 @@ footer {
       font-size: 1.3em;
       text-shadow: 1px 1px 2px #333;
   }
+}
+
+.awesome-button {
+    background: rgba(37, 134, 11, .8);
+    padding: .5em;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    -webkit-box-shadow: 0 0 5px #888;
+    -moz-box-shadow: 0 0 5px #888;
+    box-shadow: 2px 2px 2px #CCC;
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    font-family: Sketch Rockwell;
+    font-size: 1.3em;
+    text-shadow: 1px 1px 2px #333;
+    color: #fff;
+    margin: .5em;
+    &:hover {
+      background: rgba(71, 11, 193, .8);
+      color: #fff;
+    }
 }
 
 .distribute-credits {
@@ -1815,4 +1854,9 @@ hr {
 
 .pagination ul {
   box-shadow: none;
+}
+
+.news-posts {
+  width: 540px;
+  padding: 0 20px 40px 20px;
 }

@@ -1,14 +1,9 @@
-.content-container
-  .side-art
-    .side-art-students
-  .main-content-wrapper-no-bg
-    .primary-content
-      .bacon
-      .corkboard
-      .messaging-inbox
-      .inbox-screenshot
-      .teachers-inbox-cta
-        = link_to "", teacher_page_path("not_logged_in_inbox"), class: 'inbox-teachers'
-      .parents-inbox-cta
-        = link_to "", parent_page_path("not_logged_in_inbox"), class: 'inbox-parents'
+.bacon
+.corkboard
+  .messaging-inbox
+.inbox-screenshot
+.teachers-inbox-cta
+  = link_to "", teacher_page_path("not_logged_in_inbox"), class: 'inbox-teachers'
+.parents-inbox-cta
+  = link_to "", parent_page_path("not_logged_in_inbox"), class: 'inbox-parents'
 
