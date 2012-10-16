@@ -1,16 +1,11 @@
-.content-container
-  .side-art
-    .side-art-students
-  .main-content-wrapper-no-bg
-    .primary-content
-      .bacon
-      .corkboard
-      .games-board
-      .nav-container-corkboard
-        %ul.stickies-nav
-          %li
-            %span= link_to "", '#', class: 'students-stickie stickies_nav-students_green_nav_stickie active'
-          %li
-            %span= link_to "", parent_page_path('not_logged_in_play'), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
-          %li
-            %span= link_to "", teacher_page_path('not_logged_in_play'), class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie'
+.bacon
+.corkboard
+  .games-board
+.nav-container-corkboard
+  %ul.stickies-nav
+    %li
+      %span= link_to "", '#', class: 'students-stickie stickies_nav-students_green_nav_stickie active'
+    %li
+      %span= link_to "", parent_page_path('not_logged_in_play'), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
+    %li
+      %span= link_to "", teacher_page_path('not_logged_in_play'), class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie'

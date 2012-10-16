@@ -1,36 +1,30 @@
-.content-container
-  .side-art
-    .side-art-students
-  .main-content-wrapper-no-bg
-    .primary-content
-      .bacon
-      .white-board
-      .intro-slide
-      .register-slide
-      .earn-slide
-      .enter-slide
-      .buy-slide
-      .receive-slide
-      %ul.how-nav
-        %li
-          %span= link_to "Intro", "#", class:'intro'
-        %li
-          %span= link_to "Register", "#", class:'register'
-        %li
-          %span= link_to "Earn", "#", class:'earn'
-        %li
-          %span= link_to "Enter", "#", class:'enter'
-        %li
-          %span= link_to "Buy", "#", class:'buy'
-        %li
-          %span= link_to "Receive", "#", class:'receive'
+.bacon-smiling-intro
+.white-board
+.intro-slide
+.register-slide
+.earn-slide
+.enter-slide
+.buy-slide
+.receive-slide
+%ul.how-nav
+  %li
+    %span= link_to "Intro", "#", class:'intro'
+  %li
+    %span= link_to "Register", "#", class:'register'
+  %li
+    %span= link_to "Earn", "#", class:'earn'
+  %li
+    %span= link_to "Enter", "#", class:'enter'
+  %li
+    %span= link_to "Buy", "#", class:'buy'
+  %li
+    %span= link_to "Receive", "#", class:'receive'
 
-      .sir-francis-bacon
-      .nav-container
-        %ul.stickies-nav
-          %li
-            %span= link_to "", "#", class: 'students-stickie stickies_nav-students_green_nav_stickie active'
-          %li
-            %span= link_to "", parent_page_path('not_logged_in_how_it_works'), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
-          %li
-            %span= link_to "", teacher_page_path('not_logged_in_how_it_works'), class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie'
+.nav-container
+  %ul.stickies-nav
+    %li
+      %span= link_to "", "#", class: 'students-stickie stickies_nav-students_green_nav_stickie active'
+    %li
+      %span= link_to "", parent_page_path('not_logged_in_how_it_works'), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
+    %li
+      %span= link_to "", teacher_page_path('not_logged_in_how_it_works'), class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie'
