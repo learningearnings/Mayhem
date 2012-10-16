@@ -1,0 +1,9 @@
+%li{:class => "product-tile", "data-hook" => "products_list_item", :id => "product_#{variant.product_id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+  .cart-content
+    = image_tag(variant.images.first.attachment.url(:small))
+    .cart-details
+      = truncate("#{variant.product.name}", :length => 50)
+      .price.selling{:itemprop => "price"}= number_to_currency(line_item.price).to_s + " each"
+      .quantity{:itemprop => "on_hand"}= line_item.quantity.to_s + " in cart"
+      .total= number_to_currency(line_item.price * line_item.quantity) unless line_item.quantity.nil?
+      .add-to-cart= item_form.number_field :quantity, :min => 0, :class => "title", :size => 5

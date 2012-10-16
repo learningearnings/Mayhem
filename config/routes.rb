@@ -61,7 +61,8 @@ Leror::Application.routes.draw do
     end
   end
 
-  match "/restock" => 'restock#index'
+  match "/restock" => 'restock#index', :as => :restock
+  match "/restock/empty" => 'restock#empty', :as => :restock_empty_cart
 
 
   resources :auctions

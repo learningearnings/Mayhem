@@ -1,0 +1,5 @@
+= render :partial => 'spree/shared/error_messages', :locals => { :target => @order }
+.row
+  %ul.inline.product-listing{"data-hook" => ""}
+    = order_form.fields_for :line_items do |item_form|
+      = render :partial => 'line_item', :locals => { :product => item_form.object.product, :variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form }

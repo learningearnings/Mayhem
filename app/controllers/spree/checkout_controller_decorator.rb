@@ -2,7 +2,12 @@ Spree::CheckoutController.class_eval do
 
 
   def before_transmitted
-    flash[:notice] = t('transmit_notice')
+    if @order.total > current_school.store_account.balance
+      flash[:notice] = t('insufficient_funds')
+      redirect_to main_app.restock_path and return
+    else
+      flash[:notice] = t('transmit_notice')
+    end
     @person = current_person
     @school = current_school
     add = Spree::Address.where(:company => @school.name)
