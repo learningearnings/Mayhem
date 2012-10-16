@@ -180,6 +180,11 @@ end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
+
+  devise_scope :user do
+    get '/logout' => 'user_sessions#destroy', :as => :get_destroy_user_session
+  end
+#  match "/user/logout(.:format)" => "user_sessions#destroy", :via => :get, :as => :get_destroy_user_session
   namespace :admin do
     match "le_shipments/ship/:order_number" => "le_shipments#ship", :as => :le_ship_order
     match "le_shimpents/print/:order_number" => "le_shipments#print", :as => :le_print_order

@@ -15,6 +15,7 @@ ActiveAdmin.register Teacher do
   end
 
   controller do
+    skip_before_filter :add_current_store_id_to_params
 
     def update
       @teacher = Teacher.find(params[:id])

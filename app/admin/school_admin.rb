@@ -1,5 +1,6 @@
 ActiveAdmin.register SchoolAdmin do
 
+
   filter :first_name
   filter :last_name
   filter :status, :as => :check_boxes, :collection => proc { Teacher.new().status_paths.to_states.each do |s| s.to_s end }
@@ -14,6 +15,7 @@ ActiveAdmin.register SchoolAdmin do
   end
 
   controller do
+    skip_before_filter :add_current_store_id_to_params
 
     def update
       @school_admin = SchoolAdmin.find(params[:id])

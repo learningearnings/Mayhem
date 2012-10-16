@@ -1,6 +1,9 @@
 module SchoolAdmins
   class BanksController < SchoolAdmins::BaseController
     include Mixins::Banks
+    def show
+      @teacher = current_person
+    end
 
     def on_success
       flash[:notice] = 'Bucks created!'

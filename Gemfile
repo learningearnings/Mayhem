@@ -74,6 +74,7 @@ gem 'state_machine'
 
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
 gem 'spree', '~> 1.2.0'
+# gem 'spree', :git => "git@github.com:learningearnings/spree.git",  branch: '1-2-stable'
 gem 'spree_auth_devise', :git => "git://github.com/spree/spree_auth_devise"
 
 gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'

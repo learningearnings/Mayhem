@@ -36,4 +36,7 @@ ActiveAdmin.register Moniker do
     moniker.reject_with_user(current_user.person)
     redirect_to :action => :index, :notice => "Rejected!"
   end
+  controller do
+    skip_before_filter :add_current_store_id_to_params
+  end
 end
