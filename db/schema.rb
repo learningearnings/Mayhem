@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121005002747) do
+ActiveRecord::Schema.define(:version => 20121015215952) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -567,7 +567,7 @@ ActiveRecord::Schema.define(:version => 20121005002747) do
     t.integer "numcode"
   end
 
-  create_table "spree_creditcards", :force => true do |t|
+  create_table "spree_credit_cards", :force => true do |t|
     t.string   "month"
     t.string   "year"
     t.string   "cc_type"
@@ -631,13 +631,6 @@ ActiveRecord::Schema.define(:version => 20121005002747) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "spree_mail_methods", :force => true do |t|
-    t.string   "environment"
-    t.boolean  "active",      :default => true
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-  end
-
   create_table "spree_option_types", :force => true do |t|
     t.string   "name",         :limit => 100
     t.string   "presentation", :limit => 100
@@ -674,7 +667,6 @@ ActiveRecord::Schema.define(:version => 20121005002747) do
     t.decimal  "total",                              :precision => 8, :scale => 2, :default => 0.0, :null => false
     t.string   "state"
     t.decimal  "adjustment_total",                   :precision => 8, :scale => 2, :default => 0.0, :null => false
-    t.decimal  "credit_total",                       :precision => 8, :scale => 2, :default => 0.0, :null => false
     t.integer  "user_id"
     t.datetime "created_at",                                                                        :null => false
     t.datetime "updated_at",                                                                        :null => false
@@ -958,12 +950,14 @@ ActiveRecord::Schema.define(:version => 20121005002747) do
   end
 
   create_table "spree_tax_rates", :force => true do |t|
-    t.decimal  "amount",            :precision => 8, :scale => 5
+    t.decimal  "amount",             :precision => 8, :scale => 5
     t.integer  "zone_id"
     t.integer  "tax_category_id"
-    t.datetime "created_at",                                                         :null => false
-    t.datetime "updated_at",                                                         :null => false
-    t.boolean  "included_in_price",                               :default => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.boolean  "included_in_price",                                :default => false
+    t.string   "name"
+    t.boolean  "show_rate_in_label",                               :default => true
   end
 
   create_table "spree_taxonomies", :force => true do |t|
@@ -1061,6 +1055,7 @@ ActiveRecord::Schema.define(:version => 20121005002747) do
     t.integer  "count_on_hand",                               :default => 0,     :null => false
     t.decimal  "cost_price",    :precision => 8, :scale => 2
     t.integer  "position"
+    t.integer  "lock_version",                                :default => 0
   end
 
   add_index "spree_variants", ["product_id"], :name => "index_variants_on_product_id"

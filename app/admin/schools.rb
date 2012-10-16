@@ -70,5 +70,8 @@ ActiveAdmin.register School do
     student_rows[row_number] = current_row if column_number > 0
     render 'school_show', teacher_count: teacher_count, admin_count: admin_count, student_count: student_count, admin_rows: admin_rows, teacher_rows: teacher_rows, student_rows: student_rows
   end
- 
+  controller do
+    skip_before_filter :add_current_store_id_to_params
+  end
+
 end

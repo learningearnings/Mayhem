@@ -38,6 +38,7 @@ Leror::Application.routes.draw do
   # FIXME: Lock this down before hitting production
   mount Plutus::Engine => "/plutus", :as => "plutus"
 
+
   # Handle static pages
   match "/pages/teachers/*id" => 'pages#show', :as => :teacher_page, :format => false, visitor_type: 'teacher'
   match "/pages/parents/*id" => 'pages#show', :as => :parent_page, :format => false, visitor_type: 'parent'
@@ -179,8 +180,14 @@ end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
+
+  devise_scope :user do
+    get '/logout' => 'user_sessions#destroy', :as => :get_destroy_user_session
+  end
+#  match "/user/logout(.:format)" => "user_sessions#destroy", :via => :get, :as => :get_destroy_user_session
   namespace :admin do
-    match "le_ship_order" => "le_shipments#ship"
+    match "le_shipments/ship/:order_number" => "le_shipments#ship", :as => :le_ship_order
+    match "le_shimpents/print/:order_number" => "le_shipments#print", :as => :le_print_order
     resources :rewards
     match 'remove_reward' => 'rewards#destroy'
     resources :le_shipments

@@ -12,7 +12,8 @@ Spree.config do |config|
   config.auto_capture = true
   config.layout = 'application'
   config.searcher_class = Spree::Search::Filter
-
+  config.allow_backorders = false
+  config.show_zero_stock_products = false
 end
 
 module SpreeOverrideEngine

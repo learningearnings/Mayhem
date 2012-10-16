@@ -9,6 +9,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     # create new spree product with specific options for LE Admin to use
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
+    @product.available_on = Time.now
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
     @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]

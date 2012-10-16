@@ -16,8 +16,8 @@
           %h3 Distribute Credits
           %h4 Print Physical Credits
           = form_for OtuCode.new, :url => school_admins_create_print_bucks_path do |f|
-            = label_tag 'Teacher'
-            = select("teacher", "id", Teacher.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
+            = label_tag "Teacher"
+            = select("teacher", "id", current_school.teachers.order('last_name, first_name').collect {|p| [ p.name, p.id ] })
             = label_tag '$1'
             = text_field_tag :point1,nil,:class => 'focus-on-me'
             = label_tag '$5'
@@ -29,7 +29,7 @@
           %h4 Create E-Credits
           = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
             = label_tag 'Student'
-            = select("student", "id", Student.all.collect {|p| [ p.name, p.id ] }, :include_blank => true)
+            = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
             = label_tag :points
             = text_field_tag :points
             = f.submit 'Send These Credits'

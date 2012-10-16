@@ -16,7 +16,7 @@ ActiveAdmin.register Student do
   end
 
   controller do
-
+    skip_before_filter :add_current_store_id_to_params
     def update
       @student = Student.find(params[:id])
       @school = School.find_by_name(params[:school])
@@ -52,5 +52,5 @@ ActiveAdmin.register Student do
       @student = Student.new(params[:student])
     end
   end
-  
+
 end

@@ -20,7 +20,7 @@
                 %h5
                   = t(:subtotal)
                   \:
-                  %span.order-total= order_subtotal(@order)
+                  %span.order-total= number_to_currency(@order.total)
               .links.columns.sixteen.alpha.omega{"data-hook" => "cart_buttons"}
                 = button_tag :class => 'primary', :id => 'update-button' do
                   = t(:update)

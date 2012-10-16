@@ -4,6 +4,7 @@ ActiveAdmin.register Auction do
   scope :upcoming
 
   controller do
+    skip_before_filter :add_current_store_id_to_params
     with_role :le_admin
   end
 

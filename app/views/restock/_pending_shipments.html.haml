@@ -12,7 +12,9 @@
   %tbody
   - pending_shipments.each do |pending_shipment|
     %tr.shipment_row
-      %td= link_to pending_shipment.number, spree.order_path(pending_shipment)
+      %td
+        = link_to pending_shipment.number, spree.order_path(pending_shipment)
+        = "(#{pending_shipment.state})"
       %td
         = l pending_shipment.created_at.in_time_zone(current_school.timezone)
         (

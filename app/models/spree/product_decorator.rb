@@ -27,7 +27,7 @@ Spree::Product.class_eval do
   end
 
   def is_global_reward?
-    self.property("reward_type") == "charity"
+    self.property("reward_type") == "global"
   end
 
   def is_wholesale_reward?
@@ -55,7 +55,7 @@ Spree::Product.class_eval do
   end
 
   def remove_property property_name
-    pid = properties.find_by_name(product_name)
+    pid = properties.find_by_name(property_name)
     return false if pid.nil?
     pp = product_properties.find_by_property_id(pid.id)
     pp.destroy if pp

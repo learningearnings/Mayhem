@@ -23,7 +23,7 @@ class OtuCode < ActiveRecord::Base
   end
 
   def generate_code(prefix)
-    _code = Code.active[rand(Code.active.count)]
+    _code = Code.active[rand(Code.active.count)] || Code.create
     _full_code = prefix + _code.code
     self.update_attribute(:code, _full_code)
     _code.update_attributes(:active => false, :used_date => Time.now)
