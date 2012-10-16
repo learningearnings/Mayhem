@@ -7,11 +7,11 @@
       %h1= t(:shopping_cart)
       %p= t(:sa_restock_intro)
       = render :partial => "pending_shipments", :object => @pending_shipments if @pending_shipments.count > 0
-      - if @order.nil? || @order.line_items.empty?
+      - if  !@transmitted && (@order.nil? || @order.line_items.empty?)
         %div{"data-hook" => "empty_cart"}
           %p= t(:sa_your_cart_is_empty)
           %p= link_to t('.continue_shopping'),spree.products_url(host: request.host,port: request.port,subdomain: 'le'), class: 'continue'
-      - else
+      - elsif @order
         %div{"data-hook" => "outside_cart_form"}
           = form_for @order, :url => spree.update_cart_path, :html => {:id => 'update-cart'} do |order_form|
             %div{"data-hook" => "inside_cart_form"}
