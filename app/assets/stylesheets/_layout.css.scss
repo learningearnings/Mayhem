@@ -762,10 +762,10 @@ input, textarea, select {
   background-image: url(asset_path('sir_francis_bacon_shadows_small.png', image));
   width: 170px;
   height: 230px;
-  position: absolute;
+  position: relative;
   top: 30px;
-  left: 90px;
-  z-index: 15;  
+  z-index: 15; 
+  float: left; 
 }
  
 .bacon-smiling-intro {
@@ -1130,6 +1130,7 @@ input, textarea, select {
 .foot {
   color: $supporting-text-color;
   text-align: center;
+  clear: both;
   p {
       font-family: Arial, Sans-Serif; 
       color: #000000;
@@ -1248,6 +1249,7 @@ input, textarea, select {
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
   box-shadow:         1px 2px 5px 1px #ccc;  
+  margin: 5em 0 0 0;
 }
 
 .locker_edit {
@@ -1327,7 +1329,6 @@ input, textarea, select {
 }
 
 .pending-credits {
-  margin-top: 2em;
   padding: 1em; 
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
@@ -1340,16 +1341,22 @@ input, textarea, select {
 }
 
 .news-items-container {
+  
   overflow: hidden;
   margin: 20px 0 0 130px;
 }
 
 .play-header-container {
-  margin-left: 10.1em;
+  padding: 0 0 0 1em;
+  h2, h3 {
+  }
+  p {
+    padding-right: 4em;
+  }
 }
 
 .games {
-  margin-left: 10.1em;
+  padding: 0 0 0 1em;
 }
 
 .coming-soon-container {
@@ -1467,13 +1474,14 @@ input, textarea, select {
     background-image: url(asset_path('sir_francis_bacon_shadows_small.png', image));
     width: 170px;
     height: 230px;
-    position: absolute;
+    position: relative;
+    float: left;
     top: 150px;
-    left: 130px;
+    left: 0;
     z-index: 15;  
   }
   .corkboard {
-    left: 120px;
+    left: 0;
   }
   .whats-new {
     background-image: url(asset_path('whats_new_notepaper.png', image));
@@ -1481,7 +1489,7 @@ input, textarea, select {
     width: 364px;
     height: 239px;
     top: 25px;
-    left: 310px;
+    left: 200px;
   }
 }
 
@@ -1491,7 +1499,7 @@ input, textarea, select {
   width: 256px;
   height: 262px;
   top: 280px;
-  left: 310px;
+  left: 140px;
 }
 
 .play-games {
@@ -1500,7 +1508,7 @@ input, textarea, select {
   width: 213px;
   height: 247px;
   top: 305px;
-  left: 530px;
+  left: 330px;
 }
 
 
@@ -1509,36 +1517,32 @@ input, textarea, select {
   position: absolute;
   width: 585px;
   height: 272px;
-  top: 555px;
-  left: 140px;  
+  top: 585px;
+  left: 40px;  
 }
 
 .student-logged-in-sidebar {
+  position: relative;
+  top: -385px;
+  width: 300px;
+  float: right;
   .reward-highlights {
     background-image: url(asset_path('reward_highlights_with_tape.png', image));
-    position: absolute;
+    position: relative;
     width: 294px;
     height: 262px;
-    top: 0;
-    left: 775px;    
-    padding-top: 70px;
-    padding-left: 50px;
   }
   .our-sponsors {
     background-image: url(asset_path('our_sponsors.png', image));
-    position: absolute;
+    position: relative;
     width: 291px;
     height: 251px;
-    top: 270px;
-    left: 775px;  
   }
   .poll-of-the-day {
     background-image: url(asset_path('poll_of_the_day.png', image));
-    position: absolute;
+    position: relative;
     width: 296px;
     height: 268px;
-    top: 515px;
-    left: 775px;  
   }
 }
 
@@ -1618,7 +1622,7 @@ input, textarea, select {
   padding: 2em;
   display: inline-block;
   vertical-align: top;
-  width:87%;
+  width:99%;
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
@@ -1659,7 +1663,7 @@ input, textarea, select {
   padding: 2em;
   display: inline-block;
   vertical-align: top;
-  width:87%;
+  width: 99%;
   .primary-content-fw {
     width: 90%;
   }
@@ -1670,7 +1674,7 @@ input, textarea, select {
     vertical-align: top;
     .select-message {
       textarea {
-        width: 575px;
+        width: 555px;
         height: 265px;
       }
     }
@@ -1750,6 +1754,10 @@ input, textarea, select {
       background: rgba(71, 11, 193, .8);
       color: #fff;
     }
+}
+
+input.awesome-button {
+  padding-bottom: 25px;
 }
 
 .distribute-credits {
