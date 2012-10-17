@@ -274,27 +274,6 @@ input, textarea, select {
   background-image: url(asset_path('common/join-menu-blue-no-text-bg.png', image));
 }
 
-.custom-nav-bar {
-  position: relative;
-  top: 20px;
-  float: right;
-  .primary-nav {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-      li {
-        display: inline;
-        a {
-          text-decoration: none;
-          padding: 15px;
-          font-size: 1.7em;
-          font-family: 'sketch_rockwellregular';  
-        }
-      }
-  }
-}
-
-
 .nav-container, .nav-container-corkboard {
   position: absolute;
   top: 340px;
@@ -452,33 +431,34 @@ input, textarea, select {
   }
 }
 
-.custom-nav-bar .navbar-inner {
-  background-color: transparent;
-  background-image: none;
-  border: none;
-  -webkit-border-radius: none;
-  -moz-border-radius: none;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+.custom-nav-bar {
+  position: relative;
+  top: 0;
+  float: right;
+  .primary-nav {
+    list-style-type: none;
+    margin: 0;
+    padding:0;
+      li {
+        display: inline;
+        padding: 1.7em 0;
+        
+        a {
+          text-decoration: none;
+          font-family: 'sketch_rockwellregular';  
+          display: inline-block;
+        }
+      }
+  }
 }
 
-.navbar .nav li a {
-  padding: 1.3em 1.3em 1.7em 1em;
-  font-size: 13px;
+
+.primary-nav li a {
+  padding: 1em 1.3em 1em 1em;
+  font-size: 1.6em;
 }
 
-
-.navbar .nav {
-  position: static;
-  right: 0;
-  float: none;
-  display: block;
-  margin: 0;
-}
-
-.nav.primary-nav .home {
+.primary-nav .home {
   color: #25860b;
 }
 
@@ -563,13 +543,13 @@ input, textarea, select {
 }
 
 .primary-nav .restock:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C
 }
 
 .restock-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C
 }
@@ -643,13 +623,13 @@ input, textarea, select {
 }
 
 .primary-nav .reports:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #470BC1;  
 }
 
 .reports-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #470BC1; 
 }
@@ -659,13 +639,13 @@ input, textarea, select {
 }
 
 .primary-nav .classrooms:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08;  
 }
 
 .classrooms-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08; 
 }
@@ -676,13 +656,13 @@ input, textarea, select {
 }
 
 .primary-nav .lounge:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C;  
 }
 
 .lounge-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C; 
 }
@@ -1409,8 +1389,10 @@ input, textarea, select {
 
 .person-details {
   margin-right: 1em;
+  max-width: 500px;
+  float: left;
   h3 {
-    line-height: 16px;
+    line-height: 24px;
     color: #F63;
   }
   .links {
@@ -1557,7 +1539,10 @@ input, textarea, select {
 }
 
 .reward-highlights {
+  padding-top: 70px;
   .product {
+    width: 240px;
+    margin: 0 0 0 50px;
     .product-image {
       display: inline-block;
     }
@@ -1877,4 +1862,9 @@ hr {
 .news-posts {
   width: 540px;
   padding: 0 20px 40px 20px;
+}
+
+.placeholder {
+  padding-top: 0;
+  margin-top: -8px;
 }
