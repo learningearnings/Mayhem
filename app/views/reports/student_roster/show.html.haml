@@ -1,35 +1,32 @@
-.content-container
-  .side-art
-    .side-art-teachers
-  .main-content-wrapper
-    .primary-content-fw
+.main-content-wrapper
+  .primary-content-fw
 
-      %h2 Student Roster Report
+    %h2 Student Roster Report
 
-      .filter
-        %h4 Filter By
-        = form_tag student_roster_report_path, method: :get do
-          .grade-filter
-            = label_tag :grade
-            = select_tag :grade_filter, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(grades, :first, :last, params[:grade_filter])
-            = submit_tag 'Go!'
-          .classroom-roster
-            = label_tag :classroom
-            = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
-          .grade
-            = label_tag :grade
-            - # NOTE: So this grades array has its values in the reverse order from what Rails wants.  Cheating to flip them. Robby encouraged me.  -ja
-      .sorting 
-        %h4 Sort By
-        = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username", "Grade"], params[:sort_by])   
-      .report
-        %table.table.table-bordered.table-striped.solid-background
-          %thead
+    .filter
+      %h4 Filter By
+      = form_tag student_roster_report_path, method: :get do
+        .grade-filter
+          = label_tag :grade
+          = select_tag :grade_filter, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(grades, :first, :last, params[:grade_filter])
+          = submit_tag 'Go!'
+        .classroom-roster
+          = label_tag :classroom
+          = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
+        .grade
+          = label_tag :grade
+          - # NOTE: So this grades array has its values in the reverse order from what Rails wants.  Cheating to flip them. Robby encouraged me.  -ja
+    .sorting 
+      %h4 Sort By
+      = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username", "Grade"], params[:sort_by])   
+    .report
+      %table.table.table-bordered.table-striped.solid-background
+        %thead
+          %tr
+            - report.header_strings.each do |header|
+              %th= header
+        %tbody
+          - report.data_rows do |row|
             %tr
-              - report.header_strings.each do |header|
-                %th= header
-          %tbody
-            - report.data_rows do |row|
-              %tr
-                - report.header_keys.each do |key|
-                  %td= row.send(key)
+              - report.header_keys.each do |key|
+                %td= row.send(key)

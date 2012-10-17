@@ -1,32 +1,29 @@
-.content-container
-  .side-art
-    .side-art-teachers
-  .main-content-wrapper
-    .primary-content
-      %h2 Classrooms
-      - if @classrooms.present?
-        - @classrooms.each do |classroom|
-          %h3= classroom.name
-          %p= link_to("Add Students to Class", classroom_path(classroom), 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal')
-          %p= link_to 'Remove Class', classroom_path(classroom), :method => :delete
-          - if classroom.students.present?
-            %table.table
-              %thead
+.main-content-wrapper
+  .primary-content
+    %h2 Classrooms
+    - if @classrooms.present?
+      - @classrooms.each do |classroom|
+        %h3= classroom.name
+        %p= link_to("Add Students to Class", classroom_path(classroom), 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal')
+        %p= link_to 'Remove Class', classroom_path(classroom), :method => :delete
+        - if classroom.students.present?
+          %table.table
+            %thead
+              %tr
+                %th Student Name
+                %th Remove Student
+            %tbody
+              - classroom.students.each do |student|
                 %tr
-                  %th Student Name
-                  %th Remove Student
-              %tbody
-                - classroom.students.each do |student|
-                  %tr
-                    %td= student.name
-                    %td= link_to 'Remove', remove_classroom_student_path(:classroom => classroom, :student => student)
-        %hr
+                  %td= student.name
+                  %td= link_to 'Remove', remove_classroom_student_path(:classroom => classroom, :student => student)
+      %hr
 
-      = form_for Classroom.new do |f|
-        = f.label :name
-        = f.text_field :name, :class => 'focus-on-me'
-        = f.hidden_field :school_id, :value => current_school.id
-        = f.submit 'Create Classroom'
+    = form_for Classroom.new do |f|
+      = f.label :name
+      = f.text_field :name, :class => 'focus-on-me'
+      = f.hidden_field :school_id, :value => current_school.id
+      = f.submit 'Create Classroom', :class => "awesome-button"
 
-    #manage_class-modal.modal.hide
-      .modal-body
+  #manage_class-modal.modal.hide
+    .modal-body

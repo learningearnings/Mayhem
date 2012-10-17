@@ -1,19 +1,16 @@
-.content-container
-  .side-art
-    .side-art-students
-  .main-content-wrapper
-    .primary-content
-      %h2 My Locker
+.main-content-wrapper
+  .primary-content
+    %h2 My Locker
 
-      .locker_wrapper
-        = render 'locker_stickers', locker_sticker_links: locker_sticker_links
-      .locker_buttons
-        = link_to 'Decorate My Locker', edit_locker_path, class: 'btn decorate-locker awesome-button'
-        = link_to 'Share My Locker', share_locker_path, class: 'btn share-locker awesome-button', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
-        = link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn visit-locker awesome-button', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
+    .locker_wrapper
+      = render 'locker_stickers', locker_sticker_links: locker_sticker_links
+    .locker_buttons
+      = link_to 'Decorate My Locker', edit_locker_path, class: 'btn decorate-locker awesome-button'
+      = link_to 'Share My Locker', share_locker_path, class: 'btn share-locker awesome-button', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
+      = link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn visit-locker awesome-button', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
 
-      #share-locker-modal.modal.hide
-        .modal-body
+    #share-locker-modal.modal.hide
+      .modal-body
 
-      #visit-locker-modal.modal.hide
-        .modal-body
+    #visit-locker-modal.modal.hide
+      .modal-body
