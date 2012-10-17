@@ -7,6 +7,11 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
   def print
     @order = Spree::Order.find_by_number(params[:order_number])
     @address = @order.ship_address
+    if @address.nil?
+      flash[:notice] = "Order #{@order.number} doesn't have an address yet"
+      redirect_to admin_le_shipments_path and return
+    end
+
     if ['cart','transmitted'].include?(@order.state)
       while @order.state != 'printed' do
         current_state = @order.state
@@ -42,34 +47,23 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
     payment = Spree::Payment.new(payment_params, without_protection: true)
     @order.payments = [payment]
     # Trigger the purchase
-    if @order.state != 'shipped'
-      while @order.state != 'shipped' do
+    if @order.state != 'complete'
+      while @order.state != 'complete' do
         current_state = @order.state
         @order.next
         @order.save
-        break if @order.state = current_state
+        break if @order.state == current_state
       end
     end
 
-    @order.next
-    @order.save
-    @order.update!
     @order.create_shipment!
     shipment = @order.shipment
     @order.restock_items!    # shipping below will pull them out again....
     redirect_to admin_le_shipments_path
     shipment.save
-    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.reload" and return unless shipment.ready
-    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.reload" and return unless shipment.reload
-    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.save" and return unless shipment.save
-    @order.unstock_items! and flash[:notice] = "Error on @order.save " and return unless @order.save
-    @order.unstock_items! and flash[:notice] = "Error on @order.next "  and return unless @order.next
-    @order.unstock_items! and flash[:notice] = "Error on @order.next "  and return unless @order.next
-    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.ready" and return unless shipment.ready
-    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.save" and return unless shipment.save
     @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.ship" and return unless shipment.ship
-    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.save" and return unless shipment.save
-    @order.unstock_items! and flash[:notice] = "Error on @order.save #2" and return unless @order.save
+    @order.unstock_items! and flash[:notice] = "Error on @order.next" and return unless @order.next
+    @order.unstock_items! and flash[:notice] = "Error on @order.save" and return unless @order.save
     @order.update!
     @order.save
     flash[:notice] = "Order #{@order.number} is marked as complete and shipped"

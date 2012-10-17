@@ -72,6 +72,31 @@ Spree::OrdersController.class_eval do
 
   def after_save_new_order
     @current_order.special_instructions = {school_id: current_school.id}.to_yaml
+    @person = current_person
+    @school = current_school
+    add = Spree::Address.where(:company => @school.name)
+      .where(:firstname => @person.first_name)
+      .where(:lastname => @person.last_name)
+      .where(:address1 => @school.addresses.first.line1)
+      .where(:city => @school.addresses.first.city).first
+    if add
+      @current_order.ship_address = add
+      @current_order.bill_address = add
+    else
+      shipping_address = {}
+      shipping_address[:firstname] = @person.first_name
+      shipping_address[:lastname] = @person.last_name
+      shipping_address[:company] = @school.name
+      shipping_address[:address1] = @school.addresses.first.line1
+      shipping_address[:address2] = @school.addresses.first.line2
+      shipping_address[:city] = @school.addresses.first.city
+      shipping_address[:state_name] = @school.addresses.first.state.name
+      shipping_address[:zipcode] = @school.addresses.first.zip
+      shipping_address[:phone] = @school.school_phone
+      shipping_address[:country] = Spree::Country.find_by_iso "US"
+      @current_order.ship_address_attributes = shipping_address
+      @current_order.bill_address_attributes = shipping_address
+    end
   end
 
 
