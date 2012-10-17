@@ -1,14 +1,15 @@
 .main-content-wrapper-no-bg
   .primary-content
-    %h3 Send Message To Peer
-    = form_for message do |f|
-      .select-message
-        %strong Peer
-        = f.select :to_ids, options_from_collection_for_select(peers, :id, :name), { }, { multiple: true }
-        = f.label :subject
-        = f.text_field :subject
-        = f.label :body
-        = f.text_area :body
-        = f.submit "Send Message", class: 'btn awesome-button'
+    .peer-message
+      %h3 Send Message To Peer
+      = form_for message do |f|
+        .select-message
+          %strong Peer
+          = f.select :to_ids, options_from_collection_for_select(peers, :id, :name), { }, { multiple: true }
+          = f.label :subject
+          = f.text_field :subject
+          = f.label :body
+          = f.text_area :body
+          = f.submit "Send Message", class: 'btn awesome-button'
   .secondary-content
     = render 'boxes_nav'

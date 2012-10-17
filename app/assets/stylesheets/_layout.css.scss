@@ -1233,7 +1233,9 @@ input, textarea, select {
   }
 }
 
-.admin-message-content {
+.admin-message-content,
+.peer-message,
+.classroom-message {
   form {
     background-color: #fff;
     max-width: 600px;
@@ -1358,6 +1360,8 @@ input, textarea, select {
   }
   p {
     padding-right: 4em;
+    font-size: 1.8em;
+    line-height: 130%;
   }
 }
 
@@ -1680,7 +1684,7 @@ input, textarea, select {
     vertical-align: top;
     .select-message {
       textarea {
-        width: 555px;
+        width: 505px;
         height: 265px;
       }
     }
