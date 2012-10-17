@@ -1,0 +1,20 @@
+.student-tile {
+    font-size: 1.2em;
+    float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    @extend .span3 !optional;
+    @extend .thumbnail !optional;
+    background-color: white;
+    padding: 1em;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;
+    img {
+        float: right;
+    }
+}
+
+li.student-tile {
+    list-style: none;
+}

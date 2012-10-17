@@ -17,7 +17,7 @@ module Teachers
     end
 
     def show
-      @student = Student.new
+      @student = Student.find(params[:student_id])
     end
 
   end

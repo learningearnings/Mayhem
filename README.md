@@ -20,7 +20,7 @@ Everything might not be working right, but development from here on should use t
 
 The app now will try to redirect you to 1.lvh.me:3000 if you come in without a subdomain.
 
-### New Spree and custome Order flow
+### New Spree and custom Order flow
  * Upgraded to Spree 1.2.0
  * Upgraded to spree-multi-domain master fork of learningearnings (needed a patch)
  * Order flow is as follows
