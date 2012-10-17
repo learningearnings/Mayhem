@@ -1,9 +1,6 @@
-.content-container
-  .side-art
-    .side-art-teachers
-  .main-content-wrapper
-    .full-content
-      %h2 Products
-      %div{"data-hook" => "homepage_products"}
-        = render :partial => 'spree/shared/products', :locals => { :products => @products }
+.main-content-wrapper
+  .full-content
+    %h2 Products
+    %div{"data-hook" => "homepage_products"}
+      = render :partial => 'spree/shared/products', :locals => { :products => @products }
 

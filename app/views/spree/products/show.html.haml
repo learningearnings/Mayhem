@@ -1,32 +1,29 @@
-.content-container
-  .side-art
-    .side-art-teachers
-  .main-content-wrapper-no-bg
-    .primary-content
+.main-content-wrapper-no-bg
+  .primary-content
 
-      .reward-content{ "data-hook" => "product_show", itemscope: true, itemtype: "http://schema.org/Product" }
-        - @body_id = 'product-details'
-  
-        .product-item
-          .product-image{"data-hook" => "product_left_part"}
-            %div{ "data-hook" => "product_left_part_wrap" }
-              #product-images{"data-hook" => "product_images" }
-                #main-image
-                  = render :partial => 'image'
-                #thumbnails
-                  = render :partial => 'thumbnails', :locals => { :product => @product }
+    .reward-content{ "data-hook" => "product_show", itemscope: true, itemtype: "http://schema.org/Product" }
+      - @body_id = 'product-details'
 
-          .product-meta{ "data-hook" => "product_right_part" }
-            %div{ "data-hook" => "product_right_part_wrap" }
-              #product-description{ "data-hook" => "product_description" }
-                %h1.product-title{ itemprop: "name" }= accurate_title
+      .product-item
+        .product-image{"data-hook" => "product_left_part"}
+          %div{ "data-hook" => "product_left_part_wrap" }
+            #product-images{"data-hook" => "product_images" }
+              #main-image
+                = render :partial => 'image'
+              #thumbnails
+                = render :partial => 'thumbnails', :locals => { :product => @product }
 
-                %div{ "itemprop" => "description", "data-hook" => "description" }
-                  = product_description(@product) rescue t(:product_has_no_description)
-                - if current_school && current_person && (request.subdomain == current_school.store_subdomain && current_person.is_a?(Student)) || (request.subdomain == 'le' && current_person.is_a?(SchoolAdmin))
-                  #cart-form{ "data-hook" => "cart_form" }
-                    = render :partial => 'cart_form'
-                - else
-                  %p= t(:school_store_is_for_students, school: current_school_name)
-    .secondary-content
-      = render :partial => 'taxons'
+        .product-meta{ "data-hook" => "product_right_part" }
+          %div{ "data-hook" => "product_right_part_wrap" }
+            #product-description{ "data-hook" => "product_description" }
+              %h1.product-title{ itemprop: "name" }= accurate_title
+
+              %div{ "itemprop" => "description", "data-hook" => "description" }
+                = product_description(@product) rescue t(:product_has_no_description)
+              - if current_school && current_person && (request.subdomain == current_school.store_subdomain && current_person.is_a?(Student)) || (request.subdomain == 'le' && current_person.is_a?(SchoolAdmin))
+                #cart-form{ "data-hook" => "cart_form" }
+                  = render :partial => 'cart_form'
+              - else
+                %p= t(:school_store_is_for_students, school: current_school_name)
+  .secondary-content
+    = render :partial => 'taxons'
