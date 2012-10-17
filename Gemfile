@@ -75,7 +75,7 @@ gem 'state_machine'
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
 gem 'spree', '~> 1.2.0'
 # gem 'spree', :git => "git@github.com:learningearnings/spree.git",  branch: '1-2-stable'
-gem 'spree_auth_devise', :git => "git://github.com/spree/spree_auth_devise"
+gem 'spree_auth_devise', :git => "git://github.com/spree/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
 gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'
 # Hope we can use master again soon, they need to accept PR 25 on
@@ -108,7 +108,8 @@ group :development, :test do
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
   gem 'unicorn'
-  gem 'libnotify'
+  gem 'libnotify' if /linux/ =~ RUBY_PLATFORM
+  gem 'growl' if /darwin/ =~ RUBY_PLATFORM
   gem 'thin'
   gem 'rack-bug', git: 'https://github.com/brynary/rack-bug.git', branch: 'rails3'
 end

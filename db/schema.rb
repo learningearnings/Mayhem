@@ -132,16 +132,6 @@ ActiveRecord::Schema.define(:version => 20121012220348) do
     t.datetime "updated_at",                   :null => false
   end
 
-  create_table "display_names", :force => true do |t|
-    t.string   "state"
-    t.string   "display_name"
-    t.datetime "approved_at"
-    t.integer  "actioned_by_id"
-    t.integer  "person_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
-
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
