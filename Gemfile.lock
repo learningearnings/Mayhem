@@ -15,10 +15,15 @@ GIT
   remote: git://github.com/spree/spree_auth_devise
   revision: eb0f30380dc83390b52939195bf92b4195f5c5a3
   specs:
+<<<<<<< HEAD
     spree_auth_devise (1.0.0)
       cancan (= 1.6.7)
       devise (~> 2.0.4)
       spree_core
+=======
+    compass_twitter_bootstrap (2.0.3)
+      compass
+>>>>>>> origin/develop
 
 GIT
   remote: git://github.com/wojtekmach/valid_attribute.git
@@ -186,6 +191,7 @@ GEM
       actionpack (>= 3.0)
     fssm (0.2.9)
     gherkin-ruby (0.2.1)
+<<<<<<< HEAD
     google-spreadsheet-ruby (0.3.0)
       google_drive (>= 0.3.0)
     google_drive (0.3.2)
@@ -193,6 +199,8 @@ GEM
       oauth (>= 0.3.6)
       oauth2 (>= 0.5.0)
     googlecharts (1.6.8)
+=======
+>>>>>>> origin/develop
     growl (1.0.3)
     guard (1.2.3)
       listen (>= 0.4.2)
@@ -494,7 +502,10 @@ DEPENDENCIES
   dragonfly
   draper
   factory_girl_rails
+<<<<<<< HEAD
   googlecharts
+=======
+>>>>>>> origin/develop
   growl
   guard (~> 1.2.3)
   guard-minitest (~> 0.5.0)
