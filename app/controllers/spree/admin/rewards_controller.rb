@@ -2,7 +2,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :authenticate_leadmin
 
   def index
-    @products = Spree::Product.not_deleted.with_property("reward_type").where("#{Spree::ProductProperty.table_name}.value" => ['charity','wholesale','global']).order(:name)
+    @products = Spree::Product.not_deleted.with_property("reward_type").where("#{Spree::ProductProperty.table_name}.value" => ['charity','wholesale','global']).order(:name).page(params[:page]).per(10)
   end
 
   def new

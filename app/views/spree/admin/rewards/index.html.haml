@@ -3,6 +3,7 @@
 = link_to "New Reward", new_admin_reward_path
 %p
 
+= paginate @products, :theme => 'le'
 %table#listing_products.index
   %tr
     %th= t(:image)

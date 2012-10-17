@@ -1,5 +1,5 @@
 .avatars
-  = paginate @avatars
+  = paginate @avatars, :theme => 'le'
   - @avatars.each do |a|
     .avatar
       .image_wrapper{:id => a.id}
