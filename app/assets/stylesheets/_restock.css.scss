@@ -1,0 +1,17 @@
+.cart-content {
+    img {
+        vertical-align: top;
+    }
+}
+
+.cart-details {
+  display: inline-block;
+  max-width: 140px;
+  .total {
+      font-weight: bold;
+  }
+}
+
+.update-cart, .empty-cart {
+    font-family: 'sketch_rockwellregular';  
+}

@@ -53,6 +53,11 @@ span.join,
   font-family: 'sketch_rockwellregular';  
 }
 
+@mixin really-awesom-button {
+  font-family: 'sketch_rockwellregular';  
+}
+
+
 h1 {
   color: #25860B;
 }
@@ -1838,7 +1843,7 @@ input.awesome-button {
 }
 
 .currency {
-    text-align: right;
+    text-align: right !important;
 }
 
 hr {

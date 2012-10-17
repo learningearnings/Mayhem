@@ -59,13 +59,20 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
     @order.restock_items!    # shipping below will pull them out again....
     redirect_to admin_le_shipments_path
     shipment.save
-    @order.unstock_items! and flash[:notice] = "Error on shipment.reload" and return unless shipment.reload
-    @order.unstock_items! and flash[:notice] = "Error on shipment.ship" and return unless shipment.ship
-    @order.unstock_items! and flash[:notice] = "Error on shipment.save" and return unless shipment.save
+    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.reload" and return unless shipment.ready
+    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.reload" and return unless shipment.reload
+    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.save" and return unless shipment.save
     @order.unstock_items! and flash[:notice] = "Error on @order.save " and return unless @order.save
     @order.unstock_items! and flash[:notice] = "Error on @order.next "  and return unless @order.next
+    @order.unstock_items! and flash[:notice] = "Error on @order.next "  and return unless @order.next
+    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.ready" and return unless shipment.ready
+    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.save" and return unless shipment.save
+    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.ship" and return unless shipment.ship
+    @order.unstock_items! and flash[:notice] = "Error #{shipment.errors.messages} on shipment.save" and return unless shipment.save
     @order.unstock_items! and flash[:notice] = "Error on @order.save #2" and return unless @order.save
-
+    @order.update!
+    @order.save
+    flash[:notice] = "Order #{@order.number} is marked as complete and shipped"
   end
 
 

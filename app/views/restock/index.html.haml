@@ -3,7 +3,6 @@
     .side-art-teachers
   .main-content-wrapper
     .full-content
-    .full-content
       %h1= t(:shopping_cart)
       %p= t(:sa_restock_intro)
       = render :partial => "pending_shipments", :object => @pending_shipments if @pending_shipments.count > 0
@@ -22,15 +21,15 @@
                   = t('.subtotal')
                   \:
                   %span.order-total= number_to_currency(@order.total)
-              .links.columns.sixteen.alpha.omega{"data-hook" => "cart_buttons"}
-                = button_tag :class => 'primary', :id => 'update-button' do
+              %p.links.columns.sixteen.alpha.omega{"data-hook" => "cart_buttons"}
+                = button_tag :class => 'btn update-cart primary', :id => 'update-button' do
                   = t(:update)
                 = link_to t('.transmit'), spree.checkout_path(:state => 'transmitted'), :class => 'button checkout primary', :id => 'checkout-link' if @order.state == 'cart'
                 = link_to t('.transmit_again'), spree.checkout_path(:state => 'transmitted'), :class => 'button checkout primary', :id => 'checkout-link' if @order.state == 'transmitted'
         #empty-cart{"data-hook" => ""}
-          = form_tag spree.empty_cart_path, :method => :put do
-            %p#clear_cart_link{"data-hook" => ""}
-              = submit_tag t(:empty_cart), :class => 'button gray'
-              = t(:or)
-              = link_to t('.continue_shopping'),
-                spree.products_url(host: request.host,port: request.port,subdomain: 'le'), class: 'continue'
+          %p
+            = link_to  t(:empty_cart),restock_empty_cart_path, :class => 'btn empty-cart'
+            = t(:or)
+            = link_to t('.continue_shopping'),
+            spree.products_url(host: request.host,port: request.port,subdomain: 'le'), class: 'continue'
+            

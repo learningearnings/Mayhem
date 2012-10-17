@@ -5,6 +5,7 @@ en:
   add_to_cart: "Buy this"
   shopping_cart: "School Store Restocking"
   sa_your_cart_is_empty: "You don't have a current restocking order"
+  insufficient_funds: "You have too many items in your order.   Please remove some and re-transmit"
   sa_continue_shopping: "Shop for Rewards"
   only_logged_in_students_can_purchase: "Only logged in students can purchase from this store"
   school_store_is_for_students: "This is the School Store for %{school}.  Only logged in students from %{school} can purchase items from this store with their LE Credits"
