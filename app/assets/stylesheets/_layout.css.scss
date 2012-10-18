@@ -1004,17 +1004,22 @@ input, textarea, select {
   width: 814px;
   height: 356px;
   position: absolute;
-  top: 160px;
+  top: 200px;
   left: 130px;
 }
 
 .locker-desc {
-  position: absolute;
-  top: 20px;
-  width: 600px;
-  left: 200px;
+  position: relative;
+  top: 0;
+  left: 40px;
+  padding: 0 10em 3em 0;
     h2 {
       color: #1f2870;
+    }
+    p {
+      font-size: 1.8em;
+      margin-bottom: 2em;
+      line-height: 140%;
     }
 }
 
@@ -1312,7 +1317,8 @@ input, textarea, select {
 
 .flash-message {
     position: absolute;
-    left: 300px;
+    top: 210px;
+    left: 40%;
     z-index: 17;
 }
 
@@ -1682,7 +1688,7 @@ input, textarea, select {
     
   }
   p {
-    font-size: 1.5em;
+    
   }
 }
 
@@ -1867,4 +1873,28 @@ hr {
 .placeholder {
   padding-top: 0;
   margin-top: -8px;
+}
+
+#existing-customer {
+  label {
+    font-size: 1em;
+    display: inline-block;
+    margin-top: 15px;
+  }
+  input {
+    height: 30px;
+  }
+}
+
+.create-classroom {
+  form {
+    margin-top: 30px;
+      input {
+        height: 30px;
+      }
+      label {
+        font-weigth: bold;
+        font-size: 1.8em;
+      }
+  }
 }
