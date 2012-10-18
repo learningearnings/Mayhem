@@ -130,28 +130,28 @@ $(document).ready(function() {
   
    
  //detect the width on page load
-   $(document).ready(function(){
-     var current_width = $(window).width();
-      //do something with the width value here!
-     if(current_width < 1180){
-       $(".side-art").css( "display","none" );
-     }
-     else {
-       $(".side-art").css( "display","block" );
-     }
-   });
-   //update the width value when the browser is resized 
-   $(window).resize(function(){
-     var current_width = $(window).width();
-    //do something with the width value here!
-     if(current_width < 1180){
-       $(".side-art").css( "display","none" );
-     }
-     else {
-       $(".side-art").css( "display","block" );
-     }
-   });
-   
+$(document).ready(function(){
+ var current_width = $(window).width();
+  //do something with the width value here!
+ if(current_width < 1180){
+   $(".side-art").css( "display","none" );
+ }
+ else {
+   $(".side-art").css( "display","block" );
+ }
+});
+//update the width value when the browser is resized 
+$(window).resize(function(){
+ var current_width = $(window).width();
+//do something with the width value here!
+ if(current_width < 1180){
+   $(".side-art").css( "display","none" );
+ }
+ else {
+   $(".side-art").css( "display","block" );
+ }
+});
+      
 
 });
 

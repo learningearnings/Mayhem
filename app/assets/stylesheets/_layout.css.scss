@@ -274,27 +274,6 @@ input, textarea, select {
   background-image: url(asset_path('common/join-menu-blue-no-text-bg.png', image));
 }
 
-.custom-nav-bar {
-  position: relative;
-  top: 20px;
-  float: right;
-  .primary-nav {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-      li {
-        display: inline;
-        a {
-          text-decoration: none;
-          padding: 15px;
-          font-size: 1.7em;
-          font-family: 'sketch_rockwellregular';  
-        }
-      }
-  }
-}
-
-
 .nav-container, .nav-container-corkboard {
   position: absolute;
   top: 340px;
@@ -452,33 +431,34 @@ input, textarea, select {
   }
 }
 
-.custom-nav-bar .navbar-inner {
-  background-color: transparent;
-  background-image: none;
-  border: none;
-  -webkit-border-radius: none;
-  -moz-border-radius: none;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+.custom-nav-bar {
+  position: relative;
+  top: 0;
+  float: right;
+  .primary-nav {
+    list-style-type: none;
+    margin: 0;
+    padding:0;
+      li {
+        display: inline;
+        padding: 1.7em 0;
+        
+        a {
+          text-decoration: none;
+          font-family: 'sketch_rockwellregular';  
+          display: inline-block;
+        }
+      }
+  }
 }
 
-.navbar .nav li a {
-  padding: 1.3em 1.3em 1.7em 1em;
-  font-size: 13px;
+
+.primary-nav li a {
+  padding: 1em 1.3em 1em 1em;
+  font-size: 1.6em;
 }
 
-
-.navbar .nav {
-  position: static;
-  right: 0;
-  float: none;
-  display: block;
-  margin: 0;
-}
-
-.nav.primary-nav .home {
+.primary-nav .home {
   color: #25860b;
 }
 
@@ -563,13 +543,13 @@ input, textarea, select {
 }
 
 .primary-nav .restock:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C
 }
 
 .restock-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C
 }
@@ -643,13 +623,13 @@ input, textarea, select {
 }
 
 .primary-nav .reports:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #470BC1;  
 }
 
 .reports-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #470BC1; 
 }
@@ -659,13 +639,13 @@ input, textarea, select {
 }
 
 .primary-nav .classrooms:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08;  
 }
 
 .classrooms-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08; 
 }
@@ -676,13 +656,13 @@ input, textarea, select {
 }
 
 .primary-nav .lounge:hover {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C;  
 }
 
 .lounge-selected {
-  background-image: url(asset_path('rewards_selected.png', image));
+  background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C; 
 }
@@ -1024,17 +1004,22 @@ input, textarea, select {
   width: 814px;
   height: 356px;
   position: absolute;
-  top: 160px;
+  top: 200px;
   left: 130px;
 }
 
 .locker-desc {
-  position: absolute;
-  top: 20px;
-  width: 600px;
-  left: 200px;
+  position: relative;
+  top: 0;
+  left: 40px;
+  padding: 0 10em 3em 0;
     h2 {
       color: #1f2870;
+    }
+    p {
+      font-size: 1.8em;
+      margin-bottom: 2em;
+      line-height: 140%;
     }
 }
 
@@ -1332,7 +1317,8 @@ input, textarea, select {
 
 .flash-message {
     position: absolute;
-    left: 300px;
+    top: 210px;
+    left: 40%;
     z-index: 17;
 }
 
@@ -1409,8 +1395,10 @@ input, textarea, select {
 
 .person-details {
   margin-right: 1em;
+  max-width: 500px;
+  float: left;
   h3 {
-    line-height: 16px;
+    line-height: 24px;
     color: #F63;
   }
   .links {
@@ -1557,7 +1545,10 @@ input, textarea, select {
 }
 
 .reward-highlights {
+  padding-top: 70px;
   .product {
+    width: 240px;
+    margin: 0 0 0 50px;
     .product-image {
       display: inline-block;
     }
@@ -1697,7 +1688,7 @@ input, textarea, select {
     
   }
   p {
-    font-size: 1.5em;
+    
   }
 }
 
@@ -1877,4 +1868,33 @@ hr {
 .news-posts {
   width: 540px;
   padding: 0 20px 40px 20px;
+}
+
+.placeholder {
+  padding-top: 0;
+  margin-top: -8px;
+}
+
+#existing-customer {
+  label {
+    font-size: 1em;
+    display: inline-block;
+    margin-top: 15px;
+  }
+  input {
+    height: 30px;
+  }
+}
+
+.create-classroom {
+  form {
+    margin-top: 30px;
+      input {
+        height: 30px;
+      }
+      label {
+        font-weigth: bold;
+        font-size: 1.8em;
+      }
+  }
 }
