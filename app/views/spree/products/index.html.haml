@@ -1,9 +1,6 @@
-.content-container
-  .side-art
-    .side-art-teachers
-  .main-content-wrapper
-    .full-content
-      %h2= t('.products',:scope => [store_type], :school => current_school_name)
-      %p= t('.products_message',:scope => [store_type])
-      %div{"data-hook" => "homepage_products"}
-        = render :partial => 'spree/shared/products', :locals => { :products => @products }
+.main-content-wrapper
+  .full-content
+    %h2= t('.products',:scope => [store_type], :school => current_school_name)
+    %p= t('.products_message',:scope => [store_type])
+    %div{"data-hook" => "homepage_products"}
+      = render :partial => 'spree/shared/products', :locals => { :products => @products }
