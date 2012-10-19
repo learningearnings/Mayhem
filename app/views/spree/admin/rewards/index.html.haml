@@ -1,32 +1,10 @@
-%h1 Rewards
-
-= link_to "New Reward", new_admin_reward_path
-%p
-
+- content_for :head do
+  = stylesheet_link_tag    'spree_admin', media: 'all'
+%h2.object-title Rewards Administration
 = paginate @products, :theme => 'le'
-%table#listing_products.index
-  %tr
-    %th= t(:image)
-    %th= t(:name)
-    %th= t(:master_price)
-    %th= "Stores"
-    %th
-  - @products.each do |product|
-    %tr
-      %td= image_tag product.thumb, size: '100x100'
-      %td
-        = link_to product.try(:name), edit_admin_product_path(product)
-        - if product.property("retail_price")
-          %div
-            Retail Price:
-            = product.property("retail_price") + " Credits"
-          %div
-            Retail Quantity:
-            = product.property("retail_quantity") + " shipped at one time"
-      %td= number_to_currency product.price rescue ''
-      %td= product.store_ids.count
-      %td.actions{"data-hook" => "admin_products_index_row_actions"}
-        = link_to "Edit", edit_admin_reward_path(id: product.id), :class => 'edit' unless product.deleted?
-        |
-        = link_to 'Delete', admin_remove_reward_path(product: product.id), confirm: 'Are you sure?'
-
+.object-actions
+  = link_to "New Reward", new_admin_reward_path
+.content-container
+  .main-content-wrapper
+    .full-content
+      = render :partial => 'admin_rewards', :locals => { :products => @products }
