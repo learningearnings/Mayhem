@@ -1,8 +1,11 @@
 class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :authenticate_leadmin
+  before_filter :maintain_page, :except => [:index]
+  before_filter :check_saved_page, :only => [:index]
 
   def index
-    @products = Spree::Product.not_deleted.with_property("reward_type").where("#{Spree::ProductProperty.table_name}.value" => ['charity','wholesale','global']).order(:name).page(params[:page]).per(10)
+    @products = Spree::Product.not_deleted.with_property("reward_type").where("#{Spree::ProductProperty.table_name}.value" => ['charity','wholesale','global']).order(:name).page(params[:page]).per(12)
+    maintain_page params[:page] || 1
   end
 
   def new
@@ -24,7 +27,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     if @product.save
       after_save
       flash[:notice] = "Your reward was created successfully."
-      redirect_to admin_rewards_path
+      redirect_to admin_rewards_path, :page => (params[:page_id] || 0)
     else
       flash[:error] = "There was an error saving your Reward, please check the form and try again"
       render 'new'
@@ -135,17 +138,49 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def destroy
-    @product = Spree::Product.find(params[:product])
+    @product = Spree::Product.find(params[:id])
     @product.deleted_at = Time.now
     if @product.save
-      flash[:notice] = "Your reward was deleted successfully."
+      flash[:notice] = "Your reward was deleted successfully #{view_context.link_to("Undo", admin_undelete_reward_path(:id => params[:id]))}".html_safe
     else
       flash[:error] = "There was an error updating your Reward, please check the form and try again"
     end
     redirect_to admin_rewards_path
   end
 
+  def undelete
+    @product = Spree::Product.find(params[:id])
+    @product.deleted_at = nil
+    if @product.save
+      flash[:notice] = "Your reward was un-deleted successfully."
+      flash[:undeleted] = params[:id]
+    else
+      flash[:error] = "There was an error updating your Reward, please check the form and try again"
+    end
+    redirect_to admin_rewards_path
+  end
+
+
   private
+
+  def check_saved_page
+    return if params[:page]  # a passed in param trumps everything
+    key = controller_path + '_page'
+    if flash[key]
+      params[:page] = flash[key]
+    end
+  end
+
+  def maintain_page page = nil
+    key = controller_path + '_page'
+    last_page_key = controller_path + '_lastpage'
+    if page.nil? && params[:page].nil?
+      flash[key] = flash[last_page_key] # make it available for index if needed
+      flash.keep(last_page_key) # keep the last page around in case there are other interactions
+    elsif page
+      flash[last_page_key] = page  # index keeps this hot for future reference by check_saved_page
+    end
+  end
 
   def authenticate_leadmin
     if current_user && current_user.person.type == "LeAdmin"

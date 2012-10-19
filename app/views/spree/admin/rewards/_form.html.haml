@@ -1,3 +1,5 @@
+- content_for :head do
+  = stylesheet_link_tag    'spree_admin', media: 'all'
 %p
 - if @product.errors.any?
   #error_explanation
@@ -7,74 +9,72 @@
     %ul
       - @product.errors.full_messages.each do |msg|
         %li= msg
+.row
+  %fieldset.span4
+    %legend Common Properties
+    .control-group
+      = f.label :product_type, 'Product Type', {:class => 'control-label'}
+      .pull-right
+        = select_tag :product_type, options_for_select(@types), :class => 'input-medium'
+    .control-group
+      = f.label :name, 'Product Name', {:class => 'control-label'}
+      .pull-right
+        = f.text_field :name, :class => 'input-large'
+    .control-group
+      = f.label :price, 'Price', {:class => 'control-label'}
+      .input-prepend.pull-right
+        %span.add-on $
+        = f.text_field :price,{ :value => number_to_currency(@product.price, :unit => ''), :class => 'numeric input-small'}
+    .control-group#on_hand
+      = f.label :on_hand, 'Count on hand', {:class => 'control-label'}
+      .pull-right
+        = f.text_field :on_hand, {:class => 'numeric input-small'}
+    .control-group
+      = f.label :available_on, 'Available on', {:class => 'control-label'}
+      .pull-right
+        = f.text_field :available_on, :class => 'datepicker input-large numeric'
+  %fieldset.span4
+    %legend Description
+    .control-group
+      = f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth', :placeholder => "Description seen by Students" }
+    - unless @product.images.empty?
+      .control-group
+        = image_tag @product.thumb
+        = f.label :current_image
+      = f.fields_for :images do |i|
+        .control-group
+          = i.label :attachment_file_name, "New Image", {:class => 'control-label'}
+          = i.file_field :attachment_file_name
+      = f.fields_for :svg do |i|
+        .control-group#svg
+          = i.label :svg, "Charity SVG", {:class => 'control-label'}
+          = i.file_field :svg_file_name
+      - if @product.svg_file_name
+        .control-group
+          = f.label :current_svg, "Current SVG", {:class => 'control-label'}
+          = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
+          = f.hidden_field :id, value: @product.id
+          = f.hidden_field :filter, :value => 1
+  %fieldset.span4
+    %legend Retail Product Info
+    .control-group
+      = text_area_tag :school_admin_description, @product.property('school_admin_description') , {:cols => 60, :rows => 4, :class => 'fullwidth', :placeholder => "Description seen by School Administrators"}
+    .control-group#price
+      = f.label :retail_price, 'Retail Price', {:class => 'control-label'}
+      .input-prepend.pull-right
+        %span.add-on $
+        = f.text_field :retail_price, { :value => number_to_currency(@product.property('retail_price'), :unit => ''), :class => 'numeric input-small' }
+    .control-group#quantity
+      = f.label :retail_quantity, 'Minimum Shipment', {:class => 'control-label'}
+      .pull-right
+        = f.text_field :retail_quantity,:class => 'numeric input-small'
 
-%fieldset
-  %legend
-    Product Details
-  .clearfix
-    = f.label 'Product Type'
-    = select_tag :product_type, options_for_select(@types)
-  .clearfix
-    = f.label 'Name'
-    .input= f.text_field :name
-  .clearfix
-    = f.label 'Classroom'
-    = select_tag :classroom, options_from_collection_for_select(@classrooms, :id, :name)
-  .clearfix
-    = f.label 'Min/Max Grades'
-    = select_tag :min_grade, options_for_select(@grades)
-    = select_tag :max_grade, options_for_select(@grades)
-  .clearfix
-    = f.label 'Description'
-    .input= f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth'}
-  .clearfix
-    = f.label 'Price'
-    .input= f.text_field :price, :value => number_to_currency(@product.price, :unit => '')
-  .clearfix#on_hand
-    = f.label 'Count on hand'
-    .input= f.text_field :on_hand
-  .clearfix#quantity
-    = f.label 'Retail Qty'
-    .input= text_field_tag :retail_qty, @product.retail_quantity
-  .clearfix#price
-    = f.label 'Retail Price'
-    .input= text_field_tag :retail_price, @product.retail_price
-  .clearfix
-    = f.label 'Available on'
-    .input= f.text_field :available_on, :class => 'datepicker'
-  - unless @product.images.empty?
-    .clearfix
-      = image_tag @product.thumb
-      %p
-      = f.label :current_image
-  .clearfix
-    = f.fields_for :images do |i|
-      = i.label :image
-      %br
-      = i.file_field :attachment_file_name
-      %p
-  .clearfix#svg
-    = f.fields_for :svg do |i|
-      = i.label :svg
-      %br
-      = i.file_field :svg_file_name
-      %p
-  - if @product.svg_file_name
-    .clearfix
-      = f.label :current_svg
-      = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
-  .clearfix
-    = f.hidden_field :id, value: @product.id
-  .clearfix
-    .input= f.hidden_field :filter, :value => 1
-
-
-%p
 = button_to :submit
 
 :javascript
   $(document).ready(function() {
     $('#svg').hide();
+    alert("Ready!")
   });
   $('select#product_type').change(function() {
     if ($('select#product_type option:selected').val() == "wholesale"){

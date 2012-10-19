@@ -1,0 +1,142 @@
+
+@font-face {
+  font-family: 'sketch_rockwellregular';
+  src: url('sketchrockwell-bold-webfont.eot');
+  src: url('sketchrockwell-bold-webfont.eot?#iefix') format("embedded-opentype"), url('sketchrockwell-bold-webfont.woff') format("woff"), url('sketchrockwell-bold-webfont.ttf') format("truetype"), url('sketchrockwell-bold-webfont.svg#sketch_rockwellregular') format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+
+
+.main-content-wrapper {
+  padding: 2em;
+  display: inline-block;
+  vertical-align: top;
+  width:99%;
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;
+
+  .full-content {
+    width: 99%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .primary-content {
+    width: 62%;
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+  }
+  .secondary-content {
+    width: 37%;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 2em;
+
+  }
+  p {
+    font-size: 1.5em;
+  }
+}
+
+.content-container {
+    width: 100%;
+    min-width: 1060px;
+    overflow: hidden;
+}
+
+
+
+.pagination {
+    float: right;
+    margin: 0px;
+}
+
+h2.object-title {
+    height: 40px;
+    padding-top: 10px;
+    margin: 0px;
+    float: left;
+}
+
+.object-actions {
+    clear: both;
+}
+
+
+.product-tile {
+    font-size: 1.2em;
+    float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    position: relative;
+    @extend .span3 !optional;
+    @extend .thumbnail !optional;
+    background-color: white;
+    height: 125px;
+    padding: 1em;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;    
+}
+
+.product-image {
+    height: 100px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.product-details {
+  position: relative;
+  display: inline-block;
+  max-width: 180px;
+  z-index: 10;
+}
+
+a.info {
+    height: 20px;
+    overflow: hidden;
+}
+
+.wholesale {
+    .badge {
+        background: rgba(37, 11, 134, 0.2);
+    }
+}
+.charity {
+    .badge {
+        background: rgba(197, 134, 11, 0.2);
+    }
+}
+.global {
+    .badge {
+        background: rgba(37, 134, 11, 0.2);
+    }
+}
+
+.badge {
+    @include rotate(-45deg);
+    color: rgba(255,255,255, 0.9);
+    z-index: 1;
+    width: 100px;
+    font-size: 1.1em;
+    display: inline-block;
+    position: absolute;
+    line-height: 1.5em;
+    bottom: 35px;
+    text-align: center;
+    right: 0px;
+    font-family: 'sketch_rockwellregular';  
+}
+
+.numeric {
+    text-align: right;
+}
+
+input[type='file'] {
+   border: 1px solid transparent;
+   display: inline-block;
+   width: 224px;
+}

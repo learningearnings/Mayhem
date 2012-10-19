@@ -184,12 +184,16 @@ end
 Spree::Core::Engine.routes.prepend do
   devise_scope :user do
     get '/logout' => 'user_sessions#destroy', :as => :get_destroy_user_session
+    get '/logout' => 'user_sessions#destroy',:remote => true, :as => :destroy_user_session
   end
   namespace :admin do
     match "le_shipments/ship/:order_number" => "le_shipments#ship", :as => :le_ship_order
     match "le_shimpents/print/:order_number" => "le_shipments#print", :as => :le_print_order
-    resources :rewards
+    resources :rewards do
+      get 'page/:page', :action => :index, :on => :collection
+    end
     match 'remove_reward' => 'rewards#destroy'
+    match 'undelete_reward/:id' => 'rewards#undelete', :as => :undelete_reward
     resources :le_shipments
   end
 end
