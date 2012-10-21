@@ -56,7 +56,7 @@ gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'
 gem 'dragonfly'
-gem 'nested_form', :git => 'git://github.com/ryanb/nested_form.git'
+gem 'nested_form', :git => 'git://github.com/learningearnings/nested_form.git'
 gem 'simple_form'
 gem 'country_select'
 gem "ckeditor", '3.7.3'
@@ -74,20 +74,18 @@ gem 'state_machine'
 
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
 gem 'spree', '~> 1.2.0'
-# gem 'spree', :git => "git@github.com:learningearnings/spree.git",  branch: '1-2-stable'
-gem 'spree_auth_devise', :git => "git://github.com/spree/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
+gem 'spree_auth_devise', :git => "git://github.com/learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
 gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'
-# Hope we can use master again soon, they need to accept PR 25 on
-# spree-multi-domain: https://github.com/spree/spree-multi-domain/pull/25
-
+# Hope we can use master again soon, they need to accept PR 25 o
+n
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'compass-rails'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   #gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
-  gem "compass_twitter_bootstrap", :git => "git://github.com/kristianmandrup/compass-twitter-bootstrap.git"
+  gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git"
 end
 
 # Use unicorn as the app server
@@ -111,7 +109,7 @@ group :development, :test do
   gem 'libnotify' if /linux/ =~ RUBY_PLATFORM
   gem 'growl' if /darwin/ =~ RUBY_PLATFORM
   gem 'thin'
-  gem 'rack-bug', git: 'https://github.com/brynary/rack-bug.git', branch: 'rails3'
+  gem 'rack-bug', git: 'https://github.com/learningearnings/rack-bug.git', branch: 'rails3'
 end
 
 group :test do
@@ -127,7 +125,7 @@ group :test do
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
   gem 'mocha', '~> 0.12.1'
-  gem 'valid_attribute', git: 'git://github.com/wojtekmach/valid_attribute.git', branch: 'minitest-matchers-11'
+  gem 'valid_attribute', git: 'git://github.com/learningearnings/valid_attribute.git', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
 end
 
