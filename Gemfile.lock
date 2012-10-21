@@ -1,18 +1,18 @@
 GIT
-  remote: git://github.com/kristianmandrup/compass-twitter-bootstrap.git
+  remote: git://github.com/learningearnings/compass-twitter-bootstrap.git
   revision: c3ccce2cca5ec52437925e8feaaa11fead51e132
   specs:
     compass_twitter_bootstrap (2.0.3)
       compass
 
 GIT
-  remote: git://github.com/ryanb/nested_form.git
-  revision: 531a97cb15f179a6cf05162b920a3d0d9c4f9e40
+  remote: git://github.com/learningearnings/nested_form.git
+  revision: a6c38813d4bb7a89f13ca3a8a1cb2f81b693bb30
   specs:
     nested_form (0.2.3)
 
 GIT
-  remote: git://github.com/spree/spree_auth_devise
+  remote: git://github.com/learningearnings/spree_auth_devise
   revision: eb0f30380dc83390b52939195bf92b4195f5c5a3
   ref: eb0f30380dc83390b52939195bf92b4195f5c5a3
   specs:
@@ -22,7 +22,7 @@ GIT
       spree_core
 
 GIT
-  remote: git://github.com/wojtekmach/valid_attribute.git
+  remote: git://github.com/learningearnings/valid_attribute.git
   revision: cf96d8b1544ed068a97d694c3124ac86ea37f398
   branch: minitest-matchers-11
   specs:
@@ -36,7 +36,7 @@ GIT
       spree_core (~> 1.2)
 
 GIT
-  remote: https://github.com/brynary/rack-bug.git
+  remote: https://github.com/learningearnings/rack-bug.git
   revision: 1e6d33664fb21a5f08836e5d8a9d7bfcc47c8d81
   branch: rails3
   specs:
@@ -110,7 +110,7 @@ GEM
     bcrypt-ruby (3.0.1)
     bourbon (2.1.1)
       sass (>= 3.1)
-    builder (3.0.3)
+    builder (3.0.4)
     cancan (1.6.7)
     capistrano (2.13.3)
       highline
@@ -135,7 +135,7 @@ GEM
     ckeditor (3.7.3)
       mime-types
       orm_adapter
-    cocaine (0.4.0)
+    cocaine (0.4.2)
     coderay (1.0.8)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -232,10 +232,9 @@ GEM
     json (1.7.5)
     jwt (0.1.5)
       multi_json (>= 1.0)
-    kaminari (0.13.0)
+    kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-      railties (>= 3.0.0)
     kgio (2.7.4)
     launchy (2.1.2)
       addressable (~> 2.3)

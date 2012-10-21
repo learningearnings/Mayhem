@@ -78,7 +78,6 @@ gem 'spree_auth_devise', :git => "git://github.com/learningearnings/spree_auth_d
 
 gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'
 # Hope we can use master again soon, they need to accept PR 25 o
-n
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'compass-rails'
