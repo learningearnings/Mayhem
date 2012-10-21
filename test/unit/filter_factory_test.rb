@@ -6,6 +6,7 @@ describe FilterFactory do
   before do
     @all_inclusive = mock("all inclusive filter")
     Filter.stubs(:find).with(1).returns(@all_inclusive)
+    @all_inclusive.stubs(:id).returns(1)
   end
 
   it "has the basics down" do
@@ -43,6 +44,7 @@ describe FilterFactory do
   end
 
   it "can find state-only filter membership" do
+    @all_inclusive.expects(:id).returns(1)
     state = FactoryGirl.create(:state)
     school = FactoryGirl.create(:school)
     address = FactoryGirl.create(:address, state: state, addressable: school)
@@ -57,10 +59,11 @@ describe FilterFactory do
     f.save
     f.id.wont_be_nil
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
   end
 
   it "can find school-only filter membership" do
+    @all_inclusive.expects(:id).returns(1)
     state = FactoryGirl.create(:state)
     school = FactoryGirl.create(:school)
     address = FactoryGirl.create(:address, state: state, addressable: school)
@@ -75,10 +78,11 @@ describe FilterFactory do
     f.id.wont_be_nil
     f.schools.must_include school
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
   end
 
   it "can find person-class-only filter membership" do
+    @all_inclusive.expects(:id).returns(1)
     student = FactoryGirl.create(:student, grade: 9)
     teacher = FactoryGirl.create(:teacher, grade: 9)
     ff = FilterFactory.new
@@ -90,12 +94,13 @@ describe FilterFactory do
     f.id.wont_be_nil
     f.person_classes.must_include "Student"
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
     membership = ff.find_filter_membership(teacher)
-    membership.wont_include f
+    membership.wont_include f.id
   end
 
   it "can find school-classroom filter membership" do
+    @all_inclusive.expects(:id).returns(1)
     state = FactoryGirl.create(:state)
     school = FactoryGirl.create(:school)
     address = FactoryGirl.create(:address, state: state, addressable: school)
@@ -115,8 +120,8 @@ describe FilterFactory do
     f.id.wont_be_nil
     f.classrooms.must_include classroom
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
     membership = ff.find_filter_membership(teacher)
-    membership.must_include f
+    membership.must_include f.id
   end
 end
