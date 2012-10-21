@@ -1,5 +1,6 @@
 Spree::ProductsController.class_eval do
   before_filter :authenticate_user!
+  before_filter :reset_searcher_class
 
   def index
     temp_params = params
@@ -15,4 +16,14 @@ Spree::ProductsController.class_eval do
     respond_with(@products)
   end
 
+private
+  def reset_searcher_class
+    if Spree::Config.searcher_class != Spree::Search::Filter
+      Spree::Config.searcher_class = Spree::Search::Filter
+      $stderr.puts ("================================Had to reset the search filter class================================")
+    end
+  end
+
+
 end
+

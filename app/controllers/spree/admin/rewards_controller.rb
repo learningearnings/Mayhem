@@ -3,16 +3,21 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :maintain_page, :except => [:index]
   before_filter :check_saved_page, :only => [:index]
   before_filter :subdomain_required
-
+  after_filter :only => [:index ] { |f| maintain_page(params[:page] || 1) }
 
 
   def index
+    if Spree::Config.searcher_class != Spree::Search::Filter
+      Spree::Config.searcher_class = Spree::Search::Filter
+      $stderr.puts ("================================Had to reset the search filter class================================")
+    end
+
     params[:searcher_current_user] = current_user
     params[:page] = nil unless params[:keywords].blank?
     @searcher = Spree::Config.searcher_class.new(params)
     @products = @searcher.retrieve_products.order(:name).page(params[:page]).per(12)
     params[:searcher_current_user] = nil
-    maintain_page params[:page] || 1
+#    maintain_page params[:page] || 1
   end
 
   def new

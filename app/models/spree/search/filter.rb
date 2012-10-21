@@ -6,9 +6,6 @@ module Spree::Search
   class Filter < Spree::Search::MultiDomain
     def retrieve_products
       @products_scope = get_base_scope
-#      curr_page = @properties[:page] || 1
-#      le_per_page = @properties[:per_page] || per_page
-#      @products = @products_scope.includes([:master]).page(curr_page).per(le_per_page)
       @products_scope.includes([:master])
 
     end
@@ -31,6 +28,7 @@ module Spree::Search
         base_scope = base_scope.on_hand unless Spree::Config[:show_zero_stock_products]
       end
       base_scope = add_search_scopes(base_scope)
+      # don't use filters with LeAdmins
       unless  (@current_user && @current_user.person.is_a?(LeAdmin))
         base_scope.with_filter(@filters)
       end

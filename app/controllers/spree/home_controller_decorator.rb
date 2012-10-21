@@ -1,5 +1,5 @@
 Spree::HomeController.class_eval do
-
+  before_filter :reset_searcher_class
   def index
     temp_params = params
     temp_params[:filters] = session[:filters]
@@ -13,5 +13,14 @@ Spree::HomeController.class_eval do
     @products = @products.page(params[:page]).per(9)
     respond_with(@products)
   end
+
+private
+  def reset_searcher_class
+    if Spree::Config.searcher_class != Spree::Search::Filter
+      Spree::Config.searcher_class = Spree::Search::Filter
+      $stderr.puts ("================================Had to reset the search filter class================================")
+    end
+  end
+
 
 end
