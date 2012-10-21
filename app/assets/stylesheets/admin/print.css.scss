@@ -1,0 +1,44 @@
+@media print {
+
+    @import "compass_twitter_bootstrap";
+
+    table.print-order {
+        @extend .table-condensed;
+        @extend .table-striped;
+        -webkit-print-color-adjust:exact;
+    }
+
+    #header, #admin-menu, #footer {
+        display: none;
+    }
+
+    .table {
+        width: 100%;
+        border: 1px solid black;
+        font-size: 1.4em;
+    }
+
+    td, th {
+        border: 1px solid black;
+    }
+    .numeric {
+        text-align: right;
+    }
+
+    .adr {
+        float: left;
+        margin-right: 1em;
+        margin-bottom: 1em;
+        padding: 1em;
+        border: solid 1px #999;
+        -moz-border-radius: .5em;
+        -webkit-border-radius: .5em;
+        min-width: 46%;
+    }
+
+    .noprint {
+        display: none;
+    }
+
+
+}

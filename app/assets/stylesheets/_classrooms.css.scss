@@ -3,6 +3,8 @@
     float: left;
     margin-bottom: 10px;
     margin-left: 10px;
+    height: 1.5em;
+    overflow: hidden;
     @extend .span3 !optional;
     @extend .thumbnail !optional;
     background-color: white;

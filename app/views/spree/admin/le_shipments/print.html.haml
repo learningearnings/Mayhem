@@ -1,7 +1,9 @@
 - content_for :head do
-  = stylesheet_link_tag 'store/admin/print', :media => 'print'
+  = stylesheet_link_tag 'admin/print', :media => 'print'
 
-%h2= "Order # #{@order.number}"
+%h2
+  = "Order # #{@order.number}"
+  %button{:class => "btn btn-primary noprint", :onclick => "window.print(); return false;"} Print
 .adr
   %h4= t(:ship_address)
   %div= @address.company
@@ -9,17 +11,32 @@
   %div= @address.address1
   %div= @address.address2 if @address.address2
   %div= "#{@address.city}, #{@address.state_text}, #{@address.zipcode}"
-%hr
-%table{:class => 'table table-condensed'}
+%hr.noprint
+%table.table.print-order
   %thead
     %tr
       %th Product ID
       %th Title
       %th Items
       %th Price
-    - @order.line_items.each do |li|
-      %tr
-        %td= li.product.id
-        %td= li.product.name
-        %td= li.quantity
-        %td= number_to_currency(li.price)
+  %tbody
+  - total = 0
+  - @order.line_items.each do |li|
+    %tr
+      - total += li.price
+      %td= li.product.id
+      %td= li.product.name
+      %td
+        .numeric= li.quantity
+      %td
+        .numeric= number_to_currency(li.price)
+  %tr
+    %td{:colspan => 2}
+      .numeric
+        %strong Order Totals
+    %td
+      .numeric
+        %strong= @order.item_count
+    %td
+      .numeric
+        %strong= number_to_currency(total)

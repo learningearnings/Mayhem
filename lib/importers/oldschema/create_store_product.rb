@@ -87,7 +87,7 @@ class CreateStoreProduct < ActiveModelCommand
       product = spree_product_class.with_property_value('legacy_selector',@legacy_selector).first
       if product
         product = spree_product_class.find(product.id)
-        product.stores << store
+        product.store_ids |= [store.id]
         product.save
         return product
       else
@@ -105,6 +105,7 @@ class CreateStoreProduct < ActiveModelCommand
     product.price = @price
     product.master.price = @retail_price
     if @reward_type == 'wholesale' || @reward_type == 'global' || @reward_type == 'charity'
+      le_store = spree_store_class.find_by_code('le') if !le_store
       product.stores << le_store if le_store
     else
       product.stores << store

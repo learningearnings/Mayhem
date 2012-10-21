@@ -10,7 +10,7 @@
             %div= link_to '<i class="icon-trash"></i>Delete'.html_safe,admin_remove_reward_path(id: product.id), confirm: 'Are you sure?'
           .badge=product.property('reward_type')
           .product-details
-            = link_to truncate("#{product.name}", :length => 50), edit_admin_reward_path(id: product.id), :class => 'info', :itemprop => "name", :title => product.name
+            = link_to truncate("#{product.name}", :length => 30), edit_admin_reward_path(id: product.id), :class => 'info', :itemprop => "name", :title => product.name
             .price.selling{:itemprop => "price"}
               %strong= number_to_currency product.price
             .quantity{:itemprop => "on_hand", :class => "#{product.on_hand < 1 ? 'warning' : ''}"}= product.on_hand.to_s + " on hand"

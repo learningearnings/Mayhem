@@ -1,6 +1,6 @@
-= paginate @message_images, :theme => 'le'
+= paginate @message_images
 - @message_images.each do |message_image|
   %div{:id => "#{message_image.id}", :class => "hover_image"}
     = image_tag(message_image.image.thumb('50x50#').url)
-= paginate @message_images, :theme => 'le'
+= paginate @message_images
 

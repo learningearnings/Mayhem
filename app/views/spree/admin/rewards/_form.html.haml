@@ -1,5 +1,3 @@
-- content_for :head do
-  = stylesheet_link_tag    'spree_admin', media: 'all'
 %p
 - if @product.errors.any?
   #error_explanation
@@ -10,8 +8,8 @@
       - @product.errors.full_messages.each do |msg|
         %li= msg
 .row
-  %fieldset.span4
-    %legend Common Properties
+  .span4
+    %h3 Common Properties
     .control-group
       = f.label :product_type, 'Product Type', {:class => 'control-label'}
       .pull-right
@@ -32,9 +30,9 @@
     .control-group
       = f.label :available_on, 'Available on', {:class => 'control-label'}
       .pull-right
-        = f.text_field :available_on, :class => 'datepicker input-large numeric'
-  %fieldset.span4
-    %legend Description
+        = f.text_field :available_on, :class => 'datepicker input-medium numeric'
+  .span4
+    %h3 Description
     .control-group
       = f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth', :placeholder => "Description seen by Students" }
     - unless @product.images.empty?
@@ -52,12 +50,12 @@
       - if @product.svg_file_name
         .control-group
           = f.label :current_svg, "Current SVG", {:class => 'control-label'}
-          = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe 
+          = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe
           = f.hidden_field :id, value: @product.id
           = f.hidden_field :filter, :value => 1
-  %fieldset.span4
-    %legend Retail Product Info
-    .control-group
+  .span4
+    %h3#retail-info Retail Product Info
+    .control-group#school-admin-description
       = text_area_tag :school_admin_description, @product.property('school_admin_description') , {:cols => 60, :rows => 4, :class => 'fullwidth', :placeholder => "Description seen by School Administrators"}
     .control-group#price
       = f.label :retail_price, 'Retail Price', {:class => 'control-label'}
@@ -69,33 +67,35 @@
       .pull-right
         = f.text_field :retail_quantity,:class => 'numeric input-small'
 
-= button_to :submit
+%button{:type => "submit", :class => "btn btn-primary"} Save Changes
 
 :javascript
   $(document).ready(function() {
     $('#svg').hide();
-    alert("Ready!")
   });
   $('select#product_type').change(function() {
     if ($('select#product_type option:selected').val() == "wholesale"){
       $('#svg').hide();
       $('#price').show();
+      $('#retail-info').show();
+      $('#school-admin-description').show();
       $('#quantity').show();
       $('#on_hand').show();
     }
     else if ($('select#product_type option:selected').val() == "charity"){
       $('#price').hide();
       $('#quantity').hide();
+      $('#retail-info').hide();
+      $('#school-admin-description').hide();
       $('#svg').show();
       $('#on_hand').hide();
-      $('#product_on_hand').attr("value", "99999");
     }
     else {
       $('#svg').hide();
       $('#price').hide();
+      $('#retail-info').hide();
+      $('#school-admin-description').hide();
       $('#quantity').hide();
       $('#on_hand').show();
     }
   });
-
-

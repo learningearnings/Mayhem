@@ -97,7 +97,6 @@ class OldSchoolImporter
 
     if !ns.save
       # TODO What to do here?
-      # binding.pry
     end
     ns
   end
@@ -534,7 +533,6 @@ class OldSchoolImporter
       teacher = Person.find_by_legacy_user_id(legacy_teacher_id)
       if teacher.nil?
         puts "Couldn't find teacherID #{legacy_teacher_id}"
-        #            binding.pry
       else
         @found_teachers[legacy_teacher_id] = teacher
       end
@@ -554,7 +552,6 @@ class OldSchoolImporter
         end
         puts "Couldn't find Student userID #{legacy_student_id}" unless old_student
         puts "Couldn't find Student userID #{legacy_student_id} but user #{old_student.userfname} #{old_student.userlname} exists for schoolid #{old_student.schoolID} - #{old_student.old_school.school}" if old_student
-        #            binding.pry
         return false
       end
       @found_students[legacy_student_id] = student

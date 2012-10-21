@@ -46,6 +46,11 @@ Spree::Product.class_eval do
     store_ids.include?(Spree::Store.find_by_name("le").id) && has_no_retail_properties?
   end
 
+  def reward_type
+    self.property("reward_type")
+  end
+
+
   def retail_quantity
     self.property("retail_quantity")
   end

@@ -1,8 +1,8 @@
 
 @font-face {
   font-family: 'sketch_rockwellregular';
-  src: url('sketchrockwell-bold-webfont.eot');
-  src: url('sketchrockwell-bold-webfont.eot?#iefix') format("embedded-opentype"), url('sketchrockwell-bold-webfont.woff') format("woff"), url('sketchrockwell-bold-webfont.ttf') format("truetype"), url('sketchrockwell-bold-webfont.svg#sketch_rockwellregular') format("svg");
+  src: url(asset_path('sketchrockwell-bold-webfont.eot',font));
+  src: url(asset_path('sketchrockwell-bold-webfont.eot?#iefix',font)) format("embedded-opentype"), url(asset_path('sketchrockwell-bold-webfont.woff',font)) format("woff"), url(asset_path('sketchrockwell-bold-webfont.ttf',font)) format("truetype"), url(asset_path('sketchrockwell-bold-webfont.svg#sketch_rockwellregular',font)) format("svg");
   font-weight: normal;
   font-style: normal; }
 
@@ -12,11 +12,13 @@
   padding: 2em;
   display: inline-block;
   vertical-align: top;
-  width:99%;
+
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
   box-shadow:         1px 2px 5px 1px #ccc;
+  min-height: 650px;
+
 
   .full-content {
     width: 99%;
@@ -67,7 +69,7 @@ h2.object-title {
 
 
 .product-tile {
-    font-size: 1.2em;
+    font-size: 1.1em;
     float: left;
     margin-bottom: 10px;
     margin-left: 10px;
@@ -75,15 +77,15 @@ h2.object-title {
     @extend .span3 !optional;
     @extend .thumbnail !optional;
     background-color: white;
-    height: 125px;
+    height: 150px;
     padding: 1em;
     -moz-box-shadow:    1px 2px 5px 1px #ccc;
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-    box-shadow:         1px 2px 5px 1px #ccc;    
+    box-shadow:         1px 2px 5px 1px #ccc;
 }
 
 .product-image {
-    height: 100px;
+    height: 145px;
     display: inline-block;
     vertical-align: top;
 }
@@ -91,8 +93,10 @@ h2.object-title {
 .product-details {
   position: relative;
   display: inline-block;
-  max-width: 180px;
+  max-width: 122px;
   z-index: 10;
+  max-height: 145px;
+  overflow: hidden;
 }
 
 a.info {
@@ -128,7 +132,7 @@ a.info {
     bottom: 35px;
     text-align: center;
     right: 0px;
-    font-family: 'sketch_rockwellregular';  
+    font-family: 'sketch_rockwellregular';
 }
 
 .numeric {
@@ -139,4 +143,16 @@ input[type='file'] {
    border: 1px solid transparent;
    display: inline-block;
    width: 224px;
+}
+
+table.print-order {
+    @extend .table-bordered;
+    @extend .table-striped;
+}
+
+form.rewards-search {
+    float: right;
+    margin-right: 40px;
+    margin-bottom: 0px;
+    margin-top: 16px;
 }

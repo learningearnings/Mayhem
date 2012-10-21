@@ -1,21 +1,25 @@
 .main-content-wrapper
-  .full-content
+  .primary-content
     %h2 Classrooms
-    
-    - if @classrooms.present?
-      - @classrooms.each do |classroom|
-        %h3= classroom.name
-        %p= link_to("Add Students to Class", classroom_path(classroom), 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal')
-        %p= link_to 'Remove Class', classroom_path(classroom), :method => :delete
-        - if classroom.students.present?
-          .row
-            %ul.inline.product-listing
-              - classroom.students.each do |student|
-                %li.student-tile
-                  = image_tag student.avatar.image.thumb('20x20#').url if student.avatar.present?
-                  = link_to student.name + " (" + student.user.username + ")", teachers_show_student_path(student)
-                  = link_to  '<i class="icon-trash"></i>'.html_safe, remove_classroom_student_path(:classroom => classroom, :student => student), :title => "Remove #{student.name} from #{classroom.name} classroom"
-      %hr
+    .accordion#classrooms
+      - if @classrooms.present?
+        - @classrooms.each do |classroom|
+          .accordion-group
+            %h4.accordion-heading
+              %a{"data-toggle" => "collapse", "data-parent" => "classrooms", :href => "#collapse#{classroom.id}"}= classroom.name
+            - if classroom.students.present?
+              %div{:class => "accordion-body collapse", :id => "collapse#{classroom.id}"}
+                .accordion-inner
+                  %ul.inline.product-listing.accordion-inner
+                    %li
+                      = link_to("Add Students to Class", classroom_path(classroom), 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal')
+                      = link_to 'Remove Class', classroom_path(classroom), :method => :delete
+                    - classroom.students.each do |student|
+                      %li.student-tile
+                        = image_tag student.avatar.image.thumb('20x20#').url if student.avatar.present?
+                        = link_to student.name + " (" + student.user.username + ")", teachers_show_student_path(student)
+                        = link_to  '<i class="icon-trash"></i>'.html_safe, remove_classroom_student_path(:classroom => classroom, :student => student), :title => "Remove #{student.name} from #{classroom.name} classroom"
+
   .secondary-content
     .create-classroom
       %h3 Create a Classroom
@@ -25,7 +29,7 @@
         = f.text_field :name, :class => 'focus-on-me'
         = f.hidden_field :school_id, :value => current_school.id
         = f.submit 'Create', :class => "awesome-button"
-    
+
 
   #manage_class-modal.modal.hide
     .modal-body

@@ -2,9 +2,16 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :authenticate_leadmin
   before_filter :maintain_page, :except => [:index]
   before_filter :check_saved_page, :only => [:index]
+  before_filter :subdomain_required
+
+
 
   def index
-    @products = Spree::Product.not_deleted.with_property("reward_type").where("#{Spree::ProductProperty.table_name}.value" => ['charity','wholesale','global']).order(:name).page(params[:page]).per(12)
+    params[:searcher_current_user] = current_user
+    params[:page] = nil unless params[:keywords].blank?
+    @searcher = Spree::Config.searcher_class.new(params)
+    @products = @searcher.retrieve_products.order(:name).page(params[:page]).per(12)
+    params[:searcher_current_user] = nil
     maintain_page params[:page] || 1
   end
 
@@ -75,8 +82,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
       @filter = filter_factory.find_or_create_filter(filter_condition)
-      @product.set_property("retail_price",params[:retail_price])
-      @product.set_property("retail_quantity",params[:retail_quantity])
+      @product.set_property("retail_price",params[:product][:retail_price])
+      @product.set_property("retail_quantity",params[:product][:retail_quantity])
     else
       # TODO insert code here to handle removing wholesale properties if type of product is changed during update
       @product.remove_property "retail_price"
@@ -87,6 +94,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       Spree::Store.all.each do |store|
         store_id_array.push(store.id) unless store.name == "le"
       end
+      @product.set_property "reward_type", params[:product_type]
       @product.store_ids = store_id_array
     end
 
@@ -113,13 +121,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def after_save
-    if @product.has_property_type?
-      property = @product.properties.select{|p| p.name == "type"}.first
-      property.presentation = params[:product_type]
-      property.save
-    else
-      @product.set_property("reward_type", params[:product_type])
-    end
+    @product.set_property("reward_type", params[:product_type])
     create_wholesale_properties if @product.requires_wholesale_properties?
     SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
   end
@@ -162,6 +164,84 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
 
   private
+
+
+  # Users are required to access the application
+  # using a subdomain
+  def subdomain_required
+    return if current_user && !current_user.respond_to?(:person)
+    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain && 
+                        (!(current_user.person.is_a?(SchoolAdmin) && [home_subdomain, 'le'].include?(request.subdomain)))
+                        ) && home_host
+      token = Devise.friendly_token
+      current_user.authentication_token = token
+      my_redirect_url = home_host   + "/store/admin/rewards/?auth_token=#{token}"
+
+      current_user.save
+      sign_out(current_user)
+      redirect_to my_redirect_url
+    end
+  end
+
+
+  def home_subdomain
+    "le"
+  end
+
+  def home_host
+    return request.protocol + request.host_with_port unless current_user.person
+    if current_user && current_user.person
+      # TODO - figure out a better hostname naming scheme
+      subdomain = home_subdomain
+      if request.host.match /^#{subdomain}\./
+        host = request.protocol + request.host_with_port
+      else
+        if !request.subdomain.empty?
+          host = request.host.gsub /^#{request.subdomain}\./,''
+        else
+          host = request.host
+        end
+        subdomain = subdomain + '.' + host
+
+        # If this is a development environment, check to see if the
+        # hosts file is setup right
+
+        if Rails.env == 'development'
+          match_found = false
+          begin
+            subdomain_address = Addrinfo.getaddrinfo(subdomain,request.port)
+          rescue
+            subdomain_address = nil
+          end
+          original_address =  Addrinfo.getaddrinfo(request.host,request.port)
+          if subdomain_address
+            subdomain_address.each do |sa|
+              original_address.each do |oa|
+                if sa.ip_address == oa.ip_address
+                  match_found = true
+                  break
+                end
+              end
+            end
+          end
+          if !match_found
+            flash[:error] = ("Localhost(s) aren't configured correctly for development - use " + "<a href=\"http://lvh.me:3000\">lvh.me:3000</a>").html_safe
+            return nil
+          end
+        end
+        host = request.protocol + subdomain
+        if request.port && request.port != 80
+          host = host +':' + request.port.to_s
+        end
+      end
+    else
+      request.protocol + request.host_with_port
+    end
+  end
+
+
+
+
 
   def check_saved_page
     return if params[:page]  # a passed in param trumps everything

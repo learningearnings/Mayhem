@@ -9,7 +9,7 @@
           %div{ "data-hook" => "product_left_part_wrap" }
             #product-images{"data-hook" => "product_images" }
               #main-image
-                = render :partial => 'image'
+                =large_image(@product, :itemprop => "image")
               #thumbnails
                 = render :partial => 'thumbnails', :locals => { :product => @product }
 

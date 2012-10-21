@@ -1,10 +1,14 @@
-- content_for :head do
-  = stylesheet_link_tag    'spree_admin', media: 'all'
 %h2.object-title Rewards Administration
-= paginate @products, :theme => 'le'
+= paginate @products
+%form.form-search.rewards-search
+  .input-append
+    %input{:type => "text", :name => 'keywords',:class => "input-medium search-query", :placeholder => "Enter Search"}
+    %button.btn{:type => "submit"} Search
+
+
 .object-actions
   = link_to "New Reward", new_admin_reward_path
-.content-container
+.container-fluid
   .main-content-wrapper
     .full-content
       = render :partial => 'admin_rewards', :locals => { :products => @products }
