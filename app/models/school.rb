@@ -13,12 +13,12 @@ class School < ActiveRecord::Base
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
-                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
+                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
 

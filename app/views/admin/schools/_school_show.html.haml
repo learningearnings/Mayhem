@@ -43,7 +43,7 @@
         - student_rows.each do |row|
           %tr
             - row.each do |student|
-              %td= link_to student.name, admin_student_path(student)
+              %td= link_to "#{student.name} (#{student.user.username})", admin_student_path(student), :title => "#{student.gender} - #{School::GRADE_NAMES[student.grade]}"
 %h4 Accounts
 %table
   %thead

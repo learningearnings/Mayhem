@@ -128,6 +128,7 @@ group :test do
   gem 'factory_girl_rails'
 end
 
+gem "coffee-filter"
 
 #### Only here for staging deploymenbts ###
 gem 'factory_girl_rails'

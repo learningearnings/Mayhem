@@ -24,7 +24,8 @@ ActiveAdmin.register School do
     column :store_subdomain
   end
 
- 
+  form :partial => 'form'
+
   show do |school|
     admin_rows = []
     current_row = []
@@ -44,7 +45,7 @@ ActiveAdmin.register School do
     current_row = []
     row_number = column_number = 0
     teacher_count = school.teachers.count
-    school.teachers.each do |t|
+    school.teachers.status_active.each do |t|
       current_row[column_number] = t
       if (column_number += 1) > 7
         column_number = 0
@@ -57,8 +58,8 @@ ActiveAdmin.register School do
     student_rows = []
     current_row = []
     row_number = column_number = 0
-    student_count = school.students.count
-    school.students.each do |s|
+    student_count = school.students.status_active.count
+    school.students.includes(:user).status_active.each do |s|
       current_row[column_number] = s
       if (column_number += 1) > 7
         column_number = 0
