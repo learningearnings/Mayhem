@@ -6,7 +6,7 @@
     %li= inbox_link_for("School Messages", @received_messages.from_school, school_messages_path, 'school-message')
     %li= inbox_link_for("Teacher Messages", @received_messages.from_teacher, teacher_messages_path, 'teacher-message')
     %li= inbox_link_for("System Messages", @received_messages.from_system, system_messages_path, 'system-message')
-    %li= link_to 'Send Admin a Message', admin_message_path, :class => 'admin-message'
+    %li= link_to 'Send Admin a Message', leadmin_message_path, :class => 'admin-message'
     %br
 
   %h3 Send a Message:

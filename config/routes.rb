@@ -83,7 +83,7 @@ Leror::Application.routes.draw do
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
-  match "inbox/admin_message" => 'messages#admin_message', :as => 'admin_message'
+  match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
   resources :messages
 
   match "/inbox" => 'messages#index'
@@ -139,7 +139,7 @@ Leror::Application.routes.draw do
     # Messaging routes
     match "inbox/peer_messages" => 'messages#peer_messages', :as => 'peer_messages'
     match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
-    match "inbox/admin_message" => 'messages#admin_message', :as => 'admin_message'
+    match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
     match "inbox/classroom_message" => 'messages#classroom_message', :as => 'classroom_message'
     match "inbox/peer_message" => 'messages#peer_message', :as => 'peer_message'
     match "/inbox" => 'messages#index'

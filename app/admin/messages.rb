@@ -16,6 +16,9 @@ ActiveAdmin.register Message do
     column :subject
     column :body
   end
+
+  form :partial => "form"
+
   controller do
     skip_before_filter :add_current_store_id_to_params
   end
