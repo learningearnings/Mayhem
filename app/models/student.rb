@@ -29,6 +29,16 @@ class Student < Person
     schools.first
   end
 
+  def school=(my_new_school)
+    my_new_school_id = my_new_school.is_a?(School) ? my_new_school.id : my_new_school
+    self.person_school_links.status_active.each do |psl|
+      return if my_new_school_id == psl.school_id
+      psl.deactivate
+      psl.save
+    end
+    super
+  end
+
   def name
     first_name + ' ' + last_name
   end

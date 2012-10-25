@@ -34,6 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_le_admin!
+    request.query_parameters[:theme] = 'aa'  # for pagination
     current_user.person.is_a?(LeAdmin)
   end
 

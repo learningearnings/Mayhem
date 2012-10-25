@@ -1,8 +1,8 @@
 %h2= @student.name
 
 = form_for admin_student_path, :method => 'put' do |f|
-  = select_tag :school, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
-  = f.submit 'Add School'
+  = select_tag :school_id, options_for_select(School.all.collect do |s| [s.name ,s.id] end,[:school, :school_id]), :include_blank => true
+  = f.submit 'Change School'
 
 %h4 Schools
 %table

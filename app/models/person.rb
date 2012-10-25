@@ -7,8 +7,12 @@ class Person < ActiveRecord::Base
   has_many :posts
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
-  #has_many :classrooms, :through => :person_school_classroom_links
   has_many :person_school_links
+  has_many :allperson_school_links, :class_name => 'PersonSchoolLink'
+  has_many :allschools, :class_name => 'School', :through => :allperson_school_links, :order => 'id desc', :source => :school
+=begin
+  has_one  :school, :through => :person_school_links, :order => "#{PersonSchoolLink.table_name}.created_at desc,#{PersonSchoolLink.table_name}.id desc"
+=end
   has_many :person_school_classroom_links
   has_many :monikers
   has_many :buck_batches, :through => :person_buck_batch_links
@@ -50,14 +54,12 @@ class Person < ActiveRecord::Base
 
   delegate :username, :username= , to: :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :school
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status, :type,:created_at, :as => :admin
   validates_presence_of :first_name, :last_name
 
   # Relationships
-  def person_school_links(status = :status_active)
-    MacroReflectionRelationFacade.new(PersonSchoolLink.where(person_id: self.id).send(status))
-  end
+
 
   #Last approved moniker name
   def moniker
@@ -82,6 +84,27 @@ class Person < ActiveRecord::Base
   def schools(status = :status_active)
     MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc'))
   end
+
+  def school(status = :status_active)
+    MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc').limit(1))
+  end
+
+  def person_school_links(status = :status_active)
+    MacroReflectionRelationFacade.new(PersonSchoolLink.where(person_id: self.id).send(status))
+  end
+
+  def school=(my_new_school)
+    if my_new_school.is_a? School
+      psl = PersonSchoolLink.new(person_id: self.id, school_id: my_new_school.id)
+    else
+      psl = PersonSchoolLink.new(person_id: self.id, school_id: my_new_school)
+    end
+    psl.save
+    psl.activate if psl
+    self.person_school_links << psl
+  end
+
+
 
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)

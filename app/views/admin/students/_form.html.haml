@@ -6,3 +6,18 @@
     = f.input :grade, :as => :range, :input_html => {:min => 0, :max => 12}
     = f.input :school, :collection => School.all.collect {|s| [s.name, s.id]}, :include_blank => true
     = f.actions
+:coffeescript
+jQuery ready = ->
+  grade_names = #{School::GRADE_NAMES.to_json}
+  ($ "#student_grade").after('&nbsp;&nbsp;<span id="student_grade_display">Hey Max</span>')
+  process_grades = ->
+    grade_display_element = $('#student_grade_display')
+    grade_element = $("#student_grade")
+    grade_value = parseInt grade_element.val()
+
+    grade_element.val grade_value
+    grade_display_element.text grade_names[grade_value]
+
+  ($ '#student_grade').change ->  process_grades()
+
+  process_grades()

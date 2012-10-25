@@ -10,7 +10,7 @@
     = f.input :logo_name
     = f.input :mascot_name
     = f.input :school_demo
-    = f.input :status
+    = f.input :status, :as => :select, :collection => ['new','active','inactive']
     = f.input :timezone
     = f.actions
 

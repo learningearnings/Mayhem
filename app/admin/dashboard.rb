@@ -11,6 +11,9 @@ ActiveAdmin.register_page "LE Admin Dashboard" do
       end
     end
 
+    controller do 
+      skip_before_filter :add_current_store_id_to_params
+    end
     # Here is an example of a simple dashboard with columns and panels.
     #
     # columns do
