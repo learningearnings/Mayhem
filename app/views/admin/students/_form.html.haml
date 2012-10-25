@@ -1,24 +1,8 @@
-%fieldset
-  = form_for [:admin, @student] do |f|
-    .label
-      = f.label :first_name
-    = f.text_field :first_name
-
-    .label
-      = f.label :last_name
-    = f.text_field :last_name
-
-    .label
-      = f.label :dob
-    = f.text_field :dob
-   
-    .label
-      = f.label :grade
-    = f.text_field :grade
-
-    .label
-      = f.label :school
-    = select_tag :school, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
-
-    = f.submit 'Submit'
-
+= semantic_form_for [:admin, @student] do |f|
+  - f.inputs "" do
+    = f.input :first_name
+    = f.input :last_name
+    = f.input :dob
+    = f.input :grade, :as => :range, :input_html => {:min => 0, :max => 12}
+    = f.input :school, :collection => School.all.collect {|s| [s.name, s.id]}, :include_blank => true
+    = f.actions

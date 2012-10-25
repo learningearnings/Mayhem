@@ -6,6 +6,7 @@ class BuckPrinter
   end
 
   def print_bucks(bucks, html)
+    binding.pry
     #html = Tilt::HamlTemplate.new('app/views/otu_codes/show.html.haml').render(nil, :bucks => bucks)
     kit = PDFKit.new(html)
 

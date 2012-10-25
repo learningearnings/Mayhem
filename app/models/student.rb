@@ -33,6 +33,10 @@ class Student < Person
     first_name + ' ' + last_name
   end
 
+  def admin_title
+    'Student #' + id.to_s + '( ' + user.username + ')'
+  end
+
   def to_s
     name
   end

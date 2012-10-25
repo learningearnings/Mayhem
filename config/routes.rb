@@ -128,7 +128,7 @@ Leror::Application.routes.draw do
     resource  :dashboard
     resource  :lounge
     match "home" => "home#show", as: 'home'
-    match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch'
+    match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'

@@ -1,9 +1,13 @@
 module Teachers
   class BanksController < Teachers::BaseController
     include Mixins::Banks
-    def on_success
+    def on_success batch_id
       flash[:notice] = 'Bucks created!'
-      redirect_to teachers_bank_path
+      if batch_id.nil?
+        redirect_to teachers_bank_path
+      else
+        redirect_to teachers_print_batch_path(batch_id,"pdf")
+      end
     end
 
     def on_failure

@@ -1,12 +1,13 @@
 require 'action_view'
 require 'active_support/core_ext'
 
-class Bank 
+class Bank
   attr_accessor :on_failure, :on_success
   include ActionView::Helpers::UrlHelper
 
   def initialize(credit_manager=CreditManager.new, buck_printer=BuckPrinter.new)
     @credit_manager = credit_manager
+    @buck_printer = buck_printer
     # Set up no-op callbacks in case we don't want to use them
     @on_failure = lambda{}
     @on_success = lambda{}
@@ -20,12 +21,12 @@ class Bank
     points  = amount_of_bucks(bucks)
     account = person.main_account(school)
     return on_failure.call unless account_has_enough_money_for(account, points)
-    
+
     # creates and returns bucks array
     batch = create_bucks_in_batch(person, school, prefix, bucks)
 
     @credit_manager.purchase_printed_bucks(school, person, points, batch)
-    return on_success.call
+    return on_success.call batch.id
   end
 
   def create_ebucks(person, school, student, prefix, points)
@@ -33,7 +34,7 @@ class Bank
     return @on_failure.call unless account_has_enough_money_for(account, points)
 
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
-                   :expires_at => (Time.now + 45.days), 
+                   :expires_at => (Time.now + 45.days),
                    :student_id => student.id,
                    :ebuck => true}
     buck = create_buck(prefix, points, buck_params)
@@ -60,7 +61,7 @@ class Bank
       @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
     end
     if otu_code.messages.present?
-      otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.') 
+      otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.')
       otu_code.messages.first.hide!
     end
     otu_code.mark_redeemed!
@@ -83,7 +84,7 @@ class Bank
   def message_creator(message_params)
     otu_code_id = message_params[:buck_id]
     message_params.delete(:buck_id)
-    
+
     @message = Message.create(message_params)
     MessageCodeLink.create(:otu_code_id => otu_code_id, :message_id => @message.id)
   end
@@ -101,11 +102,11 @@ class Bank
 
     message_params = {from: person,
                          to: student,
-                         subject: "You've been awarded LE Bucks", 
+                         subject: "You've been awarded LE Bucks",
                          body: body,
                          category: 'teacher',
                          buck_id: buck.id}
-    
+
     message_creator(message_params)
   end
 
@@ -132,7 +133,7 @@ class Bank
     bucks[:tens].times do
       _bucks << create_buck(prefix, 10, buck_params)
     end
-   
+
     _bucks
   end
 

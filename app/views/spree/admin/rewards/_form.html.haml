@@ -56,7 +56,7 @@
   .span4
     %h3#retail-info Retail Product Info
     .control-group#school-admin-description
-      = text_area_tag :school_admin_description, @product.property('school_admin_description') , {:cols => 60, :rows => 4, :class => 'fullwidth', :placeholder => "Description seen by School Administrators"}
+      = text_area_tag :wholesale_description, @product.property('wholesale_description') , {:cols => 60, :rows => 4, :class => 'fullwidth', :placeholder => "Description seen by School Administrators"}
     .control-group#price
       = f.label :retail_price, 'Retail Price', {:class => 'control-label'}
       .input-prepend.pull-right

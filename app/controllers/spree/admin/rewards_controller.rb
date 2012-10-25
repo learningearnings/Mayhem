@@ -89,6 +89,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       @filter = filter_factory.find_or_create_filter(filter_condition)
       @product.set_property("retail_price",params[:product][:retail_price])
       @product.set_property("retail_quantity",params[:product][:retail_quantity])
+      @product.set_property("wholesale_description",params[:wholesale_description])
     else
       # TODO insert code here to handle removing wholesale properties if type of product is changed during update
       @product.remove_property "retail_price"
