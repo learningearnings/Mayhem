@@ -1,12 +1,12 @@
 module Teachers
   class BanksController < Teachers::BaseController
     include Mixins::Banks
-    def on_success batch_id
+    def on_success obj = nil
       flash[:notice] = 'Bucks created!'
-      if batch_id.nil?
+      if obj.nil? || !obj.is_a?(BuckBatch)
         redirect_to teachers_bank_path
       else
-        redirect_to teachers_print_batch_path(batch_id,"pdf")
+        redirect_to teachers_print_batch_path(obj.id,"pdf")
       end
     end
 

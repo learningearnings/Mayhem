@@ -12,6 +12,8 @@ Feature: Admin Bank
     Scenario: Create Printed Bucks
       Given I distribute printed bucks
       Then the admin account should be deducted
+
+    Scenario: Distribute Bucks for a Teacher
       Given I distribute bucks for a teacher
       Then the teacher account should be deducted
  

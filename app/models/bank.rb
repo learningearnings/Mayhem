@@ -10,7 +10,7 @@ class Bank
     @buck_printer = buck_printer
     # Set up no-op callbacks in case we don't want to use them
     @on_failure = lambda{}
-    @on_success = lambda{}
+    @on_success = lambda{|batch_id| batch_id}
   end
 
   def create_person_buck_batch_link(person, batch)
@@ -26,7 +26,7 @@ class Bank
     batch = create_bucks_in_batch(person, school, prefix, bucks)
 
     @credit_manager.purchase_printed_bucks(school, person, points, batch)
-    return on_success.call batch.id
+    return on_success.call batch
   end
 
   def create_ebucks(person, school, student, prefix, points)
@@ -44,7 +44,7 @@ class Bank
     # leave it here for now - ja
     send_message(person, student, buck)
 
-    return on_success.call
+    return on_success.call nil
   end
 
   # FIXME: Looks like you can claim these twice - that's handled in the
@@ -71,9 +71,9 @@ class Bank
     account = from_teacher.main_account(school)
     return @on_failure.call unless account_has_enough_money_for(account, points.to_d)
 
-    @credit_manager.transfer_credits_to_teacher school, from_teacher, to_teacher, points.to_d
+    transaction = @credit_manager.transfer_credits_to_teacher school, from_teacher, to_teacher, points.to_d
 
-    return on_success.call
+    return on_success.call nil
   end
 
   protected
