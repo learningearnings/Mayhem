@@ -1,4 +1,5 @@
 module MessagesHelper
+  public
   def inbox_label_with_message_count string, messages
     output = string
     if messages.unread.any?

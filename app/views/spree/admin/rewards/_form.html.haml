@@ -47,12 +47,14 @@
         .control-group#svg
           = i.label :svg, "Charity SVG", {:class => 'control-label'}
           = i.file_field :svg_file_name
-      - if @product.svg_file_name
-        .control-group
-          = f.label :current_svg, "Current SVG", {:class => 'control-label'}
-          = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe
-          = f.hidden_field :id, value: @product.id
-          = f.hidden_field :filter, :value => 1
+          - if @product.svg_file_name
+            .control-group
+              = f.label :current_svg, "Current SVG", {:class => 'control-label'}
+              .svg-container
+                = le_svg_tag @product.svg_file_name, :style => "width: 100%; height: 100%;display: inline-block;" do
+                  = open(@product.svg.path).read.gsub(/(name_val)/, current_person.name).gsub(/(school_val)/, current_school.name).html_safe
+              = f.hidden_field :id, value: @product.id
+              = f.hidden_field :filter, :value => 1
   .span4
     %h3#retail-info Retail Product Info
     .control-group#school-admin-description
@@ -69,33 +71,21 @@
 
 %button{:type => "submit", :class => "btn btn-primary"} Save Changes
 
-:javascript
-  $(document).ready(function() {
-    $('#svg').hide();
-  });
-  $('select#product_type').change(function() {
-    if ($('select#product_type option:selected').val() == "wholesale"){
-      $('#svg').hide();
-      $('#price').show();
-      $('#retail-info').show();
-      $('#school-admin-description').show();
-      $('#quantity').show();
-      $('#on_hand').show();
-    }
-    else if ($('select#product_type option:selected').val() == "charity"){
-      $('#price').hide();
-      $('#quantity').hide();
-      $('#retail-info').hide();
-      $('#school-admin-description').hide();
-      $('#svg').show();
-      $('#on_hand').hide();
-    }
-    else {
-      $('#svg').hide();
-      $('#price').hide();
-      $('#retail-info').hide();
-      $('#school-admin-description').hide();
-      $('#quantity').hide();
-      $('#on_hand').show();
-    }
-  });
+:coffeescript
+($ document).ready ->
+  update_fields = ->
+    if ($ 'select#product_type option:selected').val() == "wholesale"
+      ($ '#svg').hide()
+      ($ '#price,#retail-info,#school-admin-description,#quantity,#on_hand').show()
+    else if ($ 'select#product_type option:selected').val() == "charity"
+      ($ '#price,#quantity,#retail-info,#school-admin-description,#on_hand').hide()
+      ($ '#svg').show()
+    else
+      ($ '#svg,#price,#retail-info,#school-admin-description,#quantity').hide()
+      ($ '#on_hand').show()
+  $('#svg').hide()
+  update_fields()
+  ($ 'select#product_type').change ->
+    update_fields()
+
+

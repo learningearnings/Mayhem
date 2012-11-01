@@ -98,7 +98,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
       store_id_array = []
       Spree::Store.all.each do |store|
-        store_id_array.push(store.id) unless store.name == "le"
+        store_id_array.push(store.id)
       end
       @product.set_property "reward_type", params[:product_type]
       @product.store_ids = store_id_array

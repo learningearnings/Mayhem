@@ -1,5 +1,5 @@
 !!!
-%html
+%html.resp
   %head
     %title Learning Earnings
     = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}"
@@ -7,17 +7,13 @@
     = javascript_include_tag 'application'
     %meta{:name => "viewport", :content => "width=device-width"}
     = csrf_meta_tags
-  %body
+  %body.resp
+    .resp-page-content-container
+      .resp-head
+        = render "layouts/resp_head"
+        = render "layouts/resp_content_container"
+        = render "layouts/footer"
 
-    .header
-
-    .container-940
-      .head
-        = render "layouts/head"
-      = render "layouts/content_container"
-      = render "layouts/footer"
-
-    .container-1170
-      .content-container
-        .side-art
-          .side-art-students
+      .resp-content-container
+        .resp-side-art
+          .resp-side-art-students

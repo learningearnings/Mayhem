@@ -1,3 +1,4 @@
+
 module ApplicationHelper
   # In the context of views, the current_person gets decoratred
   # NOTE: I'm not sure if this is confusing, since current_person will be different depending on the context (controller or view)
@@ -69,4 +70,102 @@ module ApplicationHelper
                  end
     image_tag(avatar_img.thumb(geometry).url)
   end
+
+#  require 'browser_detect'
+
+  def xxle_svg_tag source, options = {}
+
+    if browser_is?(:webkit) || browser_is?(:firefox)
+      return image_tag(source, options)
+    elsif browser_is?("ie6") || browser_is?("ie7") || browser_is?("ie8")
+      options[:src] = source
+      options[:classid] = "image/svg+xml"
+      return content_tag(:object,nil, options)
+    elsif browser_is('ie') # 9 or above???
+      options[:data] = source
+      options[:classid] = "image/svg+xml"
+      return tag(:object,options)
+    end
+  end
+
+  def le_svg_tag source, options = {}
+    options[:type] = "image/svg+xml" unless options[:type]
+    if block_given?
+      content_tag(:script,options,nil,false) do
+        yield
+      end
+    else # source file passed in
+      if browser_is?(:webkit) || browser_is?(:firefox)
+        return image_tag(source, options)
+      else
+        content_tag(:script,options,nil,false) do
+          Leror::Application.assets.find_asset(source).body.html_safe
+        end
+      end
+    end
+  end
+
+  def le_svg_string source, options = {}
+    if browser_is?(:webkit) || browser_is?(:firefox)
+      return image_tag(source, options)
+    else
+      options[:type] = "image/svg+xml"
+      content_tag(:script,options,nil,false) do
+        Leror::Application.assets.find_asset(source).body.html_safe
+      end
+    end
+  end
+
+
+
+  def browser_is? query
+    query = query.to_s.strip.downcase
+    result = case query
+    when /^ie(\d+)$/
+      ua.index("msie #{$1}") && !ua.index('opera') && !ua.index('webtv')
+    when 'ie'
+      ua.match(/msie \d/) && !ua.index('opera') && !ua.index('webtv')
+    when 'yahoobot'
+      ua.index('yahoo! slurp')
+    when 'mozilla'
+      ua.index('gecko') || ua.index('mozilla')
+    when 'webkit'
+      ua.match(/webkit|iphone|ipad|ipod/)
+    when 'safari'
+      ua.index('safari') && !ua.index('chrome')
+    when 'ios'
+      ua.match(/iphone|ipad|ipod/)
+    when /^robot(s?)$/
+      ua.match(/googlebot|msnbot/) || browser_is?('yahoobot')
+    when 'mobile'
+      browser_is?('ios') || ua.match(/android|webos|mobile/)
+    else
+      ua.index(query)
+    end
+    not (result.nil? || result == false)
+  end
+
+  # Determine the version of webkit.
+  # Useful for determing rendering capabilities
+  # For instance, Mobile Webkit versions lower than 532 don't handle webfonts very well (intermittent crashing when using multiple faces/weights)
+  def browser_webkit_version
+    if browser_is? 'webkit'
+      match = ua.match(%r{\bapplewebkit/([\d\.]+)\b})
+      match[1].to_f if (match)
+    end or 0
+  end
+
+  def browser_is_mobile?
+    browser_is? 'mobile'
+  end
+
+  # Gather the user agent and store it for use.
+  def ua
+    @ua ||= begin
+      request.env['HTTP_USER_AGENT'].downcase
+    rescue
+      ''
+    end
+  end
+
 end

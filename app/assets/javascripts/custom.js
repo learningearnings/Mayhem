@@ -16,6 +16,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".register-slide").css("display", "block");
+          return false;
 	});
 
   $(".earn").click(function(){
@@ -24,6 +25,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".earn-slide").css("display", "block");
+          return false;
 	});
 
   $(".enter").click(function(){
@@ -32,6 +34,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".enter-slide").css("display", "block");
+          return false;
 	});
 
   $(".buy").click(function(){
@@ -40,6 +43,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".buy-slide").css("display", "block");
+          return false;
 	});
 
   $(".receive").click(function(){
@@ -48,6 +52,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".receive-slide").css("display", "block");
+          return false;
 	});
 
   $(".intro").click(function(){
@@ -56,6 +61,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".intro-slide").css("display", "block")
+          return false;
 	});
 
 	// How it works - teachers not logged in
@@ -65,6 +71,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".step1-slide").css("display", "block");
+          return false;
 	});
 
   $(".step-2").click(function(){
@@ -73,6 +80,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".step2-slide").css("display", "block");
+          return false;
 	});
 
   $(".step-3").click(function(){
@@ -81,6 +89,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".step3-slide").css("display", "block");
+          return false;
 	});
 
   $(".step-4").click(function(){
@@ -89,6 +98,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".step4-slide").css("display", "block");
+          return false;
 	});
 
   $(".attention").click(function(){
@@ -97,6 +107,7 @@ $(document).ready(function() {
 	  $(".selected").removeClass("selected")
 	  $(this).addClass("selected");
 	  $(".attention-teachers").css("display", "block");
+          return false;
 	});
 
   function highlightNavigation(path_part, nav_selector,subdomain){

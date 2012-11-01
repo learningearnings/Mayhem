@@ -43,6 +43,7 @@ en:
         index:
           products:  Stuff you can Buy!
           products_message: Use your LE Credits to buy these things
+  play_content: Students can take a break here (but keep on learning and earning)
   active_admin:
     dashboard: "LE Dashboard"
     dashboard_welcome:

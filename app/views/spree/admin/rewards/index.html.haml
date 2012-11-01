@@ -5,10 +5,8 @@
     %input{:type => "text", :name => 'keywords',:class => "input-medium search-query", :placeholder => "Enter Search"}
     %button.btn{:type => "submit"} Search
 
-
 .object-actions
   = link_to "New Reward", new_admin_reward_path
 .container-fluid
   .main-content-wrapper
-    .full-content
-      = render :partial => 'admin_rewards', :locals => { :products => @products }
+    = render :partial => 'admin_rewards', :locals => { :products => @products }

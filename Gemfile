@@ -11,7 +11,8 @@ gem 'pg', '0.13.2'
 # for importing
 gem 'mysql2'
 
-gem 'jquery-rails'
+gem 'jquery-rails', :git => 'git@github.com:learningearnings/jquery-rails.git', branch: 'svgweb-fix'
+
 gem 'jquery-ui-rails'
 gem 'chosen-rails'
 
@@ -26,6 +27,8 @@ gem 'responders'
 gem 'kaminari'
 
 gem 'googlecharts'
+
+gem 'browser_detect' # , :require => "browser_detect", :git => 'git://github.com/learningearnings/browser_detect.git'
 
 # Add native postgres data type suport to activerecord.  Rails 4
 # forward-compatible afaik, pretty sure the author's patch made it to rails 4
@@ -48,6 +51,7 @@ gem 'roo'
 
 # Hashie provides lots of nice convenience utilities for working with hashes
 gem 'hashie'
+
 
 # A simple date validator for rails 3
 gem 'date_validator'

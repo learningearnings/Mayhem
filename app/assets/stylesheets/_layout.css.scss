@@ -25,11 +25,11 @@
   src: url('sketch_wall-webfont.eot?#iefix') format("embedded-opentype"), url('sketch_wall-webfont.woff') format("woff"), url('sketch_wall-webfont.ttf') format("truetype"), url('sketch_wall-webfont.svg#sketch_wallregular') format("svg");
   font-weight: normal;
   font-style: normal; }
-  
-/* Variables */
-$how-to-active-color: #f05c1a; 
 
-  
+/* Variables */
+$how-to-active-color: #f05c1a;
+
+
 /* Sprites */
 $stickies_nav-layout:horizontal;
 @import "sprites/stickies_nav/*.png";
@@ -50,11 +50,11 @@ span.join,
 .primary-nav
 .awesome-button
 {
-  font-family: 'sketch_rockwellregular';  
+  font-family: 'sketch_rockwellregular';
 }
 
 @mixin really-awesom-button {
-  font-family: 'sketch_rockwellregular';  
+  font-family: 'sketch_rockwellregular';
 }
 
 
@@ -74,13 +74,21 @@ h4 {
  color: #08C;
 }
 
-html, body { height: 100%; }
-body {
-    margin: 0;
+
+
+html, body {
+    margin: 0 auto;
     padding: 0;
     height: 100%;
     min-width: 960px;
+    background: url(asset_path('notebook_bg_lines.png', image)) repeat;
+/*
+    background: url(asset_path('lines.png', image)) no-repeat scroll center;
+
+    background-position: center center;
+    background-repeat: no-repeat;
     background-image: url(asset_path('notebook_bg_lines.png', image));
+*/
 }
 
 .container-full {
@@ -116,7 +124,7 @@ input, textarea, select {
 }
 
 .header {
-  height: 140px;  
+  height: 140px;
   background-color: #fff;
 }
 
@@ -140,7 +148,7 @@ input, textarea, select {
   margin: 8px 0 0 -15px;
   float: left;
 }
-  
+
 .logo-link {
   display: inline-block;
   width: 139px;
@@ -219,7 +227,7 @@ input, textarea, select {
 
 .login-form-fields .log-in {
   font-size: 1.4em;
-  color: #1f2870;  
+  color: #1f2870;
 }
 
 .login-form-fields input {
@@ -249,7 +257,7 @@ input, textarea, select {
 .btn.parents,
 .btn.teachers,
 .btn.login-button {
-  font-family: 'sketch_rockwellregular';  
+  font-family: 'sketch_rockwellregular';
   color: #1f2870;
   cursor: pointer;
   padding: 7px 0;
@@ -259,7 +267,7 @@ input, textarea, select {
   border: none;
   box-shadow: none;
   width: 96px;
-  height: 37px;  
+  height: 37px;
 }
 
 .btn.students {
@@ -293,7 +301,7 @@ input, textarea, select {
 }
 
 .stickies-nav li a:active {
-  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));  
+  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));
 }
 
 
@@ -319,20 +327,20 @@ input, textarea, select {
 
 .content-section .how-nav li span a:hover {
   text-decoration: none;
-  color: #f05c1a;  
+  color: #f05c1a;
 }
 
 .content-section .how-nav li span a:active {
-  color: #f05c1a;    
+  color: #f05c1a;
 }
 
 .slides {
   top: 100px;
   left: 280px;
 }
-  
+
 .intro-slide {
-  background-image: url(asset_path('how_it_works_slide1.png', image));  
+  background-image: url(asset_path('how_it_works_slide1.png', image));
   position: absolute;
   top: 100px;
   left: 280px;
@@ -340,44 +348,44 @@ input, textarea, select {
   width: 522px;
 }
 .register-slide {
-  background-image: url(asset_path('how_it_works_slide2.png', image));  
+  background-image: url(asset_path('how_it_works_slide2.png', image));
   position: absolute;
   top: 100px;
   left: 280px;
   height: 232px;
-  width: 484px;  
+  width: 484px;
 }
 .earn-slide {
-  background-image: url(asset_path('how_it_works_slide3.png', image));  
+  background-image: url(asset_path('how_it_works_slide3.png', image));
   position: absolute;
   top: 90px;
   left: 280px;
   height: 245px;
-  width: 563px;   
+  width: 563px;
 }
 .enter-slide {
-  background-image: url(asset_path('how_it_works_slide4.png', image));  
+  background-image: url(asset_path('how_it_works_slide4.png', image));
   position: absolute;
   top: 90px;
   left: 280px;
   height: 238px;
-  width: 498px;     
+  width: 498px;
 }
 .buy-slide {
-  background-image: url(asset_path('how_it_works_slide5.png', image));  
+  background-image: url(asset_path('how_it_works_slide5.png', image));
   position: absolute;
   top: 90px;
   left: 280px;
   height: 250px;
-  width: 503px;     
+  width: 503px;
 }
 .receive-slide {
-  background-image: url(asset_path('how_it_works_slide6.png', image));  
+  background-image: url(asset_path('how_it_works_slide6.png', image));
   position: absolute;
   top: 90px;
   left: 280px;
   height: 227px;
-  width: 554px;      
+  width: 554px;
 }
 
 .not-selected {
@@ -385,7 +393,7 @@ input, textarea, select {
 }
 
 .selected {
-  color: #f05c1a!important;  
+  color: #f05c1a!important;
 }
 
 .students-stickie,
@@ -427,7 +435,7 @@ input, textarea, select {
   height: 107px;
   width: 110px;
   &:hover, &.active {
-    background-position: -550px 0;  
+    background-position: -550px 0;
   }
 }
 
@@ -442,10 +450,10 @@ input, textarea, select {
       li {
         display: inline;
         padding: 1.7em 0;
-        
+
         a {
           text-decoration: none;
-          font-family: 'sketch_rockwellregular';  
+          font-family: 'sketch_rockwellregular';
           display: inline-block;
         }
       }
@@ -481,13 +489,13 @@ input, textarea, select {
 .primary-nav .how-it-works:hover {
   background-image: url(asset_path('how_it_works_selected.png', image));
   background-repeat: no-repeat;
-  color: #ea4e08;  
+  color: #ea4e08;
 }
 
 .how-it-works-selected {
   background-image: url(asset_path('how_it_works_selected.png', image));
   background-repeat: no-repeat;
-  color: #ea4e08;  
+  color: #ea4e08;
 }
 
 .primary-nav .testimonials {
@@ -497,13 +505,13 @@ input, textarea, select {
 .primary-nav .testimonials:hover {
   background-image: url(asset_path('how_it_works_selected.png', image));
   background-repeat: no-repeat;
-  color: #B611B0;  
+  color: #B611B0;
 }
 
 .testimonials-selected {
   background-image: url(asset_path('how_it_works_selected.png', image));
   background-repeat: no-repeat;
-  color: #B611B0;  
+  color: #B611B0;
 }
 
 .primary-nav .locker {
@@ -561,13 +569,13 @@ input, textarea, select {
 .primary-nav .bank:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
-  color: #470bc1;  
+  color: #470bc1;
 }
 
 .bank-selected {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
-  color: #470bc1;  
+  color: #470bc1;
 }
 
 .primary-nav .play {
@@ -577,13 +585,13 @@ input, textarea, select {
 .primary-nav .play:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
-  color: #eb731c;  
+  color: #eb731c;
 }
 
 .play-selected {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
-  color: #eb731c;  
+  color: #eb731c;
 }
 
 .primary-nav .charities {
@@ -593,13 +601,13 @@ input, textarea, select {
 .primary-nav .charities:hover {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
-  color: #b611b0;  
+  color: #b611b0;
 }
 
 .charities-selected {
   background-image: url(asset_path('rewards_selected.png', image));
   background-repeat: no-repeat;
-  color: #b611b0;  
+  color: #b611b0;
 }
 
 .primary-nav .rewards {
@@ -609,13 +617,13 @@ input, textarea, select {
 .primary-nav .rewards:hover {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #b611b0;  
+  color: #b611b0;
 }
 
 .rewards-selected {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #b611b0;  
+  color: #b611b0;
 }
 
 .primary-nav .reports {
@@ -625,13 +633,13 @@ input, textarea, select {
 .primary-nav .reports:hover {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #470BC1;  
+  color: #470BC1;
 }
 
 .reports-selected {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #470BC1; 
+  color: #470BC1;
 }
 
 .primary-nav .classrooms {
@@ -641,13 +649,13 @@ input, textarea, select {
 .primary-nav .classrooms:hover {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #EA4E08;  
+  color: #EA4E08;
 }
 
 .classrooms-selected {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #EA4E08; 
+  color: #EA4E08;
 }
 
 
@@ -658,13 +666,13 @@ input, textarea, select {
 .primary-nav .lounge:hover {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #EB731C;  
+  color: #EB731C;
 }
 
 .lounge-selected {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
-  color: #EB731C; 
+  color: #EB731C;
 }
 
 .primary-nav .news {
@@ -674,13 +682,13 @@ input, textarea, select {
 .primary-nav .news:hover {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
-  color: #ff2204;  
+  color: #ff2204;
 }
 
 .news-selected {
   background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
-  color: #ff2204;  
+  color: #ff2204;
 }
 .navbar-inner {
   border-radius: 0;
@@ -742,17 +750,17 @@ input, textarea, select {
   position: relative;
   z-index: 5;
  }
- 
+
 .bacon-small {
   background-image: url(asset_path('sir_francis_bacon_shadows_small.png', image));
   width: 170px;
   height: 230px;
   position: relative;
   top: 30px;
-  z-index: 15; 
-  float: left; 
+  z-index: 15;
+  float: left;
 }
- 
+
 .bacon-smiling-intro {
   background-image: url(asset_path('pig_smiling_intro.png', image));
   width: 275px;
@@ -783,7 +791,7 @@ input, textarea, select {
 .messaging-inbox {
   background-image: url(asset_path('messaging_inbox.png', image));
   height: 241px;
-  width: 364px;  
+  width: 364px;
   position: absolute;
   top: 30px;
   left: 180px;
@@ -804,7 +812,7 @@ input, textarea, select {
   width: 180px;
   position: absolute;
   top: 325px;
-  left: 545px;  
+  left: 545px;
 }
 
 .inbox-screenshot {
@@ -813,7 +821,7 @@ input, textarea, select {
   width: 287px;
   position: absolute;
   top: 320px;
-  left: 275px;   
+  left: 275px;
 }
 
 .product-image-bursts {
@@ -908,7 +916,7 @@ input, textarea, select {
 }
 
 .join-now-how-it-works-teachers {
-  background-image: url(asset_path('join_now_how_it_works_teachers.png', image));  
+  background-image: url(asset_path('join_now_how_it_works_teachers.png', image));
   height: 127px;
   width: 134px;
   top: 50px;
@@ -1038,7 +1046,7 @@ input, textarea, select {
   top: 240px;
   left: 740px;
   height: 205px;
-  width: 190px;  
+  width: 190px;
 }
 
 .rewards-intro {
@@ -1057,7 +1065,19 @@ input, textarea, select {
   height: 280px;
   top: 25px;
   left: 160px;
-  
+  padding-top: 90px;
+  padding-right: 130px;
+  padding-left: 20px;
+
+  p {
+      font-family: 'sketch_wallregular';
+      color: $small-content-color;
+      font-size: 2.5em;
+      line-height: 1em;
+      letter-spacing: 1px;
+      font-weight: normal;
+  }
+
 }
 
 .foodfight {
@@ -1098,14 +1118,30 @@ input, textarea, select {
   left: 500px;
 }
 
-.testimonial {
-  position: absolute;
+.testimonial-intro {
+    padding: 50px 20px 0 20px;
+    text-align: center;
   p {
     font-size: 60px;
     color: #f05c1a;
-    margin: 60px 0 0 220px;
     font-family: 'sketch_rockwellregular';
   }
+}
+.testimonial-title {
+  position: relative;
+  padding: 10px 0px 0px 0px;;
+  text-align: center;
+  font-size: 3em;
+  line-height: 1em;
+  color: $small-content-color;
+  font-family: 'sketch_rockwellregular';
+}
+.testimonial-body {
+  padding: 20px 30px 0px 40px;;
+  text-align: left;
+  font-size: 2em;
+  color: $small-content-color;
+  p { display: inline; }
 }
 
 /* Primary Nav Selected */
@@ -1113,7 +1149,7 @@ input, textarea, select {
 .content.inbox-not-logged-in {
   .inbox {
     background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;  
+    background-repeat: no-repeat;
   }
 }
 
@@ -1123,7 +1159,7 @@ input, textarea, select {
   clear: both;
   margin-top: 4em;
   p {
-      font-family: Arial, Sans-Serif; 
+      font-family: Arial, Sans-Serif;
       color: #000000;
       }
   .secondary-nav {
@@ -1133,8 +1169,8 @@ input, textarea, select {
       padding: 0 1.5em 0 1em;
       border-right: solid 1px #000000;
         a {
-         font-family: Arial, Sans-Serif; 
-         color: #000000; 
+         font-family: Arial, Sans-Serif;
+         color: #000000;
         }
     }
     li:last-child {
@@ -1157,7 +1193,7 @@ input, textarea, select {
     border: 2px solid navy;
 }
 .hover_image.active img{
-    border-color: red; 
+    border-color: red;
 }
 
 .school_hover{
@@ -1167,16 +1203,39 @@ input, textarea, select {
     border: 2px solid navy;
 }
 .school_hover.active{
-    border-color: red; 
+    border-color: red;
 }
 
-.bank-intro, .coming-soon-intro {
+.coming-soon-intro {
   position: absolute;
   top: 0;
   p {
     font-size: 60px;
     color: #470BC1;
     margin: 60px 0 0 180px;
+  }
+}
+
+.bank-intro {
+  position: absolute;
+  top: 0;
+  p {
+    font-size: 60px;
+    color: #f05c1a;
+    margin: 60px 0 0 180px;
+  }
+}
+
+.bank-content {
+  position: absolute;
+  font-family: 'king_cool_kcregular';
+  top: 100px;
+  padding-right: 60px;
+  p {
+      font-size: 3em;
+      line-height: 1em;
+      color: #244398;
+      margin: 80px 0 0 180px;
   }
 }
 
@@ -1191,13 +1250,13 @@ input, textarea, select {
 
 .nav-group {
   li {
-    a { 
+    a {
       font-size: 1.6em;
       &:hover, &.active {
         text-decoration: none;
         color: #ee5b1a;
       }
-      
+
     }
   }
 }
@@ -1227,7 +1286,7 @@ input, textarea, select {
     -moz-box-shadow:    1px 2px 5px 1px #ccc;
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
     box-shadow:         1px 2px 5px 1px #ccc;
-    padding: 2em;  
+    padding: 2em;
   }
   textarea {
     height: 250px;
@@ -1241,7 +1300,7 @@ input, textarea, select {
   min-height: 500px;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;  
+  box-shadow:         1px 2px 5px 1px #ccc;
   margin: 5em 0 0 0;
 }
 
@@ -1259,7 +1318,7 @@ input, textarea, select {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;  
+  box-shadow:         1px 2px 5px 1px #ccc;
   padding: 1em;
 }
 
@@ -1267,7 +1326,7 @@ input, textarea, select {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;  
+  box-shadow:         1px 2px 5px 1px #ccc;
   padding: 1em;
   p {
   }
@@ -1281,7 +1340,7 @@ input, textarea, select {
     text-align: center;
     background-color: rgba(255,255,255, 0);
     border: none;
-    background-image: url(asset_path('message-blue.png', image));    
+    background-image: url(asset_path('message-blue.png', image));
     background-repeat: no-repeat;
     width: 254px;
     height: 259px;
@@ -1323,11 +1382,11 @@ input, textarea, select {
 }
 
 .pending-credits {
-  padding: 1em; 
+  padding: 1em;
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;    
+  box-shadow:         1px 2px 5px 1px #ccc;
 }
 
 .news-header {
@@ -1335,7 +1394,7 @@ input, textarea, select {
 }
 
 .news-items-container {
-  
+
   overflow: hidden;
   margin: 20px 0 0 130px;
 }
@@ -1360,7 +1419,7 @@ input, textarea, select {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;    
+  box-shadow:         1px 2px 5px 1px #ccc;
   overflow: hidden;
 }
 
@@ -1373,8 +1432,8 @@ input, textarea, select {
     background-color: #fff;
     -moz-box-shadow:    1px 2px 5px 1px #ccc;
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-    box-shadow:         1px 2px 5px 1px #ccc;    
-    overflow: hidden; 
+    box-shadow:         1px 2px 5px 1px #ccc;
+    overflow: hidden;
     margin-left: 100px;
     .auction-item {
       font-size: 1.5em;
@@ -1418,7 +1477,7 @@ input, textarea, select {
 }
 
 .current-person-avatar.supplemental-part {
-  position: absolute; 
+  position: absolute;
   margin-left: -90px;
 }
 
@@ -1460,7 +1519,7 @@ input, textarea, select {
 }
 .table-bordered-bl {
   border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd;  
+  border-left: 1px solid #ddd;
 }
 .table-bordered-br {
   border-bottom: 1px solid #ddd;
@@ -1476,7 +1535,7 @@ input, textarea, select {
     float: left;
     top: 150px;
     left: 0;
-    z-index: 15;  
+    z-index: 15;
   }
   .corkboard {
     left: 0;
@@ -1516,7 +1575,7 @@ input, textarea, select {
   width: 585px;
   height: 272px;
   top: 585px;
-  left: 40px;  
+  left: 40px;
 }
 
 .student-logged-in-sidebar {
@@ -1555,7 +1614,7 @@ input, textarea, select {
     .product-details {
       display: inline-block;
       a.info {
-        font-family: 'sketch_rockwellregular';  
+        font-family: 'sketch_rockwellregular';
         font-size: 1.35em;
         font-weight: bold;
       }
@@ -1568,7 +1627,7 @@ input, textarea, select {
 }
 
 .reward-content {
-  
+
   .product-image {
     float: left;
     min-height: 300px;
@@ -1580,7 +1639,7 @@ input, textarea, select {
     background-color: #fff;
     -moz-box-shadow:    1px 2px 5px 1px #ccc;
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-    box-shadow:         1px 2px 5px 1px #ccc;    
+    box-shadow:         1px 2px 5px 1px #ccc;
   }
 
 }
@@ -1608,9 +1667,9 @@ input, textarea, select {
   -moz-box-shadow: rgba(76, 76, 76, 0.33) 0px 0px 12px 3px;
   background-color: white;
   width: 920px;
-  height: 405px;  
-  background-color: #fff; 
-  margin-bottom: 2em; 
+  height: 405px;
+  background-color: #fff;
+  margin-bottom: 2em;
 }
 .games-image {
   background-image: url(asset_path('games.png', image));
@@ -1627,8 +1686,8 @@ input, textarea, select {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;    
-  
+  box-shadow:         1px 2px 5px 1px #ccc;
+
   .full-content {
     width: 99%;
     display: inline-block;
@@ -1645,7 +1704,7 @@ input, textarea, select {
     display: inline-block;
     vertical-align: top;
     padding-left: 2em;
-    
+
   }
   p {
     font-size: 1.5em;
@@ -1657,7 +1716,7 @@ input, textarea, select {
     }
 
   }
-  
+
 }
 
 .main-content-wrapper-no-bg {
@@ -1668,7 +1727,7 @@ input, textarea, select {
   .primary-content-fw {
     width: 90%;
   }
-  
+
   .primary-content {
     width: 62%;
     display: inline-block;
@@ -1685,10 +1744,10 @@ input, textarea, select {
     display: inline-block;
     vertical-align: top;
     padding-left: 2em;
-    
+
   }
   p {
-    
+
   }
 }
 
@@ -1831,7 +1890,7 @@ input.awesome-button {
 
 .report {
   margin-top: 1em;
-  
+
   table thead tr th {
     background-color: #5cc5e8;
     color: #470BC1;
@@ -1845,12 +1904,6 @@ input.awesome-button {
 hr {
     margin: 0;
     border-top: 1px solid #e1e1e1;
-}
-
-.bank-content {
-    p {
-        font-size: 2.2em;
-  }
 }
 
 .product-details {
