@@ -1,4 +1,3 @@
-
 module ApplicationHelper
   # In the context of views, the current_person gets decoratred
   # NOTE: I'm not sure if this is confusing, since current_person will be different depending on the context (controller or view)
@@ -8,7 +7,7 @@ module ApplicationHelper
       PersonDecorator.decorate(current_user.person)
     end
   end
-  
+
   def active_if(visitor_type)
     # We don't set visitor_type for students, but we want the helper to be sensible
     visitor_type = '' if visitor_type == 'student'
@@ -71,23 +70,6 @@ module ApplicationHelper
     image_tag(avatar_img.thumb(geometry).url)
   end
 
-#  require 'browser_detect'
-
-  def xxle_svg_tag source, options = {}
-
-    if browser_is?(:webkit) || browser_is?(:firefox)
-      return image_tag(source, options)
-    elsif browser_is?("ie6") || browser_is?("ie7") || browser_is?("ie8")
-      options[:src] = source
-      options[:classid] = "image/svg+xml"
-      return content_tag(:object,nil, options)
-    elsif browser_is('ie') # 9 or above???
-      options[:data] = source
-      options[:classid] = "image/svg+xml"
-      return tag(:object,options)
-    end
-  end
-
   def le_svg_tag source, options = {}
     options[:type] = "image/svg+xml" unless options[:type]
     if block_given?
@@ -104,19 +86,6 @@ module ApplicationHelper
       end
     end
   end
-
-  def le_svg_string source, options = {}
-    if browser_is?(:webkit) || browser_is?(:firefox)
-      return image_tag(source, options)
-    else
-      options[:type] = "image/svg+xml"
-      content_tag(:script,options,nil,false) do
-        Leror::Application.assets.find_asset(source).body.html_safe
-      end
-    end
-  end
-
-
 
   def browser_is? query
     query = query.to_s.strip.downcase

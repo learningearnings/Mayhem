@@ -28,8 +28,6 @@ gem 'kaminari'
 
 gem 'googlecharts'
 
-gem 'browser_detect' # , :require => "browser_detect", :git => 'git://github.com/learningearnings/browser_detect.git'
-
 # Add native postgres data type suport to activerecord.  Rails 4
 # forward-compatible afaik, pretty sure the author's patch made it to rails 4
 gem 'postgres_ext'
