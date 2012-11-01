@@ -300,7 +300,7 @@ function doDebugging() {
   var debug = false;
   var scripts = document.getElementsByTagName('script');
   for (var i = 0; i < scripts.length; i++) {
-    if (/svg(?:\-uncompressed)?\.js/.test(scripts[i].src)) {
+    if (/svg(?:\-uncompressed|\-[0-9a-fA-F]+)?\.js/.test(scripts[i].src)) {
       var debugSetting = scripts[i].getAttribute('data-debug');
       debug = (debugSetting === 'true' || debugSetting === true) ? true : false;
     }
@@ -726,7 +726,7 @@ function SVGWeb() {
   
   // prepare IE by inserting special markup into the page to have the HTC
   // be available
-  if (isIE && !Object.defineProperty) {
+  if (isIE /*&& !Object.defineProperty*/) {
     FlashHandler._prepareBehavior(this.libraryPath, this.htcFilename);
   }
   
@@ -1208,10 +1208,10 @@ extend(SVGWeb, {
   _setXDomain: function() {
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
-      if (/svg(?:\-uncompressed)?\.js/.test(scripts[i].src)
+      if (/svg(?:\-uncompressed|\-[0-9a-fA-F]+)?\.js/.test(scripts[i].src)
           && /^https?/.test(scripts[i].src)) {
         // strip out svg.js filename
-        var url = scripts[i].src.replace(/svg(?:\-uncompressed)?\.js/, '');
+        var url = scripts[i].src.replace(/svg(?:\-uncompressed|\-[0-9a-fA-F]+)?\.js/, '');
         
         // get just protocol/hostname/port portion
         var loc = url.match(/https?\:\/\/[^\/]*/)[0];
@@ -1251,7 +1251,7 @@ extend(SVGWeb, {
     
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
-      if (/svg(?:\-uncompressed)?\.js/.test(scripts[i].src)) {
+      if (/svg(?:\-uncompressed|\-[0-9a-fA-F]+)?\.js/.test(scripts[i].src)) {
         if (scripts[i].getAttribute('data-path')) {
           libraryPath = scripts[i].getAttribute('data-path');
         } else if (libraryPath === null) {
@@ -1298,7 +1298,7 @@ extend(SVGWeb, {
     
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
-      if (/svg(?:\-uncompressed)?\.js/.test(scripts[i].src)
+      if (/svg(?:\-uncompressed|\-[0-9a-fA-F]+)?\.js/.test(scripts[i].src)
           && scripts[i].getAttribute('data-htc-filename')) {
         htcFilename = scripts[i].getAttribute('data-htc-filename');
         break;
@@ -8896,7 +8896,7 @@ extend(FlashInserter, {
       
     var scripts = document.getElementsByTagName('script');
     for (var i = 0; i < scripts.length; i++) {
-      if (/svg(?:\-uncompressed)?\.js/.test(scripts[i].src)
+      if (/svg(?:\-uncompressed|\-[0-9a-fA-F]+)?\.js/.test(scripts[i].src)
           && scripts[i].getAttribute('data-swf-path')) {
         swfPath = scripts[i].getAttribute('data-swf-path');
         break;
