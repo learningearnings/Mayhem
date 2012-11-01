@@ -91,6 +91,8 @@
       padding-right: 10px;
       padding-left: 10px;
       .lower-left {
+          background-image: url(asset_path('whiteboard/whiteboard_lower_left_corner.png', image));
+          background-repeat: no-repeat;
           height: 28px;
           text-align: left;
           width: 28px;
@@ -98,6 +100,8 @@
           margin-left: -10px
        }
       .lower-right {
+          background-image: url(asset_path('whiteboard/whiteboard_lower_right_corner.png', image));
+          background-repeat: no-repeat;
           height: 28px;
           width: 28px;
           text-align: right;
