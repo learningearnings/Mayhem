@@ -8,7 +8,7 @@ ActiveAdmin.register Post do
       f.input :status,:required => true,:label => "Initial Status", :as => :select, :collection => ['submitted','published','archived','flagged']
     end
     f.inputs "Post Body" do
-      f.input :body,:required => true,:label => false, :as => :ckeditor
+      f.input :body,:required => true,:label => false
     end
     f.buttons
   end
