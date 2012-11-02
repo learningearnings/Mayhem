@@ -1,7 +1,8 @@
 %h2= @school_admin.name
 
-= form_for admin_school_admin_path, :method => 'put' do |f|
-  = select_tag :school, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
+= form_for [:admin,@school_admin],:url => add_school_admin_school_admin_path, :method => 'post' do |f|
+  = select_tag :school_id, options_for_select(School.all.collect {|s| [s.name, s.id]}), :include_blank => true
+  =# select_tag :school_id, options_for_select(School.all.map{|x| x.name}, :school), :include_blank => true
   = f.submit 'Add School'
 
 %h4 Schools
@@ -14,7 +15,7 @@
     - @school_admin.schools.each do |school|
       %tr
         %td= link_to school.name, admin_school_path(school)
-        %td= link_to 'Remove', admin_delete_school_admin_school_link_path(:school => school, :school_admin => @school_admin)
+        %td= link_to 'Remove', delete_school_admin_school_admin_path(:school_id => school.id, :school_admin => @school_admin), :method => :delete
 
 %h4 Accounts
 %table
@@ -22,10 +23,18 @@
     %tr
       %th Name
       %th Balance
+      %th Add Credits
   %tbody
-    - @school_admin.accounts.each do |account|
-      %tr
-        %td= link_to account.name
-        %td= account.balance
+    - @school_admin.schools.each do |school|
+      - @school_admin.accounts(school).each do |account|
+        %tr
+          %td= link_to account.name
+          %td= account.balance
+          %td{:style => "width: 400px;"}
+            - if account.name == @school_admin.main_account_name(school)
+              = form_for [:admin, @school_admin], :url => give_credits_admin_school_admin_path, :method => 'post' do |f|
+                = f.hidden_field :school_id, :value => school.id
+                = text_field :credits,:amount, :style => "width: 30%;"
+                = f.submit 'Add Credits'
 
 
