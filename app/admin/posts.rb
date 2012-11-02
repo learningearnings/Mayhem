@@ -1,8 +1,6 @@
 ActiveAdmin.register Post do
   config.filters = false
 
-#  form :partial => "form"
-
   form do |f|
     f.inputs do
       f.input :title,:required => true, :label => "Post Title"

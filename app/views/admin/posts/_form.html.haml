@@ -1,8 +1,0 @@
-= simple_form_for [:admin, @post],:url => new_admin_post_path(@post) do |f|
-  = f.select :type, options_for_select(@post_types)
-
-  = f.text_field :title
-
-  = f.cktext_area :body
-
-  = f.submit "Submit"
