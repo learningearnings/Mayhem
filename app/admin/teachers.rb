@@ -7,12 +7,74 @@ ActiveAdmin.register Teacher do
   filter :grade,:label => "Teacher Grade", :as => :check_boxes, :collection => School::GRADE_NAMES
   filter :created_at, :as => :date_range
 
-  form :partial => "form"
+#  form :partial => "form"
+
+  form do |f|
+    f.inputs do
+      f.input :first_name
+      f.input :last_name
+      f.input :dob
+      f.input :grade, :as => :radio, :collection => School::GRADE_NAMES, :wrapper_html => {:class => 'horizontal'}
+      f.input :status,:label => "Initial Status", :as => :select, :collection => ['new','active','inactive']
+    end
+    f.actions
+  end
 
   show do
     @teacher = Teacher.find(params[:id])
     render 'school_list'
   end
+
+  member_action :give_credits, :method => :post do
+    teacher = Teacher.find(params[:id])
+    amount = params[:credits][:amount]
+    if amount.nil? || amount.to_f <= 0.0
+      flash[:error] = "Please enter a positive, non-zero amount of credits"
+      redirect_to :action => :show and return
+    end
+    school = School.find(params[:teacher][:school_id])
+    if school.nil? || teacher.nil? or !teacher.schools.include?(school)
+      flash[:error] = "Something went wrong - maybe try that again???"
+      redirect_to :action => :show and return
+    end
+    cm = CreditManager.new
+    cm.issue_credits_to_school school, amount
+    cm.issue_credits_to_teacher school,teacher, amount
+    flash[:notice] = "Gave $#{amount} credits to #{teacher.name} at #{school.name}"
+    redirect_to :action => :show
+  end
+
+
+  member_action :add_school, :method => :post do
+    teacher = Teacher.find(params[:id]) rescue nil
+    school = School.find(params[:school_id]) rescue nil
+    if teacher.nil?
+      flash[:error] = "Something went wrong - could not find a teacher - maybe try that again???"
+    elsif school.nil?
+      flash[:error] = "Please select a school to associate with #{teacher.name}"
+    elsif teacher.schools.include?(school)
+      flash[:error] = "#{teacher.name} is already associated wiht #{school.name}"
+    else
+      PersonSchoolLink.create(:person_id => teacher.id, :school_id => school.id) if school
+      flash[:notice] = "Associated #{teacher.name} with #{school.name}"
+    end
+    redirect_to :action => :show
+  end
+
+  member_action :delete_school, :method => :delete do
+    teacher = Teacher.find(params[:id])
+    school = School.find(params[:school_id])
+    link = PersonSchoolLink.find_by_person_id_and_school_id(teacher.id, school.id)
+    if link.delete
+      flash[:notice] = "Removed #{teacher.name} from #{school.name}"
+    else
+      flash[:error] = "Could NOT remove #{teacher.name} from #{school.name}"
+    end
+    redirect_to admin_teacher_path(teacher)
+
+  end
+
+
 
   index do
     column :id do |t|
@@ -48,42 +110,6 @@ ActiveAdmin.register Teacher do
 
   controller do
     skip_before_filter :add_current_store_id_to_params
-
-    def update
-      @teacher = Teacher.find(params[:id])
-      @school = School.find_by_name(params[:school])
-      PersonSchoolLink.create(:person_id => @teacher.id, :school_id => @school.id)
-      redirect_to admin_teacher_path(@teacher)
-    end
-
-    def create
-      @school = School.find_by_name(params[:school])
-      @teacher = Teacher.new(params[:teacher])
-      if @teacher.save
-        PersonSchoolLink.create(:person_id => @teacher.id, :school_id => @school.id)
-        flash[:notice] = 'Teacher created.'
-        redirect_to admin_teacher_path(@teacher)
-      else
-        flash[:error] = 'Teacher not created.'
-        render 'form'
-      end
-    end
-
-    def delete_school_link
-      @teacher = Teacher.find(params[:teacher])
-      @school = School.find(params[:school])
-      link = PersonSchoolLink.find_by_person_id_and_school_id(@teacher.id, @school.id)
-      if link.delete
-        redirect_to admin_teacher_path(@teacher)
-      else
-        render 'show'
-      end
-    end
-
-    def form
-      @teacher = Teacher.new(params[:teacher])
-    end
-
   end
   
 end

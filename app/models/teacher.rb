@@ -2,11 +2,11 @@ class Teacher < Person
 #  has_many :schools, :through => :person_school_links
   attr_accessor :username, :password, :password_confirmation, :email
   attr_accessible :username, :password, :password_confirmation, :email, :gender
+  attr_accessible :status, :as => :admin
   validates_presence_of :grade
   after_create :create_user
 
-  def initialize
-    super
+  def after_initialize
     @teacher_main_account = []
     @teacher_undredeemed_account = []
     @teacher_undeposited_account = []
@@ -50,13 +50,25 @@ class Teacher < Person
     @teacher_undeposited_account[school.id]
   end
 
-  def accounts
+  def accounts(school = nil)
     # FIXME: I hate this -ja
-    Plutus::Account.where "name LIKE '%TEACHER#{id}%'"
+    # Plutus::Account.where "name LIKE '%TEACHER#{id}%'"
+    if school
+      these_schools = [school]
+    else
+      these_schools = self.schools
+    end
+    these_schools.collect do |s|
+      [
+       main_account(s),
+       unredeemed_account(s),
+       undeposited_account(s)
+      ]
+      end.flatten
   end
 
   def balance
-    schools.collect do |s| 
+    schools.collect do |s|
       main_account(s).balance
     end
   end

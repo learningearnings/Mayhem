@@ -146,4 +146,10 @@ ActiveAdmin.setup do |config|
   #
   # Set the CSV builder separator (default is ",")
   # config.csv_column_separator = ','
+
+
+end
+
+ActiveAdmin::ResourceController.class_eval do
+  with_role :admin   # this InheritedResources method will send the role back to the controller for the assign
 end
