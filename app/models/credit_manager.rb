@@ -87,6 +87,10 @@ class CreditManager
     transfer_credits "Issue Credits to Student", teacher.undeposited_account(school), student.checking_account, amount
   end
 
+  def issue_admin_credits_to_student student, amount
+    transfer_credits "Credits issued by LearningEarnings Administrator", main_account, student.checking_account, amount
+  end
+
   def issue_game_credits_to_student game_string, student, amount
     transfer_credits "Credits Earned for #{game_string}", game_account, student.checking_account, amount
   end

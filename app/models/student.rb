@@ -51,6 +51,11 @@ class Student < Person
     name
   end
 
+  def accounts (school)
+    [checking_account, savings_account]
+  end
+
+
   def purchases_account_name
     checking_account_name
   end
