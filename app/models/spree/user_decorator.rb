@@ -4,6 +4,7 @@ Spree::User.class_eval do
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker, :as => :admin
 
   belongs_to :person
   has_many :person_school_links, :through => :person

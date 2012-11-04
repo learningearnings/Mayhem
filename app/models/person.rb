@@ -24,11 +24,11 @@ class Person < ActiveRecord::Base
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
 
+  before_save :ensure_spree_user
+
   def name
     "#{first_name} #{last_name}"
   end
-
-  delegate :email, :to => :user
 
   def avatar
     avatars.first
@@ -52,13 +52,19 @@ class Person < ActiveRecord::Base
     School.joins(:person_food_school_links).where(person_food_school_links: { id: person_food_school_links.map(&:id) })
   end
 
-  delegate :username, :username= , to: :user
+  accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :school
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status, :type,:created_at, :as => :admin
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :school, :username, :user_attributes
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status,:username,:email, :password_confirmation, :type,:created_at,:user_attributes, :as => :admin
   validates_presence_of :first_name, :last_name
+#  delegate :email, :username , :password, :password_confirmation, to: :user
+  delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, to: :user, allow_nil: true
 
   # Relationships
+
+  def ensure_spree_user
+    self.user = Spree::User.new unless user
+  end
 
 
   #Last approved moniker name
