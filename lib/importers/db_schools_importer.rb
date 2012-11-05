@@ -40,8 +40,8 @@ class OldSchoolImporter
     OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
     OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
-    OldUser.connection("update tbl_users set verificationdate = '20100701' where month(verificationDate) = 0 and year(verificationDate) > 0;")
-    Olduser.connection("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
+    OldUser.connection.execute("update tbl_users set verificationdate = '20100701' where month(verificationDate) = 0 and year(verificationDate) > 0;")
+    Olduser.connection.execute("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
   end
 
@@ -413,6 +413,7 @@ class OldSchoolImporter
         batch = buck_batch
       end
       oc = oc = OtuCode.new(:points => c.otucodepoint,
+                            :code => c.OTUcode,
                             :expires_at => c.OTUcodeexpires,
                             :student_id => new_student_id,
                             :person_school_link_id => tsl.id,

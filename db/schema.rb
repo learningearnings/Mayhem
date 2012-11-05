@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121015215952) do
+ActiveRecord::Schema.define(:version => 20121105034846) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -344,7 +344,6 @@ ActiveRecord::Schema.define(:version => 20121015215952) do
     t.string   "salutation",     :limit => 10
   end
 
-  add_index "people", ["status"], :name => "p_status"
   add_index "people", ["type"], :name => "index_people_on_type"
 
   create_table "person_avatar_links", :force => true do |t|
@@ -381,6 +380,8 @@ ActiveRecord::Schema.define(:version => 20121015215952) do
     t.datetime "updated_at",            :null => false
   end
 
+  add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
+
   create_table "person_school_links", :force => true do |t|
     t.integer  "person_id"
     t.integer  "school_id"
@@ -388,6 +389,8 @@ ActiveRecord::Schema.define(:version => 20121015215952) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
@@ -630,6 +633,13 @@ ActiveRecord::Schema.define(:version => 20121015215952) do
     t.text     "details"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "spree_mail_methods", :force => true do |t|
+    t.string   "environment"
+    t.boolean  "active",      :default => true
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "spree_option_types", :force => true do |t|
