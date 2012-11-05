@@ -94,7 +94,13 @@ class OldSchoolImporter
                            :status => s.status_id == 200 ? 'active' : 'inactive',
                            :created_at => Time.parse((s.createdate || '20100701').to_s)
                          }, :as => :admin)
-
+    puts "#{s.school} has #{s.filters.count} filters"
+    s.filters.each do |f|
+      next if f.classrooms.count > 0
+      f.old_reward_locals.each do |rl|
+        puts "Need to create filter %{f.id}"
+      end
+    end
     if !ns.save
       # TODO What to do here?
     end

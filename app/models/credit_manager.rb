@@ -68,7 +68,7 @@ class CreditManager
    end
 
   def transfer_credits_to_teacher school, from_teacher, to_teacher, amount
-    transfer_credits "Transfer Credits to Teacher", from_teacher.main_accoun(school), to_teacher.main_account(school), amount
+    transfer_credits "Transfer Credits to Teacher", from_teacher.main_account(school), to_teacher.main_account(school), amount
   end
 
   def issue_credits_to_teacher school, teacher, amount

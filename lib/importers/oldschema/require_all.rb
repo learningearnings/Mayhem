@@ -17,3 +17,11 @@ require_relative 'old_teacher_award.rb'
 require_relative 'old_file_download.rb'
 require_relative 'old_user_avatar.rb'
 require_relative 'old_avatar.rb'
+
+require_relative 'old_filter.rb'
+require_relative 'old_filter_classroom.rb'
+require_relative 'old_filter_state.rb'
+require_relative 'old_filter_usertype.rb'
+require_relative 'old_filter_school.rb'
+
+

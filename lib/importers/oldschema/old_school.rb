@@ -14,5 +14,7 @@ class OldSchool < ActiveRecord::Base
 
   belongs_to :state, :class_name => OldState
   has_many :old_users, :foreign_key => :schoolID
+  has_many :filter_schools, :class_name => 'OldFilterSchool', :foreign_key => :schoolID, :inverse_of => :old_school
+  has_many :filters, :class_name => 'OldFilter', :through => :filter_schools, :inverse_of => :old_schools, :source => :old_filter
   has_many :classrooms, :foreign_key => :schoolID, :class_name => 'OldClassroom'
 end
