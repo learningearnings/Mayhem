@@ -18,6 +18,7 @@ class OldSchoolImporter
     Avatar.all.each do |a|
       @cached_avatars[a.image_name] = a if a.image_name
     end
+    @filter_factory = FilterFactory.new
   end
 
   def reset_school_cache
@@ -31,6 +32,7 @@ class OldSchoolImporter
     @teacher_undeposited_points = {}
     @teacher_unredeemed_points = {}
     @school_points = 0
+    @filter_lookup = {}
   end
 
   def fixup
@@ -96,9 +98,12 @@ class OldSchoolImporter
                          }, :as => :admin)
     puts "#{s.school} has #{s.filters.count} filters"
     s.filters.each do |f|
-      next if f.classrooms.count > 0
+      classroom_count = 0
+      f.old_filter_classrooms.each do |fc| classroom_count += 1 if fc.classroomID  end
+      next if classroom_count > 0
       f.old_reward_locals.each do |rl|
-        puts "Need to create filter %{f.id}"
+        new_filter_id = get_filter(f,f.id)
+        puts "Need to create filter #{f.id} - new filter id is #{new_filter_id}"
       end
     end
     if !ns.save
@@ -190,7 +195,7 @@ class OldSchoolImporter
   end
 
 
-  def import_classrooms(new_school,old_school)
+ def import_classrooms(new_school,old_school)
     last_created_at = new_school.created_at
     puts "  --> #{old_school.classrooms.count} Classrooms to import for #{new_school.name}"
     start_time = Time.now
@@ -209,6 +214,7 @@ class OldSchoolImporter
       new_c.update_attributes({:name => c.classroomtitle,
                                 :status => c.status_id == 200 ? 'active' : 'inactive',
                                 :school_id => new_school.id,
+                                :legacy_classroom_id => c.classroomID,
                                 :created_at => c.classroomcreated
                               },:as => :admin)
       new_c.save
@@ -484,9 +490,14 @@ class OldSchoolImporter
     store = Spree::Store.find_by_code 'le' if new_school.nil?
     if reward_type == 'local' && old_point
       reward_local = old_point.old_redeemed.old_reward_local
+      new_filter = nil
+      new_filter = get_filter(reward_local.filter,reward_local.filterID,new_school)
+      puts ("Couldn't find filter for local_reward id #{reward_local.id}          ") unless new_filter
+      exit unless new_filter
       owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
+                                          :filter => new_filter,
                                           :legacy_selector => reward_selector,
                                           :school => new_school,
                                           :reward_type => reward_type,
@@ -574,6 +585,39 @@ class OldSchoolImporter
       psl = PersonSchoolLink.create(person_id: person.id, school_id: school.id)
     end
     @found_student_school_links[person.id] = psl
+  end
+
+  def get_filter(old_filter,old_filter_id, fallback_school = nil)
+    if old_filter
+      return @filter_lookup[old_filter.id] if @filter_lookup[old_filter.id]
+      fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
+      old_filter.old_schools.each do |s|
+        fc << s if s
+      end
+      old_filter.old_classrooms.each do |old_c|
+        c = Classroom.find_by_legacy_classroom_id(old_c.classroomID)
+        fc << c if c
+      end
+      old_filter.old_states.each do |old_s|
+        s = State.find_by_abbreviation(old_s.StateAbbr)
+        fc << s if s
+      end
+      old_filter.old_usertypes.each do |old_ut|
+        personclass = case old_ut.usertypeID
+                      when 1 then 'Student'
+                      when 2 then 'Teacher'
+                      when 3 then 'SchoolAdmin'
+                      when 5 then 'SchoolAdmin'
+                      else 'Teacher'
+                      end
+        fc << personclass if personclass
+      end
+    elsif fallback_school
+      fc = FilterConditions.new ({:minimum_grade => fallback_school.min_grade, :maximum_grade => fallback_school.max_grade, :school => fallback_school})
+    end
+    filter = @filter_factory.find_or_create_filter(fc)
+    @filter_lookup[old_filter_id] = filter.id if filter
+    @filter_lookup[old_filter_id]
   end
 
 

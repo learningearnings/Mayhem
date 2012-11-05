@@ -11,8 +11,8 @@ class Classroom < ActiveRecord::Base
   has_many :classroom_filter_links, :inverse_of => :classrooms
   has_many :filters, :through => :classroom_filter_links
 
-  attr_accessible :name, :status, :school_id
-  attr_accessible :name, :status, :school_id, :created_at, :as => :admin
+  attr_accessible :name, :status, :school_id, :legacy_classroom_id
+  attr_accessible :name, :status, :school_id, :legacy_classroom_id, :created_at, :as => :admin
 
   validates_presence_of :name
 
