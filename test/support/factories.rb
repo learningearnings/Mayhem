@@ -81,7 +81,7 @@ FactoryGirl.define do
   factory :reward_delivery do
     association :from, factory: :person
     association :to,   factory: :person
-    association :reward, factory: :spree_product
+    reward_id  101
     status "pending"
     factory :pending_reward_delivery do
       status "pending"
@@ -92,6 +92,14 @@ FactoryGirl.define do
   end
 
   factory :spree_product, class: Spree::Product do
+    name "Some Product"
+    available_on "2012-01-01"
+    permalink "some-product"
+    count_on_hand 20
+    price 10
+  end
+
+  factory :spree_line_item, class: Spree::LineItem do
     name "Some Product"
     available_on "2012-01-01"
     permalink "some-product"

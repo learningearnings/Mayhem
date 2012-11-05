@@ -3,7 +3,7 @@ class RewardDelivery < ActiveRecord::Base
 
   belongs_to :from, class_name: "Person", foreign_key: :from_id
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
-  belongs_to :reward, class_name: "Spree::Product", foreign_key: :reward_id
+  belongs_to :reward, class_name: "Spree::LineItem", foreign_key: :reward_id
 
   validates :from_id,   presence: true
   validates :to_id,     presence: true

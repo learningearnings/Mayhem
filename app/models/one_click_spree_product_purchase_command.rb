@@ -13,7 +13,7 @@ class OneClickSpreeProductPurchaseCommand
     if can_create_school_products?
       create_school_products
     else
-      queue_delivery(@order.products)
+      queue_delivery(@order.line_items)
     end
 
     unless @order.products.first.is_wholesale_reward? || @order.products.first.is_global_reward?
@@ -40,9 +40,9 @@ class OneClickSpreeProductPurchaseCommand
 
   # Create a RewardDelivery from the teacher to the purchasing student for these
   # products
-  def queue_delivery(products)
-    products.each do |product|
-      RewardDelivery.create(from_id: @deliverer_id, to_id: @person.id, reward_id: product.id)
+  def queue_delivery(line_items)
+    line_items.each do |line_item|
+      RewardDelivery.create(from_id: @deliverer_id, to_id: @person.id, reward_id: line_item.id)
     end
   end
 

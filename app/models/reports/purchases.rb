@@ -88,7 +88,7 @@ module Reports
     end
 
     def reward_delivery_base_scope
-      RewardDelivery.includes(to: [ :person_school_links ], reward: []).where(to: { person_school_links: { school_id: @school.id } })
+      RewardDelivery.includes(to: [ :person_school_links ], reward: [:product]).where(to: { person_school_links: { school_id: @school.id } })
     end
 
     def generate_row(reward_delivery)
