@@ -38,7 +38,8 @@ class CreditManager
       created_at: @transaction_time_stamp,
       debits:      [{ account: to_account, amount: amount }],
       credits:     [{ account: from_account,   amount: amount }]
-    }).save
+    })
+    transation.save
     transaction
   end
 
