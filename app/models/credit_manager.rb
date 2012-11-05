@@ -39,7 +39,7 @@ class CreditManager
       debits:      [{ account: to_account, amount: amount }],
       credits:     [{ account: from_account,   amount: amount }]
     })
-    transation.save
+    transaction.save
     transaction
   end
 
