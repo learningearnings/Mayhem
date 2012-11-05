@@ -43,7 +43,7 @@ class OldSchoolImporter
     OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
     OldUser.connection.execute("update tbl_users set verificationdate = '20100701' where month(verificationDate) = 0 and year(verificationDate) > 0;")
-    Olduser.connection.execute("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
+    OldUser.connection.execute("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
   end
 
