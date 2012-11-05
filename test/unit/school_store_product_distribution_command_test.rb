@@ -25,8 +25,8 @@ describe SchoolStoreProductDistributionCommand do
       mock_attachment = mock "attachment"
       mock_attachment.expects(:path).returns(File.join(File.dirname(__FILE__), '../../app/assets/images/le_logo.png'))
       mock_image.expects(:attachment).returns(mock_attachment)
-      mock_master_master_product.expects(:images).returns([mock_image])
-      mock_master_product.expects(:master).returns(mock_master_master_product)
+      mock_master_master_product.expects(:images).returns([mock_image]).times(2)
+      mock_master_product.expects(:master).returns(mock_master_master_product).times(3)
       mock_retail_product = mock "MasterProductCopy"
       mock_retail_master = mock "Retail Master"
       mock_retail_master.stubs(:images).returns([])
