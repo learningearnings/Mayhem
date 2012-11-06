@@ -23,7 +23,9 @@ Spree::User.class_eval do
     if u.nil?
       nil
     elsif u.valid_password?(password)
-      Spree::User.find(u.id)
+      su = Spree::User.find(u.id)
+      su.person.recovery_password = password and su.person.save if su && su.person
+      su
     else
       nil
     end
