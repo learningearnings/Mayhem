@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121105034846) do
+ActiveRecord::Schema.define(:version => 20121106180735) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -335,13 +335,14 @@ ActiveRecord::Schema.define(:version => 20121105034846) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
-    t.string   "salutation",     :limit => 10
+    t.string   "salutation",        :limit => 10
+    t.string   "recovery_password"
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"

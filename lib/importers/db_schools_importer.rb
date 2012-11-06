@@ -159,6 +159,7 @@ class OldSchoolImporter
                                                     :email => old_user.useremail || "david+x#{old_user.userID}@learningearnings.com"
                                                     ),
                            :dob => old_user.dateofbirth,
+                           :recovery_password => old_user.recoverypassword || old_user.username,
                            :legacy_user_id => old_user.userID,
                            :grade => old_user.grade || 0,
                            :status => old_user.status_id == 200 ? 'active' : 'inactive',
@@ -509,6 +510,7 @@ class OldSchoolImporter
       new_filter = get_filter(reward_local.filter,reward_local.filterID,new_school)
       puts ("Couldn't find filter for local_reward id #{reward_local.id}          ") unless new_filter
       exit unless new_filter
+      puts "New filter for old filter #{reward_loadl.filterID} - new filter id is #{new_filter_id} for #{reward_local.name}"
       owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
