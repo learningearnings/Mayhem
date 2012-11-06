@@ -48,7 +48,11 @@ module CommonPersonConfig
           redirect_to :action => :show and return
         end
         if person.is_a? Teacher
-          school = School.find(params[:teacher][:school_id])
+          if person.is_a? SchoolAdmin
+            school = School.find(params[:school_admin][:school_id])
+          else
+            school = School.find(params[:teacher][:school_id])
+          end
           if school.nil? || person.nil? or !person.schools.include?(school)
             flash[:error] = "Something went wrong - maybe try that again???"
             redirect_to :action => :show and return

@@ -18,6 +18,7 @@ class OldSchoolImporter
     Avatar.all.each do |a|
       @cached_avatars[a.image_name] = a if a.image_name
     end
+    @filter_factory = FilterFactory.new
   end
 
   def reset_school_cache
@@ -31,6 +32,7 @@ class OldSchoolImporter
     @teacher_undeposited_points = {}
     @teacher_unredeemed_points = {}
     @school_points = 0
+    @filter_lookup = {}
   end
 
   def fixup
@@ -40,8 +42,8 @@ class OldSchoolImporter
     OldReward.connection.execute("update tbl_users set userpass = md5('i82much'), recoverypassword = 'i82much'")
     OldReward.connection.execute("update tbl_users set useremail = concat('david+',userID,'@learningearnings.com') where useremail is not null")
     OldReward.connection.execute("update tbl_rewards set partnerID = 0")
-    OldUser.connection("update tbl_users set verificationdate = '20100701' where month(verificationDate) = 0 and year(verificationDate) > 0;")
-    Olduser.connection("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
+    OldUser.connection.execute("update tbl_users set verificationdate = '20100701' where month(verificationDate) = 0 and year(verificationDate) > 0;")
+    OldUser.connection.execute("update tbl_users set verificationdate = null where month(verificationDate) = 0 and verificationdate is not null;")
     OldUser.connection.execute("update tbl_users set virtual_bal = 0")
   end
 
@@ -94,7 +96,16 @@ class OldSchoolImporter
                            :status => s.status_id == 200 ? 'active' : 'inactive',
                            :created_at => Time.parse((s.createdate || '20100701').to_s)
                          }, :as => :admin)
-
+    puts "#{s.school} has #{s.filters.count} filters"
+    s.filters.each do |f|
+      classroom_count = 0
+      f.old_filter_classrooms.each do |fc| classroom_count += 1 if fc.classroomID  end
+      next if classroom_count > 0
+      f.old_reward_locals.each do |rl|
+        new_filter_id = get_filter(f,f.id)
+        puts "Need to create filter #{f.id} - new filter id is #{new_filter_id}"
+      end
+    end
     if !ns.save
       # TODO What to do here?
     end
@@ -148,6 +159,7 @@ class OldSchoolImporter
                                                     :email => old_user.useremail || "david+x#{old_user.userID}@learningearnings.com"
                                                     ),
                            :dob => old_user.dateofbirth,
+                           :recovery_password => old_user.recoverypassword || old_user.username,
                            :legacy_user_id => old_user.userID,
                            :grade => old_user.grade || 0,
                            :status => old_user.status_id == 200 ? 'active' : 'inactive',
@@ -184,7 +196,7 @@ class OldSchoolImporter
   end
 
 
-  def import_classrooms(new_school,old_school)
+ def import_classrooms(new_school,old_school)
     last_created_at = new_school.created_at
     puts "  --> #{old_school.classrooms.count} Classrooms to import for #{new_school.name}"
     start_time = Time.now
@@ -203,6 +215,7 @@ class OldSchoolImporter
       new_c.update_attributes({:name => c.classroomtitle,
                                 :status => c.status_id == 200 ? 'active' : 'inactive',
                                 :school_id => new_school.id,
+                                :legacy_classroom_id => c.classroomID,
                                 :created_at => c.classroomcreated
                               },:as => :admin)
       new_c.save
@@ -358,7 +371,7 @@ class OldSchoolImporter
         puts "Unknown - unprocessed!!! #{op.to_yaml} "
       end
     end
-    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
+    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\033[K\r" if new_student
     [imported_points,imported_purchases,imported_points_count, imported_purchases_count]
   end
 
@@ -413,6 +426,7 @@ class OldSchoolImporter
         batch = buck_batch
       end
       oc = oc = OtuCode.new(:points => c.otucodepoint,
+                            :code => c.OTUcode,
                             :expires_at => c.OTUcodeexpires,
                             :student_id => new_student_id,
                             :person_school_link_id => tsl.id,
@@ -425,6 +439,21 @@ class OldSchoolImporter
     end
     rows
   end
+
+  def import_teacher_balances old_school, new_school
+    OldUser.where(:schoolID => old_school.schoolID).where(:usertypeID => [2,3,5]).each do |old_t|
+      old_balance = old_t.old_teacher_awards.sum(:TeacherAwardAmount)
+      old_balance = 0 if old_balance < 0
+      new_t = find_teacher old_t
+      current_balance = new_t.main_account(new_school).balance
+      credits = old_balance - current_balance
+      @cm.issue_credits_to_school new_school, credits
+      @cm.issue_credits_to_teacher new_school, new_t, credits
+      new_t.main_account(new_school).reload
+      puts "#{new_t.type} #{new_t.name} has a balance of #{new_t.main_account(new_school).balance}"
+    end
+  end
+
 
 
   def update_quantities old_school, new_school
@@ -477,9 +506,15 @@ class OldSchoolImporter
     store = Spree::Store.find_by_code 'le' if new_school.nil?
     if reward_type == 'local' && old_point
       reward_local = old_point.old_redeemed.old_reward_local
+      new_filter = nil
+      new_filter = get_filter(reward_local.filter,reward_local.filterID,new_school)
+      puts ("Couldn't find filter for local_reward id #{reward_local.id}          ") unless new_filter
+      exit unless new_filter
+      puts "New filter for old filter #{reward_loadl.filterID} - new filter id is #{new_filter_id} for #{reward_local.name}"
       owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
+                                          :filter => new_filter,
                                           :legacy_selector => reward_selector,
                                           :school => new_school,
                                           :reward_type => reward_type,
@@ -567,6 +602,39 @@ class OldSchoolImporter
       psl = PersonSchoolLink.create(person_id: person.id, school_id: school.id)
     end
     @found_student_school_links[person.id] = psl
+  end
+
+  def get_filter(old_filter,old_filter_id, fallback_school = nil)
+    if old_filter
+      return @filter_lookup[old_filter.id] if @filter_lookup[old_filter.id]
+      fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
+      old_filter.old_schools.each do |s|
+        fc << s if s
+      end
+      old_filter.old_classrooms.each do |old_c|
+        c = Classroom.find_by_legacy_classroom_id(old_c.classroomID)
+        fc << c if c
+      end
+      old_filter.old_states.each do |old_s|
+        s = State.find_by_abbreviation(old_s.StateAbbr)
+        fc << s if s
+      end
+      old_filter.old_usertypes.each do |old_ut|
+        personclass = case old_ut.usertypeID
+                      when 1 then 'Student'
+                      when 2 then 'Teacher'
+                      when 3 then 'SchoolAdmin'
+                      when 5 then 'SchoolAdmin'
+                      else 'Teacher'
+                      end
+        fc << personclass if personclass
+      end
+    elsif fallback_school
+      fc = FilterConditions.new ({:minimum_grade => fallback_school.min_grade, :maximum_grade => fallback_school.max_grade, :school => fallback_school})
+    end
+    filter = @filter_factory.find_or_create_filter(fc)
+    @filter_lookup[old_filter_id] = filter.id if filter
+    @filter_lookup[old_filter_id]
   end
 
 

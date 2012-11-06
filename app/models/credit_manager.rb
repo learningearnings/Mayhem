@@ -35,10 +35,10 @@ class CreditManager
     transaction = @transaction_class.build({
       description: description,
       commercial_document: buck_batch,
+      created_at: @transaction_time_stamp,
       debits:      [{ account: to_account, amount: amount }],
       credits:     [{ account: from_account,   amount: amount }]
     })
-    transaction.created_at = @transaction_time_stamp if @transaction_time_stamp
     transaction.save
     transaction
   end
@@ -68,7 +68,8 @@ class CreditManager
    end
 
   def transfer_credits_to_teacher school, from_teacher, to_teacher, amount
-    transfer_credits "Transfer Credits to Teacher", from_teacher.main_accoun(school), to_teacher.main_account(school), amount
+    return false if from_teacher.main_account(school).balance < amount
+    transfer_credits "Transfer Credits to Teacher", from_teacher.main_account(school), to_teacher.main_account(school), amount
   end
 
   def issue_credits_to_teacher school, teacher, amount

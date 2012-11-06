@@ -91,6 +91,7 @@ namespace :import do
         end
         osi.make_school_and_teacher_entries ns
         osi.update_quantities(s,ns)
+        osi.import_teacher_balances s,ns
       else
         puts "Could not find old school for #{ns.name}"
       end

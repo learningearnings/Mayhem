@@ -9,6 +9,9 @@ class OldUser < ActiveRecord::Base
   has_one :old_avatar, :class_name => 'OldAvatar', :through => :old_user_avatar
   has_many :old_points, :foreign_key => :userID
 
+  has_many :old_teacher_awards, :class_name => 'OldTeacherAward', :foreign_key => :teacherID
+
+
   def avatar
     self.old_avatar
   end
