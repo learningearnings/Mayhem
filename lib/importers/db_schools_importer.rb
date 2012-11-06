@@ -510,7 +510,7 @@ class OldSchoolImporter
       new_filter = get_filter(reward_local.filter,reward_local.filterID,new_school)
       puts ("Couldn't find filter for local_reward id #{reward_local.id}          ") unless new_filter
       exit unless new_filter
-      puts "New filter for old filter #{reward_loadl.filterID} - new filter id is #{new_filter_id} for #{reward_local.name}"
+      puts "New filter for old filter #{reward_load.filterID} - new filter id is #{new_filter_id} for #{reward_local.name}"
       owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
