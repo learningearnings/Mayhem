@@ -68,6 +68,7 @@ class CreditManager
    end
 
   def transfer_credits_to_teacher school, from_teacher, to_teacher, amount
+    return false if from_teacher.main_account(school).balance < amount
     transfer_credits "Transfer Credits to Teacher", from_teacher.main_account(school), to_teacher.main_account(school), amount
   end
 

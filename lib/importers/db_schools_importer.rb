@@ -370,7 +370,7 @@ class OldSchoolImporter
         puts "Unknown - unprocessed!!! #{op.to_yaml} "
       end
     end
-    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\r" if new_student
+    print "#{new_student.name} Points - $#{imported_points} (#{imported_points_count}) -- Purchases $#{imported_purchases} - (#{imported_purchases_count})  #{rowspersec} rows/sec\033[K\r" if new_student
     [imported_points,imported_purchases,imported_points_count, imported_purchases_count]
   end
 
@@ -438,6 +438,21 @@ class OldSchoolImporter
     end
     rows
   end
+
+  def import_teacher_balances old_school, new_school
+    OldUser.where(:schoolID => old_school.schoolID).where(:usertypeID => [2,3,5]).each do |old_t|
+      old_balance = old_t.old_teacher_awards.sum(:TeacherAwardAmount)
+      old_balance = 0 if old_balance < 0
+      new_t = find_teacher old_t
+      current_balance = new_t.main_account(new_school).balance
+      credits = old_balance - current_balance
+      @cm.issue_credits_to_school new_school, credits
+      @cm.issue_credits_to_teacher new_school, new_t, credits
+      new_t.main_account(new_school).reload
+      puts "#{new_t.type} #{new_t.name} has a balance of #{new_t.main_account(new_school).balance}"
+    end
+  end
+
 
 
   def update_quantities old_school, new_school
