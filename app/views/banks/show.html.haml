@@ -1,9 +1,9 @@
 .main-content-wrapper
   .primary-content    
-    %h2 My Bank
+    %h2= t('.title')
 
     .bank-account
-      %h4 My Account
+        %h4= t('.subtitle')
       .balances
         %p Checking Balance: #{current_person.checking_balance}
         %p Savings Balance: #{current_person.savings_balance}

@@ -1,0 +1,13 @@
+.full-content
+
+  %h2 Your Profile
+  
+  .first-name= @person.first_name + @person.last_name
+  .user-name= @person.user.username
+  .moniker= @person.moniker
+  .school= @person.school
+  .current-person-avatar.supplemental-part=image_tag @person.avatar.image.url
+  
+  .link
+    = link_to "Update", edit_person_path(@person.id), class: 'btn awesome-button'
+  
