@@ -1796,7 +1796,7 @@ input, textarea, select {
 }
 
 .awesome-button {
-    background-color: rgb(37, 134, 11);
+    background: rgb(37, 134, 11);
 /*    background: rgba(37, 134, 11, .8); */
     padding: .5em;
     border: 2px solid rgba(255, 255, 255, 0.5);
@@ -1812,7 +1812,7 @@ input, textarea, select {
     color: #fff;
     margin: .5em;
     &:hover {
-      background-color: rgba(71, 11, 193, .8);
+      background: rgb(71, 11, 193);
       color: #fff;
     }
 }
