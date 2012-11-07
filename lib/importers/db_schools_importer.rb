@@ -605,7 +605,7 @@ class OldSchoolImporter
   end
 
   def get_filter(old_filter,old_filter_id, fallback_school = nil)
-    return @filter_lookup[old_filter.id] if @filter_lookup[old_filter.id]
+    return @filter_lookup[old_filter_id] if @filter_lookup[old_filter_id]
     if old_filter
       fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
       old_filter.old_schools.each do |s|
