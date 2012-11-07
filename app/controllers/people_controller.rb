@@ -5,6 +5,11 @@ class PeopleController < LoggedInController
     render :layout => 'application'
   end
 
+  def show
+    @person = current_person
+    render :layout => 'application'
+  end
+  
   def get_avatar_results
     @avatars = Avatar.page params[:page]
     render partial: 'avatars'

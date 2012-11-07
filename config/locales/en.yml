@@ -17,6 +17,7 @@ en:
   time:
     formats:
       default: "%a, %e-%b %Y %I:%M %p"
+      short: 
   date:
     formats:
       default: "%a, %e-%b %Y"
@@ -39,11 +40,35 @@ en:
                             to purchase with their LE Credits.
   schoolstore:
     spree:
-      products:
+      products: &scst2
         index:
-          products:  Stuff you can Buy!
-          products_message: Use your LE Credits to buy these things
+          products: Rewards
+          search_results:  Jimmy's Search Test
+          products_message: Use your LE Credits to buy these rewards!
+      home: *scst2
+    search_results: "Search Results:"
   play_content: Students can take a break here (but keep on learning and earning)
+  banks:
+    show:
+      title: My Bank
+      subtitle: My Accounts
+    transfer_credits:
+      title: Transfer Credits
+      desc: Transfer credits between your checking and savings accounts
+  messages:
+    new:
+      title: Send A New Message
+      desc: Create a new message to send
+  games:
+    base:
+      show:
+        title: Play
+        auction_title: Auctions
+        auction_desc: "Bid on rewards"
+        ff_title: Food Fight
+        ff_desc: "Answer trivia questions correctly and throw food at other schools"
+        nm_title: Number Muncher
+        nm_desc: "Play Number Muncher now to hone your math skills"
   active_admin:
     dashboard: "LE Dashboard"
     dashboard_welcome:
