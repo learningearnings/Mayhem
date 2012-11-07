@@ -107,8 +107,7 @@ group :development, :test do
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
   gem 'unicorn'
-  gem 'libnotify' if /linux/ =~ RUBY_PLATFORM
-  gem 'growl' if /darwin/ =~ RUBY_PLATFORM
+  gem 'libnotify'
   gem 'thin'
   gem 'rack-bug', git: 'https://github.com/learningearnings/rack-bug.git', branch: 'rails3'
 end
