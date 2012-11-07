@@ -33,6 +33,7 @@ class OldSchoolImporter
     @teacher_unredeemed_points = {}
     @school_points = 0
     @filter_lookup = {}
+    @filter_reverse_lookup = {}
   end
 
   def fixup
@@ -102,8 +103,11 @@ class OldSchoolImporter
     puts "#{s.school} has #{s.filters.count} filters"
     s.filters.each do |f|
       classroom_count = 0
-      f.old_reward_locals.each do |rl|
-        new_filter_id = get_filter(f,f.id,ns) and puts "-------------------> Need to create filter #{f.id} - new filter id is #{new_filter_id}" if !@filter_lookup[f.id]
+      f.old_filter_classrooms.each do |ofc| classroom_count += 1 if oc.classroomID end
+      if classroom_count > 0
+        f.old_reward_locals.each do |rl|
+          get_filter(f,f.id,ns) # if !@filter_lookup[f.id]
+        end
       end
     end
     ns
@@ -504,7 +508,7 @@ class OldSchoolImporter
     if reward_type == 'local' && old_point
       reward_local = old_point.old_redeemed.old_reward_local
       new_filter_id = nil
-      new_filter_id = get_filter(reward_local.filter,reward_local.filterID,new_school) and puts "------------------------------> New filter for old filter #{reward_local.filterID} - new filter id is #{new_filter_id} for #{reward_local.name}" if !@filter_lookup[reward_local.filterID]
+      new_filter_id = get_filter(reward_local.filter,reward_local.filterID,new_school) # if !@filter_lookup[reward_local.filterID]
       puts ("=============================> Couldn't find old filter for local_reward id #{reward_local.id}          ") unless new_filter_id
       exit unless new_filter_id
       owner = find_teacher reward_local.userID
@@ -601,8 +605,8 @@ class OldSchoolImporter
   end
 
   def get_filter(old_filter,old_filter_id, fallback_school = nil)
+    return @filter_lookup[old_filter.id] if @filter_lookup[old_filter.id]
     if old_filter
-      return @filter_lookup[old_filter.id] if @filter_lookup[old_filter.id]
       fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
       old_filter.old_schools.each do |s|
         fc << fallback_school
@@ -633,9 +637,15 @@ class OldSchoolImporter
     end
     filter = @filter_factory.find_or_create_filter(fc)
     @filter_lookup[old_filter_id] = filter.id if filter
+    puts "--------------------> Old filter = #{old_filter_id} ---- New filter id = #{filter.id}" if filter
+    if @filter_reverse_lookup[filter.id] && @filter_reverse_lookup[filter.id] != old_filter_id
+      puts fc.to_s
+      puts "*********************************************** Something went horribly wrong **********************************************"
+      exit
+    end
+    @filter_reverse_lookup[filter.id] = old_filter_id
     @filter_lookup[old_filter_id]
   end
-
 
   def find_teacher_school_link teacher, new_school
     tsl = @found_teacher_school_links[teacher.legacy_user_id]
@@ -648,5 +658,4 @@ class OldSchoolImporter
     end
     tsl
   end
-
 end
