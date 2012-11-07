@@ -1,7 +1,8 @@
 class CreateUploadedUsers < ActiveRecord::Migration
   def change
     create_table :uploaded_users do |t|
-      t.integer :batch_id
+      t.string :batch_name
+      t.text :original_data
       t.string :first_name
       t.string :last_name
       t.string :username
