@@ -38,9 +38,16 @@ Spree::OrdersController.class_eval do
     if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
       respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
     else
-      OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-      flash[:notice] = "Bought that stuff..."
-      redirect_to "/"
+      if @order.total > current_person.checking_account.balance
+        flash[:notice] = t(:not_enough_credits_to_purchase)
+        product = @order.line_items.first.product
+        @order.empty!
+        redirect_to product and return
+      else
+        OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
+        flash[:notice] = "Bought that stuff..."
+        redirect_to "/"
+      end
     end
   end
 
