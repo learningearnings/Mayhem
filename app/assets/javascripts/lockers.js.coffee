@@ -15,7 +15,6 @@ $ ->
   click_to_remove = (event) ->
     locker_sticker = $(event.target).closest('.locker_sticker')
     id = locker_sticker.data().id
-    alert "Remove IT!"
     $.post('/remove_locker_sticker_from_locker_commands',
       {
         id: id
@@ -47,9 +46,9 @@ $ ->
         )
         locker.append(sticker_div)
         make_draggable(sticker_div)
-        sticker_div.click -> click_to_remove
+        sticker_div.first(".remove").click (event) -> click_to_remove(event)
     )
 
-  $('.locker_wrapper .locker_sticker .remove').click -> click_to_remove(event)
+  $('.locker_wrapper .locker_sticker .remove').click (event) -> click_to_remove(event)
 
   make_draggable('.locker_wrapper.editable .locker_sticker')
