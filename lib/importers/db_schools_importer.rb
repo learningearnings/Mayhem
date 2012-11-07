@@ -608,9 +608,7 @@ class OldSchoolImporter
     return @filter_lookup[old_filter_id] if @filter_lookup[old_filter_id]
     if old_filter
       fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
-      old_filter.old_schools.each do |s|
-        fc << fallback_school
-      end
+      fc << fallback_school # probably the only school we're concerned with
       old_filter.old_classrooms.each do |old_c|
         c = Classroom.find_by_legacy_classroom_id(old_c.classroomID)
         puts "Can't find classroom #{old_c.classroomID}" and exit unless c
