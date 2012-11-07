@@ -103,7 +103,7 @@ class OldSchoolImporter
     puts "#{s.school} has #{s.filters.count} filters"
     s.filters.each do |f|
       classroom_count = 0
-      f.old_filter_classrooms.each do |ofc| classroom_count += 1 if oc.classroomID end
+      f.old_filter_classrooms.each do |ofc| classroom_count += 1 if ofc.classroomID end
       if classroom_count > 0
         f.old_reward_locals.each do |rl|
           get_filter(f,f.id,ns) # if !@filter_lookup[f.id]
