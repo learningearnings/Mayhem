@@ -1645,9 +1645,16 @@ input, textarea, select {
 }
 
 #main-image {
+  width: 200px;
+  height: 200px;
   padding: .5em;
   border: solid 1px #ccc;
+  img {
+      width: 100%;
+  }
 }
+
+
 
 #product-description {
   font-size: 1.5em;

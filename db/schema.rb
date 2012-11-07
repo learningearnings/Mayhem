@@ -132,16 +132,6 @@ ActiveRecord::Schema.define(:version => 20121107044937) do
     t.datetime "updated_at",                   :null => false
   end
 
-  create_table "display_names", :force => true do |t|
-    t.string   "state"
-    t.string   "display_name"
-    t.datetime "approved_at"
-    t.integer  "actioned_by_id"
-    t.integer  "person_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
-
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -972,12 +962,14 @@ ActiveRecord::Schema.define(:version => 20121107044937) do
   end
 
   create_table "spree_tax_rates", :force => true do |t|
-    t.decimal  "amount",            :precision => 8, :scale => 5
+    t.decimal  "amount",             :precision => 8, :scale => 5
     t.integer  "zone_id"
     t.integer  "tax_category_id"
-    t.datetime "created_at",                                                         :null => false
-    t.datetime "updated_at",                                                         :null => false
-    t.boolean  "included_in_price",                               :default => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.boolean  "included_in_price",                                :default => false
+    t.string   "name"
+    t.boolean  "show_rate_in_label",                               :default => true
   end
 
   create_table "spree_taxonomies", :force => true do |t|
@@ -1075,6 +1067,7 @@ ActiveRecord::Schema.define(:version => 20121107044937) do
     t.integer  "count_on_hand",                               :default => 0,     :null => false
     t.decimal  "cost_price",    :precision => 8, :scale => 2
     t.integer  "position"
+    t.integer  "lock_version",                                :default => 0
   end
 
   add_index "spree_variants", ["product_id"], :name => "index_variants_on_product_id"

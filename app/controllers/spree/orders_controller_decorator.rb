@@ -12,6 +12,10 @@ Spree::OrdersController.class_eval do
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
   def populate
     @order = current_order(true)
+    if current_person.is_a?(Student)
+      @order.empty!
+    end
+
     @order.restock_items!
     params[:products].each do |product_id,variant_id|
       quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)

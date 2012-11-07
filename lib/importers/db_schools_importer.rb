@@ -420,7 +420,7 @@ class OldSchoolImporter
         end
         buck_batch = BuckBatch.new( :name => batch_name )
         buck_batch.created_at = c.old_teacher_award.old_file_download.creation_date
-        buck_batch.people << teacher
+        buck_batch.person_buck_batch_links << PersonBuckBatchLink.new(:person_school_link => tsl)
         buck_batch.save
         puts "Buck Batch for " + batch_name
         @otucode_batches[old_batch_id] = buck_batch
@@ -642,7 +642,7 @@ class OldSchoolImporter
     if @filter_reverse_lookup[filter.id] && @filter_reverse_lookup[filter.id] != old_filter_id
       puts fc.to_s
       puts "*********************************************** Something went horribly wrong **********************************************"
-      exit
+      return 1
     end
     @filter_reverse_lookup[filter.id] = old_filter_id
     @filter_lookup[old_filter_id]
