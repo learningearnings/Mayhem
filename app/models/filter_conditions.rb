@@ -61,6 +61,6 @@ class FilterConditions
   end
 
   def to_s
-    {:schools => @schools, :classrooms => @classrooms, :person_classes => @person_classes, :states => @states}.to_yaml.to_s
+    {:minimum_grade => @minimum_grade, :maximum_grade => @maximum_grade,:schools => @schools, :classrooms => @classrooms, :person_classes => @person_classes, :states => @states}.to_yaml.to_s
   end
 end

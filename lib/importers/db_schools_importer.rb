@@ -96,18 +96,15 @@ class OldSchoolImporter
                            :status => s.status_id == 200 ? 'active' : 'inactive',
                            :created_at => Time.parse((s.createdate || '20100701').to_s)
                          }, :as => :admin)
+    if !ns.save
+      # TODO What to do here?
+    end
     puts "#{s.school} has #{s.filters.count} filters"
     s.filters.each do |f|
       classroom_count = 0
-      f.old_filter_classrooms.each do |fc| classroom_count += 1 if fc.classroomID  end
-      next if classroom_count > 0
       f.old_reward_locals.each do |rl|
-        new_filter_id = get_filter(f,f.id)
-        puts "Need to create filter #{f.id} - new filter id is #{new_filter_id}"
+        new_filter = get_filter(f,f.id,ns) and puts "-------------------> Need to create filter #{f.id} - new filter id is #{new_filter.id}" if !@filter_lookup[f.id]
       end
-    end
-    if !ns.save
-      # TODO What to do here?
     end
     ns
   end
@@ -507,10 +504,9 @@ class OldSchoolImporter
     if reward_type == 'local' && old_point
       reward_local = old_point.old_redeemed.old_reward_local
       new_filter = nil
-      new_filter = get_filter(reward_local.filter,reward_local.filterID,new_school)
-      puts ("Couldn't find filter for local_reward id #{reward_local.id}          ") unless new_filter
+      new_filter = get_filter(reward_local.filter,reward_local.filterID,new_school) and puts "------------------------------> New filter for old filter #{reward_local.filterID} - new filter id is #{new_filter_id} for #{reward_local.name}" if !@filter_lookup[reward_local.filterID]
+      puts ("=============================> Couldn't find old filter for local_reward id #{reward_local.id}          ") unless new_filter
       exit unless new_filter
-      puts "New filter for old filter #{reward_load.filterID} - new filter id is #{new_filter_id} for #{reward_local.name}"
       owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
@@ -609,7 +605,7 @@ class OldSchoolImporter
       return @filter_lookup[old_filter.id] if @filter_lookup[old_filter.id]
       fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
       old_filter.old_schools.each do |s|
-        fc << s if s
+        fc << fallback_school
       end
       old_filter.old_classrooms.each do |old_c|
         c = Classroom.find_by_legacy_classroom_id(old_c.classroomID)
@@ -631,6 +627,9 @@ class OldSchoolImporter
       end
     elsif fallback_school
       fc = FilterConditions.new ({:minimum_grade => fallback_school.min_grade, :maximum_grade => fallback_school.max_grade, :school => fallback_school})
+    else
+      puts "*********************************************** Something went horribly wrong **********************************************"
+      return 1
     end
     filter = @filter_factory.find_or_create_filter(fc)
     @filter_lookup[old_filter_id] = filter.id if filter
