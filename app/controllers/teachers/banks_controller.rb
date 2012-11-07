@@ -16,7 +16,7 @@ module Teachers
     end
 
     def show
-      @buck_batches = current_person.buck_batches
+      @buck_batches = current_person.buck_batches(current_school)
     end
 
     def print_batch
@@ -29,7 +29,6 @@ module Teachers
         }
         format.html { render layout: false, action: "_batch.html.haml", locals: { batch: batch } }
       end
-
     end
 
     protected

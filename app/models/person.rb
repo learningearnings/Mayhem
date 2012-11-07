@@ -15,7 +15,7 @@ class Person < ActiveRecord::Base
 =end
   has_many :person_school_classroom_links
   has_many :monikers
-  has_many :buck_batches, :through => :person_buck_batch_links
+#  has_many :buck_batches, :through => :person_buck_batch_links
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true, :order => 'created_at desc, id desc'
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
@@ -36,6 +36,10 @@ class Person < ActiveRecord::Base
 
   def avatar=(new_avatar = nil)
     avatars << new_avatar if new_avatar
+  end
+
+  def buck_batches(school)
+    BuckBatch.where(:id => PersonBuckBatchLink.where(:person_school_link_id => self.person_school_links.where(school_id: school.id)).select(:buck_batch_id))
   end
 
   def favorite_foods

@@ -1,13 +1,13 @@
 module Mixins
   module Banks
     def create_print_bucks
-      @buck_batches = current_person.buck_batches
+      @buck_batches = current_person.buck_batches(current_school)
       bank = get_bank
       bank.create_print_bucks(person, current_school, 'AL', bucks)
     end
 
     def create_ebucks
-      @buck_batches = current_person.buck_batches
+      @buck_batches = current_person.buck_batches(current_school)
       bank = get_bank
       student = Student.find(params[:student][:id])
       bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:points].gsub(/[^\d]/, '')))

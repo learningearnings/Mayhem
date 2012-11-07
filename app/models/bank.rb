@@ -13,8 +13,8 @@ class Bank
     @on_success = lambda{|batch_id| batch_id}
   end
 
-  def create_person_buck_batch_link(person, batch)
-    PersonBuckBatchLink.create(:person_id => person.id, :buck_batch_id => batch.id)
+  def create_person_buck_batch_link(p_school_link, batch)
+    PersonBuckBatchLink.create(:person_school_link_id => p_school_link.id, :buck_batch_id => batch.id)
   end
 
   def create_print_bucks(person, school, prefix, bucks={})
@@ -143,7 +143,7 @@ class Bank
     batch_name = person.to_s + " Created " + Date.today.to_s
     bb = buck_batch_creator.call(:name => batch_name)
     _bucks.map{|x| buck_batch_link_creator.call(:buck_batch_id => bb.id, :otu_code_id => x.id)}
-    create_person_buck_batch_link(person, bb)
+    create_person_buck_batch_link(person_school_link(person, school), bb)
     bb
   end
 
