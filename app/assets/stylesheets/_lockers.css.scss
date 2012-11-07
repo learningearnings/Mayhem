@@ -86,24 +86,28 @@
     margin: 0 .5em;
   }
   .decorate-locker {
-    background: rgba(37, 134, 11, 0.8);
-    @include rotate(-3deg);
-    &:hover {
-      background: rgba(37, 134, 11, 1);
-    }
+      @extend .awesome-button;
+      background: rgb(37, 134, 11);
+      @include rotate(-3deg);
+      &:hover {
+          background: rgb(97, 194, 71);
+      /*      background: rgba(37, 134, 11, 1); */
+      }
   }
   .share-locker {
-    background: rgba(238, 91, 26, 0.8);
-    @include rotate(3deg);
-    &:hover {
-      background: rgba(238, 91, 26, 1);
-    }
+      @extend .awesome-button;
+      background: rgb(255, 151, 86);
+      @include rotate(3deg);
+      &:hover {
+          background: rgba(238, 91, 26,1);
+      }
   }
   .visit-locker {
-    background: rgba(182, 17, 176, 0.8);
-    @include rotate(1.8deg);
-    &:hover {
-      background: rgba(182, 17, 176, 1);
-    }
+      @extend .awesome-button;
+      background: rgb(182, 17, 176);
+      @include rotate(1.8deg);
+      &:hover {
+          background: rgb(242, 77, 236);
+      }
   }
 }

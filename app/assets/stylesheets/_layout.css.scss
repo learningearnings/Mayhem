@@ -1789,7 +1789,8 @@ input, textarea, select {
 }
 
 .awesome-button {
-    background: rgba(37, 134, 11, .8);
+    background-color: rgb(37, 134, 11);
+/*    background: rgba(37, 134, 11, .8); */
     padding: .5em;
     border: 2px solid rgba(255, 255, 255, 0.5);
     -webkit-box-shadow: 0 0 5px #888;
@@ -1804,7 +1805,7 @@ input, textarea, select {
     color: #fff;
     margin: .5em;
     &:hover {
-      background: rgba(71, 11, 193, .8);
+      background-color: rgba(71, 11, 193, .8);
       color: #fff;
     }
 }
