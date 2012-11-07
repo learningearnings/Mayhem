@@ -104,7 +104,7 @@ class OldSchoolImporter
     s.filters.each do |f|
       classroom_count = 0
       f.old_filter_classrooms.each do |ofc| classroom_count += 1 if ofc.classroomID end
-      if classroom_count > 0
+      if classroom_count == 0
         f.old_reward_locals.each do |rl|
           get_filter(f,f.id,ns) # if !@filter_lookup[f.id]
         end
@@ -613,6 +613,7 @@ class OldSchoolImporter
       end
       old_filter.old_classrooms.each do |old_c|
         c = Classroom.find_by_legacy_classroom_id(old_c.classroomID)
+        puts "Can't find classroom #{old_c.classroomID}" and exit unless c
         fc << c if c
       end
       old_filter.old_states.each do |old_s|
