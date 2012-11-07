@@ -1,17 +1,17 @@
 .main-content-wrapper
-  .primary-content    
+  .primary-content
     %h2= t('.title')
 
     .bank-account
-        %h4= t('.subtitle')
+      %h4= t('.subtitle')
       .balances
         %p Checking Balance: #{current_person.checking_balance}
         %p Savings Balance: #{current_person.savings_balance}
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
-        
+
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
-       
+
         = link_to "View Savings History", "#savings-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
 
     .pending-credits

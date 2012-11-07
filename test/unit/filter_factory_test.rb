@@ -44,7 +44,6 @@ describe FilterFactory do
   end
 
   it "can find state-only filter membership" do
-    @all_inclusive.expects(:id).returns(1)
     state = FactoryGirl.create(:state)
     school = FactoryGirl.create(:school)
     address = FactoryGirl.create(:address, state: state, addressable: school)
@@ -63,7 +62,6 @@ describe FilterFactory do
   end
 
   it "can find school-only filter membership" do
-    @all_inclusive.expects(:id).returns(1)
     state = FactoryGirl.create(:state)
     school = FactoryGirl.create(:school)
     address = FactoryGirl.create(:address, state: state, addressable: school)
@@ -82,15 +80,17 @@ describe FilterFactory do
   end
 
   it "can find person-class-only filter membership" do
-    @all_inclusive.expects(:id).returns(1)
     student = FactoryGirl.create(:student, grade: 9)
     teacher = FactoryGirl.create(:teacher, grade: 9)
     ff = FilterFactory.new
+    fc_teacher = FilterConditions.new
+    fc_teacher << "Teacher"
+    fc_teacher.person_classes.must_include "Teacher"
+    f_teacher = ff.find_or_create_filter(fc_teacher)
     fc = FilterConditions.new
     fc << "Student"
     fc.person_classes.must_include "Student"
     f = ff.find_or_create_filter(fc)
-    f.save
     f.id.wont_be_nil
     f.person_classes.must_include "Student"
     membership = ff.find_filter_membership(student)
@@ -100,7 +100,6 @@ describe FilterFactory do
   end
 
   it "can find school-classroom filter membership" do
-    @all_inclusive.expects(:id).returns(1)
     state = FactoryGirl.create(:state)
     school = FactoryGirl.create(:school)
     address = FactoryGirl.create(:address, state: state, addressable: school)
