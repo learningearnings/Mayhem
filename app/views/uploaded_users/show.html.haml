@@ -1,0 +1,48 @@
+%p#notice= notice
+
+%p
+  %b Batch:
+  = @uploaded_user.batch_id
+%p
+  %b First name:
+  = @uploaded_user.first_name
+%p
+  %b Last name:
+  = @uploaded_user.last_name
+%p
+  %b Username:
+  = @uploaded_user.username
+%p
+  %b Email:
+  = @uploaded_user.email
+%p
+  %b Grade:
+  = @uploaded_user.grade
+%p
+  %b Password:
+  = @uploaded_user.password
+%p
+  %b Type:
+  = @uploaded_user.type
+%p
+  %b Message:
+  = @uploaded_user.message
+%p
+  %b School:
+  = @uploaded_user.school_id
+%p
+  %b Created by:
+  = @uploaded_user.created_by_id
+%p
+  %b Approved by:
+  = @uploaded_user.approved_by_id
+%p
+  %b Person:
+  = @uploaded_user.person_id
+%p
+  %b State:
+  = @uploaded_user.state
+
+= link_to 'Edit', edit_uploaded_user_path(@uploaded_user)
+\|
+= link_to 'Back', uploaded_users_path

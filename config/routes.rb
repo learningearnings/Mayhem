@@ -1,4 +1,6 @@
 Leror::Application.routes.draw do
+  resources :uploaded_users
+
   # Root route
   root to: 'homes#show'
   match "/filter_widget" => "pages#show", :id => "filter_widget"
