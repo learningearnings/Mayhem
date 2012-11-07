@@ -1,5 +1,5 @@
-%h3 Bank Transfer
-%p= lipsum 100
+%h3= t('.title')
+%p= t('.desc')
 
 = form_for StudentTransferCommand.new do |f|
   = f.text_field :amount, placeholder: "Amount"

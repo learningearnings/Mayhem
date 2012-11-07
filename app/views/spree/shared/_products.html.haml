@@ -4,7 +4,7 @@
 - if products.empty?
   = t(:no_products_found)
 - elsif params.key?(:keywords)
-  %h6.search-results-title= t(:search_results, :keywords => h(params[:keywords]))
+  %h6.search-results-title= t(:search_results, :scope => [store_type], :keywords => h(params[:keywords]))
 - if products.any?
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
