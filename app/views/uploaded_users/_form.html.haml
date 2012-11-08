@@ -3,7 +3,7 @@
   = f.input :username
   = f.input :first_name
   = f.input :last_name
-  = f.input :gender, :collection ['Female','Male']
+  = f.input :gender, :collection => ['Female','Male'], :as => :select
   = f.input :grade, :collection => 0..12
   = f.input :password
   = f.association :school, :as => :select
