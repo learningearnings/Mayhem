@@ -1,7 +1,5 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 
-class UploadedUserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+describe UploadUser do
+  
 end
