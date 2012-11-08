@@ -17,13 +17,23 @@ class UploadedUsersController < LoggedInController
     @uploaded_user = UploadedUser.new
   end
 
+  def update
+    @uploaded_user = UploadedUser.find(params[:id])
+    if @uploaded_user.update_attributes(params[:uploaded_user])
+      flash[:notice] = "User Updated"
+      redirect_to uploaded_users_path
+    else
+      render :action => 'edit'
+    end
 
+
+  end
   def create
     @uploaded_user = UploadedUser.new(params[:uploaded_user])
     if @uploaded_user.save
       redirect_to uploaded_user_path(@uploaded_user), :notice => "User created!"
   else
-      render :action => "new"
+      render :action => 'new'
     end
   end
 
