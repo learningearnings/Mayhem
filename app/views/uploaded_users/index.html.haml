@@ -1,6 +1,6 @@
 %h1 Listing uploaded_users
 
-%table
+%table.table.table-striped.table-bordered.table-hover
   %tr
     %th Batch
     %th First name
@@ -16,13 +16,11 @@
     %th Approved by
     %th Person
     %th State
-    %th
-    %th
-    %th
+    %th Actions
 
   - @uploaded_users.each do |uploaded_user|
     %tr
-      %td= uploaded_user.batch_id
+      %td= uploaded_user.batch_name
       %td= uploaded_user.first_name
       %td= uploaded_user.last_name
       %td= uploaded_user.username
@@ -36,9 +34,10 @@
       %td= uploaded_user.approved_by_id
       %td= uploaded_user.person_id
       %td= uploaded_user.state
-      %td= link_to 'Show', uploaded_user
-      %td= link_to 'Edit', edit_uploaded_user_path(uploaded_user)
-      %td= link_to 'Destroy', uploaded_user, method: :delete, data: { confirm: 'Are you sure?' }
+      %td
+        = link_to('Show', uploaded_user) + " | "
+        = link_to('Edit', edit_uploaded_user_path(uploaded_user)) + " | "
+        = link_to('Destroy', uploaded_user, method: :delete, data: { confirm: 'Are you sure?' }) + " | "
 
 %br
 
