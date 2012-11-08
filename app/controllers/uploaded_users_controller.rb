@@ -1,6 +1,9 @@
 class UploadedUsersController < LoggedInController
   before_filter :ensure_le_admin!
 
+  def bulk_upload
+  end
+
   def index
     @uploaded_users = UploadedUser.all
   end

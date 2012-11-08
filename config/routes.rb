@@ -1,5 +1,7 @@
 Leror::Application.routes.draw do
-  resources :uploaded_users
+  match '/uploaded_users/bulk_upload' => "uploaded_users#bulk_upload"
+  resources :uploaded_users do
+  end
 
   # Root route
   root to: 'homes#show'

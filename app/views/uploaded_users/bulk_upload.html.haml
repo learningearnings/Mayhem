@@ -1,0 +1,5 @@
+.main-content-wrapper
+  .full-content
+    =simple_form_for :bulk_upload, :url => '/uploaded_users/bulk_upload', :html => {:class => 'form-horizontal'} do |f|
+      =f.input :the_file, :as => :file
+      =f.submit "Send"
