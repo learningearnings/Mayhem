@@ -49,7 +49,7 @@ class UploadedUsersController < LoggedInController
   def check_valid
     error_count = 0
     UploadedUser.all.each do |u|
-      @new_person = eval(u.type).new(first_name:u.first_name, last_name:u.last_name, username:u.username, grade:u.grade, email:u.email)
+      @new_person = eval(u.type).new(first_name:u.first_name, last_name:u.last_name, username:u.username, grade:u.grade, email:u.email, gender:u.gender)
       unless @new_person.valid?
         u.messages = @new_person.errors.messages.to_yaml
         u.deny
