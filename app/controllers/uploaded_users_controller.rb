@@ -4,9 +4,14 @@ class UploadedUsersController < LoggedInController
   before_filter :ensure_le_admin!
 
   def bulk_upload
-    if params[:bulk_upload][:the_file]
-      if params[:bulk_upload][:the_file][:attachment_file_name].original_filename.include?('.xls')
-        params[:bulk_upload][:the_file][:attachment_file_name].tempfile
+    if params[:bulk_upload] && params[:bulk_upload][:the_file]
+      binding.pry
+      if params[:bulk_upload][:the_file].original_filename.include?('.xls')
+        tmpfile = "/tmp/xxx-" + params[:bulk_upload][:the_file].original_filename
+        File.open(tmpfile,'w') do |f|
+          f.write(params[:bulk_upload][:the_file].tempfile.read)
+        end
+        csv_file = convert(tmpfile)
       end
     end
   end
@@ -59,7 +64,8 @@ private
   def convert(file_path)
     begin
       file_basename = File.basename(file_path, ".xls")
-      xls = Excel.new(file_path)
+      binding.pry
+      xls = Excel.new(file_path, false, :ignore)
       xls.to_csv("/tmp/#{file_basename}.csv")
       file_path = "/tmp/#{file_basename}.csv"
     end

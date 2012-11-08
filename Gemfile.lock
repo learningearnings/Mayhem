@@ -122,7 +122,7 @@ GEM
       thor
     builder (3.0.4)
     cancan (1.6.7)
-    capistrano (2.13.3)
+    capistrano (2.13.5)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -489,7 +489,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   cancan
-  capistrano (= 2.13.3)
+  capistrano (~> 2.13.5)
   capybara
   chosen-rails
   ckeditor (= 3.7.3)
