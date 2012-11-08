@@ -1,4 +1,5 @@
 Leror::Application.routes.draw do
+  match '/uploaded_users/check_valid' => "uploaded_users#check_valid"
   match '/uploaded_users/bulk_upload' => "uploaded_users#bulk_upload"
   resources :uploaded_users do
   end

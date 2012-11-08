@@ -40,9 +40,8 @@ class UploadedUsersController < LoggedInController
     else
       render :action => 'edit'
     end
-
-
   end
+
   def create
     @uploaded_user = UploadedUser.new(params[:uploaded_user])
     if @uploaded_user.save
@@ -59,6 +58,22 @@ class UploadedUsersController < LoggedInController
     redirect_to uploaded_users_path
   end
 
+  def check_valid
+    error_count = 0
+    UploadedUser.all.each do |u|
+      @new_person = eval(u.type).new(first_name:u.first_name, last_name:u.last_name, username:u.username, grade:u.grade, email:u.email, gender:u.gender)
+      unless @new_person.valid?
+        u.message = @new_person.errors.messages.to_yaml
+        u.deny
+        error_count += 1
+      end
+      u.approve
+    end
+    if error_count
+      flash[:notice] = error_count.to_s + " records have errors"
+      redirect_to uploaded_users_path
+    end
+  end
 
 private 
   def convert(file_path)
@@ -70,7 +85,4 @@ private
       file_path = "/tmp/#{file_basename}.csv"
     end
   end
-
-
-
 end
