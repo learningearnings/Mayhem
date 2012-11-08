@@ -1,7 +1,14 @@
+require 'roo'
+
 class UploadedUsersController < LoggedInController
   before_filter :ensure_le_admin!
 
   def bulk_upload
+    if params[:bulk_upload][:the_file]
+      if params[:bulk_upload][:the_file][:attachment_file_name].original_filename.include?('.xls')
+        params[:bulk_upload][:the_file][:attachment_file_name].tempfile
+      end
+    end
   end
 
   def index
@@ -46,6 +53,18 @@ class UploadedUsersController < LoggedInController
     flash[:notice] = "You just deleted a user"
     redirect_to uploaded_users_path
   end
+
+
+private 
+  def convert(file_path)
+    begin
+      file_basename = File.basename(file_path, ".xls")
+      xls = Excel.new(file_path)
+      xls.to_csv("/tmp/#{file_basename}.csv")
+      file_path = "/tmp/#{file_basename}.csv"
+    end
+  end
+
 
 
 end
