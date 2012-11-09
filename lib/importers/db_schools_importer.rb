@@ -167,6 +167,8 @@ class OldSchoolImporter
                            :created_at => old_user.usercreated
                          }, :as => :admin)
     add_person_avatar old_user,nu
+    nu.user.last_sign_in_at = old_user.userlastlogin
+
     if nu.save
       if new_school
         psl = PersonSchoolLink.new(:person_id => nu.id, :school_id => new_school.id, :status => 'active')

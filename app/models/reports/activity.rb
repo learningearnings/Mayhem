@@ -55,7 +55,7 @@ module Reports
     end
 
     def person_base_scope
-      Person.includes([:user, :person_school_links]).where("spree_users.last_sign_in_at IS NOT NULL").where(person_school_links: { school_id: @school.id })
+      Person.includes(:user).where("spree_users.last_sign_in_at IS NOT NULL").joins(:person_school_links).merge(PersonSchoolLink.where( school_id: @school.id ))
     end
 
     def generate_row(person)
@@ -76,6 +76,15 @@ module Reports
         type: "Type",
         last_sign_in_at: "Last Sign In",
         credit_balance: "Credit Balance"
+      }
+    end
+    def data_classes
+      {
+        person: "",
+        username: "",
+        type: "",
+        last_sign_in_at: "",
+        credit_balance: "currency"
       }
     end
   end

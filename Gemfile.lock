@@ -38,6 +38,13 @@ GIT
       thor (~> 0.14)
 
 GIT
+  remote: git@github.com:learningearnings/plutus.git
+  revision: 37836c76c5a90daab4d77200cb0d806f5877ca55
+  specs:
+    plutus (0.7.2)
+      rails (~> 3.1)
+
+GIT
   remote: git@github.com:learningearnings/spree-multi-domain.git
   revision: ba449186b3ea6129681a3c41e443b1fae688e75b
   specs:
@@ -122,7 +129,7 @@ GEM
       thor
     builder (3.0.4)
     cancan (1.6.7)
-    capistrano (2.13.3)
+    capistrano (2.13.5)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -312,8 +319,6 @@ GEM
     pdfkit (0.5.2)
     pg (0.13.2)
     pg_array_parser (0.0.8)
-    plutus (0.7.2)
-      rails (~> 3.1)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -489,7 +494,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   cancan
-  capistrano (= 2.13.3)
+  capistrano (= 2.13.5)
   capybara
   chosen-rails
   ckeditor (= 3.7.3)
@@ -526,7 +531,7 @@ DEPENDENCIES
   nested_form!
   pdfkit
   pg (= 0.13.2)
-  plutus
+  plutus!
   postgres_ext
   pry (~> 0.9.10)
   rack-bug!
