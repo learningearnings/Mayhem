@@ -1,17 +1,12 @@
 .main-content-wrapper
   .primary-content-fw
     %h2 Activity Report
-
-    .filter
-      %h4 Filter
-      = form_tag activity_report_path, method: :get do
-        = label_tag :show_dates
-        = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
-        
-    .sorting
-      %h4 Sort By
-      = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
-      = submit_tag 'Go!'
+    = simple_form_for :activity_report,  :url => activity_report_path, method: :get, :html => {:class => 'form-horizontal'} do |f|
+      .filter
+        = f.input :date_filter,:label => "Date Range", :collection => date_filter_options
+      .sorting
+        = f.input :sort_by,:label => "Sorting", :collection => ["Default", "First, Last", "Last, First", "Username"]
+      = f.submit 'Go!'
 
     .report
       %table.table.table-bordered.table-striped.solid-background
@@ -23,4 +18,4 @@
           - report.data_rows do |row|
             %tr
               - report.header_keys.each do |key|
-                %td= row.send(key)
+                %td{:class => report.data_classes[key]}= row.send(key)
