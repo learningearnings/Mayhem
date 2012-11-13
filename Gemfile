@@ -69,7 +69,8 @@ gem 'pdfkit'
 gem 'thor','0.14.6'
 
 # Plutus is what we use to manage our General Ledgers throughout this and other apps
-gem 'plutus', :git => 'git@github.com:learningearnings/plutus.git'
+# gem 'plutus', :git => 'git@github.com:learningearnings/plutus.git'
+gem 'plutus', :path => '~/source/plutus'
 
 # state_machine is a great gem for building state machines for your ruby objects
 gem 'state_machine'

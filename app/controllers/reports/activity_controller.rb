@@ -4,7 +4,8 @@ module Reports
       report = Reports::Activity.new params.merge(school: current_school)
       report.execute!
       render 'show', locals: {
-        report: report
+        report: report,
+        params: params
       }
     end
   end

@@ -35,11 +35,14 @@ class CreditManager
     transaction = @transaction_class.build({
       description: description,
       commercial_document: buck_batch,
-      created_at: @transaction_time_stamp,
       debits:      [{ account: to_account, amount: amount }],
       credits:     [{ account: from_account,   amount: amount }]
     })
     transaction.save
+    if @transaction_time_stamp
+      transaction.created_at = @transaction_time_stamp
+      transaction.save
+    end
     transaction
   end
 

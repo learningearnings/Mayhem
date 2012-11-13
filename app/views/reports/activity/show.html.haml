@@ -1,7 +1,8 @@
 .main-content-wrapper
   .primary-content-fw
     %h2 Activity Report
-    = simple_form_for :activity_report,  :url => activity_report_path, method: :get, :html => {:class => 'form-horizontal'} do |f|
+    %h3= report.range
+    = simple_form_for :activity_report,  :url => activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
         = f.input :date_filter,:label => "Date Range", :collection => date_filter_options
       .sorting
