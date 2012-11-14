@@ -64,6 +64,9 @@ class School < ActiveRecord::Base
   def person_school_links(status = :status_active)
     PersonSchoolLink.where(school_id: self.id).send(status)
   end
+  def persons(status = :status_active)
+    Person.joins(:person_school_links).merge(person_school_links(status)).send(status)
+  end
   def parents(status = :status_active)
     Parent.joins(:person_school_links).merge(person_school_links(status)).send(status)
   end

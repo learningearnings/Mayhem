@@ -8,6 +8,10 @@ class Person < ActiveRecord::Base
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
   has_many :person_school_links
+  has_many :person_account_links, :through => :person_school_links
+  has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
+  has_many :plutus_amounts, :through => :plutus_accounts, :class_name => 'Plutus::Amount', :source => :amounts
+  has_many :plutus_transactions, :through => :plutus_amounts, :class_name => 'Plutus::Transaction', :source => :transaction
   has_many :allperson_school_links, :class_name => 'PersonSchoolLink'
   has_many :allschools, :class_name => 'School', :through => :allperson_school_links, :order => 'id desc', :source => :school
 =begin
@@ -105,16 +109,30 @@ class Person < ActiveRecord::Base
 
   def school=(my_new_school)
     if my_new_school.is_a? School
-      psl = PersonSchoolLink.new(person_id: self.id, school_id: my_new_school.id)
+      psl = PersonSchoolLink.create(person_id: self.id, school_id: my_new_school.id)
     else
-      psl = PersonSchoolLink.new(person_id: self.id, school_id: my_new_school)
+      psl = PersonSchoolLink.create(person_id: self.id, school_id: my_new_school)
     end
-    psl.save
     psl.activate if psl
     self.person_school_links << psl
+    connect_plutus_accounts
   end
 
-
+  # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin
+  # Not valid for LE Admins
+  def connect_plutus_accounts
+    schools.each do |s|
+      self.accounts(s).each do |a|
+        PersonAccountLink.where(:plutus_account_id => a.id).each do |pal|
+          pal.destroy
+        end
+      end
+      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.id,s.id)
+      self.accounts(s).each do |a|
+        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a.id, is_main_account: a.id == self.main_account(s).id)
+      end
+    end
+  end
 
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)

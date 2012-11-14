@@ -21,6 +21,10 @@ class Student < Person
 
   after_create :create_locker
 
+  def main_account(s)
+    checking_account
+  end
+
   def primary_account
     checking_account
   end
@@ -118,6 +122,7 @@ class Student < Person
     checking_account || Plutus::Asset.create(name: checking_account_name)
     savings_account  || Plutus::Asset.create(name: savings_account_name)
     hold_account     || Plutus::Asset.create(name: hold_account_name)
+    connect_plutus_accounts
   end
 
   def create_user

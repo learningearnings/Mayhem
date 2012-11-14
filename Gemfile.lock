@@ -39,7 +39,7 @@ GIT
 
 GIT
   remote: git@github.com:learningearnings/plutus.git
-  revision: 37836c76c5a90daab4d77200cb0d806f5877ca55
+  revision: 76f87a7453b73e369eaa2f5bd7baa185618d2ea7
   specs:
     plutus (0.7.2)
       rails (~> 3.1)

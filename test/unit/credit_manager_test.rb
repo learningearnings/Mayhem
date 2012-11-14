@@ -26,7 +26,6 @@ describe CreditManager do
     @transaction_class.expects(:build).with({
       description: @description,
       commercial_document: nil,
-      created_at: nil,
       debits:      [{ account: @account2, amount: @amount }],
       credits:     [{ account: @account1, amount: @amount }]
     }).returns(@mock_transaction)
