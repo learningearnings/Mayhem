@@ -129,7 +129,7 @@ class Person < ActiveRecord::Base
       end
       psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.id,s.id)
       self.accounts(s).each do |a|
-        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a.id)
+        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a.id, is_main_account: a.id == self.main_account(s).id)
       end
     end
   end

@@ -1,8 +1,8 @@
 .main-content-wrapper
   .primary-content-fw
     %h2 Activity Report
-    %h3= report.range
-    = simple_form_for :activity_report,  :url => activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+    %h3= report.range if report.range
+    = simple_form_for activity_params,  :url => activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
         = f.input :date_filter,:label => "Date Range", :collection => date_filter_options
       .sorting
@@ -16,7 +16,11 @@
             - report.header_strings.each do |header|
               %th= header
         %tbody
-          - report.data_rows do |row|
+          - if report.data.count > 0
+            - report.data_rows do |row|
+              %tr
+                - report.header_keys.each do |key|
+                  %td{:class => report.data_classes[key]}= row.send(key)
+          - else
             %tr
-              - report.header_keys.each do |key|
-                %td{:class => report.data_classes[key]}= row.send(key)
+              %td{:colspan => report.header_keys.count} No Activity meets your date criteria above

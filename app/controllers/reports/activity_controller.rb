@@ -5,7 +5,7 @@ module Reports
       report.execute!
       render 'show', locals: {
         report: report,
-        params: params
+        activity_params: Reports::ActivityParams.new(params[:reports_activity_params])
       }
     end
   end

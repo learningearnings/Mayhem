@@ -6,9 +6,14 @@ module Reports
     def initialize params
       super
       @school = params[:school]
-      @date_filter = params[:activity_report][:date_filter] if params[:activity_report]
-      @sort_by_filter = params[:activity_report][:sort_by] if params[:activity_report]
+      @date_filter = params[:reports_activity_params][:date_filter] if params[:reports_activity_params]
+      @sort_by_filter = params[:reports_activity_params][:sort_by] if params[:reports_activity_params]
       @endpoints = date_endpoints ? [date_endpoints[0],date_endpoints[1]] : nil
+      @data = []
+    end
+
+    def data
+      @data
     end
 
     def execute!
@@ -18,7 +23,7 @@ module Reports
     end
 
     def range
-      "From #{l @endpoints[0]} to #{l @endpoints[1]}"
+      @endpoints ? "From #{l @endpoints[0]} to #{l @endpoints[1]}" : nil
     end
 
 
@@ -28,7 +33,7 @@ module Reports
       when nil
         [:scoped]
       else
-       [:where, {@object => { @column =>  @endpoints[0]..@endpoints[1] } }]
+       [:where, {:plutus_transactions => { :created_at =>  @endpoints[0]..@endpoints[1] } }]
       end
     end
 
@@ -54,16 +59,9 @@ module Reports
     def activity_balance(person)
       debits_base_scope = activity_debits_base_scope(person)
       credits_base_scope = activity_credits_base_scope(person)
-      @object = :transaction
-      @column = :created_at
       filter_option = send(:date_filter)
       debits_base_scope = debits_base_scope.send(*filter_option) # if filter_option
       credits_base_scope = credits_base_scope.send(*filter_option) # if filter_option
-
-#      date_filter_options = date_filter(:plutus_transactions,:created_at)
-#      date_scoped = send(date_filter_options)
-#      debits = person.primary_account.debit_amounts.joins(:transaction).date_scoped.sum(:amount)
-#      credits = person.primary_account.credit_amounts.joins(:transaction).date_scoped.sum(:amount)
       debits = debits_base_scope.sum(:amount)
       credits = credits_base_scope.sum(:amount)
       debits - credits
@@ -72,12 +70,12 @@ module Reports
 
     def people
       base_scope = person_base_scope
-      @object = :transaction
-      @column = :created_at
+      Rails.logger.info base_scope.to_sql
       potential_filters.each do |filter|
         filter_option = send(filter)
-        base_scope = base_scope.send(*filter_option) if filter_option && filter != :date_filter
+        base_scope = base_scope.send(*filter_option) if filter_option
       end
+      Rails.logger.info base_scope.to_sql
       base_scope
     end
 
@@ -92,25 +90,13 @@ module Reports
 
 
     def person_base_scope
-#      @school.persons.joins(:user).where("spree_users.last_sign_in_at IS NOT NULL")
-
-#      @school.persons.uniq
-#        .includes(:user)
-#        .includes(:person_school_links)
-#        .includes(:plutus_accounts)
-#        .joins(:plutus_transactions)
-#        .joins(:person_account_links)
-#        .where("person_account_links.is_main_account" => true)
-#        .where("person_account_links.plutus_account_id" => Plutus::Account.includes(:transaction).includes(:accounts).select("plutus_accounts.id"))
-
-
-      @school.persons.uniq
+      @school.students.uniq
         .includes(:user)
         .joins(:person_school_links)
         .joins(:plutus_transactions)
         .joins(:person_account_links)
         .where("person_account_links.is_main_account" => true)
-        .where("person_account_links.plutus_account_id" => Plutus::Account.includes(:transaction).includes(:accounts).select("plutus_accounts.id"))
+#        .where("person_account_links.plutus_account_id" => Plutus::Account.includes(:transaction).includes(:accounts).select("plutus_accounts.id"))
     end
 
     def generate_row(person)

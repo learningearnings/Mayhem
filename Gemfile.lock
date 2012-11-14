@@ -38,6 +38,13 @@ GIT
       thor (~> 0.14)
 
 GIT
+  remote: git@github.com:learningearnings/plutus.git
+  revision: 76f87a7453b73e369eaa2f5bd7baa185618d2ea7
+  specs:
+    plutus (0.7.2)
+      rails (~> 3.1)
+
+GIT
   remote: git@github.com:learningearnings/spree-multi-domain.git
   revision: ba449186b3ea6129681a3c41e443b1fae688e75b
   specs:
@@ -51,12 +58,6 @@ GIT
   specs:
     rack-bug (0.3.0)
       rack (>= 1.0)
-
-PATH
-  remote: ~/source/plutus
-  specs:
-    plutus (0.7.2)
-      rails (~> 3.1)
 
 GEM
   remote: https://rubygems.org/
