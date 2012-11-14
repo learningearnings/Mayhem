@@ -11,6 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+
 ActiveRecord::Schema.define(:version => 20121108025905) do
 
   create_table "active_admin_comments", :force => true do |t|
@@ -356,6 +357,16 @@ ActiveRecord::Schema.define(:version => 20121108025905) do
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"
+
+  create_table "person_account_links", :force => true do |t|
+    t.integer  "person_school_link_id"
+    t.integer  "plutus_account_id"
+    t.boolean  "is_main_account"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "person_account_links", ["person_school_link_id", "plutus_account_id"], :name => "index_pal_psl_account"
 
   create_table "person_avatar_links", :force => true do |t|
     t.integer  "person_id"

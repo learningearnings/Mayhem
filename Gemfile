@@ -69,7 +69,7 @@ gem 'pdfkit'
 gem 'thor','0.14.6'
 
 # Plutus is what we use to manage our General Ledgers throughout this and other apps
-gem 'plutus'
+gem 'plutus', :git => 'git@github.com:learningearnings/plutus.git'
 
 # state_machine is a great gem for building state machines for your ruby objects
 gem 'state_machine'
@@ -94,6 +94,7 @@ gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano', '~> 2.13.5'
+
 
 # To use debugger
 # gem 'debugger'

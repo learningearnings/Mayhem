@@ -6,8 +6,14 @@ module Reports
     def initialize params
       super
       @school = params[:school]
-      @date_filter = params[:date_filter]
-      @sort_by_filter = params[:sort_by]
+      @date_filter = params[:reports_activity_params][:date_filter] if params[:reports_activity_params]
+      @sort_by_filter = params[:reports_activity_params][:sort_by] if params[:reports_activity_params]
+      @endpoints = date_endpoints ? [date_endpoints[0],date_endpoints[1]] : nil
+      @data = []
+    end
+
+    def data
+      @data
     end
 
     def execute!
@@ -16,13 +22,18 @@ module Reports
       end
     end
 
+    def range
+      @endpoints ? "From #{l @endpoints[0]} to #{l @endpoints[1]}" : nil
+    end
+
+
     # Override what the date filter filters on
     def date_filter
-      case date_endpoints
+      case @endpoints
       when nil
         [:scoped]
       else
-        [:where, {user: { last_sign_in_at: date_endpoints[0]..date_endpoints[1] } }]
+       [:where, {:plutus_transactions => { :created_at =>  @endpoints[0]..@endpoints[1] } }]
       end
     end
 
@@ -41,31 +52,60 @@ module Reports
       when "Last, First"
         [:order, "people.last_name, people.first_name"]
       when "Username"
-        [:order, "people.username"]
+        [:order, "spree_users.username"]
       end
     end
 
+    def activity_balance(person)
+      debits_base_scope = activity_debits_base_scope(person)
+      credits_base_scope = activity_credits_base_scope(person)
+      filter_option = send(:date_filter)
+      debits_base_scope = debits_base_scope.send(*filter_option) # if filter_option
+      credits_base_scope = credits_base_scope.send(*filter_option) # if filter_option
+      debits = debits_base_scope.sum(:amount)
+      credits = credits_base_scope.sum(:amount)
+      debits - credits
+    end
+
+
     def people
       base_scope = person_base_scope
+      Rails.logger.info base_scope.to_sql
       potential_filters.each do |filter|
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
+      Rails.logger.info base_scope.to_sql
       base_scope
     end
 
+    def activity_debits_base_scope(person)
+      person.primary_account.debit_amounts.joins(:transaction)
+    end
+
+    def activity_credits_base_scope(person)
+      person.primary_account.credit_amounts.joins(:transaction)
+    end
+
+
+
     def person_base_scope
-      Person.includes([:user, :person_school_links]).where("spree_users.last_sign_in_at IS NOT NULL").where(person_school_links: { school_id: @school.id })
+      @school.students.uniq
+        .includes(:user)
+        .joins(:person_school_links)
+        .joins(:plutus_transactions)
+        .joins(:person_account_links)
+        .where("person_account_links.is_main_account" => true)
+#        .where("person_account_links.plutus_account_id" => Plutus::Account.includes(:transaction).includes(:accounts).select("plutus_accounts.id"))
     end
 
     def generate_row(person)
-      user = person.user
       Reports::Row[
         person: person,
-        username: user.username,
-        credit_balance: number_to_currency(person.primary_account.balance),
+        username: person.user.username,
+        account_activity: number_to_currency(activity_balance(person),:format => "%n", :negative_format => "(%n)"),
         type: person.type,
-        last_sign_in_at: user.last_sign_in_at
+        last_sign_in_at: time_ago_in_words(person.user.last_sign_in_at) + " ago"
       ]
     end
 
@@ -75,7 +115,16 @@ module Reports
         username: "Username",
         type: "Type",
         last_sign_in_at: "Last Sign In",
-        credit_balance: "Credit Balance"
+        account_activity: "Account Activity"
+      }
+    end
+    def data_classes
+      {
+        person: "",
+        username: "",
+        type: "",
+        last_sign_in_at: "",
+        account_activity: "currency"
       }
     end
   end

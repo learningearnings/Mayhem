@@ -38,6 +38,13 @@ GIT
       thor (~> 0.14)
 
 GIT
+  remote: git@github.com:learningearnings/plutus.git
+  revision: 76f87a7453b73e369eaa2f5bd7baa185618d2ea7
+  specs:
+    plutus (0.7.2)
+      rails (~> 3.1)
+
+GIT
   remote: git@github.com:learningearnings/spree-multi-domain.git
   revision: ba449186b3ea6129681a3c41e443b1fae688e75b
   specs:
@@ -312,8 +319,6 @@ GEM
     pdfkit (0.5.2)
     pg (0.13.2)
     pg_array_parser (0.0.8)
-    plutus (0.7.2)
-      rails (~> 3.1)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -526,7 +531,7 @@ DEPENDENCIES
   nested_form!
   pdfkit
   pg (= 0.13.2)
-  plutus
+  plutus!
   postgres_ext
   pry (~> 0.9.10)
   rack-bug!
