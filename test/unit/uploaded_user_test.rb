@@ -1,5 +1,5 @@
 require 'test_helper_with_rails'
 
-describe UploadUser do
+describe UploadedUser do
   
 end
