@@ -46,8 +46,8 @@ class Message < ActiveRecord::Base
   def self.canned_messages
     [
       "You're pretty swell, guy.",
-      "You smell worse than my mom.",
-      "I'm going to kill your family...with kindness."
+      "Hope you have a great day",
+      "Good luck on your test!"
     ]
   end
 
