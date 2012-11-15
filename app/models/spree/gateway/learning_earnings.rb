@@ -58,15 +58,15 @@ module Spree
         # TODO change this to school session variable
         # NOTE: Nope, a model shouldn't know about a session -ja
         school = AccountPersonMapper.new(credit_card.number).find_school
-        transaction = cm.transfer_store_credits_for_wholesale_purchase(school, money/BigDecimal('100.0'))
+        transaction = cm.transfer_store_credits_for_wholesale_purchase(school, money/BigDecimal('100.0'),o)
       elsif o.products.first.person.is_a?(Teacher) # purchasing a local product as a student
         # TODO: This needs to bubble up any errors that it can
         person = AccountPersonMapper.new(credit_card.number).find_person
-        transaction = cm.transfer_credits_for_local_purchase(person, o.products.first.person, money/BigDecimal('100.0'))
+        transaction = cm.transfer_credits_for_local_purchase(person, o.products.first.person, money/BigDecimal('100.0'),o.products.first)
       else # purchasing a product from a school store as a student
         # TODO: This needs to bubble up any errors that it can
         person = AccountPersonMapper.new(credit_card.number).find_person
-        transaction = cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
+        transaction = cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'),o.products.first)
       end
       transaction
     end

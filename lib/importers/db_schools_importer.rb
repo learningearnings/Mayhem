@@ -336,7 +336,7 @@ class OldSchoolImporter
         imported_purchases = imported_purchases + op.points.abs
         imported_purchases_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
-        transaction = @cm.transfer_credits "Reward Purchase", new_student.checking_account_name, @cm.main_account_name, op.points.abs
+        transaction = @cm.transfer_credits "Reward Purchase", new_student.checking_account_name, @cm.main_account_name, op.points.abs,new_reward
         @cm.transaction_time_stamp = nil
         unless transaction
           puts "Attempt to purchase #{op.old_reward.rewardtitle} for #{op.points} by #{new_student.full_name} #{op.pointID} #{new_student.legacy_user_id}"

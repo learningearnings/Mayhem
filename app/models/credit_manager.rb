@@ -31,10 +31,10 @@ class CreditManager
 
   # NOTE: I am confused about why debits and credits are switched here, but to make
   # my tests pass they needed to be.
-  def transfer_credits description, from_account, to_account, amount, buck_batch=nil
+  def transfer_credits description, from_account, to_account, amount, document = nil
     transaction = @transaction_class.build({
       description: description,
-      commercial_document: buck_batch,
+      commercial_document: document,
       debits:      [{ account: to_account, amount: amount }],
       credits:     [{ account: from_account,   amount: amount }]
     })
@@ -99,19 +99,19 @@ class CreditManager
     transfer_credits "Credits Earned for #{game_string}", game_account, student.checking_account, amount
   end
 
-  def transfer_credits_for_local_purchase student, teacher, amount
+  def transfer_credits_for_local_purchase student, teacher, amount, document = nil
     return false if student.balance < amount
-    transfer_credits "Reward Purchase", student.checking_account, teacher.main_account(student.school), amount
+    transfer_credits "Reward Purchase", student.checking_account, teacher.main_account(student.school), amount, document
   end
 
-  def transfer_credits_for_reward_purchase student, amount
+  def transfer_credits_for_reward_purchase student, amount, document = nil
     return false if student.balance < amount
-    transfer_credits "Reward Purchase", student.checking_account, main_account, amount
+    transfer_credits "Reward Purchase", student.checking_account, main_account, amount, document
   end
 
-  def transfer_store_credits_for_wholesale_purchase school, amount
+  def transfer_store_credits_for_wholesale_purchase school, amount, document = nil
     return false if school.store_account.balance < amount
-    transfer_credits "Wholesale Purchase", school.store_account, main_account, amount
+    transfer_credits "Wholesale Purchase", school.store_account, main_account, amount, document
   end
 
   def transfer_credits_from_checking_to_savings student, amount

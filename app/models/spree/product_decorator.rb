@@ -2,6 +2,8 @@ Spree::Product.class_eval do
   attr_accessible :store_ids, :svg, :svg_file_name
   has_attached_file :svg
 
+  has_many :plutus_transactions, :as => :commercial_document, :class_name => 'Plutus::Transaction'
+
   has_one :spree_product_filter_link, :inverse_of => :product
   has_one :filter, :through => :spree_product_filter_link, :inverse_of => :products
 
