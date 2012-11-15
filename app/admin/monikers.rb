@@ -1,4 +1,5 @@
 ActiveAdmin.register Moniker do
+  menu :parent => "Messages", :label => "Student Display Names"
   config.filters = false
 
   scope :approved

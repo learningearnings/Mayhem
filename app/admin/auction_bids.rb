@@ -2,6 +2,9 @@ ActiveAdmin.register AuctionBid do
 #  scope :open
 #  scope :invalidated
 
+  menu :parent => "Auctions"
+
+  
   index do
     column :person do |auction_bid|
       auction_bid.person.name

@@ -1,4 +1,5 @@
 ActiveAdmin.register Interaction do
+  menu :parent => "le_admins", :label => "User Tracking Data"
   index do
     column :id
     column :person do |interaction|
