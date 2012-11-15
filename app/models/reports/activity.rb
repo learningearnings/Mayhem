@@ -3,12 +3,13 @@ module Reports
     include DateFilterable
     include ActionView::Helpers
 
+    attr_accessor :parameters
     def initialize params
       super
       @school = params[:school]
-      @date_filter = params[:reports_activity_params][:date_filter] if params[:reports_activity_params]
-      @sort_by_filter = params[:reports_activity_params][:sort_by] if params[:reports_activity_params]
+#      @sort_by_filter = params[:reports_activity_params][:sort_by] if params[:reports_activity_params]
       @endpoints = date_endpoints ? [date_endpoints[0],date_endpoints[1]] : nil
+      @parameters = Reports::Activity::Params.new(params)
       @data = []
     end
 
@@ -44,7 +45,7 @@ module Reports
     end
 
     def sort_by
-      case @sort_by_filter
+      case parameters.sort_by_filter
       when "Default"
         [:scoped]
       when "First, Last"
@@ -126,6 +127,33 @@ module Reports
         last_sign_in_at: "",
         account_activity: "currency"
       }
+    end
+
+    class Params < Reports::ParamsBase
+      attr_accessor :date_filter,:sort_by
+      def initialize options_in = {}
+        options_in ||= {}
+        options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
+        [:date_filter, :sort_by].each do |iv|
+          default_method = (iv.to_s + "_default").to_sym
+          default_value = nil
+          default_value = send(default_method) if respond_to? default_method
+          instance_variable_set(('@' + iv.to_s).to_sym,options[iv] || default_value || "")
+        end
+      end
+
+      def sort_by_default
+        sort_by_options[0]
+      end
+
+      def sort_by_options
+        ["Default", "First, Last", "Last, First", "Username"]
+      end
+
+      def date_filter_default
+        date_filter_options[0][1]
+      end
+
     end
   end
 end

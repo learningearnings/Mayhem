@@ -2,11 +2,11 @@
   .primary-content-fw
     %h2 Activity Report
     %h3= report.range if report.range
-    = simple_form_for activity_params,  :url => activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+    = simple_form_for report.parameters,  :url => activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
-        = f.input :date_filter,:label => "Date Range", :collection => date_filter_options
+        = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
       .sorting
-        = f.input :sort_by,:label => "Sorting", :collection => ["Default", "First, Last", "Last, First", "Username"]
+        = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       = f.submit 'Go!'
 
     .report

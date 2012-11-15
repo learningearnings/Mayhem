@@ -33,5 +33,13 @@ module Reports
         nil
       end
     end
+
+    def self.default
+      "all"
+    end
+
+    def date_filter_options
+      ReportsHelper::date_filter_options
+    end
   end
 end
