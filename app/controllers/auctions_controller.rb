@@ -5,7 +5,12 @@ class AuctionsController < LoggedInController
   end
 
   def show
-    auction = Auction.find(params[:id])
+    begin
+      auction = Auction.find(params[:auction_id])
+      rescue
+        flash[:error] = "That auction doesn't exist."
+        redirect_to auctions_path and return
+    end
     bid = BidOnAuctionCommand.new
     render locals: { auction: auction, bid: bid }
   end

@@ -1,5 +1,10 @@
-.product= auction.product.name
-.start_date= auction.start_date
-.end_date= auction.end_date
-.current_bid= number_to_currency(auction.current_bid)
-= link_to "Make a bid", auction_path(auction)
+%h4.product= auction.product.name
+.header-info
+  Starts At:
+  %span.start_date= l(auction.start_date)
+  %p
+  Ends On:
+  %span.end_date= l(auction.end_date)
+  %p
+  Current Bid:
+  %span.current_bid= number_to_currency(auction.current_bid)

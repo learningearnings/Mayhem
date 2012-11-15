@@ -1,6 +1,11 @@
 class BidOnAuctionCommandsController < LoggedInController
   def create
-    auction = Auction.find(params[:auction_id])
+    begin
+      auction = Auction.find(params[:auction_id])
+      rescue
+        flash[:error] = "This auction doesn't exist."
+        redirect_to auctions_path and return
+    end
     person = current_person
     amount = BigDecimal(params[:amount])
     bid = BidOnAuctionCommand.new({ auction: auction, person: person, amount: amount, credit_manager: CreditManager.new })
@@ -15,7 +20,7 @@ class BidOnAuctionCommandsController < LoggedInController
   end
 
   def on_failure(bid)
-    flash[:error] = "Bid unsuccessful!"
+    flash[:error] = bid.failure_reason.to_s
     redirect_to bid.auction
   end
 end
