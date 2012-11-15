@@ -212,7 +212,7 @@ FactoryGirl.define do
   end
 
   factory :auction do
-    start_date Time.now + 5.days
+    start_date Time.now - 1.days
     end_date   Time.now + 7.days
     association :product, factory: :spree_product
     auction_type "traditional"

@@ -17,11 +17,13 @@ en:
   transmit_notice: "Learning Earnings has been notified of your order.   You may still update this order until the order moves into the \"Pending Shipments\" list above"
   time:
     formats:
-      default: "%a, %e-%b %Y %I:%M %p"
-      short: 
+      default: "%a, %b %e, %Y %I:%M %p"
+      david: "%a, %e-%b %Y %I:%M %p"
+      short: "%m/%e/%Y %I:%M %p"
   date:
     formats:
-      default: "%a, %e-%b %Y"
+      default: "%a, %b %e, %Y"
+      short: "%m/%e/%Y"
   subtotal: "Subtotal"
   restock:
     index:
