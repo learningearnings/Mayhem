@@ -1,14 +1,13 @@
 module Reports
   class Purchases < Reports::Base
     include DateFilterable
+    include ActionView::Helpers
 
+    attr_accessor :parameters
     def initialize params
       super
       @school = params[:school]
-      @date_filter = params[:date_filter]
-      @reward_status_filter = params[:reward_status_filter]
-      @teachers_filter = params[:teachers_filter]
-      @sort_by_filter = params[:sort_by]
+      @parameters = Reports::Purchases::Params.new(params)
     end
 
     def execute!
@@ -51,7 +50,7 @@ module Reports
     end
 
     def sort_by
-      case @sort_by_filter
+      case parameters.sort_by
       when "Default"
         [:scoped]
       when "Teacher"
@@ -68,22 +67,22 @@ module Reports
     end
 
     def reward_status_filter
-      case @reward_status_filter
-      when 'Undelivered'
-        :pending
-      when 'Delivered'
-        :delivered
+      case parameters.reward_status_filter
+      when 'undelivered'
+        [:where, {status: "pending"}]
+      when 'delivered'
+         [:where, {status: "delivered"}]
       else
-        nil
+        [:scoped]
       end
     end
 
     def teachers_filter
-      case @teachers_filter
-      when 'everyone'
-        nil
+      case parameters.teachers_filter
+      when nil
+        [:scoped]
       else
-        [:where, { from_id: @teachers_filter }]
+        [:where, { from_id: parameters.teachers_filter }]
       end
     end
 
@@ -96,12 +95,12 @@ module Reports
       deliverer = reward_delivery.from
       Reports::Row[
         delivery_teacher: deliverer,
-        classroom: "",
         student: [person, "(#{person.user.username})"].join(" "),
-        grade: person.grade,
-        purchased: reward_delivery.created_at.to_s(:db),
-        reward: reward_delivery.reward.name,
-        status: reward_delivery.status,
+        classroom: (person.classrooms.count > 0 ? person.classrooms.first.name : ""),
+        grade: School::GRADE_NAMES[person.grade],
+        purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
+        reward: reward_delivery.reward.product.name,
+        status: reward_delivery.status.humanize,
         reward_delivery_id: reward_delivery.id,
         delivery_status: reward_delivery.status
       ]
@@ -110,13 +109,68 @@ module Reports
     def headers
       {
         delivery_teacher: "Delivery Teacher",
-        classroom: "Classroom",
         student: "Student (username)",
+        classroom: "Classroom",
         grade: "Grade",
         purchased: "Purchased",
         reward: "Reward",
         status: "Status"
       }
+    end
+    class Params < Reports::ParamsBase
+      attr_accessor :date_filter, :reward_status_filter, :teachers_filter, :sort_by
+
+      def initialize options_in = {}
+        options_in ||= {}
+        options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
+        [:date_filter, :reward_status_filter, :teachers_filter, :sort_by].each do |iv|
+          default_method = (iv.to_s + "_default").to_sym
+          default_value = nil
+          default_value = send(default_method) if respond_to? default_method
+          instance_variable_set(('@' + iv.to_s).to_sym,options[iv] || default_value || "")
+        end
+      end
+
+
+      def reward_status_filter_default
+        "undelivered"
+      end
+
+      def reward_status_filter_options
+        [
+         ['Everything', "all"],
+         ['Undelivered', "undelivered"],
+         ['Delivered','delivered']
+        ]
+      end
+
+      def teachers_filter_default
+        if teachers_filter_options
+          teachers_filter_options[0]
+        else
+          nil
+        end
+      end
+
+      def teachers_filter_options(school = nil)
+        school.teachers.collect do |t| 
+          [t.name, t.id]
+        end if school
+      end
+
+      def sort_by_default
+        sort_by_options[0]
+      end
+
+      def sort_by_options
+        ["Default", "Teacher", "Student", "Purchased", "Reward", "Status"]
+      end
+
+      def date_filter_default
+        'this_month'
+      end
+
+
     end
   end
 end
