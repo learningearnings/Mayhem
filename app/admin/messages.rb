@@ -1,4 +1,5 @@
 ActiveAdmin.register Message do
+  menu :label => "Inbox"
   scope :for_admin, :default => true
 
   index do
