@@ -8,7 +8,7 @@ ActiveAdmin.register Message do
     end
     column "From" do |message|
       person = Person.find(message.from_id)
-      if person.type == Teacher
+      if person.type == "Teacher"
         link_to(Person.find(message.from_id).full_name, admin_teacher_path(Person.find(message.from_id)))
       else
         link_to(Person.find(message.from_id).full_name, admin_student_path(Person.find(message.from_id)))

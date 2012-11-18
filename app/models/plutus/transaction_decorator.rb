@@ -1,4 +1,6 @@
 Plutus::Transaction.class_eval do
+  belongs_to :spree_product,:foreign_key => :commercial_document_id,  :foreign_type => :commercial_document_type, :class_name => 'Spree::Product', :polymorphic => true
+
   def self.build(hash)
     transaction = Plutus::Transaction.new(:description => hash[:description], :commercial_document => hash[:commercial_document])
     hash[:debits].each do |debit|

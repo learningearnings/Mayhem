@@ -42,13 +42,13 @@
   %h3 Checking History
 
   #checking-history
-    = render 'ledger_table', amounts: @recent_checking_amounts
+    = render 'checking_ledger_table', amounts: @recent_checking_amounts
 
 #savings-history-modal.modal.hide
   %h3 Savings History
 
   #savings-history
-    = render 'ledger_table', amounts: @recent_savings_amounts
+    = render 'savings_ledger_table', amounts: @recent_savings_amounts
 
 #enter-codes-modal.modal.hide
   %h3 Enter Codes

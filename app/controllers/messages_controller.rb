@@ -35,7 +35,11 @@ class MessagesController < LoggedInController
   end
 
   def admin_message
-    @message = StudentMessageAdminCommand.new
+    if current_person.type == "Teacher"
+      @message = TeacherMessageAdminCommand.new
+    else
+      @message = StudentMessageAdminCommand.new
+    end
     @message.subject = params[:subject]
   end
 
