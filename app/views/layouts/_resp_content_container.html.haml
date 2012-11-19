@@ -4,7 +4,6 @@
     = breadcrumbs(@taxon)
 - if (sidebar = yield :sidebar).empty?
   .resp-page-content= yield
-
 - else
-  .span3= sidebar
+
   .span9= yield

@@ -106,15 +106,18 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
     if params[:product][:images]
       i = @product.master.images.first
+      i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
       i.attachment_content_type = params[:product][:images][:attachment_file_name].content_type
-      i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.save
     end
     if params[:product][:svg]
       i = @product
-      i.svg_file_name = params[:product][:svg][:svg_file_name].original_filename
-      i.svg = params[:product][:svg][:svg_file_name].tempfile
+#      i.svg_content_type = params[:product][:svg][:svg_file_name].content_type
+#      i.svg = params[:product][:svg][:svg_file_name].tempfile
+#      i.svg_file_name = params[:product][:svg][:svg_file_name].original_filename
+      i.svg = params[:product][:svg][:svg_file_name]
+
       i.save
     end
 
@@ -128,9 +131,13 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def after_save
     @product.set_property("reward_type", params[:product_type])
-    create_wholesale_properties if @product.requires_wholesale_properties?
+#    create_wholesale_properties if @product.requires_wholesale_properties?
     SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
   end
+
+  #
+  # Delete this
+  #
 
   def create_wholesale_properties
     # create retail price property

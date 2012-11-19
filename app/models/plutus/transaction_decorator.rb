@@ -1,5 +1,18 @@
 Plutus::Transaction.class_eval do
-  belongs_to :spree_product,:foreign_key => :commercial_document_id,  :foreign_type => :commercial_document_type, :class_name => 'Spree::Product', :polymorphic => true
+  belongs_to :spree_product,:foreign_key => :commercial_document_id,  :foreign_type => :commercial_document_type, :class_name => 'Spree::Product'
+#  has_many :amounts, :class_name => "Plutus::Amount", :inverse_of => :transaction
+  has_many :person_account_links, :class_name => 'PersonAccountLink', :through => :amounts, :inverse_of => :amounts, :source => :person_account_link
+  has_many :person_school_links, :class_name => 'PersonSchoolLink' ,:through => :person_account_links
+  has_many :people, :through => :person_school_links, :class_name => 'Person'
+  scope :with_spree_products, where(:commercial_document_type => 'Spree::Product')
+  scope :with_spree_line_items, where(:commercial_document_type => 'Spree::LineItem')
+  scope :for_account, lambda {|account_id| joins(:amounts).where("#{Plutus::Amount.table_name}.account_id" => account_id)}
+  scope :for_person, lambda {|person_id| joins(:person_school_links).where("#{PersonSchoolLink.table_name}.person_id" => person_id)}
+  scope :with_main_account, joins(:person_account_links).where("#{PersonAccountLink.table_name}.is_main_account" => true)
+
+  has_many :product_properties, :through => :spree_product, :class_name => 'Spree::ProductProperty'
+  has_many :properties, :through => :product_properties, :class_name => 'Spree::Property'
+
 
   def self.build(hash)
     transaction = Plutus::Transaction.new(:description => hash[:description], :commercial_document => hash[:commercial_document])
