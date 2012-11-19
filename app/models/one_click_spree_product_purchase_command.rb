@@ -79,7 +79,11 @@ class OneClickSpreeProductPurchaseCommand
     end
 
     # Delivery
-    @order.shipping_method_id = @order.line_items.first.product.shipping_category.shipping_methods.first
+    if @order.line_items.first.product.shipping_category && (@order.line_items.first.product.shipping_category.shipping_methods.count > 0)
+      @order.shipping_method_id = @order.line_items.first.product.shipping_category.shipping_methods.first.id
+    else
+      @order.shipping_method_id = Spree::ShippingCategory.find_by_name('In Classroom').shipping_methods.first
+    end
   end
 
   def mark_as_shipped

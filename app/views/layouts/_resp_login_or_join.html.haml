@@ -1,7 +1,7 @@
 .resp-supplemental
-  .join.resp-join-supplemental-part
+  .resp-join.resp-join-supplemental-part
     - if current_user && current_user.person
-      = render 'layouts/logged_in_block_' + current_user.person.class.to_s.downcase
+      = render 'layouts/resp_logged_in_block_' + current_user.person.class.to_s.downcase
     - else
       %ul.join-links
         %li

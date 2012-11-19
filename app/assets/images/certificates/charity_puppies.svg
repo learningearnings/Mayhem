@@ -7,11 +7,9 @@
 	c0-6.627,5.03-12,11.236-12h567.641c6.205,0,11.236,5.373,11.236,12V468.48z"/>
 <text transform="matrix(1 0 0 1 94.8691 167.8096)"><tspan x="0" y="0" font-family="times" font-size="29">LearningEarnings.com is proud to present</tspan><tspan x="50.687" y="34.8" font-family="times" font-size="29">this Certificate of Appreciation to</tspan></text>
 <text transform="matrix(1 0 0 1 103.8809 322.6045)"><tspan x="0" y="0" font-family="times" font-size="29">in recognition of your generosity towards</tspan><tspan x="73.718" y="34.799" font-family="times" font-size="29">the cause of saving a puppy.</tspan></text>
-<text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" ><tspan>name_val</tspan></text>
-<text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" ><tspan>school_val</tspan></text>
+<text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" ><tspan><%= name %></tspan></text>
+<text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" ><tspan><%= school_name %></tspan></text>
 <line fill="none" stroke="#000000" x1="156.678" y1="264.939" x2="519.69" y2="264.939"/>
-<image overflow="visible" width="1280" height="545" xlink:href="images/rewardimage/charity_puppies_1.jpg"  transform="matrix(0.1823 0 0 0.1823 222.3721 371.2002)">
-</image>
 <g>
 	<g>
 		<path fill="#8DC63F" d="M334.836,90.676c18.052,0,32.685-14.633,32.685-32.685s-14.633-32.685-32.685-32.685

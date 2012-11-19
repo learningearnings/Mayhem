@@ -160,9 +160,10 @@ form.rewards-search {
 .svg-container {
     overflow: hidden;
     border: 1px solid black;
+    text-align: center;
     * {
-        width: 100%;
-        height: 100%;
+        width: 200px;
+        height: 200px;
     }
 }
 
