@@ -11,6 +11,6 @@
     .product-purchased
       .info= "Donation On: " + l(charity.created_at.to_date,format: :short)
       .info= "You Donated: " + number_to_currency(charity.debit_amounts.sum(:amount))
-  - if charity.spree_product.svg || true
+  - if charity.spree_product.svg
     .print
       = link_to "Print Your Certificate", charity_print_path(charity),class: 'btn awesome-button'
