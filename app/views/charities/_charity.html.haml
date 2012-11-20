@@ -1,6 +1,6 @@
 %li{:class => "charity-product-tile #{tile_class}", "data-hook" => "products_list_item", :id => "product_#{charity.spree_product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
   .product-image
-    - if charity.spree_product.svg
+    - unless charity.spree_product.svg.blank? || charity.spree_product.svg.path.blank?
       = le_svg_tag charity.spree_product.svg.to_s do
         = render :file => charity.spree_product.svg.path,:formats => [:svg], :locals => {:name => current_person.name, :school_name => current_school.name}
     - else
@@ -11,6 +11,6 @@
     .product-purchased
       .info= "Donation On: " + l(charity.created_at.to_date,format: :short)
       .info= "You Donated: " + number_to_currency(charity.debit_amounts.sum(:amount))
-  - if charity.spree_product.svg
+  - unless charity.spree_product.svg.blank? || charity.spree_product.svg.path.blank?
     .print
       = link_to "Print Your Certificate", charity_print_path(charity),class: 'btn awesome-button'

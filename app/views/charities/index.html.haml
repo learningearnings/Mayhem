@@ -6,7 +6,7 @@
     - if charities.respond_to?(:num_pages)
       .charities-row
         = paginate charities
-    %ul{"data-hook" => ""}
+    %ul
       - charities.each do |c|
         = render 'charity', charity: c, tile_class: cycle('first','last') unless c.nil?
     - if charities.respond_to?(:num_pages)

@@ -11,8 +11,8 @@
               %div{:class => "accordion-body collapse", :id => "collapse#{classroom.id}"}
                 %ul.inline.student-listing.accordion-inner
                   %li
-                    = link_to("Add Students to Class", classroom_path(classroom), 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal')
-                    = link_to 'Remove Class', classroom_path(classroom), :method => :delete
+                    = link_to("Add Students to Class", classroom_path(classroom), 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal', :class => 'btn awesome-button')
+                    = link_to 'Remove This Class', classroom_path(classroom), :method => :delete, :class => 'btn awesome-button'
                   - classroom.students.in_groups_of(3) do |group|
                     - group.each do |student|
                       - next if student.nil?
