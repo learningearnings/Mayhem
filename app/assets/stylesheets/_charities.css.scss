@@ -1,0 +1,73 @@
+.my-charities {
+    .charities-row {
+        @extend .row-fluid;
+        padding-left: 10px;
+        .pagination {
+            float: left;
+        }
+
+        ul.inline.product-listing {
+            margin: 0px;
+            width: 100%;
+        }
+    }
+    ul {
+        margin: 0px;
+        padding: 0px;
+    }
+    .charity-product-tile {
+        @extend .span6;
+        display: inline-block;
+        margin: 1em 2px 1em 2px;
+        font-size: 1.2em;
+        list-style: none;
+         @extend .thumbnail !optional;
+        height: 250px;
+        padding: 1em;
+        background-color: white;
+        @include box-shadow(1px 2px 5px 1px #ccc);
+        text-align: center;
+        .print {
+            position: relative;
+            bottom: -10px;
+            text-align: center;
+            clear: both;
+        }
+        .product-image {
+            position: relative;
+            float: left;
+            width: 60%;
+            height: 70%;
+            vertical-align: top;
+            display: block;
+            text-align: left;
+            script, svg, object {
+                position: relative;
+                float: left;
+                right: 0px;
+                height: 100%;
+                width: 100%;
+            }
+            img {
+            }
+        }
+        .product-details {
+            text-align: left;
+            width: 39%;
+            max-width: 39%;
+            float: left;
+            .product-name, product-purchased {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+.print-charity {
+
+    script, svg, object {
+        position: relative;
+        width: 100%;
+    }
+}

@@ -30,6 +30,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+
   def after_sign_out_path_for(resource_or_scope)
     '/'
   end
@@ -125,4 +127,11 @@ class ApplicationController < ActionController::Base
     searcher = Spree::Config.searcher_class.new(with_filters_params)
     searcher.retrieve_products.order('random()').page(1).per(highlight_count)
   end
+
+  protected
+  def _prefixes
+    @_prefixes_with_partials ||= super | %w(/public)
+  end
+
+
 end

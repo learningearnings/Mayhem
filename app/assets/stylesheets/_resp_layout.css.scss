@@ -2,7 +2,7 @@
     @extend .row-fluid;
     background-image: url(asset_path('header-bg-large.png', image));
     background-repeat: no-repeat;
-    background-position: right top;
+    background-position: right -20px;
 }
 .resp-nav-bar {
     @extend .row-fluid;
@@ -291,6 +291,27 @@ html.resp, body.resp {
     max-width: 960px;
     min-width: 320px;
     background: url(asset_path('lines.png', image)) no-repeat scroll center;
-    background-position: center top;
+    background-position: center 170px;
 }
 
+.resp-supplemental-part {
+    .current-person {
+        position: relative;
+        bottom: 15px;
+        float: right;
+        .person-details, .credit-balance {
+            float: right;
+            table {
+                margin-bottom: 0px;
+            }
+        }
+        .avatar {
+            float: right;
+        }
+    }
+}
+
+
+
+.current-person-avatar.supplemental-part {
+}
