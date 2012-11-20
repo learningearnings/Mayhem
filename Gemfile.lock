@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/learningearnings/compass-twitter-bootstrap.git
-  revision: c3ccce2cca5ec52437925e8feaaa11fead51e132
+  revision: 90b99f266a034f0f3d99d944235a9cb781f60be8
   specs:
     compass_twitter_bootstrap (2.0.3)
       compass

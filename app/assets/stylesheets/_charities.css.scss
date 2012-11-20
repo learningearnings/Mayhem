@@ -1,5 +1,4 @@
 .my-charities {
-    @include grid-fluid();
     .charities-row {
         @extend .row-fluid;
         padding-left: 10px;

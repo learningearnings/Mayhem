@@ -1,22 +1,44 @@
+ul.student-listing {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.accordion {
+    z-index: 100;
+}
+
+.accordion-group {
+    background: white;
+}
+
+.accordion-heading {
+    display: tag;
+    width: 100%;
+    border-top: 10px solid #FFFFFF;
+    @include clearfix;
+}
+
 .student-tile {
     font-size: 1.2em;
     float: left;
     margin-bottom: 10px;
-    margin-left: 10px;
-    height: 1.5em;
+    margin-left: 5px;
+    height: 30px;
     overflow: hidden;
-    @extend .span3 !optional;
+    @extend .span2 !optional;
     @extend .thumbnail !optional;
+    display: inline-block;
     background-color: white;
-    padding: 1em;
-    -moz-box-shadow:    1px 2px 5px 1px #ccc;
-    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-    box-shadow:         1px 2px 5px 1px #ccc;
+    padding-bottom: 2em;
+    @include box-shadow(1px 2px 5px 1px #ccc);
     img {
         float: right;
     }
 }
 
-li.student-tile {
-    list-style: none;
+#classrooms {
+    .accordion-inner {
+        padding: 9px 2px;
+    }
 }
