@@ -26,7 +26,8 @@ ul.student-listing {
     margin-left: 5px;
     height: 30px;
     overflow: hidden;
-    @extend .span2 !optional;
+/*    @extend .span2 !optional; */
+    @include ctb-fluid-span(4);
     @extend .thumbnail !optional;
     display: inline-block;
     background-color: white;
