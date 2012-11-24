@@ -39,7 +39,7 @@ class Person < ActiveRecord::Base
   end
 
   def avatar=(new_avatar = nil)
-    avatars << new_avatar if new_avatar
+    PersonAvatarLink.create(:avatar_id => new_avatar.id, :person_id => self.id) if new_avatar
   end
 
   def buck_batches(school)
