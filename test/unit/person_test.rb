@@ -21,7 +21,7 @@ describe Person do
   it "can receive a school" do
     school = FactoryGirl.create(:school)
     school.activate
-    p = FactoryGirl.create(:person)
+    p = FactoryGirl.create(:student)
     p << school
     p.schools.must_include school
   end
@@ -30,7 +30,7 @@ describe Person do
     school = FactoryGirl.create(:school)
     school.activate
     classroom = FactoryGirl.create(:classroom, school: school)
-    p = FactoryGirl.create(:person)
+    p = FactoryGirl.create(:student)
     p << school
     p << classroom
     p.schools.must_include school
