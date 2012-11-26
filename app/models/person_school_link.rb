@@ -45,6 +45,7 @@ class PersonSchoolLink < ActiveRecord::Base
     if person.is_a?(Teacher) || person.is_a?(SchoolAdmin)
       person.setup_accounts(school)
     end
+    connect_plutus_accounts
   end
 
   # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin
