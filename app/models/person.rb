@@ -115,24 +115,8 @@ class Person < ActiveRecord::Base
     end
     psl.activate if psl
     self.person_school_links << psl
-    connect_plutus_accounts
   end
 
-  # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin
-  # Not valid for LE Admins
-  def connect_plutus_accounts
-    schools.each do |s|
-      self.accounts(s).each do |a|
-        PersonAccountLink.where(:plutus_account_id => a.id).each do |pal|
-          pal.destroy
-        end
-      end
-      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.id,s.id)
-      self.accounts(s).each do |a|
-        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a.id, is_main_account: a.id == self.main_account(s).id)
-      end
-    end
-  end
 
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)

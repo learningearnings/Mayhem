@@ -47,6 +47,24 @@ class PersonSchoolLink < ActiveRecord::Base
     end
   end
 
+  # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin
+  # Not valid for LE Admins
+  def connect_plutus_accounts
+    self.person.schools.each do |s|
+      self.person.accounts(s).each do |a|
+        PersonAccountLink.where(:plutus_account_id => a.id).each do |pal|
+          pal.destroy
+        end
+      end
+      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.person.id,s.id)
+      self.person.accounts(s).each do |a|
+        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a.id, is_main_account: a.id == self.person.main_account(s).id)
+      end
+    end
+  end
+
+
+
   ################### Validations ########################
 
   #

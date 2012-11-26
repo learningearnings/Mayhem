@@ -9,7 +9,7 @@ class Student < Person
 
   attr_accessor :username, :password, :password_confirmation, :email
   attr_accessible :username, :password, :password_confirmation, :email
- 
+
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
@@ -122,7 +122,6 @@ class Student < Person
     checking_account || Plutus::Asset.create(name: checking_account_name)
     savings_account  || Plutus::Asset.create(name: savings_account_name)
     hold_account     || Plutus::Asset.create(name: hold_account_name)
-    connect_plutus_accounts
   end
 
   def create_user
