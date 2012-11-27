@@ -10,5 +10,5 @@ Feature: School Settings
     Given I am logged in as an admin
 
 
-  Scenario: School Admin views the settings page
+  Scenario: School Admin views the schools settings page
     Given I am on the schools settings page
