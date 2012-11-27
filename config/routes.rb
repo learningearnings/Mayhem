@@ -1,4 +1,8 @@
 Leror::Application.routes.draw do
+  get "settings/show"
+
+  get "settings/edit"
+
   match '/uploaded_users/check_valid' => "uploaded_users#check_valid"
   match '/uploaded_users/bulk_upload' => "uploaded_users#bulk_upload"
   resources :uploaded_users do
@@ -19,6 +23,10 @@ Leror::Application.routes.draw do
   resource :games, controller: "games/base", only: [:show]
 
   resources :news_posts, controller: "news", only: [:index, :show]
+
+  namespace :schools do
+    resource :settings, controller: "settings", only: [:edit, :show]
+  end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 

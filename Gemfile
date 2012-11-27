@@ -5,6 +5,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
+gem 'rake', '~> 10.0.2'
 gem 'rails', '~> 3.2.6'
 gem 'pg', '0.13.2'
 
@@ -75,7 +76,8 @@ gem 'plutus', :git => 'git@github.com:learningearnings/plutus.git'
 gem 'state_machine'
 
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
-gem 'spree', '~> 1.2.0'
+# gem 'spree', '~> 1.2.0'
+gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :git => "git://github.com/learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
 gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'
