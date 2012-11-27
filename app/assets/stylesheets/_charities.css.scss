@@ -14,10 +14,11 @@
     .charity-product-tile {
         @include ctb-fluid-span(6);
         display: inline-block;
-        margin: 1em 2px 1em 2px;
+        margin: 1em 9px 1em 0px;
         font-size: 1.2em;
         list-style: none;
         @extend .thumbnail !optional;
+        @extend .pull-left;
         height: 250px;
         padding: 1em;
         background-color: white;
