@@ -86,7 +86,6 @@ class Teacher < Person
     Plutus::Asset.find_by_name(main_account_name(school)) || Plutus::Asset.create(name: main_account_name(school))
     Plutus::Asset.find_by_name(unredeemed_account_name(school)) || Plutus::Asset.create(name: unredeemed_account_name(school))
     Plutus::Asset.find_by_name(undeposited_account_name(school)) || Plutus::Asset.create(name: undeposited_account_name(school))
-    connect_plutus_accounts
   end
 
   def create_user

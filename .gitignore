@@ -55,3 +55,7 @@ app/assets/images/sprites
 public/ckeditor_assets
 
 images.tgz
+
+# A place to save files that won't show up as untracked
+/saveandignore/*
+

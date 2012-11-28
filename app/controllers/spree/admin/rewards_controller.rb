@@ -83,7 +83,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.available_on = params[:product][:available_on]
 
     if params[:product_type] == "wholesale"
-      @product.store_ids = ["#{Spree::Store.find_by_name("le").id}"]
+      @product.store_ids = ["#{Spree::Store.find_by_code("le").id}"]
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
       @filter = filter_factory.find_or_create_filter(filter_condition)

@@ -3,23 +3,23 @@ require 'test_helper_with_rails'
 describe OtuCode do
   describe "#person_school_link" do
     before do
-      @person_school_link = FactoryGirl.create(:person_school_link)
-      @otu_code           = FactoryGirl.create(:otu_code, :person_school_link_id => @person_school_link.id)
+      @teacher_school_link = FactoryGirl.create(:teacher_school_link)
+      @otu_code           = FactoryGirl.create(:otu_code, :person_school_link_id => @teacher_school_link.id)
     end
 
     it "has a person_school_link" do
-      @otu_code.person_school_link.must_equal @person_school_link
+      @otu_code.person_school_link.must_equal @teacher_school_link
     end
 
     describe "#teacher" do
       it "defers to person_school_link#person" do
-        @otu_code.teacher.must_equal @person_school_link.person
+        @otu_code.teacher.must_equal @teacher_school_link.person
       end
     end
 
     describe "#school" do
       it "defers to person_school_link#school" do
-        @otu_code.school.must_equal @person_school_link.school
+        @otu_code.school.must_equal @teacher_school_link.school
       end
     end
   end
@@ -39,12 +39,12 @@ describe OtuCode do
   describe "source_string" do
     describe "when given by a teacher" do
       before do
-        @person_school_link = FactoryGirl.create(:person_school_link)
-        @otu_code           = FactoryGirl.create(:otu_code, :person_school_link_id => @person_school_link.id)
+        @teacher_school_link = FactoryGirl.create(:teacher_school_link)
+        @otu_code           = FactoryGirl.create(:otu_code, :person_school_link_id => @teacher_school_link.id)
       end
 
       it "returns the teacher's to_s" do
-        @otu_code.source_string.must_equal @person_school_link.person.to_s
+        @otu_code.source_string.must_equal @teacher_school_link.person.to_s
       end
     end
 

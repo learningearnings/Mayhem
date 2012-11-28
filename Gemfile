@@ -5,6 +5,7 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
+gem 'rake', '~> 10.0.2'
 gem 'rails', '~> 3.2.6'
 gem 'pg', '0.13.2'
 
@@ -75,7 +76,8 @@ gem 'plutus', :git => 'git@github.com:learningearnings/plutus.git'
 gem 'state_machine'
 
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
-gem 'spree', '~> 1.2.0'
+# gem 'spree', '~> 1.2.0'
+gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :git => "git://github.com/learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
 gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'
@@ -100,21 +102,18 @@ gem 'capistrano', '~> 2.13.5'
 # To use debugger
 # gem 'debugger'
 
-group :development, :test do
+group :development do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
-  gem 'rb-fsevent', '~> 0.9.1'
-  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
-  gem 'guard', '~> 1.2.3'
-  gem 'guard-minitest', '~> 0.5.0'
-  gem 'guard-spinach', '~> 0.0.2'
   gem 'unicorn'
-  gem 'libnotify'
   gem 'thin'
   gem 'rack-bug', git: 'https://github.com/learningearnings/rack-bug.git', branch: 'rails3'
 end
 
 group :test do
+  gem 'letter_opener'
+  gem 'unicorn'
+  gem 'thin'
   gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
   gem 'minitest-reporters', '~> 0.8.0'
@@ -129,6 +128,12 @@ group :test do
   gem 'mocha', '~> 0.12.1'
   gem 'valid_attribute', git: 'git://github.com/learningearnings/valid_attribute.git', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
+  gem 'libnotify'
+  gem 'rb-fsevent', '~> 0.9.1'
+  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
+  gem 'guard', '~> 1.2.3'
+  gem 'guard-minitest', '~> 0.5.0'
+  gem 'guard-spinach', '~> 0.0.2'
 end
 
 gem "coffee-filter"

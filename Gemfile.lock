@@ -355,7 +355,7 @@ GEM
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
     raindrops (0.10.0)
-    rake (10.0.1)
+    rake (10.0.2)
     ranked-model (0.1.1)
       activerecord (>= 3.0.3)
     ransack (0.7.0)
@@ -538,6 +538,7 @@ DEPENDENCIES
   rack-bug!
   rack-cache
   rails (~> 3.2.6)
+  rake (~> 10.0.2)
   ranked-model
   rb-fsevent (~> 0.9.1)
   rb-inotify (~> 0.8.8)
@@ -549,7 +550,7 @@ DEPENDENCIES
   simplecov-rcov (~> 0.2.3)
   spinach (~> 0.5.2)
   spinach-rails (~> 0.1.7)
-  spree (~> 1.2.0)
+  spree (= 1.2.0)
   spree_auth_devise!
   spree_multi_domain!
   squeel
