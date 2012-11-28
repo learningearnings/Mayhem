@@ -6,6 +6,10 @@ class Teacher < Person
   validates_presence_of :grade
   after_create :create_user
 
+  has_many :reward_distributors, :through => :person_school_links
+
+
+
   def after_initialize
     @teacher_main_account = []
     @teacher_undredeemed_account = []
@@ -15,6 +19,12 @@ class Teacher < Person
   def primary_account
     main_account(self.schools.first)
   end
+
+  def can_distribute_rewards? s
+    return false unless (s && s.is_a?(School))
+    self.person_school_links.joins(:reward_distributors).exists?(:school_id => s.id)
+  end
+
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def main_account_name(school)

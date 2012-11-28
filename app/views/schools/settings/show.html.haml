@@ -1,10 +1,11 @@
 
 %h1
   = current_school.name
-%h1 Settings
+%h2 Site Settings
 %hr
 
 .school-settings
-  Edit your settings
-
-  %a.edit-settings.btn.awesome-button{href: edit_schools_settings_path} Edit
+  %h3 Select Teachers for Reward Distribution
+  #distributor-list
+    = render :partial => 'distributor_list', :locals => {:distributing_teachers => @distributing_teachers, :teachers => @teachers,  :last_changed_id => 0  }
+= javascript_include_tag "distributor_list"

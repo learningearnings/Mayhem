@@ -17,6 +17,7 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :classrooms, :through => :person_school_classroom_links, :source => :classroom, :inverse_of => :classroom
   has_many :person_account_links
   has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
+  has_many :reward_distributors
 
   attr_accessible :person_id, :school_id, :status
   validates_presence_of :person_id, :school_id

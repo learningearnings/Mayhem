@@ -25,7 +25,8 @@ Leror::Application.routes.draw do
   resources :news_posts, controller: "news", only: [:index, :show]
 
   namespace :schools do
-    resource :settings, controller: "settings", only: [:edit, :show]
+    resource :settings, controller: "settings", only: [:show]
+    match "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
