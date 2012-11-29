@@ -5,7 +5,7 @@
 %hr
 
 .school-settings
-  %h3 Select Teachers for Reward Distribution
+  %h3 Select the teachers that will distribute rewards
   #distributor-list
     = render :partial => 'distributor_list', :locals => {:distributing_teachers => @distributing_teachers, :teachers => @teachers,  :last_changed_id => 0  }
 = javascript_include_tag "distributor_list"
