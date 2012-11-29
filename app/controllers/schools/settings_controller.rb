@@ -1,7 +1,7 @@
 class Schools::SettingsController < SchoolAdmins::BaseController
   layout 'resp_application'
   def show
-    @teachers = current_school.teachers.all
+    @teachers = current_school.teachers.order(:last_name)
     @distributing_teachers = current_school.distributing_teachers
     @last_changed_id = 0
   end
@@ -23,7 +23,7 @@ class Schools::SettingsController < SchoolAdmins::BaseController
 
   private
   def distributor_list
-    @teachers = current_school.teachers.all
+    @teachers = current_school.teachers.order(:last_name)
     @distributing_teachers = current_school.distributing_teachers
     respond_to do |format|
       format.js do

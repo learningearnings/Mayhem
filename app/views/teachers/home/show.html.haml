@@ -14,6 +14,9 @@
     %h4= link_to "Student Roster",   student_roster_report_path
     %h4= link_to "Activity Report",  activity_report_path
     %h4= link_to "Student Credit History Report",  student_credit_history_report_path
+    - if current_person.is_a? SchoolAdmin
+      %hr
+      %h4= link_to "School Settings",  schools_settings_path
   
   .secondary-content
     %h4 Reward Highlights
