@@ -1,0 +1,11 @@
+- teachers.each do |t|
+  %div{:class => "teacher-tile #{(t.id == last_changed_id.to_i) ? 'changed' : ''}"}
+    - badges = ""
+    - badges = 'badge-reward-distributor' if distributing_teachers.include?(t)
+    - teacher_icons(t,badges).each do |i,text|
+      %i{:class => i,:title => text}
+    = t.name
+    - if !badges.blank? || t.can_distribute_rewards?(current_school)
+      = link_to "<i class=\"icon-remove\"></i>".html_safe, schools_toggle_distributor_path(t, :format => :js), {:class => 'toggle',:remote => true}
+    - else
+      = link_to "<i class=\"icon-plus\"></i>".html_safe, schools_toggle_distributor_path(t, :format => :js), {:class => 'toggle',:remote => true}

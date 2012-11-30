@@ -1,0 +1,38 @@
+.badge-person {
+
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    text-decoration: inherit;
+
+    vertical-align: middle;
+    width: 1em;
+    font-size: 1.3em;
+}
+
+.badge-schooladmin {
+    @extend .badge-person;
+    @extend .icon-bookmark;
+}
+
+.badge-student {
+    @extend .badge-person;
+    @extend .icon-headphones;
+}
+
+.badge-teacher {
+    @extend .badge-person;
+    @extend .icon-book;
+}
+
+.badge-leadmin {
+    @extend .badge-person;
+    @extend .icon-user;
+}
+
+.badge-reward-distributor {
+    @extend .badge-person;
+    @extend .icon-gift;
+}
+

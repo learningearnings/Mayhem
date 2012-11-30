@@ -13,6 +13,8 @@ class School < ActiveRecord::Base
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
 
+  has_many :reward_distributors, :through => :person_school_links, :include => :teacher
+
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
@@ -34,6 +36,14 @@ class School < ActiveRecord::Base
   def address=(newaddress)
     addresses << newaddress
   end
+
+  def distributing_teachers
+    @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
+    @distributing_teachers = self.school_admins if @distributing_teachers.blank?
+    @distributing_teachers = self.teachers if @distributing_teachers.blank?
+    @distributing_teachers
+  end
+
 
   def create_spree_store
     if Rails.env.development?

@@ -4,6 +4,8 @@
     %title Learning Earnings
     = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
     = stylesheet_link_tag    'application', media: 'all'
+    - if current_user && current_user.person
+      = stylesheet_link_tag    current_user.person.type.downcase + '_background', media: 'all'
     = stylesheet_link_tag    'admin/ie_noprint.css', media: 'print'
     = javascript_include_tag 'application'
     %meta{:name => "viewport", :content => "width=device-width"}
