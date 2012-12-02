@@ -1,0 +1,19 @@
+= simple_form_for(@teachers_reward,method: :post, :url => teachers_rewards_path, :html => {:class => 'form-horizontal'}) do |f|
+  = f.error_notification
+  %h3 Name and Price
+  .form-inputs.controls-row.row-fluid
+    = f.input :name, label: "Name", placeholder: 'Your Reward Name', input_html: {class: 'input-large focus-on-me'}
+    = f.input :image, :label => 'Reward Picture',:as => :file, placeholder: 'Reward Picture'
+  .form-inputs.controls-row.row-fluid
+    = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
+      %span.add-on $
+      = f.input_field :price, class: 'input-small numeric'
+      %span.add-on .00
+  %h3 Select Classrooms for your reward
+  .row-fluid.controls-row
+    .classrooms
+      - f.collection_check_boxes :classrooms, current_person.classrooms, :id, :name do |b|
+        %div.classroom-checkbox
+          = b.label(:class => "checkbox inline") { b.check_box(:class => 'inline') + b.text}
+  .control-row
+  = f.submit "WILL NOT SAVE", :class => 'btn awesome-button'

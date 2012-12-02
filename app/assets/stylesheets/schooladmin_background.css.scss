@@ -5,6 +5,6 @@ html.resp, body.resp {
     height: 100%;
     max-width: 960px;
     min-width: 320px;
-    background: url(asset_path('lines_schooladmin.png', image)) no-repeat scroll center;
+    background: url(asset_path('lines_schooladmin.png', image)) repeat-y scroll center;
     background-position: center 170px;
 }

@@ -1,0 +1,35 @@
+.teachers-reward {
+    form {
+        h3 {
+            text-align: left;
+        }
+        span.add-on {
+            display: inline;
+        }
+        .form-inputs {
+            .controls {
+                text-align: left;
+            }
+        }
+        .classrooms {
+            display: inline-block;
+            width: auto;
+            margin: 0px auto;
+            .classroom-checkbox {
+                @include box-shadow(1px 2px 5px 1px #ccc);
+                @extend .thumbnail !optional;
+                display: inline-block;
+                text-align: left;
+                padding: 0px 5px 0px 5px;
+                @include ctb-fluid-span(2);
+                min-width: 150px;
+/*                 @extend .pull-left; */
+
+            }
+        }
+    }
+
+    
+
+
+}

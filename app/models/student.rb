@@ -7,7 +7,6 @@ class Student < Person
   has_many :otu_codes
   has_one :locker, foreign_key: :person_id
 
-  attr_accessor :username, :password, :password_confirmation, :email
   attr_accessible :username, :password, :password_confirmation, :email
 
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }

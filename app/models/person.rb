@@ -65,8 +65,8 @@ class Person < ActiveRecord::Base
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :school, :username, :user_attributes, :recovery_password
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status,:username,:email, :password_confirmation, :type,:created_at,:user_attributes, :recovery_password, :as => :admin
   validates_presence_of :first_name, :last_name
-#  delegate :email, :username , :password, :password_confirmation, to: :user
-  delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, to: :user, allow_nil: true
+  delegate :email, :username , :password, :password_confirmation, to: :user
+#  delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, to: :user, allow_nil: true
 
   # Relationships
 
