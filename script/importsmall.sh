@@ -1,5 +1,5 @@
 #gzip -dc savingit.pg.db.gz | pg_restore -O --clean --dbname=learning_earning_development
-rm -rf public/spree/product/*
+rm -rf public/spree/products/*
 rm -rf public/system/dragonfly/*
 rake le:reload! 
 rake db:migrate

@@ -1,5 +1,5 @@
 # gzip -dc leafterschools.pg.db.gz | pg_restore -O --clean --dbname=le_development_dhw
-rm -rf public/spree/product/*
+rm -rf public/spree/products/*
 rm -rf public/system/dragonfly/*
 rake le:reload --trace
 rake db:migrate --trace
