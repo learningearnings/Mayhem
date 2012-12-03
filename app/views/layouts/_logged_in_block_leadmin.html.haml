@@ -16,4 +16,4 @@
   .person-details
     %h3= current_person.email
     %p= link_to "Edit My Profile", main_app.edit_person_path(current_person)
-    %p= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
+    %p= link_to 'Sign out', spree.destroy_user_session_path
