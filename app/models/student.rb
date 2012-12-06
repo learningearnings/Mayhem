@@ -55,7 +55,7 @@ class Student < Person
   end
 
   def accounts (school)
-    [checking_account, savings_account]
+    [checking_account, savings_account, hold_account]
   end
 
 

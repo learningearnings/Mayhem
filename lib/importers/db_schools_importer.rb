@@ -102,15 +102,15 @@ class OldSchoolImporter
       # TODO What to do here?
     end
     puts "#{s.school} has #{s.filters.count} filters"
-    s.filters.each do |f|
-      classroom_count = 0
-      f.old_filter_classrooms.each do |ofc| classroom_count += 1 if ofc.classroomID end
-      if classroom_count == 0
-        f.old_reward_locals.each do |rl|
-          get_filter(f,f.id,ns) # if !@filter_lookup[f.id]
-        end
-      end
-    end
+    # s.filters.each do |f|
+    #   classroom_count = 0
+    #   f.old_filter_classrooms.each do |ofc| classroom_count += 1 if ofc.classroomID end
+    #   if classroom_count == 0
+    #     f.old_reward_locals.each do |rl|
+    #       get_filter(f,f.id,ns) # if !@filter_lookup[f.id]
+    #     end
+    #   end
+    # end
     ns
   end
 
@@ -663,8 +663,12 @@ class OldSchoolImporter
       end
       old_filter_states = OldFilterState.where(:filterID => old_filter_id)
       old_filter_states.each do |old_fs|
-        s = State.find_by_abbr(old_fs.old_state.StateAbbr)
-        fc << s if s
+        if old_fs.old_state
+          s = State.find_by_abbr(old_fs.old_state.StateAbbr)
+          fc << s if s
+        else
+          puts '----------> Couldn\'t find state for state for filterID #{old_filter_id} which had stateID of #{old_fs.stateID}'
+        end
       end
       old_filter_usertypes = OldFilterUsertype.where(:filterID => old_filter_id)
       old_filter_usertypes.each do |old_fut|
