@@ -103,9 +103,17 @@ namespace :import do
 
   # run this after everything else
   task :quantities => :environment do
+    require 'importers/db_schools_importer'
     osi = OldSchoolImporter.new
     osi.update_wholesale_quantities
   end
+
+  task :local_reward_categories => :environment do
+    require 'importers/db_schools_importer'
+    osi = OldSchoolImporter.new
+    osi.import_local_reward_categories
+  end
+
 
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121127211050) do
+ActiveRecord::Schema.define(:version => 20121203212001) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"
-    t.string   "image"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
@@ -249,6 +248,14 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
     t.integer  "memory_usage_kb"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+  end
+
+  create_table "local_reward_categories", :force => true do |t|
+    t.string   "name"
+    t.string   "image_uid"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "locker_sticker_links", :force => true do |t|

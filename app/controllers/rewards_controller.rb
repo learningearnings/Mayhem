@@ -8,7 +8,8 @@ class RewardsController < LoggedInController
 #    @products = @searcher.retrieve_products
 #    respond_with(@products)
 #    @products = Spree::Product.not_deleted.order(:name)
-    @products = current_user.person.products.not_deleted.order(:name)
+#    @products = current_user.person.products.not_deleted.order(:name)
+    @products = Spree::Product.with_property_value('reward_type','local')
   end
 
   def show
@@ -101,7 +102,7 @@ class RewardsController < LoggedInController
   private
 
   def authenticate_teacher
-    if current_user && current_user.person.type == "Teacher"
+    if current_user && current_user.person.is_a?(Teacher)
       return true
     else
       flash[:error] = "You are not allowed to view this page."

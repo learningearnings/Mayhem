@@ -42,14 +42,22 @@ en:
                             to your school.  Only the items you purchase will appear for students
                             to purchase with their LE Credits.
   schoolstore:
-    spree:
-      products: &scst2
-        index:
-          products: Rewards
-          search_results:  Jimmy's Search Test
-          products_message: Use your LE Credits to buy these rewards!
+    student: &school_store_student
+      spree:
+        products: &scst2
+          index:
+            products: Rewards
+            search_results:  Jimmy's Search Test
+            products_message: Use your LE Credits to buy these rewards!
       home: *scst2
-    search_results: "Search Results:"
+      search_results: "Search Results:"
+    teacher: &school_store_teacher
+      spree:
+        products: &school_store_teacher_products
+          index:
+            products_message: Students can purchase these items with their LE Credits
+        home: *school_store_teacher_products
+    schooladmin: *school_store_teacher
   play_content: Students can take a break here (but keep on learning and earning)
   banks:
     show:

@@ -10,6 +10,23 @@
             .controls {
                 text-align: left;
             }
+            img#sample-image {
+                padding: 5px;
+                max-width: 50%;
+                max-height: 200px;
+                border: 3px solid grey;
+            }
+            .control-label {
+                padding-top: 0px;
+            }
+            input[type='number'] {
+                height: $baseLineHeight + 10;
+                line-height: $baseLineHeight + 10;
+            }
+            select, input.file {
+                height: $baseLineHeight;
+                line-height: $baseLineHeight;
+            }
         }
         .classrooms {
             display: inline-block;
@@ -28,8 +45,6 @@
             }
         }
     }
-
-    
 
 
 }

@@ -34,6 +34,7 @@ class OldSchoolImporter
     @school_points = 0
     @filter_lookup = {}
     @filter_reverse_lookup = {}
+    @stores = {}
   end
 
   def fixup
@@ -332,16 +333,16 @@ class OldSchoolImporter
         puts "#{transaction.errors.messages}"  if !transaction.valid?
         @cm.transaction_time_stamp = nil
       elsif reward_purchases.index(op.pointactionID) && op.rewardauctionID == 0
-        new_reward = get_reward(op.old_reward, op, new_school)
+        new_reward = get_reward(op.old_reward, op, new_school,op.pointtimestamp)
         imported_purchases = imported_purchases + op.points.abs
         imported_purchases_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
-        transaction = @cm.transfer_credits "Reward Purchase", new_student.checking_account_name, @cm.main_account_name, op.points.abs,new_reward
+        transaction = @cm.transfer_credits "Reward Purchase", new_student.checking_account, @cm.main_account, op.points.abs,new_reward
         @cm.transaction_time_stamp = nil
         unless transaction
           puts "Attempt to purchase #{op.old_reward.rewardtitle} for #{op.points} by #{new_student.full_name} #{op.pointID} #{new_student.legacy_user_id}"
         end
-        puts "#{transaction.errors.messages}"  if !transaction.valid?
+        puts "t1 #{transaction.errors.messages}"  if !transaction.valid?
       elsif student_transfer.index(op.pointactionID)
         imported_points_count += 1
         @cm.transaction_time_stamp = op.pointtimestamp
@@ -350,7 +351,7 @@ class OldSchoolImporter
         elsif op.pointactionID == 16 # 16 Savings -> Checking
           transaction = @cm.transfer_credits "Transfer from Savings to Checking", new_student.savings_account, new_student.checking_account, op.points.abs
         end
-        puts "#{transaction.errors.messages}"  if !transaction.valid?
+        puts "t2 #{transaction.errors.messages}"  if !transaction.valid?
         @cm.transaction_time_stamp = nil
       elsif student_winning.index(op.pointactionID)
         imported_points_count += 1
@@ -361,14 +362,14 @@ class OldSchoolImporter
         elsif op.pointactionID == 19 # 19 - Concentration
           transaction = @cm.issue_game_credits_to_student 'Concentration',new_student, op.points.abs
         end
-        puts "#{transaction.errors.messages}"  if !transaction.valid?
+        puts "t3 #{transaction.errors.messages}"  if !transaction.valid?
         @cm.transaction_time_stamp = nil
       elsif student_interest.index(op.pointactionID)
         imported_points_count += 1
         imported_points = imported_points + op.points.abs
         @cm.transaction_time_stamp = op.pointtimestamp
-        transaction = @cm.transfer_credits "Interest from Savings",  @cm.main_account_name,new_student.savings_account, op.points.abs
-        puts "#{transaction.errors.messages}"  if !transaction.valid?
+        transaction = @cm.transfer_credits "Interest from Savings",  @cm.main_account,new_student.savings_account, op.points.abs
+        puts "t4 #{transaction.errors.messages}"  if !transaction.valid?
         @cm.transaction_time_stamp = nil
       elsif op.pointactionID != 1
         puts "Unknown - unprocessed!!! #{op.to_yaml} "
@@ -458,6 +459,37 @@ class OldSchoolImporter
   end
 
 
+  def import_local_reward_categories
+    dragonfly = Dragonfly[:images]
+    puts "Importing Local Reward Categories"
+    LocalRewardCategory.all.each do |lrc|
+      lrc.destroy
+    end
+    OldLocalRewardCategory.where(:status_id => 200).each do |olrc|
+      puts "Checking " + olrc.name
+      next if olrc.old_reward_image.nil?
+      if olrc.filterID == 0
+        filter = 1
+      elsif olrc.old_filter
+        filter = get_filter(olrc.old_filter, olrc.old_filter.id)
+      else
+        puts "Couldn't find filter " + olrc.filterID.to_s + " for " + olrc.name
+        next
+      end
+      begin
+        puts "Creating " + olrc.name + " with " + olrc.old_reward_image.imagepath
+        LocalRewardCategory.create(:name => olrc.name,
+                                   :image_uid => dragonfly.store(open('http://learningearnings.com/' + URI::encode(olrc.old_reward_image.imagepath.force_encoding('ASCII-8BIT'),"[]"))),
+                                   :filter_id => filter
+                                   )
+      rescue StandardError => err
+        puts "*************** Hmmm - had a problem creating that one....." + err.to_s
+      end
+
+    end
+  end
+
+
 
   def update_quantities old_school, new_school
     puts "Updating quantities for #{old_school.school}"
@@ -490,7 +522,7 @@ class OldSchoolImporter
   end
 
 
-  def get_reward old_reward, old_point = nil, new_school = nil
+  def get_reward old_reward, old_point = nil, new_school = nil, transaction_timestamp = nil
     return if old_point.nil? && old_reward.nil?
     old_reward = old_point.old_reward if old_reward.nil?
     old_reward_id = old_reward.rewardID
@@ -505,8 +537,9 @@ class OldSchoolImporter
     reward_type = 'wholesale' if old_reward.old_reward_details.count > 0
     reward_type = 'charity' if old_reward.rewardcategoryID == 12  # this must come last - some charities mistakenly in globals
 #    old_reward = OldReward.find(old_reward_id)
-    store = Spree::Store.find_by_code new_school.store_subdomain if new_school
-    store = Spree::Store.find_by_code 'le' if new_school.nil?
+    store = find_store(new_school.nil? ? 'le' : new_school.store_subdomain)
+#    store = Spree::Store.find_by_code new_school.store_subdomain if new_school
+#    store = Spree::Store.find_by_code 'le' if new_school.nil?
     if reward_type == 'local' && old_point
       reward_local = old_point.old_redeemed.old_reward_local
       new_filter_id = nil
@@ -516,18 +549,18 @@ class OldSchoolImporter
       owner = find_teacher reward_local.userID
       new_reward = CreateStoreProduct.new(:name => reward_local.name,
                                           :description => reward_local.body,
-                                          :filter => new_filter_id,
+                                          :filter_id => new_filter_id,
                                           :legacy_selector => reward_selector,
                                           :school => new_school,
                                           :reward_type => reward_type,
                                           :quantity => reward_local.quantity,
                                           :retail_price => reward_local.points,
                                           :deleted_at => nil,
-                                          :available_on => Time.now(),
+                                          :available_on => transaction_timestamp || Time.now(),
                                           :reward_owner => owner || new_school.school_admins.first || @first_leadmin,
                                           :image => reward_local.old_reward_image.imagepath).execute! if store
       puts "Error ------------> Didn't create reward - 1" if new_reward.nil?
-    else
+    else # not local
       if reward_type == 'wholesale'
         if new_school
           owner = new_school.school_admins.first || new_school.teachers.first || @first_leadmin
@@ -546,7 +579,7 @@ class OldSchoolImporter
         :price => old_reward.rewardpoints,
         :deleted_at => @non_display_reward_categories.index(old_reward.rewardcategoryID) ? Time.now : nil,
         :reward_owner => owner,
-        :available_on => Time.now(),
+        :available_on => transaction_timestamp || Time.now(),
         :image => 'images/rewardimage/' + old_reward.rewardimagepath}
 
       if reward_type == 'wholesale'
@@ -608,20 +641,34 @@ class OldSchoolImporter
 
   def get_filter(old_filter,old_filter_id, fallback_school = nil)
     return @filter_lookup[old_filter_id] if @filter_lookup[old_filter_id]
-    if old_filter
-      fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
-      fc << fallback_school # probably the only school we're concerned with
-      old_filter.old_classrooms.each do |old_c|
-        c = Classroom.find_by_legacy_classroom_id(old_c.classroomID)
-        puts "Can't find classroom #{old_c.classroomID}" and exit unless c
+    if old_filter_id
+      if old_filter
+        fc = FilterConditions.new ({:minimum_grade => old_filter.minschoolgrade, :maximum_grade => old_filter.maxschoolgrade})
+      else
+        fc = FilterConditions.new ({:minimum_grade => 0, :maximum_grade => 12})
+      end
+      fc << fallback_school if fallback_school # probably the only school we're concerned with
+      old_filter_schools = OldFilterSchool.where(:filterID => old_filter_id)
+      if fallback_school.nil? && old_filter_schools.count > 0
+        old_filter_schools.each do |ofs|
+          ns = School.find_by_legacy_school_id(ofs.schoolID)
+          fc << ns if ns
+        end
+      end
+      old_filter_classrooms = OldFilterClassroom.where(:filterID => old_filter_id)
+      old_filter_classrooms.each do |old_fc|
+        c = Classroom.find_by_legacy_classroom_id(old_fc.classroomID)
+        puts "Can't find classroom #{old_c.classroomID}" and next unless c
         fc << c if c
       end
-      old_filter.old_states.each do |old_s|
-        s = State.find_by_abbreviation(old_s.StateAbbr)
+      old_filter_states = OldFilterState.where(:filterID => old_filter_id)
+      old_filter_states.each do |old_fs|
+        s = State.find_by_abbr(old_fs.old_state.StateAbbr)
         fc << s if s
       end
-      old_filter.old_usertypes.each do |old_ut|
-        personclass = case old_ut.usertypeID
+      old_filter_usertypes = OldFilterUsertype.where(:filterID => old_filter_id)
+      old_filter_usertypes.each do |old_fut|
+        personclass = case old_fut.usertypeID
                       when 1 then 'Student'
                       when 2 then 'Teacher'
                       when 3 then 'SchoolAdmin'
@@ -647,6 +694,15 @@ class OldSchoolImporter
     @filter_reverse_lookup[filter.id] = old_filter_id
     @filter_lookup[old_filter_id]
   end
+  def find_store store_code
+    store = @stores[store_code]
+    unless store
+      store = Spree::Store.find_by_code store_code
+      @stores[store_code] = store
+    end
+    store
+  end
+
 
   def find_teacher_school_link teacher, new_school
     tsl = @found_teacher_school_links[teacher.legacy_user_id]

@@ -4,5 +4,10 @@
   .resp-product-details
     = link_to(product.name ,edit_teachers_reward_path(product.id))
     .price.selling{:itemprop => "price"}= number_to_currency(product.price).to_s + " each"
+  .resp-product-classrooms
+    - if product.filter.classrooms.count > 0
+      = "#{product.filter.classrooms.count} Classrooms"
+    - else
+      Whole School
   .resp-product-moreinfo
     = "You have #{product.on_hand} left to sell"

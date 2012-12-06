@@ -11,8 +11,10 @@
     }
     .resp-product-tile {
         @include ctb-fluid-span(4);
+        vertical-align: top;
         display: inline-block;
         margin: 0px auto;
+        margin-bottom: 10px;
         font-size: 1.2em;
         list-style: none;
         @extend .thumbnail !optional;
@@ -69,6 +71,15 @@
             width: 90%;
             float: left;
             color: orange;
+        }
+        .resp-product-classrooms {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: left;
+            line-height: 1.1em;
+            margin-top: 5px;
+            float: left;
+            color: green;
         }
     }
 }

@@ -20,7 +20,7 @@ class CreateStoreProduct < ActiveModelCommand
     @available_on     = params[:available_on]
     @deleted_at       = params[:deleted_at]
     @image            = params[:image]
-    @filter           = params[:filter]
+    @filter_id        = params[:filter_id]
     @reward_type      = params[:reward_type] || 'retail' # global, local, charity, retail, wholesale
     @reward_owner     = params[:reward_owner] || @school.school_admins.first
   end
@@ -121,17 +121,19 @@ class CreateStoreProduct < ActiveModelCommand
       product.master.count_on_hand = 100000  #Charities have a nearly unlimited supply
     end
 
-    if @filter.nil? && @reward_type == "wholesale"
+    if @filter_id.nil? && @reward_type == "wholesale"
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
-      @filter = filter_factory.find_or_create_filter(filter_condition)
-    elsif @school
+      filter = filter_factory.find_or_create_filter(filter_condition)
+      @filter_id = filter.id
+    elsif @filter_id.nil? && @school
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new schools: [@school], states: [@school.addresses[0].state]
-      @filter = filter_factory.find_or_create_filter(filter_condition)
+      filter = filter_factory.find_or_create_filter(filter_condition)
+      @filter_id = filter.id
     end
-    link = product.spree_product_filter_link || spree_product_filter_link_class.new(:product_id => product.id, :filter_id => @filter.id)
-    link.filter_id = @filter.id
+    link = product.spree_product_filter_link || spree_product_filter_link_class.new(:product_id => product.id, :filter_id => @filter_id)
+    link.filter_id = @filter_id
     product.spree_product_filter_link = link
 
     product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id) if product && @reward_owner

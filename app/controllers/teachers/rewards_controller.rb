@@ -5,7 +5,7 @@ module Teachers
     # GET /teachers/rewards.json
     def index
 #      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').joins(:spree_product_person_link).where(:spree_product_person_link => {:person_id => current_person.id})
-      @teachers_rewards = Spree::Product.with_property_value('reward_type','local')
+      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').page(params[:page]).per(9)
 
       respond_to do |format|
         format.html # index.html.haml
@@ -38,6 +38,7 @@ module Teachers
     # GET /teachers/rewards/1/edit
     def edit
 #      @teachers_reward = nil # Teachers::Reward.find(params[:id])
+      @reward_categories = LocalRewardCategory.where(:filter_id => [session[:filters]]).order(:name).collect { |lrc| [lrc.id,lrc.image.url,lrc.name]}
       @teachers_reward = Teachers::Reward.new
       @teachers_reward.spree_product_id = params[:id]
     end

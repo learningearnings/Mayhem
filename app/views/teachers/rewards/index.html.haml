@@ -1,6 +1,9 @@
 .main-content-wrapper
   .full-content
-    %h1 Your Rewards
+    %h1.span5.pull-left
+      Your Rewards
+    = paginate @teachers_rewards, :window => 2
+    = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
     .resp-product
       - if @teachers_rewards.any?
         .resp-product-row
@@ -8,5 +11,5 @@
             - grp.each do |tr|
               - next if tr.nil?
               = render :partial => 'line_item', :locals => { :product => tr }
-  = link_to 'New Reward', new_teachers_reward_path
+    = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
 
