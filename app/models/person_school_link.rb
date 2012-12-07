@@ -19,8 +19,8 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
   has_many :reward_distributors
 
-  attr_accessible :person_id, :school_id, :status
-  validates_presence_of :person_id, :school_id
+  attr_accessible :person_id, :school_id, :status, :person, :school
+  validates_presence_of :person, :school
   validate :validate_unique_with_status
 
   def link(d)
@@ -53,14 +53,15 @@ class PersonSchoolLink < ActiveRecord::Base
   # Not valid for LE Admins
   def connect_plutus_accounts
     self.person.schools.each do |s|
-      self.person.accounts(s).each do |a|
-        PersonAccountLink.where(:plutus_account_id => a.id).each do |pal|
+      main_account_id = self.person.main_account(s).id
+      accounts = self.person.accounts(s).collect {|a| a.id}
+      PersonAccountLink.where(:plutus_account_id => accounts).each do |pal|
           pal.destroy
-        end
       end
-      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.person.id,s.id)
-      self.person.accounts(s).each do |a|
-        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a.id, is_main_account: a.id == self.person.main_account(s).id)
+      psl = self if self.school_id = s.id
+      psl ||= PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.person.id,s.id)
+      accounts.each do |a|
+        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a, is_main_account: a == main_account_id)
       end
     end
   end

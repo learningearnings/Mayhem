@@ -6,6 +6,6 @@ rake db:migrate
 rake import:fixup
 rake import:reset
 #exit
-xargs --arg-file=smallschoolargs --max-args=10 --max-procs=4 ./processimport.sh schools
-xargs --arg-file=smallschoolargs --max-args=10 --max-procs=4  ./processimport.sh classrooms
-xargs --arg-file=smallschoolargs --max-args=10 --max-procs=4 ./processimport.sh transactions
+xargs --arg-file=./script/smallschoolargs --max-args=10 --max-procs=4 ./script/processimport.sh schools
+xargs --arg-file=./script/smallschoolargs --max-args=10 --max-procs=4  ./script/processimport.sh classrooms
+xargs --arg-file=./script/smallschoolargs --max-args=10 --max-procs=4 ./script/processimport.sh transactions

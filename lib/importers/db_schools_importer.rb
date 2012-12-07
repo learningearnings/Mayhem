@@ -155,11 +155,12 @@ class OldSchoolImporter
                            :last_name => old_user.userlname,
                            :gender => old_user.usergender,
                            :salutation => old_user.usersalutation,
-                           :user => Spree::User.new(:username => old_user.username,
+                           :user => Spree::User.new({:username => old_user.username,
                                                       :password => old_user.recoverypassword || old_user.username,
-#TODO - don't require email
-                                                    :email => old_user.useremail || "david+x#{old_user.userID}@learningearnings.com"
-                                                    ),
+                                                      #TODO - don't require email
+                                                      :email => old_user.useremail || "david+x#{old_user.userID}@learningearnings.com",
+                                                      :last_sign_in_at => old_user.userlastlogin
+                                                    }, :without_protection => true),
                            :dob => old_user.dateofbirth,
                            :recovery_password => old_user.recoverypassword || old_user.username,
                            :legacy_user_id => old_user.userID,
@@ -299,7 +300,7 @@ class OldSchoolImporter
         teacher = find_teacher op.old_otu_code.issuinguserID if op.old_otu_code
         teacher = find_teacher op.teacherID if !op.old_otu_code
         teacher = new_school.school_admins.first || new_school.teachers.first || LeAdmin.first if teacher.nil?
-        next unless teacher
+        next unless teacher && teacher.is_a?(Teacher)
         tsl = find_teacher_school_link teacher, new_school
         next unless tsl
         if !op.old_otu_code.blank?
@@ -324,7 +325,7 @@ class OldSchoolImporter
 #        transaction = @cm.issue_credits_to_teacher new_school, teacher, op.points
 #        transaction = @cm.issue_credits_to_student new_school, teacher, new_student, op.points.abs
         if op.old_otu_code.blank? || op.old_otu_code.ebuck
-          transaction = @cm.issue_ecredits_to_student new_school, teacher, new_student, op.points.abs
+          transaction = @cm.issue_ecredits_to_student new_school, teacher, new_student, op.points.abs 
           @teacher_undeposited_points[teacher.legacy_user_id] += op.points.abs
         else
           transaction = @cm.issue_print_credits_to_student new_school, teacher, new_student, op.points.abs

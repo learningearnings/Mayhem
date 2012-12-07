@@ -30,7 +30,7 @@ namespace :import do
     end
     puts "---> Importing Schools"
     osi.importable_schools(schools).each do |s|
-#      ActiveRecord::Base.transaction do
+      ActiveRecord::Base.transaction do
         ns = osi.import_school(s)
         next if ns.legacy_school_id == s.schoolID
         ns.legacy_school_id = s.schoolID
@@ -39,7 +39,7 @@ namespace :import do
         osi.import_users(ns,s)
         s.ad_profile = 20
         s.save
-#      end
+      end
     end
   end
 
