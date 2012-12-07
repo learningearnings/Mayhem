@@ -31,6 +31,10 @@ Spree::User.class_eval do
     end
   end
 
+  def self.admin_created?
+    true
+  end
+
   def moniker
     person.moniker
   end

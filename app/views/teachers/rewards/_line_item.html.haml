@@ -6,7 +6,11 @@
     .price.selling{:itemprop => "price"}= number_to_currency(product.price).to_s + " each"
   .resp-product-classrooms
     - if product.filter.classrooms.count > 0
-      = "#{product.filter.classrooms.count} Classrooms"
+      - if product.filter.classrooms.count > 1
+        = "#{product.filter.classrooms.count} Classrooms"
+      - else
+        %span{:title => product.filter.classrooms[0].teachers.join(',')}
+          = product.filter.classrooms[0].name
     - else
       Whole School
   .resp-product-moreinfo

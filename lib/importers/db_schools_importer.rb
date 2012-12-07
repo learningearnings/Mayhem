@@ -53,6 +53,27 @@ class OldSchoolImporter
     OldSchool.connection.execute("update tbl_schools set ad_profile = 0 where ad_profile = 20")
   end
 
+  def dependant_schools legacy_school_ids
+    return [] if legacy_school_ids.nil?
+    legacy_school_ids = [legacy_school_ids] if !legacy_school_ids.is_a?(Array)
+    dependencies = []
+    previous_dependencies = legacy_school_ids
+    while true
+#      puts "previous_dependencies is " + previous_dependencies.join(",")
+      new_schools = OldClassroom.where(:schoolID => previous_dependencies).collect do |c|
+        [c.teacher.schoolID, c.students.collect do |st|
+           st.schoolID
+         end.uniq,
+         OldSchool.connection.execute("select tut.schoolid from tbl_points tp inner join tbl_users tut on tut.userID = tp.teacherId inner join tbl_users tus on tus.userID = tp.userID where  tus.schoolID != tut.schoolID and tus.schoolID in (#{previous_dependencies.join(',')}) group by tut.schoolID;").to_a.flatten
+        ].flatten.uniq
+      end.flatten.uniq - previous_dependencies - dependencies
+      break if !new_schools.any?
+      dependencies += new_schools
+      previous_dependencies = new_schools
+#      puts "new_schools was " + new_schools.join(",")
+    end
+    dependencies
+  end
   def importable_schools school = nil
     if school
       OldSchool.where(:schoolID => school)
@@ -97,7 +118,7 @@ class OldSchoolImporter
                            :timezone => s.timezone,
                            :status => s.status_id == 200 ? 'active' : 'inactive',
                            :created_at => Time.parse((s.createdate || '20100701').to_s)
-                         }, :as => :admin)
+                         }, :without_protection => true)
     if !ns.save
       # TODO What to do here?
     end
@@ -139,7 +160,8 @@ class OldSchoolImporter
                      nil,
                      SchoolAdmin
                     ]
-    return if oldusertypes[old_user.usertypeID].nil?
+    puts "Invalid usertypeID = #{old_user.usertypeID} for userID = #{old_user.userID}"  if oldusertypes[old_user.usertypeID].nil?
+    return nil if oldusertypes[old_user.usertypeID].nil?
     nu = oldusertypes[old_user.usertypeID].new
     begin
       old_user.dateofbirth = Date.parse(old_user.dateofbirth.to_s)
@@ -150,6 +172,18 @@ class OldSchoolImporter
       old_user.usercreated = Date.parse(old_user.usercreated)
     rescue
       old_user.usercreated = Date.parse('20100701 00:00:00')
+    end
+    if old_user.userlname.blank? && !old_user.userfname.blank?
+      orig_names = old_user.userfname.tr('\'\"\_\&\~\`\!\@\#\$\%\^\&\*\(\)\-\=\+\{\}\[\]\|\<\>\?\/',"")
+      names = orig_names.split /\s/
+      if names.count > 1
+        puts "Fixing name '#{old_user.userfname}' '#{old_user.userlname}' to be " + names.join(" ")
+        old_user.userfname, old_user.userlname = names
+      end
+    end
+    if old_user.userlname.blank? && old_user.userfname.blank?
+      old_user.userfname, old_user.userlname = "legacy_f_#{old_user.userID}", "legacy_l_#{old_user.userID}"
+      puts "Replaced Blank name with  '#{old_user.userfname}' '#{old_user.userlname}'"
     end
     nu.assign_attributes({:first_name => old_user.userfname,
                            :last_name => old_user.userlname,
@@ -168,19 +202,19 @@ class OldSchoolImporter
                            :status => old_user.status_id == 200 ? 'active' : 'inactive',
                            :created_at => old_user.usercreated
                          }, :as => :admin)
-    add_person_avatar old_user,nu
-    nu.user.last_sign_in_at = old_user.userlastlogin
 
     if nu.save
+      nu.user.last_sign_in_at = old_user.userlastlogin
+      add_person_avatar old_user,nu
       if new_school
         psl = PersonSchoolLink.new(:person_id => nu.id, :school_id => new_school.id, :status => 'active')
         if !psl.save
-          puts "Problem (#{psl.errors.messages}) Saving Person School Link #{old_user.userID} - #{old_user.username} - #{old_user.userfname} #{old_user.userlname}"
+          puts "(psl) Problem (#{psl.errors.messages}) Saving Person School Link #{old_user.userID} - #{old_user.username} - #{old_user.userfname} #{old_user.userlname}"
         end
       end
       retval = nu
     else
-      puts "Problem (#{nu.errors.messages}) Saving User #{old_user.userID} - #{old_user.username} - #{old_user.userfname} #{old_user.userlname}"
+      puts "(nu) Problem (#{nu.errors.messages}) Saving User '#{old_user.userID}' - '#{old_user.username}' - '#{old_user.userfname}' '#{old_user.userlname}'"
       retval = nil
     end
     retval
@@ -230,7 +264,7 @@ class OldSchoolImporter
       users = errors = 0
       c.classroom_details.each do |cd|
         # Add the student to the classroom
-        p = find_student cd.userID 
+        p = find_student cd.userID
         next unless p
         add_person_to_classroom(p,new_c, new_school)
         users = users + 1
@@ -262,7 +296,7 @@ class OldSchoolImporter
       pscl.owner = true
     end
     if !pscl.save
-      puts "Problem #{pscl.errors.messages} saving person school classroom link for #{person.id}-#{person.name} legacy-#{person.legacy_user_id} classroom = #{classroom.id}-#{classroom.name}"
+      puts "(pscl) Problem #{pscl.errors.messages} saving person school classroom link for #{person.id}-#{person.name} legacy-#{person.legacy_user_id} classroom = #{classroom.id}-#{classroom.name}"
       return false
     end
     return true
@@ -306,8 +340,8 @@ class OldSchoolImporter
         if !op.old_otu_code.blank?
           oc = oc = OtuCode.new(:points => op.points,
                                 :expires_at => op.old_otu_code.OTUcodeexpires,
-                                :student_id => new_student.id, 
-                                :person_school_link_id => tsl.id, 
+                                :student_id => new_student.id,
+                                :person_school_link_id => tsl.id,
                                 :ebuck => op.old_otu_code.ebuck)
           oc.created_at = op.old_otu_code.OTUcodeDate
           if !oc.mark_redeemed!
@@ -325,7 +359,7 @@ class OldSchoolImporter
 #        transaction = @cm.issue_credits_to_teacher new_school, teacher, op.points
 #        transaction = @cm.issue_credits_to_student new_school, teacher, new_student, op.points.abs
         if op.old_otu_code.blank? || op.old_otu_code.ebuck
-          transaction = @cm.issue_ecredits_to_student new_school, teacher, new_student, op.points.abs 
+          transaction = @cm.issue_ecredits_to_student new_school, teacher, new_student, op.points.abs
           @teacher_undeposited_points[teacher.legacy_user_id] += op.points.abs
         else
           transaction = @cm.issue_print_credits_to_student new_school, teacher, new_student, op.points.abs
@@ -450,6 +484,7 @@ class OldSchoolImporter
       old_balance = old_t.old_teacher_awards.sum(:TeacherAwardAmount)
       old_balance = 0 if old_balance < 0
       new_t = find_teacher old_t
+      next unless new_t && new_t.is_a?(Teacher)
       current_balance = new_t.main_account(new_school).balance
       credits = old_balance - current_balance
       @cm.issue_credits_to_school new_school, credits
@@ -668,7 +703,7 @@ class OldSchoolImporter
           s = State.find_by_abbr(old_fs.old_state.StateAbbr)
           fc << s if s
         else
-          puts '----------> Couldn\'t find state for state for filterID #{old_filter_id} which had stateID of #{old_fs.stateID}'
+          puts "----------> Couldn\'t find state for state for filterID #{old_filter_id} which had stateID of #{old_fs.stateID} and a tbl_statefilters.id of #{old_fs.id}"
         end
       end
       old_filter_usertypes = OldFilterUsertype.where(:filterID => old_filter_id)
