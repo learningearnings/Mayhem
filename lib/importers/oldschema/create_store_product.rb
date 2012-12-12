@@ -1,4 +1,4 @@
-_relative '../../../app/models/active_model_command'
+require_relative '../../../app/models/active_model_command'
 
 class CreateStoreProduct < ActiveModelCommand
 
