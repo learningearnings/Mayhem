@@ -127,6 +127,7 @@ namespace :import do
         end
         osi.make_school_and_teacher_entries ns
         osi.update_quantities(s,ns)
+        osi.add_missing_local_rewards(s,ns)
         osi.import_teacher_balances s,ns
       else
         puts "Could not find old school for #{s.school}"
@@ -148,6 +149,22 @@ namespace :import do
     require 'importers/db_schools_importer'
     osi = OldSchoolImporter.new
     osi.import_local_reward_categories
+  end
+
+  task :missing_local_rewards, [:school_in] => :environment do |tsk, _school_in|
+    require 'importers/db_schools_importer'
+    schools = _school_in[:school_in].split('-').collect {|s| s.to_i } if !_school_in[:school_in].blank?
+    schools = nil if _school_in[:school_in].blank?
+    puts "_school_in is #{_school_in} and schools was #{schools}"
+    osi = OldSchoolImporter.new
+    dependant_schools = osi.dependant_schools schools
+    puts "Dependant Schools are --> " + dependant_schools.join(',')
+    schools += dependant_schools if dependant_schools.any?
+    imported_purchases = imported_points = 0
+    osi.importable_schools(schools).each do |s|
+      ns = School.find_by_legacy_school_id(s.schoolID)
+      osi.add_missing_local_rewards s,ns
+    end
   end
 
 

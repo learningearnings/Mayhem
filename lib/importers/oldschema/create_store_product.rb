@@ -1,4 +1,4 @@
-require_relative '../../../app/models/active_model_command'
+_relative '../../../app/models/active_model_command'
 
 class CreateStoreProduct < ActiveModelCommand
 
@@ -88,7 +88,7 @@ class CreateStoreProduct < ActiveModelCommand
       if product
         product = spree_product_class.find(product.id)
         product.store_ids |= [store.id]
-        product.save
+        puts "(p1) ------------------------------------ Problem (#{product.errors.messages}) Saving product #{product.name} - #{product.properties.join(',')} for #{product.store_ids.join(',')}" if !product.save
         return product
       else
 #        puts "#{@legacy_selector} Not found - must create"
@@ -138,9 +138,10 @@ class CreateStoreProduct < ActiveModelCommand
 
     product.spree_product_person_link = spree_product_person_link_class.new(product_id: product.id, person_id: @reward_owner.id) if product && @reward_owner
     if !product.save
-      puts "#{product.errors.messages}"
+      puts "(p2) ------------------------------------ Problem (#{product.errors.messages}) Saving product #{product.name} - #{product.properties.join(',')} for #{product.store_ids.join(',')}"
       if product.errors.messages[:permalink]
         product.permalink = @legacy_selector + '-' + @name.parameterize
+        puts "(p2.1) ------------------------------------ Problem (#{product.errors.messages}) Saving product #{product.name} - #{product.properties.join(',')} for #{product.store_ids.join(',')}" if !product.save
       end
     end
 
@@ -158,9 +159,7 @@ class CreateStoreProduct < ActiveModelCommand
     end
     product.set_property("reward_type", @reward_type)
     product.set_property("legacy_selector", @legacy_selector)
-    if !product.save
-      puts "#{product.errors.messages}"
-    end
+    puts "(p3) ------------------------------------ Problem (#{product.errors.messages}) Saving product #{product.name} - #{product.properties.join(',')} for #{product.store_ids.join(',')}" if !product.save
     image_url = 'http://learningearnings.com/' + @image
     begin
       new_image = open('http://learningearnings.com/' + @image)
@@ -180,10 +179,7 @@ class CreateStoreProduct < ActiveModelCommand
     new_spree_image.attachment = new_image if new_image
     new_spree_image.save
     product.master.images << new_spree_image
-    product.save
-    if !product.save
-      puts "#{product.errors.messages}"
-    end
+    puts "(p2) ------------------------------------ Problem (#{product.errors.messages}) Saving product #{product.name} - #{product.properties.join(',')} for #{product.store_ids.join(',')}"  if !product.save
     if @reward_type == 'wholesale' && @school
       retail_price = product.property('retail_price').to_f
       retail_qty = product.property('retail_quantity').to_i

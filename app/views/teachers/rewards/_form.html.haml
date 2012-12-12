@@ -1,4 +1,4 @@
-= simple_form_for(@teachers_reward,method: :post, :url => teachers_rewards_path, :html => {:class => 'form-horizontal'}) do |f|
+= simple_form_for(@teachers_reward,html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
   %h3 Name and Price
   .row-fluid
@@ -11,7 +11,7 @@
         = f.input_field :price, class: 'input-small numeric'
         %span.add-on .00
     .form-inputs.controls-row.span6.clearfix
-      %img#sample-image{:src => @teachers_reward.image}
+      %img#sample-image{:src => (@teachers_reward.image || "http://placehold.it/160x120&text=Select+A+Category")}
   %h3
     Select Classrooms for your reward
   .row-fluid.controls-row
@@ -25,11 +25,11 @@
         %div.classroom-checkbox
           = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text}
   .control-row
+  = f.input :spree_product_id, :as => :hidden
   = f.submit "WILL NOT SAVE", :class => 'btn awesome-button'
 
 :javascript
-  var reward_categories = #{(@reward_categories + [[nil,@teachers_reward.image,""]]).collect{ |row| [row[0].to_s,row[1]]}.to_json};
-
+  var reward_categories = #{(@reward_categories + [[nil,(@teachers_reward.image || "http://placehold.it/160x120&text=Select+A+Category"),""]]).collect{ |row| [row[0].to_s,row[1]]}.to_json};
 :coffeescript
   jQuery ->
     update_image = (_event) ->
@@ -37,8 +37,6 @@
 
     toggle_all_classrooms = (_event) ->
       if ($ _event.target).prop('checked') == true
-        ($ ".class-checkbox").prop('checked', true);
-      else
         ($ ".class-checkbox").prop('checked',false);
 
 
@@ -47,6 +45,9 @@
 
     ($ 'input.school-checkbox').change (_event) ->
       toggle_all_classrooms(_event)
-
-
-  ($ "input.school-checkbox").click()
+    whole_school_if_no_classrooms = ->
+      num_checked = ($ "input.class-checkbox:checked").length
+      if num_checked == 0
+        ($ "input.school-checkbox").click()
+    whole_school_if_no_classrooms()
+    ($ 'select#teachers_reward_image').change()

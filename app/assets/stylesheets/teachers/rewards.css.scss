@@ -37,6 +37,8 @@
                 @extend .thumbnail !optional;
                 display: inline-block;
                 text-align: left;
+                margin-bottom: 5px;
+                margin-top: 5px;
                 padding: 0px 5px 0px 5px;
                 @include ctb-fluid-span(2);
                 min-width: 150px;

@@ -542,6 +542,23 @@ class OldSchoolImporter
     end
   end
 
+
+  def add_missing_local_rewards old_school, new_school
+    puts "Updating quantities for #{old_school.school}"
+    OldRewardLocal.joins(:old_user).includes(:old_reward).where(:old_user => {:schoolID => old_school.schoolID}).each do |lr|
+      reward = get_reward lr,nil,new_school
+      if reward
+        puts " ----> updating count_on_hand from #{reward.master.count_on_hand} to #{lr.quantity}"
+        reward.master.count_on_hand = lr.quantity < 0 ? 0 : lr.quantity
+        reward.save
+      else
+        puts "Could not find reward for #{old_reward.rewardtitle}"
+      end
+    end
+  end
+
+
+
   def update_wholesale_quantities
     puts "Updating quantities for le store"
     OldReward.all.each do |r|
@@ -560,10 +577,20 @@ class OldSchoolImporter
 
   def get_reward old_reward, old_point = nil, new_school = nil, transaction_timestamp = nil
     return if old_point.nil? && old_reward.nil?
-    old_reward = old_point.old_reward if old_reward.nil?
-    old_reward_id = old_reward.rewardID
-    reward_selector = "R#{old_reward_id}"
-    reward_selector = "L#{old_point.old_redeemed.old_reward_local.id}" if (old_point && old_reward && old_reward.rewardcategoryID == 1002) # Local and School Rewards
+    if old_reward.is_a?(OldRewardLocal) or (old_point && old_reward.is_a?(OldReward) && old_reward.rewardcategoryID == 1002)
+      if old_point
+        reward_local = old_point.old_redeemed.old_reward_local
+      else
+        reward_local = old_reward
+        old_reward = reward_local.old_reward
+      end
+      reward_selector = "L#{reward_local.id}"
+    else
+      reward_local = nil
+      old_reward = old_point.old_reward if old_reward.nil?
+      old_reward_id = old_reward.rewardID
+      reward_selector = "R#{old_reward_id}"
+    end
 #    puts reward_type + ' - ' + reward_selector
     product = @new_school_rewards["#{reward_selector}:#{new_school.store_subdomain}"] if new_school
     return product if product
@@ -576,14 +603,13 @@ class OldSchoolImporter
     store = find_store(new_school.nil? ? 'le' : new_school.store_subdomain)
 #    store = Spree::Store.find_by_code new_school.store_subdomain if new_school
 #    store = Spree::Store.find_by_code 'le' if new_school.nil?
-    if reward_type == 'local' && old_point
-      reward_local = old_point.old_redeemed.old_reward_local
+    if reward_type == 'local'
       new_filter_id = nil
       new_filter_id = get_filter(reward_local.filter,reward_local.filterID,new_school) # if !@filter_lookup[reward_local.filterID]
       puts ("=============================> Couldn't find old filter for local_reward id #{reward_local.id}          ") unless new_filter_id
       exit unless new_filter_id
       owner = find_teacher reward_local.userID
-      new_reward = CreateStoreProduct.new(:name => reward_local.name,
+      new_reward = CreateStoreProduct.new(:name => reward_local.headertext.blank? ? reward_local.name : reward_local.headertext,
                                           :description => reward_local.body,
                                           :filter_id => new_filter_id,
                                           :legacy_selector => reward_selector,
@@ -687,18 +713,21 @@ class OldSchoolImporter
       old_filter_schools = OldFilterSchool.where(:filterID => old_filter_id)
       if fallback_school.nil? && old_filter_schools.count > 0
         old_filter_schools.each do |ofs|
+          next if ofs.schoolID.nil?
           ns = School.find_by_legacy_school_id(ofs.schoolID)
           fc << ns if ns
         end
       end
       old_filter_classrooms = OldFilterClassroom.where(:filterID => old_filter_id)
       old_filter_classrooms.each do |old_fc|
+        next if old_fc.classroomID.nil?
         c = Classroom.find_by_legacy_classroom_id(old_fc.classroomID)
-        puts "Can't find classroom #{old_c.classroomID}" and next unless c
+        puts "Can't find classroom #{old_fc.classroomID}" and next unless c
         fc << c if c
       end
       old_filter_states = OldFilterState.where(:filterID => old_filter_id)
       old_filter_states.each do |old_fs|
+        next if old_fs.stateID.nil?
         if old_fs.old_state
           s = State.find_by_abbr(old_fs.old_state.StateAbbr)
           fc << s if s
@@ -708,6 +737,7 @@ class OldSchoolImporter
       end
       old_filter_usertypes = OldFilterUsertype.where(:filterID => old_filter_id)
       old_filter_usertypes.each do |old_fut|
+        next if old_fut.usertypeID.nil?
         personclass = case old_fut.usertypeID
                       when 1 then 'Student'
                       when 2 then 'Teacher'
@@ -728,8 +758,8 @@ class OldSchoolImporter
     puts "--------------------> Old filter = #{old_filter_id} ---- New filter id = #{filter.id}" if filter
     if @filter_reverse_lookup[filter.id] && @filter_reverse_lookup[filter.id] != old_filter_id
       puts fc.to_s
-      puts "*********************************************** Something went horribly wrong **********************************************"
-      return 1
+      puts "*********************************************** Filter collision - probably due to deleted filters in the legacy system **********************************************"
+      return filter.id
     end
     @filter_reverse_lookup[filter.id] = old_filter_id
     @filter_lookup[old_filter_id]
