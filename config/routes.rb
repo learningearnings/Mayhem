@@ -144,6 +144,7 @@ Leror::Application.routes.draw do
     resource  :bank
     resource  :dashboard
     resource  :lounge
+    resources :rewards
     match "home" => "home#show", as: 'home'
     match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'

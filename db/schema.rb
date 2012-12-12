@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121127211050) do
+ActiveRecord::Schema.define(:version => 20121207000233) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"
-    t.string   "image"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
@@ -251,6 +250,14 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
     t.datetime "updated_at",           :null => false
   end
 
+  create_table "local_reward_categories", :force => true do |t|
+    t.string   "name"
+    t.string   "image_uid"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "locker_sticker_links", :force => true do |t|
     t.integer  "locker_id"
     t.integer  "sticker_id"
@@ -345,6 +352,7 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
     t.string   "recovery_password"
   end
 
+  add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
 
   create_table "person_account_links", :force => true do |t|
@@ -356,6 +364,7 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
   end
 
   add_index "person_account_links", ["person_school_link_id", "plutus_account_id"], :name => "index_pal_psl_account"
+  add_index "person_account_links", ["plutus_account_id"], :name => "idx_pal_plutus_account_id"
 
   create_table "person_avatar_links", :force => true do |t|
     t.integer  "person_id"
@@ -401,6 +410,7 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
 
   create_table "plutus_accounts", :force => true do |t|
@@ -1067,6 +1077,8 @@ ActiveRecord::Schema.define(:version => 20121127211050) do
 
   add_index "spree_users", ["email"], :name => "email_idx_unique", :unique => true
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
+  add_index "spree_users", ["person_id"], :name => "su_person_id", :unique => true
+  add_index "spree_users", ["username"], :name => "su_username"
 
   create_table "spree_variants", :force => true do |t|
     t.string   "sku",                                         :default => "",    :null => false

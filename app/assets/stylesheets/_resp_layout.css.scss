@@ -9,7 +9,9 @@
 }
 
 .resp-page-content-container {
-    @extend .container-fluid;
+
+    @include ctb-grid-fluid;
+/*    @extend .container-fluid; */
     border-left: solid 1px pink;
     border-right: solid 1px pink;
 

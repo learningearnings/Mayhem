@@ -4,6 +4,7 @@ class OldRewardLocal < ActiveRecord::Base
   self.primary_key = 'id'
   belongs_to :filter, :class_name => 'OldFilter', :foreign_key => :filterID
   belongs_to :old_user, :class_name => 'OldUser', :foreign_key => :userID
+  belongs_to :old_reward, :class_name => 'OldReward', :foreign_key => :rewardID
 
   belongs_to :old_redeemed, :foreign_key => :rewardID, :class_name => 'OldRedeemed', :inverse_of => :old_reward_local
   belongs_to :old_local_reward_category, :foreign_key => :localrewardcategoryID, :inverse_of => :old_reward_locals, :class_name => "OldLocalRewardCategory"

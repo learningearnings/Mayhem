@@ -39,7 +39,7 @@ GIT
 
 GIT
   remote: git@github.com:learningearnings/plutus.git
-  revision: 76f87a7453b73e369eaa2f5bd7baa185618d2ea7
+  revision: 5529938323c980b5608afa4bddcb21d6cde94eab
   specs:
     plutus (0.7.2)
       rails (~> 3.1)
@@ -288,7 +288,7 @@ GEM
     money (5.0.0)
       i18n (~> 0.4)
       json
-    multi_json (1.3.7)
+    multi_json (1.4.0)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
     mysql2 (0.3.11)
@@ -447,7 +447,7 @@ GEM
       spree_core (= 1.2.0)
     spree_sample (1.2.0)
       spree_core (= 1.2.0)
-    sprockets (2.2.1)
+    sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)

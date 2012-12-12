@@ -16,4 +16,6 @@ class OldFilter < ActiveRecord::Base
 
   has_many :old_reward_locals, :class_name => 'OldRewardLocal', :foreign_key => :filterID
 
+  has_many :old_local_reward_categories, :class_name => 'OldLocalRewardCategory', :foreign_key => :filterID, :inverse_of => :old_filter
+
 end

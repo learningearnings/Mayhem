@@ -1,6 +1,5 @@
 class Teacher < Person
 #  has_many :schools, :through => :person_school_links
-  attr_accessor :username, :password, :password_confirmation, :email
   attr_accessible :username, :password, :password_confirmation, :email, :gender
   attr_accessible :status, :as => :admin
   validates_presence_of :grade

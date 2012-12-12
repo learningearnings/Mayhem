@@ -107,11 +107,6 @@ html, body {
 
 .notebook-vertical-rule {
 }
-
-input, textarea, select {
-  height: 26px; /* Fix for box-sizing in twitter bootstrap */
-}
-
 .head {
   width: 940px;
 }
@@ -224,7 +219,6 @@ input, textarea, select {
 }
 
 .login-form-fields input {
-  height: 25px;
   width: 130px;
   font-size: 1em;
 }
@@ -1639,7 +1633,6 @@ input, textarea, select {
 
 .add-to-cart {
   input {
-    height: 2em;
     width: 4em;
   }
 }
@@ -1819,7 +1812,7 @@ input, textarea, select {
 }
 
 input.awesome-button {
-  padding-bottom: 25px;
+  padding-bottom: .5em;
 }
 
 .distribute-credits {
@@ -1828,7 +1821,6 @@ input.awesome-button {
   }
   input {
     width: 50px;
-    height: 25px;
     margin-right: 10px;
   }
   input[type="submit"] {
@@ -1936,21 +1928,16 @@ hr {
     display: inline-block;
     margin-top: 15px;
   }
-  input {
-    height: 30px;
-  }
 }
 
 .create-classroom {
   form {
     margin-top: 30px;
-      input {
-        height: 30px;
-      }
-      label {
-        font-weigth: bold;
-        font-size: 1.8em;
-      }
+    font-weigth: bold;
+    font-size: 1.8em;
   }
 }
 
+.numeric {
+    text-align: right;
+}

@@ -14,8 +14,9 @@ Spree::UserSessionsController.class_eval do
         }
       end
     else
-      flash.now[:error] = t('devise.failure.invalid')
-      render :new
+      flash[:error] = t('devise.failure.invalid')
+      redirect_to main_app.page_path('home')
+#      render :new
     end
   end
 end
