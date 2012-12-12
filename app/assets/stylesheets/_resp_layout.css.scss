@@ -217,7 +217,7 @@
   overflow: hidden;
   position: relative;
   min-height: 650px;
-  text-align: center;
+/*  text-align: center; */
 }
 
 .resp-sir-francis-bacon {
@@ -292,8 +292,6 @@ html.resp, body.resp {
     height: 100%;
     max-width: 960px;
     min-width: 320px;
-    background: url(asset_path('lines.png', image)) no-repeat scroll center;
-    background-position: center 170px;
 }
 
 .resp-supplemental-part {

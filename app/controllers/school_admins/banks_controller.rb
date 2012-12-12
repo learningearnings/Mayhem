@@ -1,5 +1,6 @@
 module SchoolAdmins
   class BanksController < SchoolAdmins::BaseController
+    layout 'resp_application'
     include Mixins::Banks
     def show
       @teacher = current_person
