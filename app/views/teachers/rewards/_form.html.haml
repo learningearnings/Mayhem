@@ -5,7 +5,7 @@
     .form-inputs.controls-row.span6
       = f.input :name, label: "Name", placeholder: 'Your Reward Name', input_html: {class: 'input-large focus-on-me'}
       = f.input :image, :label => "Reward Category", :collection => @reward_categories.collect {|row| [row[2],row[0]]}
-      = f.input :on_hand, label: "Quantity On Hand", placeholder: 'On Hand', input_html: { :min => "0",class: 'input-small focus-on-me numeric'}
+      = f.input :on_hand, label: "Quantity On Hand", placeholder: 'On Hand', input_html: { :min => "0",class: 'input-small numeric'}
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
         %span.add-on $
         = f.input_field :price, class: 'input-small numeric'
@@ -26,7 +26,7 @@
           = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text}
   .control-row
   = f.input :spree_product_id, :as => :hidden
-  = f.submit "WILL NOT SAVE", :class => 'btn awesome-button'
+  = f.submit :class => 'btn awesome-button'
 
 :javascript
   var reward_categories = #{(@reward_categories + [[nil,(@teachers_reward.image || "http://placehold.it/160x120&text=Select+A+Category"),""]]).collect{ |row| [row[0].to_s,row[1]]}.to_json};
