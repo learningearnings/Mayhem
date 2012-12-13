@@ -71,12 +71,10 @@ module Reports
 
     def people
       base_scope = person_base_scope
-      Rails.logger.info base_scope.to_sql
       potential_filters.each do |filter|
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
-      Rails.logger.info base_scope.to_sql
       base_scope
     end
 
