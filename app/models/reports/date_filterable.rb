@@ -9,8 +9,10 @@ module Reports
       end
     end
 
-    def date_endpoints
-      case @date_filter
+    def date_endpoints parameters = nil
+      local_date_filter = parameters.date_filter if parameters && parameters.date_filter
+      local_date_filter = @date_filter if !@date_filter.nil?
+      case local_date_filter
       when 'last_90_days'
         [90.days.ago.beginning_of_day, 1.second.from_now]
       when 'last_60_days'

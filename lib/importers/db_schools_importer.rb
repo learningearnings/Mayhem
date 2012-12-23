@@ -60,13 +60,7 @@ class OldSchoolImporter
     previous_dependencies = legacy_school_ids
     while true
 #      puts "previous_dependencies is " + previous_dependencies.join(",")
-      new_schools = OldClassroom.where(:schoolID => previous_dependencies).collect do |c|
-        [c.teacher.schoolID, c.students.collect do |st|
-           st.schoolID
-         end.uniq,
-         OldSchool.connection.execute("select tut.schoolid from tbl_points tp inner join tbl_users tut on tut.userID = tp.teacherId inner join tbl_users tus on tus.userID = tp.userID where  tus.schoolID != tut.schoolID and tus.schoolID in (#{previous_dependencies.join(',')}) group by tut.schoolID;").to_a.flatten
-        ].flatten.uniq
-      end.flatten.uniq - previous_dependencies - dependencies
+      new_schools =  OldSchool.connection.execute("select tut.schoolid from tbl_points tp inner join tbl_users tut on tut.userID = tp.teacherId inner join tbl_users tus on tus.userID = tp.userID where  tus.schoolID != tut.schoolID and tus.schoolID in (#{previous_dependencies.join(',')}) group by tut.schoolID;").to_a.flatten.uniq - previous_dependencies - dependencies
       break if !new_schools.any?
       dependencies += new_schools
       previous_dependencies = new_schools

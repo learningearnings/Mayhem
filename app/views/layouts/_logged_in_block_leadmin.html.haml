@@ -1,6 +1,6 @@
 .current-person-avatar.supplemental-part
   - if current_person.avatar.present?
-    = image_tag current_person.avatar.image.thumb('175x175#').url
+    = image_tag current_person.avatar.image.thumb('80x80#').url
 .current-person.supplemental-part
   .credit-balance
     %table.table
@@ -14,6 +14,6 @@
       %tbody
         %tr
   .person-details
-    %h3= current_person.email
+    %h3= current_person.name
     %p= link_to "Edit My Profile", main_app.edit_person_path(current_person)
     %p= link_to 'Sign out', spree.destroy_user_session_path

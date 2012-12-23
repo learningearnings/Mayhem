@@ -6,10 +6,9 @@ module Reports
     attr_accessor :parameters
     def initialize params
       super
-      @school = params[:school]
-#      @sort_by_filter = params[:reports_activity_params][:sort_by] if params[:reports_activity_params]
-      @endpoints = date_endpoints ? [date_endpoints[0],date_endpoints[1]] : nil
       @parameters = Reports::Activity::Params.new(params)
+      @school = params[:school]
+      @endpoints = date_endpoints(@parameters);
       @data = []
     end
 
@@ -18,8 +17,16 @@ module Reports
     end
 
     def execute!
-      people.each do |person|
-        @data << generate_row(person)
+      begin
+        people.each do |person|
+          @data << generate_row(person)
+        end
+      rescue StandardError => e
+        Rails.logger.fatal("Something went bad wrong")
+        Rails.logger.fatal(e.to_s + people.to_yaml)
+      rescue NoMethodError => e
+        Rails.logger.fatal("Something went bad wrong")
+        Rails.logger.fatal(e.to_s + people.to_yaml)
       end
     end
 
@@ -32,9 +39,9 @@ module Reports
     def date_filter
       case @endpoints
       when nil
-        [:scoped]
+        [:with_transactions_between, 10.years.ago,1.second.from_now]
       else
-       [:where, {:plutus_transactions => { :created_at =>  @endpoints[0]..@endpoints[1] } }]
+        [:with_transactions_between, @endpoints[0],@endpoints[1]]
       end
     end
 
@@ -45,7 +52,7 @@ module Reports
     end
 
     def sort_by
-      case parameters.sort_by_filter
+      case parameters.sort_by
       when "Default"
         [:scoped]
       when "First, Last"
@@ -53,31 +60,20 @@ module Reports
       when "Last, First"
         [:order, "people.last_name, people.first_name"]
       when "Username"
-        [:order, "spree_users.username"]
+        [:order, "person_username"]
       end
     end
 
-    def activity_balance(person)
-      debits_base_scope = activity_debits_base_scope(person)
-      credits_base_scope = activity_credits_base_scope(person)
-      filter_option = send(:date_filter)
-      debits_base_scope = debits_base_scope.send(*filter_option) # if filter_option
-      credits_base_scope = credits_base_scope.send(*filter_option) # if filter_option
-      debits = debits_base_scope.sum(:amount)
-      credits = credits_base_scope.sum(:amount)
-      debits - credits
-    end
-
-
     def people
       base_scope = person_base_scope
-      Rails.logger.info base_scope.to_sql
       potential_filters.each do |filter|
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
-      Rails.logger.info base_scope.to_sql
-      base_scope
+      # have to do .select here to get both the object and the sums, counts, etc.
+      # have a look at the scope called "with_transactions_between" on person
+      base_scope.select("people.*, sum(case when plutus_amounts.type = 'Plutus::DebitAmount' then plutus_amounts.amount else null end) - sum(case when plutus_amounts.type = 'Plutus::CreditAmount' then plutus_amounts.amount else null end) as activity_balance,count(distinct plutus_transactions.id) as num_transactions, spree_users.username as person_username")
+      .having("count(distinct plutus_transactions.id) > 0")
     end
 
     def activity_debits_base_scope(person)
@@ -91,22 +87,18 @@ module Reports
 
 
     def person_base_scope
-      @school.students.uniq
+      @school.students
         .includes(:user)
-        .joins(:person_school_links)
-        .joins(:plutus_transactions)
-        .joins(:person_account_links)
-        .where("person_account_links.is_main_account" => true)
 #        .where("person_account_links.plutus_account_id" => Plutus::Account.includes(:transaction).includes(:accounts).select("plutus_accounts.id"))
     end
 
     def generate_row(person)
       Reports::Row[
-        person: person,
-        username: person.user.username,
-        account_activity: number_to_currency(activity_balance(person),:format => "%n", :negative_format => "(%n)"),
+        person: person.name,
+        username: person.person_username,
+        account_activity: number_to_currency(person.activity_balance || 0),
         type: person.type,
-        last_sign_in_at: time_ago_in_words(person.user.last_sign_in_at) + " ago"
+        last_sign_in_at: time_ago_in_words(person.last_sign_in_at) + " ago"
       ]
     end
 

@@ -1708,7 +1708,10 @@ html, body {
       font-size: 1.8em;
       line-height: 140%;
     }
-
+    input[type='number'] {
+        height: $baseLineHeight + 10;
+        line-height: $baseLineHeight + 10;
+    }
   }
 
 }
@@ -1819,12 +1822,15 @@ input.awesome-button {
   label {
     display: inline-block;
   }
-  input {
-    width: 50px;
-    margin-right: 10px;
+  input[type="number"] {
+      @extend .input-small;
+      margin-right: 10px;
   }
   input[type="submit"] {
     width: auto;
+  }
+  h4 {
+      font-weight: normal;
   }
 }
 
