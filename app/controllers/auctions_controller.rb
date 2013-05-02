@@ -8,7 +8,7 @@ class AuctionsController < LoggedInController
     begin
       auction = Auction.find(params[:auction_id])
       rescue
-        flash[:error] = "That auction doesn't exist."
+        flash[:error] = "This auction has already ended."
         redirect_to auctions_path and return
     end
     bid = BidOnAuctionCommand.new
