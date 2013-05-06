@@ -79,7 +79,7 @@ end
 gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano'
+gem 'capistrano', :git => 'git@github.com:capistrano/capistrano.git'
 
 # To use debugger
 # gem 'debugger'
