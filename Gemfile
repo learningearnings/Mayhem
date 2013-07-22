@@ -93,7 +93,7 @@ end
 gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano', '= 2.13.3'
+gem 'capistrano', '~> 2.15.5'
 
 # To use debugger
 # gem 'debugger'

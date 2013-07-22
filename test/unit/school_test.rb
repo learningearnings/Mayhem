@@ -52,4 +52,21 @@ describe School do
       assert_equal school.store_subdomain, "#{school.addresses.first.state.abbr}#{school.id}".downcase
     end
   end
+
+  describe "#teachers_available_for_delivery" do
+    subject{ FactoryGirl.create(:school) }
+    let(:school_admin){ FactoryGirl.create(:school_admin, status: 'active') }
+    before do
+      FactoryGirl.create(:school_admin_school_link, person: school_admin, school: subject)
+    end
+
+    it "lists school admins that can deliver rewards" do
+      school_admin.update_attribute(:can_deliver_rewards, true)
+      subject.teachers_available_for_delivery.include?(school_admin).must_equal true
+    end
+
+    it "doesn't list school admins that can't deliver rewards" do
+      subject.teachers_available_for_delivery.include?(school_admin).must_equal false
+    end
+  end
 end

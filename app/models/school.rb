@@ -114,6 +114,10 @@ class School < ActiveRecord::Base
     name
   end
 
+  def teachers_available_for_delivery
+    school_admins.select{|t| t.can_deliver_rewards? }
+  end
+
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
