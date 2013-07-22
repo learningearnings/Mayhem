@@ -20,7 +20,6 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     distributor_list
   end
 
-
   private
   def distributor_list
     @teachers = current_school.teachers.order(:last_name)

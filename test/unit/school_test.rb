@@ -53,20 +53,31 @@ describe School do
     end
   end
 
-  describe "#teachers_available_for_delivery" do
+  describe "#distributing_teachers" do
     subject{ FactoryGirl.create(:school) }
     let(:school_admin){ FactoryGirl.create(:school_admin, status: 'active') }
+    let(:some_other_teacher){ FactoryGirl.create(:school_admin, status: 'active') }
+
     before do
-      FactoryGirl.create(:school_admin_school_link, person: school_admin, school: subject)
+      @person_school_link = FactoryGirl.create(:school_admin_school_link, person: school_admin, school: subject)
+      @some_other_person_school_link = FactoryGirl.create(:school_admin_school_link, person: some_other_teacher, school: subject)
     end
 
     it "lists school admins that can deliver rewards" do
-      school_admin.update_attribute(:can_deliver_rewards, true)
-      subject.teachers_available_for_delivery.include?(school_admin).must_equal true
+      RewardDistributor.create(:person_school_link_id => @some_other_person_school_link.id)
+      RewardDistributor.create(:person_school_link_id => @person_school_link.id)
+      subject.distributing_teachers.include?(school_admin).must_equal true
+    end
+
+    it "lists everyone if there are no RewardDistributor links" do
+      subject.distributing_teachers.include?(school_admin).must_equal true
     end
 
     it "doesn't list school admins that can't deliver rewards" do
-      subject.teachers_available_for_delivery.include?(school_admin).must_equal false
+      # NOTE: This requires at least one reward distributor or else 'all
+      # teachers' can distribute rewards
+      RewardDistributor.create(:person_school_link_id => @some_other_person_school_link.id)
+      subject.distributing_teachers.include?(school_admin).must_equal false
     end
   end
 end

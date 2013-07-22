@@ -124,7 +124,7 @@ group :test do
   gem 'capybara'
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
-  gem 'mocha', '~> 0.12.1'
+  gem 'mocha', '~> 0.14.0', require: false
   gem 'valid_attribute', git: 'git://github.com/learningearnings/valid_attribute.git', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
   gem 'libnotify'

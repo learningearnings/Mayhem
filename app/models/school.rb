@@ -13,6 +13,8 @@ class School < ActiveRecord::Base
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
 
+  has_many :reward_distributors, :through => :person_school_links, :include => :teacher
+
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain,
                   :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
@@ -117,8 +119,11 @@ class School < ActiveRecord::Base
     name
   end
 
-  def teachers_available_for_delivery
-    school_admins.select{|t| t.can_deliver_rewards? }
+  def distributing_teachers
+    @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
+    @distributing_teachers = self.school_admins if @distributing_teachers.blank?
+    @distributing_teachers = self.teachers if @distributing_teachers.blank?
+    @distributing_teachers
   end
 
   private

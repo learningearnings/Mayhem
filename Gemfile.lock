@@ -273,7 +273,7 @@ GEM
       builder
       minitest (>= 2.0, < 4.0)
       ruby-progressbar
-    mocha (0.12.10)
+    mocha (0.14.0)
       metaclass (~> 0.0.1)
     money (5.0.0)
       i18n (~> 0.4)
@@ -507,7 +507,7 @@ DEPENDENCIES
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
-  mocha (~> 0.12.1)
+  mocha (~> 0.14.0)
   mysql2
   nested_form!
   pdfkit
