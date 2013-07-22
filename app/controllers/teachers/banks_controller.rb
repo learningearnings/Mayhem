@@ -1,6 +1,7 @@
 module Teachers
   class BanksController < Teachers::BaseController
     include Mixins::Banks
+
     def on_success obj = nil
       flash[:notice] = 'Bucks created!'
       if obj.nil? || !obj.is_a?(BuckBatch)

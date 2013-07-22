@@ -3,11 +3,18 @@ class Ability
 
   def initialize(person)
 
-    if person.class.name == "Teacher"
-      can :manage, :all
-    elsif person.class.name == "Student"
+    if person.is_a?(Teacher)
       can :read, :all
-    elsif person.class.name == "Parent"
+      can :update, :all
+      can :destroy, :all
+      can :modify, :all
+      can :create, :all
+      if person.can_distribute_credits?
+        can :distribute, :credits
+      end
+    elsif person.is_a?(Student)
+      can :read, :all
+    elsif person.is_a?(Parent)
       can :read, :all
     end
 

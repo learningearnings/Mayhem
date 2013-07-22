@@ -15,7 +15,7 @@ module Mixins
 
     def transfer_bucks
       @from_teacher = Person.find(params[:from_teacher_id])
-      @to_teacher   = Person.find(params[:to_teacher_id]) 
+      @to_teacher   = Person.find(params[:to_teacher_id])
       bank = get_bank
       bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:points])
     end

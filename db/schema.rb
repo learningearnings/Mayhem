@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121107044937) do
+ActiveRecord::Schema.define(:version => 20130722145028) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -130,16 +130,6 @@ ActiveRecord::Schema.define(:version => 20121107044937) do
     t.datetime "used_date"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
-  end
-
-  create_table "display_names", :force => true do |t|
-    t.string   "state"
-    t.string   "display_name"
-    t.datetime "approved_at"
-    t.integer  "actioned_by_id"
-    t.integer  "person_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
   end
 
   create_table "filters", :force => true do |t|
@@ -345,14 +335,16 @@ ActiveRecord::Schema.define(:version => 20121107044937) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
-    t.string   "salutation",        :limit => 10
+    t.string   "salutation",             :limit => 10
     t.string   "recovery_password"
+    t.boolean  "can_distribute_credits"
+    t.boolean  "can_deliver_rewards"
   end
 
   add_index "people", ["type"], :name => "index_people_on_type"

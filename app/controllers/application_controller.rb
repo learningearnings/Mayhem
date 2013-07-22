@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   def subdomain_required
     return if current_user && current_user.respond_to?(:person) && current_user.person.is_a?(LeAdmin)
     return if current_user && !current_user.respond_to?(:person)
-    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain && 
+    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain &&
                         (!(current_user.person.is_a?(SchoolAdmin) && [home_subdomain, 'le'].include?(request.subdomain)))
                         ) && home_host
       token = Devise.friendly_token
@@ -28,6 +28,10 @@ class ApplicationController < ActionController::Base
       sign_out(current_user)
       redirect_to my_redirect_url
     end
+  end
+
+  def current_ability
+    Ability.new(current_person)
   end
 
   def after_sign_out_path_for(resource_or_scope)
