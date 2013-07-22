@@ -23,14 +23,23 @@ module CommonPersonConfig
           f.input :last_name
           f.input :dob
           f.input :grade, :as => :radio, :collection => School::GRADE_NAMES, :wrapper_html => {:class => 'horizontal'}
-          f.input :status,:label => "Initial Status", :as => :select, :collection => ['new','active','inactive']
-          f.inputs :username, :email, :password,:password_confirmation,
-          :name => "Spree::User",:required => true, :for => [:user, f.object.user || Spree::User.new] do |u|
-            u.input :username, :required => true
-            u.input :email
-            u.input :password
-            u.input :password_confirmation
+          f.input :status, :label => "Initial Status", :as => :select, :collection => ['new','active','inactive']
+          if f.object.is_a?(Teacher)
+            f.input :can_distribute_credits
+            f.input :can_deliver_rewards
           end
+          f.inputs :username,
+            :email,
+            :password,
+            :password_confirmation,
+            :name => "Spree::User",
+            :required => true,
+            :for => [:user, f.object.user || Spree::User.new] do |u|
+              u.input :username, :required => true
+              u.input :email
+              u.input :password
+              u.input :password_confirmation
+            end
         end
         f.actions
       end

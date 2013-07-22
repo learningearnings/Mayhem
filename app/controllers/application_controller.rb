@@ -43,6 +43,15 @@ class ApplicationController < ActionController::Base
     current_user.person.is_a?(LeAdmin)
   end
 
+  def authenticate_le_admin!
+    if current_person && !current_person.is_a?(LeAdmin)
+      flash[:error] = "You must be an admin to access that."
+      redirect_to '/' and return
+    else
+      authenticate_user!
+    end
+  end
+
   def home_subdomain
     if session[:current_school_id]
       s = School.find(session[:current_school_id])
@@ -106,7 +115,11 @@ class ApplicationController < ActionController::Base
   # Override this anywhere you need to actually know how to get a current_person
   # - i.e. when logged in :)
   def current_person
-    nil
+    if current_user
+      current_user.person
+    else
+      nil
+    end
   end
 
   def track_interaction
