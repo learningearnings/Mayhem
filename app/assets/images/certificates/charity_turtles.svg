@@ -241,8 +241,8 @@
 	<polygon fill="#FAA634" points="332.846,52.364 335.151,59.463 329.108,55.077 323.094,59.463 325.4,52.364 319.417,48.009 
 		326.817,48.009 329.108,40.955 331.429,48.009 338.829,48.009 	"/>
 </g>
-<text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" ><tspan><?= $student ?></tspan></text>
-<text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" ><tspan><?= $school ?></tspan></text>
+<text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" ><tspan><%= name %></tspan></text>
+<text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" ><tspan><%= school_name %></tspan></text>
 <line fill="none" stroke="#000000" x1="156.677" y1="264.938" x2="519.689" y2="264.938"/>
 <image overflow="visible" width="666" height="428" xlink:href="images/rewardimage/charity_turtles_1.jpg"  transform="matrix(0.2253 -0.0973 0.0973 0.2253 21.541 104.1699)">
 </image>

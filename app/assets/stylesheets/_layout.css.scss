@@ -107,11 +107,6 @@ html, body {
 
 .notebook-vertical-rule {
 }
-
-input, textarea, select {
-  height: 26px; /* Fix for box-sizing in twitter bootstrap */
-}
-
 .head {
   width: 940px;
 }
@@ -129,7 +124,7 @@ input, textarea, select {
 
 .content-940 {
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   padding: 3em 0 0 0;
   min-height: 650px;
@@ -224,7 +219,6 @@ input, textarea, select {
 }
 
 .login-form-fields input {
-  height: 25px;
   width: 130px;
   font-size: 1em;
 }
@@ -1639,15 +1633,21 @@ input, textarea, select {
 
 .add-to-cart {
   input {
-    height: 2em;
     width: 4em;
   }
 }
 
 #main-image {
+  width: 200px;
+  height: 200px;
   padding: .5em;
   border: solid 1px #ccc;
+  img {
+      width: 100%;
+  }
 }
+
+
 
 #product-description {
   font-size: 1.5em;
@@ -1675,6 +1675,7 @@ input, textarea, select {
   padding: 2em;
   display: inline-block;
   vertical-align: top;
+  height: auto;
   width:99%;
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
@@ -1707,7 +1708,10 @@ input, textarea, select {
       font-size: 1.8em;
       line-height: 140%;
     }
-
+    input[type='number'] {
+        height: $baseLineHeight + 10;
+        line-height: $baseLineHeight + 10;
+    }
   }
 
 }
@@ -1789,7 +1793,7 @@ input, textarea, select {
 }
 
 .awesome-button {
-    background-color: rgb(37, 134, 11);
+    background: rgb(37, 134, 11);
 /*    background: rgba(37, 134, 11, .8); */
     padding: .5em;
     border: 2px solid rgba(255, 255, 255, 0.5);
@@ -1805,26 +1809,28 @@ input, textarea, select {
     color: #fff;
     margin: .5em;
     &:hover {
-      background-color: rgba(71, 11, 193, .8);
+      background: rgb(71, 11, 193);
       color: #fff;
     }
 }
 
 input.awesome-button {
-  padding-bottom: 25px;
+  padding-bottom: .5em;
 }
 
 .distribute-credits {
   label {
     display: inline-block;
   }
-  input {
-    width: 50px;
-    height: 25px;
-    margin-right: 10px;
+  input[type="number"] {
+      @extend .input-small;
+      margin-right: 10px;
   }
   input[type="submit"] {
     width: auto;
+  }
+  h4 {
+      font-weight: normal;
   }
 }
 
@@ -1928,20 +1934,16 @@ hr {
     display: inline-block;
     margin-top: 15px;
   }
-  input {
-    height: 30px;
-  }
 }
 
 .create-classroom {
   form {
     margin-top: 30px;
-      input {
-        height: 30px;
-      }
-      label {
-        font-weigth: bold;
-        font-size: 1.8em;
-      }
+    font-weigth: bold;
+    font-size: 1.8em;
   }
+}
+
+.numeric {
+    text-align: right;
 }

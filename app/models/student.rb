@@ -7,9 +7,8 @@ class Student < Person
   has_many :otu_codes
   has_one :locker, foreign_key: :person_id
 
-  attr_accessor :username, :password, :password_confirmation, :email
   attr_accessible :username, :password, :password_confirmation, :email
- 
+
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
@@ -20,6 +19,10 @@ class Student < Person
   }
 
   after_create :create_locker
+
+  def main_account(s)
+    checking_account
+  end
 
   def primary_account
     checking_account
@@ -52,7 +55,7 @@ class Student < Person
   end
 
   def accounts (school)
-    [checking_account, savings_account]
+    [checking_account, savings_account, hold_account]
   end
 
 

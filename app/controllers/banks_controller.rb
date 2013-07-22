@@ -28,12 +28,12 @@ class BanksController < LoggedInController
 
   def checking_transactions
     recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).joins(:transaction).order({ transaction: :created_at}).reverse_order.page(params[:page]).per(10))
-    render partial: 'ledger_table', locals: { amounts: recent_checking_amounts }
+    render partial: 'checking_ledger_table', locals: { amounts: recent_checking_amounts }
   end
 
   def savings_transactions
     recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at }).reverse_order.page(params[:page]).per(10))
-    render partial: 'ledger_table', locals: { amounts: recent_savings_amounts }
+    render partial: 'savings_ledger_table', locals: { amounts: recent_savings_amounts }
   end
 
   protected

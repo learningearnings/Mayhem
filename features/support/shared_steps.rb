@@ -60,6 +60,10 @@ module SharedSteps
      visit 'http://1.lvh.me/bank'
    end
 
+   Given 'I am on the schools settings page' do
+     visit 'http://1.lvh.me/schools/settings'
+   end
+
    Given 'I am on the teachers bank page' do
      visit 'http://1.lvh.me/teachers/bank'
    end

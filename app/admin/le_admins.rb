@@ -1,5 +1,4 @@
 ActiveAdmin.register LeAdmin do
-
   show do |le_admin|
     render "show"
   end

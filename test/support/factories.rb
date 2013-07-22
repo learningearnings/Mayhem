@@ -44,6 +44,11 @@ FactoryGirl.define do
     school
   end
 
+  factory :teacher_school_link, class: PersonSchoolLink do
+    association :person, factory: :teacher
+    school
+  end
+
   factory :school_admin_school_link, class: PersonSchoolLink do
     association :person, factory: :school_admin
     school
@@ -212,7 +217,7 @@ FactoryGirl.define do
   end
 
   factory :auction do
-    start_date Time.now + 5.days
+    start_date Time.now - 1.days
     end_date   Time.now + 7.days
     association :product, factory: :spree_product
     auction_type "traditional"

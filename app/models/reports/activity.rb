@@ -3,26 +3,45 @@ module Reports
     include DateFilterable
     include ActionView::Helpers
 
+    attr_accessor :parameters
     def initialize params
       super
+      @parameters = Reports::Activity::Params.new(params)
       @school = params[:school]
-      @date_filter = params[:date_filter]
-      @sort_by_filter = params[:sort_by]
+      @endpoints = date_endpoints(@parameters);
+      @data = []
+    end
+
+    def data
+      @data
     end
 
     def execute!
-      people.each do |person|
-        @data << generate_row(person)
+      begin
+        people.each do |person|
+          @data << generate_row(person)
+        end
+      rescue StandardError => e
+        Rails.logger.fatal("Something went bad wrong")
+        Rails.logger.fatal(e.to_s + people.to_yaml)
+      rescue NoMethodError => e
+        Rails.logger.fatal("Something went bad wrong")
+        Rails.logger.fatal(e.to_s + people.to_yaml)
       end
     end
 
+    def range
+      @endpoints ? "From #{l @endpoints[0]} to #{l @endpoints[1]}" : nil
+    end
+
+
     # Override what the date filter filters on
     def date_filter
-      case date_endpoints
+      case @endpoints
       when nil
-        [:scoped]
+        [:with_transactions_between, 10.years.ago,1.second.from_now]
       else
-        [:where, {user: { last_sign_in_at: date_endpoints[0]..date_endpoints[1] } }]
+        [:with_transactions_between, @endpoints[0],@endpoints[1]]
       end
     end
 
@@ -33,7 +52,7 @@ module Reports
     end
 
     def sort_by
-      case @sort_by_filter
+      case parameters.sort_by
       when "Default"
         [:scoped]
       when "First, Last"
@@ -41,7 +60,7 @@ module Reports
       when "Last, First"
         [:order, "people.last_name, people.first_name"]
       when "Username"
-        [:order, "people.username"]
+        [:order, "person_username"]
       end
     end
 
@@ -51,21 +70,35 @@ module Reports
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
-      base_scope
+      # have to do .select here to get both the object and the sums, counts, etc.
+      # have a look at the scope called "with_transactions_between" on person
+      base_scope.select("people.*, sum(case when plutus_amounts.type = 'Plutus::DebitAmount' then plutus_amounts.amount else null end) - sum(case when plutus_amounts.type = 'Plutus::CreditAmount' then plutus_amounts.amount else null end) as activity_balance,count(distinct plutus_transactions.id) as num_transactions, spree_users.username as person_username")
+      .having("count(distinct plutus_transactions.id) > 0")
     end
 
+    def activity_debits_base_scope(person)
+      person.primary_account.debit_amounts.joins(:transaction)
+    end
+
+    def activity_credits_base_scope(person)
+      person.primary_account.credit_amounts.joins(:transaction)
+    end
+
+
+
     def person_base_scope
-      Person.includes([:user, :person_school_links]).where("spree_users.last_sign_in_at IS NOT NULL").where(person_school_links: { school_id: @school.id })
+      @school.students
+        .includes(:user)
+#        .where("person_account_links.plutus_account_id" => Plutus::Account.includes(:transaction).includes(:accounts).select("plutus_accounts.id"))
     end
 
     def generate_row(person)
-      user = person.user
       Reports::Row[
-        person: person,
-        username: user.username,
-        credit_balance: number_to_currency(person.primary_account.balance),
+        person: person.name,
+        username: person.person_username,
+        account_activity: number_to_currency(person.activity_balance || 0),
         type: person.type,
-        last_sign_in_at: user.last_sign_in_at
+        last_sign_in_at: time_ago_in_words(person.last_sign_in_at) + " ago"
       ]
     end
 
@@ -75,8 +108,44 @@ module Reports
         username: "Username",
         type: "Type",
         last_sign_in_at: "Last Sign In",
-        credit_balance: "Credit Balance"
+        account_activity: "Account Activity"
       }
+    end
+    def data_classes
+      {
+        person: "",
+        username: "",
+        type: "",
+        last_sign_in_at: "",
+        account_activity: "currency"
+      }
+    end
+
+    class Params < Reports::ParamsBase
+      attr_accessor :date_filter,:sort_by
+      def initialize options_in = {}
+        options_in ||= {}
+        options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
+        [:date_filter, :sort_by].each do |iv|
+          default_method = (iv.to_s + "_default").to_sym
+          default_value = nil
+          default_value = send(default_method) if respond_to? default_method
+          instance_variable_set(('@' + iv.to_s).to_sym,options[iv] || default_value || "")
+        end
+      end
+
+      def sort_by_default
+        sort_by_options[0]
+      end
+
+      def sort_by_options
+        ["Default", "First, Last", "Last, First", "Username"]
+      end
+
+      def date_filter_default
+        date_filter_options[0][1]
+      end
+
     end
   end
 end

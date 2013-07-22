@@ -26,7 +26,6 @@ describe CreditManager do
     @transaction_class.expects(:build).with({
       description: @description,
       commercial_document: nil,
-      created_at: nil,
       debits:      [{ account: @account2, amount: @amount }],
       credits:     [{ account: @account1, amount: @amount }]
     }).returns(@mock_transaction)
@@ -101,7 +100,7 @@ describe CreditManager do
         it "transfers credits from a student for reward purchase" do
           @student.expects(:balance).returns(BigDecimal('1000.00'))
           @amount = BigDecimal("500.00")
-          @credit_manager.expects(:transfer_credits).with("Reward Purchase", @student_account, @credit_manager.main_account, @amount).once
+          @credit_manager.expects(:transfer_credits).with("Reward Purchase", @student_account, @credit_manager.main_account, @amount,nil).once
           @credit_manager.transfer_credits_for_reward_purchase(@student, @amount)
         end
       end

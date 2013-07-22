@@ -1,0 +1,48 @@
+%h1 Listing uploaded_users
+
+%table.table.table-striped.table-bordered.table-hover
+  %tr
+    %th Batch
+    %th First name
+    %th Last name
+    %th Username
+    %th Email
+    %th Grade
+    %th Gender
+    %th Password
+    %th Type
+    %th Message
+    %th School
+    %th Created by
+    %th Approved by
+    %th Person
+    %th State
+    %th Actions
+
+  - @uploaded_users.each do |uploaded_user|
+    %tr
+      %td= uploaded_user.batch_name
+      %td= uploaded_user.first_name
+      %td= uploaded_user.last_name
+      %td= uploaded_user.username
+      %td= uploaded_user.email
+      %td= uploaded_user.grade
+      %td= uploaded_user.gender
+      %td= uploaded_user.password
+      %td= uploaded_user.type
+      %td= uploaded_user.message
+      %td= uploaded_user.school_id
+      %td= uploaded_user.created_by_id
+      %td= uploaded_user.approved_by_id
+      %td= uploaded_user.person_id
+      %td= uploaded_user.state
+      %td
+        = link_to('Show', uploaded_user_path(uploaded_user)) + " | "
+        = link_to('Edit', edit_uploaded_user_path(uploaded_user)) + " | "
+        = link_to('Destroy', uploaded_user_path(uploaded_user), method: :delete, data: { confirm: 'Are you sure?' })
+
+%br
+
+= link_to 'New Uploaded user', new_uploaded_user_path
+\|
+= link_to 'Validate Data', uploaded_users_check_valid_path

@@ -4,10 +4,21 @@ require 'macro_reflection_relation_facade'
 class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
+
+  ## Only useful for the scopes below with_transactions...
+  ## Don't use for anything else
+  ## Need to get rid of spree_users anyway...
+  ##
+  has_one  :spree_user, :class_name => 'Spree::User'
+
   has_many :posts
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
   has_many :person_school_links
+  has_many :person_account_links, :through => :person_school_links
+  has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
+  has_many :plutus_amounts, :through => :plutus_accounts, :class_name => 'Plutus::Amount', :source => :amounts
+  has_many :plutus_transactions, :through => :plutus_amounts, :class_name => 'Plutus::Transaction', :source => :transaction
   has_many :allperson_school_links, :class_name => 'PersonSchoolLink'
   has_many :allschools, :class_name => 'School', :through => :allperson_school_links, :order => 'id desc', :source => :school
 =begin
@@ -24,7 +35,32 @@ class Person < ActiveRecord::Base
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
 
-  before_save :ensure_spree_user
+
+  scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
+  scope :with_transactions_between, lambda { |startdate,enddate|
+    joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]])
+      .where(:person_school_links => {:person_account_links => {:account => {:amounts => {:transaction => {:created_at => (startdate..enddate)}}}}})
+      .joins(:spree_user)
+      .merge(PersonAccountLink.with_main_account)
+      .group([:people => :id, :spree_users => :id]) }
+  scope :with_transactions_since, lambda { |startdate| with_transactions_between(startdate,1.second.from_now) }
+
+  # use the above like this (from rails c)
+  # 1.9.3p327 :029 > sch = School.find(6)
+  #   School Load (0.2ms)  SELECT "schools".* FROM "schools" WHERE "schools"."id" = $1 LIMIT 1  [["id", 6]]
+  #  => #<School id: 6, name: "Caloosa Elementary", school_type_id: 1, min_grade: 0, max_grade: 12, school_phone: "239-574-3113", school_mail_to: "", logo_uid: nil, logo_name: nil, mascot_name: nil, school_demo: false, status: "active", timezone: "America/New_York", gmt_offset: #<BigDecimal:9c349f8,'-0.5E1',9(18)>, distribution_model: "Centralized", ad_profile: 821, created_at: "2010-07-01 05:00:00", updated_at: "2012-12-12 20:32:06", store_subdomain: "al6", legacy_school_id: 821> 
+  # 1.9.3p327 :030 > student = sch.students.with_transactions_since(1.year.ago).group(:people => :id).select("people.*, sum(case when plutus_amounts.type = 'Plutus::DebitAmount' then plutus_amounts.amount else null end) - sum(case when plutus_amounts.type = 'Plutus::CreditAmount' then plutus_amounts.amount else null end) as activity,count(distinct plutus_transactions.id) as num_transactions").first
+  #   Student Load (2.5ms)  SELECT people.*, sum(case when plutus_amounts.type = 'Plutus::DebitAmount' then plutus_amounts.amount else null end) - sum(case when plutus_amounts.type = 'Plutus::CreditAmount' then plutus_amounts.amount else null end) as activity,count(distinct plutus_transactions.id) as num_transactions FROM "people" INNER JOIN "person_school_links" ON "person_school_links"."person_id" = "people"."id" INNER JOIN "person_account_links" ON "person_account_links"."person_school_link_id" = "person_school_links"."id" INNER JOIN "plutus_accounts" ON "plutus_accounts"."id" = "person_account_links"."plutus_account_id" INNER JOIN "plutus_amounts" ON "plutus_amounts"."account_id" = "plutus_accounts"."id" INNER JOIN "plutus_transactions" ON "plutus_transactions"."id" = "plutus_amounts"."transaction_id" WHERE "people"."type" IN ('Student') AND "person_school_links"."school_id" = 6 AND "person_school_links"."status" = 'active' AND "people"."status" = 'active' AND "plutus_transactions"."created_at" BETWEEN '2011-12-14 15:42:02.165571' AND '2012-12-14 15:42:03.165881' AND "person_account_links"."is_main_account" = 't' GROUP BY "people"."id" LIMIT 1
+  #  => #<Student id: 1191, first_name: "Morgan", last_name: "L", dob: nil, grade: 5, created_at: "2010-07-01 05:00:00", updated_at: "2012-12-12 20:32:10", type: "Student", status: "active", legacy_user_id: 168707, gender: "Female", salutation: nil, recovery_password: "i82much"> 
+  # 1.9.3p327 :031 > student.activity
+  #  => "1.0000000000" 
+  # 1.9.3p327 :032 > student.num_transactions
+  #  => "3" 
+  # 1.9.3p327 :033 > 
+
+
+
+#  before_save :ensure_spree_user
 
   def name
     "#{first_name} #{last_name}"
@@ -35,7 +71,7 @@ class Person < ActiveRecord::Base
   end
 
   def avatar=(new_avatar = nil)
-    avatars << new_avatar if new_avatar
+    PersonAvatarLink.create(:avatar_id => new_avatar.id, :person_id => self.id) if new_avatar
   end
 
   def buck_batches(school)
@@ -59,17 +95,16 @@ class Person < ActiveRecord::Base
   accepts_nested_attributes_for :user
 
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :school, :username, :user_attributes, :recovery_password
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status,:username,:email, :password_confirmation, :type,:created_at, :user_attributes, :recovery_password, :as => :admin
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status,:username,:email, :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
   validates_presence_of :first_name, :last_name
-#  delegate :email, :username , :password, :password_confirmation, to: :user
-  delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, to: :user, allow_nil: true
+
+  delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
   # Relationships
 
   def ensure_spree_user
     self.user = Spree::User.new unless user
   end
-
 
   #Last approved moniker name
   def moniker
@@ -105,16 +140,13 @@ class Person < ActiveRecord::Base
 
   def school=(my_new_school)
     if my_new_school.is_a? School
-      psl = PersonSchoolLink.new(person_id: self.id, school_id: my_new_school.id)
+      psl = PersonSchoolLink.create(person_id: self.id, school_id: my_new_school.id)
     else
-      psl = PersonSchoolLink.new(person_id: self.id, school_id: my_new_school)
+      psl = PersonSchoolLink.create(person_id: self.id, school_id: my_new_school)
     end
-    psl.save
     psl.activate if psl
     self.person_school_links << psl
   end
-
-
 
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)

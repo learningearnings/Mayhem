@@ -18,9 +18,9 @@
 </g>
 <line fill="none" stroke="#000000" x1="156.677" y1="264.939" x2="519.69" y2="264.939"/>
 <text font-family="times" text-anchor="middle" font-size="28pt" font-weight="bold" x="338" y="260" fill="black" class="student_name" >
-  <tspan>name_val</tspan></text>
+  <tspan><%= name %></tspan></text>
 <text font-family="times" text-anchor="middle" font-size="18pt" font-weight="bold" x="338" y="285" class="school_name" fill="black" >
-<tspan>school_val</tspan>
+<tspan><%= school_name %></tspan>
 </text>
 <a xlink:href="http://learningearnings.com"><text font-family="sans" text-anchor="middle" font-size="8pt" font-weight="normal" x="338" y="136" class="site_name" fill="#8DC63F" >LearningEarnings.com</text></a>
 <g>

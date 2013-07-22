@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(:version => 20130722145028) do
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"
-    t.string   "image"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
@@ -251,6 +250,14 @@ ActiveRecord::Schema.define(:version => 20130722145028) do
     t.datetime "updated_at",           :null => false
   end
 
+  create_table "local_reward_categories", :force => true do |t|
+    t.string   "name"
+    t.string   "image_uid"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "locker_sticker_links", :force => true do |t|
     t.integer  "locker_id"
     t.integer  "sticker_id"
@@ -347,7 +354,19 @@ ActiveRecord::Schema.define(:version => 20130722145028) do
     t.boolean  "can_deliver_rewards"
   end
 
+  add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
+
+  create_table "person_account_links", :force => true do |t|
+    t.integer  "person_school_link_id"
+    t.integer  "plutus_account_id"
+    t.boolean  "is_main_account"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "person_account_links", ["person_school_link_id", "plutus_account_id"], :name => "index_pal_psl_account"
+  add_index "person_account_links", ["plutus_account_id"], :name => "idx_pal_plutus_account_id"
 
   create_table "person_avatar_links", :force => true do |t|
     t.integer  "person_id"
@@ -393,6 +412,7 @@ ActiveRecord::Schema.define(:version => 20130722145028) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
 
   create_table "plutus_accounts", :force => true do |t|
@@ -445,6 +465,12 @@ ActiveRecord::Schema.define(:version => 20130722145028) do
     t.string   "status"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "reward_distributors", :force => true do |t|
+    t.integer  "person_school_link_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
   end
 
   create_table "school_filter_links", :force => true do |t|
@@ -1053,6 +1079,8 @@ ActiveRecord::Schema.define(:version => 20130722145028) do
 
   add_index "spree_users", ["email"], :name => "email_idx_unique", :unique => true
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
+  add_index "spree_users", ["person_id"], :name => "su_person_id", :unique => true
+  add_index "spree_users", ["username"], :name => "su_username"
 
   create_table "spree_variants", :force => true do |t|
     t.string   "sku",                                         :default => "",    :null => false
@@ -1108,6 +1136,27 @@ ActiveRecord::Schema.define(:version => 20130722145028) do
     t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "uploaded_users", :force => true do |t|
+    t.string   "batch_name"
+    t.text     "original_data"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "username"
+    t.string   "email"
+    t.integer  "grade"
+    t.string   "password"
+    t.string   "type"
+    t.text     "message"
+    t.integer  "school_id"
+    t.integer  "created_by_id"
+    t.integer  "approved_by_id"
+    t.integer  "person_id"
+    t.string   "state"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.string   "gender"
   end
 
   create_table "users", :force => true do |t|

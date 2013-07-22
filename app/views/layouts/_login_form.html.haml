@@ -1,11 +1,11 @@
-= form_tag spree.user_session_path do
+= form_tag spree.user_session_path, :novalidate => 'novalidate' do
   %ul.login-form-fields
     %li
       %span.log-in LOG-IN
     %li
-      = text_field_tag 'user[username]', nil, :placeholder => 'Username', :class => 'focus-on-me'
+      = text_field_tag 'user[username]', nil, :placeholder => 'Username', :autocomplete => (Rails.env.development? ? 'on' : 'off'),:type => 'email',:class => 'focus-on-me'
     %li
-    = password_field_tag 'user[password]', nil, :placeholder => 'Password'
+      = password_field_tag 'user[password]', nil, :autocomplete =>  (Rails.env.development? ? 'on' : 'off'), :placeholder => 'Password'
     %li
     %label.supplemenal-login-form @
     = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name,School.find_by_store_subdomain(request.subdomain).try(:id) ), :class => 'chzn-select'

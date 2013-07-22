@@ -1,0 +1,12 @@
+= simple_form_for @uploaded_user, { :as => :uploaded_user,  :html => { :class => 'form-horizontal' }}  do |f|
+  = f.input :batch_name, :html => {:class => 'focus-on-me'}
+  = f.input :username
+  = f.input :first_name
+  = f.input :last_name
+  = f.input :gender, :collection => ['Female','Male'], :as => :select
+  = f.input :grade, :collection => 0..12
+  = f.input :password
+  = f.association :school, :as => :select
+  = f.input :type, :collection => ['Student','Teacher','SchoolAdmin'], :as => :select
+  = f.submit "Save"
+

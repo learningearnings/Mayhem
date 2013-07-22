@@ -1,0 +1,16 @@
+= paginate amounts, :window => 2
+
+%table.table.table-bordered
+  %thead
+    %tr
+      %th.source Source
+      %th.name 
+      %th.date Date
+      %th.amount Amount
+  - amounts.each do |amount|
+    %tr
+      %td.source= amount.transaction.description
+      %td.name= commercial_document_link(amount.transaction)
+      %td.date= l(amount.transaction.created_at)
+      %td.amount
+        .currency= amount.amount

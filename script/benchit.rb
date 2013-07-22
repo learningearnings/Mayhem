@@ -40,7 +40,7 @@ require 'rails/all'
 
 # If you would prefer gems to incur the cost of autoloading
 # Rails frameworks, then comment out this next line.
-# ActiveSupport::Autoload.eager_autoload!
+ActiveSupport::Autoload.eager_autoload!
 
 $VERBOSE = nil
 

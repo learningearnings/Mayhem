@@ -1,12 +1,35 @@
 Spree::Product.class_eval do
-  attr_accessible :store_ids, :svg, :svg_file_name
+  attr_accessible :store_ids
   has_attached_file :svg
+
+  has_many :plutus_transactions, :as => :commercial_document, :class_name => 'Plutus::Transaction'
 
   has_one :spree_product_filter_link, :inverse_of => :product
   has_one :filter, :through => :spree_product_filter_link, :inverse_of => :products
 
   has_one :spree_product_person_link, :inverse_of => :product
   has_one :person, :through => :spree_product_person_link, :inverse_of => :products
+
+  #   # add_search_scope :with_property_value do |property, value|
+  #   #   properties = Spree::Property.table_name
+  #   #   conditions = case property
+  #   #   when String   then ["#{properties}.name = ?", property]
+  #   #   when Property then ["#{properties}.id = ?", property.id]
+  #   #   else               ["#{properties}.id = ?", property.to_i]
+  #   #   end
+  #   #   conditions = ["#{ProductProperty.table_name}.value = ? AND #{conditions[0]}", value, conditions[1]]
+
+  #   #   joins(:properties).where(conditions)
+  #   # end
+
+  # scope :le_with_property, lambda { |property|
+  #     joins(:properties).where("#{Spree::Property.table_name}.name" => property)
+  # }
+
+  # scope :le_with_property_value, lambda { |property, value|
+  #     le_with_property(property).joins(:properties).where("#{Spree::ProductProperty.table_name}.value" => value)
+  # }
+
 
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})

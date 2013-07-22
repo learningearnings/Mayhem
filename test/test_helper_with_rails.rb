@@ -1,6 +1,7 @@
 require_relative './test_helper'
 require File.expand_path('../../config/environment', __FILE__)
-require 'action_controller/test_case'
+# require 'action_controller/test_case'
+require 'rails/test_help'
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f; puts f }
 

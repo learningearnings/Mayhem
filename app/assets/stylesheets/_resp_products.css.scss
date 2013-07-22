@@ -1,0 +1,85 @@
+.resp-product {
+    .resp-product-row {
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+        margin: 0px auto;
+        .pagination {
+            float: left;
+        }
+
+    }
+    .resp-product-tile {
+        @include ctb-fluid-span(4);
+        vertical-align: top;
+        display: inline-block;
+        margin: 0px auto;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+        list-style: none;
+        @extend .thumbnail !optional;
+        min-height: 150px;
+        padding: 1em;
+        min-width: 290px;
+        background-color: white;
+        @include box-shadow(1px 2px 5px 1px #ccc);
+        text-align: center;
+        .print {
+            position: relative;
+            bottom: -10px;
+            text-align: center;
+            clear: both;
+        }
+        .resp-product-image {
+            position: relative;
+            float: left;
+            width: 50%;
+            height: 70%;
+            vertical-align: top;
+            display: block;
+            text-align: left;
+            script, svg, object {
+                position: relative;
+                float: left;
+                right: 0px;
+                height: 100%;
+                width: 100%;
+            }
+            img {
+            }
+        }
+        .resp-product-details {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: left;
+/*            width: auto; */
+            max-width: 49%;
+            margin: 0px auto;
+            line-height: 1.1em;
+            float: left;
+            .resp-product-name, resp-product-purchased {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+        .resp-product-moreinfo {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: left;
+            line-height: 1.1em;
+            margin-top: 5px;
+            width: 90%;
+            float: left;
+            color: orange;
+        }
+        .resp-product-classrooms {
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: left;
+            line-height: 1.1em;
+            margin-top: 5px;
+            float: left;
+            color: green;
+        }
+    }
+}

@@ -1,4 +1,13 @@
 Leror::Application.routes.draw do
+  get "settings/show"
+
+  get "settings/edit"
+
+  match '/uploaded_users/check_valid' => "uploaded_users#check_valid"
+  match '/uploaded_users/bulk_upload' => "uploaded_users#bulk_upload"
+  resources :uploaded_users do
+  end
+
   # Root route
   root to: 'homes#show'
   match "/filter_widget" => "pages#show", :id => "filter_widget"
@@ -14,6 +23,11 @@ Leror::Application.routes.draw do
   resource :games, controller: "games/base", only: [:show]
 
   resources :news_posts, controller: "news", only: [:index, :show]
+
+  namespace :schools do
+    resource :settings, controller: "settings", only: [:show]
+    match "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+  end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
@@ -122,11 +136,15 @@ Leror::Application.routes.draw do
     match "home" => "home#show", as: 'home'
   end
 
+  match "/charities" => 'charities#index'
+  match "/charity/print/:id" => 'charities#print', :as => :charity_print
+
   namespace :teachers do
     resources :reports
     resource  :bank
     resource  :dashboard
     resource  :lounge
+    resources :rewards
     match "home" => "home#show", as: 'home'
     match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'

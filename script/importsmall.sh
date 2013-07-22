@@ -1,8 +1,11 @@
-# gzip -dc leafterschools.pg.db.gz | pg_restore -O --clean --dbname=le_development_dhw
-#rm -rf public/spree/product/*
-#rm -rf public/system/dragonfly/*
-#rake le:reload! 
+#gzip -dc savingit.pg.db.gz | pg_restore -O --clean --dbname=learning_earning_development
+rm -rf public/spree/products/*
+rm -rf public/system/dragonfly/*
+rake le:reload! 
 rake db:migrate
-xargs --arg-file=smallschoolargs --max-args=10 --max-procs=4 ./processimport.sh schools
-xargs --arg-file=smallschoolargs --max-args=10 --max-procs=4  ./processimport.sh classrooms
-xargs --arg-file=smallschoolargs --max-args=10 --max-procs=4 ./processimport.sh transactions
+rake import:fixup
+rake import:reset
+#exit
+xargs --arg-file=./script/smallschoolargs --max-args=10 --max-procs=4 ./script/processimport.sh schools
+xargs --arg-file=./script/smallschoolargs --max-args=10 --max-procs=4  ./script/processimport.sh classrooms
+xargs --arg-file=./script/smallschoolargs --max-args=10 --max-procs=4 ./script/processimport.sh transactions
