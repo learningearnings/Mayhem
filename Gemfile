@@ -51,9 +51,12 @@ gem 'roo'
 # Hashie provides lots of nice convenience utilities for working with hashes
 gem 'hashie'
 
-
 # A simple date validator for rails 3
 gem 'date_validator'
+
+# Allows easily modifying models provided earlier in the stack without causing
+# any grief
+gem 'decorators', '~> 1.0.0'
 
 gem 'ranked-model'
 gem 'squeel'
