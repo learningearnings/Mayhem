@@ -20,6 +20,13 @@ Feature: Teacher Bank
       Given I distribute ebucks
       Then the teacher account should be deducted for ebucks
 
+    Scenario: Transfer Credits to another teacher when authorized
+      Given I am authorized to distribute credits
+      Given I am on the teachers bank page
+      Given I transfer credits to another teacher
+      Then the teacher should have the credits deducted
+      And the other teacher should have the credits credited
+
     Scenario: Create Printed Bucks when unauthorized
       Given I am on the teachers bank page
       Then I should not see the option to distribute printed bucks

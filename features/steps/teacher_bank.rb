@@ -5,6 +5,14 @@ class TeacherBank < Spinach::FeatureSteps
     @teacher.update_attributes({ can_distribute_credits: true }, as: :admin)
   end
 
+  Then 'the teacher should have the credits deducted' do
+    @teacher.main_account(@school).balance.must_equal BigDecimal.new('984.00')
+  end
+
+  Then 'the other teacher should have the credits credited' do
+    @school_admin.main_account(@school).balance.must_equal BigDecimal.new('1016.00')
+  end
+
   Then 'the teacher account should be deducted' do
     @teacher.main_account(@school).balance.must_equal BigDecimal.new('984.00')
     @teacher.unredeemed_account(@school).balance.must_equal BigDecimal.new('16.00')
