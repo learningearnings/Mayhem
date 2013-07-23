@@ -11,7 +11,6 @@
           Credits Available:
         = number_to_currency(current_person.main_account(current_school).balance)
 
-  .secondary-content
     - if can?(:distribute, :credits)
       .distribute-credits
         %h3 Distribute Credits
