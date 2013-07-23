@@ -68,6 +68,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :login_schools_list
 
+  def school_id_by_subdomain
+    School.find_by_store_subdomain(request.subdomain).try(:id)
+  end
+  helper_method :school_id_by_subdomain
+
   def home_host
     return request.protocol + request.host_with_port unless current_user.person
     if current_user && current_user.person
