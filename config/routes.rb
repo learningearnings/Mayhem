@@ -168,6 +168,7 @@ Leror::Application.routes.draw do
   namespace :school_admins do
     resource :bank
     resource :dashboard
+    resources :reports
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/transfer_bucks" => 'banks#transfer_bucks'

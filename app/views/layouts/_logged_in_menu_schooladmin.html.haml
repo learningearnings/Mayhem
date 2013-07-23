@@ -5,4 +5,4 @@
   %li= link_to "Classrooms",  main_app.classrooms_path, class: 'classrooms'
   %li= link_to "Rewards",            Spree::Core::Engine.routes.url_helpers.root_url(host: request.host,port: request.port,subdomain: current_school.store_subdomain), class: 'rewards'
   %li= link_to "Restock",            main_app.restock_path, class: 'restock'
-  %li= link_to "Reports",            "#", class: 'reports'
+  %li= link_to "Reports",            main_app.school_admins_reports_path, class: 'reports'
