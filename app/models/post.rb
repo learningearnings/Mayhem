@@ -1,5 +1,6 @@
 class Post < ActiveRecord::Base
   attr_accessible :body, :filter_id, :person_id, :published_by, :status, :title, :type
+  attr_accessible :body, :filter_id, :person_id, :published_by, :status, :title, :type, as: :admin
   belongs_to :person
 
   scope :most_recent, order("created_at DESC")
