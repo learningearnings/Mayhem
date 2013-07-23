@@ -2,7 +2,7 @@ class TeacherBank < Spinach::FeatureSteps
   include SharedSteps
 
   Given 'I am authorized to distribute credits' do
-    @teacher.update_attributes(can_distribute_credits: true)
+    @teacher.update_attributes({ can_distribute_credits: true }, as: :admin)
   end
 
   Then 'the teacher account should be deducted' do

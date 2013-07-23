@@ -26,7 +26,6 @@ module CommonPersonConfig
           f.input :status, :label => "Initial Status", :as => :select, :collection => ['new','active','inactive']
           if f.object.is_a?(Teacher)
             f.input :can_distribute_credits
-            f.input :can_deliver_rewards
           end
           f.inputs :username,
             :email,

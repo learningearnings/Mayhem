@@ -2,6 +2,8 @@ require "application_responder"
 require 'socket'
 
 class ApplicationController < ActionController::Base
+  layout 'resp_application'
+
   self.responder = ApplicationResponder
   respond_to :html
   include UrlHelper

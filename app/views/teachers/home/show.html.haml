@@ -7,7 +7,7 @@
       .checking-balance-text Checking Balance:
       .checking-balance= number_to_currency(current_person.main_account(current_school).balance)
       .distribute-credits-link= link_to('Distribute credits', teachers_bank_path)
-    
+
     %h3 Reports
     %hr
     %h4= link_to "Purchases Report", purchases_report_path
@@ -17,6 +17,6 @@
     - if current_person.is_a? SchoolAdmin
       %hr
       %h4= link_to "School Settings",  schools_settings_path
-  
+
   .secondary-content
     %h4 Reward Highlights

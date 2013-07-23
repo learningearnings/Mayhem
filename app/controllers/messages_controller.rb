@@ -62,7 +62,7 @@ class MessagesController < LoggedInController
     if request.xhr?
       return false
     else
-      return 'application'
+      return 'resp_application'
     end
   end
 
