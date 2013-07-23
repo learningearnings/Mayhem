@@ -63,6 +63,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def login_schools_list
+    School.select("id,name").order('name asc').all
+  end
+  helper_method :login_schools_list
+
   def home_host
     return request.protocol + request.host_with_port unless current_user.person
     if current_user && current_user.person
