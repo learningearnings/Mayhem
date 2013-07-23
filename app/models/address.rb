@@ -13,5 +13,9 @@ class Address < ActiveRecord::Base
   def geocode_address
     "#{line1}, #{city} #{state} #{zip}"
   end
+
+  def city_and_state
+    [city, state.abbr].join(", ")
+  end
 end
 

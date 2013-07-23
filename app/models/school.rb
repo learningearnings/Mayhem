@@ -119,6 +119,14 @@ class School < ActiveRecord::Base
     name
   end
 
+  def name_and_location
+    [name, first_address.try(:city_and_state)].join(", ")
+  end
+
+  def first_address
+    addresses.first
+  end
+
   def distributing_teachers
     @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
