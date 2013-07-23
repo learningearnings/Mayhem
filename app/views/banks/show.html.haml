@@ -52,14 +52,13 @@
 
 #enter-codes-modal.modal.hide
   %h3 Enter Codes
-  .row
-    .span3
+  .enter_codes_content
+    .span6
       = form_for OtuCode.new, :url => redeem_bucks_path do |f|
         = label_tag "Enter Code:"
         = text_field_tag :code
         = f.submit 'Redeem'
-    .span2
-
+    .span6
       %h5 Checking Balance
       %strong #{current_person.checking_balance}
       %h5 Savings Balance
