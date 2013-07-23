@@ -17,6 +17,27 @@
 
 }
 
+.how-nav {
+  list-style-type: none;
+  margin: 0;
+  font-size: 1.3em;
+  text-align: center;
+  position: relative;
+  bottom: 25px;
+  display: inline;
+  li {
+      display: inline;
+      margin: 0 12px;
+      a {
+          font-family: 'sketch_rockwellregular';
+      }
+  }
+  &.non-resp {
+    bottom: 80px;
+    left: 340px;
+  }
+}
+
 .resp-bacon {
   @extend .span4;
   @extend .pull-left;
@@ -109,22 +130,6 @@
           text-align: right;
           float: right;
           margin-right: -10px
-      }
-      .how-nav {
-          list-style-type: none;
-          margin: 0;
-          font-size: 1.3em;
-          text-align: center;
-          position: relative;
-          bottom: 25px;
-          display: inline;
-          li {
-              display: inline;
-              margin: 0 12px;
-              a {
-                  font-family: 'sketch_rockwellregular';
-              }
-          }
       }
   }
   .content-area {
