@@ -1,6 +1,4 @@
 Spree::CheckoutController.class_eval do
-
-
   def before_transmitted
     if @order.total > current_school.store_account.balance
       flash[:notice] = t('insufficient_funds')

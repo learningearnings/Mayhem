@@ -1,5 +1,4 @@
 class Schools::SettingsController < SchoolAdmins::BaseController
-  layout 'resp_application'
   def show
     @teachers = current_school.teachers.order(:last_name)
     @distributing_teachers = current_school.distributing_teachers

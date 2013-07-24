@@ -1,6 +1,5 @@
 module Teachers
   class BanksController < Teachers::BaseController
-    layout 'resp_application'
     include Mixins::Banks
 
     def on_success obj = nil

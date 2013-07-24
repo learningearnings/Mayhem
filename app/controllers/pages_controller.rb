@@ -8,7 +8,7 @@ class PagesController < HighVoltage::PagesController
       when /pdf/
         false
       else
-        'resp_application'
+        'application'
       end
     end
 

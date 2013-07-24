@@ -1,6 +1,5 @@
 module Teachers
   class RewardsController < Teachers::BaseController
-    layout 'resp_application'
     # GET /teachers/rewards
     # GET /teachers/rewards.json
     def index
