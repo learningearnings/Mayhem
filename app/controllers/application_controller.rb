@@ -43,6 +43,11 @@ class ApplicationController < ActionController::Base
     current_user.person.is_a?(LeAdmin)
   end
 
+  def current_url
+    url_for()
+  end
+  helper_method :current_url
+
   def authenticate_le_admin!
     if current_person && !current_person.is_a?(LeAdmin)
       flash[:error] = "You must be an admin to access that."

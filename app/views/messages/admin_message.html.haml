@@ -8,7 +8,8 @@
           = f.text_field :subject
           = f.label :body
           = f.text_area :body
-      
+        = hidden_field_tag :refurl, params[:refurl]
+
         = f.submit "Send Message", class: 'btn awesome-button'
   .secondary-content
     = render 'boxes_nav'
