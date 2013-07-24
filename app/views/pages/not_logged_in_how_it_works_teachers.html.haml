@@ -8,7 +8,7 @@
   .step2-slide
   .step3-slide
   .step4-slide
-%ul.how-nav
+%ul.how-nav.non-resp
   %li
     %span= link_to "Attention", "#", class:'attention'
   %li
@@ -19,3 +19,12 @@
     %span= link_to "Step 3", "#", class:'step-3'
   %li
     %span= link_to "Step 4", "#", class:'step-4'
+
+.nav-container
+  %ul.stickies-nav
+    %li
+      %span= link_to "", page_path('not_logged_in_how_it_works'), class: 'students-stickie stickies_nav-students_green_nav_stickie'
+    %li
+      %span= link_to "", parent_page_path('not_logged_in_how_it_works'), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
+    %li
+      %span= link_to "", '#', class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie active'
