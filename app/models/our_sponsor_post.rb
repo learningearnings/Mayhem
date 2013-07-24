@@ -1,0 +1,2 @@
+class OurSponsorPost < Post
+end

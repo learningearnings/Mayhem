@@ -1,0 +1,2 @@
+class FeaturedActivityPost < Post
+end

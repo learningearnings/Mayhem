@@ -4,9 +4,9 @@ class Post < ActiveRecord::Base
   belongs_to :person
 
   scope :most_recent, order("created_at DESC")
+  scope :published, where(status: 'published')
 
   state_machine :status, initial: :submitted do
-
     event :publish do
       transition [:submitted] => :published
     end

@@ -1544,6 +1544,8 @@ html.resp, body.resp {
     height: 239px;
     top: 25px;
     left: 200px;
+    padding: 80px 70px 20px 20px;
+    font-size: 1.5em;
   }
 }
 
@@ -1554,6 +1556,7 @@ html.resp, body.resp {
   height: 262px;
   top: 280px;
   left: 140px;
+  padding: 50px 70px 30px 30px;
 }
 
 .play-games {
@@ -1564,7 +1567,6 @@ html.resp, body.resp {
   top: 305px;
   left: 330px;
 }
-
 
 .honor-roll {
   background-image: url(asset_path('honor_roll.png', image));
@@ -1591,6 +1593,7 @@ html.resp, body.resp {
     position: relative;
     width: 291px;
     height: 251px;
+    padding: 45px 120px 30px 30px;
   }
   .poll-of-the-day {
     background-image: url(asset_path('poll_of_the_day.png', image));
