@@ -1627,7 +1627,6 @@ html.resp, body.resp {
 }
 
 .reward-content {
-
   .product-image {
     float: left;
     min-height: 300px;
@@ -1641,12 +1640,12 @@ html.resp, body.resp {
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
     box-shadow:         1px 2px 5px 1px #ccc;
   }
-
 }
 
 .add-to-cart {
   input {
     width: 4em;
+    height: 2.5em;
   }
 }
 
