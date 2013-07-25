@@ -11,4 +11,12 @@ Spree::ProductsHelper.module_eval do
     raw(description.gsub(/(.*?)\r?\n\r?\n/m, '<p>\1</p>'))
   end
 
+  def checkout_image_for_variant(variant)
+    url = if variant.images.any?
+            variant.images.first.attachment.url(:small)
+          else
+            "noimage/mini.png"
+          end
+    image_tag(url)
+  end
 end

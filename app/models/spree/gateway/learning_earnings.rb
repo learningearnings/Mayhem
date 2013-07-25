@@ -54,7 +54,7 @@ module Spree
     def charge_account(money, credit_card, options)
       cm = CreditManager.new
       o = Spree::Order.find_by_number(options[:order_id])
-      if o.store == Spree::Store.find_by_name("le") # purchasing a wholesale product as a school_admin
+      if o.store == Spree::Store.find_by_code("le") # purchasing a wholesale product as a school_admin
         # TODO change this to school session variable
         # NOTE: Nope, a model shouldn't know about a session -ja
         school = AccountPersonMapper.new(credit_card.number).find_school

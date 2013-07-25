@@ -34,7 +34,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   def create
     # create the product reward
     @product = Spree::Product.new
-    @image = @product.master.images.new
+    #@image = @product.master.images.new # If we create an empty image, the
+    #master doesn't save correctly
     form_data
     if @product.save
       after_save

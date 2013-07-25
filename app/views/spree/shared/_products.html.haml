@@ -13,7 +13,7 @@
       .row
         %ul#products.inline.product-listing{"data-hook" => ""}
           - grp.each do |product|
-            - if Spree::Config[:show_zero_stock_products] || product.has_stock?
+            - if Spree::Config[:show_zero_stock_products] || (product && product.has_stock?)
               %li{:class => "product-tile", "data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
                 .product-image
                   = link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url'

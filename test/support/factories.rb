@@ -135,7 +135,7 @@ FactoryGirl.define do
     status "active"
     logo_name "Logo"
     logo_uid "2323"
-    timezone "Central"
+    timezone "Central Time (US & Canada)"
     gmt_offset "6.0"
     distribution_model "Delivery"
     address
