@@ -39,23 +39,23 @@
       .control-group
         = image_tag @product.thumb
         = f.label :current_image
-      = f.fields_for :images do |i|
-        .control-group
-          = i.label :attachment_file_name, "New Image", {:class => 'control-label'}
-          = i.file_field :attachment_file_name
-      = f.fields_for :svg do |i|
-        .control-group#svg
-          = i.label :svg, "Charity SVG", {:class => 'control-label'}
-          = i.file_field :svg_file_name
-          - if @product.svg_file_name
-            .control-group
-              = f.label :current_svg, "Current SVG", {:class => 'control-label'}
-              = @product.svg.to_s
-              .svg-container
-                = le_svg_tag @product.svg, :style => "width: 100%; height: 100%;display: inline-block;" do
-                  = render :file => @product.svg.path, :formats => [:svg], :locals => {:name => "Student Name", :school_name => "School Name"}
-              = f.hidden_field :id, value: @product.id
-              = f.hidden_field :filter, :value => 1
+    = f.fields_for :images do |i|
+      .control-group
+        = i.label :attachment_file_name, "New Image", {:class => 'control-label'}
+        = i.file_field :attachment_file_name
+    = f.fields_for :svg do |i|
+      .control-group#svg
+        = i.label :svg, "Charity SVG", {:class => 'control-label'}
+        = i.file_field :svg_file_name
+        - if @product.svg_file_name
+          .control-group
+            = f.label :current_svg, "Current SVG", {:class => 'control-label'}
+            = @product.svg.to_s
+            .svg-container
+              = le_svg_tag @product.svg, :style => "width: 100%; height: 100%;display: inline-block;" do
+                = render :file => @product.svg.path, :formats => [:svg], :locals => {:name => "Student Name", :school_name => "School Name"}
+            = f.hidden_field :id, value: @product.id
+            = f.hidden_field :filter, :value => 1
   .span4
     %h3#retail-info Retail Product Info
     .control-group#school-admin-description

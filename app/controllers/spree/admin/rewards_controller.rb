@@ -106,7 +106,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     end
 
     if params[:product][:images]
-      i = @product.master.images.first
+      i = @product.master.images.first || @product.master.images.build
       i.attachment = params[:product][:images][:attachment_file_name].tempfile
       i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
       i.attachment_content_type = params[:product][:images][:attachment_file_name].content_type
