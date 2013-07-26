@@ -52,7 +52,7 @@ class OneClickSpreeProductPurchaseCommand
 
   def skip_irrelevant_spree_order_steps
     # Address
-    @deliverer = Teacher.find(@deliverer_id)
+    @deliverer = Teacher.find_by_id(@deliverer_id)
     @deliverer = @person unless @deliverer
     addr = Spree::Address.where(:firstname => @deliverer.name)
       .where(:lastname => @person.name)
@@ -82,7 +82,7 @@ class OneClickSpreeProductPurchaseCommand
     if @order.line_items.first.product.shipping_category && (@order.line_items.first.product.shipping_category.shipping_methods.count > 0)
       @order.shipping_method_id = @order.line_items.first.product.shipping_category.shipping_methods.first.id
     else
-      @order.shipping_method_id = Spree::ShippingCategory.find_by_name('In Classroom').shipping_methods.first
+      @order.shipping_method = Spree::ShippingCategory.find_by_name('In Classroom').shipping_methods.first
     end
   end
 

@@ -79,7 +79,7 @@
       ($ '#svg').hide()
       ($ '#price,#retail-info,#school-admin-description,#quantity,#on_hand').show()
     else if ($ 'select#product_type option:selected').val() == "charity"
-      ($ '#price,#quantity,#retail-info,#school-admin-description,#on_hand').hide()
+      ($ '#price,#quantity,#retail-info,#school-admin-description').hide()
       ($ '#svg').show()
     else
       ($ '#svg,#price,#retail-info,#school-admin-description,#quantity').hide()
