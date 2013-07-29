@@ -149,6 +149,7 @@ Leror::Application.routes.draw do
     match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
+    match "/create_ebucks_for_classroom" => 'banks#create_ebucks_for_classroom'
     match "/transfer_bucks" => 'banks#transfer_bucks'
     match "/new_student" => 'dashboards#new_student'
     match "/create_student" => 'dashboards#create_student'
@@ -171,6 +172,7 @@ Leror::Application.routes.draw do
     resources :reports
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
+    match "/create_ebucks_for_classroom" => 'banks#create_ebucks_for_classroom'
     match "/transfer_bucks" => 'banks#transfer_bucks'
     match "/new_student" => 'dashboards#new_student'
     match "/create_student" => 'dashboards#create_student'
