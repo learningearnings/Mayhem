@@ -7,8 +7,6 @@ class Teacher < Person
 
   has_many :reward_distributors, :through => :person_school_links
 
-
-
   def after_initialize
     @teacher_main_account = []
     @teacher_undredeemed_account = []

@@ -6,7 +6,7 @@ def linux_only(require_as)
 end
 
 gem 'rake', '~> 10.0.2'
-gem 'rails', '~> 3.2.6'
+gem 'rails', '~> 3.2.14'
 gem 'pg', '0.13.2'
 
 # for importing
