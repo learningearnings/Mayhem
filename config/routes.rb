@@ -1,8 +1,12 @@
 Leror::Application.routes.draw do
+  devise_scope :user do
+    match "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
+  end
+
+  #match 'logout' => 'devise/sessions#destroy', :as => :destroy_user_session
   get "settings/show"
 
   get "settings/edit"
-
   match '/uploaded_users/check_valid' => "uploaded_users#check_valid"
   match '/uploaded_users/bulk_upload' => "uploaded_users#bulk_upload"
   resources :uploaded_users do
