@@ -5,6 +5,7 @@ class School < ActiveRecord::Base
 
   GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
   GRADE_NAMES = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]
+
   has_many :addresses, :as => :addressable
   has_many :classrooms
   has_many :foods, :through => :food_school_links
@@ -16,16 +17,17 @@ class School < ActiveRecord::Base
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain,
-                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
+                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
-                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
+                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
+  image_accessor :logo
 
-  validates_presence_of :name
-  validates_presence_of :addresses
+  validates_presence_of :name, :school_phone
+#  validates_presence_of :addresses
 
   after_save :create_spree_store
   after_create :ensure_accounts

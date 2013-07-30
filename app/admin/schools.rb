@@ -2,6 +2,9 @@ ActiveAdmin.register School do
 
   index do
     column :id
+    column :avatar do |school|
+      image_tag(school.logo.thumb('100x75!').url) if school.logo
+    end
     column :name do |school|
       a = school.addresses.first
       output = []
@@ -22,6 +25,7 @@ ActiveAdmin.register School do
     column :timezone
     column "Distribution",:distribution_model
     column :store_subdomain
+    default_actions
   end
 
   form :partial => 'form'
@@ -73,6 +77,18 @@ ActiveAdmin.register School do
   end
   controller do
     skip_before_filter :add_current_store_id_to_params
+    after_filter :handle_address, :only => [:create, :update]
+
+    def handle_address
+      if params[:address]
+        address_params_present = params[:address][:line1].present? && params[:address][:city].present? && params[:address][:state_id].present?
+        if address_params_present
+          @address = @school.addresses.create(params[:address])
+        else
+          # we should redirect back to the new page if no address....
+        end
+      end
+    end
   end
 
 end
