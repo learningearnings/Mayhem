@@ -12,7 +12,7 @@ module CommonPersonConfig
 
       filter :first_name_or_last_name, :as => :string
       filter :last_name
-      filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name} | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
+      filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
       filter :status,:label => "Status", :as => :check_boxes, :collection => proc { Person.new().status_paths.to_states.each do |s| s.to_s end }
       filter :grade,:label => "Grade", :as => :check_boxes, :collection => School::GRADE_NAMES
       filter :created_at, :as => :date_range
@@ -134,6 +134,7 @@ module CommonPersonConfig
         column "Updated", :updated_at do |t|
           t.updated_at.strftime("%m/%d/%Y") if t.updated_at
         end
+        default_actions
       end
       controller do
         skip_before_filter :add_current_store_id_to_params
