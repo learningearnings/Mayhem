@@ -1559,13 +1559,10 @@ html.resp, body.resp {
   padding: 50px 70px 30px 30px;
 }
 
-.play-games {
-  background-image: url(asset_path('play_games.png', image));
+.featured-activity-callout {
   position: absolute;
-  width: 213px;
-  height: 247px;
-  top: 305px;
-  left: 330px;
+  top: 315px;
+  left: 331px;
 }
 
 .honor-roll {
@@ -1590,10 +1587,22 @@ html.resp, body.resp {
   }
   .our-sponsors {
     background-image: url(asset_path('our_sponsors.png', image));
+    background-repeat: no-repeat;
     position: relative;
     width: 291px;
     height: 251px;
     padding: 45px 120px 30px 30px;
+  }
+  .our-sponsors-callout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .our-sponsors-callout-content {
+      display: block;
+      position: absolute;
+      left: 175px;
+      top: 60px;
+    }
   }
   .poll-of-the-day {
     background-image: url(asset_path('poll_of_the_day.png', image));
@@ -1835,14 +1844,15 @@ input.awesome-button {
     display: inline-block;
   }
   input[type="number"] {
-      @extend .input-small;
-      margin-right: 10px;
+    @extend .input-small;
+    margin-right: 10px;
+    height: $baseLineHeight + 10;
   }
   input[type="submit"] {
     width: auto;
   }
   h4 {
-      font-weight: normal;
+    font-weight: normal;
   }
 }
 

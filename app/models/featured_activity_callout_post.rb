@@ -1,0 +1,2 @@
+class FeaturedActivityCalloutPost < Post
+end

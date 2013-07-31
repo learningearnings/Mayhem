@@ -4,7 +4,17 @@ ActiveAdmin.register Post do
   form do |f|
     f.inputs do
       f.input :title,:required => true, :label => "Post Title"
-      f.input :type,:required => true, :label => "Kind of Post", :as => :select, :collection => [["Tip", "TipPost"], ["Testimonial", "TestimonialPost"], ["News", "NewsPost"], ["Press Release", "PressRelease"], ["What's New", "WhatsNewPost"], ['Featured Activity', 'FeaturedActivityPost'], ['Our Sponsor', 'OurSponsorPost']]
+      f.input :type,:required => true, :label => "Kind of Post", :as => :select, :collection => [
+        ["Tip", "TipPost"],
+        ["Testimonial", "TestimonialPost"],
+        ["News", "NewsPost"],
+        ["Press Release", "PressRelease"],
+        ["What's New", "WhatsNewPost"],
+        ['Featured Activity', 'FeaturedActivityPost'],
+        ['Featured Activity Callout', 'FeaturedActivityCalloutPost'],
+        ['Our Sponsor', 'OurSponsorPost'],
+        ['Our Sponsor Callout', 'OurSponsorCalloutPost']
+      ]
       f.input :status,:required => true,:label => "Initial Status", :as => :select, :collection => ['submitted','published','archived','flagged']
     end
     f.inputs "Post Body" do
