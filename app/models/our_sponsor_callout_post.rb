@@ -1,0 +1,2 @@
+class OurSponsorCalloutPost < Post
+end

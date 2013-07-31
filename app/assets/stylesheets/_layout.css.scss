@@ -1559,13 +1559,10 @@ html.resp, body.resp {
   padding: 50px 70px 30px 30px;
 }
 
-.play-games {
-  background-image: url(asset_path('play_games.png', image));
+.featured-activity-callout {
   position: absolute;
-  width: 213px;
-  height: 247px;
-  top: 305px;
-  left: 330px;
+  top: 315px;
+  left: 331px;
 }
 
 .honor-roll {
@@ -1594,6 +1591,17 @@ html.resp, body.resp {
     width: 291px;
     height: 251px;
     padding: 45px 120px 30px 30px;
+  }
+  .our-sponsors-callout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .our-sponsors-callout-content {
+      display: block;
+      position: absolute;
+      left: 175px;
+      top: 60px;
+    }
   }
   .poll-of-the-day {
     background-image: url(asset_path('poll_of_the_day.png', image));
