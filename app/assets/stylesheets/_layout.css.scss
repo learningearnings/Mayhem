@@ -1587,6 +1587,7 @@ html.resp, body.resp {
   }
   .our-sponsors {
     background-image: url(asset_path('our_sponsors.png', image));
+    background-repeat: no-repeat;
     position: relative;
     width: 291px;
     height: 251px;
@@ -1843,14 +1844,15 @@ input.awesome-button {
     display: inline-block;
   }
   input[type="number"] {
-      @extend .input-small;
-      margin-right: 10px;
+    @extend .input-small;
+    margin-right: 10px;
+    height: $baseLineHeight + 10;
   }
   input[type="submit"] {
     width: auto;
   }
   h4 {
-      font-weight: normal;
+    font-weight: normal;
   }
 }
 
