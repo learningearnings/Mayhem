@@ -3,7 +3,6 @@ Leror::Application.routes.draw do
     match "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
   end
 
-  #match 'logout' => 'devise/sessions#destroy', :as => :destroy_user_session
   get "settings/show"
 
   get "settings/edit"
