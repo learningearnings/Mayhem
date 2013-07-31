@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   end
 
   def login_schools_list
-    School.includes(:addresses => [:state]).order('schools.name asc').all
+    School.includes(:state).order('schools.name asc').all
   end
   helper_method :login_schools_list
 

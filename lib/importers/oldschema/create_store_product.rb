@@ -128,7 +128,7 @@ class CreateStoreProduct < ActiveModelCommand
       @filter_id = filter.id
     elsif @filter_id.nil? && @school
       filter_factory = FilterFactory.new
-      filter_condition = FilterConditions.new schools: [@school], states: [@school.addresses[0].state]
+      filter_condition = FilterConditions.new schools: [@school], states: [@school.state]
       filter = filter_factory.find_or_create_filter(filter_condition)
       @filter_id = filter.id
     end
