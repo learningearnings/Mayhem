@@ -27,6 +27,10 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :can_distribute_credits
           end
+          if f.object.is_a?(Teacher)
+            f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
+          end
+
           f.inputs :username,
             :email,
             :password,
