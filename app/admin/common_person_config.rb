@@ -85,7 +85,7 @@ module CommonPersonConfig
         elsif school.nil?
           flash[:error] = "Please select a school to associate with #{person.name}"
         elsif person.schools.include?(school)
-          flash[:error] = "#{person.name} is already associated wiht #{school.name}"
+          flash[:error] = "#{person.name} is already associated with #{school.name}"
         else
           person.school = school
           flash[:notice] = "Associated #{person.name} with #{school.name}"
@@ -134,6 +134,7 @@ module CommonPersonConfig
         column "Updated", :updated_at do |t|
           t.updated_at.strftime("%m/%d/%Y") if t.updated_at
         end
+        default_actions
       end
       controller do
         skip_before_filter :add_current_store_id_to_params
