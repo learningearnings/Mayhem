@@ -8,6 +8,7 @@ class School < ActiveRecord::Base
 
   has_many :addresses, :as => :addressable
   has_many :classrooms
+  belongs_to :state
   has_many :foods, :through => :food_school_links
   has_many :food_school_links
   has_many :person_school_links
@@ -16,18 +17,17 @@ class School < ActiveRecord::Base
 
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
   image_accessor :logo
 
-  validates_presence_of :name, :school_phone
-#  validates_presence_of :addresses
+  validates_presence_of :name, :school_phone, :city, :state_id, :zip, :address1
 
   after_save :create_spree_store
   after_create :ensure_accounts
@@ -37,6 +37,16 @@ class School < ActiveRecord::Base
 
   def address=(newaddress)
     addresses << newaddress
+  end
+
+  def address
+    addr = ""
+    addr << "#{address1}<br>"
+    addr << "#{address2}<br>" if address2.present?
+    addr << "#{city}, "
+    addr << state.name
+    addr << " #{zip}"
+    addr.html_safe
   end
 
   def create_spree_store
@@ -144,7 +154,7 @@ class School < ActiveRecord::Base
 
   def set_default_subdomain
     if store_subdomain.nil?
-      address_state_abbr = addresses.first.try(:state).try(:abbr).to_s.downcase
+      address_state_abbr = state.abbr.to_s.downcase
       update_attribute(:store_subdomain, "#{address_state_abbr}#{self.id.to_s}")
     end
   end

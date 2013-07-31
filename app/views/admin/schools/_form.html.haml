@@ -4,32 +4,17 @@
     = f.input :min_grade, :as => :range, :input_html => {:min => 0, :max => 12}
     = f.input :max_grade, :as => :range, :input_html => {:min => 0, :max => 12}
     = f.input :school_phone
-    = f.input :school_mail_to
+    = f.input :address1
+    = f.input :address2
+    = f.input :city
+    = f.input :state_id, :as => :select, :collection => State.all
+    = f.input :zip
     = f.input :logo, :as => :file
     = f.input :store_subdomain, :input_html => {:disabled => true}
     = f.input :mascot_name
     = f.input :school_demo
     = f.input :status, :as => :select, :collection => ['new','active','inactive']
     = f.input :timezone, :as => :time_zone
-    %hr
-    - unless @school.addresses.present?
-      %h3 Address
-      %table
-        %tr
-          %th Address 1
-          %td= text_field_tag "address[line1]"
-        %tr
-          %th Address 2
-          %td= text_field_tag "address[line2]"
-        %tr
-          %th City
-          %td= text_field_tag "address[city]"
-        %tr
-          %th State
-          %td= select_tag "address[state_id]", options_from_collection_for_select(State.all, :id, :name), :include_blank => true 
-        %tr
-          %th Zip
-          %td= text_field_tag "address[zip]"
     = f.actions
 
 :coffeescript

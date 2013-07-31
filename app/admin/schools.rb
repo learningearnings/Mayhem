@@ -6,15 +6,10 @@ ActiveAdmin.register School do
       image_tag(school.logo.thumb('100x75!').url) if school.logo
     end
     column :name do |school|
-      a = school.addresses.first
-      output = []
-      output << link_to(school.name, admin_school_path(school))
-      if a
-        output << a.line1
-        output << a.line2 unless a.line2.blank?
-        output << "#{a.city} #{a.state.abbr} #{a.zip}"
-      end
-      output.join('<br />').html_safe
+      link_to(school.name, admin_school_path(school))
+    end
+    column :address do |school|
+      school.address
     end
     column "Grades" do |school|
       school.min_grade.to_s + ' - ' + school.max_grade.to_s
@@ -77,18 +72,6 @@ ActiveAdmin.register School do
   end
   controller do
     skip_before_filter :add_current_store_id_to_params
-    after_filter :handle_address, :only => [:create, :update]
-
-    def handle_address
-      if params[:address]
-        address_params_present = params[:address][:line1].present? && params[:address][:city].present? && params[:address][:state_id].present?
-        if address_params_present
-          @address = @school.addresses.create(params[:address])
-        else
-          # we should redirect back to the new page if no address....
-        end
-      end
-    end
   end
 
 end
