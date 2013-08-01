@@ -16,7 +16,7 @@ class OneClickSpreeProductPurchaseCommand
       queue_delivery(@order.line_items)
     end
 
-    unless @order.products.first.is_wholesale_reward? || @order.products.first.is_global_reward?
+    unless @order.products.first.is_wholesale_reward?
       mark_as_shipped
     end
   end
