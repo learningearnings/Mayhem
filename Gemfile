@@ -7,7 +7,7 @@ end
 
 gem 'rake', '~> 10.0.2'
 # NOTE: There was a regression in activerecord in 3.2.14 that affects us.  I've
-# pinned us to 3.2.13 for now
+# pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 
