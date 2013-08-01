@@ -10,6 +10,7 @@ Spree::OrdersController.class_eval do
   # * Multiple products at once
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => quantity+
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
+
   def populate
     @order = current_order(true)
     if current_person.is_a?(Student)
