@@ -12,7 +12,7 @@ module CommonPersonConfig
 
       filter :first_name_or_last_name, :as => :string
       filter :last_name
-      filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name} | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
+      filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
       filter :status,:label => "Status", :as => :check_boxes, :collection => proc { Person.new().status_paths.to_states.each do |s| s.to_s end }
       filter :grade,:label => "Grade", :as => :check_boxes, :collection => School::GRADE_NAMES
       filter :created_at, :as => :date_range
@@ -27,6 +27,10 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :can_distribute_credits
           end
+          if f.object.is_a?(Teacher)
+            f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
+          end
+
           f.inputs :username,
             :email,
             :password,
@@ -85,7 +89,7 @@ module CommonPersonConfig
         elsif school.nil?
           flash[:error] = "Please select a school to associate with #{person.name}"
         elsif person.schools.include?(school)
-          flash[:error] = "#{person.name} is already associated wiht #{school.name}"
+          flash[:error] = "#{person.name} is already associated with #{school.name}"
         else
           person.school = school
           flash[:notice] = "Associated #{person.name} with #{school.name}"
@@ -134,6 +138,7 @@ module CommonPersonConfig
         column "Updated", :updated_at do |t|
           t.updated_at.strftime("%m/%d/%Y") if t.updated_at
         end
+        default_actions
       end
       controller do
         skip_before_filter :add_current_store_id_to_params

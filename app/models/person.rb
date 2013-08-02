@@ -144,6 +144,9 @@ class Person < ActiveRecord::Base
   end
 
   def school=(my_new_school)
+    if self.is_a? Student
+      PersonSchoolLink.where(:person_id => self.id).delete_all
+    end
     if my_new_school.is_a? School
       psl = PersonSchoolLink.create(person_id: self.id, school_id: my_new_school.id)
     else
