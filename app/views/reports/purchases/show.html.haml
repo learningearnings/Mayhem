@@ -28,12 +28,16 @@
               - enable_mark_button = false
               - report.header_strings.each do |header|
                 %th= header
+              %th Refund
               %th Deliver
           %tbody
             - report.data_rows do |row|
               %tr
                 - report.header_keys.each do |key|
                   %td= row.send(key)
+                %td
+                  - if row.delivery_status == 'pending'
+                    = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
                 %td
                   - if row.delivery_status == 'pending'
                     - enable_mark_button = true

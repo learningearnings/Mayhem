@@ -109,6 +109,11 @@ class CreditManager
     transfer_credits "Reward Purchase", student.checking_account, main_account, amount, document
   end
 
+  def transfer_credits_for_reward_refund student, amount, document = nil
+    return false if main_account.balance < amount
+    transfer_credits "Reward Refund", main_account, student.checking_account, amount, document
+  end
+
   def transfer_store_credits_for_wholesale_purchase school, amount, document = nil
     return false if school.store_account.balance < amount
     transfer_credits "Wholesale Purchase", school.store_account, main_account, amount, document
