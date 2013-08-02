@@ -38,6 +38,10 @@ Fork, then clone the repository to your development environment
     bundle install
     rake db:drop db:create:all db:migrate db:test:clone test
 
+To start the Rails server
+
+    bundle exec rails server
+
 Run guard to run the tests as you develop:
 
     bundle exec guard
@@ -59,6 +63,13 @@ To load up sample spree products, also run:
 
 Or, to load up some sample Learning Earnings products, do:
     rake db:load_dir[samples]
+
+### Login Seed Info
+leadmin = username: 'leadmin', password: 'spree123'
+teacher = username: 'user 1', password: 'spree123'
+school_admin = username: 'schooladmin', password: 'spree123'
+student1 = username: 'student1', password: 'spree123'
+student2 = username: 'student2', password: 'spree123'
 
 ### Binary Dependencies
 Below are a list of binary dependencies that the project uses:
