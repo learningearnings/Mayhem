@@ -66,11 +66,11 @@ Or, to load up some sample Learning Earnings products, do:
     rake db:load_dir[samples]
 
 ### Login Seed Info
-leadmin = username: 'leadmin', password: 'spree123'
-teacher = username: 'user 1', password: 'spree123'
-school_admin = username: 'schooladmin', password: 'spree123'
-student1 = username: 'student1', password: 'spree123'
-student2 = username: 'student2', password: 'spree123'
+    leadmin = username: 'leadmin', password: 'spree123'
+    teacher = username: 'user 1', password: 'spree123'
+    school_admin = username: 'schooladmin', password: 'spree123'
+    student1 = username: 'student1', password: 'spree123'
+    student2 = username: 'student2', password: 'spree123'
 
 ### Binary Dependencies
 Below are a list of binary dependencies that the project uses:
