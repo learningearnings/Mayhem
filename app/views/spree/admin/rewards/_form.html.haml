@@ -41,8 +41,8 @@
         = f.label :current_image
     = f.fields_for :images do |i|
       .control-group
-        = i.label :attachment_file_name, "New Image", {:class => 'control-label'}
-        = i.file_field :attachment_file_name
+        = i.label :attachment, "New Image", {:class => 'control-label'}
+        = i.file_field :attachment
     = f.fields_for :svg do |i|
       .control-group#svg
         = i.label :svg, "Charity SVG", {:class => 'control-label'}
