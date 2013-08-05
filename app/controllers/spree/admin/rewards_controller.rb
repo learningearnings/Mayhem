@@ -29,6 +29,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @grades = @current_school.grades
     @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     @classrooms = @current_school.classrooms
+    @fullfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
   end
 
   def create
@@ -77,6 +78,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def form_data
     @product.name = params[:product][:name]
+    @product.fullfillment_type = params[:product][:fullfillment_type]
     @product.description = params[:product][:description]
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
