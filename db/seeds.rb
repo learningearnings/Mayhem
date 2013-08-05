@@ -248,11 +248,15 @@ if Rails.env.development? || Rails.env.production?
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
   @school_admin.activate
+  @school_admin.user.password = 'spree123'
+  @school_admin.user.password_confirmation = 'spree123'
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
   @teacher.activate
+  @teacher.user.password = 'spree123'
+  @teacher.user.password_confirmation = 'spree123'
   @teacher.save
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
 
@@ -268,6 +272,10 @@ if Rails.env.development? || Rails.env.production?
   @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
   @student2 = FactoryGirl.create(:student, :user => FactoryGirl.create(:spree_user,:username => 'student2', :email => 'student2@example.com'))
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+  @student1.user.password = 'spree123'
+  @student1.user.password_confirmation = 'spree123'
+  @student2.user.password = 'spree123'
+  @student2.user.password_confirmation = 'spree123'
   @student1.activate!
   @student2.activate!
 

@@ -1,4 +1,3 @@
-
 %h1
   = current_school.name
 %h2 Site Settings
@@ -6,6 +5,22 @@
 
 .school-settings
   %h3 Select the teachers that will distribute rewards
-  #distributor-list
-    = render :partial => 'distributor_list', :locals => {:distributing_teachers => @distributing_teachers, :teachers => @teachers,  :last_changed_id => 0  }
-= javascript_include_tag "distributor_list"
+  = form_for :teacher, :url => schools_toggle_distributor_path do |f|
+    %table
+      %thead
+        %tr
+          %td Teacher Name
+          %td Reward Distributor
+          %td Credit Distributor
+          %td Toggle Reward
+          %td Toggle Credit
+      %body
+        - @teachers.each do |teacher|
+          %tr
+            %td= teacher.name
+            %td= teacher.can_distribute_rewards?(current_school) ? 'YES' : 'NO'
+            %td= teacher.can_distribute_credits ? 'YES' : 'NO'
+            %td= check_box_tag "reward_teachers[]", teacher.id, false
+            %td= check_box_tag "credit_teachers[]", teacher.id, false
+    = f.submit 'Update'
+
