@@ -15,6 +15,10 @@
       .pull-right
         = select_tag :product_type, options_for_select(@types), :class => 'input-medium'
     .control-group
+      = f.label :fullfillment_type, 'Fullfillment Type', {:class => 'control-label'}
+      .pull-right
+        = f.select :fullfillment_type, options_for_select(@fullfillment_types), :include_blank => true, :class => 'input-large'
+    .control-group
       = f.label :name, 'Product Name', {:class => 'control-label'}
       .pull-right
         = f.text_field :name, :class => 'input-large'
@@ -41,8 +45,8 @@
         = f.label :current_image
     = f.fields_for :images do |i|
       .control-group
-        = i.label :attachment_file_name, "New Image", {:class => 'control-label'}
-        = i.file_field :attachment_file_name
+        = i.label :attachment, "New Image", {:class => 'control-label'}
+        = i.file_field :attachment
     = f.fields_for :svg do |i|
       .control-group#svg
         = i.label :svg, "Charity SVG", {:class => 'control-label'}
