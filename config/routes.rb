@@ -1,8 +1,11 @@
 Leror::Application.routes.draw do
+  devise_scope :user do
+    match "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
+  end
+
   get "settings/show"
 
   get "settings/edit"
-
   match '/uploaded_users/check_valid' => "uploaded_users#check_valid"
   match '/uploaded_users/bulk_upload' => "uploaded_users#bulk_upload"
   resources :uploaded_users do
@@ -26,7 +29,8 @@ Leror::Application.routes.draw do
 
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
-    match "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+    #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+    post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
@@ -87,6 +91,7 @@ Leror::Application.routes.draw do
   post "/filters" => "filters#create"
 
   match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
+  match '/reports/refund' => 'reports/purchases#refund_purchase', as: 'refund_purchase'
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
   match '/reports/activity' => 'reports/activity#show', as: 'activity_report'
   match '/reports/student_credit_history' => 'reports/student_credit_history#show', as: 'student_credit_history_report'
@@ -149,6 +154,7 @@ Leror::Application.routes.draw do
     match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
+    match "/create_ebucks_for_classroom" => 'banks#create_ebucks_for_classroom'
     match "/transfer_bucks" => 'banks#transfer_bucks'
     match "/new_student" => 'dashboards#new_student'
     match "/create_student" => 'dashboards#create_student'
@@ -168,8 +174,10 @@ Leror::Application.routes.draw do
   namespace :school_admins do
     resource :bank
     resource :dashboard
+    resources :reports
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
+    match "/create_ebucks_for_classroom" => 'banks#create_ebucks_for_classroom'
     match "/transfer_bucks" => 'banks#transfer_bucks'
     match "/new_student" => 'dashboards#new_student'
     match "/create_student" => 'dashboards#create_student'

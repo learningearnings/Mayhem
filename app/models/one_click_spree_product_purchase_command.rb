@@ -16,7 +16,7 @@ class OneClickSpreeProductPurchaseCommand
       queue_delivery(@order.line_items)
     end
 
-    unless @order.products.first.is_wholesale_reward? || @order.products.first.is_global_reward?
+    unless @order.products.first.is_wholesale_reward?
       mark_as_shipped
     end
   end
@@ -52,13 +52,13 @@ class OneClickSpreeProductPurchaseCommand
 
   def skip_irrelevant_spree_order_steps
     # Address
-    @deliverer = Teacher.find(@deliverer_id)
+    @deliverer = Teacher.find_by_id(@deliverer_id)
     @deliverer = @person unless @deliverer
     addr = Spree::Address.where(:firstname => @deliverer.name)
       .where(:lastname => @person.name)
       .where(:company => @school.name)
-      .where(:address1 => @school.addresses.first.line1)
-      .where(:city => @school.addresses.first.city).first
+      .where(:address1 => @school.address1)
+      .where(:city => @school.city).first
     if addr
       @order.ship_address = addr
       @order.bill_address = addr
@@ -67,11 +67,11 @@ class OneClickSpreeProductPurchaseCommand
       shipping_address[:company] = @school.name
       shipping_address[:firstname] = @deliverer.name
       shipping_address[:lastname] = @person.name
-      shipping_address[:address1] = @school.addresses.first.line1
-      shipping_address[:address2] = @school.addresses.first.line2
-      shipping_address[:city] = @school.addresses.first.city
-      shipping_address[:state_name] = @school.addresses.first.state.name
-      shipping_address[:zipcode] = @school.addresses.first.zip
+      shipping_address[:address1] = @school.address1
+      shipping_address[:address2] = @school.address2
+      shipping_address[:city] = @school.city
+      shipping_address[:state_name] = @school.state.name
+      shipping_address[:zipcode] = @school.zip
       shipping_address[:phone] = @school.school_phone
       shipping_address[:country] = Spree::Country.find_by_iso "US"
       @order.ship_address_attributes = shipping_address
@@ -82,7 +82,7 @@ class OneClickSpreeProductPurchaseCommand
     if @order.line_items.first.product.shipping_category && (@order.line_items.first.product.shipping_category.shipping_methods.count > 0)
       @order.shipping_method_id = @order.line_items.first.product.shipping_category.shipping_methods.first.id
     else
-      @order.shipping_method_id = Spree::ShippingCategory.find_by_name('In Classroom').shipping_methods.first
+      @order.shipping_method = Spree::ShippingCategory.find_by_name('In Classroom').shipping_methods.first
     end
   end
 

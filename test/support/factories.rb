@@ -135,10 +135,15 @@ FactoryGirl.define do
     status "active"
     logo_name "Logo"
     logo_uid "2323"
-    timezone "Central"
+    timezone "Central Time (US & Canada)"
     gmt_offset "6.0"
     distribution_model "Delivery"
-    address
+#    address
+    address1 "123 Foo Street"
+    address2 "Unit 2"
+    city "Birmingham"
+    state_id { FactoryGirl.create(:state).id }
+    zip "35111"
     ad_profile 1
   end
 

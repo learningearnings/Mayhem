@@ -2,10 +2,17 @@
   .bacon-small
   .corkboard
     .whats-new
+      = @whats_new.body.html_safe
     .featured-activity
-    .play-games
+      = @featured_activity.body.html_safe
+    .featured-activity-callout
+      = @featured_activity_callout.body.html_safe
   .honor-roll
 .student-logged-in-sidebar
   = render_reward_highlights(@products[0..1])
   .our-sponsors
+    = @our_sponsor.body.html_safe
+    .our-sponsors-callout
+      .our-sponsors-callout-content
+        = @our_sponsor_callout.body.html_safe
   .poll-of-the-day

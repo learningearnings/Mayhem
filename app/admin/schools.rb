@@ -2,16 +2,14 @@ ActiveAdmin.register School do
 
   index do
     column :id
+    column :avatar do |school|
+      image_tag(school.logo.thumb('100x75!').url) if school.logo
+    end
     column :name do |school|
-      a = school.addresses.first
-      output = []
-      output << link_to(school.name, admin_school_path(school))
-      if a
-        output << a.line1
-        output << a.line2 unless a.line2.blank?
-        output << "#{a.city} #{a.state.abbr} #{a.zip}"
-      end
-      output.join('<br />').html_safe
+      link_to(school.name, admin_school_path(school))
+    end
+    column :address do |school|
+      school.address
     end
     column "Grades" do |school|
       school.min_grade.to_s + ' - ' + school.max_grade.to_s
@@ -22,6 +20,7 @@ ActiveAdmin.register School do
     column :timezone
     column "Distribution",:distribution_model
     column :store_subdomain
+    default_actions
   end
 
   form :partial => 'form'

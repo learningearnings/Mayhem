@@ -1,15 +1,15 @@
 class BanksController < LoggedInController
   before_filter :load_recent_bucks, only: [:show, :redeem_bucks]
   before_filter :load_unredeemed_bucks, only: [:show, :redeem_bucks]
+  before_filter :load_reward_highlights, only: [:show, :redeem_bucks]
 
   def show
-    @products = get_reward_highlights
   end
 
   def redeem_bucks
     person = Student.find_by_id(params[:student_id]) if params[:student_id]
     person = current_person unless person
-      
+
     if otu_code = OtuCode.active.find_by_code(params[:code])
       if !otu_code.expired?
         @bank = Bank.new
@@ -44,5 +44,9 @@ class BanksController < LoggedInController
 
   def load_unredeemed_bucks
     @unredeemed_bucks = current_person.otu_codes.active
+  end
+
+  def load_reward_highlights
+    @products = get_reward_highlights
   end
 end

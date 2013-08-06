@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   def subdomain_required
     return if current_user && current_user.respond_to?(:person) && current_user.person.is_a?(LeAdmin)
     return if current_user && !current_user.respond_to?(:person)
-    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain && 
+    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain &&
                         (!(current_user.person.is_a?(SchoolAdmin) && [home_subdomain, 'le'].include?(request.subdomain)))
                         ) && home_host
       token = Devise.friendly_token
@@ -30,7 +30,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
+  def current_ability
+    Ability.new(current_person)
+  end
 
   def after_sign_out_path_for(resource_or_scope)
     '/'
@@ -41,6 +43,20 @@ class ApplicationController < ActionController::Base
     current_user.person.is_a?(LeAdmin)
   end
 
+  def current_url
+    url_for()
+  end
+  helper_method :current_url
+
+  def authenticate_le_admin!
+    if current_person && !current_person.is_a?(LeAdmin)
+      flash[:error] = "You must be an admin to access that."
+      redirect_to '/' and return
+    else
+      authenticate_user!
+    end
+  end
+
   def home_subdomain
     if session[:current_school_id]
       s = School.find(session[:current_school_id])
@@ -49,6 +65,24 @@ class ApplicationController < ActionController::Base
       ""
     end
   end
+
+  def login_schools_list
+    School.includes(:state).order('schools.name asc').all
+  end
+  helper_method :login_schools_list
+
+  def school_id_by_subdomain
+    School.find_by_store_subdomain(request.subdomain).try(:id)
+  end
+
+  def last_school_id
+    session[:last_school_id]
+  end
+
+  def last_school_id_or_by_subdomain
+    last_school_id || school_id_by_subdomain
+  end
+  helper_method :last_school_id_or_by_subdomain
 
   def home_host
     return request.protocol + request.host_with_port unless current_user.person
@@ -104,7 +138,11 @@ class ApplicationController < ActionController::Base
   # Override this anywhere you need to actually know how to get a current_person
   # - i.e. when logged in :)
   def current_person
-    nil
+    if current_user
+      current_user.person
+    else
+      nil
+    end
   end
 
   def track_interaction
@@ -132,6 +170,4 @@ class ApplicationController < ActionController::Base
   def _prefixes
     @_prefixes_with_partials ||= super | %w(/public)
   end
-
-
 end

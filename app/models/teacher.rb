@@ -1,13 +1,11 @@
 class Teacher < Person
 #  has_many :schools, :through => :person_school_links
   attr_accessible :username, :password, :password_confirmation, :email, :gender
-  attr_accessible :status, :as => :admin
+  attr_accessible :status, :can_distribute_credits, :as => :admin
   validates_presence_of :grade
   after_create :create_user
 
   has_many :reward_distributors, :through => :person_school_links
-
-
 
   def after_initialize
     @teacher_main_account = []
@@ -23,7 +21,6 @@ class Teacher < Person
     return false unless (s && s.is_a?(School))
     self.person_school_links.joins(:reward_distributors).exists?(:school_id => s.id)
   end
-
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
   def main_account_name(school)

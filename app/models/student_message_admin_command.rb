@@ -5,6 +5,7 @@ class StudentMessageAdminCommand < ActiveModelCommand
   attr_accessor :to_id, :from_id, :body, :subject
 
   validates :from_id, numericality: true, presence: true
+  validates :body, presence: true
 
   def initialize params={}
     @to_id       = params[:to_id]

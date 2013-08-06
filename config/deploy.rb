@@ -21,7 +21,6 @@ set :user,            "deployer"
 set :group,           "deployer"
 set :use_sudo,        false
 
-
 set(:latest_release)  { fetch(:current_path) }
 set(:release_path)    { fetch(:current_path) }
 set(:current_release) { fetch(:current_path) }

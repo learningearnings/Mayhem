@@ -113,11 +113,7 @@ class FilterFactory
       s.id
     end
     state_ids = person.schools.collect do |s|
-      if s.addresses && s.addresses.first && s.addresses.first.state
-        s.addresses.first.state.id
-      else
-        nil
-      end
+      s.state.id
     end
     sfl_arel = SchoolFilterLink.arel_table
     sfl = SchoolFilterLink.where(sfl_arel[:school_id].in(school_ids).or(sfl_arel[:school_id].eq(nil)))

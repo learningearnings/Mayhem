@@ -1,0 +1,2 @@
+class WhatsNewPost < Post
+end

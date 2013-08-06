@@ -10,7 +10,7 @@ describe School do
   describe "Validations" do
     it "initializes correctly" do
       subject.new.wont_be :valid?
-      subject.new(:name => "MiniTest School", :address => FactoryGirl.create(:address)).must_be :valid?
+      subject.new(name: "MiniTest School", address1: "123 Street", city: "Bham", state_id: 1, zip: "23233", school_phone: "3443443").must_be :valid?
     end
   end
 
@@ -33,23 +33,61 @@ describe School do
     school.main_account.must_equal account
   end
 
-  it "can add an address to a school" do
-    bama = FactoryGirl.create(:state)
-    a = Address.new(:line1 => '4630 Wooddale Lane',
-                    :city => 'Pelham',
-                    :state => bama,
-                    :zip => '35124')
-    school = FactoryGirl.create(:school)
-    school.addresses << a
-    school.addresses.wont_be_empty
-    school.addresses.must_include a
-  end
+#  it "can add an address to a school" do
+#    bama = FactoryGirl.create(:state)
+#    a = Address.new(:line1 => '4630 Wooddale Lane',
+#                    :city => 'Pelham',
+#                    :state => bama,
+#                    :zip => '35124')
+#    school = FactoryGirl.create(:school)
+#    school.addresses << a
+#    school.addresses.wont_be_empty
+#    school.addresses.must_include a
+#  end
 
   describe "School#store_subdomain" do
     it "should be state+id if there is a state" do
       school = FactoryGirl.create(:school)
-      school.addresses << FactoryGirl.create(:address)
-      assert_equal school.store_subdomain, "#{school.addresses.first.state.abbr}#{school.id}".downcase
+#      school.addresses << FactoryGirl.create(:address)
+      assert_equal school.store_subdomain, "#{school.state.abbr}#{school.id}".downcase
+    end
+  end
+
+  describe "#distributing_teachers" do
+    subject{ FactoryGirl.create(:school) }
+    let(:school_admin){ FactoryGirl.create(:school_admin, status: 'active') }
+    let(:some_other_teacher){ FactoryGirl.create(:school_admin, status: 'active') }
+
+    before do
+      @person_school_link = FactoryGirl.create(:school_admin_school_link, person: school_admin, school: subject)
+      @some_other_person_school_link = FactoryGirl.create(:school_admin_school_link, person: some_other_teacher, school: subject)
+    end
+
+    it "lists school admins that can deliver rewards" do
+      RewardDistributor.create(:person_school_link_id => @some_other_person_school_link.id)
+      RewardDistributor.create(:person_school_link_id => @person_school_link.id)
+      subject.distributing_teachers.include?(school_admin).must_equal true
+    end
+
+    it "lists everyone if there are no RewardDistributor links" do
+      subject.distributing_teachers.include?(school_admin).must_equal true
+    end
+
+    it "doesn't list school admins that can't deliver rewards" do
+      # NOTE: This requires at least one reward distributor or else 'all
+      # teachers' can distribute rewards
+      RewardDistributor.create(:person_school_link_id => @some_other_person_school_link.id)
+      subject.distributing_teachers.include?(school_admin).must_equal false
+    end
+  end
+
+  describe "#name_and_location" do
+    let(:state){ FactoryGirl.create(:state, abbr: "BR") }
+    let(:address){ FactoryGirl.create(:address, city: "Footown", state: state) }
+    subject{ FactoryGirl.build(:school, address: address, name: "Schoolington") }
+
+    it "outputs the name and city and state" do
+      subject.name_and_location.must_equal "Schoolington, Footown, BR"
     end
   end
 end

@@ -6,9 +6,14 @@ class StudentMessageAdminCommandsController < LoggedInController
     if command.valid?
       command.execute!
       flash[:success] = "Message sent successfully."
+      handle_redirect(params[:refurl])
     else
-      flash[:error] = "Message not sent."
+      flash[:error] = "Message not sent.  " + command.errors.full_messages.to_sentence
+      redirect_to :back
     end
-    redirect_to inbox_path
+  end
+
+  def handle_redirect(refurl)
+    redirect_to refurl || inbox_path
   end
 end

@@ -5,8 +5,10 @@ class School < ActiveRecord::Base
 
   GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
   GRADE_NAMES = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]
+
   has_many :addresses, :as => :addressable
   has_many :classrooms
+  belongs_to :state
   has_many :foods, :through => :food_school_links
   has_many :food_school_links
   has_many :person_school_links
@@ -15,17 +17,17 @@ class School < ActiveRecord::Base
 
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain,
-                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2,
+                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,
-                  :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2,
+                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
+  image_accessor :logo
 
-  validates_presence_of :name
-  validates_presence_of :addresses
+  validates_presence_of :name, :school_phone, :city, :state_id, :zip, :address1
 
   after_save :create_spree_store
   after_create :ensure_accounts
@@ -37,13 +39,15 @@ class School < ActiveRecord::Base
     addresses << newaddress
   end
 
-  def distributing_teachers
-    @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
-    @distributing_teachers = self.school_admins if @distributing_teachers.blank?
-    @distributing_teachers = self.teachers if @distributing_teachers.blank?
-    @distributing_teachers
+  def address
+    addr = ""
+    addr << "#{address1}<br>"
+    addr << "#{address2}<br>" if address2.present?
+    addr << "#{city}, "
+    addr << state.name
+    addr << " #{zip}"
+    addr.html_safe
   end
-
 
   def create_spree_store
     if Rails.env.development?
@@ -127,6 +131,21 @@ class School < ActiveRecord::Base
     name
   end
 
+  def name_and_location
+    [name, first_address.try(:city_and_state)].join(", ")
+  end
+
+  def first_address
+    addresses.first
+  end
+
+  def distributing_teachers
+    @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
+    @distributing_teachers = self.school_admins if @distributing_teachers.blank?
+    @distributing_teachers = self.teachers if @distributing_teachers.blank?
+    @distributing_teachers
+  end
+
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
@@ -135,7 +154,7 @@ class School < ActiveRecord::Base
 
   def set_default_subdomain
     if store_subdomain.nil?
-      address_state_abbr = addresses.first.try(:state).try(:abbr).to_s.downcase
+      address_state_abbr = state.abbr.to_s.downcase
       update_attribute(:store_subdomain, "#{address_state_abbr}#{self.id.to_s}")
     end
   end

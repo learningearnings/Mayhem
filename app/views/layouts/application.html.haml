@@ -1,24 +1,23 @@
 !!!
-%html
+%html.resp
   %head
     %title Learning Earnings
-    = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
-    = stylesheet_link_tag    'application', media: 'all'
-    = stylesheet_link_tag    'admin/ie_noprint', media: 'print'
-    = javascript_include_tag 'application'
-    %meta{:name => "viewport", :content => "width=device-width"}
     = csrf_meta_tags
-  %body
+    %meta{:name => "viewport", :content => "width=device-width"}
 
-    .header
+    = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag    'application', media: 'all'
+    = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
+    - if current_user && current_user.person
+      = stylesheet_link_tag current_user.person.type.downcase + '_background', media: 'all'
+  %body.resp
+    .resp-page-content-container
+      .resp-head
+        = render "layouts/resp_head"
+        = render "layouts/resp_content_container"
+        = render "layouts/footer"
 
-    .container-940
-      .head.noprint
-        = render "layouts/head"
-      = render "layouts/content_container"
-      = render "layouts/footer"
-
-    .container-1170
-      .content-container
-        .side-art
-          .side-art-students
+      .resp-content-container
+        .resp-side-art
+          .resp-side-art-students

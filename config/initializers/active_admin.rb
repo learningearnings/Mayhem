@@ -54,7 +54,8 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # within the controller.
-  config.authentication_method = :authenticate_user!
+  #config.authentication_method = :authenticate_user!
+  config.authentication_method = :authenticate_le_admin!
 
 
   # == Current User
@@ -77,7 +78,7 @@ ActiveAdmin.setup do |config|
   # will call the method to return the path.
   #
   # Default:
-  config.logout_link_path = '/store/user/logout'
+  config.logout_link_path = :destroy_user_session_path
 
   # This setting changes the http method used when rendering the
   # link. For example :get, :delete, :put, etc..
@@ -115,7 +116,6 @@ ActiveAdmin.setup do |config|
   # Enable and disable Batch Actions
   #
   config.batch_actions = true
-  
 
   # == Controller Filters
   #
@@ -133,7 +133,7 @@ ActiveAdmin.setup do |config|
   #
   # To load a stylesheet:
   #   config.register_stylesheet 'my_stylesheet.css'
-  
+
   # You can provide an options hash for more control, which is passed along to stylesheet_link_tag():
   #   config.register_stylesheet 'my_print_stylesheet.css', :media => :print
   #

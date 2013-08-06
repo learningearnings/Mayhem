@@ -1,25 +1,33 @@
 class Schools::SettingsController < SchoolAdmins::BaseController
-  layout 'resp_application'
   def show
     @teachers = current_school.teachers.order(:last_name)
     @distributing_teachers = current_school.distributing_teachers
-    @last_changed_id = 0
   end
 
   def toggle_distributor
-    teacher = Teacher.find(params[:teacher_id])
-    psl = teacher.person_school_links.where(:school_id => current_school.id).first
-    if teacher.can_distribute_rewards? current_school
-      RewardDistributor.where(:person_school_link_id => psl.id).each do |rd|
-        rd.destroy
+    reward_teachers = Teacher.find(params[:reward_teachers]) if params[:reward_teachers]
+    credit_teachers = Teacher.find(params[:credit_teachers]) if params[:credit_teachers]
+    if reward_teachers.present?
+      reward_teachers.each do |teacher|
+        psl = teacher.person_school_links.where(:school_id => current_school.id).first
+        if teacher.can_distribute_rewards? current_school
+          RewardDistributor.where(:person_school_link_id => psl.id).delete_all
+        else
+          rd = RewardDistributor.create(:person_school_link_id => psl.id)
+        end
       end
-    else
-      rd = RewardDistributor.create(:person_school_link_id => psl.id)
     end
-    @last_changed_id = params[:teacher_id]
-    distributor_list
+    if credit_teachers.present?
+      credit_teachers.each do |teacher|
+        if teacher.can_distribute_credits
+          teacher.update_attribute(:can_distribute_credits, false)
+        else
+          teacher.update_attribute(:can_distribute_credits, true)
+        end
+      end
+    end
+    redirect_to :back
   end
-
 
   private
   def distributor_list

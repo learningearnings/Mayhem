@@ -71,7 +71,7 @@ module Reports
       when 'undelivered'
         [:where, {status: "pending"}]
       when 'delivered'
-         [:where, {status: "delivered"}]
+        [:where, {status: "delivered"}]
       else
         [:scoped]
       end
@@ -138,9 +138,9 @@ module Reports
 
       def reward_status_filter_options
         [
-         ['Everything', "all"],
-         ['Undelivered', "undelivered"],
-         ['Delivered','delivered']
+          ['Everything', "all"],
+          ['Undelivered', "undelivered"],
+          ['Delivered','delivered']
         ]
       end
 
@@ -169,8 +169,6 @@ module Reports
       def date_filter_default
         'this_month'
       end
-
-
     end
   end
 end

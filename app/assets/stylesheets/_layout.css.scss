@@ -84,6 +84,16 @@ html, body {
     background: url(asset_path('notebook_bg_lines.png', image)) repeat;
 }
 
+html.resp, body.resp {
+    margin: 0 auto;
+    padding: 0;
+    height: 100%;
+    max-width: 960px;
+    min-width: 320px;
+    background: url(asset_path('lines.png', image)) repeat-y scroll center;
+    background-position: center 170px;
+}
+
 .container-full {
   height: 100%;
 }
@@ -329,7 +339,7 @@ html, body {
 .intro-slide {
   background-image: url(asset_path('how_it_works_slide1.png', image));
   position: absolute;
-  top: 100px;
+  top: 40px;
   left: 280px;
   height: 232px;
   width: 522px;
@@ -337,7 +347,7 @@ html, body {
 .register-slide {
   background-image: url(asset_path('how_it_works_slide2.png', image));
   position: absolute;
-  top: 100px;
+  top: 40px;
   left: 280px;
   height: 232px;
   width: 484px;
@@ -345,7 +355,7 @@ html, body {
 .earn-slide {
   background-image: url(asset_path('how_it_works_slide3.png', image));
   position: absolute;
-  top: 90px;
+  top: 30px;
   left: 280px;
   height: 245px;
   width: 563px;
@@ -353,7 +363,7 @@ html, body {
 .enter-slide {
   background-image: url(asset_path('how_it_works_slide4.png', image));
   position: absolute;
-  top: 90px;
+  top: 30px;
   left: 280px;
   height: 238px;
   width: 498px;
@@ -361,7 +371,7 @@ html, body {
 .buy-slide {
   background-image: url(asset_path('how_it_works_slide5.png', image));
   position: absolute;
-  top: 90px;
+  top: 30px;
   left: 280px;
   height: 250px;
   width: 503px;
@@ -369,7 +379,7 @@ html, body {
 .receive-slide {
   background-image: url(asset_path('how_it_works_slide6.png', image));
   position: absolute;
-  top: 90px;
+  top: 30px;
   left: 280px;
   height: 227px;
   width: 554px;
@@ -1534,6 +1544,8 @@ html, body {
     height: 239px;
     top: 25px;
     left: 200px;
+    padding: 80px 70px 20px 20px;
+    font-size: 1.5em;
   }
 }
 
@@ -1544,17 +1556,14 @@ html, body {
   height: 262px;
   top: 280px;
   left: 140px;
+  padding: 50px 70px 30px 30px;
 }
 
-.play-games {
-  background-image: url(asset_path('play_games.png', image));
+.featured-activity-callout {
   position: absolute;
-  width: 213px;
-  height: 247px;
-  top: 305px;
-  left: 330px;
+  top: 315px;
+  left: 331px;
 }
-
 
 .honor-roll {
   background-image: url(asset_path('honor_roll.png', image));
@@ -1578,9 +1587,22 @@ html, body {
   }
   .our-sponsors {
     background-image: url(asset_path('our_sponsors.png', image));
+    background-repeat: no-repeat;
     position: relative;
     width: 291px;
     height: 251px;
+    padding: 45px 120px 30px 30px;
+  }
+  .our-sponsors-callout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .our-sponsors-callout-content {
+      display: block;
+      position: absolute;
+      left: 175px;
+      top: 60px;
+    }
   }
   .poll-of-the-day {
     background-image: url(asset_path('poll_of_the_day.png', image));
@@ -1614,7 +1636,6 @@ html, body {
 }
 
 .reward-content {
-
   .product-image {
     float: left;
     min-height: 300px;
@@ -1628,12 +1649,12 @@ html, body {
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
     box-shadow:         1px 2px 5px 1px #ccc;
   }
-
 }
 
 .add-to-cart {
   input {
     width: 4em;
+    height: 2.5em;
   }
 }
 
@@ -1823,14 +1844,15 @@ input.awesome-button {
     display: inline-block;
   }
   input[type="number"] {
-      @extend .input-small;
-      margin-right: 10px;
+    @extend .input-small;
+    margin-right: 10px;
+    height: $baseLineHeight + 10;
   }
   input[type="submit"] {
     width: auto;
   }
   h4 {
-      font-weight: normal;
+    font-weight: normal;
   }
 }
 

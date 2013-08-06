@@ -60,7 +60,8 @@ class Person < ActiveRecord::Base
 
 
 
-#  before_save :ensure_spree_user
+  before_save :ensure_spree_user
+  after_destroy :delete_user
 
   def name
     "#{first_name} #{last_name}"
@@ -95,7 +96,7 @@ class Person < ActiveRecord::Base
   accepts_nested_attributes_for :user
 
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :school, :username, :user_attributes, :recovery_password
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status,:username,:email, :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
   validates_presence_of :first_name, :last_name
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
@@ -106,6 +107,9 @@ class Person < ActiveRecord::Base
     self.user = Spree::User.new unless user
   end
 
+  def delete_user
+    self.user.delete
+  end
 
   #Last approved moniker name
   def moniker
@@ -141,14 +145,13 @@ class Person < ActiveRecord::Base
 
   def school=(my_new_school)
     if my_new_school.is_a? School
-      psl = PersonSchoolLink.create(person_id: self.id, school_id: my_new_school.id)
+      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: self.id, school_id: my_new_school.id)
     else
-      psl = PersonSchoolLink.create(person_id: self.id, school_id: my_new_school)
+      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: self.id, school_id: my_new_school)
     end
     psl.activate if psl
     self.person_school_links << psl
   end
-
 
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)

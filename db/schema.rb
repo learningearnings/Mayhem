@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121207000233) do
+ActiveRecord::Schema.define(:version => 20130805215100) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -342,14 +342,16 @@ ActiveRecord::Schema.define(:version => 20121207000233) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
-    t.string   "salutation",        :limit => 10
+    t.string   "salutation",             :limit => 10
     t.string   "recovery_password"
+    t.boolean  "can_distribute_credits"
+    t.boolean  "can_deliver_rewards"
   end
 
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
@@ -500,6 +502,11 @@ ActiveRecord::Schema.define(:version => 20121207000233) do
     t.datetime "updated_at",         :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zip"
   end
 
   create_table "spree_activators", :force => true do |t|
@@ -814,6 +821,7 @@ ActiveRecord::Schema.define(:version => 20121207000233) do
     t.datetime "updated_at",                           :null => false
     t.integer  "count_on_hand",        :default => 0,  :null => false
     t.string   "svg_file_name"
+    t.string   "fullfillment_type"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"

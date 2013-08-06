@@ -44,7 +44,7 @@
               = f.submit 'Print These Credits', :class => 'awesome-button'
 
           .tab-pane#electronic-credits
-            %h4 Issue Electronic Credits
+            %h4 Issue Electronic Credits to a single student
             = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
               = label_tag 'Student'
               = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
@@ -52,11 +52,19 @@
               = text_field_tag :points, nil,:min => '0',:step => '1',:type => "number"
               = f.submit 'Send These Credits', :class => 'awesome-button'
 
+            %h4 Issue Electronic Credits to each student in a classroom
+            = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
+              = label_tag 'Classroom'
+              = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
+              = label_tag :points
+              = text_field_tag :points, nil, :min => '0', :step => '1', :type => "number"
+              = f.submit 'Send These Credits', :class => 'awesome-button'
+
           .tab-pane#transfer-credits
             %h4 Transfer Credits Between Teachers
             = form_for OtuCode.new, :url => school_admins_transfer_bucks_path do |f|
               = label_tag 'Credits'
-              = text_field_tag :points, nil,:min => '0',:step => '1',:type => "number"
+              = text_field_tag :transfer_points, nil, :min => '0', :step => '1', :type => "number"
               = label_tag :from_teacher
               = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = label_tag :to_teacher

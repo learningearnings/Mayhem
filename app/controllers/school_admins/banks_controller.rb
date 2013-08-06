@@ -1,12 +1,11 @@
 module SchoolAdmins
   class BanksController < SchoolAdmins::BaseController
-    layout 'resp_application'
     include Mixins::Banks
     def show
       @teacher = current_person
     end
 
-    def on_success batch_id
+    def on_success(batch_id = nil)
       flash[:notice] = 'Bucks created!'
       if batch_id.nil?
         redirect_to school_admins_bank_path
@@ -16,8 +15,8 @@ module SchoolAdmins
     end
 
     def on_failure
-      flash.now[:error] = 'You do not have enough bucks.'
-      render :show
+      flash[:error] = 'You do not have enough bucks.'
+      redirect_to :back
     end
 
     protected

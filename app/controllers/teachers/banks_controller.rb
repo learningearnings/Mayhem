@@ -1,8 +1,8 @@
 module Teachers
   class BanksController < Teachers::BaseController
-    layout 'resp_application'
     include Mixins::Banks
-    def on_success obj = nil
+
+    def on_success(obj = nil)
       flash[:notice] = 'Bucks created!'
       if obj.nil? || !obj.is_a?(BuckBatch)
         redirect_to teachers_bank_path
@@ -12,8 +12,8 @@ module Teachers
     end
 
     def on_failure
-      flash.now[:error] = 'You do not have enough bucks.'
-      render :show
+      flash[:error] = 'You do not have enough bucks.'
+      redirect_to :back
     end
 
     def show

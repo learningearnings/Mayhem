@@ -6,7 +6,9 @@ def linux_only(require_as)
 end
 
 gem 'rake', '~> 10.0.2'
-gem 'rails', '~> 3.2.6'
+# NOTE: There was a regression in activerecord in 3.2.14 that affects us.  I've
+# pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
+gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 
 # for importing
@@ -34,13 +36,13 @@ gem 'googlecharts'
 gem 'postgres_ext'
 
 # Draper provides decorators to help keep your views dry and low on logic
-gem 'draper'
+gem 'draper', '0.18.0'
 
 # High Voltage provides drop-in static pages for quick ui mockup
 gem 'high_voltage'
 
 # haml is a templating language we use extensively / exclusively on this project
-gem 'haml-rails'
+gem 'haml-rails', '~> 0.3.5'
 
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'
@@ -51,9 +53,12 @@ gem 'roo'
 # Hashie provides lots of nice convenience utilities for working with hashes
 gem 'hashie'
 
-
 # A simple date validator for rails 3
 gem 'date_validator'
+
+# Allows easily modifying models provided earlier in the stack without causing
+# any grief
+gem 'decorators', '~> 1.0.0'
 
 gem 'ranked-model'
 gem 'squeel'
@@ -96,8 +101,7 @@ end
 gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano', '~> 2.13.5'
-
+gem 'capistrano', '~> 2.15.5'
 
 # To use debugger
 # gem 'debugger'
@@ -125,7 +129,7 @@ group :test do
   gem 'capybara'
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
-  gem 'mocha', '~> 0.12.1'
+  gem 'mocha', '~> 0.14.0', require: false
   gem 'valid_attribute', git: 'git://github.com/learningearnings/valid_attribute.git', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
   gem 'libnotify'
@@ -136,7 +140,7 @@ group :test do
   gem 'guard-spinach', '~> 0.0.2'
 end
 
-gem "coffee-filter"
+gem "coffee-filter", '~> 0.1.3'
 
 #### Only here for staging deploymenbts ###
 gem 'factory_girl_rails'

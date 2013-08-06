@@ -29,15 +29,16 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @grades = @current_school.grades
     @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     @classrooms = @current_school.classrooms
+    @fullfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
   end
 
   def create
-    # create the product reward
     @product = Spree::Product.new
-    @image = @product.master.images.new
+    #@image = @product.master.images.new # If we create an empty image, the master doesn't save correctly
     form_data
     if @product.save
       after_save
+      handle_image
       flash[:notice] = "Your reward was created successfully."
       redirect_to admin_rewards_path, :page => (params[:page_id] || 0)
     else
@@ -77,6 +78,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def form_data
     @product.name = params[:product][:name]
+    @product.fullfillment_type = params[:product][:fullfillment_type]
     @product.description = params[:product][:description]
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
@@ -104,13 +106,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       @product.store_ids = store_id_array
     end
 
-    if params[:product][:images]
-      i = @product.master.images.first
-      i.attachment = params[:product][:images][:attachment_file_name].tempfile
-      i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
-      i.attachment_content_type = params[:product][:images][:attachment_file_name].content_type
-      i.save
-    end
     if params[:product][:svg]
       i = @product
 #      i.svg_content_type = params[:product][:svg][:svg_file_name].content_type
@@ -120,13 +115,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
       i.save
     end
-
-#    filter_factory = FilterFactory.new
-#    filter_condition = FilterConditions.new classrooms: [Classroom.find(params[:classroom])], minimum_grade: params[:min_grade], maximum_grade: params[:max_grade]
-#    filter = filter_factory.find_or_create_filter(filter_condition)
-#    filter.save
-#    @product.filter = filter
-
   end
 
   def after_save
@@ -135,9 +123,12 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
   end
 
-  #
-  # Delete this
-  #
+  def handle_image
+    if params[:product][:images].present?
+      @product.images.first.destroy if @product.images.present?
+      @product.images.create(params[:product][:images])
+    end
+  end
 
   def create_wholesale_properties
     # create retail price property
@@ -175,9 +166,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     redirect_to admin_rewards_path
   end
 
-
   private
-
 
   # Users are required to access the application
   # using a subdomain
@@ -195,7 +184,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       redirect_to my_redirect_url
     end
   end
-
 
   def home_subdomain
     "le"
@@ -251,10 +239,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       request.protocol + request.host_with_port
     end
   end
-
-
-
-
 
   def check_saved_page
     return if params[:page]  # a passed in param trumps everything

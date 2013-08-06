@@ -13,6 +13,14 @@ Spree::Order.class_eval do
     end
   end
 
+  def after_refund
+    # restock item quantity
+    variant = products.first.master
+    # to get qty, we can call the first line_item since we are using one_click_spree_product_purchase_command and there is only one line-item per order
+    variant.count_on_hand += line_items.first.quantity
+    variant.save
+  end
+
 
 checkout_flow do
     go_to_state :transmitted
@@ -23,6 +31,7 @@ checkout_flow do
     # go_to_state :confirm, :if => lambda { |order| order.confirmation_required? }
     go_to_state :complete
     go_to_state :shipped
+    go_to_state :refunded
     #remove_transition :from => :delivery, :to => :confirm
   end
 

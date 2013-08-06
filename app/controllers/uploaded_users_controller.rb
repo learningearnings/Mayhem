@@ -5,7 +5,6 @@ class UploadedUsersController < LoggedInController
 
   def bulk_upload
     if params[:bulk_upload] && params[:bulk_upload][:the_file]
-      binding.pry
       if params[:bulk_upload][:the_file].original_filename.include?('.xls')
         tmpfile = "/tmp/xxx-" + params[:bulk_upload][:the_file].original_filename
         File.open(tmpfile,'w') do |f|
@@ -75,11 +74,10 @@ class UploadedUsersController < LoggedInController
     end
   end
 
-private 
+private
   def convert(file_path)
     begin
       file_basename = File.basename(file_path, ".xls")
-      binding.pry
       xls = Excel.new(file_path, false, :ignore)
       xls.to_csv("/tmp/#{file_basename}.csv")
       file_path = "/tmp/#{file_basename}.csv"

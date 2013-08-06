@@ -8,7 +8,7 @@
       = password_field_tag 'user[password]', nil, :autocomplete =>  (Rails.env.development? ? 'on' : 'off'), :placeholder => 'Password'
     %li
     %label.supplemenal-login-form @
-    = select_tag 'user[school_id]',options_from_collection_for_select(School.select("id,name").all,:id,:name,School.find_by_store_subdomain(request.subdomain).try(:id) ), :class => 'chzn-select'
+    = select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain ), :class => 'chzn-select'
     %li
       %button.btn.login-button
   .forgot-password

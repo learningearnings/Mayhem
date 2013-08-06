@@ -1,4 +1,4 @@
-module School::SettingsHelper
+module SchoolsHelper
 
   def teacher_icons teacher, badges = []
     unless badges.is_a? Array
@@ -10,6 +10,5 @@ module School::SettingsHelper
     end
     icons
   end
-
 
 end

@@ -13,6 +13,7 @@ require 'minitest/matchers'
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'minitest/reporters'
+require "mocha/setup"
 require 'valid_attribute'
 require 'factory_girl'
 require 'bigdecimal'

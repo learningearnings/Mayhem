@@ -35,6 +35,13 @@ module Spree
     end
 
     def void(response_code, credit_card, options = {})
+      order = Spree::Order.find_by_number(credit_card[:order_id])
+      person = order.user.person
+      refund_amount = order.amount
+      product = order.products.first
+      order.refund
+      # apply plutus refund
+      CreditManager.new.transfer_credits_for_reward_refund(person, refund_amount, product)
       ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345')
     end
 
@@ -54,7 +61,7 @@ module Spree
     def charge_account(money, credit_card, options)
       cm = CreditManager.new
       o = Spree::Order.find_by_number(options[:order_id])
-      if o.store == Spree::Store.find_by_name("le") # purchasing a wholesale product as a school_admin
+      if o.store == Spree::Store.find_by_code("le") # purchasing a wholesale product as a school_admin
         # TODO change this to school session variable
         # NOTE: Nope, a model shouldn't know about a session -ja
         school = AccountPersonMapper.new(credit_card.number).find_school

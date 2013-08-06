@@ -96,4 +96,10 @@ module SharedSteps
     fill_in 'points', :with => '16'
     click_button 'Send These Credits'
   end
+
+  Given 'I transfer credits to another teacher' do
+    fill_in 'transfer_points', :with => '16'
+    select @school_admin.name, :from => 'to_teacher_id'
+    click_button 'Transfer Credits'
+  end
 end
