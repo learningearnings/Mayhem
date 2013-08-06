@@ -14,6 +14,14 @@ class Auction < ActiveRecord::Base
   scope :ended,  where("NOW() >= end_date")
   scope :upcoming,  where("NOW() < start_date")
 
+  def grade_range
+    self.min_grade..self.max_grade
+  end
+
+  def grades
+    self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+  end
+
   def open_bids
     auction_bids.where(status: 'open')
   end

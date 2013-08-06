@@ -54,8 +54,8 @@ ActiveAdmin.register Auction do
   form do |f|
     f.inputs "Details" do
       f.input :product
-      f.input :start_date
-      f.input :end_date
+      f.input :start_date, :as => :datepicker
+      f.input :end_date, :as => :datepicker
     end
     f.buttons
   end
