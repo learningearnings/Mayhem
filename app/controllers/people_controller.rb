@@ -18,11 +18,17 @@ class PeopleController < LoggedInController
   def update
     @person = Person.find(params[:id])
     @person.avatar = Avatar.find(params[:avatar_id]) if !params[:avatar_id].blank?
+    if params[:teacher][:password].present? && params[:teacher][:password_confirmation].present?
+      @person.user.update_attributes(:password => params[:teacher][:password], :password_confirmation => params[:teacher][:password_confirmation])
+    end
+    if params[:teacher][:email].present?
+      @person.user.update_attributes(:email => params[:teacher][:email])
+    end
     # If the moniker is either blank or is the existing moniker, don't update
     # it.
     if @person.update_attributes(moniker: params[:moniker])
       flash[:notice] = "#{@person.type} profile updated."
-      redirect_to main_app.root_path
+      redirect_to person_path(@person)
     else
       @avatars = Avatar.page params[:page]
       flash[:notice] = "#{@person.type} profile not updated."
