@@ -84,7 +84,7 @@ ActiveAdmin.register Auction do
         auction.schools.collect{|t| t.name}.join(', ')
       end
     end
-    #link_to 'Cancel Auction', admin_cancel_auction_path(auction)
+    render 'links'
   end
 
   form do |f|
