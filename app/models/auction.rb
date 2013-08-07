@@ -18,6 +18,8 @@ class Auction < ActiveRecord::Base
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :ended,  where("NOW() >= end_date")
   scope :upcoming,  where("NOW() < start_date")
+  scope :for_school,  lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
+  scope :for_state,   lambda {|state|  joins({:states =>  [:auction_state_links] }).where("auction_state_links.state_id = ?", state.id) }
 
   def grade_range
     self.min_grade..self.max_grade

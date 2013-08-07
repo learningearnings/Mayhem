@@ -1,6 +1,6 @@
 class AuctionsController < LoggedInController
   def index
-    auctions = Auction.active
+    auctions = Auction.active.for_school(current_school).for_state(current_school.addresses.first.state).uniq
     render locals: { auctions: auctions }
   end
 

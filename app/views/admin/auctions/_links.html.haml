@@ -1,1 +1,2 @@
-= link_to 'Cancel Auction', cancel_auction_path(@auction)
+- if @auction.active?
+  = link_to 'Cancel Auction', cancel_auction_path(@auction)
