@@ -72,6 +72,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     form_data
     if @product.save
       after_save
+      handle_image
       flash[:notice] = "Your reward was updated successfully."
       redirect_to admin_rewards_path
     else
