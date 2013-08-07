@@ -35,6 +35,7 @@ Leror::Application.routes.draw do
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
+  post "/cancel_auction/:id" => 'auctions#cancel_auction', :as => 'cancel_auction'
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
@@ -199,6 +200,7 @@ Leror::Application.routes.draw do
   resources :add_locker_sticker_to_locker_commands, only: [:create]
   resources :remove_locker_sticker_from_locker_commands, only: [:create]
   resources :bid_on_auction_commands, only: [:create]
+
 
   # rewards for teachers
   resources :rewards

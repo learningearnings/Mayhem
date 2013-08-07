@@ -7,8 +7,13 @@ class Auction < ActiveRecord::Base
 
   belongs_to :product, class_name: "Spree::Product", foreign_key: :product_id
   has_many :auction_bids
+  has_many :states, :through => :auction_state_links
+  has_many :auction_state_links
+  has_many :schools, :through => :auction_school_links
+  has_many :auction_school_links
 
-  attr_accessible :start_date, :end_date, :current_bid, :auction_type, :product_id, :starting_bid, as: :le_admin
+  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, as: :le_admin
+  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :ended,  where("NOW() >= end_date")

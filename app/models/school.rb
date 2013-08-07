@@ -14,6 +14,8 @@ class School < ActiveRecord::Base
   has_many :person_school_links
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
+  has_many :auctions, :through => :auction_school_links
+  has_many :auction_school_links
 
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
 
