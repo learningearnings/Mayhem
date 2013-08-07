@@ -1,5 +1,17 @@
 .main-content-wrapper
+
   .primary-content
+    .create-classroom
+      %h3 Create a Classroom
+      %hr
+      = form_for Classroom.new do |f|
+        = f.label :classroom_name
+        = f.text_field :name, :class => 'focus-on-me'
+        = f.hidden_field :school_id, :value => current_school.id
+        = f.submit 'Create', :class => "awesome-button"
+
+
+  .secondary-content
     %h2 Classrooms
     .accordion#classrooms
       - if @classrooms.present?
@@ -19,17 +31,6 @@
                       = link_to student.name + " (" + student.user.username + ")", teachers_show_student_path(student)
                       = link_to  '<i class="icon-trash"></i>'.html_safe, remove_classroom_student_path(:classroom => classroom, :student => student), :title => "Remove #{student.name} from #{classroom.name} classroom"
                       = image_tag student.avatar.image.thumb('20x20#').url if student.avatar.present?
-
-  .secondary-content
-    .create-classroom
-      %h3 Create a Classroom
-      %hr
-      = form_for Classroom.new do |f|
-        = f.label :classroom_name
-        = f.text_field :name, :class => 'focus-on-me'
-        = f.hidden_field :school_id, :value => current_school.id
-        = f.submit 'Create', :class => "awesome-button"
-
 
   #manage_class-modal.modal.hide
     .modal-body
