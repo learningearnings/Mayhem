@@ -58,7 +58,7 @@ module Mixins
     end
 
     def issue_ebucks_to_student(student)
-      @bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:points].gsub(/[^\d]/, '')))
+      @bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:credits][student.id.to_s].gsub(/[^\d]/, '')))
     end
   end
 end
