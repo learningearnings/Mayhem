@@ -25,11 +25,17 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
     @product.available_on = Time.now
+    @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
+    set_vars
+  end
+
+  def set_vars
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
-    @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     @classrooms = @current_school.classrooms
     @fullfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
+    @purchased_by = ["LE", "Sponsor", "School", "Charity"]
+    @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
   end
 
   def create
@@ -49,9 +55,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def edit
     @product = Spree::Product.find(params[:id])
-    @current_school = School.find(session[:current_school_id])
-    @grades = @current_school.grades
-    @classrooms = @current_school.classrooms
     if @product.has_property_type?
       @type = @product.property("reward_type")
       @types = [[@type, @type]]
@@ -61,6 +64,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     else
       @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
     end
+    set_vars
   end
 
   def update
@@ -79,10 +83,13 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   def form_data
     @product.name = params[:product][:name]
     @product.fullfillment_type = params[:product][:fullfillment_type]
+    @product.purchased_by = params[:product][:purchased_by]
     @product.description = params[:product][:description]
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
+    @product.taxons = params[:product][:taxons].map{|k,v| Spree::Taxon.find(k) if v == "1" }.compact
+
 
     if params[:product_type] == "wholesale"
       @product.store_ids = ["#{Spree::Store.find_by_code("le").id}"]

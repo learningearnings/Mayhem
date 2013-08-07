@@ -1,5 +1,5 @@
 Spree::Product.class_eval do
-  attr_accessible :store_ids, :fullfillment_type
+  attr_accessible :store_ids, :fullfillment_type, :purchased_by
   has_attached_file :svg
 
   has_many :plutus_transactions, :as => :commercial_document, :class_name => 'Plutus::Transaction'
