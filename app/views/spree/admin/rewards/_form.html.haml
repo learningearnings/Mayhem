@@ -86,6 +86,13 @@
       = f.label :retail_quantity, 'Minimum Shipment', {:class => 'control-label'}
       .pull-right
         = f.text_field :retail_quantity,:class => 'numeric input-small'
+    %h3 Grades
+    .control-group
+      = f.label :min_grade, "Minimum Grade", {:class => "control-label"}
+      = f.select :min_grade, options_for_select(@grades, :selected => @product.min_grade), :include_blank => @product.min_grade.nil?, :class => 'input-small'
+    .control-group
+      = f.label :max_grade, "Maximum Grade", {:class => "control-label"}
+      = f.select :max_grade, options_for_select(@grades, :selected => @product.max_grade), :include_blank => @product.max_grade.nil?, :class => 'input-small'
 
 %button{:type => "submit", :class => "btn btn-primary"} Save Changes
 

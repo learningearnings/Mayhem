@@ -36,6 +36,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @fullfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
     @purchased_by = ["LE", "Sponsor", "School", "Charity"]
     @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
+    @grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   end
 
   def create
@@ -89,6 +90,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
+    @product.min_grade = params[:product][:min_grade]
+    @product.max_grade = params[:product][:max_grade]
     @product.taxons = params[:product][:taxons].map{|k,v| Spree::Taxon.find(k) if v == "1" }.compact
 
 
