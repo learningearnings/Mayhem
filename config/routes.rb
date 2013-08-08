@@ -137,6 +137,7 @@ Leror::Application.routes.draw do
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
   match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
+
   namespace :students do
     match "home" => "home#show", as: 'home'
   end
@@ -159,7 +160,9 @@ Leror::Application.routes.draw do
     match "/transfer_bucks" => 'banks#transfer_bucks'
     match "/new_student" => 'dashboards#new_student'
     match "/create_student" => 'dashboards#create_student'
-    match "/show_student/:student_id" => 'dashboards#show', as: "show_student"
+    match "/edit_student/:id" => 'dashboards#edit_student'
+    match "/update_student" => 'dashboards#update_student', :as => 'update_student'
+    match "/show_student/:id" => 'dashboards#show', as: "show_student"
 
     # Messaging routes
     match "inbox/peer_messages" => 'messages#peer_messages', :as => 'peer_messages'
@@ -172,6 +175,7 @@ Leror::Application.routes.draw do
     resources :messages
   end
 
+  resources :students
   namespace :school_admins do
     resource :bank
     resource :dashboard

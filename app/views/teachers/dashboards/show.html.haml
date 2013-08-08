@@ -1,5 +1,28 @@
-%h2 Teacher Dashboard
+%h2= "Student - #{@student.name}"
+%h4= link_to "Back to Classroom", classroom_path(@classroom)
 
-= link_to 'Create Student', teachers_new_student_path
+/= link_to 'Create Student', teachers_new_student_path
+= form_for @student, :url => teachers_update_student_path do |f|
+  = f.hidden_field :id, :value => @student.id
+  = hidden_field_tag :classroom_id, @classroom.id
+  = f.label :first_name
+  = f.text_field :first_name
+  = f.label :last_name
+  = f.text_field :last_name
+  = f.label :username
+  = f.text_field :username
+  = f.label :grade
+  = f.select :grade, School::GRADES
+  = f.label :moniker
+  = f.text_field :moniker
+  = f.label :password
+  = f.text_field :password
+  %br
+  = f.submit
 
+.bank-account
+  %h4 Accounts
+  .balances
+    %p Checking Balance: #{@student.checking_balance}
+    %p Savings Balance: #{@student.savings_balance}
 

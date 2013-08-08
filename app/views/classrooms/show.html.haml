@@ -15,7 +15,7 @@
   %tbody
     - @classroom.students.each do |student|
       %tr
-        %td= student.name
+        %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
         %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
 
