@@ -144,6 +144,7 @@ Leror::Application.routes.draw do
   match "/charities" => 'charities#index'
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
+  match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   namespace :teachers do
     resources :reports
     resource  :bank
