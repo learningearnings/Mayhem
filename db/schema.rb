@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130806142951) do
+ActiveRecord::Schema.define(:version => 20130808133458) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -66,6 +66,13 @@ ActiveRecord::Schema.define(:version => 20130806142951) do
   create_table "auction_state_links", :force => true do |t|
     t.integer  "auction_id"
     t.integer  "state_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auction_zip_codes", :force => true do |t|
+    t.integer  "auction_id"
+    t.string   "zip_code"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

@@ -11,15 +11,17 @@ class Auction < ActiveRecord::Base
   has_many :auction_state_links
   has_many :schools, :through => :auction_school_links
   has_many :auction_school_links
+  has_many :auction_zip_codes
 
-  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, as: :le_admin
-  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid
+  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_codes, :auction_zip_code_ids, as: :le_admin
+  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_code, :auction_zip_code_ids
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :ended,  where("NOW() >= end_date")
   scope :upcoming,  where("NOW() < start_date")
   scope :for_school,  lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
   scope :for_state,   lambda {|state|  joins({:states =>  [:auction_state_links] }).where("auction_state_links.state_id = ?", state.id) }
+  scope :for_zip,     lambda {|zip|    joins({:auction_zip_codes =>  [:auction_zip_codes] }).where("auction_zip_codes.zip_code= ?", zip) }
 
   def grade_range
     self.min_grade..self.max_grade

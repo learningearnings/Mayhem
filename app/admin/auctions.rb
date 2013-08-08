@@ -8,10 +8,31 @@ ActiveAdmin.register Auction do
     skip_before_filter :add_current_store_id_to_params
     with_role :le_admin
 
+    def create
+      options = params[:auction].dup
+      options.delete(:auction_zip_code_ids)
+      @auction = Auction.new(options)
+      if @auction.save
+        params[:auction][:auction_zip_code_ids].each do |zip|
+          @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
+        end
+        flash[:notice] = 'Auction updated'
+        redirect_to admin_auction_path(@auction)
+      else
+        flash[:error] = 'There was a problem updating the auction.'
+        render :edit
+      end
+    end
+
     def update
       @auction = Auction.find(params[:id])
       @auction.auction_state_links.delete_all
       @auction.auction_school_links.delete_all
+      @auction.auction_zip_codes.delete_all
+      params[:auction][:auction_zip_code_ids].each do |zip|
+        @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
+      end
+      params[:auction].delete(:auction_zip_code_ids)
       if @auction.update_attributes(params[:auction])
         flash[:notice] = 'Auction updated'
         redirect_to admin_auction_path(@auction)
@@ -83,6 +104,10 @@ ActiveAdmin.register Auction do
       row :schools do
         auction.schools.collect{|t| t.name}.join(', ')
       end
+      row :auction_zip_codes do
+        auction.auction_zip_codes.collect{|t| t.zip_code}.join(', ')
+      end
+ 
     end
     render 'links'
   end
@@ -96,6 +121,7 @@ ActiveAdmin.register Auction do
       f.input :max_grade, :as => :select, :collection => School::GRADES
       f.input :schools, :as => :chosen
       f.input :states, :as => :chosen
+      f.input :auction_zip_codes, :as => :chosen, :collection => Address.all.map{|x| x.zip}
     end
     f.buttons
   end
