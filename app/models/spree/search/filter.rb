@@ -4,10 +4,11 @@
 module Spree::Search
 #  class Filter < defined?(Spree::Search::MultiDomain) ? Spree::Search::MultiDomain :  Spree::Core::Search::Base
   class Filter < Spree::Search::MultiDomain
+    attr_reader :current_school
+
     def retrieve_products
       @products_scope = get_base_scope
       @products_scope.includes([:master])
-
     end
 
     def manage_pagination
@@ -21,6 +22,7 @@ module Spree::Search
       base_scope = @cached_product_group ? @cached_product_group.products.active : Spree::Product.active
       base_scope = base_scope.by_store(current_store_id) if current_store_id
       base_scope = base_scope.in_taxon(taxon) unless taxon.blank?
+      base_scope = base_scope.not_excluded(current_school) if current_school
 
       base_scope = get_products_conditions_for(base_scope, keywords) unless keywords.blank?
       # Leadmins get to see out of stock products
@@ -40,6 +42,7 @@ module Spree::Search
       params[:filters] = nil
       @properties[:filters] = nil
       @current_user = params[:searcher_current_user]
+      @current_school = params[:current_school]
       super
     end
   end

@@ -29,6 +29,7 @@ Leror::Application.routes.draw do
 
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
+    resources :reward_exclusions
     #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
     post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
   end

@@ -35,6 +35,14 @@ Spree::Product.class_eval do
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})
   end
 
+  def self.not_excluded(school)
+    if(school.reward_exclusions.any?)
+      where("spree_products.id NOT IN (?)", school.reward_exclusions.map(&:product_id))
+    else
+      scoped
+    end
+  end
+
   def thumb
     images.first.attachment.url(:small)
   rescue
