@@ -11,7 +11,7 @@ Spree::Product.class_eval do
   has_one :person, :through => :spree_product_person_link, :inverse_of => :products
 
   has_many :state_product_links, :foreign_key => :spree_product_id
-  has_many :states, :through => :state_product_links
+  has_many :states, :through => :state_product_links, :class_name => "::State"
 
   has_many :school_product_links, :foreign_key => :spree_product_id
   has_many :schools, :through => :school_product_links
