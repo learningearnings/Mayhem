@@ -1,4 +1,5 @@
 %h2= "Student - #{@student.name}"
+= avatar_for(current_person, '80x80#')
 %h4= link_to "Back to Classroom", classroom_path(@classroom)
 
 /= link_to 'Create Student', teachers_new_student_path
@@ -26,3 +27,11 @@
     %p Checking Balance: #{@student.checking_balance}
     %p Savings Balance: #{@student.savings_balance}
 
+%table
+  %thead
+    %tr
+      %th Sturff
+  %tbody
+    %tr
+      %td more sturff
+/= link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button"

@@ -35,6 +35,7 @@ module Teachers
     def show
       @classroom = Classroom.find(params[:classroom_id])
       @student = Student.find(params[:id])
+      @orders = @student.user.orders
     end
 
   end
