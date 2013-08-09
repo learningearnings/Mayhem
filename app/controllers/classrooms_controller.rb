@@ -11,10 +11,10 @@ class ClassroomsController < LoggedInController
 
   def show
     @classroom = Classroom.find(params[:id])
-    #respond_to do |format|
-    #  format.html { render layout: false }
-    #  format.json { render json: @classroom.students }
-    #end
+    respond_to do |format|
+      format.html { render layout: true }
+      format.json { render json: @classroom.students }
+    end
   end
 
   def remove_student
