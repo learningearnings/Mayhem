@@ -1,26 +1,6 @@
 .main-content-wrapper
-  .primary-content
-    %h2 Classrooms
-    .accordion#classrooms
-      - if @classrooms.present?
-        - @classrooms.each do |classroom|
-          .accordion-group
-            %h4.accordion-heading
-              %a{"data-toggle" => "collapse", "data-parent" => "classrooms", :href => "#collapse#{classroom.id}"}= classroom.name
-            %div{:class => "accordion-body collapse", :id => "collapse#{classroom.id}"}
-              %ul.inline.student-listing.accordion-inner
-                %li
-                  = link_to("Add Students to Class", classroom_path(classroom), 'data-toggle' => 'modal', 'data-target' => '#manage_class-modal', :class => 'btn awesome-button')
-                  = link_to 'Remove This Class', classroom_path(classroom), :method => :delete, :class => 'btn awesome-button'
-                - classroom.students.in_groups_of(3) do |group|
-                  - group.each do |student|
-                    - next if student.nil?
-                    %li.student-tile
-                      = link_to student.name + " (" + student.user.username + ")", teachers_show_student_path(student)
-                      = link_to  '<i class="icon-trash"></i>'.html_safe, remove_classroom_student_path(:classroom => classroom, :student => student), :title => "Remove #{student.name} from #{classroom.name} classroom"
-                      = image_tag student.avatar.image.thumb('20x20#').url if student.avatar.present?
 
-  .secondary-content
+  .primary-content
     .create-classroom
       %h3 Create a Classroom
       %hr
@@ -31,5 +11,9 @@
         = f.submit 'Create', :class => "awesome-button"
 
 
-  #manage_class-modal.modal.hide
-    .modal-body
+  .secondary-content
+    %h2 Classrooms
+    #classrooms
+      - if @classrooms.present?
+        - @classrooms.each do |classroom|
+          %h3= link_to classroom.name, classroom_path(classroom)

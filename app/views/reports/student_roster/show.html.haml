@@ -16,7 +16,7 @@
         .grade
           = label_tag :grade
           - # NOTE: So this grades array has its values in the reverse order from what Rails wants.  Cheating to flip them. Robby encouraged me.  -ja
-    .sorting 
+    .sorting
       %h4 Sort By
       = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username", "Grade"], params[:sort_by])   
     .report
