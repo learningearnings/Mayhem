@@ -1,4 +1,3 @@
-require 'pry'
 ActiveAdmin.register Auction do
   scope :active
   scope :ended
@@ -80,9 +79,9 @@ ActiveAdmin.register Auction do
     end
     column :actions do |auction|
       link_html = ""
-      link_html += (link_to "Show", admin_auction_path(auction)) + " " #if auction.upcoming?
-      link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " #if auction.upcoming?
-      link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " #if auction.upcoming?
+      link_html += (link_to "Show", admin_auction_path(auction)) + " " if auction.upcoming?
+      link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " if auction.upcoming?
+      link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.upcoming?
       link_html.html_safe
     end
   end
