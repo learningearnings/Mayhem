@@ -17,9 +17,9 @@ gem 'mysql2'
 gem 'jquery-rails', :git => 'git@github.com:learningearnings/jquery-rails.git', branch: 'svgweb-fix'
 
 gem 'jquery-ui-rails'
-gem 'chosen-rails'
 
 gem 'activeadmin'
+gem 'activeadmin-extra', github: 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
 
@@ -88,6 +88,7 @@ gem 'spree_auth_devise', :git => "git://github.com/learningearnings/spree_auth_d
 gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
+  gem 'chosen-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'compass-rails'
   gem 'coffee-rails', '~> 3.2.1'

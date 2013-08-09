@@ -36,6 +36,7 @@ Leror::Application.routes.draw do
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
+  match "/cancel_auction/:id" => 'auctions#cancel_auction', :as => 'cancel_auction'
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
