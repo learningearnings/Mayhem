@@ -4,6 +4,7 @@ class AuctionsController < LoggedInController
     @auctions << Auction.active.for_school(current_school)
     @auctions << Auction.active.for_state(current_school.addresses.first.state).uniq
     @auctions << Auction.active.for_zip(current_school.addresses.first.zip).uniq
+    @auctions << Auction.active.select{|x| x.global?}.uniq
     @auctions = @auctions.uniq
     render locals: { auctions: auctions }
   end
