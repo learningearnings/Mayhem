@@ -247,9 +247,9 @@ if Rails.env.development? || Rails.env.production?
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
-  @school_admin.activate
   @school_admin.user.password = 'spree123'
   @school_admin.user.password_confirmation = 'spree123'
+  @school_admin.activate!
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
 
   # Create a teacher
@@ -262,10 +262,9 @@ if Rails.env.development? || Rails.env.production?
 
   # Create a LE Admin
   @le_admin = FactoryGirl.create(:le_admin, :user => Spree::User.find(1))
-  @le_admin.activate
   @le_admin.username = 'leadmin'
   @le_admin.user.password = "spree123"
-  @le_admin.save
+  @le_admin.activate!
 
   # Give the school some students
   @student1 = FactoryGirl.create(:student, :user => FactoryGirl.create(:spree_user,:username => 'student1', :email => 'student1@example.com'))
@@ -284,7 +283,6 @@ if Rails.env.development? || Rails.env.production?
                                                                    :classroom_id => @classroom.id,
                                                                    :owner => true)
 
-
   # ======== GIVE OUT SOME CREDITS ======
   # Issue some credits to the school
   @school_credits = 200_000
@@ -299,7 +297,7 @@ if Rails.env.development? || Rails.env.production?
   @student_credits = 10000
   @credit_manager.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
   # ======== /GIVE OUT SOME CREDITS ======
-  
+
   # ======== MESSAGING ========
   @message1 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message2 = FactoryGirl.create(:message, from: @student2, to: @student1)

@@ -11,19 +11,23 @@
   .span4
     %h3 Common Properties
     .control-group
+      = f.label :purchased_by, 'Purchased By', {:class => 'control-label'}
+      .pull-right
+        = f.select :purchased_by, options_for_select(@purchased_by, :selected => @product.purchased_by), :include_blank => @product.purchased_by.nil?, :class => 'input-medium'
+    .control-group
       = f.label :product_type, 'Product Type', {:class => 'control-label'}
       .pull-right
         = select_tag :product_type, options_for_select(@types), :class => 'input-medium'
     .control-group
       = f.label :fullfillment_type, 'Fullfillment Type', {:class => 'control-label'}
       .pull-right
-        = f.select :fullfillment_type, options_for_select(@fullfillment_types), :include_blank => true, :class => 'input-large'
+        = f.select :fullfillment_type, options_for_select(@fullfillment_types, :selected => @product.fullfillment_type), :include_blank => @product.fullfillment_type.nil?, :class => 'input-medium'
     .control-group
-      = f.label :name, 'Product Name', {:class => 'control-label'}
+      = f.label :name, 'Name', {:class => 'control-label'}
       .pull-right
         = f.text_field :name, :class => 'input-large'
     .control-group
-      = f.label :price, 'Price', {:class => 'control-label'}
+      = f.label :price, 'credits', {:class => 'control-label'}
       .input-prepend.pull-right
         %span.add-on $
         = f.text_field :price,{ :value => number_to_currency(@product.price, :unit => ''), :class => 'numeric input-small'}
@@ -32,13 +36,22 @@
       .pull-right
         = f.text_field :on_hand, {:class => 'numeric input-small'}
     .control-group
-      = f.label :available_on, 'Available on', {:class => 'control-label'}
+      = f.label :available_on, 'Available On', {:class => 'control-label'}
       .pull-right
-        = f.text_field :available_on, :class => 'datepicker input-medium numeric'
+        = f.text_field :available_on, :value => @product.available_on.in_time_zone(@current_school.timezone), :class => 'datepicker input-medium numeric'
   .span4
     %h3 Description
     .control-group
       = f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth', :placeholder => "Description seen by Students" }
+    = f.fields_for :taxons do |t|
+      %h3 Categories
+      .control-group
+        - @categories.each do |category|
+          .row
+            .span12
+              .inline= t.check_box category.id, :checked => @product.taxons.include?(category)
+              .inline= t.label category.name
+    %h3 Image
     - unless @product.images.empty?
       .control-group
         = image_tag @product.thumb
@@ -73,6 +86,19 @@
       = f.label :retail_quantity, 'Minimum Shipment', {:class => 'control-label'}
       .pull-right
         = f.text_field :retail_quantity,:class => 'numeric input-small'
+    %h3 Grades
+    .control-group
+      = f.label :min_grade, "Minimum Grade", {:class => "control-label"}
+      = f.select :min_grade, options_for_select(@grades, :selected => @product.min_grade), :include_blank => @product.min_grade.nil?, :class => 'input-small'
+    .control-group
+      = f.label :max_grade, "Maximum Grade", {:class => "control-label"}
+      = f.select :max_grade, options_for_select(@grades, :selected => @product.max_grade), :include_blank => @product.max_grade.nil?, :class => 'input-small'
+    %h3 States
+    .control-group
+      = f.select :states, options_from_collection_for_select(State.all, :id, :name, :selected => @product.states.map{|s| s.id} ), {},  {:multiple => true}
+    %h3 Schools
+    .control-group
+      = f.select :schools, options_from_collection_for_select(School.all, :id, :name, :selected => @product.schools.map{|s| s.id} ), {}, {:multiple => true}
 
 %button{:type => "submit", :class => "btn btn-primary"} Save Changes
 

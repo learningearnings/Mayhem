@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130808133458) do
+ActiveRecord::Schema.define(:version => 20130809140232) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -496,6 +496,11 @@ ActiveRecord::Schema.define(:version => 20130808133458) do
     t.datetime "updated_at",            :null => false
   end
 
+  create_table "reward_exclusions", :force => true do |t|
+    t.integer "school_id"
+    t.integer "product_id"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -504,6 +509,13 @@ ActiveRecord::Schema.define(:version => 20130808133458) do
   end
 
   add_index "school_filter_links", ["filter_id", "school_id"], :name => "index_school_filter_links_on_filter_id_and_school_id", :unique => true
+
+  create_table "school_product_links", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "schools", :force => true do |t|
     t.string   "name"
@@ -845,6 +857,9 @@ ActiveRecord::Schema.define(:version => 20130808133458) do
     t.integer  "count_on_hand",        :default => 0,  :null => false
     t.string   "svg_file_name"
     t.string   "fullfillment_type"
+    t.string   "purchased_by"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1153,6 +1168,13 @@ ActiveRecord::Schema.define(:version => 20130808133458) do
   end
 
   add_index "state_filter_links", ["filter_id", "state_id"], :name => "index_state_filter_links_on_filter_id_and_state_id", :unique => true
+
+  create_table "state_product_links", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "states", :force => true do |t|
     t.string   "name"

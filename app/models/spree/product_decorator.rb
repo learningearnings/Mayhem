@@ -1,5 +1,5 @@
 Spree::Product.class_eval do
-  attr_accessible :store_ids, :fullfillment_type
+  attr_accessible :store_ids, :fullfillment_type, :purchased_by, :min_grade, :max_grade
   has_attached_file :svg
 
   has_many :plutus_transactions, :as => :commercial_document, :class_name => 'Plutus::Transaction'
@@ -9,6 +9,12 @@ Spree::Product.class_eval do
 
   has_one :spree_product_person_link, :inverse_of => :product
   has_one :person, :through => :spree_product_person_link, :inverse_of => :products
+
+  has_many :state_product_links, :foreign_key => :spree_product_id
+  has_many :states, :through => :state_product_links, :class_name => "::State"
+
+  has_many :school_product_links, :foreign_key => :spree_product_id
+  has_many :schools, :through => :school_product_links
 
   #   # add_search_scope :with_property_value do |property, value|
   #   #   properties = Spree::Property.table_name
@@ -33,6 +39,14 @@ Spree::Product.class_eval do
 
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})
+  end
+
+  def self.not_excluded(school)
+    if(school.reward_exclusions.any?)
+      where("spree_products.id NOT IN (?)", school.reward_exclusions.map(&:product_id))
+    else
+      scoped
+    end
   end
 
   def thumb

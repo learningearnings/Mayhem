@@ -4,6 +4,7 @@ Spree::HomeController.class_eval do
   def index
     temp_params = params
     temp_params[:filters] = session[:filters]
+    temp_params[:current_school] = current_school
     @searcher = Spree::Search::Filter.new(temp_params)
     @products = @searcher.retrieve_products
     if current_user.person.is_a?(SchoolAdmin) &&
