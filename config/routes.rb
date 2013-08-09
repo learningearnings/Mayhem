@@ -202,7 +202,6 @@ Leror::Application.routes.draw do
   resources :remove_locker_sticker_from_locker_commands, only: [:create]
   resources :bid_on_auction_commands, only: [:create]
 
-
   # rewards for teachers
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
