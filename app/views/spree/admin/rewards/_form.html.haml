@@ -93,6 +93,12 @@
     .control-group
       = f.label :max_grade, "Maximum Grade", {:class => "control-label"}
       = f.select :max_grade, options_for_select(@grades, :selected => @product.max_grade), :include_blank => @product.max_grade.nil?, :class => 'input-small'
+    %h3 States
+    .control-group
+      = f.select :states, options_from_collection_for_select(State.all, :id, :name, :selected => @product.states.map{|s| s.id} ), {},  {:multiple => true}
+    %h3 Schools
+    .control-group
+      = f.select :schools, options_from_collection_for_select(School.all, :id, :name, :selected => @product.schools.map{|s| s.id} ), {}, {:multiple => true}
 
 %button{:type => "submit", :class => "btn btn-primary"} Save Changes
 

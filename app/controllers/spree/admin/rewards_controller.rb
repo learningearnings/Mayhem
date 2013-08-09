@@ -93,6 +93,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.min_grade = params[:product][:min_grade]
     @product.max_grade = params[:product][:max_grade]
     @product.taxons = params[:product][:taxons].map{|k,v| Spree::Taxon.find(k) if v == "1" }.compact
+    @product.states = params[:product][:states].map{|s| ::State.find(s) if s.present? }.compact
+    @product.schools = params[:product][:schools].map{|s| School.find(s) if s.present? }.compact
 
 
     if params[:product_type] == "wholesale"
