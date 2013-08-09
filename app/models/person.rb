@@ -185,6 +185,10 @@ class Person < ActiveRecord::Base
     rewards
   end
 
+  def orders
+    user.orders
+  end
+
   def charities
     charities = []
     user.orders.each do |order|
