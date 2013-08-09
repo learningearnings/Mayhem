@@ -473,6 +473,11 @@ ActiveRecord::Schema.define(:version => 20130809140232) do
     t.datetime "updated_at",            :null => false
   end
 
+  create_table "reward_exclusions", :force => true do |t|
+    t.integer "school_id"
+    t.integer "product_id"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"

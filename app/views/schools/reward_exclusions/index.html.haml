@@ -1,0 +1,19 @@
+%h2 Reward Exclusions
+
+%p Use this tool to restrict certain rewards from being available in your school's store.
+
+- if @reward_exclusions.any?
+  %table.table
+    %thead
+      %tr
+        %th Product
+        %th Action
+    %tbody
+      - @reward_exclusions.each do |exclusion|
+        %tr
+          %td= exclusion.product.name
+          %td= button_to "Remove this exclusion", schools_reward_exclusion_path(exclusion), { method: :delete }
+- else
+  %p
+    You do not currently have any reward exclusions.
+    = link_to "Get started by adding one.", new_schools_reward_exclusion_path
