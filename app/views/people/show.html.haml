@@ -4,8 +4,9 @@
   
   .first-name= @person.first_name + @person.last_name
   .user-name= @person.user.username
+  .user-name= @person.user.email
   .moniker= @person.moniker
-  .school= @person.school
+  .school= @person.school.name
   .current-person-avatar.supplemental-part=image_tag @person.avatar.image.url if @person.avatar
   
   .link

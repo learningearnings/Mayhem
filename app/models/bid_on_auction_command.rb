@@ -12,7 +12,7 @@ class BidOnAuctionCommand < ActiveModelCommand
 
   validates :amount, positive_decimal: true, greater_than: :auction_current_bid
   validates :person, presence: true
-  validates :auction, presence: true 
+  validates :auction, presence: true
   validate :auction_active
   validate :high_bidder_not_current_bidder
   validates :credit_manager, presence: true
@@ -31,11 +31,11 @@ class BidOnAuctionCommand < ActiveModelCommand
   def auction_current_bid
     auction && auction.current_bid
   end
-  
+
   def auction_active
     errors.add(:auction, 'has already ended.') unless auction && auction.active?
   end
-  
+
   def high_bidder_not_current_bidder
     errors.add(:you, 'are already the high bidder') unless auction && auction.current_leader != person
   end
@@ -102,7 +102,7 @@ class BidOnAuctionCommand < ActiveModelCommand
 
     message_creator.call(from: person,
                          to: bid.person,
-                         subject: "You've been outbid on an auction", 
+                         subject: "You've been outbid on an auction",
                          body: body,
                          category: 'system')
   end

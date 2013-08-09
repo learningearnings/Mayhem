@@ -9,6 +9,12 @@
       %p= f.submit t(:update)
       #avatar_partial= render :partial => 'avatars'
       = render :partial => "moniker", :locals => { :f => f }
+      = f.label :email
+      = f.text_field :email
+      = f.label :password
+      = f.password_field :password
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation
       %p= f.submit t(:update), class: 'btn awesome-button'
 
     = javascript_include_tag "avatar_pager.js"

@@ -247,27 +247,34 @@ if Rails.env.development? || Rails.env.production?
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
-  @school_admin.activate
+  @school_admin.user.password = 'spree123'
+  @school_admin.user.password_confirmation = 'spree123'
+  @school_admin.activate!
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
   @teacher.activate
+  @teacher.user.password = 'spree123'
+  @teacher.user.password_confirmation = 'spree123'
   @teacher.save
   @teacher_link = FactoryGirl.create(:person_school_link, school: @school, person: @teacher)
 
   # Create a LE Admin
   @le_admin = FactoryGirl.create(:le_admin, :user => Spree::User.find(1))
-  @le_admin.activate
   @le_admin.username = 'leadmin'
   @le_admin.user.password = "spree123"
-  @le_admin.save
+  @le_admin.activate!
 
   # Give the school some students
   @student1 = FactoryGirl.create(:student, :user => FactoryGirl.create(:spree_user,:username => 'student1', :email => 'student1@example.com'))
   @link1 = FactoryGirl.create(:person_school_link, school: @school, person: @student1)
   @student2 = FactoryGirl.create(:student, :user => FactoryGirl.create(:spree_user,:username => 'student2', :email => 'student2@example.com'))
   @link2 = FactoryGirl.create(:person_school_link, school: @school, person: @student2)
+  @student1.user.password = 'spree123'
+  @student1.user.password_confirmation = 'spree123'
+  @student2.user.password = 'spree123'
+  @student2.user.password_confirmation = 'spree123'
   @student1.activate!
   @student2.activate!
 
@@ -275,7 +282,6 @@ if Rails.env.development? || Rails.env.production?
   @person_school_classroom_link = PersonSchoolClassroomLink.create(:person_school_link_id => @teacher_link.id,
                                                                    :classroom_id => @classroom.id,
                                                                    :owner => true)
-
 
   # ======== GIVE OUT SOME CREDITS ======
   # Issue some credits to the school
@@ -291,7 +297,7 @@ if Rails.env.development? || Rails.env.production?
   @student_credits = 10000
   @credit_manager.issue_ecredits_to_student(@school, @teacher, @student1, @student_credits)
   # ======== /GIVE OUT SOME CREDITS ======
-  
+
   # ======== MESSAGING ========
   @message1 = FactoryGirl.create(:message, from: @student1, to: @student2)
   @message2 = FactoryGirl.create(:message, from: @student2, to: @student1)

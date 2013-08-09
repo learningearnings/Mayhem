@@ -11,7 +11,10 @@ class ClassroomsController < LoggedInController
 
   def show
     @classroom = Classroom.find(params[:id])
-    render layout: false
+    respond_to do |format|
+      format.html { render layout: false }
+      format.json { render json: @classroom.students }
+    end
   end
 
   def remove_student
@@ -32,8 +35,6 @@ class ClassroomsController < LoggedInController
       flash[:error] = "Student not removed from classroom."
       render :show
     end
-
-
   end
 
   def add_student
@@ -48,7 +49,7 @@ class ClassroomsController < LoggedInController
       render :show
     end
   end
-  
+
   def create
     @classroom = Classroom.new(params[:classroom])
     @classroom.school_id = current_school.id
@@ -77,6 +78,4 @@ class ClassroomsController < LoggedInController
       redirect_to classrooms_path
     end
   end
-
-
 end
