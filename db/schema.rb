@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130807215120) do
+ActiveRecord::Schema.define(:version => 20130809140232) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -481,6 +481,13 @@ ActiveRecord::Schema.define(:version => 20130807215120) do
   end
 
   add_index "school_filter_links", ["filter_id", "school_id"], :name => "index_school_filter_links_on_filter_id_and_school_id", :unique => true
+
+  create_table "school_product_links", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "schools", :force => true do |t|
     t.string   "name"
@@ -1133,6 +1140,13 @@ ActiveRecord::Schema.define(:version => 20130807215120) do
   end
 
   add_index "state_filter_links", ["filter_id", "state_id"], :name => "index_state_filter_links_on_filter_id_and_state_id", :unique => true
+
+  create_table "state_product_links", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "states", :force => true do |t|
     t.string   "name"

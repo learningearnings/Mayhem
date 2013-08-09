@@ -15,6 +15,9 @@ class School < ActiveRecord::Base
   has_many :school_filter_links, :inverse_of => :schools
   has_many :filters, :through => :school_filter_links
 
+  has_many :school_product_links
+  has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
+
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2,
