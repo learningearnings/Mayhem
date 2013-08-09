@@ -56,6 +56,27 @@ ActiveRecord::Schema.define(:version => 20130809140232) do
     t.datetime "updated_at",                                :null => false
   end
 
+  create_table "auction_school_links", :force => true do |t|
+    t.integer  "auction_id"
+    t.integer  "school_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auction_state_links", :force => true do |t|
+    t.integer  "auction_id"
+    t.integer  "state_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auction_zip_codes", :force => true do |t|
+    t.integer  "auction_id"
+    t.string   "zip_code"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "auctions", :force => true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
@@ -65,6 +86,8 @@ ActiveRecord::Schema.define(:version => 20130809140232) do
     t.datetime "created_at",                                  :null => false
     t.datetime "updated_at",                                  :null => false
     t.decimal  "starting_bid", :precision => 10, :scale => 2
+    t.integer  "min_grade"
+    t.integer  "max_grade"
   end
 
   create_table "avatars", :force => true do |t|
