@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130809140232) do
+ActiveRecord::Schema.define(:version => 20130809203117) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -833,7 +833,7 @@ ActiveRecord::Schema.define(:version => 20130809140232) do
     t.datetime "updated_at",                           :null => false
     t.integer  "count_on_hand",        :default => 0,  :null => false
     t.string   "svg_file_name"
-    t.string   "fullfillment_type"
+    t.string   "fulfillment_type"
     t.string   "purchased_by"
     t.integer  "min_grade"
     t.integer  "max_grade"

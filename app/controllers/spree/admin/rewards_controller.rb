@@ -25,7 +25,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
     @product.available_on = Time.now
-    @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
+    @types = [["global","global"],["charity","charity"]]
     set_vars
   end
 
@@ -33,7 +33,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
     @classrooms = @current_school.classrooms
-    @fullfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
+    @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
     @purchased_by = ["LE", "Sponsor", "School", "Charity"]
     @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
     @grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -45,7 +45,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     form_data
     if @product.save
       after_save
-      handle_image
       flash[:notice] = "Your reward was created successfully."
       redirect_to admin_rewards_path, :page => (params[:page_id] || 0)
     else
@@ -59,11 +58,11 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     if @product.has_property_type?
       @type = @product.property("reward_type")
       @types = [[@type, @type]]
-      ["wholesale", "global", "charity"].each do |product_type|
+      ["global", "charity"].each do |product_type|
         @types.push([product_type, product_type]) unless product_type == @type
       end
     else
-      @types = [["wholesale","wholesale"],["global","global"],["charity","charity"]]
+      @types = [["global","global"],["charity","charity"]]
     end
     set_vars
   end
@@ -73,7 +72,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     form_data
     if @product.save
       after_save
-      handle_image
       flash[:notice] = "Your reward was updated successfully."
       redirect_to admin_rewards_path
     else
@@ -84,7 +82,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def form_data
     @product.name = params[:product][:name]
-    @product.fullfillment_type = params[:product][:fullfillment_type]
+    @product.fulfillment_type = params[:product][:fulfillment_type]
     @product.purchased_by = params[:product][:purchased_by]
     @product.description = params[:product][:description]
     @product.price = params[:product][:price]
@@ -92,54 +90,32 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.available_on = params[:product][:available_on]
     @product.min_grade = params[:product][:min_grade]
     @product.max_grade = params[:product][:max_grade]
-    @product.taxons = params[:product][:taxons].map{|k,v| Spree::Taxon.find(k) if v == "1" }.compact
+    # set associated objects
+    @product.taxons = params[:product][:taxons].map{|s| Spree::Taxon.find(s) if s.present? }.compact
     @product.states = params[:product][:states].map{|s| ::State.find(s) if s.present? }.compact
     @product.schools = params[:product][:schools].map{|s| School.find(s) if s.present? }.compact
-
-
-    if params[:product_type] == "wholesale"
-      @product.store_ids = ["#{Spree::Store.find_by_code("le").id}"]
-      filter_factory = FilterFactory.new
-      filter_condition = FilterConditions.new :person_classes => ['LeAdmin', 'SchoolAdmin']
-      @filter = filter_factory.find_or_create_filter(filter_condition)
-      @product.set_property("retail_price",params[:product][:retail_price])
-      @product.set_property("retail_quantity",params[:product][:retail_quantity])
-      @product.set_property("wholesale_description",params[:wholesale_description])
-    else
-      # TODO insert code here to handle removing wholesale properties if type of product is changed during update
-      @product.remove_property "retail_price"
-      @product.remove_property "retail_quantity"
-      @product.remove_property "master_product"
-
-      store_id_array = []
-      Spree::Store.all.each do |store|
-        store_id_array.push(store.id)
-      end
-      @product.set_property "reward_type", params[:product_type]
-      @product.store_ids = store_id_array
-    end
-
-    if params[:product][:svg]
-      i = @product
-#      i.svg_content_type = params[:product][:svg][:svg_file_name].content_type
-#      i.svg = params[:product][:svg][:svg_file_name].tempfile
-#      i.svg_file_name = params[:product][:svg][:svg_file_name].original_filename
-      i.svg = params[:product][:svg][:svg_file_name]
-
-      i.save
-    end
   end
 
   def after_save
-    @product.set_property("reward_type", params[:product_type])
-#    create_wholesale_properties if @product.requires_wholesale_properties?
+    @product.store_ids = Spree::Store.all.map{|s| s.id }
+    if params[:product][:fulfillment_type] == "Digitally Delivered Charity Certificate"
+      product_type = "charity"
+    else
+      product_type = "global"
+    end
+    @product.set_property("reward_type", product_type)
     SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
+    handle_uploads
   end
 
-  def handle_image
+  def handle_uploads
     if params[:product][:images].present?
       @product.images.first.destroy if @product.images.present?
       @product.images.create(params[:product][:images])
+    end
+    if params[:product][:svg].present?
+      @product.svg = params[:product][:svg][:svg_file_name]
+      @product.save
     end
   end
 
