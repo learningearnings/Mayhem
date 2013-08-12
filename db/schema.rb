@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130809203117) do
+ActiveRecord::Schema.define(:version => 20130812193034) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20130809203117) do
     t.integer  "school_id"
     t.integer  "legacy_classroom_id"
     t.integer  "processed"
+    t.string   "sti_uuid"
   end
 
   create_table "codes", :force => true do |t|
@@ -375,6 +376,7 @@ ActiveRecord::Schema.define(:version => 20130809203117) do
     t.string   "recovery_password"
     t.boolean  "can_distribute_credits"
     t.boolean  "can_deliver_rewards"
+    t.string   "sti_uuid"
   end
 
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
@@ -542,6 +544,7 @@ ActiveRecord::Schema.define(:version => 20130809203117) do
     t.string   "city"
     t.integer  "state_id"
     t.string   "zip"
+    t.string   "sti_uuid"
   end
 
   create_table "spree_activators", :force => true do |t|

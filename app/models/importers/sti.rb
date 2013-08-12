@@ -1,3 +1,6 @@
+require_relative './sti/schools_importer'
+require_relative './sti/rosters_importer'
+require_relative './sti/people_importer'
 module Importers
   class Sti
     attr_reader :schools_file_path, :rosters_file_path, :people_file_path
@@ -5,6 +8,12 @@ module Importers
       @schools_file_path = schools_file_path
       @rosters_file_path = rosters_file_path
       @people_file_path = people_file_path
+    end
+
+    def call
+      schools_importer.call
+      rosters_importer.call
+      people_importer.call
     end
 
     def schools_importer
@@ -17,21 +26,6 @@ module Importers
 
     def people_importer
       @people_importer ||= PeopleImporter.new(people_file_path)
-    end
-
-    class SchoolsImporter
-      def initialize(filename)
-      end
-    end
-
-    class RostersImporter
-      def initialize(filename)
-      end
-    end
-
-    class PeopleImporter
-      def initialize(filename)
-      end
     end
   end
 end
