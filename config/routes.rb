@@ -228,5 +228,6 @@ Spree::Core::Engine.routes.prepend do
     match 'remove_reward' => 'rewards#destroy'
     match 'undelete_reward/:id' => 'rewards#undelete', :as => :undelete_reward
     resources :le_shipments
+    match 'create_manual_order' => 'orders#create_manual_order'
   end
 end

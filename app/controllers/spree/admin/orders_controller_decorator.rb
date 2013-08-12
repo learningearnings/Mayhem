@@ -37,4 +37,8 @@ Spree::Admin::OrdersController.class_eval do
     end
   end
 
+  def create_manual_order
+    binding.pry
+  end
+
 end

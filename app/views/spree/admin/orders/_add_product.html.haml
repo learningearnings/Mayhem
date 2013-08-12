@@ -1,11 +1,23 @@
 #add-line-item{"data-hook" => ""}
   %fieldset
-    %legend= t(:manual_order)
-    - @school_inventory_items.each do |item|
-      %div{"data-hook" => "shipped_for_school_inventory", :style => "float:left; width:10%; margin-right:5%;"}
-        = label_tag item.name
-      %div{"data-hook" => "add_quantity", :style => "float:left; width:10%; margin-right:5%;"}
-        = label_tag :add_quantity, t(:qty)
-        = number_field_tag :add_quantity,  1, :min => 0, :class => 'fullwidth title'
-      %div{"data-hook" => "add_button", :style => "float: left; width: 15%; padding-top: 17px;"}
-        = link_to text_for_button_link(t(:add), :icon => 'add'), admin_order_line_items_url(@order), :method => :post, :id => 'add_line_item_to_order', :class => 'button', 'data-update' => 'order-form-wrapper'
+    %hr
+    .pull-left{:style => "font-size: 1.4em;"}= "School"
+    .pull-right= select_tag :schools, options_from_collection_for_select(School.all, :id, :name)
+    %hr
+
+    %table.table.table-striped.table-bordered
+      %tr
+        %th
+          %h4 Reward Name
+        %th
+          %h4 Count on Hand
+        %th
+          %h4 Qty to Order
+      - @school_inventory_items.each do |item|
+        %tr
+          %td= label_tag item.name
+          %td{:width => 200}= item.count_on_hand
+          %td{:width => 200}= number_field_tag :add_quantity,  1, :min => 0, :class => 'fullwidth title'
+
+    .pull-right= link_to t(:create_order), admin_create_manual_order_url(@order), :method => :post, :class => 'button'
+
