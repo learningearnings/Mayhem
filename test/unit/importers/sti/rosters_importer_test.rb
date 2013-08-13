@@ -32,7 +32,7 @@ class Student; end
 describe Importers::Sti::RostersImporter do
   subject { Importers::Sti::RostersImporter.new(file_path.to_s) }
 
-  let(:file_path){ File.expand_path("../../../../support/files/Rosters.xml", __FILE__) }
+  let(:file_path){ File.expand_path("../../../../support/files/sti/Rosters.xml", __FILE__) }
   let(:mock_state_id){ 1 }
   let(:fake_school){ Object.new }
   let(:fake_teacher){ Object.new }

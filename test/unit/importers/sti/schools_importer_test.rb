@@ -5,7 +5,7 @@ class State; end
 class School; end
 
 describe Importers::Sti::SchoolsImporter do
-  let(:file_path){ File.expand_path("../../../../support/files/Schools.xml", __FILE__) }
+  let(:file_path){ File.expand_path("../../../../support/files/sti/Schools.xml", __FILE__) }
   let(:mock_state_id){ 1 }
   let(:fake_school){ Object.new }
   let(:fake_state){ Object.new }

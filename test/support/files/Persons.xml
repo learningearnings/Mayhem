@@ -1,3 +1,0 @@
-<Persons>
-  <Person Id="42" Guid="personguid1" FirstName="Gary" LastName="Adams" GradeLevelName="07" EmailAddress="RDuhon@sti-k12.com" Gender="M" PersonType="S" SchoolId="1" SchoolGuid="2077D700-1FCE-4C55-A8F9-B91F4FACAC70" DistrictId="1" DistrictGuid="E8FB64F5-0DCB-4DB5-BC27-75F60139E315"/>
-</Persons>

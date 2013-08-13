@@ -5,7 +5,7 @@ class Person; end
 class School; end
 
 describe Importers::Sti::PeopleImporter do
-  let(:file_path){ File.expand_path("../../../../support/files/Persons.xml", __FILE__) }
+  let(:file_path){ File.expand_path("../../../../support/files/sti/Persons.xml", __FILE__) }
   let(:fake_person){ Object.new }
   let(:fake_school){ Object.new }
   subject { Importers::Sti::PeopleImporter.new(file_path.to_s) }
