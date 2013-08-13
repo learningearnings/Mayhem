@@ -16,8 +16,16 @@
     -else
       = f.label :choice_1
       = text_field_tag "choices[:choice_1]"
-  <input type="button" onclick="addInput()" name="add" value="Add input field" />
+  %br
+  <input type="button" onclick="addInput()" name="add" value="Add Choice" />
 
+  %br
+  %br
+  = f.label :active
+  = f.check_box :active
+
+  %br
+  %br
   = f.submit
 
 :javascript

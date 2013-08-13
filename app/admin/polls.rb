@@ -1,8 +1,7 @@
 ActiveAdmin.register Poll do
   form :partial => 'form'
 
-  controller do
-
+  controller do 
     def create
       @poll = Poll.new(params[:poll])
       if @poll.save
@@ -43,6 +42,7 @@ ActiveAdmin.register Poll do
       div do
         simple_format poll.poll_choices.map{|x| x.choice}.join(', ')
       end
+      row :active
     end
     active_admin_comments
   end
