@@ -1,6 +1,6 @@
-class PollChoice
+class PollChoice < ActiveRecord::Base
 
-  attr_accessible :name, :poll_id
+  attr_accessible :choice, :poll_id
 
   has_many :votes
   belongs_to :poll
