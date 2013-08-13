@@ -34,6 +34,7 @@ class School < ActiveRecord::Base
   image_accessor :logo
 
   validates_presence_of :name, :school_phone, :city, :state_id, :zip, :address1
+  validates_uniqueness_of :sti_uuid
 
   after_save :create_spree_store
   after_create :ensure_accounts
