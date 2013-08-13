@@ -211,6 +211,10 @@ Leror::Application.routes.draw do
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
   match "/get_image_results" => 'messages#get_image_results'
+
+  # spree admin manual orders
+  match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
+  match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
 end
 
 # Any routes we add to Spree go here:
@@ -228,6 +232,5 @@ Spree::Core::Engine.routes.prepend do
     match 'remove_reward' => 'rewards#destroy'
     match 'undelete_reward/:id' => 'rewards#undelete', :as => :undelete_reward
     resources :le_shipments
-    match 'create_manual_order' => 'orders#create_manual_order'
   end
 end

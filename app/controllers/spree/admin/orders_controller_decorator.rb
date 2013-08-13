@@ -3,7 +3,7 @@ Spree::Admin::OrdersController.class_eval do
   def new
     @order = Spree::Order.create
     # Tis should pull in: The currently available rewards where fulfillment_type == "Shipped For School Inventory"
-    @school_inventory_items = Spree::Product.where(:fulfillment_type => "Shipped for School Inventory")
+    @school_inventory_items = Spree::Product.shipped_for_school_inventory
     respond_with(@order)
   end
 
@@ -39,6 +39,12 @@ Spree::Admin::OrdersController.class_eval do
 
   def create_manual_order
     binding.pry
+    redirect_to :back
+  end
+
+  def refresh_school_rewards
+    @school = School.find(params[:school_id])
+    @school_inventory_items = Spree::Product.shipped_for_school_inventory.not_excluded(@school)
   end
 
 end
