@@ -2,6 +2,9 @@ Leror::Application.routes.draw do
   devise_scope :user do
     match "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
   end
+  resources :polls
+  match "/vote" => 'polls#vote', :as => 'votes'
+  match "/poll_form/:id" => 'polls#poll_form', :as => 'poll_form'
 
   get "settings/show"
 
