@@ -80,14 +80,15 @@ ActiveRecord::Schema.define(:version => 20130814184934) do
   create_table "auctions", :force => true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
-    t.decimal  "current_bid",  :precision => 10, :scale => 2
+    t.decimal  "current_bid",     :precision => 10, :scale => 2
     t.integer  "product_id"
     t.string   "auction_type"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
-    t.decimal  "starting_bid", :precision => 10, :scale => 2
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.decimal  "starting_bid",    :precision => 10, :scale => 2
     t.integer  "min_grade"
     t.integer  "max_grade"
+    t.boolean  "created_locally"
   end
 
   create_table "avatars", :force => true do |t|

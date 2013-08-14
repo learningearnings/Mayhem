@@ -2,6 +2,7 @@ Spree::HomeController.class_eval do
   before_filter :authenticate_user!
 
   def index
+    @auction = ::Auction.new
     temp_params = params
     temp_params[:filters] = session[:filters]
     temp_params[:current_school] = current_school
