@@ -6,3 +6,5 @@
   - links
   - people
 - Make MySQL stop exporting invalid csv files
+- Import TeacherPoints
+- Import SchoolPoints
