@@ -41,10 +41,15 @@ Spree::Admin::OrdersController.class_eval do
     order.shipping_method_id = Spree::ShippingMethod.find_by_name("Shipped To School").id
     order.save
     params[:product_quantities].each do |product_id, quantity|
+      # add line_items to order from product variants
       variant = Spree::Variant.where(:product_id => product_id).first
       order.line_items.create(variant_id: variant.id, quantity: quantity)
+      # remove count_on_hand from variant as the quantity requested
+      variant.count_on_hand -= quantity.to_i
+      variant.save
     end
     until order.complete?
+      # move order along until complete
       order.next
     end
     redirect_to admin_orders_path
