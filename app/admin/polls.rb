@@ -6,10 +6,13 @@ ActiveAdmin.register Poll do
       @poll = Poll.new(params[:poll])
       if @poll.save
         params[:choices].each do |choice|
+          # choice.last is so I can get the choice value since I built the form
+          # to group the choices together in the params.  Probably a better way
+          # to do this.
           @poll.poll_choices.create(:choice => choice.last)
         end
         flash[:notice] = 'The poll was created.'
-        redirect_to admin_poll_path @poll
+        redirect_to [:admin, @poll]
       else
         flash[:error] = 'There was a problem creating the poll.'
         render :new
@@ -21,10 +24,13 @@ ActiveAdmin.register Poll do
       if @poll.update_attributes(params[:poll])
         @poll.poll_choices.delete_all
         params[:choices].each do |choice|
+          # choice.last is so I can get the choice value since I built the form
+          # to group the choices together in the params.  Probably a better way
+          # to do this.
           @poll.poll_choices.find_or_create_by_choice(choice.last) if choice.last.present?
         end
         flash[:notice] = 'The poll was updated.'
-        redirect_to admin_poll_path @poll
+        redirect_to [:admin, @poll]
       else
         flash[:error] = 'There was a problem updating the poll.'
         render :edit

@@ -16,19 +16,19 @@
     -else
       = f.label :choice_1
       = text_field_tag "choices[:choice_1]"
+      %br
   %br
-  <input type="button" onclick="addInput()" name="add" value="Add Choice" />
-
+  %button.add Add Choice
   %br
   %br
   = f.label :active
   = f.check_box :active
-
   %br
   %br
   = f.submit
 
 :javascript
+  $('button.add').on('click', addInput)
   function addInput() {
     if($(".choices input:last")) {
       var old_num = $(".choices input:last").attr("name").replace("choices[:choice_", "").replace("]", "");
@@ -37,5 +37,6 @@
       var num = 3;
     }
     $('.choices').append("<label for='poll_choice_" + num + "'> Choice " + num + " </label>    <input id='choices_:choice_" + num + "' name='choices[:choice_" + num + "]' type='text' /><br />");
+    return false;
   }
 
