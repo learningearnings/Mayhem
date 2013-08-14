@@ -40,6 +40,7 @@ class AuctionsController < LoggedInController
 
   def create
     @auction = Auction.new(params[:auction])
+    @auction.created_locally = true
     if @auction.save
       AuctionSchoolLink.create(:school_id => current_school.id, :auction_id => @auction.id)
       flash[:notice] = 'Auction created'
