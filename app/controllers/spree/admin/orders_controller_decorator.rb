@@ -1,10 +1,8 @@
 Spree::Admin::OrdersController.class_eval do
 
   def new
-    @order = Spree::Order.create
     # Tis should pull in: The currently available rewards where fulfillment_type == "Shipped For School Inventory"
     @school_inventory_items = Spree::Product.shipped_for_school_inventory
-    respond_with(@order)
   end
 
   def edit
@@ -38,8 +36,18 @@ Spree::Admin::OrdersController.class_eval do
   end
 
   def create_manual_order
-    binding.pry
-    redirect_to :back
+    order = current_user.orders.create
+    order.school_id = params[:school]
+    order.shipping_method_id = Spree::ShippingMethod.find_by_name("Shipped To School").id
+    order.save
+    params[:product_quantities].each do |product_id, quantity|
+      variant = Spree::Variant.where(:product_id => product_id).first
+      order.line_items.create(variant_id: variant.id, quantity: quantity)
+    end
+    until order.complete?
+      order.next
+    end
+    redirect_to admin_orders_path
   end
 
   def refresh_school_rewards
