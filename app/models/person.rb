@@ -37,6 +37,7 @@ class Person < ActiveRecord::Base
 
   has_many :votes
 
+  validates_uniqueness_of :sti_uuid
 
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|

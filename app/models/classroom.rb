@@ -15,6 +15,7 @@ class Classroom < ActiveRecord::Base
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :created_at, :as => :admin
 
   validates_presence_of :name
+  validates_uniqueness_of :sti_uuid
 
   # Roll our own Relationships (with ARel merge!)
   def person_school_links(status = :status_active)
