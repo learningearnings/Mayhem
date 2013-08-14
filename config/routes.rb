@@ -2,6 +2,9 @@ Leror::Application.routes.draw do
   devise_scope :user do
     match "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
   end
+  resources :polls
+  match "/vote" => 'polls#vote', :as => 'votes'
+  match "/poll_form/:id" => 'polls#poll_form', :as => 'poll_form'
 
   get "settings/show"
 
@@ -212,6 +215,10 @@ Leror::Application.routes.draw do
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
   match "/get_image_results" => 'messages#get_image_results'
+
+  # spree admin manual orders
+  match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
+  match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
 end
 
 # Any routes we add to Spree go here:
