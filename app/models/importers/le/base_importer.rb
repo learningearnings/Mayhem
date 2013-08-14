@@ -20,6 +20,10 @@ module Importers
       def file_data
         File.read(file_path)
       end
+
+      def warn(msg)
+        STDOUT.puts msg
+      end
     end
   end
 end

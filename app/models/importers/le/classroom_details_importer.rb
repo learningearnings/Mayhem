@@ -5,7 +5,13 @@ module Importers
     class ClassroomDetailsImporter < BaseImporter
       def call
         classroom_link_data.each do |datum|
-          existing_person(datum[:legacy_user_id]) << existing_classroom(datum[:legacy_classroom_id])
+          person = existing_person(datum[:legacy_user_id])
+          classroom = existing_classroom(datum[:legacy_classroom_id])
+          if(person && classroom)
+            person << classroom
+            person.person_school_links.each{|psl| psl.activate! unless psl.active? }
+            person.person_school_classroom_links.each{|pscl| pscl.activate! unless pscl.active? }
+          end
         end
       end
 

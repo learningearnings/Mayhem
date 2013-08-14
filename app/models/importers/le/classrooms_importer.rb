@@ -12,15 +12,18 @@ module Importers
       protected
       def classroom_data
         parsed_doc.map do |classroom|
-          {
-            classroom: {
-              name: classroom["classroomtitle"],
-              legacy_classroom_id: classroom["classroomID"],
-              school_id: existing_school(classroom["schoolID"]).id
-            },
-            legacy_user_id: classroom["userID"]
-          }
-        end
+          school = existing_school(classroom["schoolID"])
+          if school
+            {
+              classroom: {
+                name: classroom["classroomtitle"],
+                legacy_classroom_id: classroom["classroomID"],
+                school_id: school.id
+              },
+              legacy_user_id: classroom["userID"]
+            }
+          end
+        end.compact
       end
 
       def existing_school(uuid)
@@ -33,7 +36,16 @@ module Importers
 
       def create_classroom(datum)
         Classroom.create(datum[:classroom]).tap do |classroom|
-          classroom.assign_owner(existing_teacher(datum[:legacy_user_id]))
+          teacher = existing_teacher(datum[:legacy_user_id])
+          if teacher
+            teacher << classroom
+            classroom.assign_owner(teacher)
+            teacher.activate! unless teacher.active?
+            teacher.person_school_links.each{|psl| psl.activate! unless psl.active? }
+            teacher.person_school_classroom_links.each{|pscl| pscl.activate! unless pscl.active? }
+          else
+            warn "Couldn't find teacher with legacy user id #{datum[:legacy_user_id]} when importing classroom #{datum[:classroom][:legacy_classroom_id]}"
+          end
         end
       end
 

@@ -16,9 +16,9 @@ LINES TERMINATED BY '\n';
 ## Schools
 ### To select schools from the database into CSV
 ```sql
-SELECT 'SchoolID', 'school', 'min_grade', 'max_grade', 'schooladdress', 'schooladdress2', 'city', 'state', 'schoolzip', 'lat', 'lon', 'timezone', 'gmtoffset', 'distribution_model'
+SELECT 'SchoolID', 'school', 'min_grade', 'max_grade', 'schooladdress', 'schooladdress2', 'city', 'state', 'schoolzip', 'schoolphone', 'lat', 'lon', 'timezone', 'gmtoffset', 'distribution_model'
 UNION ALL
-SELECT SchoolID, school, min_grade, max_grade, schooladdress, schooladdress2, cityID, tbl_states.state, schoolzip, lat, lon, timezone, gmtoffset, distribution_model
+SELECT SchoolID, school, min_grade, max_grade, schooladdress, schooladdress2, cityID, tbl_states.state, schoolzip, schoolphone, lat, lon, timezone, gmtoffset, distribution_model
 FROM tbl_schools
 INNER JOIN tbl_states ON tbl_states.stateID = tbl_schools.stateID
 INTO OUTFILE '/tmp/schools.csv'

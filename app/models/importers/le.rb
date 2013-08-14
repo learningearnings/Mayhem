@@ -24,23 +24,23 @@ module Importers
     end
 
     def schools_importer
-      @schools_importer ||= SchoolsImporter.new(schools_file_path)
+      @schools_importer ||= Importers::Le::SchoolsImporter.new(schools_file_path)
     end
 
     def users_importer
-      @users_importer ||= UsersImporter.new(users_file_path)
+      @users_importer ||= Importers::Le::UsersImporter.new(users_file_path)
     end
 
     def classrooms_importer
-      @classrooms_importer ||= ClassroomsImporter.new(classrooms_file_path)
+      @classrooms_importer ||= Importers::Le::ClassroomsImporter.new(classrooms_file_path)
     end
 
     def classroom_details_importer
-      @classroom_details_importer ||= ClassroomDetailsImporter.new(classroom_details_file_path)
+      @classroom_details_importer ||= Importers::Le::ClassroomDetailsImporter.new(classroom_details_file_path)
     end
 
     def points_importer
-      @points_importer ||= PointsImporter.new(points_file_path)
+      @points_importer ||= Importers::Le::PointsImporter.new(points_file_path)
     end
   end
 end

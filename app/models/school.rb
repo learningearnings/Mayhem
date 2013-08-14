@@ -25,7 +25,7 @@ class School < ActiveRecord::Base
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
-                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone
+                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
@@ -34,7 +34,7 @@ class School < ActiveRecord::Base
   image_accessor :logo
 
   validates_presence_of :name, :school_phone, :city, :state_id, :zip, :address1
-  validates_uniqueness_of :sti_uuid
+  validates_uniqueness_of :sti_uuid, allow_blank: true
 
   after_save :create_spree_store
   after_create :ensure_accounts

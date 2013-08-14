@@ -12,6 +12,7 @@ describe Importers::Le::SchoolsImporter do
   subject { Importers::Le::SchoolsImporter.new(file_path.to_s) }
 
   before do
+    fake_state.stubs(:id).returns(3)
     State.stubs(:find_by_name).with("Alabama").returns(fake_state)
   end
 
@@ -21,7 +22,7 @@ describe Importers::Le::SchoolsImporter do
 
   it "creates a school for each element in the file if it doesn't already exist" do
     School.stubs(:where).returns([])
-    School.expects(:create).with( name: "Challenger Middle School", min_grade: '6', max_grade: '8', legacy_school_id: "74", address1: "13555 CHANEY THOMPSON RD", address2: "", city: "Huntsville", state: fake_state, zip: "55555", distribution_model: "Distributed")
+    School.expects(:create).with( name: "Challenger Middle School", min_grade: '6', max_grade: '8', legacy_school_id: "74", address1: "13555 CHANEY THOMPSON RD", address2: "", city: "Huntsville", state_id: 3, zip: "55555", distribution_model: "Distributed")
     subject.call
   end
 

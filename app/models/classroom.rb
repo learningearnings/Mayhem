@@ -15,7 +15,7 @@ class Classroom < ActiveRecord::Base
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :created_at, :as => :admin
 
   validates_presence_of :name
-  validates_uniqueness_of :sti_uuid
+  validates_uniqueness_of :sti_uuid, allow_blank: true
 
   # Roll our own Relationships (with ARel merge!)
   def person_school_links(status = :status_active)
@@ -35,17 +35,25 @@ class Classroom < ActiveRecord::Base
   end
   # END Relationships
 
-  def assign_owner(person_school_link)
+  def assign_owner(person_or_person_school_link)
     person_school_classroom_links.where(:owner => true).each do |link|
       link.owner = false
+      link.save
     end
-    if person_school_classroom_links.where(person_school_link_id => t.id).count < 1
-      person_school_classroom_links << PersonSchoolClassroomLink(:person_school_link_id => person_school_link.id, 
+    if person_or_person_school_link.is_a?(Person)
+      person_school_link = PersonSchoolLink.where(person_id: person_or_person_school_link.id, school_id: school.id).first
+    else
+      person_school_link = person_or_person_school_link
+    end
+    this_persons_links = person_school_classroom_links.where(person_school_link_id: person_school_link.id)
+    if this_persons_links.empty?
+      person_school_classroom_links << PersonSchoolClassroomLink.create(:person_school_link_id => person_school_link.id,
                                                                  :classroom_id => self.id,
                                                                  :owner => true)
-      else
-      person_school_classroom_links.where(person_id => t.id).each do
-        pscl.owner = true
+    else
+      this_persons_links.each do |link|
+        link.owner = true
+        link.save
       end
     end
   end

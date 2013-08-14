@@ -21,6 +21,10 @@ module Importers
               type: type_for(person["usertypeID"])
             },
             school_uuid: person["SchoolID"]
+            user: {
+              username: person["username"],
+              password: person["recoverypassword"]
+            }
           }
         end
       end
@@ -34,8 +38,13 @@ module Importers
       end
 
       def create_person(datum)
-        Person.create(datum[:person]).tap do |person|
+        Person.create(datum[:person], as: :admin).tap do |person|
           person << existing_school(datum[:school_uuid])
+          user = person.user
+          user.username = datum[:user][:username]
+          user.password = datum[:user][:password]
+          user.save
+          person.activate!
         end
       end
 
