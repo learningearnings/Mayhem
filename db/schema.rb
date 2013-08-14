@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130812193034) do
+ActiveRecord::Schema.define(:version => 20130814184934) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -763,6 +763,7 @@ ActiveRecord::Schema.define(:version => 20130812193034) do
     t.string   "email"
     t.text     "special_instructions"
     t.integer  "store_id"
+    t.integer  "school_id"
   end
 
   add_index "spree_orders", ["number"], :name => "index_orders_on_number"
