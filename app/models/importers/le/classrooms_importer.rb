@@ -3,13 +3,13 @@ require_relative './base_importer'
 module Importers
   class Le
     class ClassroomsImporter < BaseImporter
-      def call
+      protected
+      def run
         classroom_data.each do |datum|
           find_or_create_classroom(datum)
         end
       end
 
-      protected
       def classroom_data
         parsed_doc.map do |classroom|
           school = existing_school(classroom["schoolID"])

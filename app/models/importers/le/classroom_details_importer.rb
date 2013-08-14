@@ -3,7 +3,8 @@ require_relative './base_importer'
 module Importers
   class Le
     class ClassroomDetailsImporter < BaseImporter
-      def call
+      protected
+      def run
         classroom_link_data.each do |datum|
           person = existing_person(datum[:legacy_user_id])
           classroom = existing_classroom(datum[:legacy_classroom_id])
@@ -15,7 +16,6 @@ module Importers
         end
       end
 
-      protected
       def classroom_link_data
         parsed_doc.map do |classroom_link|
           {

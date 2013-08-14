@@ -3,13 +3,13 @@ require_relative './base_importer'
 module Importers
   class Le
     class UsersImporter < BaseImporter
-      def call
+      protected
+      def run
         person_data.each do |datum|
           find_or_create_person(datum)
         end
       end
 
-      protected
       def person_data
         parsed_doc.map do |person|
           {
@@ -23,7 +23,7 @@ module Importers
             school_uuid: person["SchoolID"],
             user: {
               username: person["username"],
-              password: person["recoverypassword"]
+              password: person["recoverypassword"],
             }
           }
         end
@@ -38,13 +38,17 @@ module Importers
       end
 
       def create_person(datum)
-        person_class_for(datum).create(datum[:person], as: :admin).tap do |person|
-          person << existing_school(datum[:school_uuid])
-          user = person.user
-          user.username = datum[:user][:username]
-          user.password = datum[:user][:password]
-          user.save(validate: false)
-          person.activate!
+        begin
+          person_class_for(datum).create(datum[:person], as: :admin).tap do |person|
+            person << existing_school(datum[:school_uuid])
+            user = person.user
+            user.username = datum[:user][:username]
+            user.password = datum[:user][:password]
+            user.save(validate: false)
+            person.activate!
+          end
+        rescue Exception => e
+          warn "Got exception for #{datum.inspect} - #{e.inspect}"
         end
       end
 
