@@ -12,3 +12,7 @@
     %p
     Starting Bid:
     %span.current_bid= number_to_currency(auction.starting_bid)
+- if current_person.is_a? SchoolAdmin
+  = link_to 'Cancel Auction', cancel_school_auction_path(auction)
+  %br
+  = link_to 'New Auction', new_auction_path

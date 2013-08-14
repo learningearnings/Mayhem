@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130812193034) do
+ActiveRecord::Schema.define(:version => 20130813220613) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -470,6 +470,21 @@ ActiveRecord::Schema.define(:version => 20130812193034) do
   end
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
+
+  create_table "poll_choices", :force => true do |t|
+    t.string   "choice"
+    t.integer  "poll_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "polls", :force => true do |t|
+    t.string   "title"
+    t.string   "question"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.boolean  "active"
+  end
 
   create_table "posts", :force => true do |t|
     t.string   "title"
@@ -1233,5 +1248,13 @@ ActiveRecord::Schema.define(:version => 20130812193034) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "votes", :force => true do |t|
+    t.integer  "poll_choice_id"
+    t.integer  "person_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "poll_id"
+  end
 
 end
