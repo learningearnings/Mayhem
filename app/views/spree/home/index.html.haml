@@ -14,3 +14,9 @@
         %a{:href => main_app.teachers_rewards_path, :class => 'btn awesome-button'} Create Your Own Rewards
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
+
+.auctions
+  %h2 School Auctions
+  %h5= link_to 'New Auction', new_auction_path
+  %h5= link_to 'All Auctions', auctions_path
+

@@ -1,5 +1,13 @@
 Spree::Order.class_eval do
 
+  attr_accessible :school_id
+
+  def school
+    ::School.find(school_id)
+  rescue
+    nil
+  end
+
   def restock_items!
     line_items.each do |line_item|
       Spree::InventoryUnit.decrease(self, line_item.variant, line_item.quantity)

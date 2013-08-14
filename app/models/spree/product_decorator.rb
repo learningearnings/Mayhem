@@ -36,6 +36,7 @@ Spree::Product.class_eval do
   #     le_with_property(property).joins(:properties).where("#{Spree::ProductProperty.table_name}.value" => value)
   # }
 
+  scope :shipped_for_school_inventory, where(:fulfillment_type => "Shipped for School Inventory")
 
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})

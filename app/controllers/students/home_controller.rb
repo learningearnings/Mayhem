@@ -7,6 +7,7 @@ module Students
       @featured_activity_callout = featured_activity_callout_post
       @our_sponsor = our_sponsor_post
       @our_sponsor_callout = our_sponsor_callout_post
+      @poll = Poll.active.last
     end
 
     private

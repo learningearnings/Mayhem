@@ -2,6 +2,9 @@ Leror::Application.routes.draw do
   devise_scope :user do
     match "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
   end
+  resources :polls
+  match "/vote" => 'polls#vote', :as => 'votes'
+  match "/poll_form/:id" => 'polls#poll_form', :as => 'poll_form'
 
   get "settings/show"
 
@@ -37,6 +40,7 @@ Leror::Application.routes.draw do
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
   match "/cancel_auction/:id" => 'auctions#cancel_auction', :as => 'cancel_auction'
+  match "/cancel_school_auction/:id" => 'auctions#cancel_school_auction', :as => 'cancel_school_auction'
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
@@ -211,10 +215,15 @@ Leror::Application.routes.draw do
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
   match "/get_image_results" => 'messages#get_image_results'
+
+  # spree admin manual orders
+  match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
+  match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
 end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
+  resources :auctions
   devise_scope :user do
     get '/logout' => 'user_sessions#destroy', :as => :get_destroy_user_session
     get '/logout' => 'user_sessions#destroy',:remote => true, :as => :destroy_user_session
