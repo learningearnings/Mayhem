@@ -18,7 +18,7 @@ module Importers
       end
 
       def file_data
-        File.read(file_path)
+        File.read(file_path).gsub('\"', '""')
       end
 
       def warn(msg)

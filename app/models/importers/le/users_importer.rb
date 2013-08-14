@@ -20,7 +20,7 @@ module Importers
               legacy_user_id: person["UserID"],
               type: type_for(person["usertypeID"])
             },
-            school_uuid: person["SchoolID"]
+            school_uuid: person["SchoolID"],
             user: {
               username: person["username"],
               password: person["recoverypassword"]
@@ -38,12 +38,12 @@ module Importers
       end
 
       def create_person(datum)
-        Person.create(datum[:person], as: :admin).tap do |person|
+        person_class_for(datum).create(datum[:person], as: :admin).tap do |person|
           person << existing_school(datum[:school_uuid])
           user = person.user
           user.username = datum[:user][:username]
           user.password = datum[:user][:password]
-          user.save
+          user.save(validate: false)
           person.activate!
         end
       end
@@ -59,6 +59,11 @@ module Importers
           "3" => "LeAdmin",
           "5" => "SchoolAdmin"
         }[person_type] || "Student"
+      end
+
+      def person_class_for(datum)
+        type = datum[:person][:type]
+        Kernel.const_get(type)
       end
     end
   end
