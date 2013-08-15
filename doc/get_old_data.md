@@ -31,6 +31,7 @@ LINES TERMINATED BY '\n';
 
 ## Points
 ### To select points from the database into CSV
+##### NOTE: This needs to be changed to account for inbound/outbound, working on it
 ```sql
 SELECT 'UserID', 'pointsSum'
 UNION ALL
