@@ -1,5 +1,49 @@
-%h2 Teacher Dashboard
+%h2= "Student - #{@student.name}"
+= avatar_for(@student, '80x80#')
+%h4= link_to "Back to Classroom", classroom_path(@classroom)
 
-= link_to 'Create Student', teachers_new_student_path
+/= link_to 'Create Student', teachers_new_student_path
+= form_for @student, :url => teachers_update_student_path do |f|
+  = f.hidden_field :id, :value => @student.id
+  = hidden_field_tag :classroom_id, @classroom.id
+  = f.label :first_name
+  = f.text_field :first_name
+  = f.label :last_name
+  = f.text_field :last_name
+  = f.label :username
+  = f.text_field :username
+  = f.label :grade
+  = f.select :grade, School::GRADES
+  = f.label :moniker
+  = f.text_field :moniker
+  = f.label :password
+  = f.text_field :password
+  %br
+  = f.submit
 
+.bank-account
+  %h4 Accounts
+  .balances
+    %p Checking Balance: #{@student.checking_balance}
+    %p Savings Balance: #{@student.savings_balance}
 
+%table
+  %thead
+    %tr
+      %th Completed At
+      %th Amount
+      %th Payment State
+      %th Shipment State
+      %th Product Name
+      %th Product Description
+      %th Refund
+  %tbody
+    - @orders.each do |order|
+      %tr
+        %td= order.completed_at
+        %td= number_to_currency order.amount
+        %td= order.payment_state
+        %td= order.state
+        %td= order.products.first.name
+        %td= order.products.first.description
+        %td= link_to "Refund", refund_purchase_path(reward_delivery_id: order.id), :confirm => "Are you sure you want to refund this purchase?", :class => "button"

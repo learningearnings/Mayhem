@@ -1,0 +1,42 @@
+= form_for [:admin, @poll] do |f|
+  = f.label :title
+  = f.text_field :title
+  %br
+  = f.label :question
+  = f.text_field :question
+  %br
+  .choices
+    - if @poll.poll_choices.present?
+      - count = 1
+      - @poll.poll_choices.each do |choice|
+        = f.label "choice_#{count}"
+        = text_field_tag "choices[:choice_#{count}]", "choice_#{count}", :value => choice.choice
+        %br
+        - count += 1
+    -else
+      = f.label :choice_1
+      = text_field_tag "choices[:choice_1]"
+      %br
+  %br
+  %button.add Add Choice
+  %br
+  %br
+  = f.label :active
+  = f.check_box :active
+  %br
+  %br
+  = f.submit
+
+:javascript
+  $('button.add').on('click', addInput)
+  function addInput() {
+    if($(".choices input:last")) {
+      var old_num = $(".choices input:last").attr("name").replace("choices[:choice_", "").replace("]", "");
+      var num = Number(old_num) + 1;}
+    else {
+      var num = 3;
+    }
+    $('.choices').append("<label for='poll_choice_" + num + "'> Choice " + num + " </label>    <input id='choices_:choice_" + num + "' name='choices[:choice_" + num + "]' type='text' /><br />");
+    return false;
+  }
+

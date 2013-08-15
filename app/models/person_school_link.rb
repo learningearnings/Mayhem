@@ -56,7 +56,7 @@ class PersonSchoolLink < ActiveRecord::Base
       main_account_id = self.person.main_account(s).id
       accounts = self.person.accounts(s).collect {|a| a.id}
       PersonAccountLink.where(:plutus_account_id => accounts).each do |pal|
-          pal.destroy
+        pal.destroy
       end
       psl = self if self.school_id = s.id
       psl ||= PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.person.id,s.id)

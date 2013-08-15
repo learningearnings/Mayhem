@@ -35,6 +35,9 @@ class Person < ActiveRecord::Base
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
 
+  validates_uniqueness_of :sti_uuid, allow_blank: true
+
+  has_many :votes
 
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
@@ -183,6 +186,10 @@ class Person < ActiveRecord::Base
       end
     end
     rewards
+  end
+
+  def orders
+    user.orders
   end
 
   def charities

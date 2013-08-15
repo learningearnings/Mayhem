@@ -24,3 +24,5 @@
             %td= check_box_tag "credit_teachers[]", teacher.id, false
     = f.submit 'Update'
 
+  %h3 Manage Reward Exclusions
+  = link_to "Click here to manage your school's reward exclusions.", schools_reward_exclusions_path

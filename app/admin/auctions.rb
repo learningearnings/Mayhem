@@ -6,6 +6,40 @@ ActiveAdmin.register Auction do
   controller do
     skip_before_filter :add_current_store_id_to_params
     with_role :le_admin
+
+    def create
+      options = params[:auction].dup
+      options.delete(:auction_zip_code_ids)
+      @auction = Auction.new(options)
+      if @auction.save
+        params[:auction][:auction_zip_code_ids].each do |zip|
+          @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
+        end
+        flash[:notice] = 'Auction updated'
+        redirect_to admin_auction_path(@auction)
+      else
+        flash[:error] = 'There was a problem updating the auction.'
+        render :edit
+      end
+    end
+
+    def update
+      @auction = Auction.find(params[:id])
+      @auction.auction_state_links.delete_all
+      @auction.auction_school_links.delete_all
+      @auction.auction_zip_codes.delete_all
+      params[:auction][:auction_zip_code_ids].each do |zip|
+        @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
+      end
+      params[:auction].delete(:auction_zip_code_ids)
+      if @auction.update_attributes(params[:auction])
+        flash[:notice] = 'Auction updated'
+        redirect_to admin_auction_path(@auction)
+      else
+        flash[:error] = 'There was a problem updating the auction.'
+        render :edit
+      end
+    end
   end
 
   index do
@@ -45,17 +79,48 @@ ActiveAdmin.register Auction do
     end
     column :actions do |auction|
       link_html = ""
+      link_html += (link_to "Show", admin_auction_path(auction)) + " " if auction.upcoming?
       link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " if auction.upcoming?
       link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.upcoming?
       link_html.html_safe
     end
   end
 
+  show do |auction|
+    attributes_table do
+      row :id
+      row :start_date
+      row :end_date
+      row :current_bid
+      row :product
+      row :auction_type
+      row :starting_bid
+      row :min_grade
+      row :max_grade
+      row :states do
+        auction.states.collect{|t| t.name}.join(', ')
+      end
+      row :schools do
+        auction.schools.collect{|t| t.name}.join(', ')
+      end
+      row :auction_zip_codes do
+        auction.auction_zip_codes.collect{|t| t.zip_code}.join(', ')
+      end
+ 
+    end
+    render 'links'
+  end
+
   form do |f|
     f.inputs "Details" do
       f.input :product
-      f.input :start_date
-      f.input :end_date
+      f.input :start_date, :as => :datepicker
+      f.input :end_date, :as => :datepicker
+      f.input :min_grade, :as => :select, :collection => School::GRADES
+      f.input :max_grade, :as => :select, :collection => School::GRADES
+      f.input :schools, :as => :chosen
+      f.input :states, :as => :chosen
+      f.input :auction_zip_codes, :as => :chosen, :collection => Address.all.map{|x| x.zip}
     end
     f.buttons
   end

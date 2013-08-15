@@ -77,7 +77,6 @@ module Leror
     # For generating pdfs from routes in the site
     config.middleware.use PDFKit::Middleware, {}, only: %r[^/pages/pdf]
 
-
     config.after_initialize do
       Spree::Config.searcher_class = Spree::Search::Filter
     end
