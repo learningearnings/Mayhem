@@ -1,4 +1,4 @@
-%h4.product= auction.product.name
+%h4.product= link_to auction.product.name, auction_path(auction)
 .header-info
   Starts At:
   %span.start_date= l(auction.start_date)
@@ -8,3 +8,9 @@
   %p
   Current Bid:
   %span.current_bid= number_to_currency(auction.current_bid)
+  - if auction.current_bid == 0.00
+    %p
+    Starting Bid:
+    %span.current_bid= number_to_currency(auction.starting_bid)
+- if current_person.is_a?(SchoolAdmin) && auction.created_locally?
+  = link_to 'Cancel Auction', cancel_school_auction_path(auction)

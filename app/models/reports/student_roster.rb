@@ -63,13 +63,16 @@ module Reports
       # NOTE: I'm doing this in memory rather than sql, because my sql-fu is
       # weak and this won't be big
       hash = {}
+      students_without_classrooms = @school.students
       classrooms.each do |classroom|
         students = classroom.students
         if @grade_filter && @grade_filter != 'all'
           students = students.for_grade(@grade_filter)
         end
         hash[classroom] = students
+        students_without_classrooms -= students
       end
+      hash["no classroom"] = students_without_classrooms
       hash
     end
 

@@ -34,6 +34,10 @@ class ApplicationController < ActionController::Base
     Ability.new(current_person)
   end
 
+  def current_school
+    School.find(session[:current_school_id])
+  end
+
   def after_sign_out_path_for(resource_or_scope)
     '/'
   end

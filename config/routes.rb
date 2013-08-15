@@ -2,6 +2,9 @@ Leror::Application.routes.draw do
   devise_scope :user do
     match "/logout" => "devise/sessions#destroy", :as => :destroy_user_session
   end
+  resources :polls
+  match "/vote" => 'polls#vote', :as => 'votes'
+  match "/poll_form/:id" => 'polls#poll_form', :as => 'poll_form'
 
   get "settings/show"
 
@@ -29,12 +32,15 @@ Leror::Application.routes.draw do
 
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
+    resources :reward_exclusions
     #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
     post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
+  match "/cancel_auction/:id" => 'auctions#cancel_auction', :as => 'cancel_auction'
+  match "/cancel_school_auction/:id" => 'auctions#cancel_school_auction', :as => 'cancel_school_auction'
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
@@ -137,6 +143,7 @@ Leror::Application.routes.draw do
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
   match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
+
   namespace :students do
     match "home" => "home#show", as: 'home'
   end
@@ -144,6 +151,7 @@ Leror::Application.routes.draw do
   match "/charities" => 'charities#index'
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
+  match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   namespace :teachers do
     resources :reports
     resource  :bank
@@ -158,7 +166,9 @@ Leror::Application.routes.draw do
     match "/transfer_bucks" => 'banks#transfer_bucks'
     match "/new_student" => 'dashboards#new_student'
     match "/create_student" => 'dashboards#create_student'
-    match "/show_student/:student_id" => 'dashboards#show', as: "show_student"
+    match "/edit_student/:id" => 'dashboards#edit_student'
+    match "/update_student" => 'dashboards#update_student', :as => 'update_student'
+    match "/show_student/:id" => 'dashboards#show', as: "show_student"
 
     # Messaging routes
     match "inbox/peer_messages" => 'messages#peer_messages', :as => 'peer_messages'
@@ -171,6 +181,7 @@ Leror::Application.routes.draw do
     resources :messages
   end
 
+  resources :students
   namespace :school_admins do
     resource :bank
     resource :dashboard
@@ -204,10 +215,15 @@ Leror::Application.routes.draw do
   resources :rewards
   match 'remove_reward' => 'rewards#destroy'
   match "/get_image_results" => 'messages#get_image_results'
+
+  # spree admin manual orders
+  match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
+  match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
 end
 
 # Any routes we add to Spree go here:
 Spree::Core::Engine.routes.prepend do
+  resources :auctions
   devise_scope :user do
     get '/logout' => 'user_sessions#destroy', :as => :get_destroy_user_session
     get '/logout' => 'user_sessions#destroy',:remote => true, :as => :destroy_user_session

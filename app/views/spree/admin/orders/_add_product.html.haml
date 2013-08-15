@@ -1,0 +1,15 @@
+#add-line-item{"data-hook" => ""}
+  = form_tag main_app.create_manual_order_path do
+    %fieldset
+      %hr
+      .pull-left{:style => "font-size: 1.4em;"}= "School"
+      .pull-right= select_tag :school, options_from_collection_for_select(School.all, :id, :name), :include_blank => true
+      %hr
+      #school_items
+        %h3 Please select a school
+
+:javascript
+  $("#school").change(function(){
+    $.get("#{main_app.refresh_school_rewards_url}" + "?school_id=" + $("#school").val());
+  });
+

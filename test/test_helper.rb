@@ -27,3 +27,15 @@ require 'ostruct'
 MiniTest::Unit.runner = MiniTest::SuiteRunner.new
 MiniTest::Unit.runner.reporters << MiniTest::Reporters::SpecReporter.new
 MiniTest::Unit.runner.reporters << MiniTest::Reporters::GuardReporter.new
+
+# Add 'change' assertion
+module MiniTest::Assertions
+  def assert_changes(obj, method, exp_diff)
+    before = obj.send method
+    yield
+    after  = obj.send method
+    diff = after - before
+
+    assert_equal exp_diff, diff, "Expected #{obj.class.name}##{method} to change by #{exp_diff}, changed by #{diff}"
+  end
+end

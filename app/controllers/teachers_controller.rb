@@ -7,6 +7,7 @@ class TeachersController < ApplicationController
   def create
     @teacher = Teacher.new(params[:teacher])
     if @teacher.save
+      @teacher.user.update_attributes(:username => params[:teacher][:username], :email => params[:teacher][:email], :password => params[:teacher][:password], :password_confirmation => params[:teacher][:password_confirmation])
       PersonSchoolLink.create(:school_id => params[:school_id], :person_id => @teacher.id)
       UserMailer.teacher_request_email(@teacher).deliver
       flash[:message] = 'You will be notified when your account is approved.'

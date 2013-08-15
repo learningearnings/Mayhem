@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130805215100) do
+ActiveRecord::Schema.define(:version => 20130814184934) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -56,15 +56,39 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
     t.datetime "updated_at",                                :null => false
   end
 
+  create_table "auction_school_links", :force => true do |t|
+    t.integer  "auction_id"
+    t.integer  "school_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auction_state_links", :force => true do |t|
+    t.integer  "auction_id"
+    t.integer  "state_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auction_zip_codes", :force => true do |t|
+    t.integer  "auction_id"
+    t.string   "zip_code"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "auctions", :force => true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
-    t.decimal  "current_bid",  :precision => 10, :scale => 2
+    t.decimal  "current_bid",     :precision => 10, :scale => 2
     t.integer  "product_id"
     t.string   "auction_type"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
-    t.decimal  "starting_bid", :precision => 10, :scale => 2
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.decimal  "starting_bid",    :precision => 10, :scale => 2
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.boolean  "created_locally"
   end
 
   create_table "avatars", :force => true do |t|
@@ -121,6 +145,7 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
     t.integer  "school_id"
     t.integer  "legacy_classroom_id"
     t.integer  "processed"
+    t.string   "sti_uuid"
   end
 
   create_table "codes", :force => true do |t|
@@ -352,6 +377,7 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
     t.string   "recovery_password"
     t.boolean  "can_distribute_credits"
     t.boolean  "can_deliver_rewards"
+    t.string   "sti_uuid"
   end
 
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
@@ -446,6 +472,21 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
 
+  create_table "poll_choices", :force => true do |t|
+    t.string   "choice"
+    t.integer  "poll_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "polls", :force => true do |t|
+    t.string   "title"
+    t.string   "question"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.boolean  "active"
+  end
+
   create_table "posts", :force => true do |t|
     t.string   "title"
     t.text     "body"
@@ -473,6 +514,11 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
     t.datetime "updated_at",            :null => false
   end
 
+  create_table "reward_exclusions", :force => true do |t|
+    t.integer "school_id"
+    t.integer "product_id"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -481,6 +527,13 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
   end
 
   add_index "school_filter_links", ["filter_id", "school_id"], :name => "index_school_filter_links_on_filter_id_and_school_id", :unique => true
+
+  create_table "school_product_links", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "schools", :force => true do |t|
     t.string   "name"
@@ -507,6 +560,7 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
     t.string   "city"
     t.integer  "state_id"
     t.string   "zip"
+    t.string   "sti_uuid"
   end
 
   create_table "spree_activators", :force => true do |t|
@@ -725,6 +779,7 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
     t.string   "email"
     t.text     "special_instructions"
     t.integer  "store_id"
+    t.integer  "school_id"
   end
 
   add_index "spree_orders", ["number"], :name => "index_orders_on_number"
@@ -821,7 +876,10 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
     t.datetime "updated_at",                           :null => false
     t.integer  "count_on_hand",        :default => 0,  :null => false
     t.string   "svg_file_name"
-    t.string   "fullfillment_type"
+    t.string   "fulfillment_type"
+    t.string   "purchased_by"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1134,6 +1192,13 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
 
   add_index "state_filter_links", ["filter_id", "state_id"], :name => "index_state_filter_links_on_filter_id_and_state_id", :unique => true
 
+  create_table "state_product_links", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
   create_table "states", :force => true do |t|
     t.string   "name"
     t.string   "abbr"
@@ -1188,5 +1253,13 @@ ActiveRecord::Schema.define(:version => 20130805215100) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "votes", :force => true do |t|
+    t.integer  "poll_choice_id"
+    t.integer  "person_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "poll_id"
+  end
 
 end

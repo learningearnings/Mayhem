@@ -11,7 +11,7 @@
         %li
           %span= link_to "Parents", main_app.parent_page_path("home"), class: 'btn parents'
         %li
-          %span= link_to "Teachers", main_app.teacher_page_path("home"), class: 'btn teachers'
+          %span= link_to "Teachers", main_app.new_teachers_path, class: 'btn teachers'
   .resp-login
     - unless current_user
       = render 'layouts/resp_login_form'
