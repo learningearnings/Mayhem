@@ -21,7 +21,29 @@ GIT
     nested_form (0.2.3)
 
 GIT
-  remote: git://github.com/learningearnings/spree_auth_devise
+  remote: git://github.com/learningearnings/plutus.git
+  revision: 5529938323c980b5608afa4bddcb21d6cde94eab
+  specs:
+    plutus (0.7.2)
+      rails (~> 3.1)
+
+GIT
+  remote: git://github.com/learningearnings/rack-bug.git
+  revision: 1e6d33664fb21a5f08836e5d8a9d7bfcc47c8d81
+  branch: rails3
+  specs:
+    rack-bug (0.3.0)
+      rack (>= 1.0)
+
+GIT
+  remote: git://github.com/learningearnings/spree-multi-domain.git
+  revision: ba449186b3ea6129681a3c41e443b1fae688e75b
+  specs:
+    spree_multi_domain (1.0.0)
+      spree_core (~> 1.2)
+
+GIT
+  remote: git://github.com/learningearnings/spree_auth_devise.git
   revision: eb0f30380dc83390b52939195bf92b4195f5c5a3
   ref: eb0f30380dc83390b52939195bf92b4195f5c5a3
   specs:
@@ -43,28 +65,6 @@ GIT
   specs:
     activeadmin-extra (0.1.0)
       activeadmin
-
-GIT
-  remote: git@github.com:learningearnings/plutus.git
-  revision: 5529938323c980b5608afa4bddcb21d6cde94eab
-  specs:
-    plutus (0.7.2)
-      rails (~> 3.1)
-
-GIT
-  remote: git@github.com:learningearnings/spree-multi-domain.git
-  revision: ba449186b3ea6129681a3c41e443b1fae688e75b
-  specs:
-    spree_multi_domain (1.0.0)
-      spree_core (~> 1.2)
-
-GIT
-  remote: https://github.com/learningearnings/rack-bug.git
-  revision: 1e6d33664fb21a5f08836e5d8a9d7bfcc47c8d81
-  branch: rails3
-  specs:
-    rack-bug (0.3.0)
-      rack (>= 1.0)
 
 GEM
   remote: https://rubygems.org/
