@@ -14,7 +14,7 @@ gem 'pg', '0.13.2'
 # for importing
 gem 'mysql2'
 
-gem 'jquery-rails', :github => 'git@github.com:learningearnings/jquery-rails.git', branch: 'svgweb-fix'
+gem 'jquery-rails', :github => 'learningearnings/jquery-rails', branch: 'svgweb-fix'
 
 gem 'jquery-ui-rails'
 
