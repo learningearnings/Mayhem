@@ -29,22 +29,6 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 ```
 
-## Points
-### To select points from the database into CSV
-##### NOTE: This needs to be changed to account for inbound/outbound, working on it
-```sql
-SELECT 'UserID', 'pointsSum'
-UNION ALL
-SELECT tbl_users.UserID, sum(points)
-FROM tbl_users
-INNER JOIN tbl_points ON tbl_points.UserID = tbl_users.UserID
-GROUP BY UserID
-INTO OUTFILE '/tmp/points.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n';
-```
-
 ## Classrooms
 ### To select classrooms from the database into CSV
 ```sql
@@ -66,6 +50,60 @@ UNION ALL
 SELECT classroomdetailID, classroomID, userID
 FROM tbl_classroomdetails
 INTO OUTFILE '/tmp/classroom_details.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+```
+
+
+## Points
+### From Jimmy:
+Here's how we get the student's balances (tbl_pointtypes.pointtypeID dictates Checking or Savings):
+For checking:
+SELECT ROUND(sum(points),2) as points, userID FROM tbl_points WHERE userID=? AND pointtypeID = 1 GROUP BY userID;
+
+For Savings:
+SELECT ROUND(sum(points),2) as points, userID FROM tbl_points WHERE userID=? AND pointtypeID = 2 GROUP BY userID;
+
+Here is how me get the teacher/school admin balances:
+SELECT SUM(TeacherAwardAmount) as sum FROM tbl_teacherawards WHERE TeacherID = ?;
+
+Let me know if this is not what you're looking for or need something else.  I'm happy to give you access to this code as well if you don't already have it.
+## User Points
+### To select points from the database into CSV
+```sql
+SELECT 'UserID', 'checking_points'
+UNION ALL
+SELECT UserID, ROUND(sum(points), 2) as checking_points
+FROM tbl_points
+WHERE pointtypeID=1
+GROUP BY UserID
+INTO OUTFILE '/tmp/checking_points.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+```
+
+```sql
+SELECT 'UserID', 'saving_points'
+UNION ALL
+SELECT UserID, ROUND(sum(points), 2) as checking_points
+FROM tbl_points
+WHERE pointtypeID=2
+GROUP BY UserID
+INTO OUTFILE '/tmp/saving_points.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+```
+
+```sql
+SELECT 'TeacherID', 'teacher_points'
+UNION ALL
+SELECT TeacherID, SUM(TeacherAwardAmount) as teacher_points
+FROM tbl_teacherawards
+GROUP BY TeacherID
+INTO OUTFILE '/tmp/teacher_points.csv'
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';

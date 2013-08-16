@@ -1,1 +1,1 @@
-rvm ruby-1.9.3-p327-falcon@learning_earnings --create
+rvm ruby-2.0.0@learning_earnings --create
