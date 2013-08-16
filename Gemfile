@@ -64,7 +64,7 @@ gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'
 gem 'dragonfly'
-gem 'nested_form', :git => 'git://github.com/learningearnings/nested_form.git'
+gem 'nested_form', :github => 'learningearnings/nested_form'
 gem 'simple_form'
 gem 'country_select'
 gem "ckeditor", '3.7.3'
@@ -75,7 +75,7 @@ gem 'pdfkit'
 gem 'thor','0.14.6'
 
 # Plutus is what we use to manage our General Ledgers throughout this and other apps
-gem 'plutus', :git => 'git@github.com:learningearnings/plutus.git'
+gem 'plutus', :github => 'learningearnings/plutus'
 
 # state_machine is a great gem for building state machines for your ruby objects
 gem 'state_machine'
@@ -83,9 +83,9 @@ gem 'state_machine'
 # Spree is a rails-based ecom solution we're using to provide inventory / rewards purchase flow / reporting
 # gem 'spree', '~> 1.2.0'
 gem 'spree', '1.2.0'
-gem 'spree_auth_devise', :git => "git://github.com/learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
+gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
-gem 'spree_multi_domain', git: 'git@github.com:learningearnings/spree-multi-domain.git'
+gem 'spree_multi_domain', github: 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
@@ -95,7 +95,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   #gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
   #gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git", :tag => "MayhemV1"
-  gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git"
+  gem "compass_twitter_bootstrap", :github => "learningearnings/compass-twitter-bootstrap"
 end
 
 # Use unicorn as the app server
@@ -112,7 +112,7 @@ group :development do
   gem 'letter_opener'
   gem 'unicorn'
   gem 'thin'
-  gem 'rack-bug', git: 'https://github.com/learningearnings/rack-bug.git', branch: 'rails3'
+  gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
 end
 
 group :test do
@@ -131,7 +131,7 @@ group :test do
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
   gem 'mocha', '~> 0.14.0', require: false
-  gem 'valid_attribute', git: 'git://github.com/learningearnings/valid_attribute.git', branch: 'minitest-matchers-11'
+  gem 'valid_attribute', github: 'learningearnings/valid_attribute', branch: 'minitest-matchers-11'
   gem 'factory_girl_rails'
   gem 'libnotify'
   gem 'rb-fsevent', '~> 0.9.1'
