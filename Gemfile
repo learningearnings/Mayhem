@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '1.9.3'
+
 # Helper method
 def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
