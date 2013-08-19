@@ -10,14 +10,26 @@ describe Importers::Le::ClassroomsImporter do
   let(:fake_classroom){ Object.new }
   let(:fake_school){ Object.new }
   let(:fake_teacher){ Object.new }
-  let(:wrong_teacher){ Object.new }
+  let(:fake_person_school_link){ Object.new }
+  let(:fake_person_school_classroom_link){ Object.new }
   subject { Importers::Le::ClassroomsImporter.new(file_path.to_s) }
 
   before do
     fake_school.stubs(:id).returns(2)
     School.stubs(:where).returns([fake_school])
-    Person.stubs(:where).returns([wrong_teacher])
+    Person.stubs(:where).returns([fake_teacher])
+    Classroom.stubs(:where).returns([])
+    Classroom.stubs(:create).returns(fake_classroom)
     fake_classroom.stubs(:assign_owner)
+    fake_teacher.stubs(:<<)
+    fake_teacher.stubs(:active?).returns(false)
+    fake_teacher.stubs(:activate!)
+    fake_person_school_link.stubs(:active?).returns(false)
+    fake_person_school_classroom_link.stubs(:active?).returns(false)
+    fake_person_school_link.stubs(:activate!)
+    fake_person_school_classroom_link.stubs(:activate!)
+    fake_teacher.stubs(:person_school_links).returns([fake_person_school_link])
+    fake_teacher.stubs(:person_school_classroom_links).returns([fake_person_school_classroom_link])
   end
 
   it "takes a filename as its only argument" do
@@ -40,6 +52,21 @@ describe Importers::Le::ClassroomsImporter do
     Classroom.stubs(:create).returns(fake_classroom)
     Person.stubs(:where).with(legacy_user_id: "544").returns([fake_teacher])
     fake_classroom.expects(:assign_owner).with(fake_teacher)
+    subject.call
+  end
+
+  it "activates the teacher" do
+    fake_teacher.expects(:activate!)
+    subject.call
+  end
+
+  it "activates each school link" do
+    fake_person_school_link.expects(:activate!)
+    subject.call
+  end
+
+  it "activates each classroom link" do
+    fake_person_school_classroom_link.expects(:activate!)
     subject.call
   end
 end
