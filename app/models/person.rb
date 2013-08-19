@@ -37,6 +37,10 @@ class Person < ActiveRecord::Base
 
   validates_uniqueness_of :sti_uuid, allow_blank: true
 
+  has_many :foods, :through => :food_person_links
+  has_many :food_person_links
+
+
   has_many :votes
 
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
@@ -83,13 +87,13 @@ class Person < ActiveRecord::Base
   end
 
   def favorite_foods
-    links = FoodSchoolLink.find_all_by_person_id(self.id)
+    links = FoodPersonLink.find_all_by_thrown_by_id(self.id)
     links.sort_by{|x| x.food_id}.uniq{|x| x.food_id}.map{|x| x.food}.first(3)
   end
 
-  def favorite_schools
-    links = FoodSchoolLink.find_all_by_person_id(self.id)
-    links.sort_by{|x| x.school_id}.uniq{|x| x.school_id}.map{|x| x.school}.first(3)
+  def favorite_people
+    links = FoodPersonLink.find_all_by_thrown_by_id(self.id)
+    links.sort_by{|x| x.person_id}.uniq{|x| x.person_id}.map{|x| x.person}.first(3)
   end
 
   def food_schools
