@@ -113,14 +113,14 @@ group :development do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
   gem 'unicorn'
-  gem 'thin'
+  #gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
 end
 
 group :test do
   gem 'letter_opener'
   gem 'unicorn'
-  gem 'thin'
+  #gem 'thin'
   gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
   gem 'minitest-reporters', '~> 0.8.0'
