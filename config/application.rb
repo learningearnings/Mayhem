@@ -26,7 +26,7 @@ module Leror
       end
     end
 
-    config.assets.initialize_on_precompile = false
+    config.assets.initialize_on_precompile = true
     #Spree::Core::Engine.precompile_assets!
 
     # Settings in config/environments/* take precedence over those specified here.
