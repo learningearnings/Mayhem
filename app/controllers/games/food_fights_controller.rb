@@ -18,15 +18,14 @@ module Games
       @foods = Food.all
     end
 
-    def choose_school
+    def choose_person
       @food = Food.find(params[:food_id])
-      @schools = School.all
+      @students = current_school.students
     end
 
     def throw_food
-      @school = School.find(params[:school_id])
       @food = Food.find(params[:food_id])
-      FoodSchoolLink.create(:food_id => @food.id, :school_id => @school.id, :person_id => current_person.id)
+      FoodPersonLink.create(:food_id => @food.id, :thrown_by_id => current_person.id, :person_id => params[:person_id])
       redirect_to play_games_food_fight_path, flash: { success: "Food Thrown!" }
     end
  
