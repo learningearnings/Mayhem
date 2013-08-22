@@ -70,7 +70,7 @@ ActiveAdmin.register Auction do
       end
       session[auction_session_key] = Time.zone.now
 
-      bid_text += auction.current_bid
+      bid_text += auction.current_bid.to_s
       bid_text.html_safe
     end
     column :leader do |auction|
