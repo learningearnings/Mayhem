@@ -10,10 +10,10 @@
       %tbody
         %tr
           %td.table-bordered-tl.cb-heading Credits
-          %td.table-bordered-tr.cb-value.currency= number_to_currency(current_person.main_account(current_person.schools.first).balance)
+          %td.table-bordered-tr.cb-value.currency= current_person.main_account(current_person.schools.first).balance
         %tr
           %td.table-bordered-bl.cb-heading Store Credits
-          %td.table-bordered-br.cb-value.currency= number_to_currency(current_school.store_account.balance)
+          %td.table-bordered-br.cb-value.currency= current_school.store_account.balance
 
   .person-details
     %h3= current_person.name

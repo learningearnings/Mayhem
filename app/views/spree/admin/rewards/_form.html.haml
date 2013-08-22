@@ -26,7 +26,7 @@
       = f.label :price, 'Credits', {:class => 'control-label'}
       .input-prepend.pull-right
         %span.add-on $
-        = f.text_field :price,{ :value => number_to_currency(@product.price, :unit => ''), :class => 'numeric input-small'}
+        = f.text_field :price,{ :value => @product.price, :class => 'numeric input-small'}
     .control-group#on_hand
       = f.label :on_hand, 'Count on hand', {:class => 'control-label'}
       .pull-right

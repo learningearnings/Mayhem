@@ -15,7 +15,7 @@
       %td= order.ship_address.company rescue School.find(YAML.load(order.special_instructions)[:school_id]).name
       %td= order.item_count
       %td= order.line_items.collect do |li| li.product.name end.uniq.join(', ')
-      %td= number_to_currency(order.total)
+      %td= order.total
       %td
         .btn-group
           = link_to "Print", admin_le_print_order_path(order) , :class => "btn print"

@@ -6,4 +6,4 @@
         = link_to image_tag(image_processor.fetch_file(product_image_path).thumb('80x80#').url), spree.product_path(product)
       .product-details
         = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :class => 'info', :itemprop => "name", :title => product.name
-        .price.selling{:itemprop => "price"}= number_to_currency product.price
+        .price.selling{:itemprop => "price"}= product.price

@@ -52,7 +52,7 @@ ActiveAdmin.register Auction do
     column :end_date
     column :status
     column :starting_bid do |auction|
-      number_to_currency(auction.starting_bid)
+      auction.starting_bid
     end
     column :bids do |auction|
       auction.auction_bids.count
@@ -70,7 +70,7 @@ ActiveAdmin.register Auction do
       end
       session[auction_session_key] = Time.zone.now
 
-      bid_text += number_to_currency(auction.current_bid)
+      bid_text += auction.current_bid
       bid_text.html_safe
     end
     column :leader do |auction|

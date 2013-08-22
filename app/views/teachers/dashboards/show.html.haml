@@ -41,7 +41,7 @@
     - @orders.each do |order|
       %tr
         %td= order.completed_at
-        %td= number_to_currency order.amount
+        %td= order.amount
         %td= order.payment_state
         %td= order.state
         %td= order.products.first.name
