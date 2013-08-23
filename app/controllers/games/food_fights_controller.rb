@@ -18,7 +18,7 @@ module Games
       @foods = Food.all
     end
 
-    def choose_person
+    def challenge_opponent
       @food = Food.find(params[:food_id])
       @students = current_school.students
     end
