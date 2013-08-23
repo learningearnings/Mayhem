@@ -2,6 +2,7 @@ require_relative '../../../test_helper'
 require_relative '../../../../app/models/importers/le/users_importer'
 
 class Person; end
+class LeAdmin; end
 class School; end
 
 describe Importers::Le::UsersImporter do
@@ -21,7 +22,7 @@ describe Importers::Le::UsersImporter do
 
   it "creates a person for each element in the file if it doesn't already exist" do
     Person.stubs(:where).returns([])
-    Person.expects(:create).with(first_name: "Adam", last_name: "Pearson", grade: '2', type: "LeAdmin", legacy_user_id: "544").returns(fake_person)
+    LeAdmin.expects(:create).with({first_name: "Adam", last_name: "Pearson", grade: '2', type: "LeAdmin", legacy_user_id: "544"}, as: :admin).returns(fake_person)
     subject.call
   end
 
@@ -32,7 +33,7 @@ describe Importers::Le::UsersImporter do
 
   it "associates the person with the school" do
     Person.stubs(:where).returns([])
-    Person.stubs(:create).returns(fake_person)
+    LeAdmin.stubs(:create).returns(fake_person)
     fake_person.expects(:<<).with(fake_school)
     subject.call
   end
