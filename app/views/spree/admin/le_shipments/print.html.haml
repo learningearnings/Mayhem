@@ -29,7 +29,7 @@
       %td
         .numeric= li.quantity
       %td
-        .numeric= number_to_currency(li.price)
+        .numeric= li.price
   %tr
     %td{:colspan => 2}
       .numeric
@@ -39,4 +39,4 @@
         %strong= @order.item_count
     %td
       .numeric
-        %strong= number_to_currency(total)
+        %strong= total

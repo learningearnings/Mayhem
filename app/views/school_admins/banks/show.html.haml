@@ -9,7 +9,7 @@
       %p.credits-available
         %strong
           Credits Available:
-        = number_to_currency(current_person.main_account(current_school).balance)
+        = current_person.main_account(current_school).balance
 
       .distribute-credits
         %h3 Distribute Credits

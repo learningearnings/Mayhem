@@ -29,7 +29,7 @@
                     #product-price
                       %h6.product-section-title= t(:price)
                       %div
-                        %span.price.selling{ itemprop:"price" }= number_to_currency @product.price
+                        %span.price.selling{ itemprop:"price" }= @product.price
                 %p= t(:school_store_is_for_students, school: current_school_name)
   .secondary-content
     = render :partial => 'taxons'
