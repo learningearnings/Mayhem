@@ -49,6 +49,7 @@ module Games
       @opponent = Person.find(params[:person_id])
       @match = FoodFightMatch.create(:active => true)
       @match.food_fight_players.create(:person_id => current_person.id)
+      @match.update_attributes(:initiated_by => @match.players.first.id)
       @match.food_fight_players.create(:person_id => @opponent.id)
       @match
     end

@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20130823185513) do
   create_table "food_fight_matches", :force => true do |t|
     t.boolean  "active"
     t.integer  "players_turn"
+    t.integer  "initiated_by"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

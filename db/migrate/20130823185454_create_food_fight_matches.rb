@@ -3,6 +3,7 @@ class CreateFoodFightMatches < ActiveRecord::Migration
     create_table :food_fight_matches do |t|
       t.boolean :active
       t.integer :players_turn
+      t.integer :initiated_by
       t.timestamps
     end
   end

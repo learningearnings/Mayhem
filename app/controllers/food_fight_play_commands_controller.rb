@@ -28,8 +28,9 @@ class FoodFightPlayCommandsController < LoggedInController
       @match = FoodFightMatch.find(params[:match_id])
     else
       @opponent = Person.find(params[:person_id])
-      @match = FoodFightMatch.create(:active => true)
+      @match = FoodFightMatch.create(:active => true, :initiated_by => current_person.id)
       @match.food_fight_players.create(:person_id => current_person.id)
+      @match.update_attributes(:initiated_by => @match.players.first.id)
       @match.food_fight_players.create(:person_id => @opponent.id)
       @match
     end
@@ -37,7 +38,7 @@ class FoodFightPlayCommandsController < LoggedInController
 
   def handle_turn
     @match.change_turn
-    FoodFightMessageStudentCommand.new(:to_id => @match.turn.id, :from_id => @match.player_waiting.id, :body => 'It is your turn in this food fight.  Bring the pain!', :subject => 'Food Fight Match').execute
+    FoodFightMessageStudentCommand.new(:to_id => @match.turn.id, :from_id => @match.waiting_player.id, :body => 'It is your turn in this food fight.  Bring the pain!', :subject => 'Food Fight Match').execute!
   end
 
 

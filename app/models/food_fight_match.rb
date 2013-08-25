@@ -1,5 +1,5 @@
 class FoodFightMatch < ActiveRecord::Base
-  attr_accessible :active, :players_turn
+  attr_accessible :active, :players_turn, :initiated_by
 
   has_many :food_fight_players
 
@@ -30,7 +30,11 @@ class FoodFightMatch < ActiveRecord::Base
   end
 
   def turn
-    FoodFightPlayer.find players_turn
+    if players_turn
+      FoodFightPlayer.find players_turn
+    else
+      FoodFightPlayer.find initiated_by
+    end
   end
 
   def change_turn
@@ -38,7 +42,6 @@ class FoodFightMatch < ActiveRecord::Base
   end
 
   def waiting_player
-    binding.pry
-    (players - turn).first
+    (players - [turn]).first
   end
 end
