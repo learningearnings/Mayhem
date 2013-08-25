@@ -1,0 +1,9 @@
+%h1 Round End
+- if @match.winner?
+  %p= "Congratulations #{@player.person.name}!"
+  %ul
+    %li= link_to "Throw Food", throw_food_games_food_fight_path, class: 'btn'
+- else
+  %h5 Food Fight!
+  %p We have notified to student of the incoming attack!
+  %p= link_to "Click Here to Challenge someone else!", games_food_fight_path

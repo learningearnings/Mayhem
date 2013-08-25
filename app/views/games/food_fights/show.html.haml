@@ -2,7 +2,12 @@
 
 %ul
   %li= link_to "My Stats", "#", class: 'btn'
-  %li= link_to "Throw Food", play_games_food_fight_path, class: 'btn'
+  %li= link_to "Find Opponent", challenge_opponent_games_food_fight_path, class: 'btn'
+
+%h3 Active Matches
+- current_person.food_fight_matches.each do |match|
+  = link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
+
 
 %h3 Current Round: #{current_round}
 

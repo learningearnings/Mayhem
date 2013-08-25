@@ -77,10 +77,12 @@ Leror::Application.routes.draw do
   namespace :games do
     resource :food_fight do
       member do
-        get 'play'
-        get 'choose_food'
-        post 'challenge_opponent'
+        get  'challenge_opponent'
+        post 'play'
+        get  'round_end'
+        get  'choose_food'
         post 'throw_food'
+        post 'continue_match'
       end
     end
   end

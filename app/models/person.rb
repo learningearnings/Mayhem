@@ -40,6 +40,8 @@ class Person < ActiveRecord::Base
   has_many :foods, :through => :food_person_links
   has_many :food_person_links
 
+  has_many :food_fight_players
+
 
   has_many :votes
 
@@ -190,6 +192,10 @@ class Person < ActiveRecord::Base
       end
     end
     rewards
+  end
+
+  def food_fight_matches
+    food_fight_players.map{|x| x.match if x.match && x.match.active}.compact
   end
 
   def orders
