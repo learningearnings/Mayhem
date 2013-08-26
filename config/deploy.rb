@@ -12,7 +12,9 @@ require "rvm/capistrano/gem_install_uninstall"
 require "rvm/capistrano/alias_and_wrapp"
 before 'deploy', 'rvm:create_alias'
 before 'deploy', 'rvm:create_wrappers'
-#require "bundler/capistrano"
+require "bundler/capistrano"
+
+before "deploy", "deploy:install_bundler"
 
 set :bundle_dir, ''
 set :bundle_flags, '--system --quiet'
@@ -38,18 +40,12 @@ set :group,           "deployer"
 set :use_sudo,        false
 
 set(:latest_release)  { fetch(:current_path) }
-set(:release_path)    { fetch(:current_path) }
-set(:current_release) { fetch(:current_path) }
-
-set(:current_revision)  { capture("cd #{current_path}; git rev-parse --short HEAD").strip }
-set(:latest_revision)   { capture("cd #{current_path}; git rev-parse --short HEAD").strip }
-set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEAD@{1}").strip }
-
-default_environment["RAILS_ENV"] = 'production'
-default_environment["AUTO_ACCEPT"] = '1'
-default_run_options[:shell] = 'bash'
 
 namespace :deploy do
+  task :install_bundler, :roles => :app do
+    run "type -P bundle &>/dev/null || { /home/deployer/.rvm//wrappers/Mayhem/gem install bundler --no-rdoc --no-ri; }"
+  end
+
   desc "Deploy your application"
   task :default do
     update
@@ -84,14 +80,14 @@ namespace :deploy do
   desc "Reload the database (deletes everything!!!)."
   task :reload, except: { no_release: true } do
 #    stop if remote_file_exists?('/tmp/unicorn.mayhemstaging.lemirror.com.pid')
-    run "cd #{latest_release}; rake le:reload RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake le:reload RAILS_ENV=#{rails_env}"
     start
   end
 
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; rake assets:precompile RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -170,3 +166,4 @@ def run_rake(cmd)
 end
 
 after 'deploy:finalize_update', 'deploy:precompile_assets'
+

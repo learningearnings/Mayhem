@@ -289,7 +289,6 @@ GEM
       json
     multi_json (1.7.9)
     multi_xml (0.5.5)
-    mysql2 (0.3.13)
     nested_set (1.7.0)
       activerecord (>= 3.0.0)
       railties (>= 3.0.0)
@@ -521,7 +520,6 @@ DEPENDENCIES
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
   mocha (~> 0.14.0)
-  mysql2
   nested_form!
   pdfkit
   pg (= 0.13.2)

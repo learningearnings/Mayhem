@@ -14,7 +14,7 @@ gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 
 # for importing
-gem 'mysql2'
+#gem 'mysql2'
 
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', branch: 'svgweb-fix'
 
