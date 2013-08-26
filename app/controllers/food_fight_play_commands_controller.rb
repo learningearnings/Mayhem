@@ -23,8 +23,6 @@ class FoodFightPlayCommandsController < LoggedInController
     @player = player
     @match = match
     redirect_to round_end_games_food_fight_path(:match => match, :player => player), flash: { success: "Answered successfully." }
-    #render '/games/food_fights/round_end'    
-    #render '/games/food_fights/incorrect', locals: { food_fight_play_command: command, question_statistics: question_statistics }
   end
 
   def match_setup
@@ -48,10 +46,10 @@ class FoodFightPlayCommandsController < LoggedInController
 
   def handle_messaging
     if @match.winner?
-      FoodFightMessageStudentCommand.new(:to_id => @match.winner.id, :from_id => @match.loser.id, :body => 'You won the food fight!', :subject => 'Food Fight Match').execute!
-      FoodFightMessageStudentCommand.new(:to_id => @match.loser.id, :from_id => @match.winner.id, :body => 'You lost the food fight.', :subject => 'Food Fight Match').execute!
+      FoodFightMessageStudentCommand.new(:to_id => @match.winner.person.id, :from_id => @match.loser.person.id, :body => "You won the food fight! <a href='/games/food_fight/throw_food/#{@match}'>Click here to throw food!</a>", :subject => 'Food Fight Match').execute!
+      FoodFightMessageStudentCommand.new(:to_id => @match.loser.person.id, :from_id => @match.winner.person.id, :body => "You lost the food fight. <a href='/rematch/#{@match.winner.id}'>Click here for a rematch!</a>", :subject => 'Food Fight Match').execute!
     else
-      FoodFightMessageStudentCommand.new(:to_id => @match.turn.id, :from_id => @match.waiting_player.id, :body => 'It is your turn in this food fight.  Bring the pain!', :subject => 'Food Fight Match').execute!
+      FoodFightMessageStudentCommand.new(:to_id => @match.turn.person.id, :from_id => @match.waiting_player.person.id, :body => "It is your turn in this food fight.  Bring the pain! <a href='/continue_match/#{@match.id}'>Click here to get back in the fight!</a>", :subject => 'Food Fight Match').execute!
     end
 
   end

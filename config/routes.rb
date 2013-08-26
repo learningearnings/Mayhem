@@ -87,6 +87,7 @@ Leror::Application.routes.draw do
   end
 
   match 'continue_match/:match_id' => 'games/food_fights#continue_match', :as => :continue_match_games_food_fight
+  match 'rematch/:winner_id' => 'games/food_fights#rematch', :as => :rematch_games_food_fight
   match "/restock" => 'restock#index', :as => :restock
   match "/restock/empty" => 'restock#empty', :as => :restock_empty_cart
 

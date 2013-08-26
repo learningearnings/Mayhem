@@ -44,19 +44,32 @@ module Games
       end
     end
 
-    def match_setup
-    if params[:match_id]
-      @match = FoodFightMatch.find(params[:match_id])
-    else
-      @opponent = Person.find(params[:person_id])
-      @match = FoodFightMatch.create(:active => true)
-      @match.food_fight_players.create(:person_id => current_person.id)
-      @match.update_attributes(:initiated_by => @match.players.first.id)
-      @match.food_fight_players.create(:person_id => @opponent.id)
-      @match
+    def rematch
+      @rematch = true
+      @winner = FoodFightPlayer.find(params[:winner_id])
     end
-  end
 
+    def match_setup
+      if @rematch
+        @opponent = @winner
+        @match = FoodFightMatch.create(:active => true)
+        @match.food_fight_players.create(:person_id => current_person.id)
+        @match.update_attributes(:initiated_by => @match.players.first.id)
+        @match.food_fight_players.create(:person_id => @opponent.id)
+        @match
+      else
+        if params[:match_id]
+          @match = FoodFightMatch.find(params[:match_id])
+        else
+          @opponent = Person.find(params[:person_id])
+          @match = FoodFightMatch.create(:active => true)
+          @match.food_fight_players.create(:person_id => current_person.id)
+          @match.update_attributes(:initiated_by => @match.players.first.id)
+          @match.food_fight_players.create(:person_id => @opponent.id)
+          @match
+        end
+      end
+    end
 
   end
 end

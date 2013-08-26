@@ -61,7 +61,7 @@ module ApplicationHelper
   end
 
   def avatar_for(person, geometry='50x50#')
-    avatar_img = if person.avatar.present?
+    avatar_img = if person && person.avatar.present?
                    person.avatar.image
                  else
                    default_avatar_path = Rails.root.join('app/assets/images/default_avatar.png').to_s

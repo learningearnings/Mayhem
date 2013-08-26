@@ -6,7 +6,11 @@ class FoodFightMatch < ActiveRecord::Base
   scope :active, where("active = ?", true)
 
   def winner
-    players.select{|x| x.winner?}
+    players.select{|x| x.winner?}.first
+  end
+
+  def loser
+    (players - [winner]).first
   end
 
   def initiated
@@ -19,10 +23,6 @@ class FoodFightMatch < ActiveRecord::Base
   
   def winner?
     winner.present?
-  end
-
-  def loser
-    players - winner
   end
 
   def players
