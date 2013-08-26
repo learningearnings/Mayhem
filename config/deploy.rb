@@ -1,5 +1,21 @@
 # config/deploy.rb 
-require "bundler/capistrano"
+
+set :rvm_ruby_string, :local
+set :rvm_autolibs_flag, "read-only"
+set :rvm_type, :user
+before 'deploy', 'rvm:install_rvm'
+before 'deploy', 'rvm:install_ruby'
+before 'deploy', 'rvm:create_gemset'
+require "rvm/capistrano"
+require "rvm/capistrano/selector"
+require "rvm/capistrano/gem_install_uninstall"
+require "rvm/capistrano/alias_and_wrapp"
+before 'deploy', 'rvm:create_alias'
+before 'deploy', 'rvm:create_wrappers'
+#require "bundler/capistrano"
+
+set :bundle_dir, ''
+set :bundle_flags, '--system --quiet'
 
 set :stages, %w(production staging)
 set :default_stage, "staging"
@@ -7,7 +23,7 @@ require 'capistrano/ext/multistage'
 
 set :application,     "Mayhem"
 set :scm,             :git
-set :repository,      "git@github.com:learningearnings/Mayhem.git"
+set :repository,      "git@github.com:knewter/Mayhem.git"
 set :branch,          "origin/develop"
 set :migrate_target,  :current
 set :ssh_options,     { forward_agent: true }
@@ -68,14 +84,14 @@ namespace :deploy do
   desc "Reload the database (deletes everything!!!)."
   task :reload, except: { no_release: true } do
 #    stop if remote_file_exists?('/tmp/unicorn.mayhemstaging.lemirror.com.pid')
-    run "cd #{latest_release}; bundle exec rake le:reload RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; rake le:reload RAILS_ENV=#{rails_env}"
     start
   end
 
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -117,7 +133,7 @@ namespace :deploy do
 
   desc "Start unicorn"
   task :start, except: { no_release: true } do
-    run "cd #{current_path} ; bundle exec unicorn_rails -c config/unicorn.rb -D"
+    run "cd #{current_path} ; unicorn_rails -c config/unicorn.rb -D"
   end
 
   desc "Stop unicorn"
