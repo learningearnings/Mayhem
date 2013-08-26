@@ -24,4 +24,4 @@
       %td= pending_shipment.item_count
       %td
         .currency
-          = number_to_currency(pending_shipment.total) rescue ''
+          = pending_shipment.total rescue ''
