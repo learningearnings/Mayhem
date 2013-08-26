@@ -82,11 +82,11 @@ Leror::Application.routes.draw do
         get  'round_end'
         get  'choose_food'
         post 'throw_food'
-        post 'continue_match'
       end
     end
   end
 
+  match 'continue_match/:match_id' => 'games/food_fights#continue_match', :as => :continue_match_games_food_fight
   match "/restock" => 'restock#index', :as => :restock
   match "/restock/empty" => 'restock#empty', :as => :restock_empty_cart
 
@@ -108,6 +108,7 @@ Leror::Application.routes.draw do
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
   match "inbox/school_messages" => 'messages#school_messages', :as => 'school_messages'
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
+  match "inbox/food_fight_messages" => 'messages#food_fight_messages', :as => 'food_fight_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'

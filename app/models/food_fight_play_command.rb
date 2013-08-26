@@ -13,7 +13,8 @@ class FoodFightPlayCommand < ActiveModelCommand
   delegate :body, to: :question, prefix: :question
 
   def initialize params={}
-    @match = FoodFightMatch.find params[:match_id] if params[:match_id]
+    @match       = FoodFightMatch.find params[:match_id] if params[:match_id]
+    @player      = @match.players.find_by_person_id person_id
     @question_id = params[:question_id]
     @answer_id   = params[:answer_id].to_i
     @on_success  = lambda{|a|}
@@ -93,14 +94,17 @@ class FoodFightPlayCommand < ActiveModelCommand
   end
 
   def execute!
-    return on_failure.call(self) unless valid?
+    @player = @match.players.find_by_person_id person_id
+    @player.update_attributes(:questions_answered => @player.questions_answered + 1)
+    return on_failure.call(self, @match, @player) unless valid?
     answer = person_answer_repository.create(person_answer_args)
     unless answer.valid? && correct?
-      return on_failure.call(self)
+      return on_failure.call(self, @match, @player)
     end
+    @player.add_score
     credit = game_credit_class.new('FF', person_id)
     credit.increment!(game_credits)
-    return on_success.call(self, @match)
+    return on_success.call(self, @match, @player)
   end
 
   class AnswerOption < SimpleDelegator

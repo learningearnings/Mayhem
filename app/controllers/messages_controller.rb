@@ -26,6 +26,11 @@ class MessagesController < LoggedInController
     @messages.map{|x| x.read!}
   end
 
+  def food_fight_messages
+    @messages = @received_messages.from_food_fight.page params[:page]
+    @messages.map{|x| x.read!}
+  end
+
   def reply
     @old_message = Message.find(params[:message_id])
     @message = StudentMessageStudentCommand.new

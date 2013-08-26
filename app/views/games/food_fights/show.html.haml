@@ -5,9 +5,22 @@
   %li= link_to "Find Opponent", challenge_opponent_games_food_fight_path, class: 'btn'
 
 %h3 Active Matches
+%h5 Your Turn
 - current_person.food_fight_matches.each do |match|
-  = link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
+  - if match.turn.person == current_person.person
+    %ul
+      %li= link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
+%h5 Their Turn
+- current_person.food_fight_matches.each do |match|
+  - if match.turn.person != current_person.person
+    %ul
+      %li= link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
 
+
+%h4 Wins
+- current_person.food_fight_wins.each do |win|
+  %ul
+    %li= win.match.score
 
 %h3 Current Round: #{current_round}
 

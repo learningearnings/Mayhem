@@ -6,13 +6,12 @@ module Games
     end
 
     def challenge_opponent
-      @students = current_school.students
+      @students = current_school.students - [current_person]
     end
 
     def play
       match_setup
       # FIXME: Make this...better
-      @opponent = Person.find(params[:person_id])
       question = Games::Question.first
       food_fight_play_command = FoodFightPlayCommand.new(question_id: question.id, :match_id => @match.id)
       question_statistics = Games::QuestionStatisticsPresenter.new(question)
@@ -21,10 +20,8 @@ module Games
 
     def round_end
       @match = FoodFightMatch.find(params[:match])
-      @player = current_person
-      if @match.winner?
-        @match.end!
-      end
+      @player = FoodFightPlayer.find(params[:player])
+      @match.end! if @match.winner?
     end
 
     def choose_food
@@ -40,6 +37,11 @@ module Games
 
     def continue_match
       @match = FoodFightMatch.find(params[:match_id])
+      if @match.turn.person == current_person
+        play
+      else
+        redirect_to games_food_fight_path, flash: { success: "It is not your turn."}
+      end
     end
 
     def match_setup

@@ -198,6 +198,10 @@ class Person < ActiveRecord::Base
     food_fight_players.map{|x| x.match if x.match && x.match.active}.compact
   end
 
+  def food_fight_wins
+    food_fight_players.select{|x| x.winner?}
+  end
+
   def orders
     user.orders
   end

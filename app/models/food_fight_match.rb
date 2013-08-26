@@ -6,7 +6,15 @@ class FoodFightMatch < ActiveRecord::Base
   scope :active, where("active = ?", true)
 
   def winner
-    players.where(:score => 1).first
+    players.select{|x| x.winner?}
+  end
+
+  def initiated
+    FoodFightPlayer.find initiated_by
+  end
+
+  def score
+    "#{initiated.person.name}: #{initiated.score} - #{initiated.opponent.person.name}: #{initiated.opponent.score}"
   end
   
   def winner?
@@ -26,7 +34,7 @@ class FoodFightMatch < ActiveRecord::Base
   end
 
   def end!
-    update_attribute(:active, true)
+    update_attribute(:active, false)
   end
 
   def turn

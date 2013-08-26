@@ -11,14 +11,19 @@ class FoodFightPlayCommandsController < LoggedInController
     command.execute!
   end
 
-  def on_success(command, match)
+  def on_success(command, match, player)
     handle_turn
-    redirect_to round_end_games_food_fight_path(:match => @match), flash: { success: "Answered successfully." }
+    redirect_to round_end_games_food_fight_path(:match => match, :player => player), flash: { success: "Answered successfully." }
   end
 
-  def on_failure(command)
+  def on_failure(command, match, player)
+    handle_turn
     flash.now[:error] = "Incorrect answer."
     question_statistics = Games::QuestionStatisticsPresenter.new(command.question)
+    @player = player
+    @match = match
+    redirect_to round_end_games_food_fight_path(:match => match, :player => player), flash: { success: "Answered successfully." }
+    #render '/games/food_fights/round_end'    
     #render '/games/food_fights/incorrect', locals: { food_fight_play_command: command, question_statistics: question_statistics }
   end
 
@@ -38,8 +43,17 @@ class FoodFightPlayCommandsController < LoggedInController
 
   def handle_turn
     @match.change_turn
-    FoodFightMessageStudentCommand.new(:to_id => @match.turn.id, :from_id => @match.waiting_player.id, :body => 'It is your turn in this food fight.  Bring the pain!', :subject => 'Food Fight Match').execute!
+    handle_messaging
   end
 
+  def handle_messaging
+    if @match.winner?
+      FoodFightMessageStudentCommand.new(:to_id => @match.winner.id, :from_id => @match.loser.id, :body => 'You won the food fight!', :subject => 'Food Fight Match').execute!
+      FoodFightMessageStudentCommand.new(:to_id => @match.loser.id, :from_id => @match.winner.id, :body => 'You lost the food fight.', :subject => 'Food Fight Match').execute!
+    else
+      FoodFightMessageStudentCommand.new(:to_id => @match.turn.id, :from_id => @match.waiting_player.id, :body => 'It is your turn in this food fight.  Bring the pain!', :subject => 'Food Fight Match').execute!
+    end
+
+  end
 
 end
