@@ -15,6 +15,9 @@ gem 'pg', '0.13.2'
 
 # for importing
 gem 'mysql2'
+gem 'taps'
+gem 'sqlite3'
+
 
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', branch: 'svgweb-fix'
 
