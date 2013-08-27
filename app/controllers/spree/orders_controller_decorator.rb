@@ -46,7 +46,7 @@ Spree::OrdersController.class_eval do
         redirect_to product and return
       else
         OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-        flash[:notice] = "Bought that stuff..."
+        flash[:notice] = "Purchase Completed."
         redirect_to "/"
       end
     end

@@ -10,7 +10,7 @@
       = link_to truncate("#{charity.spree_product.name}", :length => 50), spree.product_path(charity.spree_product), :class => 'info', :itemprop => "name", :title => charity.spree_product.name
     .product-purchased
       .info= "Donation On: " + l(charity.created_at.to_date,format: :short)
-      .info= "You Donated: " + charity.debit_amounts.sum(:amount)
+      .info= "You Donated: " + charity.debit_amounts.sum(:amount).to_s
   - unless charity.spree_product.svg.blank? || charity.spree_product.svg.path.blank?
     .print
       = link_to "Print Your Certificate", charity_print_path(charity),class: 'btn awesome-button'

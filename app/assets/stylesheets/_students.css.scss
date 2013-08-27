@@ -1,0 +1,13 @@
+.honor-roll-content {
+  padding-top: 3em;
+  padding-left: 3em;
+  @include rotate(-5deg);
+  h4 {
+    font-size: 125%;
+    color: black;
+    margin-bottom: 0;
+  }
+  ol {
+    font-size: 125%;
+  }
+}
