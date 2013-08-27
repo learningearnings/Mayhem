@@ -26,8 +26,6 @@ module Teachers
       @classrooms = params[:classrooms].collect{|c| c.to_i} if params[:classrooms] && params[:classrooms].is_a?(Array)
     end
 
-
-
     def spree_product_id=(id)
       self.spree_product = Spree::Product.find(id)
       @spree_product_id = @id = id
@@ -58,7 +56,6 @@ module Teachers
       p.deleted_on = @end_date = reward_params[:end_date] if reward_params[:end_date]
       p.save
     end
-
 
     def persisted?
       @id ? true : false

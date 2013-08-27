@@ -1,5 +1,24 @@
 # config/deploy.rb 
+
+set :rvm_ruby_string, :local
+set :rvm_autolibs_flag, "read-only"
+set :rvm_type, :user
+require "rvm/capistrano"
+require "rvm/capistrano/selector"
+require "rvm/capistrano/gem_install_uninstall"
+require "rvm/capistrano/alias_and_wrapp"
 require "bundler/capistrano"
+
+before 'deploy:setup', 'rvm:install_rvm'
+before 'deploy:setup', 'rvm:install_ruby'
+before 'deploy:setup', 'rvm:create_gemset'
+before 'deploy:setup', 'rvm:create_alias'
+before 'deploy:setup', 'rvm:create_wrappers'
+
+before "deploy", "deploy:install_bundler"
+
+set :bundle_dir, ''
+set :bundle_flags, '--system --quiet'
 
 set :stages, %w(production staging)
 set :default_stage, "staging"
@@ -7,7 +26,7 @@ require 'capistrano/ext/multistage'
 
 set :application,     "Mayhem"
 set :scm,             :git
-set :repository,      "git@github.com:learningearnings/Mayhem.git"
+set :repository,      "git@github.com:knewter/Mayhem.git"
 set :branch,          "origin/develop"
 set :migrate_target,  :current
 set :ssh_options,     { forward_agent: true }
@@ -22,18 +41,12 @@ set :group,           "deployer"
 set :use_sudo,        false
 
 set(:latest_release)  { fetch(:current_path) }
-set(:release_path)    { fetch(:current_path) }
-set(:current_release) { fetch(:current_path) }
-
-set(:current_revision)  { capture("cd #{current_path}; git rev-parse --short HEAD").strip }
-set(:latest_revision)   { capture("cd #{current_path}; git rev-parse --short HEAD").strip }
-set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEAD@{1}").strip }
-
-default_environment["RAILS_ENV"] = 'production'
-default_environment["AUTO_ACCEPT"] = '1'
-default_run_options[:shell] = 'bash'
 
 namespace :deploy do
+  task :install_bundler, :roles => :app do
+    run "type -P bundle &>/dev/null || { /home/deployer/.rvm//wrappers/Mayhem/gem install bundler --no-rdoc --no-ri; }"
+  end
+
   desc "Deploy your application"
   task :default do
     update
@@ -68,14 +81,14 @@ namespace :deploy do
   desc "Reload the database (deletes everything!!!)."
   task :reload, except: { no_release: true } do
 #    stop if remote_file_exists?('/tmp/unicorn.mayhemstaging.lemirror.com.pid')
-    run "cd #{latest_release}; bundle exec rake le:reload RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake le:reload RAILS_ENV=#{rails_env}"
     start
   end
 
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -100,7 +113,8 @@ namespace :deploy do
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
-      ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml
+      ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml &&
+      ln -sf #{shared_path}/config/initilizers/setup_mail.rb #{latest_release}/config/initializers
     CMD
 
     if fetch(:normalize_asset_timestamps, true)
@@ -117,7 +131,7 @@ namespace :deploy do
 
   desc "Start unicorn"
   task :start, except: { no_release: true } do
-    run "cd #{current_path} ; bundle exec unicorn_rails -c config/unicorn.rb -D"
+    run "cd #{current_path} ; RAILS_ENV=production unicorn_rails -c config/unicorn.rb -D"
   end
 
   desc "Stop unicorn"
@@ -154,3 +168,4 @@ def run_rake(cmd)
 end
 
 after 'deploy:finalize_update', 'deploy:precompile_assets'
+

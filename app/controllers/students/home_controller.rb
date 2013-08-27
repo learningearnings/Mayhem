@@ -8,6 +8,7 @@ module Students
       @our_sponsor = our_sponsor_post
       @our_sponsor_callout = our_sponsor_callout_post
       @poll = Poll.active.last
+      @charity_donations = honor_roll.charity_purchases_per_person(3)
     end
 
     private
@@ -33,6 +34,10 @@ module Students
 
     def fetch_most_recent(post_type, default_text)
       post_type.published.most_recent.limit(1).first || post_type.new(body: default_text)
+    end
+
+    def honor_roll
+      @honor_roll ||= HonorRoll.new(current_school, 7.days.ago.beginning_of_day, Date.today.end_of_day)
     end
   end
 end
