@@ -7,6 +7,7 @@ Plutus::Transaction.class_eval do
   scope :with_spree_products, where(:commercial_document_type => 'Spree::Product')
   scope :with_spree_line_items, where(:commercial_document_type => 'Spree::LineItem')
   scope :for_account, lambda {|account_id| joins(:amounts).where("#{Plutus::Amount.table_name}.account_id" => account_id)}
+  scope :for_accounts, lambda {|accounts| joins(:amounts).where("#{Plutus::Amount.table_name}.account_id" => accounts)}
   scope :for_person, lambda {|person_id| joins(:person_school_links).where("#{PersonSchoolLink.table_name}.person_id" => person_id)}
   scope :with_main_account, joins(:person_account_links).where("#{PersonAccountLink.table_name}.is_main_account" => true)
 
