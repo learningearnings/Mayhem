@@ -96,7 +96,7 @@ module Reports
       Reports::Row[
         person: person.name,
         username: person.person_username,
-        account_activity: number_to_currency(person.activity_balance || 0),
+        account_activity: (person.activity_balance || 0),
         type: person.type,
         last_sign_in_at: time_ago_in_words(person.last_sign_in_at) + " ago"
       ]

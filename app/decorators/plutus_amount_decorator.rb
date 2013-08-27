@@ -5,9 +5,9 @@ class PlutusAmountDecorator < Draper::Base
   def amount
     case plutus_amount
     when Plutus::DebitAmount
-      h.number_to_currency(plutus_amount.amount)
+      plutus_amount.amount
     when Plutus::CreditAmount
-      h.number_to_currency(-1 * plutus_amount.amount)
+      -1 * plutus_amount.amount
     end
   end
 end
