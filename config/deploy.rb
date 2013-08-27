@@ -129,7 +129,7 @@ namespace :deploy do
 
   desc "Start unicorn"
   task :start, except: { no_release: true } do
-    run "cd #{current_path} ; unicorn_rails -c config/unicorn.rb -D"
+    run "cd #{current_path} ; RAILS_ENV=production unicorn_rails -c config/unicorn.rb -D"
   end
 
   desc "Stop unicorn"
