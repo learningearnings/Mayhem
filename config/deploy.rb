@@ -3,16 +3,17 @@
 set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
-before 'deploy', 'rvm:install_rvm'
-before 'deploy', 'rvm:install_ruby'
-before 'deploy', 'rvm:create_gemset'
 require "rvm/capistrano"
 require "rvm/capistrano/selector"
 require "rvm/capistrano/gem_install_uninstall"
 require "rvm/capistrano/alias_and_wrapp"
-before 'deploy', 'rvm:create_alias'
-before 'deploy', 'rvm:create_wrappers'
 require "bundler/capistrano"
+
+before 'deploy:setup', 'rvm:install_rvm'
+before 'deploy:setup', 'rvm:install_ruby'
+before 'deploy:setup', 'rvm:create_gemset'
+before 'deploy:setup', 'rvm:create_alias'
+before 'deploy:setup', 'rvm:create_wrappers'
 
 before "deploy", "deploy:install_bundler"
 
