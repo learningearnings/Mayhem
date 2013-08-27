@@ -8,6 +8,13 @@
     .featured-activity-callout
       = @featured_activity_callout.body.html_safe
   .honor-roll
+    .honor-roll-content
+      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%H")) do
+        %h4 Most Credits Donated to Charity
+        %ol
+          - @charity_donations.each do |person, amount|
+            %li #{person} [#{number_to_bucks amount}]
+
 .student-logged-in-sidebar
   = render_reward_highlights(@products[0..1])
   .our-sponsors
