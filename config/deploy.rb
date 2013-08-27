@@ -113,7 +113,8 @@ namespace :deploy do
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
-      ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml
+      ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml &&
+      ln -sf #{shared_path}/config/initilizers/setup_mail.rb #{latest_release}/config/initializers
     CMD
 
     if fetch(:normalize_asset_timestamps, true)
