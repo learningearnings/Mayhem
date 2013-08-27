@@ -16,12 +16,12 @@ gem 'pg', '0.13.2'
 # for importing
 #gem 'mysql2'
 
-gem 'jquery-rails', :github => 'learningearnings/jquery-rails', branch: 'svgweb-fix'
+gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
 gem 'jquery-ui-rails'
 
 gem 'activeadmin'
-gem 'activeadmin-extra', github: 'stefanoverna/activeadmin-extra'
+gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
 
@@ -87,7 +87,7 @@ gem 'state_machine'
 gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
-gem 'spree_multi_domain', github: 'learningearnings/spree-multi-domain'
+gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
@@ -115,7 +115,7 @@ group :development do
   gem 'letter_opener'
   gem 'unicorn'
   gem 'thin'
-  gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
+  gem 'rack-bug', :github => 'learningearnings/rack-bug', :branch => 'rails3'
 end
 
 group :test do
@@ -133,12 +133,12 @@ group :test do
   gem 'capybara'
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
-  gem 'mocha', '~> 0.14.0', require: false
-  gem 'valid_attribute', github: 'learningearnings/valid_attribute', branch: 'minitest-matchers-11'
+  gem 'mocha', '~> 0.14.0', :require => false
+  gem 'valid_attribute', :github => 'learningearnings/valid_attribute', :branch => 'minitest-matchers-11'
   gem 'factory_girl_rails'
   gem 'libnotify'
   gem 'rb-fsevent', '~> 0.9.1'
-  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
+  gem 'rb-inotify', '~> 0.8.8', :require => linux_only('rb-inotify')
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
