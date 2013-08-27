@@ -10,7 +10,7 @@ module Games
     end
 
     def play
-      match_setup
+      match_setup unless @match
       # FIXME: Make this...better
       question = Games::Question.first
       food_fight_play_command = FoodFightPlayCommand.new(question_id: question.id, :match_id => @match.id)
@@ -35,7 +35,7 @@ module Games
       @food = Food.find(params[:food_id])
       @match = FoodFightMatch.find(params[:match_id])
       @link = FoodPersonLink.create(:food_id => @food.id, :thrown_by_id => current_person.id, :person_id => @match.loser.person.id)
-      @match.update_attribute(:food_person_link_id, @link.id)
+      @match.update_attributes(:food_person_link_id => @link.id)
       FoodFightMessageStudentCommand.new(:to_id => @match.loser.person.id, :from_id => @match.winner.person.id, :body => "#{@match.winner.person.name} has thrown food at you.  <a href='/food_hit/#{@match.id}'>Click here for a rematch!</a>", :subject => 'Food Fight Match').execute!
       redirect_to games_food_fight_path, flash: { success: "Food Thrown!" }
     end
@@ -56,29 +56,19 @@ module Games
     end
 
     def rematch
-      @rematch = true
       match_setup
+      play
     end
 
     def match_setup
-      if @rematch
-        @opponent = FoodFightPlayer.find(params[:winner_id])
+      if params[:match_id]
+        @match = FoodFightMatch.find(params[:match_id])
+      else
         @match = FoodFightMatch.create(:active => true)
         @match.food_fight_players.create(:person_id => current_person.id)
         @match.update_attributes(:initiated_by => @match.players.first.id)
-        @match.food_fight_players.create(:person_id => @opponent.id)
+        @match.food_fight_players.create(:person_id => params[:person_id])
         @match
-      else
-        if params[:match_id]
-          @match = FoodFightMatch.find(params[:match_id])
-        else
-          @opponent = Person.find(params[:person_id])
-          @match = FoodFightMatch.create(:active => true)
-          @match.food_fight_players.create(:person_id => current_person.id)
-          @match.update_attributes(:initiated_by => @match.players.first.id)
-          @match.food_fight_players.create(:person_id => @opponent.id)
-          @match
-        end
       end
     end
 

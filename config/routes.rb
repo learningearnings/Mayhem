@@ -89,7 +89,7 @@ Leror::Application.routes.draw do
   match 'throw_food' => 'games/food_fights#throw_food', :as => :throw_food
   match 'food_hit/:match_id' => 'games/food_fights#food_hit', :as => :food_hit
   match 'continue_match/:match_id' => 'games/food_fights#continue_match', :as => :continue_match_games_food_fight
-  match 'rematch/:winner_id' => 'games/food_fights#rematch', :as => :rematch_games_food_fight
+  match 'rematch/:person_id' => 'games/food_fights#rematch', :as => :rematch_games_food_fight
   match "/restock" => 'restock#index', :as => :restock
   match "/restock/empty" => 'restock#empty', :as => :restock_empty_cart
 

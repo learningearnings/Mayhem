@@ -168,10 +168,10 @@ ActiveRecord::Schema.define(:version => 20130823185513) do
     t.boolean  "active"
     t.integer  "players_turn"
     t.integer  "initiated_by"
-    t.boolean  "food_thrown"
-    t.boolean  "food_person_link_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.boolean  "food_thrown",         :default => false
+    t.integer  "food_person_link_id"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   create_table "food_fight_players", :force => true do |t|
