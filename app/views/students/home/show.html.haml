@@ -15,14 +15,15 @@
     .our-sponsors-callout
       .our-sponsors-callout-content
         = @our_sponsor_callout.body.html_safe
-  .poll
-    %h6= link_to 'All Polls', polls_path
-    %h5= @poll.question
-    = form_for Vote.new do |f|
-      - @poll.poll_choices.each do |choice|
-        = hidden_field_tag :poll_id, @poll.id
-        = f.label choice.choice
-        = f.radio_button(:poll_choice_id, choice.id)
-        = "#{choice.votes.count} Votes"
-      %br
-      = f.submit 'Vote'
+  - if Poll.active.present?           
+    .poll
+      %h6= link_to 'All Polls', polls_path
+      %h5= @poll.question
+      = form_for Vote.new do |f|
+        - @poll.poll_choices.each do |choice|
+          = hidden_field_tag :poll_id, @poll.id
+          = f.label choice.choice
+          = f.radio_button(:poll_choice_id, choice.id)
+          = "#{choice.votes.count} Votes"
+        %br
+        = f.submit 'Vote'
