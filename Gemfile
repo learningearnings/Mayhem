@@ -7,14 +7,14 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rake', '~> 10.0.2'
+gem 'rake', '~> 10.1.0'
 # NOTE: There was a regression in activerecord in 3.2.14 that affects us.  I've
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 
 # for importing
-gem 'mysql2'
+#gem 'mysql2'
 
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
@@ -105,6 +105,7 @@ gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano', '~> 2.15.5'
+gem 'rvm-capistrano'
 
 # To use debugger
 # gem 'debugger'
