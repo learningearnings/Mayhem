@@ -5,6 +5,7 @@ class CreateFoodFightMatches < ActiveRecord::Migration
       t.integer :players_turn
       t.integer :initiated_by
       t.boolean :food_thrown
+      t.boolean :food_person_link_id
       t.timestamps
     end
   end

@@ -9,7 +9,7 @@
     %h1 Game Over
     %h5= "Congratulations #{@player.person.name}!"
     %ul
-      %li= link_to "Throw Food", throw_food_games_food_fight_path, class: 'btn'
+      %li= link_to "Throw Food", choose_food_path(@match.id), class: 'btn'
   - elsif @player.loser?
     %h1 Game Over
     %h5= "Sorry #{@player.person.name}! Better luck next time."

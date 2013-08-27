@@ -25,14 +25,25 @@ module Games
     end
 
     def choose_food
+      @match = FoodFightMatch.find(params[:match_id])
+      @person = @match.loser
       @favorite_foods = current_person.favorite_foods
       @foods = Food.all
     end
 
     def throw_food
       @food = Food.find(params[:food_id])
-      FoodPersonLink.create(:food_id => @food.id, :thrown_by_id => current_person.id, :person_id => params[:person_id])
-      redirect_to play_games_food_fight_path, flash: { success: "Food Thrown!" }
+      @match = FoodFightMatch.find(params[:match_id])
+      @link = FoodPersonLink.create(:food_id => @food.id, :thrown_by_id => current_person.id, :person_id => @match.loser.person.id)
+      @match.update_attribute(:food_person_link_id, @link.id)
+      FoodFightMessageStudentCommand.new(:to_id => @match.loser.person.id, :from_id => @match.winner.person.id, :body => "#{@match.winner.person.name} has thrown food at you.  <a href='/food_hit/#{@match.id}'>Click here for a rematch!</a>", :subject => 'Food Fight Match').execute!
+      redirect_to games_food_fight_path, flash: { success: "Food Thrown!" }
+    end
+
+    def food_hit
+      @match = FoodFightMatch.find params[:match_id]
+      @link = @match.food_person_link
+      @food = @link.food
     end
 
     def continue_match
@@ -46,12 +57,12 @@ module Games
 
     def rematch
       @rematch = true
-      @winner = FoodFightPlayer.find(params[:winner_id])
+      match_setup
     end
 
     def match_setup
       if @rematch
-        @opponent = @winner
+        @opponent = FoodFightPlayer.find(params[:winner_id])
         @match = FoodFightMatch.create(:active => true)
         @match.food_fight_players.create(:person_id => current_person.id)
         @match.update_attributes(:initiated_by => @match.players.first.id)

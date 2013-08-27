@@ -1,5 +1,6 @@
 class FoodFightMatch < ActiveRecord::Base
   attr_accessible :active, :players_turn, :initiated_by
+  belongs_to :food_person_link
 
   has_many :food_fight_players
 
