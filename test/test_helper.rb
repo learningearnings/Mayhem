@@ -19,7 +19,7 @@ require 'factory_girl'
 require 'bigdecimal'
 require 'pry'
 
-require 'mocha'
+require 'mocha/setup'
 
 require 'ostruct'
 
