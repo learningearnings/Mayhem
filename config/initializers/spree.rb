@@ -16,6 +16,18 @@ Spree.config do |config|
   config.show_zero_stock_products = false
 end
 
+# nginx handles ssl for us, so the rails app needn't worry about it
+SslRequirement.module_eval do
+  protected
+  def ssl_allowed?
+    true
+  end
+  def ssl_required?
+    false
+  end
+end
+
+
 module SpreeOverrideEngine
   class Engine < Rails::Engine
     config.after_initialize do
