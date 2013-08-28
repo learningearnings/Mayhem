@@ -8,4 +8,8 @@ class PersonAccountLink < ActiveRecord::Base
   has_one :person, :through => :person_school_link
   scope :with_main_account, where(:is_main_account => true)
   scope :with_account_balance, with_main_account.joins(:account).includes(:account)
+
+  def self.for_school(school)
+    includes(:person_school_link).where(:person_school_link => { :school_id => school.id })
+  end
 end

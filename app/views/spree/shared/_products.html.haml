@@ -11,19 +11,19 @@
 - if products.any?
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
-    - reset_cycle('default')
-    - products.in_groups_of(3) do |grp|
-      .row
-        %ul#products.inline.product-listing{"data-hook" => ""}
-          - grp.each do |product|
-            - if product
-              - if Spree::Config[:show_zero_stock_products] || product.has_stock?
-                %li{:class => "product-tile", "data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
-                  .product-image
-                    = link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url'
-                  .product-details
-                    = link_to truncate("#{product.name}", :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name
-                    .price.selling{:itemprop => "price"}= product.price
-                    .quantity{:itemprop => "on_hand"}= product.on_hand.to_s + " available"
+  - reset_cycle('default')
+  - products.in_groups_of(3) do |grp|
+    .row
+      %ul#products.inline.product-listing{"data-hook" => ""}
+        - grp.each do |product|
+          - if product
+            - if Spree::Config[:show_zero_stock_products] || product.has_stock?
+              %li{:class => "product-tile", "data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+                .product-image
+                  = link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url'
+                .product-details
+                  = link_to truncate("#{product.name}", :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name
+                  .price.selling{:itemprop => "price"}= product.price
+                  .quantity{:itemprop => "on_hand"}= product.on_hand.to_s + " available"
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
