@@ -110,7 +110,7 @@ namespace :deploy do
       rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids  &&
       mkdir -p #{latest_release}/public &&
       mkdir -p #{latest_release}/tmp &&
-      rm #{latest_release}/config/initializers/dragonfly.rb} &&
+      rm #{latest_release}/config/initializers/dragonfly.rb &&
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
       ln -s #{shared_path}/tmp/pids #{latest_release}/tmp/pids &&
