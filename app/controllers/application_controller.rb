@@ -133,6 +133,7 @@ class ApplicationController < ActionController::Base
         if request.port && request.port != 80
           host = host +':' + request.port.to_s
         end
+        host
       end
     else
       request.protocol + request.host_with_port

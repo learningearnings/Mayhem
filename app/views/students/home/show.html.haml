@@ -8,6 +8,13 @@
     .featured-activity-callout
       = @featured_activity_callout.body.html_safe
   .honor-roll
+    .honor-roll-content
+      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%H")) do
+        %h4 Most Credits Donated to Charity
+        %ol
+          - @charity_donations.each do |person, amount|
+            %li #{person} [#{number_to_bucks amount}]
+
 .student-logged-in-sidebar
   = render_reward_highlights(@products[0..1])
   .our-sponsors
@@ -15,14 +22,17 @@
     .our-sponsors-callout
       .our-sponsors-callout-content
         = @our_sponsor_callout.body.html_safe
-  .poll
-    %h6= link_to 'All Polls', polls_path
-    %h5= @poll.question
-    = form_for Vote.new do |f|
-      - @poll.poll_choices.each do |choice|
-        = hidden_field_tag :poll_id, @poll.id
-        = f.label choice.choice
-        = f.radio_button(:poll_choice_id, choice.id)
-        = "#{choice.votes.count} Votes"
-      %br
-      = f.submit 'Vote'
+  - if Poll.active.present?
+    .poll
+      %h2 Polls
+      %h6= link_to 'View All Polls', polls_path
+      - if @poll
+        %h5= @poll.question
+        = form_for Vote.new do |f|
+          - @poll.poll_choices.each do |choice|
+            = hidden_field_tag :poll_id, @poll.id
+            = f.label choice.choice
+            = f.radio_button(:poll_choice_id, choice.id)
+            = "#{choice.votes.count} Votes"
+          %br
+          = f.submit 'Vote'

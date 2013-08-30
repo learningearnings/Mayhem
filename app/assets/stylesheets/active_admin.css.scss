@@ -32,3 +32,9 @@
     display: inline-block;
     margin-right: 7px !important;
 }
+
+body.active_admin {
+  #title_bar, #active_admin_content {
+    max-width: 100%;
+  }
+}

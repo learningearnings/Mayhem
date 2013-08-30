@@ -22,7 +22,7 @@
         #product-price
           %h6.product-section-title= t(:price)
           %div
-            %span.price.selling{ itemprop:"price" }= number_to_currency @product.price
+            %span.price.selling{ itemprop:"price" }= @product.price
 
         .add-to-cart
           - if (!@product.has_stock?)
