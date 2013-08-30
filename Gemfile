@@ -7,21 +7,24 @@ def linux_only(require_as)
   RUBY_PLATFORM.include?('linux') && require_as
 end
 
-gem 'rake', '~> 10.0.2'
+gem 'rake', '~> 10.1.0'
 # NOTE: There was a regression in activerecord in 3.2.14 that affects us.  I've
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 
 # for importing
-gem 'mysql2'
+#gem 'mysql2'
+#
+#
+# FOR IMPORTERS
 
-gem 'jquery-rails', :github => 'learningearnings/jquery-rails', branch: 'svgweb-fix'
+gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
 gem 'jquery-ui-rails'
 
 gem 'activeadmin'
-gem 'activeadmin-extra', github: 'stefanoverna/activeadmin-extra'
+gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
 
@@ -50,6 +53,7 @@ gem 'haml-rails', '~> 0.3.5'
 gem 'whereabouts', '~> 0.9.0'
 
 # roo handles reading and converting excel files to csv
+gem 'iconv'
 gem 'roo'
 
 # Hashie provides lots of nice convenience utilities for working with hashes
@@ -87,7 +91,7 @@ gem 'state_machine'
 gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
-gem 'spree_multi_domain', github: 'learningearnings/spree-multi-domain'
+gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
@@ -105,6 +109,7 @@ gem 'unicorn'
 
 # Deploy with Capistrano
 gem 'capistrano', '~> 2.15.5'
+gem 'rvm-capistrano'
 
 # To use debugger
 # gem 'debugger'
@@ -114,7 +119,7 @@ group :development do
   gem 'letter_opener'
   gem 'unicorn'
   gem 'thin'
-  gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
+  gem 'rack-bug', :github => 'learningearnings/rack-bug', :branch => 'rails3'
 end
 
 group :test do
@@ -132,12 +137,12 @@ group :test do
   gem 'capybara'
   gem 'simplecov', '~> 0.6.4'
   gem 'simplecov-rcov', '~> 0.2.3'
-  gem 'mocha', '~> 0.14.0', require: false
-  gem 'valid_attribute', github: 'learningearnings/valid_attribute', branch: 'minitest-matchers-11'
+  gem 'mocha', '~> 0.14.0', :require => false
+  gem 'valid_attribute', :github => 'learningearnings/valid_attribute', :branch => 'minitest-matchers-11'
   gem 'factory_girl_rails'
   gem 'libnotify'
   gem 'rb-fsevent', '~> 0.9.1'
-  gem 'rb-inotify', '~> 0.8.8', require: linux_only('rb-inotify')
+  gem 'rb-inotify', '~> 0.8.8', :require => linux_only('rb-inotify')
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'

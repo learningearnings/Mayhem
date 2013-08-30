@@ -1,4 +1,4 @@
-set :branch,  "origin/develop"
-role :web,    "mayhemstaging.lemirror.com"
-role :app,    "mayhemstaging.lemirror.com"
-role :db,     "mayhemstaging.lemirror.com", primary: true
+set :branch,  "origin/master"
+role :web,    "192.241.248.83", "192.241.249.30"
+role :app,    "192.241.248.83", "192.241.249.30"
+role :db,     "192.241.248.83", primary: true

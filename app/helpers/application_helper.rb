@@ -137,4 +137,8 @@ module ApplicationHelper
     end
   end
 
+  def number_to_bucks number
+    '%.02f' % number
+  end
+
 end
