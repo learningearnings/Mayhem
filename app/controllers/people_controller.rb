@@ -1,28 +1,28 @@
 class PeopleController < LoggedInController
+  load_and_authorize_resource except: [:get_avatar_results]
+
   def edit
     @avatars = Avatar.page params[:page]
-    @person = Person.find(params[:id])
     render :layout => 'application'
   end
 
   def show
-    @person = current_person
     render :layout => 'application'
   end
-  
+
   def get_avatar_results
     @avatars = Avatar.page params[:page]
     render partial: 'avatars'
   end
 
   def update
-    @person = Person.find(params[:id])
+    person_attributes = params[:teacher] || params[:student]
     @person.avatar = Avatar.find(params[:avatar_id]) if !params[:avatar_id].blank?
-    if params[:teacher][:password].present? && params[:teacher][:password_confirmation].present?
-      @person.user.update_attributes(:password => params[:teacher][:password], :password_confirmation => params[:teacher][:password_confirmation])
+    if person_attributes[:password].present? && person_attributes[:password_confirmation].present?
+      @person.user.update_attributes(:password => person_attributes[:password], :password_confirmation => person_attributes[:password_confirmation])
     end
-    if params[:teacher][:email].present?
-      @person.user.update_attributes(:email => params[:teacher][:email])
+    if person_attributes[:email].present?
+      @person.user.update_attributes(:email => person_attributes[:email])
     end
     # If the moniker is either blank or is the existing moniker, don't update
     # it.

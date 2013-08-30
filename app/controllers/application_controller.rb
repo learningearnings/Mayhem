@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
   before_filter :subdomain_required
   around_filter :track_interaction
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
+
   # Users are required to access the application
   # using a subdomain
   def subdomain_required

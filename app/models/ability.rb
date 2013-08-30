@@ -2,7 +2,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(person)
-
     if person.is_a?(Teacher)
       can :read, :all
       can :update, :all
@@ -14,6 +13,9 @@ class Ability
       end
     elsif person.is_a?(Student)
       can :read, :all
+      can :update, Person do |p|
+        p.id == person.id
+      end
     elsif person.is_a?(Parent)
       can :read, :all
     end
