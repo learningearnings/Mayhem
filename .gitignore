@@ -56,6 +56,9 @@ public/ckeditor_assets
 
 images.tgz
 
+.ruby-version
+.ruby-gemset
+
 # A place to save files that won't show up as untracked
 /saveandignore/*
 
