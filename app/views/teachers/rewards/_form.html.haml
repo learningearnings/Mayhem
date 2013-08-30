@@ -4,15 +4,19 @@
   .row-fluid
     .form-inputs.controls-row.span6
       = f.input :name, label: "Name", placeholder: 'Your Reward Name', input_html: {class: 'input-large focus-on-me'}
-      = f.input :image, :label => "Reward Category", :collection => @reward_categories.map{|x| x.name}
-      /= f.input :image, :label => "Reward Category", :collection => @reward_categories.collect {|row| [row[2],row[0]]}
+      = f.input :category do
+        = f.select :category, options_from_collection_for_select(Spree::Taxon.where("parent_id IS NOT NULL"), :id, :name, @teachers_reward.category_id), :include_blank => true
+      = f.input :image, :as => :file
       = f.input :on_hand, label: "Quantity On Hand", placeholder: 'On Hand', input_html: { :min => "0",class: 'input-small numeric'}
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
         %span.add-on $
         = f.input_field :price, class: 'input-small numeric'
         %span.add-on .00
-    .form-inputs.controls-row.span6.clearfix
-      %img#sample-image{:src => (@teachers_reward.image || "http://placehold.it/160x120&text=Select+A+Category")}
+    - if @teachers_reward.spree_product_id
+      .form-inputs.controls-row.span6.clearfix
+        %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
+
+
   %h3
     Select Classrooms for your reward
   .row-fluid.controls-row

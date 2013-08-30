@@ -11,10 +11,10 @@ module Teachers
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     validates :classrooms, presence: true
 
-    attr_accessible :name, :price, :classrooms, :image, :end_date, :start_date, :on_hand
+    attr_accessible :name, :price, :classrooms, :image, :end_date, :start_date, :on_hand, :category, :school_id, :classroom_id
 
     attr_accessor :id, :name, :price, :classrooms,:image, :end_date, :start_date, :spree_product_id
-    attr_accessor :on_hand, :spree_product, :teacher, :school
+    attr_accessor :on_hand, :spree_product, :teacher, :school, :category, :school_id, :classroom_id
 
     def initialize params = {}
       @name = params[:name] if params[:name]
@@ -22,7 +22,8 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @start_date = params[:start_date] if params[:start_date]
       @end_date = params[:end_date] if params[:end_date]
-      @image = params[:image].to_i if params[:image]
+      @image = params[:image] if params[:image]
+      @category = params[:category] if params[:category]
       @classrooms = params[:classrooms].collect{|c| c.to_i} if params[:classrooms] && params[:classrooms].is_a?(Array)
     end
 
@@ -31,9 +32,24 @@ module Teachers
       @spree_product_id = @id = id
     end
 
+    def product
+      Spree::Product.find(spree_product_id)
+    end
+
+    def category
+      product.taxons.first
+    rescue
+      false
+    end
+
+    def category_id
+      category.id
+    rescue
+      nil
+    end
+
     def spree_product=(p)
       @name = p.name
-      @image = p.images.first.attachment.url(:small)
       @price = p.price.to_int
       @start_date = p.available_on
       @end_date = p.deleted_at
@@ -71,7 +87,8 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @start_date = params[:start_date] if params[:start_date]
       @end_date = params[:end_date] if params[:end_date]
-      @image = params[:image].to_i if params[:image] && params[:image].to_i > 0
+      @image = params[:image] if params[:image]
+      @category = params[:category] if params[:category]
       @classrooms = params[:classrooms].collect{|c| c.to_i} if params[:classrooms] && params[:classrooms].is_a?(Array)
       if valid?
         self.save
@@ -96,17 +113,15 @@ module Teachers
       p.deleted_at = @end_date if @end_date
       p.save
 
-      if @image.is_a?(Integer) && @image > 0
-        lrc = LocalRewardCategory.find(@image)
-        if(lrc)
-          p.master.images.each do |i| i.destroy end
-          image = File.open(lrc.image.path)
-          Spree::Image.create({:viewable_id => p.master.id, :viewable_type => 'Spree::Variant',        :alt => "position 2", :attachment => image, :position => 1})
-#          p.master.images[0] = i
-        end
+      if @image.present?
+        p.images.destroy_all if p.images.present?
+        p.images.create(attachment: @image)
       end
+
       p.set_property('reward_type','local')
       p.save
+      p.taxons = Spree::Taxon.where(:id => @category)
+
       fc = FilterConditions.new
       if @classrooms.count == 1 && @classrooms[0] == 0  #whole school
         fc.schools << @school
