@@ -15,6 +15,9 @@ gem 'pg', '0.13.2'
 
 # for importing
 #gem 'mysql2'
+#
+#
+# FOR IMPORTERS
 
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
@@ -50,6 +53,7 @@ gem 'haml-rails', '~> 0.3.5'
 gem 'whereabouts', '~> 0.9.0'
 
 # roo handles reading and converting excel files to csv
+gem 'iconv'
 gem 'roo'
 
 # Hashie provides lots of nice convenience utilities for working with hashes
