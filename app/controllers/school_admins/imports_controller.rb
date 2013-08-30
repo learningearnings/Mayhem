@@ -1,5 +1,4 @@
 require 'students_importer'
-require 'students_importer2'
 require 'teachers_importer'
 module SchoolAdmins
   class ImportsController < SchoolAdmins::BaseController
@@ -8,7 +7,7 @@ module SchoolAdmins
     end
 
     def import_students
-      f = StudentsImporter2.new(current_school.id, params[:file])
+      f = StudentsImporter.new(current_school.id, params[:file])
       f.call
       flash[:notice] = 'Import Completed.'
       redirect_to '/school_admins/dashboard'

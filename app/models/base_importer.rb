@@ -1,6 +1,7 @@
 require 'csv'
 require 'logger'
 require 'forwardable'
+require 'spreadsheet'
 
 class BaseImporter
   extend Forwardable
@@ -9,9 +10,11 @@ class BaseImporter
   attr_reader :school_id, :file, :log_file_path
   def initialize(school_id, file, log_file_path='/tmp/le_importer.log')
     if file.original_filename.include?('.xls')
-      #path = file_path(file)
-      #file = store_file(file)
-      @file = convert(path)
+      path = file_path(file)
+      new_file = store_file(file)
+      book = Spreadsheet.open(new_file.path)
+      new_path = book.write("/tmp/#{file.original_filename}.xls")
+      @file = convert("/tmp/#{file.original_filename}.xls")
     elsif file.original_filename.include?('.csv')
       @file = file.read
     end
@@ -22,8 +25,8 @@ class BaseImporter
     @school = School.find(school_id)
   end
 
-  def convert(file)
-    Roo::Excel.new(file.path).to_csv.read
+  def convert(path)
+    Roo::Excel.new(path).to_csv
   end
 
   def call
@@ -36,11 +39,7 @@ class BaseImporter
 
   protected
   def parsed_doc
-    CSV.parse(file_data, headers: true)
-  end
-
-  def file_data
-    @file.gsub('\"', '""')
+    CSV.parse(@file, headers: true)
   end
 
   def store_file(file)

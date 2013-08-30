@@ -54,6 +54,8 @@ gem 'whereabouts', '~> 0.9.0'
 # roo handles reading and converting excel files to csv
 gem 'iconv'
 gem 'roo', '1.12.1'
+gem 'spreadsheet'
+gem 'rubyzip', '0.9.9'
 
 # Hashie provides lots of nice convenience utilities for working with hashes
 gem 'hashie'
