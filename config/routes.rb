@@ -77,14 +77,19 @@ Leror::Application.routes.draw do
   namespace :games do
     resource :food_fight do
       member do
-        get 'play'
-        get 'choose_food'
-        post 'choose_school'
-        post 'throw_food'
+        get  'challenge_opponent'
+        post 'play'
+        get  'round_end'
+        get  'choose_food'
       end
     end
   end
 
+  match 'choose_food/:match_id' => 'games/food_fights#choose_food', :as => :choose_food
+  match 'throw_food' => 'games/food_fights#throw_food', :as => :throw_food
+  match 'food_hit/:match_id' => 'games/food_fights#food_hit', :as => :food_hit
+  match 'continue_match/:match_id' => 'games/food_fights#continue_match', :as => :continue_match_games_food_fight
+  match 'rematch/:person_id' => 'games/food_fights#rematch', :as => :rematch_games_food_fight
   match "/restock" => 'restock#index', :as => :restock
   match "/restock/empty" => 'restock#empty', :as => :restock_empty_cart
 
@@ -106,6 +111,7 @@ Leror::Application.routes.draw do
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
   match "inbox/school_messages" => 'messages#school_messages', :as => 'school_messages'
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
+  match "inbox/food_fight_messages" => 'messages#food_fight_messages', :as => 'food_fight_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
@@ -186,6 +192,7 @@ Leror::Application.routes.draw do
     resource :bank
     resource :dashboard
     resources :reports
+    match "/dashboard" => "dashboard#show", :as => 'dashboard'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/create_ebucks_for_classroom" => 'banks#create_ebucks_for_classroom'
@@ -194,6 +201,10 @@ Leror::Application.routes.draw do
     match "/create_student" => 'dashboards#create_student'
     match "/new_teacher" => 'dashboards#new_teacher'
     match "/create_teacher" => 'dashboards#create_teacher'
+    match "/new_student_import" => "imports#new_student_import", :as => 'new_student_import'
+    match "/new_teacher_import" => "imports#new_teacher_import", :as => 'new_teacher_import'
+    match "/import_students" => "imports#import_students", :as => 'import_students'
+    match "/import_teachers" => "imports#import_teachers", :as => 'import_teachers'
   end
 
   # Command routes

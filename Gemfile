@@ -14,10 +14,9 @@ gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 
 # for importing
-#gem 'mysql2'
-#
-#
-# FOR IMPORTERS
+gem 'mysql2'
+gem 'taps'
+gem 'sqlite3'
 
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
@@ -54,7 +53,9 @@ gem 'whereabouts', '~> 0.9.0'
 
 # roo handles reading and converting excel files to csv
 gem 'iconv'
-gem 'roo'
+gem 'roo', '1.12.1'
+gem 'spreadsheet'
+gem 'rubyzip', '0.9.9'
 
 # Hashie provides lots of nice convenience utilities for working with hashes
 gem 'hashie'
@@ -119,14 +120,14 @@ group :development do
   gem 'pry', '~> 0.9.10'
   gem 'letter_opener'
   gem 'unicorn'
-  gem 'thin'
-  gem 'rack-bug', :github => 'learningearnings/rack-bug', :branch => 'rails3'
+  #gem 'thin'
+  gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
 end
 
 group :test do
   gem 'letter_opener'
   gem 'unicorn'
-  gem 'thin'
+  #gem 'thin'
   gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
   gem 'minitest-reporters', '~> 0.8.0'
