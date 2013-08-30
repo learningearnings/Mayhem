@@ -36,7 +36,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
     @purchased_by = ["LE", "Sponsor", "School", "Charity"]
     @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
-    @grades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    @grades = ["K", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   end
 
   def create

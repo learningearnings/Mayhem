@@ -15,8 +15,8 @@
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 
-.auctions
-  %h2 School Auctions
-  %h5= link_to 'New Auction', new_auction_path
-  %h5= link_to 'All Auctions', auctions_path
-
+- if current_person.is_a? SchoolAdmin
+  .auctions
+    %h2 School Auctions
+    %h5= link_to 'New Auction', main_app.new_auction_path
+    %h5= link_to 'All Auctions', main_app.auctions_path

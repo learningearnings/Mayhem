@@ -1,0 +1,1 @@
+!function(){jQuery(function(){var e;return e=function(){return $(".toggle").bind("ajax:complete",function(t,n){return $("#distributor-list").html(n.responseText),e()})},e()})}.call(this);

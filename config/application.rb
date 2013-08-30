@@ -83,5 +83,6 @@ module Leror
     config.after_initialize do
       Spree::Config.searcher_class = Spree::Search::Filter
     end
+    config.middleware.use 'Dragonfly::Middleware', :images
   end
 end

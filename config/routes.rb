@@ -192,6 +192,7 @@ Leror::Application.routes.draw do
     resource :bank
     resource :dashboard
     resources :reports
+    match "/dashboard" => "dashboard#show", :as => 'dashboard'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/create_ebucks_for_classroom" => 'banks#create_ebucks_for_classroom'
@@ -200,6 +201,10 @@ Leror::Application.routes.draw do
     match "/create_student" => 'dashboards#create_student'
     match "/new_teacher" => 'dashboards#new_teacher'
     match "/create_teacher" => 'dashboards#create_teacher'
+    match "/new_student_import" => "imports#new_student_import", :as => 'new_student_import'
+    match "/new_teacher_import" => "imports#new_teacher_import", :as => 'new_teacher_import'
+    match "/import_students" => "imports#import_students", :as => 'import_students'
+    match "/import_teachers" => "imports#import_teachers", :as => 'import_teachers'
   end
 
   # Command routes
