@@ -1,6 +1,7 @@
 .resp-product-tile{"data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
   .resp-product-image
-    = image_tag(product.images.first.attachment.url(:small))
+    - if product.images.present?
+      = image_tag(product.images.first.attachment.url(:small))
   .resp-product-details
     = link_to(product.name ,edit_teachers_reward_path(product.id))
     .price.selling{:itemprop => "price"}= product.price.to_s + " each"
