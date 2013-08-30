@@ -17,7 +17,7 @@ module SchoolAdmins
     end
 
     def import_teachers
-      f = TeachersImporter.new(current_school.id, params[:file].path)
+      f = TeachersImporter.new(current_school.id, params[:file])
       f.call
       flash[:notice] = 'Import Completed.'
       redirect_to '/school_admins/dashboard'

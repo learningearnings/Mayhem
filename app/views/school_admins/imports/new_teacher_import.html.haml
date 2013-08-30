@@ -1,5 +1,5 @@
 %h1 Import Teachers
-= form_tag '/school_admins/import_teachers', :html => {:multipart => true} do
+= form_tag school_admins_import_teachers_path, :multipart => true do
   .field
     = file_field_tag :file
   = submit_tag
