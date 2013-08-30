@@ -361,7 +361,7 @@ GEM
     ref (1.0.5)
     responders (0.9.3)
       railties (~> 3.1)
-    roo (1.11.2)
+    roo (1.12.1)
       nokogiri
       rubyzip
       spreadsheet (> 0.6.4)
@@ -399,7 +399,7 @@ GEM
       capybara (~> 1)
       railties (>= 3)
       spinach (>= 0.4)
-    spreadsheet (0.8.8)
+    spreadsheet (0.8.9)
       ruby-ole (>= 1.0)
     spree (1.2.0)
       spree_api (= 1.2.0)
@@ -536,7 +536,7 @@ DEPENDENCIES
   rb-fsevent (~> 0.9.1)
   rb-inotify (~> 0.8.8)
   responders
-  roo
+  roo (= 1.12.1)
   rvm-capistrano
   sass-rails (~> 3.2.3)
   simple_form
