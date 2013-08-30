@@ -42,7 +42,6 @@ class FoodFightPlayCommandsController < LoggedInController
     else
       FoodFightMessageStudentCommand.new(:to_id => @match.turn.person.id, :from_id => @match.waiting_player.person.id, :body => "It is your turn in this food fight.  Bring the pain! <a href='/continue_match/#{@match.id}'>Click here to get back in the fight!</a>", :subject => 'Food Fight Match').execute!
     end
-
   end
 
 end
