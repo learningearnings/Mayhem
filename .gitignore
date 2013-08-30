@@ -60,3 +60,5 @@ images.tgz
 /saveandignore/*
 
 public/assets
+
+config/initializers/setup_mail.rb

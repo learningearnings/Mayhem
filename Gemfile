@@ -118,10 +118,10 @@ gem 'rvm-capistrano'
 
 group :development do
   gem 'pry', '~> 0.9.10'
-  gem 'letter_opener'
   gem 'unicorn'
   #gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
+  gem 'letter_opener'
 end
 
 group :test do
