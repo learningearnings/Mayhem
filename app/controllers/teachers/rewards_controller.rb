@@ -27,7 +27,8 @@ module Teachers
     # GET /teachers/rewards/new.json
     def new
       @teachers_reward = Teachers::Reward.new
-      @reward_categories = LocalRewardCategory.where(:filter_id => [session[:filters]]).order(:name).collect { |lrc| [lrc.id,lrc.image.url,lrc.name]}
+      @reward_categories = LocalRewardCategory.all
+      #where(:filter_id => [session[:filters]]).order(:name).collect { |lrc| [lrc.id,lrc.image.url,lrc.name]}
 
       respond_to do |format|
         format.html # new.html.haml
