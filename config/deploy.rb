@@ -24,6 +24,7 @@ set :stages, %w(production staging)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
+set :deploy_via,      :remote_cache
 set :application,     "Mayhem"
 set :scm,             :git
 set :repository,      "git@github.com:knewter/Mayhem.git"
