@@ -9,10 +9,9 @@ class BaseImporter
   attr_reader :school_id, :file, :log_file_path
   def initialize(school_id, file, log_file_path='/tmp/le_importer.log')
     if file.original_filename.include?('.xls')
-      path = file_path(file)
+      #path = file_path(file)
       #file = store_file(file)
       @file = convert(path)
-      binding.pry
     elsif file.original_filename.include?('.csv')
       @file = file.read
     end
@@ -24,7 +23,7 @@ class BaseImporter
   end
 
   def convert(file)
-    Roo::Excel.new(file).to_csv
+    Roo::Excel.new(file.path).to_csv.read
   end
 
   def call
@@ -41,7 +40,7 @@ class BaseImporter
   end
 
   def file_data
-    File.read(@file).gsub('\"', '""')
+    @file.gsub('\"', '""')
   end
 
   def store_file(file)
