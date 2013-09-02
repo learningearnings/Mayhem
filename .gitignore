@@ -62,3 +62,6 @@ images.tgz
 # A place to save files that won't show up as untracked
 /saveandignore/*
 
+public/assets
+
+config/initializers/setup_mail.rb

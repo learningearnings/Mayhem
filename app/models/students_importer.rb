@@ -1,5 +1,3 @@
-require_relative './base_importer'
-
 class StudentsImporter < BaseImporter
   protected
   def run

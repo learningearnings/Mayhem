@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130814184934) do
+ActiveRecord::Schema.define(:version => 20130823185513) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -162,6 +162,33 @@ ActiveRecord::Schema.define(:version => 20130814184934) do
     t.string   "nickname"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "food_fight_matches", :force => true do |t|
+    t.boolean  "active"
+    t.integer  "players_turn"
+    t.integer  "initiated_by"
+    t.boolean  "food_thrown",         :default => false
+    t.integer  "food_person_link_id"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
+
+  create_table "food_fight_players", :force => true do |t|
+    t.integer  "food_fight_match_id"
+    t.integer  "person_id"
+    t.integer  "score",               :default => 0
+    t.integer  "questions_answered",  :default => 0
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  create_table "food_person_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "thrown_by_id"
+    t.integer  "food_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "food_school_links", :force => true do |t|

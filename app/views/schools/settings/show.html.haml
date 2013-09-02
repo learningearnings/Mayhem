@@ -6,14 +6,14 @@
 .school-settings
   %h3 Select the teachers that will distribute rewards
   = form_for :teacher, :url => schools_toggle_distributor_path do |f|
-    %table
+    %table.table.table-bordered.table-striped.solid-background
       %thead
         %tr
           %td Teacher Name
           %td Reward Distributor
           %td Credit Distributor
-          %td Toggle Reward
-          %td Toggle Credit
+          %td Can Deliver Rewards?
+          %td Can Distribute Credits?
       %body
         - @teachers.each do |teacher|
           %tr

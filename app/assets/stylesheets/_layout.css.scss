@@ -1193,13 +1193,13 @@ html.resp, body.resp {
     border-color: red;
 }
 
-.school_hover{
+.student_hover{
     border: 2px solid #ccc;
 }
-.school_hover:hover{
+.student_hover:hover{
     border: 2px solid navy;
 }
-.school_hover.active{
+.student_hover.active{
     border-color: red;
 }
 

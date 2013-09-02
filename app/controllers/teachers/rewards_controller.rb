@@ -27,7 +27,7 @@ module Teachers
     # GET /teachers/rewards/new.json
     def new
       @teachers_reward = Teachers::Reward.new
-      @reward_categories = LocalRewardCategory.where(:filter_id => [session[:filters]]).order(:name).collect { |lrc| [lrc.id,lrc.image.url,lrc.name]}
+      #where(:filter_id => [session[:filters]]).order(:name).collect { |lrc| [lrc.id,lrc.image.url,lrc.name]}
 
       respond_to do |format|
         format.html # new.html.haml
@@ -37,7 +37,6 @@ module Teachers
 
     # GET /teachers/rewards/1/edit
     def edit
-      @reward_categories = LocalRewardCategory.where(:filter_id => [session[:filters]]).order(:name).collect { |lrc| [lrc.id,lrc.image.url,lrc.name]}
       @teachers_reward = Teachers::Reward.new
       @teachers_reward.teacher = current_person
       @teachers_reward.school = current_school
@@ -74,7 +73,6 @@ module Teachers
           format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully updated." }
           format.json { head :no_content }
         else
-          @reward_categories = LocalRewardCategory.where(:filter_id => [session[:filters]]).order(:name).collect { |lrc| [lrc.id,lrc.image.url,lrc.name]}
           format.html { render action: "edit" }
           format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
         end
