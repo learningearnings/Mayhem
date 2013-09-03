@@ -43,3 +43,8 @@
       %tr
         %td= row.person
         %td= row.score
+
+:javascript
+  $('.student_list li').on('click', function(){
+    window.location = $('a', $(this)).attr('href');
+  });
