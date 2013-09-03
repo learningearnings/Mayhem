@@ -24,6 +24,7 @@ module Importers
             user: {
               username: person["username"],
               password: person["recoverypassword"],
+              email: person["useremail"]
             }
           }
         end
@@ -34,7 +35,11 @@ module Importers
       end
 
       def find_or_create_person(datum)
-        existing_person(datum[:person]) || create_person(datum)
+        if existing_person(datum[:person])
+          update_person(datum)
+        else
+          create_person(datum)
+        end
       end
 
       def create_person(datum)
@@ -50,6 +55,12 @@ module Importers
         rescue Exception => e
           warn "Got exception for #{datum.inspect} - #{e.inspect}"
         end
+      end
+
+      def update_person(datum)
+        person = existing_person(datum)
+        person.update_attributes(datum[:person])
+        person.user.update_attributes(datum[:user])
       end
 
       def existing_person(datum)

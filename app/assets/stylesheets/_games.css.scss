@@ -27,3 +27,28 @@
     @extend .hover-picker;
   }
 }
+
+ul.student_list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-bottom: 1em;
+  li {
+    border: 1px solid transparent;
+    background: #eee;
+    padding: .5em;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      background: #ddd;
+    }
+    &.active {
+      border-color: #333;
+    }
+    .avatar {
+    }
+    .name {
+    }
+  }
+}

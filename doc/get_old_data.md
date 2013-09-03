@@ -3,9 +3,9 @@
 ## Users
 ### To select users from the database into CSV
 ```sql
-SELECT 'UserID', 'SchoolID', 'grade', 'usertypeID', 'username', 'userfname', 'userlname', 'dateofbirth', 'recoverypassword'
+SELECT 'UserID', 'SchoolID', 'grade', 'usertypeID', 'username', 'useremail', 'userfname', 'userlname', 'dateofbirth', 'recoverypassword'
 UNION ALL
-SELECT UserID, SchoolID, grade, usertypeID, username, userfname, userlname, dateofbirth, recoverypassword
+SELECT UserID, SchoolID, grade, usertypeID, username, useremail, userfname, userlname, dateofbirth, recoverypassword
 FROM tbl_users
 WHERE usertypeid IN (1,2,3,5)
   AND usercreated > 20120801 OR userlastlogin > 20120801

@@ -12,7 +12,6 @@
   %ul.foods
     - (@foods - current_person.favorite_foods).each do |food|
       %li.food= image_tag food.image.thumb('50x50#').url, :id => food.id
-  = f.submit 'Submit Food'
 
 
 :javascript
@@ -20,5 +19,6 @@
     $('.food').removeClass('active');
     $(this).addClass('active');
     var imageId = $('img', this).attr("id");
-    $("input[id=food_id]").val(imageId)
+    $("input[id=food_id]").val(imageId);
+    $(this).closest("form").submit();
   });
