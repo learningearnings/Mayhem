@@ -15,7 +15,7 @@ Spree::UserSessionsController.class_eval do
         }
       end
     else
-      flash[:error] = t('devise.failure.invalid')
+      flash[:error] = "Wrong Username, Password and School combination.  Please make sure you have all 3 credentials correct and try again."
       redirect_to main_app.page_path('home')
 #      render :new
     end
