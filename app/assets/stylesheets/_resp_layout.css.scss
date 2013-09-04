@@ -207,7 +207,11 @@
   width: 100%;
   position: relative;
   min-height: 650px;
+  padding: 1em;
   /*  text-align: center; */
+  > p {
+    font-size: 2em;
+  }
 }
 
 .resp-sir-francis-bacon {
@@ -287,4 +291,21 @@ html.resp, body.resp {
       float: right;
     }
   }
+}
+
+ul.action_buttons {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  li {
+    margin-right: .5em;
+    display: inline-block;
+  }
+}
+
+.solid-background {
+  background: white;
 }
