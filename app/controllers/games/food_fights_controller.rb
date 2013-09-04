@@ -7,7 +7,7 @@ module Games
 
     def challenge_opponent
       current_opponents = Person.find current_person.food_fight_matches.map{|x| x.players}.flatten.map{|x| x.person_id}
-      @students = current_school.students - current_opponents
+      @students = (current_school.students - [current_person]) - current_opponents
     end
 
     def play
