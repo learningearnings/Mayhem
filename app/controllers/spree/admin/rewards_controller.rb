@@ -90,6 +90,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.available_on = params[:product][:available_on]
     @product.min_grade = params[:product][:min_grade]
     @product.max_grade = params[:product][:max_grade]
+    @product.visible_to_all = params[:product][:visible_to_all]
     # set associated objects
     @product.taxons = params[:product][:taxons].map{|s| Spree::Taxon.find(s) if s.present? }.compact
     @product.states = params[:product][:states].map{|s| ::State.find(s) if s.present? }.compact

@@ -48,6 +48,11 @@
           = f.fields_for :images do |i|
             = i.file_field :attachment
 
+    .control-group
+      = f.label :visible_to_all, 'Visible to All', {:class => 'control-label'}
+      .pull-right
+        = f.check_box :visible_to_all
+
     #svg
       .control-group
         = f.label :svg, "Charity SVG", {:class => 'control-label'}
