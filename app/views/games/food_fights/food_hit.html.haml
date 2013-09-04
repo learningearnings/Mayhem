@@ -1,8 +1,8 @@
 %h1 You have been hit by food!
 
-= "#{@match.food_person_link.person}! You have been hit by #{@match.winner.person.name}."
-%li.food= image_tag @food.image.thumb('50x50#').url, :id => @food.id
-= @food
+%p= "#{@match.food_person_link.person}! You have been hit by #{@match.winner.person.name}."
+.food= image_tag @food.image.thumb('50x50#').url, :id => @food.id
+%p= @food
 
 %p= link_to "Click Here for a rematch!", rematch_games_food_fight_path(@match.winner.person.id)
 %p= link_to "Click Here to Challenge someone else!", games_food_fight_path

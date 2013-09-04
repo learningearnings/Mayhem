@@ -1,7 +1,7 @@
 .my-charities
   %h2 Your Charities
   - if charities.blank?
-    You haven't purchased any charities
+    %p You haven't purchased any charities.
   -else
     - if charities.respond_to?(:num_pages)
       .charities-row

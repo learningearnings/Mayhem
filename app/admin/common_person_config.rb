@@ -21,7 +21,7 @@ module CommonPersonConfig
         f.inputs do
           f.input :first_name
           f.input :last_name
-          f.input :dob
+          f.input :dob, :as => :datepicker
           f.input :grade, :as => :radio, :collection => School::GRADE_NAMES, :wrapper_html => {:class => 'horizontal'}
           f.input :status, :label => "Initial Status", :as => :select, :collection => ['new','active','inactive']
           if f.object.is_a?(Teacher)

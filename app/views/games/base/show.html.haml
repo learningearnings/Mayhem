@@ -9,32 +9,23 @@
   .span6
     .game.row
       .span2
-        .image-placeholder
-          image
+        = link_to "Play Now", auctions_path, class: 'btn awesome-button play-now'
       .span4
         %h4= t('.auction_title')
         %p
           = t('.auction_desc')
-          = link_to "Play Now", auctions_path, class: 'btn awesome-button'
+
     .game.row
       .span2
-        .image-placeholder
-          image
+        = link_to "Play Now", games_food_fight_path, class: 'btn awesome-button play-now'
       .span4
         %h4= t('.ff_title')
         %p
           = t('.ff_desc')
-          = link_to "Play Now", games_food_fight_path, class: 'btn awesome-button'
-    .game.row
-      .span2
-        .image-placeholder
-          image
-      .span4
-        %h4= t('.nm_title')
-        %p
-          = t('.nm_desc')
-          = link_to "Play Now", "#", class: 'btn awesome-button'
 
+.row.games-footer
   .span4
+    %h3 Reward Highlights
     = render_reward_highlights(@products[0..1])
-    %h3= link_to('Suggest a Game', leadmin_message_path(subject: "I have a game suggestion!", refurl: current_url))
+  .span4
+    = link_to 'Suggest a Game', leadmin_message_path(subject: "I have a game suggestion!", refurl: current_url), class: 'btn awesome-button suggest-a-game'
