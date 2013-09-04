@@ -6,4 +6,4 @@ class ErrorsController < ApplicationController
   def server_error
     render :status => 500, :formats => [:html]
   end
-ene
+end
