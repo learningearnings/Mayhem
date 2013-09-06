@@ -1,15 +1,18 @@
-%h2 Message Reply
 = form_for @message do |f|
-  .span3
-    .select-message
-      %strong Select Message
-      = f.select :canned_message, options_for_select(Message.canned_messages)
-  .span2
-    %strong Select Image
-    #hover_value= f.hidden_field :message_image_id
-    = hidden_field_tag "student_message_student_command[to_ids][]", @old_message.from_id
-    #image_partial= render :partial => 'images'
-  = f.submit "Send Message", class: 'btn btn-primary'
+  %h3
+    Message Reply
+    = f.submit "Send Message", class: 'btn awesome-button'
+  .row
+    .span5
+      .select-message
+        %strong Select Message
+        = f.select :canned_message, options_for_select(Message.canned_messages)
+  .row
+    .span5
+      %strong Select Image
+      #hover_value= f.hidden_field :message_image_id
+      = hidden_field_tag "student_message_student_command[to_ids][]", @old_message.from_id
+      #image_partial= render :partial => 'images'
 
 = javascript_include_tag "image_pager.js"
 :javascript
