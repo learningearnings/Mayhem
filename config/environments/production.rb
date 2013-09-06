@@ -5,7 +5,7 @@ Leror::Application.configure do
     I18n.locale = 'en'
     I18n.reload!
   end
-
+  config.exceptions_app = self.routes
   # Code is not reloaded between requests
   config.cache_classes = true
 

@@ -1,6 +1,6 @@
 Spree::User.class_eval do
   devise :database_authenticatable, :token_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker
