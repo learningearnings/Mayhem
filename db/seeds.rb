@@ -367,24 +367,24 @@ if Rails.env.development? || Rails.env.production?
 
   # ======== Foods ===========
   [
-   ["Baked Potato","baked_potato.png"],
-   ["Broccoli and Cheese","broccoli_cheese.png"],
-   ["Cheese Burger ","cheeseburger.png"],
-   ["Cheese","cheese.png"],
-   ["Cherry Pie","cherry_pie.png"],
-   ["Chocolate Milk","chocolate_milk.png"],
-   ["Donut","doughnut.png"],
-   ["Eggs","eggs.png"],
-   ["Fries","fries.png"],
-   ["Hot Dog","hot_dog.png"],
-   ["Ice Cream","ice_cream.png"],
-   ["Pizza","pizza.png"],
-   ["Spagetti","spagetti.png"],
-   ["Toast","toast.png"],
-   ["Tuna","tuna.png"]
+   ["Baked Potato","food_fight_baked_potato.svg"],
+   ["Broccoli and Cheese","food_fight_broccoli_cheese.svg"],
+   ["Cheese","food_fight_cheese.svg"],
+   ["Cheese Burger ","food_fight_cheeseburger.svg"],
+   ["Chocolate Milk","food_fight_chocolate_milk.svg"],
+   ["Donut","food_fight_doughnut.svg"],
+   ["Eggs","food_fight_eggs.svg"],
+   ["Fries","food_fight_french_fries.svg"],
+   ["Hot Dog","food_fight_hot_dog.svg"],
+   ["Milk Shake","food_fight_milkshake.svg"],
+   ["Peanut Butter and Jelly","food_fight_peanut_butter_jelly.svg"],
+   ["Pie","food_fight_pie.svg"],
+   ["Pizza","food_fight_pizza.svg"],
+   ["Spaghetti","food_fight_spaghetti.svg"],
+   ["Tuna","food_fight_tuna.svg"]
   ].each do |f|
     food = Food.create(name: f[0])
-    food.image = open("http://www.lemirror1.com/Development/images/games/foodfight/" + f[1]).read
+    food.image = open(Rails.root.join("app", "assets", "images", f[1])).read
     #food.image = open(Rails.root.join('app', 'assets', 'images', 'common', 'le_logo.png')).read
     food.save
   end
