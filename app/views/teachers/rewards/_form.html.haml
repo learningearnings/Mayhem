@@ -34,11 +34,8 @@
   = f.submit :class => 'btn awesome-button'
 
 :javascript
-  var reward_categories = #{(@reward_categories + [[nil,(@teachers_reward.image || "http://placehold.it/160x120&text=Select+A+Category"),""]]).collect{ |row| [row[0].to_s,row[1]]}.to_json};
 :coffeescript
   jQuery ->
-    update_image = (_event) ->
-      ($ '#sample-image').attr('src',rc[1]) for rc in reward_categories when rc[0] is ($ "select#teachers_reward_image").val() or ($ "select#teachers_reward_image").val() is undefined
 
     toggle_all_classrooms = (_event) ->
       if ($ _event.target).prop('checked') == true

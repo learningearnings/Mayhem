@@ -4,14 +4,15 @@
 
     .bank-account
       %h4= t('.subtitle')
-      .balances
-        %p Checking Balance: #{current_person.checking_balance}
-        %p Savings Balance: #{current_person.savings_balance}
+      %dl.balance
+        %dt Checking Balance
+        %dd= current_person.checking_balance
+      %dl.balance
+        %dt Savings Balance
+        %dd= current_person.savings_balance
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
-
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
-
         = link_to "View Savings History", "#savings-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
 
     .pending-credits
@@ -57,11 +58,13 @@
       = form_for OtuCode.new, :url => redeem_bucks_path do |f|
         = label_tag "Enter Code:"
         = text_field_tag :code
-        = f.submit 'Redeem'
+        = f.submit 'Redeem', class: 'btn awesome-button'
     .span6
-      %h5 Checking Balance
-      %strong #{current_person.checking_balance}
-      %h5 Savings Balance
-      %strong #{current_person.savings_balance}
+      %dl.balance
+        %dt Checking Balance
+        %dd= current_person.checking_balance
+      %dl.balance
+        %dt Savings Balance
+        %dd= current_person.savings_balance
 
 = javascript_include_tag 'transaction_pager'
