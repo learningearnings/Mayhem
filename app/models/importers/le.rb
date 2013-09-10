@@ -2,7 +2,8 @@ require_relative './le/schools_importer'
 require_relative './le/users_importer'
 require_relative './le/classrooms_importer'
 require_relative './le/classroom_details_importer'
-require_relative './le/points_importer'
+require_relative './le/student_checking_importer'
+require_relative './le/student_savings_importer'
 
 module Importers
   class Le
