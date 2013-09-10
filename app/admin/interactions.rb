@@ -1,4 +1,7 @@
 ActiveAdmin.register Interaction do
+  filter :page
+  filter :created_at
+  filter :elapsed_milliseconds
   menu :parent => "le_admins", :label => "User Tracking Data"
   index do
     column :id
