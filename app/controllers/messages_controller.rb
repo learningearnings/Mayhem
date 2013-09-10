@@ -64,7 +64,6 @@ class MessagesController < LoggedInController
     render partial: '/messages/images'
   end
 
-
   protected
   # No layout if this is an xhr request
   def layout

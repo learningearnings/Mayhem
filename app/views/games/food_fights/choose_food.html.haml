@@ -7,11 +7,11 @@
     %h4 Favorite Foods
     %ul.foods
       - current_person.favorite_foods.each do |food|
-        %li.food= image_tag food.image.thumb('50x50#').url, :id => food.id
+        %li.food= le_svg_tag food.image.url, :id => food.id
   %h4 All Foods
   %ul.foods
     - (@foods - current_person.favorite_foods).each do |food|
-      %li.food= image_tag food.image.thumb('50x50#').url, :id => food.id
+      %li.food= le_svg_tag food.image.url, :id => food.id
 
 
 :javascript

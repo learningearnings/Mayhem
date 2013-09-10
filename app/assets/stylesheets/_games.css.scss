@@ -1,3 +1,5 @@
+@import 'animation';
+
 .games {
   margin-top: 2em;
   .game {
@@ -69,5 +71,32 @@ ul.student_list {
 
   .suggest-a-game {
     margin-top: 2em;
+  }
+}
+
+@include keyframes(food-thrown){
+  0% {
+    @include transform(scale(1, 1) rotate(0deg));
+  }
+  50% {
+    @include transform(scale(3, 3) rotate(15deg));
+  }
+  100% {
+    @include transform(scale(3, 3) rotate(15deg) translateY(50px) translateX(20px));
+  }
+}
+
+.food-thrown{
+  margin-top: 10em;
+  margin-left: 5em;
+  img {
+    @include transform(scale(3, 3) rotate(15deg) translateY(50px) translateX(20px));
+    @include animation(food-thrown 2s);
+  }
+}
+
+.food-thrown-wrapper{
+  p {
+    font-size: 1.5em;
   }
 }

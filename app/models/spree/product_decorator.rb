@@ -1,5 +1,5 @@
 Spree::Product.class_eval do
-  attr_accessible :store_ids, :fulfillment_type, :purchased_by, :min_grade, :max_grade
+  attr_accessible :store_ids, :fulfillment_type, :purchased_by, :min_grade, :max_grade, :visible_to_all
   has_attached_file :svg
 
   has_many :plutus_transactions, :as => :commercial_document, :class_name => 'Plutus::Transaction'
@@ -37,6 +37,7 @@ Spree::Product.class_eval do
   # }
 
   scope :shipped_for_school_inventory, where(:fulfillment_type => "Shipped for School Inventory")
+  scope :visible_to_all, where(:visible_to_all => true)
 
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})

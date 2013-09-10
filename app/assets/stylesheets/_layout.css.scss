@@ -1183,14 +1183,21 @@ html.resp, body.resp {
   display: none;
 }
 
-.hover_image img{
-    border: 2px solid #ccc;
-}
-.hover_image:hover img{
-    border: 2px solid navy;
-}
-.hover_image.active img{
-    border-color: red;
+.hover_image {
+  display: inline-block;
+  img{
+      border: 2px solid #ccc;
+  }
+  &:hover {
+    img{
+      border: 2px solid navy;
+    }
+  }
+  &.active {
+    img{
+      border-color: red;
+    }
+  }
 }
 
 .coming-soon-intro {
@@ -1958,4 +1965,16 @@ hr {
 
 .numeric {
     text-align: right;
+}
+
+#send-message-modal {
+  .modal-body {
+    padding: 0;
+  }
+  h3 {
+    input {
+      font-size: 14px;
+      margin-left: 4em;
+    }
+  }
 }
