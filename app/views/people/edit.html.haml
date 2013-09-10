@@ -6,15 +6,17 @@
     = form_for @person,:url => person_path(@person) do |f|
       #hover_value= hidden_field_tag :avatar_id
       #avatar_partial= render :partial => 'avatars'
-      = render :partial => "moniker", :locals => { :f => f }
-      = f.label :email
-      = f.text_field :email
-      = f.label :password
-      = f.password_field :password
-      = f.label :password_confirmation
-      = f.password_field :password_confirmation
-      %p= f.submit t(:update), class: 'btn awesome-button'
+      .row
+        .span4
+          = render :partial => "moniker", :locals => { :f => f }
+          = f.label :email
+          = f.text_field :email
+        .span4
+          = f.label :password
+          = f.password_field :password
+          = f.label :password_confirmation
+          = f.password_field :password_confirmation
+      = f.submit t(:update), class: 'btn awesome-button'
+      = link_to "Cancel", current_person, class: 'btn awesome-button'
 
     = javascript_include_tag "avatar_pager.js"
-
-    = link_to "Cancel", current_person, class: 'btn awesome-button'
