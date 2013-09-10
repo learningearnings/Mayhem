@@ -16,7 +16,11 @@
           .sticker{"data-id" => sticker.id}
             = image_tag(sticker.image.url)
 
+    #share-locker-modal.modal.hide
+      .modal-body
 
+    #visit-locker-modal.modal.hide
+      .modal-body
 
   -# Render a template for our javascript to tie into
   %script#sticker_template{type: 'text/html'}

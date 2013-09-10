@@ -3,10 +3,8 @@
     = render :partial => 'spree/shared/error_messages', :locals => { :target => @person } 
 
     %h2 Edit Your Profile
-
     = form_for @person,:url => person_path(@person) do |f|
       #hover_value= hidden_field_tag :avatar_id
-      %p= f.submit t(:update)
       #avatar_partial= render :partial => 'avatars'
       = render :partial => "moniker", :locals => { :f => f }
       = f.label :email
