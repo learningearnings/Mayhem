@@ -1035,6 +1035,15 @@ html.resp, body.resp {
   left: 740px;
   height: 173px;
   width: 190px;
+  padding-top: 45px;
+  ul {
+    li {
+      .product-image {
+        height: inherit;
+      }
+      padding-bottom: 10px;
+    }
+  }
 }
 
 .reward-of-the-week {
