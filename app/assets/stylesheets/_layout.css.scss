@@ -1298,16 +1298,6 @@ html.resp, body.resp {
   margin: 5em 0 0 0;
 }
 
-.locker_edit {
-  h2 {
-    margin-left: 130px;
-  }
-  .locker_wrapper {
-    margin-left: 130px;
-  }
-}
-
-
 .bank-account {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
@@ -1976,5 +1966,11 @@ hr {
       font-size: 14px;
       margin-left: 4em;
     }
+  }
+}
+
+#transfer-credits-modal {
+  input.amount {
+    width: 100px;
   }
 }

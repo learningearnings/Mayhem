@@ -8,7 +8,7 @@ class StudentShareLockerMessageCommandsController < LoggedInController
     command.to_ids.map!(&:to_i)
     if command.valid?
       command.execute!
-      flash[:success] = "Message sent successfully."
+      flash[:success] = "A message has been sent to your friend's LE messages. They can use this link to see your locker!"
     else
       flash[:error] = "Message not sent."
     end

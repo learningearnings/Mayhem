@@ -352,7 +352,7 @@ if Rails.env.development? || Rails.env.production?
 
   # ======== LOCKERS ========
   # Generate some stickers
-  sticker_dir = "public/avatars/football/college"
+  sticker_dir = "app/assets/images/stickers"
   Dir.foreach(sticker_dir) do |item|
     next if item.match(/^\./)
     s = Sticker.new
