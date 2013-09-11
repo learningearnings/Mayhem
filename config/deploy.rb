@@ -45,7 +45,7 @@ set(:latest_release)  { fetch(:current_path) }
 
 namespace :deploy do
   task :install_bundler, :roles => :app do
-    run "type -P bundle &>/dev/null || { /home/deployer/.rvm//wrappers/Mayhem/gem install bundler --no-rdoc --no-ri; }"
+    run "type -P bundle &>/dev/null || { /home/deployer/.rvm/wrappers/Mayhem/gem install bundler --no-rdoc --no-ri; }"
   end
 
   desc "Deploy your application"
@@ -82,14 +82,14 @@ namespace :deploy do
   desc "Reload the database (deletes everything!!!)."
   task :reload, except: { no_release: true } do
 #    stop if remote_file_exists?('/tmp/unicorn.mayhemstaging.lemirror.com.pid')
-    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake le:reload RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm/wrappers/Mayhem/rake le:reload RAILS_ENV=#{rails_env}"
     start
   end
 
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake assets:precompile RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm/wrappers/Mayhem/rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -160,6 +160,13 @@ namespace :deploy do
       rollback.repo
       rollback.cleanup
     end
+  end
+end
+
+namespace :bundle do
+  desc "Install bundle..."
+  task :install do
+    run "cd #{latest_release} && /home/deployer/.rvm/wrappers/Mayhem/bundle install --gemfile /home/deployer/apps/Mayhem/current/Gemfile --without development test"
   end
 end
 
