@@ -24,6 +24,7 @@ module Importers
       def transfer_points(datum)
         begin
           student = Student.find_by_legacy_user_id(datum[:points][:legacy_user_id])
+          @credit_manager.transfer_credits('Imported Legacy Points', @credit_manager.main_account, student.savings_account, -(student.savings_account.balance))
           @credit_manager.transfer_credits('Imported Legacy Points', @credit_manager.main_account, student.savings_account, datum[:points][:points])
         rescue Exception => e
           warn "Got exception for #{datum.inspect} - #{e.inspect}"
