@@ -70,6 +70,11 @@ module ApplicationHelper
     image_tag(avatar_img.thumb(geometry).url)
   end
 
+  def resized_image(image_file_path, geometry='50x50#')
+    img = image_processor.fetch_file(image_file_path)
+    image_tag(img.thumb(geometry).url)
+  end
+
   def le_svg_tag source, options = {}
     options[:type] = "image/svg+xml" unless options[:type]
     if block_given?

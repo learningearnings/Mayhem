@@ -1,6 +1,16 @@
 .bacon
 .corkboard
   .rewards-intro
+
 .rewards-highlights-small
+  %ul
+    - Spree::Product.visible_to_all.each do |product|
+      - if product
+        %li{:id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+          .product-image
+            = resized_image(product.images.first.attachment.path)
+          .product-details
+            = truncate("#{product.name}", :length => 50)
+
 .reward-of-the-week
 .nav-container-corkboard
