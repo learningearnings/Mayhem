@@ -10,8 +10,8 @@
           %li= student.name
 
   %h4 All Students
-  - (@students).each do |student|
-    %ul.student_list
+  %ul.student_list
+    - (@students).each do |student|
       %li.student_hover{ id: student.id }
         .avatar= avatar_for(student)
         .name= student.name
