@@ -52,7 +52,7 @@ Leror::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( lockers.js avatar_pager.js ckeditor/init.js transaction_pager.js distributor_list.js admin/print.css admin/ie_noprint.css spree_admin.css svgweb/svg.js )
-  config.assets.precompile += %w( schooladmin_background.css person_background.css student_background.css teacher_background.css leadmin_background.css image_pager.js )
+  config.assets.precompile += %w( schooladmin_background.css person_background.css student_background.css teacher_background.css leadmin_background.css image_pager.js store/all.js )
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.delivery_method = :smtp
