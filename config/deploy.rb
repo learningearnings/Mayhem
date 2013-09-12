@@ -118,6 +118,7 @@ namespace :deploy do
       ln -sf #{shared_path}/tmp/cache #{latest_release}/tmp/cache &&
       ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml &&
       ln -sf #{shared_path}/config/initializers/dragonfly.rb #{latest_release}/config/initializers &&
+      ln -sf #{shared_path}/config/initializers/spree_s3.rb #{latest_release}/config/initializers &&
       ln -sf #{shared_path}/config/initializers/setup_mail.rb #{latest_release}/config/initializers
     CMD
 
