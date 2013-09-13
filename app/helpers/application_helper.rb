@@ -69,8 +69,8 @@ module ApplicationHelper
     image_tag(avatar_img.thumb(geometry).url)
   end
 
-  def resized_image(image_file_path, geometry='50x50#')
-    img = image_processor.fetch_file(image_file_path)
+  def resized_image(image_file_url, geometry='50x50#')
+    img = image_processor.fetch_url(image_file_url)
     image_tag(img.thumb(geometry).url)
   end
 
