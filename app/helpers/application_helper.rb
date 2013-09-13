@@ -55,7 +55,6 @@ module ApplicationHelper
     end
   end
 
-
   def render_reward_highlights products
     render 'shared/rewards_highlights', products: products
   end
