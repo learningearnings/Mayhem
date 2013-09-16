@@ -917,7 +917,7 @@ html.resp, body.resp {
   height: 127px;
   width: 134px;
   top: 50px;
-  left: 1000px;
+  left: 650px;
   position: absolute;
 }
 
@@ -926,7 +926,7 @@ html.resp, body.resp {
   height: 131px;
   width: 134px;
   top: 190px;
-  left: 1000px;
+  left: 650px;
   position: absolute;
 }
 
@@ -1388,6 +1388,19 @@ html.resp, body.resp {
 
 .news-items-container {
   overflow: hidden;
+  .news-item {
+    padding-bottom: 2em;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+h3 {
+  .post_date {
+    display: inline-block;
+    font-size: .5em;
+    color: #999;
+    font-weight: normal;
+  }
 }
 
 .play-header-container {

@@ -9,7 +9,9 @@
           - posts.each do |post|
             .news-item.row
               .span6
-                %h3= post.title
+                %h3
+                  = post.title
+                  .post_date= human_date post.created_at
                 = post.body.html_safe
   .secondary-content
     .press-releases-container
@@ -18,5 +20,7 @@
         - press_releases.each do |post|
           .press-release.row
             .span3
-              %h3= post.title
+              %h3
+                = post.title
+                .post_date= human_date post.created_at
               = post.body.html_safe
