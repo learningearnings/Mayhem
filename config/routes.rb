@@ -32,6 +32,8 @@ Leror::Application.routes.draw do
   resource :games, controller: "games/base", only: [:show]
 
   resources :news_posts, controller: "news", only: [:index, :show]
+  match '/pages/parents/news' => 'news#index', visitor_type: 'parent'
+  match '/pages/teachers/news' => 'news#index', visitor_type: 'teacher'
 
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
