@@ -392,5 +392,15 @@ if Rails.env.development? || Rails.env.production?
 
   # ======== Auctions =========
   auction = FactoryGirl.create(:auction)
-  # ======== /Auctions =========
+  # ======== /Auctions ========
+  #
+  # ======== Posts ===========
+  # news posts
+  first = NewsPost.create(title: "Welcome back to school", body: "LE welcomes you back to school!!")
+  first.update_attribute(:created_at, Time.parse("2013-08-15"))
+  first.publish!
+  second = NewsPost.create(title: "New site Update", body: "LE is super excited that we will unleash Sir Bacon Francis in just a few weeks!! Stay tuned!")
+  second.update_attribute(:created_at, Time.parse("2013-09-13"))
+  second.publish!
+  # ======== /Posts ==========
 end
