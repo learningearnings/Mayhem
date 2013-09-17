@@ -54,6 +54,5 @@ namespace :deploy do
   end
 end
 
-before 'deploy:finalize_update', 'deploy:symlink_shared'
-#before 'deploy:assets:precompile', 'deploy:symlink_shared'
-#before 'deploy:finalize_update', 'deploy:assets:precompile'
+before 'deploy:assets:precompile', 'deploy:symlink_shared'
+before 'deploy:finalize_update', 'deploy:assets:precompile'
