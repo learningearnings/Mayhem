@@ -52,7 +52,13 @@ namespace :deploy do
     run "ln -sf #{shared_path}/config/initializers/00_env.rb #{latest_release}/config/initializers"
     run "ln -sf #{shared_path}/config/initializers/setup_mail.rb #{latest_release}/config/initializers"
   end
+
+  desc "Precompile assets"
+  task :precompile_assets do
+    #precompile the assets
+    run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
+  end
 end
 
-before 'deploy:assets:precompile', 'deploy:symlink_shared'
-before 'deploy:finalize_update', 'deploy:assets:precompile'
+before 'deploy:precompile_assets', 'deploy:symlink_shared'
+before 'deploy:finalize_update', 'deploy:precompile_assets'
