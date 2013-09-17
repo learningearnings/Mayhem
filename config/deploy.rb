@@ -48,6 +48,7 @@ namespace :deploy do
   task :symlink_shared, :roles => :app do
     run "ln -s #{shared_path}/log #{latest_release}/log"
     run "ln -s #{shared_path}/system #{latest_release}/public/system"
+    run "mkdir #{latest_release}/tmp"
     run "rm -fr #{latest_release}/tmp/cache"
     run "ln -s #{shared_path}/tmp/cache #{latest_release}/tmp/cache"
     run "ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml"
