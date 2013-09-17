@@ -10,7 +10,7 @@ class StudentTransferCommand < ActiveModelCommand
   validates :amount, positive_decimal: true
 
   def initialize params={}
-    @amount = BigDecimal(params[:amount]) if params[:amount]
+    @amount = get_decimal(params[:amount]) if params[:amount]
     @direction = params[:direction]
     @student_id = params[:student_id]
     @on_success = lambda{}
@@ -44,5 +44,10 @@ class StudentTransferCommand < ActiveModelCommand
     else
       on_failure.call()
     end
+  end
+
+  def get_decimal(amount_string)
+    coerced_amount = amount_string.gsub('$', '').gsub(',', '')
+    BigDecimal(coerced_amount)
   end
 end
