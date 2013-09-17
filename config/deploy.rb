@@ -22,6 +22,8 @@ set :stages, %w(production staging)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
+after 'deploy:start',   'unicorn:start'
+after 'deploy:stop',    'unicorn:stop'
 after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
 
 # main details
