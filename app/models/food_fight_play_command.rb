@@ -2,19 +2,21 @@ require_relative './active_model_command'
 require 'delegate'
 
 class FoodFightPlayCommand < ActiveModelCommand
-  attr_accessor :question_id, :answer_id, :person_id, :match_id, :on_success, :on_failure
+  attr_accessor :question_id, :answer_id, :person_id, :school_id, :match_id, :on_success, :on_failure
 
   validates :question_id, numericality: true, presence: true
   validates :answer_id,   numericality: true,
                           presence: true,
                           inclusion: { in: lambda{|o| o.answer_ids } }
   validates :person_id,   numericality: true, presence: true
+  validates :school_id,   numericality: true, presence: true
 
   delegate :body, to: :question, prefix: :question
 
   def initialize params={}
-    @match       = FoodFightMatch.find params[:match_id] if params[:match_id]
+    @match       = FoodFightMatch.find params[:match_id]
     @player      = @match.players.find_by_person_id person_id
+    @school_id   = params[:school_id]
     @question_id = params[:question_id]
     @answer_id   = params[:answer_id].to_i
     @on_success  = lambda{|a|}
@@ -82,7 +84,8 @@ class FoodFightPlayCommand < ActiveModelCommand
     {
       person_id: person_id,
       question_answer_id: chosen_question_answer.id,
-      question_id: question_id
+      question_id: question_id,
+      school_id: school_id
     }
   end
 
@@ -94,9 +97,9 @@ class FoodFightPlayCommand < ActiveModelCommand
   end
 
   def execute!
+    return on_failure.call(self, @match, @player) unless valid?
     @player = @match.players.find_by_person_id person_id
     @player.update_attributes(:questions_answered => @player.questions_answered + 1)
-    return on_failure.call(self, @match, @player) unless valid?
     answer = person_answer_repository.create(person_answer_args)
     unless answer.valid? && correct?
       return on_failure.call(self, @match, @player)

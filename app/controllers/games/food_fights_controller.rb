@@ -1,7 +1,7 @@
 module Games
   class FoodFightsController < LoggedInController
     def show
-      leaderboard = Games::Leaderboard.new('FoodFight').top(10)
+      leaderboard = Games::Leaderboard.new(current_school, 'FoodFight').top(10)
       render 'show', locals: { current_round: "2012 Round 1", leaderboard: leaderboard }
     end
 

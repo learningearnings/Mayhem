@@ -4,7 +4,7 @@ class FoodFightPlayCommandsController < LoggedInController
     command = FoodFightPlayCommand.new(params[:food_fight_play_command])
     command.person_id = current_person.id
     command.match_id = @match.id
-    
+    command.school_id = current_school.id
     # Set up success / failure callbacks
     command.on_success = method(:on_success)
     command.on_failure = method(:on_failure)
