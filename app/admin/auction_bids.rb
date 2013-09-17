@@ -2,9 +2,11 @@ ActiveAdmin.register AuctionBid do
 #  scope :open
 #  scope :invalidated
 
+  filter :auction
+  filter :amount
+
   menu :parent => "Auctions"
 
-  
   index do
     column :person do |auction_bid|
       auction_bid.person.name
@@ -17,5 +19,4 @@ ActiveAdmin.register AuctionBid do
     column :updated_at
     column :status
   end
-
 end

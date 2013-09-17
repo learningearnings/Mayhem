@@ -7,7 +7,8 @@ module Games
 
     def challenge_opponent
       current_opponents = Person.find current_person.food_fight_matches.map{|x| x.players}.flatten.map{|x| x.person_id}
-      @students = (current_school.students - [current_person]) - current_opponents
+      ignored_ids = (current_opponents + [current_person]).map(&:id)
+      @students = current_school.students.where("people.id NOT IN (?)", ignored_ids).page(params[:page])
     end
 
     def play

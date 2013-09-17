@@ -1,5 +1,3 @@
-# config/deploy.rb 
-
 set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
@@ -7,15 +5,15 @@ require "rvm/capistrano"
 require "rvm/capistrano/selector"
 require "rvm/capistrano/gem_install_uninstall"
 require "rvm/capistrano/alias_and_wrapp"
-require "bundler/capistrano"
+# Bundler bootstrap
+require 'bundler/capistrano'
+require 'capistrano-unicorn'
 
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 before 'deploy:setup', 'rvm:create_gemset'
 before 'deploy:setup', 'rvm:create_alias'
 before 'deploy:setup', 'rvm:create_wrappers'
-
-before "deploy", "deploy:install_bundler"
 
 set :bundle_dir, ''
 set :bundle_flags, '--system --quiet'
@@ -24,11 +22,48 @@ set :stages, %w(production staging)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
-set :deploy_via,      :remote_cache
+after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
+
+
+# main details
 set :application,     "Mayhem"
+
+# server details
+default_run_options[:pty] = true
+ssh_options[:forward_agent] = true
+set :deploy_to, "/home/deployer/apps/#{application}"
+set :user, "deployer"
+set :use_sudo, false
+
+# repo details
 set :scm,             :git
 set :repository,      "git@github.com:knewter/Mayhem.git"
-set :branch,          "origin/develop"
+set :branch,          "develop"
+
+# tasks
+namespace :deploy do
+  desc "Symlink shared resources on each release"
+  task :symlink_shared, :roles => :app do
+    run "ln -s #{shared_path}/log #{latest_release}/log"
+    run "ln -s #{shared_path}/system #{latest_release}/public/system"
+    run "ln -s #{shared_path}/tmp/pids #{latest_release}/tmp/pids"
+    run "ln -sf #{shared_path}/tmp/cache #{latest_release}/tmp/cache"
+    run "ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml"
+    run "ln -sf #{shared_path}/config/initializers/00_env.rb #{latest_release}/config/initializers"
+    run "ln -sf #{shared_path}/config/initializers/setup_mail.rb #{latest_release}/config/initializers"
+  end
+end
+
+before 'deploy:assets:precompile', 'deploy:symlink_shared'
+=begin
+#
+#
+#
+# config/deploy.rb 
+
+
+set :deploy_via,      :remote_cache
+set :scm,             :git
 set :migrate_target,  :current
 set :ssh_options,     { forward_agent: true }
 set :rails_env,       "production"
@@ -44,10 +79,6 @@ set :use_sudo,        false
 set(:latest_release)  { fetch(:current_path) }
 
 namespace :deploy do
-  task :install_bundler, :roles => :app do
-    run "type -P bundle &>/dev/null || { /home/deployer/.rvm//wrappers/Mayhem/gem install bundler --no-rdoc --no-ri; }"
-  end
-
   desc "Deploy your application"
   task :default do
     update
@@ -82,14 +113,14 @@ namespace :deploy do
   desc "Reload the database (deletes everything!!!)."
   task :reload, except: { no_release: true } do
 #    stop if remote_file_exists?('/tmp/unicorn.mayhemstaging.lemirror.com.pid')
-    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake le:reload RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm/wrappers/Mayhem/rake le:reload RAILS_ENV=#{rails_env}"
     start
   end
 
   desc "Precompile assets"
   task :precompile_assets do
     #precompile the assets
-    run "cd #{latest_release}; /home/deployer/.rvm//wrappers/Mayhem/rake assets:precompile RAILS_ENV=#{rails_env}"
+    run "cd #{latest_release}; /home/deployer/.rvm/wrappers/Mayhem/rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Update the database (overwritten to avoid symlink)"
@@ -117,7 +148,7 @@ namespace :deploy do
       ln -s #{shared_path}/tmp/pids #{latest_release}/tmp/pids &&
       ln -sf #{shared_path}/tmp/cache #{latest_release}/tmp/cache &&
       ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml &&
-      ln -sf #{shared_path}/config/initializers/dragonfly.rb #{latest_release}/config/initializers &&
+      ln -sf #{shared_path}/config/initializers/00_env.rb #{latest_release}/config/initializers
       ln -sf #{shared_path}/config/initializers/setup_mail.rb #{latest_release}/config/initializers
     CMD
 
@@ -163,6 +194,13 @@ namespace :deploy do
   end
 end
 
+namespace :bundle do
+  desc "Install bundle..."
+  task :install do
+    run "cd #{latest_release} && /home/deployer/.rvm/wrappers/Mayhem/bundle install --gemfile /home/deployer/apps/Mayhem/current/Gemfile --without development test"
+  end
+end
+
 #def remote_file_exists?(full_path)
 #  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
 #end
@@ -173,3 +211,5 @@ end
 
 after 'deploy:finalize_update', 'deploy:precompile_assets'
 
+
+=end

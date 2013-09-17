@@ -145,6 +145,8 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    capistrano-unicorn (0.1.10)
+      capistrano
     capybara (1.1.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -499,6 +501,7 @@ DEPENDENCIES
   animation
   cancan
   capistrano (~> 2.15.5)
+  capistrano-unicorn
   capybara
   chosen-rails
   ckeditor (= 3.7.3)

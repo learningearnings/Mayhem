@@ -55,7 +55,6 @@ module ApplicationHelper
     end
   end
 
-
   def render_reward_highlights products
     render 'shared/rewards_highlights', products: products
   end
@@ -68,6 +67,11 @@ module ApplicationHelper
                    image_processor.fetch_file(default_avatar_path)
                  end
     image_tag(avatar_img.thumb(geometry).url)
+  end
+
+  def resized_image(image_file_url, geometry='50x50#')
+    img = image_processor.fetch_url(image_file_url)
+    image_tag(img.thumb(geometry).url)
   end
 
   def le_svg_tag source, options = {}
@@ -141,4 +145,7 @@ module ApplicationHelper
     '%.02f' % number
   end
 
+  def human_date date
+    date.strftime("%B %d, %Y")
+  end
 end

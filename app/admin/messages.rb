@@ -2,6 +2,13 @@ ActiveAdmin.register Message do
   menu :label => "Inbox"
   scope :for_admin, :default => true
 
+  filter :created_at
+  filter :updated_at
+  filter :subject
+  filter :body
+  filter :status
+  filter :category
+
   index do
     column "ID" do |message|
       link_to(message.id, admin_message_path(message))
