@@ -110,10 +110,6 @@ end
 # Use unicorn as the app server
 gem 'unicorn'
 
-# Deploy with Capistrano
-gem 'capistrano', '~> 2.15.5'
-gem 'rvm-capistrano'
-
 # To use debugger
 # gem 'debugger'
 
@@ -123,6 +119,10 @@ group :development do
   #gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
   gem 'letter_opener'
+  # Deploy with Capistrano
+  gem 'capistrano', '~> 2.15.5'
+  gem 'rvm-capistrano'
+  gem 'capistrano-unicorn', require: false
 end
 
 group :test do
