@@ -16,5 +16,4 @@ Spree::HomeController.class_eval do
     @products = @products.page(params[:page]).per(9)
     respond_with(@products)
   end
-
 end

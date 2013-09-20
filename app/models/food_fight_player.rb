@@ -2,7 +2,7 @@ class FoodFightPlayer < ActiveRecord::Base
   attr_accessible :food_fight_match_id, :person_id, :score, :questions_answered
   belongs_to :food_fight_match
   belongs_to :person
- 
+
   def winner?
     score >= 1 && score > opponent.score && opponent.score < opponent.questions_answered
   end
@@ -12,7 +12,7 @@ class FoodFightPlayer < ActiveRecord::Base
   end
 
   def opponent
-    (food_fight_match.players - [self]).first
+    (match.players - [self]).first
   end
 
   def match

@@ -67,3 +67,4 @@ images.tgz
 public/assets
 
 config/initializers/setup_mail.rb
+config/initializers/00_env.rb
