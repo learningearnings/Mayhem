@@ -48,8 +48,8 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
 
   def execute!
     retail_store = @school.store || return
-    if retail_store.products.with_property_value('master_product',@master_product.id.to_s).exists?
-      retail_product = retail_store.products.with_property_value('master_product',@master_product.id.to_s).first
+    if retail_store.products.with_property_value('master_product', @master_product.id.to_s).exists?
+      retail_product = retail_store.products.with_property_value('master_product', @master_product.id.to_s).first
       ### TODO - Is this legit?
       retail_product.taxons = @master_product.taxons
       retail_product.master.count_on_hand += @quantity.to_i

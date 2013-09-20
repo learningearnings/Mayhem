@@ -18,7 +18,6 @@ module Spree::Search
     protected
     def get_base_scope
       # Copied from spree-multi-domain/lib/spree/search/multi_domain.rb
-
       base_scope = @cached_product_group ? @cached_product_group.products.active : Spree::Product.active
       base_scope = base_scope.by_store(current_store_id) if current_store_id
       base_scope = base_scope.in_taxon(taxon) unless taxon.blank?
