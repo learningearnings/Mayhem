@@ -98,12 +98,8 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def after_save
-    @product.store_ids = Spree::Store.all.map{|s| s.id }
-    if params[:product][:fulfillment_type] == "Digitally Delivered Charity Certificate"
-      product_type = "charity"
-    else
-      product_type = "global"
-    end
+    @product.fulfillment_type == "Shipped for School Inventory" ? @product.store_ids = [] : @product.store_ids = Spree::Store.all.map{|s| s.id }
+    product_type = @product.fulfillment_type == "Digitally Delivered Charity Certificate" ? "charity" : "global"
     @product.set_property("reward_type", product_type)
     SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
     handle_uploads
