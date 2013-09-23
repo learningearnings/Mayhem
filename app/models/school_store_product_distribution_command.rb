@@ -53,6 +53,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       ### TODO - Is this legit?
       retail_product.taxons = @master_product.taxons
       retail_product.master.count_on_hand += @quantity.to_i
+      retail_product.master.price = @retail_price
       retail_product.master.save
     else
       retail_price_property = spree_property_class.find_by_name('retail_price');
@@ -70,7 +71,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       ### TODO - Is this legit?
       retail_product.taxons = @master_product.taxons
       if @master_product && @master_product.master && @master_product.master.images[0]
-        new_image = open(@master_product.master.images[0].attachment.path)
+        new_image = open(@master_product.master.images[0].attachment.url)
 #       def new_image.original_filename; base_uri.path.split('/').last; end
         new_spree_image = spree_image_class.new({:viewable_id => retail_product.master.id,
                                                   :viewable_type => 'Spree::Variant',
@@ -81,6 +82,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
         retail_product.master.images << new_spree_image
       end
       retail_product.count_on_hand = @quantity
+      retail_product.fulfillment_type = 'School to Fulfill'
       retail_product.store_ids = [retail_store.id]
 #      retail_product.master.save # The master variant, not the master_product
       retail_product.save
@@ -91,7 +93,7 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       filter = factory.find_or_create_filter(fc)
 
       spree_product_filter_link_class.create(:filter_id => filter.id, :product_id => retail_product.id)
-      spree_product_person_link_class.create(product_id: retail_product.id, person_id: @person.id)
+      #spree_product_person_link_class.create(product_id: retail_product.id, person_id: @person.id)
       # currently only SchoolAdmin persons can call this method to add products to their school == retail
       retail_product.properties.create(name: "type", presentation: "retail")
     end
