@@ -33,6 +33,10 @@ module Spree::Search
       unless  (@current_user && @current_user.person.is_a?(LeAdmin))
         base_scope.with_filter(@filters)
       end
+      if @current_person
+        base_scope = base_scope.above_min_grade(@current_person.grade).below_max_grade(@current_person.grade)
+      end
+      base_scope = base_scope.not_shipped_for_school_inventory
       base_scope
     end
 
@@ -41,6 +45,7 @@ module Spree::Search
       params[:filters] = nil
       @properties[:filters] = nil
       @current_user = params[:searcher_current_user]
+      @current_person = params[:searcher_current_person]
       @current_school = params[:current_school]
       super
     end

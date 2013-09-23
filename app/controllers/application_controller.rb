@@ -170,6 +170,7 @@ class ApplicationController < ActionController::Base
 
   def get_reward_highlights highlight_count = 3
     with_filters_params = params
+    with_filters_params[:searcher_current_person] = current_person
     with_filters_params[:filters] = session[:filters] || [1]
     searcher = Spree::Config.searcher_class.new(with_filters_params)
     searcher.retrieve_products.order('random()').page(1).per(highlight_count)
