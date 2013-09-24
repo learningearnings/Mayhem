@@ -19,14 +19,13 @@ class ApplicationController < ActionController::Base
   # Users are required to access the application
   # using a subdomain
   def subdomain_required
-    return if current_user && current_user.respond_to?(:person) && current_user.person.is_a?(LeAdmin)
-    return if current_user && !current_user.respond_to?(:person)
-    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain &&
-                        (!(current_user.person.is_a?(SchoolAdmin) && [home_subdomain, 'le'].include?(request.subdomain)))
-                        ) && home_host
+    return unless current_user
+    return if !current_user.respond_to?(:person)
+    return if current_user.person.is_a?(LeAdmin)
+    if not_at_home && home_host
       token = Devise.friendly_token
       current_user.authentication_token = token
-      my_redirect_url = home_host   + "/home/?auth_token=#{token}"
+      my_redirect_url = home_host + "/home/?auth_token=#{token}"
 
       current_user.save
       sign_out(current_user)
@@ -66,12 +65,7 @@ class ApplicationController < ActionController::Base
   end
 
   def home_subdomain
-    if session[:current_school_id]
-      s = School.find(session[:current_school_id])
-      s.store_subdomain.downcase if s
-    else
-      ""
-    end
+    current_school ? current_school.store_subdomain : ''
   end
 
   def login_schools_list
@@ -93,55 +87,7 @@ class ApplicationController < ActionController::Base
   helper_method :last_school_id_or_by_subdomain
 
   def home_host
-    return request.protocol + request.host_with_port unless current_user.person
-    if current_user && current_user.person
-      # TODO - figure out a better hostname naming scheme
-      subdomain = home_subdomain
-      if request.host.match /^#{subdomain}\./
-        host = request.protocol + request.host_with_port
-      else
-        if !request.subdomain.empty?
-          host = request.host.gsub /^#{request.subdomain}\./,''
-        else
-          host = request.host
-        end
-        subdomain = subdomain + '.' + host
-
-        # If this is a development environment, check to see if the
-        # hosts file is setup right
-
-        if Rails.env == 'development'
-          match_found = false
-          begin
-            subdomain_address = Addrinfo.getaddrinfo(subdomain,request.port)
-          rescue
-            subdomain_address = nil
-          end
-          original_address =  Addrinfo.getaddrinfo(request.host,request.port)
-          if subdomain_address
-            subdomain_address.each do |sa|
-              original_address.each do |oa|
-                if sa.ip_address == oa.ip_address
-                  match_found = true
-                  break
-                end
-              end
-            end
-          end
-          if !match_found
-            flash[:error] = ("Localhost(s) aren't configured correctly for development - use " + "<a href=\"http://lvh.me:3000\">lvh.me:3000</a>").html_safe
-            return nil
-          end
-        end
-        host = request.protocol + subdomain
-        if request.port && request.port != 80
-          host = host +':' + request.port.to_s
-        end
-        host
-      end
-    else
-      request.protocol + request.host_with_port
-    end
+    HomeHostFinder.new.host_for(home_subdomain, request)
   end
 
   # Override this anywhere you need to actually know how to get a current_person
@@ -171,6 +117,7 @@ class ApplicationController < ActionController::Base
   def get_reward_highlights highlight_count = 3
     with_filters_params = params
     with_filters_params[:searcher_current_person] = current_person
+    with_filters_params[:current_school] = current_school
     with_filters_params[:filters] = session[:filters] || [1]
     searcher = Spree::Config.searcher_class.new(with_filters_params)
     searcher.retrieve_products.order('random()').page(1).per(highlight_count)
@@ -179,5 +126,9 @@ class ApplicationController < ActionController::Base
   protected
   def _prefixes
     @_prefixes_with_partials ||= super | %w(/public)
+  end
+
+  def not_at_home
+    request.subdomain.empty? || (request.subdomain != home_subdomain)
   end
 end
