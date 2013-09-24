@@ -129,6 +129,8 @@ class ApplicationController < ActionController::Base
   end
 
   def not_at_home
-    request.subdomain.empty? || (request.subdomain != home_subdomain)
+    return true if request.subdomain.empty?
+    first_subdomain = request.subdomain.split(".").first
+    return first_subdomain != home_subdomain
   end
 end
