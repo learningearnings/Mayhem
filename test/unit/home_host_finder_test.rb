@@ -11,8 +11,15 @@ describe HomeHostFinder do
   end
 
   it "returns the request host properly if on the wrong subdomain" do
-    request = request_for("bar", "bar.foo.com")
+    request = request_for("bar", "foo.com")
     subject.host_for("al2", request).must_equal("http://al2.foo.com")
+  end
+
+  it "handles expected subdomains it shouldn't strip properly" do
+    request = request_for("beta", "beta.foo.com")
+    subject.host_for("al2", request).must_equal("http://al2.beta.foo.com")
+    request = request_for("rclements", "rclements.foo.com")
+    subject.host_for("al2", request).must_equal("http://al2.rclements.foo.com")
   end
 
   def request_for(subdomain, host)
