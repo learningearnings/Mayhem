@@ -98,10 +98,11 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   def after_save
-    @product.fulfillment_type == "Shipped for School Inventory" ? @product.store_ids = [] : @product.store_ids = Spree::Store.all.map{|s| s.id }
-    product_type = @product.fulfillment_type == "Digitally Delivered Charity Certificate" ? "charity" : "global"
-    @product.set_property("reward_type", product_type)
-    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id) unless @product.person
+    @product.store_ids = store_ids_for(@product.fulfillment_type)
+    @product.set_property("reward_type", product_type_for(@product))
+    @product.save
+
+    create_product_person_link unless @product.person
     handle_uploads
   end
 
@@ -254,4 +255,23 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     end
   end
 
+  def product_type_for(product)
+    if @product.fulfillment_type == "Digitally Delivered Charity Certificate"
+      "charity"
+    else
+      "global" 
+    end
+  end
+
+  def store_ids_for(fulfillment_type)
+    if fulfillment_type == "Shipped for School Inventory"
+      [Spree::Store.find_by_code('le').id]
+    else
+      Spree::Store.all.map{|s| s.id }
+    end
+  end
+
+  def create_product_person_link
+    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
+  end
 end

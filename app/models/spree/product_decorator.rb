@@ -35,8 +35,12 @@ Spree::Product.class_eval do
   # scope :le_with_property_value, lambda { |property, value|
   #     le_with_property(property).joins(:properties).where("#{Spree::ProductProperty.table_name}.value" => value)
   # }
-
+  scope :above_min_grade, lambda {|grade| where("min_grade <= ? OR min_grade IS NULL", grade)}
+  scope :below_max_grade, lambda {|grade| where("max_grade >= ? OR max_grade IS NULL", grade)}
+  scope :no_min_grade, where("min_grade == ?", nil)
+  scope :no_max_grade, where("max_grade == ?", nil)
   scope :shipped_for_school_inventory, where(:fulfillment_type => "Shipped for School Inventory")
+  scope :not_shipped_for_school_inventory, where("fulfillment_type != ?", "Shipped for School Inventory")
   scope :visible_to_all, where(:visible_to_all => true)
 
   def self.with_filter(filters = [1])
