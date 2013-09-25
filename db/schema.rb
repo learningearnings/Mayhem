@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130917181058) do
+ActiveRecord::Schema.define(:version => 20130925212806) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -201,9 +201,9 @@ ActiveRecord::Schema.define(:version => 20130917181058) do
 
   create_table "foods", :force => true do |t|
     t.string   "name"
-    t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "image_uid"
   end
 
   create_table "games_answers", :force => true do |t|
@@ -1170,7 +1170,6 @@ ActiveRecord::Schema.define(:version => 20130917181058) do
     t.string   "username"
   end
 
-  add_index "spree_users", ["email"], :name => "email_idx_unique", :unique => true
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
   add_index "spree_users", ["person_id"], :name => "su_person_id", :unique => true
   add_index "spree_users", ["username"], :name => "su_username"

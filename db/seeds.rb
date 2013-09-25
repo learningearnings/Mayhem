@@ -108,10 +108,6 @@ states = {
 "Wyoming" => "WY"
 }
 
-states.each do |state|
-#  State.create name: state.first, abbr: state.last
-end
-
 Spree::Core::Engine.load_seed if defined?(Spree::Core)
 Spree::Auth::Engine.load_seed if defined?(Spree::Auth)
 

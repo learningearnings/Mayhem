@@ -118,11 +118,6 @@ FactoryGirl.define do
     email "foo@example.com"
   end
 
-  factory :state do
-    sequence(:name) {|n| "State #{n}" }
-    sequence(:abbr) {|n| "S#{n}" }
-  end
-
   factory :school do
     sequence(:name) {|n| "Test School #{n}"}
     min_grade 1
@@ -142,7 +137,7 @@ FactoryGirl.define do
     address1 "123 Foo Street"
     address2 "Unit 2"
     city "Birmingham"
-    state_id { FactoryGirl.create(:state).id }
+    state_id 1
     zip "35111"
     ad_profile 1
   end
