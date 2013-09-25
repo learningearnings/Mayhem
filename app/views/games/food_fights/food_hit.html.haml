@@ -6,4 +6,4 @@
 
 .food-thrown-wrapper
   %p= "#{@match.food_person_link.person}! You have been hit by #{@match.winner.person.name}."
-  .food-thrown= le_svg_tag @food.image.url, :id => @food.id
+  .food-thrown= image_tag @food.image.url, :id => @food.id

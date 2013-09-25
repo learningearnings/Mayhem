@@ -20,6 +20,10 @@
     - if @product.price
       %div{ "data-hook" => "product_price", class: "columns five #{@product.has_variants? ? 'omega' : 'alpha'}" }
         #product-price
+          %h6.product-section-title= t(:quantity_availalbe)
+          %div
+            %span.quantity.selling{ itemprop:"Available" }= @product.count_on_hand
+        #product-price
           %h6.product-section-title= t(:price)
           %div
             %span.price.selling{ itemprop:"price" }= @product.price
@@ -27,7 +31,7 @@
         .add-to-cart
           - if (!@product.has_stock?)
             = content_tag('strong', t(:out_of_stock))
-          - elsif current_person && ((current_person.store_code == request.subdomain) || current_person.is_a?(SchoolAdmin))
+          - elsif current_person && ((current_person.store_code == actual_subdomain) || current_person.is_a?(SchoolAdmin))
             = number_field_tag (@product.has_variants? ? :quantity : "variants[#{@product.master.id}]"), 1, :class => 'title', :in => 1..@product.on_hand
             - if current_person.is_a?(Student)
               - unless @product.reward_type == 'charity'
