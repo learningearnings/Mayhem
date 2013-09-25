@@ -46,13 +46,13 @@ ActiveAdmin.register Auction do
     column :id
     column :auction_type
     column :product do |auction|
-      auction.product.name
+      auction.product.name if auction.product
     end
     column :start_date
     column :end_date
     column :status
     column :starting_bid do |auction|
-      auction.starting_bid
+      auction.starting_bid if auction
     end
     column :bids do |auction|
       auction.auction_bids.count
@@ -84,6 +84,7 @@ ActiveAdmin.register Auction do
       link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.upcoming?
       link_html.html_safe
     end
+    default_actions
   end
 
   show do |auction|
@@ -113,7 +114,7 @@ ActiveAdmin.register Auction do
 
   form do |f|
     f.inputs "Details" do
-      f.input :product
+      f.input :product, :as => :chosen, :collection => Spree::Product.shipped_for_school_inventory
       f.input :start_date, :as => :datepicker
       f.input :end_date, :as => :datepicker
       f.input :min_grade, :as => :select, :collection => School::GRADES

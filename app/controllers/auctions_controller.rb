@@ -1,12 +1,13 @@
 class AuctionsController < LoggedInController
   def new
+    @products = get_products
     @auction = Auction.new
   end
 
   def index
     @auctions = []
     Auction.active.for_school(current_school).uniq.map{|x| @auctions << x}
-    Auction.active.for_state(current_school.addresses.first.state).uniq.map{|x| @auctions << x}
+    Auction.active.for_state(current_school.state).uniq.map{|x| @auctions << x}
     #Auction.active.for_zip(current_school.addresses.first.zip).uniq.map{|x| @auctions << x}
     Auction.active.select{|x| x.global?}.uniq.map{|x| @auctions << x}
     @auctions = @auctions.uniq
@@ -51,5 +52,11 @@ class AuctionsController < LoggedInController
     end
   end
 
-
+  def get_products
+    with_filters_params = params
+    with_filters_params[:searcher_current_person] = current_person
+    with_filters_params[:current_school] = current_school
+    searcher = Spree::Config.searcher_class.new(with_filters_params)
+    searcher.retrieve_products
+  end
 end

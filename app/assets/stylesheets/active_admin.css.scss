@@ -1,3 +1,4 @@
+$gray: #ddd;
 // SASS variable overrides must be declared before loading up Active Admin's styles.
 //
 // To view the variables that Active Admin provides, take a look at
@@ -36,5 +37,10 @@
 body.active_admin {
   #title_bar, #active_admin_content {
     max-width: 100%;
+  }
+  thead {
+    th {
+      background-color: $gray;
+    }
   }
 }

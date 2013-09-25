@@ -128,7 +128,14 @@ class ApplicationController < ActionController::Base
     @_prefixes_with_partials ||= super | %w(/public)
   end
 
+  def actual_subdomain
+    request.subdomain.split(".").first
+  end
+  helper_method :actual_subdomain
+
   def not_at_home
-    request.subdomain.empty? || (request.subdomain != home_subdomain)
+    return true if request.subdomain.empty?
+    first_subdomain = actual_subdomain
+    return first_subdomain != home_subdomain
   end
 end

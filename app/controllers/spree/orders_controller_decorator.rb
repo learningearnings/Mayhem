@@ -10,13 +10,23 @@ Spree::OrdersController.class_eval do
   # * Multiple products at once
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => quantity+
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
+  
+  def insufficient_quantity?
+    variant_options = params[:variants].to_a.flatten
+    variant  = Spree::Variant.find variant_options.first
+    quantity = variant_options.last
+    return true if quantity.to_i > variant.count_on_hand
+  end
 
   def populate
     @order = current_order(true)
     if current_person.is_a?(Student)
       @order.empty!
     end
-
+    if insufficient_quantity?
+      flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
+      redirect_to :back and return
+    end 
     @order.restock_items!
     params[:products].each do |product_id,variant_id|
       quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)

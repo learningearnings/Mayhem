@@ -124,6 +124,8 @@ group :development do
   gem 'capistrano', '~> 2.15.5'
   gem 'rvm-capistrano'
   gem 'capistrano-unicorn', require: false
+  # Generate ERD diagrams from your models
+  gem 'rails-erd'
 end
 
 group :test do
