@@ -8,7 +8,7 @@ class AuctionsController < LoggedInController
     @auctions = []
     Auction.active.for_school(current_school).uniq.map{|x| @auctions << x}
     Auction.active.for_state(current_school.state).uniq.map{|x| @auctions << x}
-    #Auction.active.for_zip(current_school.addresses.first.zip).uniq.map{|x| @auctions << x}
+    Auction.active.for_zip(current_school.zip).uniq.map{|x| @auctions << x}
     Auction.active.select{|x| x.global?}.uniq.map{|x| @auctions << x}
     @auctions = @auctions.uniq
     render locals: { auctions: @auctions }

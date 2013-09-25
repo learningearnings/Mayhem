@@ -21,7 +21,7 @@ class Auction < ActiveRecord::Base
   scope :upcoming,  where("NOW() < start_date")
   scope :for_school,  lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
   scope :for_state,   lambda {|state|  joins({:states =>  [:auction_state_links] }).where("auction_state_links.state_id = ?", state.id) }
-  scope :for_zip,     lambda {|zip|    joins({:auction_zip_codes =>  [:auction_zip_codes] }).where("auction_zip_codes.zip_code= ?", zip) }
+  scope :for_zip,     lambda {|zip|    joins(:auction_zip_codes).where("auction_zip_codes.zip_code= ?", zip) }
 
   def global?
     !schools.present? && !states.present? && !auction_zip_codes.present?
