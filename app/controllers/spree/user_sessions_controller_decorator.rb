@@ -2,6 +2,7 @@ Spree::UserSessionsController.class_eval do
   def create
     authenticate_user!
     session[:last_school_id] = params[:user]["school_id"]
+    session[:current_school_id] = params[:user]["school_id"]
 
     if user_signed_in?
       respond_to do |format|

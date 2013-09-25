@@ -97,7 +97,7 @@ module Warden
       # @see Warden::Strategy::Base#valid?
       # @api private
       def valid?
-        if required_param_values.nil? 
+        if required_param_values.nil?
           false
         else
           !required_param_values.include?(nil)
@@ -138,6 +138,7 @@ module Warden
       end
 
       private
+      # FIXME: I don't think this
       def extract_value_from_params(key)
         case key
         when String, Symbol
@@ -151,7 +152,6 @@ module Warden
           instance_eval(&key)
         end
       end
-
     end
   end
 end
