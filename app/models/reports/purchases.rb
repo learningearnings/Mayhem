@@ -78,8 +78,7 @@ module Reports
     end
 
     def teachers_filter
-      case parameters.teachers_filter
-      when nil
+      if parameters.teachers_filter.blank?
         [:scoped]
       else
         [:where, { from_id: parameters.teachers_filter }]

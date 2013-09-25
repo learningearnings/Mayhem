@@ -19,7 +19,6 @@ class RewardsController < LoggedInController
     # create new spree product with specific options for LE Admin to use
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
-    @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
   end
 
@@ -27,7 +26,6 @@ class RewardsController < LoggedInController
     # create the product reward
     @product = Spree::Product.new
     @image = @product.master.images.new
-    @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
     form_data
     if @product.save
@@ -42,7 +40,6 @@ class RewardsController < LoggedInController
 
   def edit
     @product = Spree::Product.find(params[:id])
-    @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
   end
 
