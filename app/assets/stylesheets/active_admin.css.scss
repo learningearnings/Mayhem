@@ -12,6 +12,7 @@ $gray: #ddd;
 /*= require chosen */
 @import "chosen";
 @import "active_admin/extra/base";
+@import "just_datetime_picker/base";
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:

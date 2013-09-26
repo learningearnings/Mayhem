@@ -4,6 +4,8 @@ class Auction < ActiveRecord::Base
   validates :current_bid, numericality: true
   validates :auction_type, inclusion: { in: ["traditional"] }
   after_initialize :set_defaults
+  just_define_datetime_picker :start_date, :add_to_attr_accessible => true
+  just_define_datetime_picker :end_date, :add_to_attr_accessible => true
 
   belongs_to :product, class_name: "Spree::Product", foreign_key: :product_id
   has_many :auction_bids
