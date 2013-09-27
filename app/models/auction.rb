@@ -27,9 +27,6 @@ class Auction < ActiveRecord::Base
   scope :within_grade, lambda {|grade|  where("? BETWEEN min_grade AND max_grade", grade) }
   scope :no_min_grade, where("min_grade IS NULL")
   scope :no_max_grade, where("max_grade IS NULL")
-  #scope :no_min_grade, where("min_grade = ?", nil)
-  #scope :no_max_grade, where("max_grade = ?", nil)
- 
 
   def global?
     !schools.present? && !states.present? && !auction_zip_codes.present?
