@@ -9,10 +9,12 @@ class AuctionsController < LoggedInController
     state_auctions  = Auction.active.for_state(current_school.state)
     zip_auctions    = Auction.active.for_zip(current_school.zip)
     grade_auctions  = Auction.active.within_grade(current_person.grade)
+    no_min_grade_auctions = Auction.active.no_min_grade
+    no_max_grade_auctions = Auction.active.no_max_grade
     # Union of inclusive bits (school, state, zip)
     @auctions = school_auctions | state_auctions | zip_auctions
     # Intersection with the filters (grades)
-    @auctions = @auctions & grade_auctions
+    @auctions = (@auctions + grade_auctions + no_min_grade_auctions + no_max_grade_auctions).uniq
     render locals: { auctions: @auctions }
   end
 

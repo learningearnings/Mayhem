@@ -25,6 +25,11 @@ class Auction < ActiveRecord::Base
   scope :for_state,    lambda {|state|  joins({:states =>  [:auction_state_links] }).where("auction_state_links.state_id = ?", state.id) }
   scope :for_zip,      lambda {|zip|    joins(:auction_zip_codes).where("auction_zip_codes.zip_code= ?", zip) }
   scope :within_grade, lambda {|grade|  where("? BETWEEN min_grade AND max_grade", grade) }
+  scope :no_min_grade, where("min_grade IS NULL")
+  scope :no_max_grade, where("max_grade IS NULL")
+  #scope :no_min_grade, where("min_grade = ?", nil)
+  #scope :no_max_grade, where("max_grade = ?", nil)
+ 
 
   def global?
     !schools.present? && !states.present? && !auction_zip_codes.present?
