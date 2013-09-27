@@ -88,6 +88,8 @@ Leror::Application.routes.draw do
         get  'choose_food'
       end
     end
+    resource :number_muncher do
+    end
   end
 
   match 'choose_food/:match_id' => 'games/food_fights#choose_food', :as => :choose_food
