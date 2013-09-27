@@ -37,14 +37,19 @@ class ClassroomsController < LoggedInController
   end
 
   def add_student
-    @student = Student.find(params[:student_id])
-    @classroom = Classroom.find(params[:classroom_id])
-    if @student<<(@classroom)
-      flash[:notice] = "Student added to classroom."
-      redirect_to classroom_path(@classroom)
+    if params[:student_id].present?
+      @student = Student.find(params[:student_id])
+      @classroom = Classroom.find(params[:classroom_id])
+      if @student<<(@classroom)
+        flash[:notice] = "Student added to classroom."
+        redirect_to classroom_path(@classroom)
+      else
+        flash[:error] = "Student not added to classroom."
+        render :show
+      end
     else
-      flash[:error] = "Student not added to classroom."
-      render :show
+      flash[:error] = 'Please pick a student.'
+      redirect_to :back
     end
   end
 
