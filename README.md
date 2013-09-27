@@ -1,7 +1,7 @@
 Project Mayhem
 =====
 
-Ruby On Rails reimplementation of LearningEarnings.com
+Ruby on Rails reimplementation of LearningEarnings.com.
 
 ### Multi-Domain Spree **** IMPORTANT ****
 

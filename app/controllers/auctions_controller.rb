@@ -5,12 +5,14 @@ class AuctionsController < LoggedInController
   end
 
   def index
-    @auctions = []
-    Auction.active.for_school(current_school).uniq.map{|x| @auctions << x}
-    Auction.active.for_state(current_school.state).uniq.map{|x| @auctions << x}
-    #Auction.active.for_zip(current_school.addresses.first.zip).uniq.map{|x| @auctions << x}
-    Auction.active.select{|x| x.global?}.uniq.map{|x| @auctions << x}
-    @auctions = @auctions.uniq
+    school_auctions = Auction.active.for_school(current_school)
+    state_auctions  = Auction.active.for_state(current_school.state)
+    zip_auctions    = Auction.active.for_zip(current_school.zip)
+    grade_auctions  = Auction.active.within_grade(current_person.grade)
+    # Union of inclusive bits (school, state, zip)
+    @auctions = school_auctions | state_auctions | zip_auctions
+    # Intersection with the filters (grades)
+    @auctions = @auctions & grade_auctions
     render locals: { auctions: @auctions }
   end
 

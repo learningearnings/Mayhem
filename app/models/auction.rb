@@ -21,9 +21,10 @@ class Auction < ActiveRecord::Base
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :ended,  where("NOW() >= end_date")
   scope :upcoming,  where("NOW() < start_date")
-  scope :for_school,  lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
-  scope :for_state,   lambda {|state|  joins({:states =>  [:auction_state_links] }).where("auction_state_links.state_id = ?", state.id) }
-  scope :for_zip,     lambda {|zip|    joins({:auction_zip_codes =>  [:auction_zip_codes] }).where("auction_zip_codes.zip_code= ?", zip) }
+  scope :for_school,   lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
+  scope :for_state,    lambda {|state|  joins({:states =>  [:auction_state_links] }).where("auction_state_links.state_id = ?", state.id) }
+  scope :for_zip,      lambda {|zip|    joins(:auction_zip_codes).where("auction_zip_codes.zip_code= ?", zip) }
+  scope :within_grade, lambda {|grade|  where("? BETWEEN min_grade AND max_grade", grade) }
 
   def global?
     !schools.present? && !states.present? && !auction_zip_codes.present?
