@@ -241,7 +241,7 @@ GEM
     guard-spinach (0.0.2)
       guard (>= 1.1)
       spinach
-    haml (3.1.8)
+    haml (3.1.7)
     haml-rails (0.3.5)
       actionpack (>= 3.1, < 4.1)
       activesupport (>= 3.1, < 4.1)
@@ -534,6 +534,7 @@ DEPENDENCIES
   guard (~> 1.2.3)
   guard-minitest (~> 0.5.0)
   guard-spinach (~> 0.0.2)
+  haml (= 3.1.7)
   haml-rails (~> 0.3.5)
   has_scope
   hashie
