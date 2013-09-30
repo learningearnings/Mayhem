@@ -6,7 +6,7 @@ module SchoolAdmins
     end
 
     def on_success(batch_id = nil)
-      flash[:notice] = 'Bucks created!'
+      flash[:notice] = 'Bucks sent!'
       if batch_id.nil?
         redirect_to school_admins_bank_path
       else

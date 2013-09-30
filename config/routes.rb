@@ -63,6 +63,7 @@ Leror::Application.routes.draw do
   # We ask that you don't use the :as option here, as Spree relies on it being the default of "spree"
   mount Spree::Core::Engine, :at => '/store'
 
+
   # Mount the plutus controllers for viewing accounts for basic reporting
   # FIXME: Lock this down before hitting production
   mount Plutus::Engine => "/plutus", :as => "plutus"
@@ -87,6 +88,8 @@ Leror::Application.routes.draw do
         get  'round_end'
         get  'choose_food'
       end
+    end
+    resource :number_muncher do
     end
   end
 
@@ -241,6 +244,7 @@ end
 Spree::Core::Engine.routes.prepend do
   resources :auctions
   devise_scope :user do
+    post '/reset_password/:resource_name' => 'user_passwords#create', :as => 'reset_password'
     get '/logout' => 'user_sessions#destroy', :as => :get_destroy_user_session
     get '/logout' => 'user_sessions#destroy',:remote => true, :as => :destroy_user_session
   end

@@ -36,10 +36,15 @@ module Mixins
     end
 
     def transfer_bucks
-      @from_teacher = Person.find(params[:from_teacher_id])
-      @to_teacher   = Person.find(params[:to_teacher_id])
-      @get_bank
-      @bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:transfer_points])
+      if params[:from_teacher_id].present? && params[:to_teacher_id].present?
+        @from_teacher = Person.find(params[:from_teacher_id])
+        @to_teacher   = Person.find(params[:to_teacher_id])
+        @get_bank
+        @bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:transfer_points])
+      else
+        flash[:error] = "Please choose a teacher for buck transfer."
+        redirect_to :back
+      end
     end
 
     protected
@@ -58,7 +63,8 @@ module Mixins
     end
 
     def issue_ebucks_to_student(student)
-      @bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:credits][student.id.to_s].gsub(/[^\d]/, '')))
+      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, BigDecimal(params[:points]))
+      #@bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:credits][student.id.to_s].gsub(/[^\d]/, '')))
     end
   end
 end
