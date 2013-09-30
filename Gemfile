@@ -112,9 +112,6 @@ end
 # Use unicorn as the app server
 gem 'unicorn'
 
-# Deploy with Capistrano
-gem 'capistrano', :git => 'git@github.com:capistrano/capistrano.git'
-
 # To use debugger
 # gem 'debugger'
 
