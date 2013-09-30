@@ -1,22 +1,19 @@
-%h2 Classrooms
-- @classrooms.each do |classroom|
-  %h3= link_to classroom.name, classroom_path(classroom)
-  %p= link_to 'Remove Class', classroom_path(classroom), :method => :delete
-  %table
-    %thead
-      %tr
-        %th Student Name
-    %tbody
-      - classroom.students.each do |student|
-        %tr
-          %td= student.name
+.main-content-wrapper
 
-= form_for Classroom.new do |f|
-  = f.label :name
-  = f.text_field :name
-  = f.hidden_field :school_id, :value => current_school.id
-  = f.submit 'Create Classroom'
+  .primary-content
+    .create-classroom
+      %h3 Create a Classroom
+      %hr
+      = form_for Classroom.new do |f|
+        = f.label :classroom_name
+        = f.text_field :name, :class => 'focus-on-me'
+        = f.hidden_field :school_id, :value => current_school.id
+        = f.submit 'Create', :class => "awesome-button"
 
 
-
-
+  .secondary-content
+    %h2 Classrooms
+    #classrooms
+      - if @classrooms.present?
+        - @classrooms.each do |classroom|
+          %h3= link_to classroom.name, classroom_path(classroom)

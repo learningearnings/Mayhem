@@ -1,15 +1,16 @@
 Spree::User.class_eval do
   devise :database_authenticatable, :token_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker, :as => :admin
+
+  validates_uniqueness_of :email, allow_blank: true
 
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
-  has_one :user_avatar_link
-  has_one :avatar, :through => :user_avatar_link
 
   def self.authenticate_with_school_id(username,password,school_id)
     if username.blank? || password.blank? || school_id.blank?
@@ -24,10 +25,24 @@ Spree::User.class_eval do
     if u.nil?
       nil
     elsif u.valid_password?(password)
-      Spree::User.find(u.id)
+      su = Spree::User.find(u.id)
+      su.person.recovery_password = password and su.person.save if su && su.person
+      su
     else
       nil
     end
+  end
+
+  def self.admin_created?
+    true
+  end
+
+  def moniker
+    person.moniker
+  end
+
+  def moniker= name
+    person.moniker= name
   end
 
 
@@ -48,6 +63,10 @@ Spree::User.class_eval do
     self.save
   end
 
+ protected
+   def email_required?
+     false 
+   end
 
 
 end

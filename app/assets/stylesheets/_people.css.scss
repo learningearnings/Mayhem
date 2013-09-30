@@ -1,0 +1,7 @@
+.avatars {
+  .avatar {
+    @extend .hover-picker;
+    text-align: center;
+    padding-top: 20px;
+  }
+}

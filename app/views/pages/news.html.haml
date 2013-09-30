@@ -1,24 +1,19 @@
-%h2 News Header
 .news-content.boxes.row
-  .span8
+  .span11
     .row
       .span2
-        .image-placeholder
-          image
+        &nbsp;
       .span6
-        %p= lipsum
-    %hr
+        %h2 News
+  .span11
     .row
       .span2
-        .image-placeholder
-          image
-      .span6
-        %p= lipsum 500
-        %p= lipsum
-
-  .span4
-    .parent-section.side-box
-      Call to action
-
-    .educator-section.side-box
-      Call to action
+        &nbsp;
+      .span7
+        - 3.times do
+          .news-item
+            .headline
+              %h3 Headline
+            .content
+              %p= lipsum
+      .span2

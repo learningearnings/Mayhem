@@ -1,0 +1,35 @@
+/* Twitter Bootstrap Default Style Overrides
+============================================= */
+
+/* Modals */
+
+.modal {
+  overflow: scroll-y;
+  max-height:90%;
+  padding: 2em;
+  border: solid 8px #8BC53E;
+}
+#checking-history-modal.modal {
+    width: 700px;
+    td.source, td.name, td.date,th.source, th.name, th.date {
+        width: 29%;
+    }
+    th.amount {
+        width: 10%;
+    }
+}
+
+.modal-body {
+  overflow: visible;
+}
+
+.modal-backdrop {
+  background-color: #312D68;
+  opacity: 0.8;
+}
+
+/* Pagination ul */
+
+.pagination ul {
+  min-width: 450px;
+}

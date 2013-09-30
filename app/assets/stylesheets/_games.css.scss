@@ -1,3 +1,5 @@
+@import 'animation';
+
 .games {
   margin-top: 2em;
   .game {
@@ -19,5 +21,82 @@
         background-color: $correct-background;
       }
     }
+  }
+}
+
+.foods {
+  .food {
+    @extend .hover-picker;
+  }
+}
+
+ul.student_list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  margin-bottom: 1em;
+  li {
+    border: 1px solid transparent;
+    background: #eee;
+    padding: .5em;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      background: #ddd;
+    }
+    &.active {
+      border-color: #333;
+    }
+    .avatar {
+    }
+    .name {
+    }
+  }
+}
+
+.games {
+  .game {
+    a.play-now {
+      margin-left: 2em;
+      font-size: 2em;
+    }
+  }
+}
+
+.row.games-footer {
+  .reward-highlights {
+    padding-top: 0;
+  }
+
+  .suggest-a-game {
+    margin-top: 2em;
+  }
+}
+
+@include keyframes(food-thrown){
+  0% {
+    @include transform(scale(1, 1) rotate(0deg));
+  }
+  50% {
+    @include transform(scale(3, 3) rotate(15deg));
+  }
+  100% {
+    @include transform(scale(3, 3) rotate(15deg) translateY(50px) translateX(20px));
+  }
+}
+
+.food-thrown{
+  margin-top: 10em;
+  margin-left: 5em;
+  img {
+    @include transform(scale(3, 3) rotate(15deg) translateY(50px) translateX(20px));
+    @include animation(food-thrown 2s);
+  }
+}
+
+.food-thrown-wrapper{
+  p {
+    font-size: 1.5em;
   }
 }

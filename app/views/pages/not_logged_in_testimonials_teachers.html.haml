@@ -1,0 +1,44 @@
+.resp-bacon
+  = le_svg_tag("sir_bacon_francis.svg")
+  .bacon-text
+    = image_tag('sir_bacon_francis_arrow_flipped.png')
+    %div
+      %b "SIR BACON FRANCIS, PHD."
+      %p OFFICIAL MASCOT AND SPOKESPIG FOR LEARNINGEARNINGS.COM
+.resp-white-board
+  .upper
+    .upper-left
+    .upper-right
+  .content-area
+    .left-repeat
+    .testimonial
+      .testimonial-title
+        %p Teacher Testimonials
+      .testimonial-body
+        %p We're still loading Teacher Testimonials - check back in a couple of days
+    .right-repeat
+  .lower
+    .lower-left
+    %ul.how-nav
+      - numbers_to_words = ['Zero','One','Two','Three','Four','Five','Six']
+      - current_link = 1
+      - TestimonialPost.order('random()').limit(6).each do |p|
+        %li
+          = link_to numbers_to_words[current_link], "#", class: ["testimonial-link",numbers_to_words[current_link]] 
+          - current_link += 1
+          %span{:class => "posttitle hidden"}= p.title
+          %span{:class => "postbody hidden"}= p.body
+    .lower-right
+  .shadow
+    = image_tag("whiteboard/shadows.png")
+
+:coffeescript
+($ "document").ready = ->
+  ($ ".testimonial-link").each ->
+    ($ this).click ->
+      ($ this).siblings("span.posttitle").each ->
+        ($ ".testimonial-title").text(($ this).text())
+      ($ this).siblings("span.postbody").each ->
+        ($ ".testimonial-body").html(($ this).text())
+      return false
+  ($ ".One").click()

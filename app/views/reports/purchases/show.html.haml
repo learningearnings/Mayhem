@@ -1,30 +1,53 @@
-%h2 Purchases Report
+.main-content-wrapper
+  .primary-content-fw
+    %h2 Purchases Report
 
-.filters.well
-  = form_tag purchases_report_path, method: :get do
-    = label_tag :show_dates
-    = select_tag :date_filter, options_for_select(date_filter_options, params[:date_filter])
-    = label_tag :show_rewards
-    = select_tag :reward_status_filter, options_for_select(['Everything', 'Undelivered', 'Delivered'], params[:reward_status_filter])
-    = label_tag :show_teachers
-    = select_tag :teachers_filter, "<option value='everyone'>Everyone</option>".html_safe + options_from_collection_for_select(current_school.teachers + current_school.school_admins, :id, :name, params[:teachers_filter])
-    = submit_tag 'Go!'
+    = simple_form_for report.parameters,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+      .form-sections
+        .filter
+          %h4 Filter By
+          .filter-dates
+            = f.input :date_filter, :label => "Date Range", :collection => report.parameters.date_filter_options
+          .filter-rewards
+            = f.input :reward_status_filter,:label => "Show Rewards", :collection => report.parameters.reward_status_filter_options
+          .filter-teachers
+            = f.input :teachers_filter, :label => "Show Teachers", :collection => report.parameters.teachers_filter_options(current_school)
+        .sorting
+          %h4 Sort By
+          .sort-by
+            = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
+        = f.submit 'Run Report', :class => 'awesome-button'
 
-= form_tag DeliverRewardsCommand.new, method: :post do
-  %table.table.table-bordered.table-striped.solid-background
-    %thead
-      %tr
-        - report.header_strings.each do |header|
-          %th= header
-        %th Deliver
-    %tbody
-      - report.data_rows do |row|
-        %tr
-          - report.header_keys.each do |key|
-            %td= row.send(key)
-          %td
-            - unless row.delivery_status == 'delivered'
-              = check_box_tag "reward_deliveries[]", row.reward_delivery_id
-  - report.potential_filters.each do |filter_key|
-    = hidden_field_tag "filters[#{filter_key}]", params[filter_key]
-  = submit_tag 'Mark Rewards Delivered'
+    .report
+      %h3= report.filters_in_text
+
+      = form_tag DeliverRewardsCommand.new, method: :post do
+        %table.table.table-bordered.table-striped.solid-background
+          %thead
+            %tr
+              - enable_mark_button = false
+              - report.header_strings.each do |header|
+                %th= header
+              %th Refund
+              %th Deliver
+          %tbody
+            - report.data_rows do |row|
+              %tr
+                - report.header_keys.each do |key|
+                  %td= row.send(key)
+                %td
+                  - if row.delivery_status == 'pending'
+                    = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
+                %td
+                  - if row.delivery_status == 'pending'
+                    - enable_mark_button = true
+                    = check_box_tag "reward_deliveries[]", row.reward_delivery_id
+
+        = simple_fields_for report.parameters do |p|
+          = p.input :date_filter, :as => :hidden
+          = p.input :reward_status_filter, :as => :hidden
+          = p.input :teachers_filter, :as => :hidden
+          = p.input :sort_by, :as => :hidden
+
+        - if enable_mark_button
+          = submit_tag 'Mark Rewards Delivered', :class => "awesome-button"

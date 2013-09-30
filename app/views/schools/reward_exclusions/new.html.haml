@@ -1,0 +1,14 @@
+%h2 New Reward Exclusion
+
+%p Here are the products currently available in your store.  To add one to #{link_to "your list of exclusions", schools_reward_exclusions_path}, click the "add" button to the right of it.
+
+%table.table
+  %thead
+    %tr
+      %th Product
+      %th Action
+  %tbody
+    - @products.each do |product|
+      %tr
+        %td= product.name
+        %td= button_to "Add Exclusion", { action: "create", product_id: product.id }

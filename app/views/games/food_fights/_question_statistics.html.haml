@@ -1,5 +1,5 @@
 .question-statistics
-  %table
+  %table.table.table-bordered.table-striped.solid-background
     %thead
       %tr
         %th Right
@@ -8,3 +8,6 @@
       %tr
         %td= question_statistics.number_of_correct_answers
         %td= question_statistics.number_of_incorrect_answers
+
+  - if question_statistics.number_of_answers > 0
+    = image_tag(Gchart.pie title: 'Question Statistics', labels: ['Right', 'Wrong'], data: [question_statistics.number_of_correct_answers, question_statistics.number_of_incorrect_answers])

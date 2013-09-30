@@ -1,6 +1,11 @@
 module SharedSteps
   include Spinach::DSL
- 
+
+  Given 'the default filter exists' do
+    filter = Filter.create
+    Filter.stubs(:find).with(1).returns filter
+  end
+
   Given 'I am logged in as an admin' do
     visit 'http://1.lvh.me/'
     fill_in 'user_username', :with => @school_admin.user.username
@@ -9,14 +14,14 @@ module SharedSteps
   end
 
   Given 'I am logged in as a teacher' do
-    visit 'http://1.lvh.me/' 
+    visit 'http://1.lvh.me/'
     fill_in 'user_username', :with => @teacher.user.username
     fill_in 'user_password', :with => '123456'
     page.find(".login-button").click
   end
 
   Given 'I am logged in as a student' do
-    visit 'http://1.lvh.me/' 
+    visit 'http://1.lvh.me/'
     fill_in 'user_username', :with => @student1.user.username
     fill_in 'user_password', :with => '123456'
     page.find(".login-button").click
@@ -55,6 +60,10 @@ module SharedSteps
      visit 'http://1.lvh.me/bank'
    end
 
+   Given 'I am on the schools settings page' do
+     visit 'http://1.lvh.me/schools/settings'
+   end
+
    Given 'I am on the teachers bank page' do
      visit 'http://1.lvh.me/teachers/bank'
    end
@@ -67,20 +76,30 @@ module SharedSteps
      visit 'http://1.lvh.me/inbox'
    end
 
+   Given 'I am on the teacher messages page' do
+     visit 'http://1.lvh.me/inbox/teacher_messages'
+   end
+
    Then 'show me the page' do
      save_and_open_page
    end
- 
+
   Given 'I distribute printed bucks' do
     fill_in 'point1', :with => '1'
     fill_in 'point5', :with => '1'
     fill_in 'point10', :with => '1'
-    click_button 'Print Bucks'
+    click_button 'Print These Credits'
   end
 
   Given 'I distribute ebucks' do
     select @student1.name, :from => 'student_id'
-    fill_in 'points', :with => '1'
-    click_button 'Create eBucks'
+    fill_in 'points', :with => '16'
+    click_button 'Send These Credits'
+  end
+
+  Given 'I transfer credits to another teacher' do
+    fill_in 'transfer_points', :with => '16'
+    select @school_admin.name, :from => 'to_teacher_id'
+    click_button 'Transfer Credits'
   end
 end

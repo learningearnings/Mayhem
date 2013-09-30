@@ -1,19 +1,50 @@
-%h3= @classroom.name
-%table
+%h3= "Select Students to add to #{@classroom.name}"
+
+%p Please Note:
+
+%p You can only add students from your school.
+%p If you don't see your students you may need to first Add Students to My School.
+
+%table.table.table-bordered.table-striped.solid-background
   %thead
     %tr
-      %th Student Name
-      %th Remove
+      - if @classroom.students.present?
+        %th Student Name
+        %th Remove
   %tbody
     - @classroom.students.each do |student|
       %tr
-        %td= student.name
+        %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
         %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
 
 = form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
-  = select_tag :student_id, options_from_collection_for_select((current_school.students.all - @classroom.students), :id, :to_s)
+  = select_tag :student_id, options_from_collection_for_select((current_school.students.all - @classroom.students), :id, :to_s), :class => 'chzn-select'
   = hidden_field_tag :classroom_id, @classroom.id
-  = f.submit 'Add Student'
+  = f.submit 'Add Student', class: 'btn awesome-button'
 
+%a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
+%div{:class => "accordion-body collapse", :id => "new-student"}
+  %h3 Create Student
+  = form_for :student, :url => '/create_classroom_student' do |f|
+    = hidden_field_tag :classroom_id, @classroom.id
+    .row
+      .span4
+        = f.label :first_name
+        = f.text_field :first_name
+        = f.label :last_name
+        = f.text_field :last_name
+        = f.label :username
+        = f.text_field :username
+      .span4
+        = f.label :grade
+        = f.select :grade, School::GRADES
+        = f.label :moniker
+        = f.text_field :moniker
+        = f.label :password
+        = f.text_field :password
 
+    = f.submit 'Save', class: 'btn awesome-button'
+
+:javascript
+  $(".chzn-select").chosen();

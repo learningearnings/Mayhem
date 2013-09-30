@@ -3,12 +3,12 @@ class StudentBank < Spinach::FeatureSteps
   include ActionView::Helpers::UrlHelper
 
   Then 'the teacher unredeemed account should be deducted' do
-    @teacher.main_account(@school).balance == BigDecimal.new('9984.00')
-    @teacher.unredeemed_account(@school).balance == BigDecimal.new('16.00')
+    @teacher.main_account(@school).balance.must_equal BigDecimal.new('9984.00')
+    @teacher.unredeemed_account(@school).balance.must_equal BigDecimal.new('16.00')
   end
 
   Then 'the student account should receive bucks' do 
-    @student1.checking_account.balance == BigDecimal.new('5.00')
+    @student1.checking_account.balance.must_equal BigDecimal.new('5.00')
   end
 
   Then 'I enter the code' do
@@ -18,7 +18,7 @@ class StudentBank < Spinach::FeatureSteps
 
   Given 'I have a printed buck\'s code' do
     bank = Bank.new
-    bank.create_print_bucks(@teacher, @school, 'AL', { ones: 1, fives: 0, tens: 0 })
+    bank.create_print_bucks(@teacher, @school, 'AL', { ones: 0, fives: 1, tens: 0 })
     @code = OtuCode.last.code
   end
 
@@ -27,8 +27,7 @@ class StudentBank < Spinach::FeatureSteps
     bank.create_ebucks(@teacher, @school, @student1, 'AL', 5)
   end
 
-  Given 'I click on a buck message' do
-    click_link 'Read Message'
+  Given 'I claim bucks from a buck message' do
     click_link 'Claim Bucks'
   end
 end

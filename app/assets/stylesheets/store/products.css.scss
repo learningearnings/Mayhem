@@ -1,5 +1,4 @@
 .product-tile {
-    min-height: 140px;
     font-size: 1.2em;
     float: left;
     margin-bottom: 10px;
@@ -7,6 +6,10 @@
     @extend .span3 !optional;
     @extend .thumbnail !optional;
     background-color: white;
+    padding: 1em;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;    
 }
 
 .product-image {
@@ -18,6 +21,7 @@
 .product-details {
   display: inline-block;
   max-width: 140px;
+  line-height: 18px;
 }
 
 a.info {
@@ -30,4 +34,23 @@ table#product-properties{
   @extend .table-striped !optional;
   @extend .table-bordered !optional;
   @extend .solid-background !optional;
+}
+
+.homepage_sidebar_navigation {
+  background-color: white;
+  padding: 1em;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;    
+}
+
+ul.filter_choices{
+  margin-left: 0px;
+  list-style-type: none;
+  input{
+    display: inline-block;
+  }
+  label{
+    display: inline-block;
+  }
 }

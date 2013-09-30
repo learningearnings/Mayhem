@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120915152936) do
+ActiveRecord::Schema.define(:version => 20130925212806) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -47,10 +47,53 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
   add_index "addresses", ["addressable_type"], :name => "index_addresses_on_addressable_type"
   add_index "addresses", ["type"], :name => "index_addresses_on_type"
 
+  create_table "auction_bids", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "auction_id"
+    t.decimal  "amount",     :precision => 10, :scale => 2
+    t.string   "status"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  create_table "auction_school_links", :force => true do |t|
+    t.integer  "auction_id"
+    t.integer  "school_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auction_state_links", :force => true do |t|
+    t.integer  "auction_id"
+    t.integer  "state_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auction_zip_codes", :force => true do |t|
+    t.integer  "auction_id"
+    t.string   "zip_code"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "auctions", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.decimal  "current_bid",     :precision => 10, :scale => 2
+    t.integer  "product_id"
+    t.string   "auction_type"
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.decimal  "starting_bid",    :precision => 10, :scale => 2
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.boolean  "created_locally"
+  end
+
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"
-    t.string   "image"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
@@ -97,9 +140,12 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
   create_table "classrooms", :force => true do |t|
     t.string   "name"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.integer  "school_id"
+    t.integer  "legacy_classroom_id"
+    t.integer  "processed"
+    t.string   "sti_uuid"
   end
 
   create_table "codes", :force => true do |t|
@@ -118,6 +164,33 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "food_fight_matches", :force => true do |t|
+    t.boolean  "active"
+    t.integer  "players_turn"
+    t.integer  "initiated_by"
+    t.boolean  "food_thrown",         :default => false
+    t.integer  "food_person_link_id"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
+
+  create_table "food_fight_players", :force => true do |t|
+    t.integer  "food_fight_match_id"
+    t.integer  "person_id"
+    t.integer  "score",               :default => 0
+    t.integer  "questions_answered",  :default => 0
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  create_table "food_person_links", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "thrown_by_id"
+    t.integer  "food_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
   create_table "food_school_links", :force => true do |t|
     t.integer  "food_id"
     t.integer  "school_id"
@@ -128,9 +201,9 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
 
   create_table "foods", :force => true do |t|
     t.string   "name"
-    t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "image_uid"
   end
 
   create_table "games_answers", :force => true do |t|
@@ -180,6 +253,7 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.integer  "elapsed_time"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.integer  "school_id"
   end
 
   create_table "games_question_answers", :force => true do |t|
@@ -218,6 +292,25 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.string  "game_type"
   end
 
+  create_table "interactions", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "page"
+    t.inet     "ip_address"
+    t.date     "date"
+    t.integer  "elapsed_milliseconds"
+    t.integer  "memory_usage_kb"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  create_table "local_reward_categories", :force => true do |t|
+    t.string   "name"
+    t.string   "image_uid"
+    t.integer  "filter_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "locker_sticker_links", :force => true do |t|
     t.integer  "locker_id"
     t.integer  "sticker_id"
@@ -231,6 +324,13 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.integer  "person_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "message_code_links", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "otu_code_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "message_image_links", :force => true do |t|
@@ -259,6 +359,16 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
 
   add_index "messages", ["category"], :name => "index_messages_on_category"
 
+  create_table "monikers", :force => true do |t|
+    t.string   "state"
+    t.string   "moniker"
+    t.datetime "approved_at"
+    t.integer  "actioned_by_id"
+    t.integer  "person_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "otu_codes", :force => true do |t|
     t.string   "code"
     t.integer  "person_school_link_id"
@@ -285,21 +395,47 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
+    t.string   "salutation",             :limit => 10
+    t.string   "recovery_password"
+    t.boolean  "can_distribute_credits"
+    t.boolean  "can_deliver_rewards"
+    t.string   "sti_uuid"
   end
 
+  add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
 
-  create_table "person_buck_batch_links", :force => true do |t|
+  create_table "person_account_links", :force => true do |t|
+    t.integer  "person_school_link_id"
+    t.integer  "plutus_account_id"
+    t.boolean  "is_main_account"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "person_account_links", ["person_school_link_id", "plutus_account_id"], :name => "index_pal_psl_account"
+  add_index "person_account_links", ["plutus_account_id"], :name => "idx_pal_plutus_account_id"
+
+  create_table "person_avatar_links", :force => true do |t|
     t.integer  "person_id"
+    t.integer  "avatar_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "person_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
+
+  create_table "person_buck_batch_links", :force => true do |t|
     t.integer  "buck_batch_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+    t.integer  "person_school_link_id"
   end
 
   create_table "person_class_filter_links", :force => true do |t|
@@ -320,6 +456,8 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.datetime "updated_at",            :null => false
   end
 
+  add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
+
   create_table "person_school_links", :force => true do |t|
     t.integer  "person_id"
     t.integer  "school_id"
@@ -327,6 +465,9 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
+  add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
@@ -359,6 +500,21 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
 
   add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
 
+  create_table "poll_choices", :force => true do |t|
+    t.string   "choice"
+    t.integer  "poll_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "polls", :force => true do |t|
+    t.string   "title"
+    t.string   "question"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.boolean  "active"
+  end
+
   create_table "posts", :force => true do |t|
     t.string   "title"
     t.text     "body"
@@ -380,6 +536,17 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "reward_distributors", :force => true do |t|
+    t.integer  "person_school_link_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  create_table "reward_exclusions", :force => true do |t|
+    t.integer "school_id"
+    t.integer "product_id"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -388,6 +555,13 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
   end
 
   add_index "school_filter_links", ["filter_id", "school_id"], :name => "index_school_filter_links_on_filter_id_and_school_id", :unique => true
+
+  create_table "school_product_links", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "schools", :force => true do |t|
     t.string   "name"
@@ -407,6 +581,14 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.integer  "ad_profile"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.string   "store_subdomain"
+    t.integer  "legacy_school_id"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.integer  "state_id"
+    t.string   "zip"
+    t.string   "sti_uuid"
   end
 
   create_table "spree_activators", :force => true do |t|
@@ -505,7 +687,7 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.integer "numcode"
   end
 
-  create_table "spree_creditcards", :force => true do |t|
+  create_table "spree_credit_cards", :force => true do |t|
     t.string   "month"
     t.string   "year"
     t.string   "cc_type"
@@ -612,7 +794,6 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.decimal  "total",                              :precision => 8, :scale => 2, :default => 0.0, :null => false
     t.string   "state"
     t.decimal  "adjustment_total",                   :precision => 8, :scale => 2, :default => 0.0, :null => false
-    t.decimal  "credit_total",                       :precision => 8, :scale => 2, :default => 0.0, :null => false
     t.integer  "user_id"
     t.datetime "created_at",                                                                        :null => false
     t.datetime "updated_at",                                                                        :null => false
@@ -626,6 +807,7 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.string   "email"
     t.text     "special_instructions"
     t.integer  "store_id"
+    t.integer  "school_id"
   end
 
   add_index "spree_orders", ["number"], :name => "index_orders_on_number"
@@ -691,6 +873,13 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.datetime "updated_at",     :null => false
   end
 
+  create_table "spree_product_person_links", :force => true do |t|
+    t.integer  "product_id"
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "spree_product_properties", :force => true do |t|
     t.string   "value"
     t.integer  "product_id"
@@ -702,7 +891,7 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
   add_index "spree_product_properties", ["product_id"], :name => "index_product_properties_on_product_id"
 
   create_table "spree_products", :force => true do |t|
-    t.string   "name",                 :default => "", :null => false
+    t.string   "name",                 :default => "",    :null => false
     t.text     "description"
     t.datetime "available_on"
     t.datetime "deleted_at"
@@ -711,9 +900,15 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.string   "meta_keywords"
     t.integer  "tax_category_id"
     t.integer  "shipping_category_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
-    t.integer  "count_on_hand",        :default => 0,  :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "count_on_hand",        :default => 0,     :null => false
+    t.string   "svg_file_name"
+    t.string   "fulfillment_type"
+    t.string   "purchased_by"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.boolean  "visible_to_all",       :default => false
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -975,8 +1170,9 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.string   "username"
   end
 
-  add_index "spree_users", ["email"], :name => "email_idx_unique", :unique => true
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
+  add_index "spree_users", ["person_id"], :name => "su_person_id", :unique => true
+  add_index "spree_users", ["username"], :name => "su_username"
 
   create_table "spree_variants", :force => true do |t|
     t.string   "sku",                                         :default => "",    :null => false
@@ -1021,6 +1217,13 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
 
   add_index "state_filter_links", ["filter_id", "state_id"], :name => "index_state_filter_links_on_filter_id_and_state_id", :unique => true
 
+  create_table "state_product_links", :force => true do |t|
+    t.integer  "state_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
   create_table "states", :force => true do |t|
     t.string   "name"
     t.string   "abbr"
@@ -1034,14 +1237,26 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "user_avatar_links", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "avatar_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+  create_table "uploaded_users", :force => true do |t|
+    t.string   "batch_name"
+    t.text     "original_data"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "username"
+    t.string   "email"
+    t.integer  "grade"
+    t.string   "password"
+    t.string   "type"
+    t.text     "message"
+    t.integer  "school_id"
+    t.integer  "created_by_id"
+    t.integer  "approved_by_id"
+    t.integer  "person_id"
+    t.string   "state"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.string   "gender"
   end
-
-  add_index "user_avatar_links", ["created_at"], :name => "index_user_avatar_links_on_created_at"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -1063,5 +1278,13 @@ ActiveRecord::Schema.define(:version => 20120915152936) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "votes", :force => true do |t|
+    t.integer  "poll_choice_id"
+    t.integer  "person_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "poll_id"
+  end
 
 end

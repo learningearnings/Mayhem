@@ -1,7 +1,7 @@
 Project Mayhem
 =====
 
-Ruby On Rails reimplementation of LearningEarnings.com
+Ruby on Rails reimplementation of LearningEarnings.com.
 
 ### Multi-Domain Spree **** IMPORTANT ****
 
@@ -11,7 +11,7 @@ Currently, we're using the schools id as the domain, so the domain would be (for
     1.localhost:3000
 
 This requires that you put 1.localhost in your hosts file.   If your on the Interwebs, then you can use
-the domain lvh.me (local virtual host - resolves to 127.0.0.1) which has a subdomain wildcard so *.lvh.me
+the domain lvh.me (local virtual host - resolves to 127.0.0.1) which has a subdomain wildcard so `*.lvh.me`
 resolves to 127.0.0.1
 
 Everything might not be working right, but development from here on should use the below url:
@@ -20,12 +20,28 @@ Everything might not be working right, but development from here on should use t
 
 The app now will try to redirect you to 1.lvh.me:3000 if you come in without a subdomain.
 
+### New Spree and custom Order flow
+ * Upgraded to Spree 1.2.0
+ * Upgraded to spree-multi-domain master fork of learningearnings (needed a patch)
+ * Order flow is as follows
+   * cart
+   * transmitted (Sent to LE for fulfillment)  (only global and wholesale purchases stop here)
+   * printed (Printed by LE for fulfillment) (user can't edit the order at this point)
+   * completed
+   * shipped
+   * refunded
+
+
 ### Development
 Fork, then clone the repository to your development environment
 
     gem install bundler
     bundle install
     rake db:drop db:create:all db:migrate db:test:clone test
+
+To start the Rails server
+
+    bundle exec rails server
 
 Run guard to run the tests as you develop:
 
@@ -48,6 +64,13 @@ To load up sample spree products, also run:
 
 Or, to load up some sample Learning Earnings products, do:
     rake db:load_dir[samples]
+
+### Login Seed Info
+    leadmin = username: 'leadmin', password: 'spree123'
+    teacher = username: 'user 1', password: 'spree123'
+    school_admin = username: 'schooladmin', password: 'spree123'
+    student1 = username: 'student1', password: 'spree123'
+    student2 = username: 'student2', password: 'spree123'
 
 ### Binary Dependencies
 Below are a list of binary dependencies that the project uses:
@@ -104,7 +127,7 @@ Plutus is a General Ledger / Accounting engine that Isotope11 has contributed to
 Right now, you can hit /plutus (as anyone) to view the chart of accounts, balances, and transactions.  This is basic reporting provided out of the box by plutus, and can be useful.  We must lock this down before going into production
 
 #### Account Names
-* MAIN_ACCOUNT(Liability)
+* MAIN\_ACCOUNT(Liability)
   LE
 * SCHOOL1 MAIN(Asset)
 * SCHOOL1 CREDIT(Asset)
@@ -136,3 +159,11 @@ _with migrations:_
 _roll it back:_
 
     cap staging deploy:rollback
+
+### Rack Bug
+To use rack-bug, first visit this page in your browser and drag the link from
+the page content into your bookmarks toolbar:
+
+    http://RAILS_APP/__rack_bug__/bookmarklet.html
+
+Then visit the site in dev mode and click the bookmarklet.  Use the password: "Seriouslythoughthisisadebugkey"

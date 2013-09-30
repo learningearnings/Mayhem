@@ -1,0 +1,23 @@
+.full-content
+  %h2 Your Profile
+
+  .row
+    .span2
+      .avatar= image_tag(@person.avatar.image.url) if @person.avatar
+    .span3
+      %dl.details
+        %dt Name
+        %dd= @person.first_name + @person.last_name
+        %dt Username
+        %dd= @person.user.username
+        %dt Email
+        %dd= @person.user.email
+    .span3
+      %dl.details
+        %dt Moniker
+        %dd= @person.moniker
+        %dt School
+        %dd= @person.school.name
+
+      .link
+        = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'

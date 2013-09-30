@@ -1,4 +1,3 @@
-# This will guess the User class
 FactoryGirl.define do
   factory :person do
     first_name "Testy"
@@ -35,8 +34,18 @@ FactoryGirl.define do
     school
   end
 
+  factory :moniker do
+    sequence(:moniker) { |n| "moniker#{n}" }
+    user
+  end
+
   factory :student_school_link, class: PersonSchoolLink do
     association :person, factory: :student
+    school
+  end
+
+  factory :teacher_school_link, class: PersonSchoolLink do
+    association :person, factory: :teacher
     school
   end
 
@@ -77,7 +86,7 @@ FactoryGirl.define do
   factory :reward_delivery do
     association :from, factory: :person
     association :to,   factory: :person
-    association :reward, factory: :spree_product
+    reward_id  101
     status "pending"
     factory :pending_reward_delivery do
       status "pending"
@@ -92,18 +101,21 @@ FactoryGirl.define do
     available_on "2012-01-01"
     permalink "some-product"
     count_on_hand 20
-    price BigDecimal('10')
+    price 10
+  end
+
+  factory :spree_line_item, class: Spree::LineItem do
+    name "Some Product"
+    available_on "2012-01-01"
+    permalink "some-product"
+    count_on_hand 20
+    price 10
   end
 
   factory :spree_store, class: Spree::Store do
     name  "Test Store"
     code  "123"
     email "foo@example.com"
-  end
-
-  factory :state do
-    name {|n| "State #{n}" }
-    abbr {|n| "S#{n}" }
   end
 
   factory :school do
@@ -118,9 +130,15 @@ FactoryGirl.define do
     status "active"
     logo_name "Logo"
     logo_uid "2323"
-    timezone "Central"
+    timezone "Central Time (US & Canada)"
     gmt_offset "6.0"
     distribution_model "Delivery"
+#    address
+    address1 "123 Foo Street"
+    address2 "Unit 2"
+    city "Birmingham"
+    state_id 1
+    zip "35111"
     ad_profile 1
   end
 
@@ -133,7 +151,8 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
-    association :addressable
+    state_id 1
+    #association :addressable
   end
 
   factory :spree_user, class: Spree::User do
@@ -141,7 +160,7 @@ FactoryGirl.define do
     sequence(:username) {|n| "foo#{n}"}
     password "123456"
     password_confirmation "123456"
-#    person
+    #person
   end
 
   factory :question, class: Games::Question do
@@ -167,7 +186,16 @@ FactoryGirl.define do
 
   factory :sticker do
     image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+#    image { open('http://learningearnings.com/images/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif') }
   end
+
+  factory :avatar do
+#    image { open('http://learningearnings.com/images/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif') }
+    image { Rails.root.join("public/avatars/football/college/Alabama_Crimson_Tide_Roll_Tide.gif") }
+    sequence(:description) {|n| "Avatar Description - #{n}"}
+    sequence(:image_name) {|n| "Avatar image_name #{n}"}
+  end
+
 
   factory :locker_sticker_link do
     locker
@@ -186,5 +214,18 @@ FactoryGirl.define do
     student
     points          BigDecimal("5")
     expires_at      Time.now + 5.days
+  end
+
+  factory :auction do
+    start_date Time.now - 1.days
+    end_date   Time.now + 7.days
+    association :product, factory: :spree_product
+    auction_type "traditional"
+  end
+
+  factory :auction_bid do
+    auction
+    person
+    amount BigDecimal('1')
   end
 end

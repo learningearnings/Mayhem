@@ -1,25 +1,49 @@
 %h2= @school.name
 
-%h4 Teachers
 %table
   %thead
     %tr
-      %th Teacher Name
+      %th Store Subdomain
   %tbody
-    - @school.teachers.each do |teacher|
-      %tr
-        %td= link_to teacher.name, admin_teacher_path(teacher)
-
-%h4 Students
+    %tr
+      %td
+        =@school.store_subdomain
 %table
   %thead
     %tr
-      %th Student Name
+      %th
+        ="School Admins (#{admin_count})"
   %tbody
-    - @school.students.each do |student|
-      %tr
-        %td= link_to student.name, admin_student_path(student)
-
+    %table
+      %thead
+        - admin_rows.each do |row|
+          %tr
+            - row.each do |school_admin|
+              %td= link_to school_admin.name, admin_school_admin_path(school_admin)
+%table
+  %thead
+    %tr
+      %th
+        ="Teachers (#{teacher_count})"
+  %tbody
+    %table
+      %thead
+        - teacher_rows.each do |row|
+          %tr
+            - row.each do |teacher|
+              %td= link_to teacher.name, admin_teacher_path(teacher)
+%table
+  %thead
+    %tr
+      %th
+        ="Students (#{student_count})"
+  %tbody
+    %table
+      %thead
+        - student_rows.each do |row|
+          %tr
+            - row.each do |student|
+              %td= link_to "#{student.name} (#{student.user.username})", admin_student_path(student), :title => "#{student.gender} - #{School::GRADE_NAMES[student.grade]}"
 %h4 Accounts
 %table
   %thead
@@ -31,8 +55,5 @@
       %td= link_to @school.main_account.name
       %td= @school.main_account.balance
     %tr
-      %td= link_to @school.credit_account.name
-      %td= @school.credit_account.balance
- 
-
-
+      %td= link_to @school.store_account.name
+      %td= @school.store_account.balance

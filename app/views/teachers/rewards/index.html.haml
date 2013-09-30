@@ -1,0 +1,19 @@
+.main-content-wrapper
+  .full-content
+    %h1.span5.pull-left
+      Your Rewards
+    = paginate @teachers_rewards, :window => 2
+    = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
+    .resp-product
+      .resp-product-row
+        - if @teachers_rewards.any?
+          - @teachers_rewards.in_groups_of(2) do |grp|
+            - grp.each do |tr|
+              - next if tr.nil?
+              = render :partial => 'line_item', :locals => { :product => tr }
+        - else
+          %p
+            You haven't created any local rewards.   Click the button above to add some!
+    - if @teachers_rewards.count > 3
+      = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
+

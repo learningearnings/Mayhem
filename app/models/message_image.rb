@@ -1,4 +1,5 @@
 class MessageImage < ActiveRecord::Base
+  paginates_per 16
   image_accessor :image
   attr_accessible :image_uid
 

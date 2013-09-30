@@ -1,0 +1,20 @@
+.main-content-wrapper
+
+  .primary-content
+    %h2 Lounge
+    .tips-container
+      .tip
+        - tips.each do |post|
+          .tip-post
+            .tip-title
+              %h4= post.title
+              = post.body.html_safe
+  .secondary-content
+    .testimonials-container
+      %h3 Testimonials
+      .testimonial-postss
+        - testimonials.each do |post|
+          .testimonial-post.row
+            .span3
+              %h4= post.title
+              = post.body.html_safe

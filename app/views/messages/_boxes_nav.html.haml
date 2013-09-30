@@ -1,0 +1,15 @@
+.boxes-nav-container
+  %h3 Messages:
+  %hr
+  %ul.nav-group
+    %li= inbox_link_for("Friend Messages", @received_messages.from_friend, friend_messages_path, 'friend-message')
+    %li= inbox_link_for("Games Messages", @received_messages.from_food_fight, food_fight_messages_path, 'food_fight-message')
+    %li= inbox_link_for("School Messages", @received_messages.from_school, school_messages_path, 'school-message')
+    %li= inbox_link_for("Teacher Messages", @received_messages.from_teacher, teacher_messages_path, 'teacher-message')
+    %li= inbox_link_for("System Messages", @received_messages.from_system, system_messages_path, 'system-message')
+    %li= link_to 'Send Admin a Message', leadmin_message_path, :class => 'admin-message'
+    %br
+
+  %h3 Send a Message:
+  %hr 
+  = link_to "Send a Message", new_message_path, class: 'btn awesome-button', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'

@@ -35,6 +35,13 @@ module Spree
     end
 
     def void(response_code, credit_card, options = {})
+      order = Spree::Order.find_by_number(credit_card[:order_id])
+      person = order.user.person
+      refund_amount = order.amount
+      product = order.products.first
+      order.refund
+      # apply plutus refund
+      CreditManager.new.transfer_credits_for_reward_refund(person, refund_amount, product)
       ActiveMerchant::Billing::Response.new(true, 'LE Gateway: Forced success', {}, :test => test?, :authorization => '12345')
     end
 
@@ -54,16 +61,16 @@ module Spree
     def charge_account(money, credit_card, options)
       cm = CreditManager.new
       o = Spree::Order.find_by_number(options[:order_id])
-      if o.store == Spree::Store.find_by_name("le")
-        # TODO change this to school session variable
-        # NOTE: Nope, a model shouldn't know about a session -ja
-        school = AccountPersonMapper.new(credit_card.number).find_school
-        cm.transfer_store_credits_for_wholesale_purchase(school, money/BigDecimal('100.0'))
-      else
+      if o.products.first.person.is_a?(Teacher) # purchasing a local product as a student
         # TODO: This needs to bubble up any errors that it can
         person = AccountPersonMapper.new(credit_card.number).find_person
-        cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'))
+        transaction = cm.transfer_credits_for_local_purchase(person, o.products.first.person, money/BigDecimal('100.0'),o.products.first)
+      else # purchasing a product from a school store as a student
+        # TODO: This needs to bubble up any errors that it can
+        person = AccountPersonMapper.new(credit_card.number).find_person
+        transaction = cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'),o.products.first)
       end
+      transaction
     end
   end
 end

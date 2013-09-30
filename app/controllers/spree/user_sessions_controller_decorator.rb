@@ -1,22 +1,14 @@
 Spree::UserSessionsController.class_eval do
   def create
     authenticate_user!
+    session[:last_school_id] = params[:user]["school_id"]
+    session[:current_school_id] = params[:user]["school_id"]
 
     if user_signed_in?
       respond_to do |format|
         format.html {
           flash.notice = t(:logged_in_succesfully)
-          if current_user.person && current_user.person.is_a?(Student)
-            redirect_to '/'
-          elsif current_user.person && current_user.person.is_a?(Teacher)
-            redirect_to '/'
-         elsif current_user.person && current_user.person.is_a?(SchoolAdmin)
-            redirect_to '/'
-          elsif current_user.person && current_user.person.is_a?(LeAdmin)
-            redirect_to  "/admin/le_admin_dashboard"
-          elsif !current_user.person
-            redirect_to '/store/admin'
-          end
+          redirect_to main_app.home_path
         }
         format.js {
           user = resource.record
@@ -24,8 +16,13 @@ Spree::UserSessionsController.class_eval do
         }
       end
     else
-      flash.now[:error] = t('devise.failure.invalid')
-      render :new
+      flash[:error] = "Wrong Username, Password and School combination.  Please make sure you have all 3 credentials correct and try again."
+      redirect_to main_app.page_path('home')
+#      render :new
     end
   end
+ 
+  def new
+    redirect_to main_app.page_path('home')
+  end 
 end

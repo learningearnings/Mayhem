@@ -1,36 +1,51 @@
 class MessagesController < LoggedInController
   layout :layout
+  before_filter :get_received_messages
 
   def index
-    @received_messages = current_person.received_messages
+    redirect_to friend_messages_path
   end
 
   def friend_messages
-    @received_messages = current_person.received_messages
-    @messages = @received_messages.from_friend
+    @messages = @received_messages.from_friend.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def school_messages
-    @received_messages = current_person.received_messages
-    @messages = @received_messages.from_school
+    @messages = @received_messages.from_school.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def teacher_messages
-    @received_messages = current_person.received_messages
-    @messages = @received_messages.from_teacher
+    @messages = @received_messages.from_teacher.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def system_messages
-    @received_messages = current_person.received_messages
-    @messages = @received_messages.from_system
+    @messages = @received_messages.from_system.page params[:page]
+    @messages.map{|x| x.read!}
+  end
+
+  def food_fight_messages
+    @messages = @received_messages.from_food_fight.page params[:page]
+    @messages.map{|x| x.read!}
   end
 
   def reply
-    params[:to_ids] = []
-    params[:to_ids] << params[:to_id]
-    @message = StudentMessageStudentCommand.new
     @old_message = Message.find(params[:message_id])
-    @message_images = MessageImage.first(10)
+    @message = StudentMessageStudentCommand.new
+    @message.to_ids = []
+    @message.to_ids << @old_message.from_id
+    @message_images = MessageImage.page params[:page]
+  end
+
+  def admin_message
+    if current_person.type == "Teacher"
+      @message = TeacherMessageAdminCommand.new
+    else
+      @message = StudentMessageAdminCommand.new
+    end
+    @message.subject = params[:subject]
   end
 
   def show
@@ -41,7 +56,12 @@ class MessagesController < LoggedInController
   def new
     @message = StudentMessageStudentCommand.new
     @grademates = current_person.grademates
-    @message_images = MessageImage.first(10)
+    @message_images = MessageImage.page params[:page]
+  end
+
+  def get_image_results
+    @message_images = MessageImage.page params[:page]
+    render partial: '/messages/images'
   end
 
   protected
@@ -52,5 +72,9 @@ class MessagesController < LoggedInController
     else
       return 'application'
     end
+  end
+
+  def get_received_messages
+    @received_messages = current_person.received_messages.not_hidden.order("created_at DESC")
   end
 end

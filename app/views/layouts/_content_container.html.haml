@@ -3,8 +3,8 @@
   - if respond_to? :breadcrumbs
     = breadcrumbs(@taxon)
 - if (sidebar = yield :sidebar).empty?
-  .span12.content-section= yield
-  
+  .content-940= yield
+
 - else
   .span3= sidebar
-  .span9.content-section= yield
+  .span9= yield

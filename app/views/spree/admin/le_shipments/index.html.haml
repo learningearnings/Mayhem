@@ -1,0 +1,26 @@
+%h1 Shipping
+%table.table.table-bordered.table-striped
+  %tr
+    %th Order Number
+    %th Order Status
+    %th School
+    %th Item Count
+    %th Items
+    %th.currency Total
+    %th Actions
+  - @shipments.each do |order|
+    %tr
+      %td.order-number= link_to order.number, admin_order_path(order)
+      %td= order.state
+      %td= order.ship_address.company rescue School.find(YAML.load(order.special_instructions)[:school_id]).name
+      %td= order.item_count
+      %td= order.line_items.collect do |li| li.product.name end.uniq.join(', ')
+      %td= order.total
+      %td
+        .btn-group
+          = link_to "Print", admin_le_print_order_path(order) , :class => "btn print"
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = link_to "Edit", edit_admin_order_path(order) , :class => "btn edit"
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          = link_to "Ship", admin_le_ship_order_path(order) , :class => "btn ship"
+

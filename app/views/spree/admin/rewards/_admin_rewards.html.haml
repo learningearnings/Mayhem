@@ -1,0 +1,27 @@
+- if products.empty?
+  = t(:no_products_found)
+- if products.any?
+  - products.in_groups_of(4) do |pgroup|
+    - if pgroup
+      .row
+        %ul#products.inline.product-listing{"data-hook" => ""}
+          - pgroup.each do |product|
+            - if product
+              %li{:class => "product-tile #{product.property('reward_type')}", "data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+                .product-image
+                  %div= link_to mini_image(product, :itemprop => "image"), product, :itemprop => 'url'
+                  %div= link_to '<i class="icon-trash"></i>Delete'.html_safe,admin_remove_reward_path(id: product.id), confirm: 'Are you sure?'
+                .badge=product.property('reward_type')
+                .product-details
+                  = link_to truncate("#{product.name}", :length => 30), edit_admin_reward_path(id: product.id), :class => 'info', :itemprop => "name", :title => product.name
+                  .price.selling{:itemprop => "price"}
+                    %strong= product.price
+                  .quantity{:itemprop => "on_hand", :class => "#{product.on_hand < 1 ? 'warning' : ''}"}= product.on_hand.to_s + " on hand"
+                  - if product.property("retail_price")
+                    %div
+                      Retail Price:
+                      %strong= product.property("retail_price")
+                    %div
+                      Retail Quantity:
+                      %strong= product.property("retail_quantity")
+                      \/per

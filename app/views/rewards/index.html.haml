@@ -10,13 +10,14 @@
     %th= t(:master_price)
     %th= "Classroom"
     %th= "Actions"
-  - @products.each do |product|
-    %tr
-      %td= image_tag product.thumb, :size => "100x100" , :itemprop => "image"
-      %td= product.try(:name)
-      %td= money(product.price) rescue ''
-      %td
-      %td
-        = link_to "Edit", edit_reward_path(id: product.id), :class => 'edit' unless product.deleted?
-        |
-        = link_to 'Delete', remove_reward_path(product: product.id), confirm: 'Are you sure?'
+  - unless @products.nil?
+    - @products.each do |product|
+      %tr
+        %td= image_tag product.thumb, :size => "100x100" , :itemprop => "image"
+        %td= product.try(:name)
+        %td= money(product.price) rescue ''
+        %td= product.filter.classrooms.collect do |c| c.name end.join(',')
+        %td
+          = link_to "Edit", edit_reward_path(id: product.id), :class => 'edit' unless product.deleted?
+          |
+          = link_to 'Delete', remove_reward_path(product: product.id), confirm: 'Are you sure?'

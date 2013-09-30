@@ -1,25 +1,20 @@
-.current-user-avatar.supplemental-part
-  - if current_user.avatar.present?
-    = image_tag current_user.avatar.image.thumb('135x135#').url
-.current-user.supplemental-part
+.current-person-avatar.supplemental-part
+  = avatar_for(current_person, '80x80#')
+.current-person.supplemental-part
   .credit-balance
-    %h4 Credit Balance
-    %table.table.table-bordered
+    %table.table
       %thead
-        %tr
-          %th Checking
-          %th Savings
+        %tr 
+          %th.cb-heading-primary{:colspan => "2"} Credit Balance
       %tbody
         %tr
-          %td= current_person.checking_balance
-          %td= current_person.savings_balance
+          %td.table-bordered-tl.cb-heading Checking
+          %td.table-bordered-tr.cb-value.currency= current_person.checking_balance
+        %tr
+          %td.table-bordered-bl.cb-heading Savings
+          %td.table-bordered-br.cb-value.currency= current_person.savings_balance
   .person-details
     %h3= current_person.full_name
     %ul.links
-      %li= link_to "Edit My Profile", spree.edit_user_path(current_user)
-      %li= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
-
-    %p
-      %strong
-        Messages:
-      = link_to current_person.received_messages.unread.count, main_app.inbox_path
+      %li= link_to "Edit My Profile", main_app.person_path(current_person)
+      %li= link_to 'Sign out', spree.get_destroy_user_session_path

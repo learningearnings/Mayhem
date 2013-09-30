@@ -1,9 +1,7 @@
 class BuckBatch < ActiveRecord::Base
-
-  attr_accessible :name
+  attr_accessible :name, :person_buck_batch_links
   has_many :otu_codes, :through => :buck_batch_links
   has_many :buck_batch_links
   has_many :people, :through => :person_buck_batch_links
   has_many :person_buck_batch_links
-
 end

@@ -7,43 +7,115 @@
     %ul
       - @product.errors.full_messages.each do |msg|
         %li= msg
+.row
+  %h3 Reward Properties
+  .span6
+    .control-group
+      = f.label :purchased_by, 'Purchased By', {:class => 'control-label'}
+      .pull-right
+        = f.select :purchased_by, options_for_select(@purchased_by, :selected => @product.purchased_by), :include_blank => @product.purchased_by.nil?, :class => 'input-medium'
+    .control-group
+      = f.label :fulfillment_type, 'Fulfillment Type', {:class => 'control-label'}
+      .pull-right
+        = f.select :fulfillment_type, options_for_select(@fulfillment_types, :selected => @product.fulfillment_type), :class => 'input-medium'
+    .control-group
+      = f.label :name, 'Name', {:class => 'control-label'}
+      .pull-right
+        = f.text_field :name, :class => 'input-large'
+    .control-group
+      = f.label :price, 'Credits', {:class => 'control-label'}
+      .input-prepend.pull-right
+        %span.add-on $
+        = f.text_field :price,{ :value => @product.price, :class => 'numeric input-small'}
+    .control-group#on_hand
+      = f.label :on_hand, 'Count on hand', {:class => 'control-label'}
+      .pull-right
+        = f.text_field :on_hand, {:class => 'numeric input-small'}
+    .control-group
+      = f.label :available_on, 'Available On', {:class => 'control-label'}
+      .pull-right
+        = f.text_field :available_on, :value => @product.available_on.in_time_zone(@current_school.timezone), :class => 'datepicker input-medium numeric'
 
-%fieldset
-  %legend
-    Product Details
-  .clearfix
-    = f.label 'Name'
-    .input= f.text_field :name
-  .clearfix
-    = f.label 'Description'
-    .input= f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth'}
-  .clearfix
-    = f.label 'Price'
-    .input= f.text_field :price, :value => number_to_currency(@product.price, :unit => '')
-  .clearfix
-    = f.label 'Count on hand'
-    .input= f.text_field :on_hand
-  .clearfix
-    = f.label 'Available on'
-    .input= f.text_field :available_on, :class => 'datepicker'
-  .clearfix
-    = f.fields_for :images do |i|
-      = i.label :image
-      = i.file_field :attachment_file_name
-  - unless @product.images.empty?
-    .clearfix
-      = f.label :current_image
-      = image_tag @product.thumb
-  .clearfix
-    = f.label 'Stores'
-    %br
-    - Spree::Store.all.each do |store|
-      = check_box_tag "product[store_ids][]", store.id, @product.stores.include?(store)
-      = store.name
-  .clearfix
-    = f.hidden_field :id, value: @product.id
+    .control-group
+      .row
+        = f.label :image, "Image", {:class => "control-label"}
+        .pull-right
+          - unless @product.images.empty?
+            = image_tag @product.thumb
+            = f.label :current_image
+      .row
+        .pull-right
+          = f.fields_for :images do |i|
+            = i.file_field :attachment
 
+    .control-group
+      = f.label :visible_to_all, 'Visible to All', {:class => 'control-label'}
+      .pull-right
+        = f.check_box :visible_to_all
 
-%p
-= button_to :submit
+    #svg
+      .control-group
+        = f.label :svg, "Charity SVG", {:class => 'control-label'}
+        .pull-right
+          = f.fields_for :svg do |i|
+            = i.file_field :svg_file_name
+            - if @product.svg_file_name
+              .control-group
+                = f.label :current_svg, "Current SVG", {:class => 'control-label'}
+                = @product.svg.to_s
+                .svg-container
+                  = le_svg_tag @product.svg, :style => "width: 100%; height: 100%;display: inline-block;" do
+                    = render :file => @product.svg.path, :formats => [:svg], :locals => {:name => "Student Name", :school_name => "School Name"}
+                = f.hidden_field :id, value: @product.id
+                = f.hidden_field :filter, :value => 1
+  .span6
+    .control-group
+      = f.label :categories, 'Categories', {:class => 'control-label'}
+      .pull-right
+        = f.select :taxons, options_from_collection_for_select(@categories, :id, :name, :selected => @product.taxons.map{|s| s.id} ), {}, {:multiple => true}
+    #grades
+      .control-group
+        = f.label :min_grade, "Minimum Grade", {:class => "control-label"}
+        .pull-right
+          = f.select :min_grade, options_for_select(@grades, :selected => @product.min_grade), :include_blank => @product.min_grade.nil?, :class => 'input-small'
+      .control-group
+        = f.label :max_grade, "Maximum Grade", {:class => "control-label"}
+        .pull-right
+          = f.select :max_grade, options_for_select(@grades, :selected => @product.max_grade), :include_blank => @product.max_grade.nil?, :class => 'input-small'
+    #states
+      .control-group
+        = f.label :states, "States", {:class => "control-label"}
+        .pull-right
+          = f.select :states, options_from_collection_for_select(State.all, :id, :name, :selected => @product.states.map{|s| s.id} ), {},  {:multiple => true}
+    #schools
+      .control-group
+        = f.label :schools, "Schools", {:class => "control-label"}
+        .pull-right
+          = f.select :schools, options_from_collection_for_select(School.all, :id, :name, :selected => @product.schools.map{|s| s.id} ), {}, {:multiple => true}
+    .control-group
+      = f.label :description, "Description", {:class => "control-label"}
+      .pull-right
+        = f.text_area :description, {:cols => 60, :rows => 4, :placeholder => "Description seen by Students" }
+
+.pull-right
+  %button{:type => "submit", :class => "btn btn-primary"} Save Changes
+
+:coffeescript
+($ document).ready ->
+  update_fields = ->
+    if ($ 'select#product_fulfillment_type option:selected').val() == "Shipped for School Inventory"
+      ($ '#grades').show()
+      ($ '#states,#schools,#svg').hide()
+    else if ($ 'select#product_fulfillment_type option:selected').val() == "Digitally Delivered Charity Certificate"
+      ($ '#grades,#states,#schools').hide()
+      ($ '#svg').show()
+    else if ($ 'select#product_fulfillment_type option:selected').val() == "School To Fulfill"
+      ($ '#svg,#grades,#states,#schools').hide()
+    else
+      ($ '#grades,#states,#schools').show()
+      ($ '#svg').hide()
+  $( '#svg,#grades,#states,#schools').hide()
+  update_fields()
+  ($ 'select#product_fulfillment_type').change ->
+    update_fields()
 

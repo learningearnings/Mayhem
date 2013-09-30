@@ -4,31 +4,53 @@
 module Spree::Search
 #  class Filter < defined?(Spree::Search::MultiDomain) ? Spree::Search::MultiDomain :  Spree::Core::Search::Base
   class Filter < Spree::Search::MultiDomain
-    def initialize(params)
-      super
-    end
+    attr_reader :current_school
 
     def retrieve_products
       @products_scope = get_base_scope
-      curr_page = page || 1
-      @products = @products_scope.includes([:master]).page(curr_page).per(per_page)
-      super
+      @products_scope.includes([:master])
+    end
+
+    def manage_pagination
+      false
     end
 
     protected
     def get_base_scope
-      base_scope = super
-      new_scope = base_scope.with_filter(@properties[:filters])
-      new_scope
+      # Copied from spree-multi-domain/lib/spree/search/multi_domain.rb
+      base_scope = @cached_product_group ? @cached_product_group.products.active : Spree::Product.active
+      # Leadmins get to see out of stock products
+      # don't use filters with LeAdmins
+
+      unless (@current_user && @current_user.person.is_a?(LeAdmin))
+        base_scope = base_scope.by_store(current_store) if current_store
+        base_scope = base_scope.in_taxon(taxon) unless taxon.blank?
+        base_scope = base_scope.not_excluded(current_school) if current_school
+
+        base_scope = get_products_conditions_for(base_scope, keywords) unless keywords.blank?
+        base_scope = base_scope.on_hand unless Spree::Config[:show_zero_stock_products]
+        #base_scope.with_filter(@filters)
+        base_scope = base_scope.not_shipped_for_school_inventory
+        base_scope = base_scope.above_min_grade(@current_person.grade).below_max_grade(@current_person.grade) if @current_person
+      else
+        base_scope = base_scope.by_store(Spree::Store.find_by_code('le'))
+      end
+      base_scope = add_search_scopes(base_scope)
+      base_scope
     end
-    def get_products_conditions_for(base_scope, query)
-      super
+
+    def current_store
+      current_school.store
     end
 
     def prepare(params)
-      @properties[:filters] = params[:filters] || [1]
+      @filters = params[:filters] || [1]
+      params[:filters] = nil
+      @properties[:filters] = nil
+      @current_user = params[:searcher_current_user]
+      @current_person = params[:searcher_current_person]
+      @current_school = params[:current_school]
       super
     end
-
   end
 end

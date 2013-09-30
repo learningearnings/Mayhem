@@ -1,0 +1,44 @@
+= semantic_form_for [:admin,@school] do |f|
+  - f.inputs "" do
+    = f.input :name
+    = f.input :min_grade, :as => :range, :input_html => {:min => 0, :max => 12}
+    = f.input :max_grade, :as => :range, :input_html => {:min => 0, :max => 12}
+    = f.input :school_phone
+    = f.input :address1
+    = f.input :address2
+    = f.input :city
+    = f.input :state_id, :as => :select, :collection => State.all
+    = f.input :zip
+    = f.input :logo, :as => :file
+    = f.input :store_subdomain, :input_html => {:disabled => true}
+    = f.input :mascot_name
+    = f.input :school_demo
+    = f.input :status, :as => :select, :collection => ['new','active','inactive']
+    = f.input :timezone, :as => :time_zone
+    = f.actions
+
+:coffeescript
+  jQuery ready = ->
+    grade_names = #{School::GRADE_NAMES.to_json}
+    ($ "#school_min_grade").after('&nbsp;&nbsp;<span id="school_min_grade_display">Hey Min</span>')
+    ($ "#school_max_grade").after('&nbsp;&nbsp;<span id="school_max_grade_display">Hey Max</span>')
+    process_grades = (changed_element = "") ->
+      min_display_element = $('#school_min_grade_display')
+      max_display_element = $('#school_max_grade_display')
+      min_element = $("#school_min_grade")
+      max_element = $("#school_max_grade")
+      min_value = parseInt min_element.val()
+      max_value = parseInt max_element.val()
+      if changed_element == 'school_min_grade' && max_value < min_value
+        max_value = min_value
+      else if changed_element == 'school_max_grade' && max_value < min_value
+        min_value = max_value
+
+      min_element.val min_value
+      max_element.val max_value
+      max_display_element.text grade_names[max_value]
+      min_display_element.text grade_names[min_value]
+
+    ($ '#school_max_grade, #school_min_grade').change ->  process_grades @id
+
+    process_grades ""

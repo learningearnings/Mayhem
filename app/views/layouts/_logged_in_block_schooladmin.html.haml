@@ -1,40 +1,22 @@
-.current-user-avatar.supplemental-part
-  - if current_user.avatar.present?
-    = image_tag current_user.avatar.image.thumb('175x175#').url
-.current-user.supplemental-part
+.current-person-avatar.supplemental-part
+  - if current_person.avatar.present?
+    = image_tag current_person.avatar.image.thumb('80x80#').url
+.current-person.supplemental-part
   .credit-balance
-    %h4 Credit Balance
-    %table.table.table-bordered
+    %table.table
       %thead
-        %tr
-          %th Credits
-          %th Unredeemed
-          %th Undeposited
+        %tr 
+          %th.cb-heading-primary{:colspan => "3"} Credit Balance
       %tbody
         %tr
-          - if current_person
-            %td= number_to_currency(current_user.person.main_account(current_person.schools.first).balance)
-            %td= number_to_currency(current_user.person.unredeemed_account(current_person.schools.first).balance)
-            %td= number_to_currency(current_user.person.undeposited_account(current_person.schools.first).balance)
-          - else
-            %td=number_to_currency(0.00)
-            %td=number_to_currency(0.00)
-    %table.table.table-bordered
-      %thead
+          %td.table-bordered-tl.cb-heading Credits
+          %td.table-bordered-tr.cb-value.currency= current_person.main_account(current_person.schools.first).balance
         %tr
-          %th{colspan: "3", align: 'center'} Store Credits
-      %tbody
-        %tr
-          - if current_person
-            %td{colspan: "3", align: 'center'}= number_to_currency(current_school.store_account.balance)
-          - else
-            %td{colspan: "3", align: 'center'}=number_to_currency(0.00)
+          %td.table-bordered-bl.cb-heading Store Credits
+          %td.table-bordered-br.cb-value.currency= current_school.store_account.balance
+
   .person-details
-    %h3= current_user.email
+    %h3= current_person.name
     %ul.links
-      %li= link_to "Edit My Profile", spree.edit_user_path(current_user)
-      %li= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
-    %p
-      %strong
-        Messages:
-      = link_to '2', main_app.page_path('logged_in_inbox')
+      %li= link_to "Edit My Profile", main_app.edit_person_path(current_person)
+      %li= link_to 'Sign out', spree.destroy_user_session_path

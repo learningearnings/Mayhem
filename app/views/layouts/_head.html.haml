@@ -1,7 +1,5 @@
-.span12.head
-  .logo
-    = link_to('', root_path, :class => "logo-link")
-  .login-or-join
+.logo
+  = link_to('', root_path, :class => "logo-link")
+.login-or-join
   = render 'layouts/login_or_join'
-  .custom-nav-bar
-    = render "layouts/navbar"
+= render "layouts/navbar"

@@ -4,7 +4,9 @@ module Teachers
 
     protected
     def redirect_unless_teacher
-      redirect_to(root_path, flash: { notice: "Only teachers can do that." }) unless current_person.is_a?(Teacher)
+      unless current_person.is_a?(Teacher) || current_person.is_a?(SchoolAdmin)
+        redirect_to(root_path, flash: { notice: "Only teachers can do that." })
+      end
     end
   end
 end

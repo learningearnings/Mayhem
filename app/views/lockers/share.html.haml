@@ -1,0 +1,8 @@
+%h3 Share your locker with your friends
+= form_for @message do |f|
+  .row
+    .span3
+      .select-recipient
+        %strong Select Who To Share It With
+        = f.select :to_ids, options_from_collection_for_select(@grademates, :id, :name), { }, { multiple: true }
+  = f.submit "Share Locker", class: 'btn awesome-button'

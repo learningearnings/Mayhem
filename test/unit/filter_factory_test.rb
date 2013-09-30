@@ -3,6 +3,12 @@ require 'test_helper_with_rails'
 describe FilterFactory do
   subject { FilterFactory }
 
+  before do
+    @all_inclusive = mock("all inclusive filter")
+    Filter.stubs(:find).with(1).returns(@all_inclusive)
+    @all_inclusive.stubs(:id).returns(1)
+  end
+
   it "has the basics down" do
     subject.must_be_kind_of Class
   end
@@ -52,7 +58,7 @@ describe FilterFactory do
     f.save
     f.id.wont_be_nil
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
   end
 
   it "can find school-only filter membership" do
@@ -70,24 +76,27 @@ describe FilterFactory do
     f.id.wont_be_nil
     f.schools.must_include school
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
   end
 
   it "can find person-class-only filter membership" do
     student = FactoryGirl.create(:student, grade: 9)
     teacher = FactoryGirl.create(:teacher, grade: 9)
     ff = FilterFactory.new
+    fc_teacher = FilterConditions.new
+    fc_teacher << "Teacher"
+    fc_teacher.person_classes.must_include "Teacher"
+    f_teacher = ff.find_or_create_filter(fc_teacher)
     fc = FilterConditions.new
     fc << "Student"
     fc.person_classes.must_include "Student"
     f = ff.find_or_create_filter(fc)
-    f.save
     f.id.wont_be_nil
     f.person_classes.must_include "Student"
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
     membership = ff.find_filter_membership(teacher)
-    membership.wont_include f
+    membership.wont_include f.id
   end
 
   it "can find school-classroom filter membership" do
@@ -110,8 +119,8 @@ describe FilterFactory do
     f.id.wont_be_nil
     f.classrooms.must_include classroom
     membership = ff.find_filter_membership(student)
-    membership.must_include f
+    membership.must_include f.id
     membership = ff.find_filter_membership(teacher)
-    membership.must_include f
+    membership.must_include f.id
   end
 end

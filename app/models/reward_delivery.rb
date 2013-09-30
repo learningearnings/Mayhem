@@ -3,7 +3,7 @@ class RewardDelivery < ActiveRecord::Base
 
   belongs_to :from, class_name: "Person", foreign_key: :from_id
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
-  belongs_to :reward, class_name: "Spree::Product", foreign_key: :reward_id
+  belongs_to :reward, class_name: "Spree::LineItem", foreign_key: :reward_id
 
   validates :from_id,   presence: true
   validates :to_id,     presence: true
@@ -12,11 +12,27 @@ class RewardDelivery < ActiveRecord::Base
   state_machine :status, initial: :pending do
     state :pending
     state :delivered
+    state :refunded
     event :deliver do
       transition :pending => :delivered
     end
+    event :refund do
+      transition :pending => :refunded
+    end
   end
 
-  scope :pending,   where(status: 'pending')
+  scope :pending,  where(status: 'pending')
   scope :delivered, where(status: 'delivered')
+  scope :refunded, where(status: 'refunded')
+
+  def refund_purchase
+    if self.reward.order.payment.state != "void"
+      self.reward.order.payment.void_transaction!
+      self.refund
+    else
+      # if payment.state is already void, do not issue another refund
+      return false
+    end
+  end
+
 end

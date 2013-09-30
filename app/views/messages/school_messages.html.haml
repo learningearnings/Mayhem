@@ -1,23 +1,7 @@
-%h2 School Messages
-
-- @messages.each do |message|
-  %h3= message.subject
-  .image-placeholder
-    = message.body.html_safe
-    - if message.message_images.present?
-      = image_tag(message.message_images.first.image.thumb('50x50#').url)
-  = link_to "Reply to this message", "#", class: 'btn btn-primary'
-
-%ul.nav.primary-nav
-  %li= link_to "Friend Messages",  friend_messages_path
-  %li= link_to "School Messages",  school_messages_path
-  %li= link_to "Teacher Messages", teacher_messages_path
-  %li= link_to "System Messages",  system_messages_path
-
-= link_to "Send a message", new_message_path, class: 'btn', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
-
-#read-message-modal.modal.hide
-  .modal-body
-
-#send-message-modal.modal.hide
-  .modal-body
+.main-content-wrapper-no-bg
+  .primary-content
+    .inbox-messages-content
+      %h2 School Messages
+      = render 'messages_interface'
+  .secondary-content
+    = render 'boxes_nav'

@@ -1,3 +1,4 @@
+$gray: #ddd;
 // SASS variable overrides must be declared before loading up Active Admin's styles.
 //
 // To view the variables that Active Admin provides, take a look at
@@ -8,8 +9,10 @@
 // $sidebar-width: 242px;
 
 // Active Admin's got SASS!
-@import "active_admin/mixins";
-@import "active_admin/base";
+/*= require chosen */
+@import "chosen";
+@import "active_admin/extra/base";
+@import "just_datetime_picker/base";
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -27,3 +30,18 @@
 // .active_admin       applies to any Active Admin namespace
 // .admin_namespace    applies to the admin namespace (eg: /admin)
 // .other_namespace    applies to a custom namespace named other (eg: /other)
+.horizontal .choice {
+    display: inline-block;
+    margin-right: 7px !important;
+}
+
+body.active_admin {
+  #title_bar, #active_admin_content {
+    max-width: 100%;
+  }
+  thead {
+    th {
+      background-color: $gray;
+    }
+  }
+}

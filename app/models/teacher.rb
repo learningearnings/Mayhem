@@ -1,13 +1,25 @@
 class Teacher < Person
-
-  has_many :schools, :through => :person_school_links
-  attr_accessor :username, :password, :password_confirmation, :email
+#  has_many :schools, :through => :person_school_links
   attr_accessible :username, :password, :password_confirmation, :email, :gender
+  attr_accessible :status, :can_distribute_credits, :as => :admin
   validates_presence_of :grade
   after_create :create_user
 
+  has_many :reward_distributors, :through => :person_school_links
+
+  def after_initialize
+    @teacher_main_account = []
+    @teacher_undredeemed_account = []
+    @teacher_undeposited_account = []
+  end
+
   def primary_account
     main_account(self.schools.first)
+  end
+
+  def can_distribute_rewards? s
+    return false unless (s && s.is_a?(School))
+    self.person_school_links.joins(:reward_distributors).exists?(:school_id => s.id)
   end
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
@@ -24,40 +36,62 @@ class Teacher < Person
   end
 
   def main_account(school)
-    Plutus::Asset.find_by_name main_account_name(school)
+    @teacher_main_account ||= []
+    return @teacher_main_account[school.id] if @teacher_main_account[school.id]
+    @teacher_main_account[school.id] = Plutus::Asset.find_by_name main_account_name(school)
+    @teacher_main_account[school.id]
   end
 
   def unredeemed_account(school)
-    Plutus::Asset.find_by_name unredeemed_account_name(school)
+    @teacher_unredeemed_account ||= []
+    return @teacher_unredeemed_account[school.id] if @teacher_unredeemed_account[school.id]
+    @teacher_unredeemed_account[school.id] = Plutus::Asset.find_by_name unredeemed_account_name(school)
+    @teacher_unredeemed_account[school.id]
   end
 
   def undeposited_account(school)
-    Plutus::Asset.find_by_name undeposited_account_name(school)
+    @teacher_undeposited_account ||= []
+    return @teacher_undeposited_account[school.id] if @teacher_undeposited_account[school.id]
+    @teacher_undeposited_account[school.id] = Plutus::Asset.find_by_name undeposited_account_name(school)
+    @teacher_undeposited_account[school.id]
   end
 
-  def accounts
+  def accounts(school = nil)
     # FIXME: I hate this -ja
-    Plutus::Account.where "name LIKE '%TEACHER#{id}%'"
+    # Plutus::Account.where "name LIKE '%TEACHER#{id}%'"
+    if school
+      these_schools = [school]
+    else
+      these_schools = self.schools
+    end
+    these_schools.collect do |s|
+      [
+       main_account(s),
+       unredeemed_account(s),
+       undeposited_account(s)
+      ]
+      end.flatten
   end
 
   def balance
-    schools.collect do |s| 
+    schools.collect do |s|
       main_account(s).balance
     end
   end
-
-  #def username
-  #  self.name.gsub(' ', '').underscore 
-  #end
 
   def name
     first_name + ' ' + last_name
   end
 
+  # Don't love that bizlogic is right here, but hey...
+  def students_ive_given_ebucks_to
+    Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL").where(otu_codes: { teacher: { id: id } })
+  end
+
   def setup_accounts(school)
-    main_account(school)        || Plutus::Asset.create(name: main_account_name(school))
-    unredeemed_account(school)  || Plutus::Asset.create(name: unredeemed_account_name(school))
-    undeposited_account(school) || Plutus::Asset.create(name: undeposited_account_name(school))
+    Plutus::Asset.find_by_name(main_account_name(school)) || Plutus::Asset.create(name: main_account_name(school))
+    Plutus::Asset.find_by_name(unredeemed_account_name(school)) || Plutus::Asset.create(name: unredeemed_account_name(school))
+    Plutus::Asset.find_by_name(undeposited_account_name(school)) || Plutus::Asset.create(name: undeposited_account_name(school))
   end
 
   def create_user
@@ -72,5 +106,7 @@ class Teacher < Person
     end
   end
 
-
+  def peers_at(school)
+    school.teachers - [self]
+  end
 end

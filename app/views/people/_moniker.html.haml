@@ -1,0 +1,8 @@
+-unless f.object.requested_moniker.blank?
+  = f.label "Last Requested Moniker"
+  = f.object.requested_moniker
+-unless f.object.moniker.blank?
+  = f.label "Current Moniker"
+  = f.object.moniker
+= f.label :moniker
+= text_field_tag :moniker, f.object.moniker

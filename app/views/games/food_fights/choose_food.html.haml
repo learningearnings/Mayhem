@@ -1,29 +1,23 @@
 %h2 Choose a food
 
-= form_for FoodSchoolLink.new, :url => choose_school_games_food_fight_path do |f|
+= form_for FoodPersonLink.new, :url => throw_food_path do |f|
   #hover_value= hidden_field_tag :food_id 
+  = hidden_field_tag :match_id, @match.id
   - if current_person.favorite_foods.present?
     %h4 Favorite Foods
-    %ul
+    %ul.foods
       - current_person.favorite_foods.each do |food|
-        %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
+        %li.food= image_tag food.image.url, :id => food.id
   %h4 All Foods
-  %ul
+  %ul.foods
     - (@foods - current_person.favorite_foods).each do |food|
-      %li.hover_image= image_tag food.image.thumb('50x50#').url, :id => food.id
-  = f.submit 'Submit Food'
-
+      %li.food= image_tag food.image.url, :id => food.id
 
 :javascript
-  $(".hover_image img").hover(
-    function() { $(this).addClass("hover"); },
-    function() { $(this).removeClass("hover"); }
-  );
-
-  $(".hover_image").click( function() {
-    $('.hover_image').removeClass("active");
-    $(this).addClass("active");
-    var imageId = $(this).children().attr("id");
-    $("input[id=food_id]").val(imageId)
+  $('.food').click( function() {
+    $('.food').removeClass('active');
+    $(this).addClass('active');
+    var imageId = $('img', this).attr("id");
+    $("input[id=food_id]").val(imageId);
+    $(this).closest("form").submit();
   });
-

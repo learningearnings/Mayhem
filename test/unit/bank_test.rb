@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test_helper_with_rails'
 require_relative '../../app/models/bank'
 
 # NOTE: This test is not great looking, but I believe that to be a result of Bank
@@ -14,6 +14,7 @@ describe Bank do
     on_success = lambda{}
     buck_creator = mock "OtuCode"
     person = mock "Person"
+    person.stubs(:id)
     person_school_links = mock "Person School Links collection"
     person.stubs(:person_school_links).returns(person_school_links)
     person_school_link = mock "Person School Link"
@@ -70,6 +71,7 @@ describe Bank do
     person.expects(:main_account).with(school).returns(account)
     account.expects(:balance).returns(BigDecimal('1000'))
     buck = mock "Buck"
+    buck.expects(:id)
     buck.expects(:code).returns(2)
     buck_creator = lambda{ |params| return buck }
     message_creator = lambda{ |params| return true }

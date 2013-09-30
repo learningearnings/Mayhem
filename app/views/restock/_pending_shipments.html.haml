@@ -1,0 +1,27 @@
+%h2= t(:pending_shipments)
+%table{:class => 'table table-condensed'}
+  %thead
+    %tr
+      %th Order Number
+      %th Order Date
+      %th Items
+      %th Total Count
+      %th
+        .currency
+          Price
+  %tbody
+  - pending_shipments.each do |pending_shipment|
+    %tr.shipment_row
+      %td
+        = link_to pending_shipment.number, spree.order_path(pending_shipment)
+        = "(#{pending_shipment.state})"
+      %td
+        = l pending_shipment.created_at.in_time_zone(current_school.timezone)
+        (
+        = time_ago_in_words(pending_shipment.created_at)
+        ago)
+      %td= pending_shipment.line_items.collect do |li| li.product.name end.uniq.join(', ')
+      %td= pending_shipment.item_count
+      %td
+        .currency
+          = pending_shipment.total rescue ''

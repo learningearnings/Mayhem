@@ -1,24 +1,17 @@
-%h2 My Locker Header
+.main-content-wrapper
+  .full-content.show-locker
+    %h2 My Locker
 
-.locker_wrapper
-  = render 'locker_stickers', locker_sticker_links: locker_sticker_links
+    %ul.action_buttons.locker_buttons
+      %li= link_to 'Decorate My Locker', edit_locker_path, class: 'btn decorate-locker'
+      %li= link_to 'Share My Locker', share_locker_path, class: 'btn share-locker', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
+      %li= link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn visit-locker', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
 
-= link_to 'Decorate My Locker', edit_locker_path, class: 'btn'
-= link_to 'Share My Locker', '#share-locker-modal', class: 'btn', "data-toggle" => 'modal'
-= link_to "Visit My Friend's Locker", '#visit-locker-modal', class: 'btn', "data-toggle" => 'modal'
+    .locker_wrapper
+      = render 'locker_stickers', locker_sticker_links: locker_sticker_links
 
-#share-locker-modal.modal.hide
-  %h3 Share Header
-  %p= lipsum
-  %strong Pick Your Friends:
-  .image-placeholder
-    Paginated Friend List
-  = link_to "Share", "#", class: 'btn btn-primary'
+    #share-locker-modal.modal.hide
+      .modal-body
 
-#visit-locker-modal.modal.hide
-  %h3 Visit Locker Header
-  %p= lipsum
-  %strong Pick The Friend's Locker:
-  .image-placeholder
-    Paginated Friend List
-  = link_to "Visit", "#", class: 'btn btn-primary'
+    #visit-locker-modal.modal.hide
+      .modal-body

@@ -1,0 +1,30 @@
+// Place all the styles related to the School/Settings controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.school-settings {
+    h3 {
+        text-align: left;
+    }
+    #distributor-list {
+        @extend .row-fluid;
+    }
+    .teacher-tile {
+        text-align: left;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        margin-left: 5px;
+        min-width: 180px;
+        overflow: hidden;
+        @include ctb-fluid-span(4);
+        @extend .thumbnail !optional;
+        display: inline-block;
+        background-color: white;
+        @include box-shadow(1px 2px 5px 1px #ccc);
+        img, i.icon-remove, i.icon-plus {
+            float: right;
+        }
+    }
+    .teacher-tile.changed {
+        background-color: lightgreen;
+    }
+}

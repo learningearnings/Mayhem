@@ -9,4 +9,12 @@ describe Address do
       subject.must have_valid(:zip).when('35205')
     end
   end
+
+  describe "#city_and_state" do
+    let(:state){ FactoryGirl.create(:state, name: "BROTOWN", abbr: "BR") }
+
+    it "prints a string representation" do
+      Address.new(city: "Foo", state: state).city_and_state.must_equal "Foo, BR"
+    end
+  end
 end

@@ -1,0 +1,15 @@
+= form_tag spree.user_session_path, :class => 'form-inline resp-login-form-fields' do
+  %label.log-in
+    LOG-IN
+  = text_field_tag 'user[username]', nil, :placeholder => 'Username', :class => 'focus-on-me input-medium'
+  = password_field_tag 'user[password]', nil, :placeholder => 'Password', :class => 'input-medium'
+  %label.log-in
+    @
+    = select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain ), :class => 'chzn-select'
+  %button.btn.login-button
+  .resp-forgot-password
+    = link_to "Forgot your password?", spree.new_user_password_path('user')
+
+:coffeescript
+  ($ "document").ready ->
+    $(".chzn-select").chosen();

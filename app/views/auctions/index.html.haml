@@ -1,0 +1,14 @@
+.auctions-content
+  %h2 Auctions
+  .span8
+    .auctions  
+      - if current_person.is_a? SchoolAdmin
+        = link_to 'New Auction', new_auction_path
+      - if auctions.any?
+        %p 
+          %h4 Here are the currently-open auctions.
+        = render auctions
+
+      - else
+        %p 
+          %h4 There are no auctions currently open, sorry.

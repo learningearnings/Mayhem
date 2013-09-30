@@ -1,6 +1,7 @@
 #filter_widget
   = link_to "Build Filter", "#", :class => "btn", "data-toggle" => "modal", "data-target" => "#filter_widget_state_selector"
-  = hidden_field_tag "filter_widget_json", ""
+  = hidden_field_tag "filter_id", ""
+  #filter_text
   =render "shared/filter/state_selector"
   =render "shared/filter/school_selector"
   =render "shared/filter/classroom_selector"
@@ -13,20 +14,23 @@
   });
 
   function finish_filter() {
+    $.post("/filters", {data: build_filter_json()}, function(data) {
+      $('#filter_id').attr("value", data);
+      $('#filter_text').text("Filter ID: " + data);
+    });
     $('#filter_widget_user_selector').modal('hide');
-    build_filter_json();
   }
 
   //Build filter json
   function build_filter_json() {
     var filter_json = {};
-    filter_json["states"]     = [];
-    filter_json["schools"]    = [];
-    filter_json["classrooms"] = [];
-    filter_json["grades"]     = {};
-    filter_json["grades"]["min_grade"] = "";
-    filter_json["grades"]["max_grade"] = "";
-    filter_json["users"]      = [];
+    filter_json["states"]           = [];
+    filter_json["schools"]          = [];
+    filter_json["classrooms"]       = [];
+    filter_json["grades"]           = {};
+    filter_json["minimum_grade"]    = "";
+    filter_json["maximum_grade"]    = "";
+    filter_json["person_classes"]   = [];
 
     //This will grab all the selected states and put them in the array
     $.each($(':checked.filter_widget_state_checkbox'), function(index, value) { filter_json["states"].push($(value).val()); });
@@ -38,14 +42,13 @@
     $.each($(':checked.filter_widget_classroom_checkbox'), function(index, value) { filter_json["classrooms"].push($(value).val()); });
 
     //Grade
-    filter_json["grades"]["min_grade"] = $('#filter_widget_min_grade').val();
-    filter_json["grades"]["max_grade"] = $('#filter_widget_max_grade').val();
+    filter_json["minimum_grade"] = $('#filter_widget_min_grade').val();
+    filter_json["maximum_grade"] = $('#filter_widget_max_grade').val();
 
     //Users
-    $.each($(':checked.filter_widget_user_checkbox'), function(index, value) { filter_json["users"].push($(value).val()); });
+    $.each($(':checked.filter_widget_user_checkbox'), function(index, value) { filter_json["person_classes"].push($(value).val()); });
 
     filter_json = JSON.stringify(filter_json);
-    $('#filter_widget_json').attr("value", filter_json);
     return filter_json;
   }
 

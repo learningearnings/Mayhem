@@ -1,6 +1,11 @@
 Leror::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
-
+  config.before_configuration do
+    I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
+    I18n.locale = 'en'
+    I18n.reload!
+  end
+  config.exceptions_app = self.routes
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -46,10 +51,14 @@ Leror::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( lockers.js avatar_pager.js )
+  config.assets.precompile += %w( lockers.js avatar_pager.js ckeditor/init.js transaction_pager.js distributor_list.js admin/print.css admin/ie_noprint.css spree_admin.css svgweb/svg.js )
+  config.assets.precompile += %w( schooladmin_background.css person_background.css student_background.css teacher_background.css leadmin_background.css image_pager.js store/all.js )
 
   # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.default :charset => "utf-8"
 
   # Enable threaded mode
   # config.threadsafe!
@@ -66,5 +75,6 @@ Leror::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   config.action_dispatch.tld_length = 2
+
 
 end

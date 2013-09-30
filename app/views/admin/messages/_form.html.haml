@@ -1,0 +1,14 @@
+= semantic_form_for [:admin,@message] do |f|
+  - f.inputs "" do
+    = f.input :from_id, :as => :hidden,:input_html => { :value => current_user.person.id}
+    = f.input :category, :as => :hidden,:input_html => { :value => 'system'}
+    = f.input :to, :required => true, :collection => Person.includes(:user).status_active.collect{|p| ["#{p.name} ( #{p.user.username} )",p.id]},:input_html => { :class => 'chzn-select', "data-placeholder" => "Choose a Recipient"}
+    = f.input :subject
+    = f.input :body
+    = f.submit
+
+
+:javascript
+  $(document).ready (function () {
+  $(".chzn-select").chosen();
+  });

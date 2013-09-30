@@ -1,18 +1,20 @@
-%h2 My Bank Header
-
-.row
-  .span8
-    %p= lipsum 200
+.main-content-wrapper
+  .primary-content
+    %h2= t('.title')
 
     .bank-account
-      %h4 My Account
-      .balances
-        %p Checking Balance: #{current_person.checking_balance}
-        %p Savings Balance: #{current_person.savings_balance}
+      %h4= t('.subtitle')
+      %dl.balance
+        %dt Checking Balance
+        %dd= current_person.checking_balance
+      %dl.balance
+        %dt Savings Balance
+        %dd= current_person.savings_balance
       .actions
-        = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn', 'data-toggle' => 'modal'
-    = link_to "View Checking History", "#checking-history-modal", class: 'btn', 'data-toggle' => 'modal'
-    = link_to "View Savings History", "#savings-history-modal", class: 'btn', 'data-toggle' => 'modal'
+        = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
+        = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
+        = link_to "View Savings History", "#savings-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
+
     .pending-credits
       %h4 Pending Credits
       %table.table.table-bordered.solid-background
@@ -24,95 +26,45 @@
         %tbody
           - @unredeemed_bucks.each do |buck|
             %tr
-              %td= buck.teacher
+              %td= buck.source_string
               %td= buck.created_at.to_s(:db)
-              %td= number_to_currency(buck.points)
-              %td= link_to "Claim Credits", redeem_buck_path(current_person.id, buck.code), class: 'btn'
+              %td= buck.points
+              %td= link_to("Claim Credits", redeem_buck_path(current_person.id, buck.code), class: 'btn awesome-button') rescue 'error because no buck code...'
       .actions
-        = link_to "Enter Codes", "#enter-codes-modal", class: 'btn', 'data-toggle' => 'modal'
-  .span4
-    %h3 Rewards Highlights
-    .row
-      .span1
-        .image-placeholder
-      .span3
-        %p= lipsum 100
-        %strong Cost: $3,000
-    %hr
-    .row
-      .span1
-        .image-placeholder
-      .span3
-        %p= lipsum 100
-        %strong Cost: $3,000
-    %hr
-    .row
-      .span1
-        .image-placeholder
-      .span3
-        %p= lipsum 100
-        %strong Cost: $3,000
-    %hr
-    .row
-      .span1
-        .image-placeholder
-      .span3
-        %p= lipsum 100
-        %strong Cost: $3,000
-    %hr
-    = link_to "Redeem Credits", "#", class: 'btn'
+        = link_to "Enter Codes", "#enter-codes-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
+
+  .secondary-content
+    = render_reward_highlights(@products[0..3])
 
 #transfer-credits-modal.modal.hide
   = render 'transfer_credits'
 
 #checking-history-modal.modal.hide
   %h3 Checking History
-  %p= lipsum 100
 
-  %table.table.table-bordered
-    %thead
-      %tr
-        %th Source
-        %th Date
-        %th Amount
-    - if @recent_checking_amounts.present?
-      - @recent_checking_amounts.each do |amount|
-        %tr
-          // FIXME: This view is horrible, refactor
-          %td= amount.transaction.description
-          %td= amount.transaction.created_at.to_s(:db)
-          %td= amount.amount
+  #checking-history
+    = render 'checking_ledger_table', amounts: @recent_checking_amounts
 
 #savings-history-modal.modal.hide
   %h3 Savings History
-  %p= lipsum 100
 
-  %table.table.table-bordered
-    %thead
-      %tr
-        %th Source
-        %th Date
-        %th Amount
-    - if @recent_savings_amounts.present?
-      - @recent_savings_amounts.each do |amount|
-        %tr
-          // FIXME: This view is horrible, refactor
-          %td= amount.transaction.description
-          %td= amount.transaction.created_at.to_s(:db)
-          %td= amount.amount
+  #savings-history
+    = render 'savings_ledger_table', amounts: @recent_savings_amounts
 
 #enter-codes-modal.modal.hide
   %h3 Enter Codes
-  %p= lipsum 150
-  .row
-    .span3
+  .enter_codes_content
+    .span6
       = form_for OtuCode.new, :url => redeem_bucks_path do |f|
         = label_tag "Enter Code:"
         = text_field_tag :code
-        = f.submit 'Redeem'
-    .span2
- 
-      %h5 Checking Balance
-      %strong #{current_person.checking_balance}
-      %h5 Savings Balance
-      %strong #{current_person.savings_balance}
+        = f.submit 'Redeem', class: 'btn awesome-button'
+    .span6
+      %dl.balance
+        %dt Checking Balance
+        %dd= current_person.checking_balance
+      %dl.balance
+        %dt Savings Balance
+        %dd= current_person.savings_balance
+
+= javascript_include_tag 'transaction_pager'

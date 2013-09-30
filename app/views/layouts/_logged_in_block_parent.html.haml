@@ -1,10 +1,10 @@
-.current-user-avatar.supplemental-part
-  - if current_user.avatar.present?
-    = image_tag current_user.avatar.image.thumb('175x175#').url
-.current-user.supplemental-part
-  %h3= current_user.email
-  %p= link_to "Edit My Profile", spree.edit_user_path(current_user)
-  %p= link_to 'Sign out', spree.destroy_user_session_path, :method => :delete
+.current-person-avatar.supplemental-part
+  - if current_person.avatar.present?
+    = image_tag current_person.avatar.image.thumb('80x80#').url
+.current-person.supplemental-part
+  %h3= current_person.email
+  %p= link_to "Edit My Profile", main_app.edit_person_path(current_person)
+  %p= link_to 'Sign out', spree.destroy_user_session_path
   %h4 Credit Balance
   %table.table.table-bordered
     %thead
@@ -14,13 +14,8 @@
     %tbody
       %tr
         - if current_person
-          %td= current_user.person.checking_balance
-          %td= current_user.person.savings_balance
+          %td= current_person.checking_balance
+          %td= current_person.savings_balance
         - else
-          %td=number_to_currency(0.00)
-          %td=number_to_currency(0.00)
-
-  %p
-    %strong
-      Messages:
-    = link_to '2', main_app.page_path('logged_in_inbox')
+          %td 0.00
+          %td 0.00

@@ -5,6 +5,8 @@
 // the compiled file.
 //
 
+//= require svgweb/svg
+//= require jquery
 //= require admin/spree_core
 //= require admin/spree_auth
 //= require admin/spree_promo

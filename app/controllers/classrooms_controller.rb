@@ -11,6 +11,10 @@ class ClassroomsController < LoggedInController
 
   def show
     @classroom = Classroom.find(params[:id])
+    respond_to do |format|
+      format.html { render layout: true }
+      format.json { render json: @classroom.students }
+    end
   end
 
   def remove_student
@@ -30,24 +34,28 @@ class ClassroomsController < LoggedInController
       flash[:error] = "Student not removed from classroom."
       render :show
     end
-
-
   end
 
   def add_student
-    @student = Student.find(params[:student_id])
-    @classroom = Classroom.find(params[:classroom_id])
-    if @student<<(@classroom)
-      flash[:notice] = "Student added to classroom."
-      redirect_to classroom_path(@classroom)
+    if params[:student_id].present?
+      @student = Student.find(params[:student_id])
+      @classroom = Classroom.find(params[:classroom_id])
+      if @student<<(@classroom)
+        flash[:notice] = "Student added to classroom."
+        redirect_to classroom_path(@classroom)
+      else
+        flash[:error] = "Student not added to classroom."
+        render :show
+      end
     else
-      flash[:error] = "Student not added to classroom."
-      render :show
+      flash[:error] = 'Please pick a student.'
+      redirect_to :back
     end
   end
-  
+
   def create
     @classroom = Classroom.new(params[:classroom])
+    @classroom.school_id = current_school.id
     if @classroom.save
       current_person<<@classroom
       psl = PersonSchoolLink.find_by_person_id_and_school_id(current_person.id, current_school.id)
@@ -55,7 +63,7 @@ class ClassroomsController < LoggedInController
       pscl.activate
       pscl.update_attribute(:owner, true)
       flash[:notice] = "Classroom Created."
-      redirect_to classroom_path(@classroom)
+      redirect_to classrooms_path
     else
       flash[:error] = "Classroom not created."
       render :new
@@ -74,5 +82,19 @@ class ClassroomsController < LoggedInController
     end
   end
 
+  def create_student
+    @classroom = Classroom.find(params[:classroom_id])
+    @student = Student.new(params[:student])
+    if @student.save
+      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(@student.id, current_school.id)
+      pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
+      pscl.activate
+      flash[:notice] = 'Student created!'
+      redirect_to classroom_path(@classroom)
+    else
+      flash.now[:error] = 'Student not created'
+      render :show
+    end
+  end
 
 end

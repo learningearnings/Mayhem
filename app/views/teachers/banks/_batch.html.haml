@@ -1,1 +1,74 @@
-Testing it!
+- buck_image_pdf = Rails.root.join('app', 'assets', 'images', 'buck_blank.png')
+- buck_image_html = image_path('buck_blank.png')
+- buck_image = params[:format] == 'pdf' ? buck_image_pdf : buck_image_html
+%meta{'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
+%style{type: 'text/css'}
+  :sass
+    body
+      margin: 0mm
+      padding: 0mm
+      font-size: 70%
+      width: 630px
+    .break
+      page-break-after: always
+    .buck
+      position: relative
+      //background-image: url(#{buck_image})
+      //background-size: 100%
+      display: inline-block
+      //background-color: #eee
+      width: 300px
+      height: 126px
+      margin-right: 10px
+      .background-image
+        width: 100%
+      .code
+        width: 30%
+        text-align: center
+        position: absolute
+        top: 40%
+        left: 37%
+      .amount
+        width: 5%
+        text-align: center
+        position: absolute
+        font-size: 1.8em
+        color: #999
+      .amount1
+        top: 14%
+        left: 9%
+      .amount2
+        top: 14%
+        right: 8%
+      .amount3
+        bottom: 16%
+        left: 9%
+      .amount4
+        bottom: 16%
+        right: 8%
+      .teacher
+        width: 70%
+        position: absolute
+        top: 55%
+        left: 12%
+        font-size: .7em
+      .expires
+        width: 40%
+        position: absolute
+        top: 72%
+        left: 20%
+        font-size: .7em
+
+.bucks
+  - batch.otu_codes.in_groups_of(12,false) do |code_group|
+    .break
+    - code_group.each do |otu_code|
+      .buck
+        %img.background-image{ src: buck_image }
+          .code= otu_code.code
+          .amount.amount1= otu_code.points.to_i
+          .amount.amount2= otu_code.points.to_i
+          .amount.amount3= otu_code.points.to_i
+          .amount.amount4= otu_code.points.to_i
+          .teacher= otu_code.teacher
+          .expires= otu_code.expires_at.to_date.to_s(:db)

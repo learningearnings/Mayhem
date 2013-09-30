@@ -1,5 +1,4 @@
 ActiveAdmin.setup do |config|
-
   # == Site Title
   #
   # Set the title that is displayed on the main layout
@@ -55,7 +54,8 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # within the controller.
-  config.authentication_method = :authenticate_user!
+  #config.authentication_method = :authenticate_user!
+  config.authentication_method = :authenticate_le_admin!
 
 
   # == Current User
@@ -78,7 +78,7 @@ ActiveAdmin.setup do |config|
   # will call the method to return the path.
   #
   # Default:
-  config.logout_link_path = '/store/user/logout'
+  config.logout_link_path = :destroy_user_session_path
 
   # This setting changes the http method used when rendering the
   # link. For example :get, :delete, :put, etc..
@@ -116,7 +116,6 @@ ActiveAdmin.setup do |config|
   # Enable and disable Batch Actions
   #
   config.batch_actions = true
-  
 
   # == Controller Filters
   #
@@ -134,16 +133,23 @@ ActiveAdmin.setup do |config|
   #
   # To load a stylesheet:
   #   config.register_stylesheet 'my_stylesheet.css'
-  
+
   # You can provide an options hash for more control, which is passed along to stylesheet_link_tag():
   #   config.register_stylesheet 'my_print_stylesheet.css', :media => :print
   #
   # To load a javascript file:
   #   config.register_javascript 'my_javascript.js'
 
+  config.register_javascript 'ckeditor/init.js'
 
   # == CSV options
   #
   # Set the CSV builder separator (default is ",")
   # config.csv_column_separator = ','
+
+
+end
+
+ActiveAdmin::ResourceController.class_eval do
+  with_role :admin   # this InheritedResources method will send the role back to the controller for the assign
 end

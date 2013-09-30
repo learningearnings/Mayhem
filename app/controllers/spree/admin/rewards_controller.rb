@@ -1,25 +1,52 @@
 class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :authenticate_leadmin
+  before_filter :maintain_page, :except => [:index]
+  before_filter :check_saved_page, :only => [:index]
+  before_filter :subdomain_required
+  after_filter :only => [:index ] { |f| maintain_page(params[:page] || 1) }
+
 
   def index
-    # insert code here to gather all products for the current school
-    @products = Spree::Product.not_deleted.order(:name)
+    if Spree::Config.searcher_class != Spree::Search::Filter
+      Spree::Config.searcher_class = Spree::Search::Filter
+      $stderr.puts ("================================Had to reset the search filter class================================")
+    end
+
+    params[:searcher_current_user] = current_user
+    params[:page] = nil unless params[:keywords].blank?
+    @searcher = Spree::Config.searcher_class.new(params)
+    @products = @searcher.retrieve_products.order(:name).page(params[:page]).per(12)
+    params[:searcher_current_user] = nil
+#    maintain_page params[:page] || 1
   end
 
   def new
     # create new spree product with specific options for LE Admin to use
     # TODO incorporate the school into the new object
     @product = Spree::Product.new
+    @product.available_on = Time.now
+    @types = [["global","global"],["charity","charity"]]
+    set_vars
+  end
+
+  def set_vars
+    @current_school = School.find(session[:current_school_id])
+    @grades = @current_school.grades
+    @classrooms = @current_school.classrooms
+    @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
+    @purchased_by = ["LE", "Sponsor", "School", "Charity"]
+    @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
+    @grades = ["K", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   end
 
   def create
-    # create the product reward
     @product = Spree::Product.new
-    @image = @product.master.images.new
+    #@image = @product.master.images.new # If we create an empty image, the master doesn't save correctly
     form_data
     if @product.save
+      after_save
       flash[:notice] = "Your reward was created successfully."
-      redirect_to admin_rewards_path
+      redirect_to admin_rewards_path, :page => (params[:page_id] || 0)
     else
       flash[:error] = "There was an error saving your Reward, please check the form and try again"
       render 'new'
@@ -28,12 +55,23 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def edit
     @product = Spree::Product.find(params[:id])
+    if @product.has_property_type?
+      @type = @product.property("reward_type")
+      @types = [[@type, @type]]
+      ["global", "charity"].each do |product_type|
+        @types.push([product_type, product_type]) unless product_type == @type
+      end
+    else
+      @types = [["global","global"],["charity","charity"]]
+    end
+    set_vars
   end
 
   def update
     @product = Spree::Product.find(params[:id])
     form_data
     if @product.save
+      after_save
       flash[:notice] = "Your reward was updated successfully."
       redirect_to admin_rewards_path
     else
@@ -44,26 +82,71 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
   def form_data
     @product.name = params[:product][:name]
+    @product.fulfillment_type = params[:product][:fulfillment_type]
+    @product.purchased_by = params[:product][:purchased_by]
     @product.description = params[:product][:description]
     @product.price = params[:product][:price]
     @product.on_hand = params[:product][:on_hand]
     @product.available_on = params[:product][:available_on]
-    @product.store_ids = params[:product][:store_ids]
-    if params[:product][:images]
-      i = @product.master.images.first
-      i.attachment_file_name = params[:product][:images][:attachment_file_name].original_filename
-      i.attachment_content_type = params[:product][:images][:attachment_file_name].content_type
-      i.attachment = params[:product][:images][:attachment_file_name].tempfile
-      i.save
+    @product.min_grade = params[:product][:min_grade]
+    @product.max_grade = params[:product][:max_grade]
+    @product.visible_to_all = params[:product][:visible_to_all]
+    # set associated objects
+    @product.taxons = params[:product][:taxons].map{|s| Spree::Taxon.find(s) if s.present? }.compact
+    @product.states = params[:product][:states].map{|s| ::State.find(s) if s.present? }.compact
+    @product.schools = params[:product][:schools].map{|s| School.find(s) if s.present? }.compact
+  end
+
+  def after_save
+    @product.store_ids = store_ids_for(@product.fulfillment_type)
+    @product.set_property("reward_type", product_type_for(@product))
+    @product.save
+
+    create_product_person_link unless @product.person
+    handle_uploads
+  end
+
+  def handle_uploads
+    if params[:product][:images].present?
+      @product.images.first.destroy if @product.images.present?
+      @product.images.create(params[:product][:images])
     end
-#   anything else?
+    if params[:product][:svg].present?
+      @product.svg = params[:product][:svg][:svg_file_name]
+      @product.save
+    end
+  end
+
+  def create_wholesale_properties
+    # create retail price property
+    retail_price_property = @product.properties.create name: "retail_price", presentation: "retail_price"
+    price_product_property = retail_price_property.product_properties.first
+    price_product_property.value = params[:retail_price]
+    price_product_property.save
+    # create retail qty property
+    retail_qty_property = @product.properties.create(name: "retail_quantity", presentation: "retail_quantity")
+    qty_product_property = retail_qty_property.product_properties.first
+    qty_product_property.value = params[:retail_qty]
+    qty_product_property.save
   end
 
   def destroy
-    @product = Spree::Product.find(params[:product])
+    @product = Spree::Product.find(params[:id])
     @product.deleted_at = Time.now
     if @product.save
-      flash[:notice] = "Your reward was deleted successfully."
+      flash[:notice] = "Your reward was deleted successfully #{view_context.link_to("Undo", admin_undelete_reward_path(:id => params[:id]))}".html_safe
+    else
+      flash[:error] = "There was an error updating your Reward, please check the form and try again"
+    end
+    redirect_to admin_rewards_path
+  end
+
+  def undelete
+    @product = Spree::Product.find(params[:id])
+    @product.deleted_at = nil
+    if @product.save
+      flash[:notice] = "Your reward was un-deleted successfully."
+      flash[:undeleted] = params[:id]
     else
       flash[:error] = "There was an error updating your Reward, please check the form and try again"
     end
@@ -71,6 +154,97 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   private
+
+  # Users are required to access the application
+  # using a subdomain
+  def subdomain_required
+    return if current_user && !current_user.respond_to?(:person)
+    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain && 
+                        (!(current_user.person.is_a?(SchoolAdmin) && [home_subdomain, 'le'].include?(request.subdomain)))
+                        ) && home_host
+      token = Devise.friendly_token
+      current_user.authentication_token = token
+      my_redirect_url = home_host   + "/store/admin/rewards/?auth_token=#{token}"
+
+      current_user.save
+      sign_out(current_user)
+      redirect_to my_redirect_url
+    end
+  end
+
+  def home_subdomain
+    "le"
+  end
+
+  def home_host
+    return request.protocol + request.host_with_port unless current_user.person
+    if current_user && current_user.person
+      # TODO - figure out a better hostname naming scheme
+      subdomain = home_subdomain
+      if request.host.match /^#{subdomain}\./
+        host = request.protocol + request.host_with_port
+      else
+        if !request.subdomain.empty?
+          host = request.host.gsub /^#{request.subdomain}\./,''
+        else
+          host = request.host
+        end
+        subdomain = subdomain + '.' + host
+
+        # If this is a development environment, check to see if the
+        # hosts file is setup right
+
+        if Rails.env == 'development'
+          match_found = false
+          begin
+            subdomain_address = Addrinfo.getaddrinfo(subdomain,request.port)
+          rescue
+            subdomain_address = nil
+          end
+          original_address =  Addrinfo.getaddrinfo(request.host,request.port)
+          if subdomain_address
+            subdomain_address.each do |sa|
+              original_address.each do |oa|
+                if sa.ip_address == oa.ip_address
+                  match_found = true
+                  break
+                end
+              end
+            end
+          end
+          if !match_found
+            flash[:error] = ("Localhost(s) aren't configured correctly for development - use " + "<a href=\"http://lvh.me:3000\">lvh.me:3000</a>").html_safe
+            return nil
+          end
+        end
+        host = request.protocol + subdomain
+        if request.port && request.port != 80
+          host = host +':' + request.port.to_s
+        end
+      end
+    else
+      request.protocol + request.host_with_port
+    end
+  end
+
+  def check_saved_page
+    return if params[:page]  # a passed in param trumps everything
+    key = controller_path + '_page'
+    if flash[key]
+      params[:page] = flash[key]
+    end
+  end
+
+  def maintain_page page = nil
+    key = controller_path + '_page'
+    last_page_key = controller_path + '_lastpage'
+    if page.nil? && params[:page].nil?
+      flash[key] = flash[last_page_key] # make it available for index if needed
+      flash.keep(last_page_key) # keep the last page around in case there are other interactions
+    elsif page
+      flash[last_page_key] = page  # index keeps this hot for future reference by check_saved_page
+    end
+  end
 
   def authenticate_leadmin
     if current_user && current_user.person.type == "LeAdmin"
@@ -81,4 +255,23 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     end
   end
 
+  def product_type_for(product)
+    if @product.fulfillment_type == "Digitally Delivered Charity Certificate"
+      "charity"
+    else
+      "global" 
+    end
+  end
+
+  def store_ids_for(fulfillment_type)
+    if fulfillment_type == "Shipped for School Inventory"
+      [Spree::Store.find_by_code('le').id]
+    else
+      Spree::Store.all.map{|s| s.id }
+    end
+  end
+
+  def create_product_person_link
+    SpreeProductPersonLink.create(product_id: @product.id, person_id: current_user.person_id)
+  end
 end

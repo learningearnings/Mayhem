@@ -20,9 +20,17 @@ namespace :le do
     Rake::Task['db:seed'].invoke
   end
   desc "Do a killall ruby, killall pgsql then db:drop db:create db:migrate and db:seed"
+
+  task :tags do
+    `ctags -e -f tags --exclude=.git --exclude=\'*.log\' -R * `
+    `ctags -e -f gems.tags --exclude=.git --exclude=\'*.log\' -R \`bundle show --paths\``
+    `ctags -e --etags-include=tags --etags-include=gems.tags`
+  end
+
   task :reload! do
     system('killall -9 --verbose --older-than 20s ruby')
     system('killall -9 --verbose --older-than 20s psql')
+    system('rm -rf public/spree/products/*')
     Rake::Task['db:drop'].invoke
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke

@@ -1,17 +1,28 @@
-%h2 Decorate My Locker Header
+.main-content-wrapper
+  .locker_edit.full-content
+    %h2 Decorate My Locker
 
-.locker_edit
-  .locker_wrapper.editable
-    = render 'locker_stickers', locker_sticker_links: locker_sticker_links
+    %ul.action_buttons.locker_buttons
+      %li= link_to 'Share My Locker', share_locker_path, class: 'btn share-locker', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
+      %li= link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn visit-locker', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
 
-  .locker_interface
-    .available_stickers
-      %p Click a sticker to add it to your locker
-      - available_stickers.each do |sticker|
-        .sticker{"data-id" => sticker.id}
-          = image_tag(sticker.image.url)
+    .locker_wrapper.editable
+      = render 'locker_stickers', locker_sticker_links: locker_sticker_links
 
--# Render a template for our javascript to tie into
-%script#sticker_template{type: 'text/html'}
-  = render 'locker_sticker_template', x: '{{x}}', y: '{{y}}', id: '{{id}}', image_url: '{{image_url}}'
-= javascript_include_tag 'lockers'
+    .locker_interface
+      .available_stickers
+        %p Pick out your favorite stickers and add some pizazz to your locker.
+        - available_stickers.each do |sticker|
+          .sticker{"data-id" => sticker.id}
+            = image_tag(sticker.image.url)
+
+    #share-locker-modal.modal.hide
+      .modal-body
+
+    #visit-locker-modal.modal.hide
+      .modal-body
+
+  -# Render a template for our javascript to tie into
+  %script#sticker_template{type: 'text/html'}
+    = render 'locker_sticker_template', x: '{{x}}', y: '{{y}}', id: '{{id}}', image_url: '{{image_url}}'
+  = javascript_include_tag 'lockers'

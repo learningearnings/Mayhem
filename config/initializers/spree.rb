@@ -12,7 +12,19 @@ Spree.config do |config|
   config.auto_capture = true
   config.layout = 'application'
   config.searcher_class = Spree::Search::Filter
+  config.allow_backorders = false
+  config.show_zero_stock_products = false
+end
 
+# nginx handles ssl for us, so the rails app needn't worry about it
+SslRequirement.module_eval do
+  protected
+  def ssl_allowed?
+    true
+  end
+  def ssl_required?
+    false
+  end
 end
 
 module SpreeOverrideEngine
@@ -21,4 +33,17 @@ module SpreeOverrideEngine
       Rails.application.config.spree.payment_methods = [Spree::Gateway::LearningEarnings]
     end
   end
+end
+
+Paperclip.interpolates(:s3_eu_url) do |attachment, style|
+  "#{attachment.s3_protocol}://#{Spree::Config[:s3_host_alias]}/#{attachment.bucket_name}/#{attachment.path(style).gsub(%r{^/}, "")}"
+end
+Spree.config do |config|
+  config.use_s3 = true
+
+  config.s3_bucket = ENV['LE_S3_BUCKET']
+  config.s3_access_key = ENV['LE_S3_ACCESS_KEY']
+  config.s3_secret = ENV['LE_S3_SECRET_ACCESS_KEY']
+  config.s3_host_alias = "s3-us-west-2.amazonaws.com"
+  config.attachment_url = ":s3_eu_url"
 end

@@ -1,31 +1,115 @@
 .locker_wrapper {
-  background-color: #eee;
-  width: 800px;
-  height: 400px;
+  background-image: asset_url('locker-not-decorated-large.png', image);
+  width: 814px;
+  height: 334px;
   position: relative;
   .locker_sticker {
     position: absolute;
+    .remove {
+      display: none;
+    }
   }
 }
 
 .locker_edit {
   .locker_wrapper {
     display: inline-block;
-  }
-
-  .locker_interface {
-    display: inline-block;
-    width: 200px;
-    height: 400px;
-    overflow: scroll;
-    .available_stickers {
-      .sticker {
-        padding: 1em;
+    .locker_sticker {
+      &:hover {
+        .remove {
+          display: block;
+        }
+      }
+      .remove {
+        display: none;
+        background-color: white;
+        padding: 5px;
+        position: absolute;
+        top: 0;
+        right: 0;
         cursor: pointer;
         &:hover {
           background-color: #eee;
         }
       }
     }
+  }
+
+  .locker_interface {
+    display: block;
+    width: 804px;
+    height: 260px;
+    overflow: scroll;
+    background-color: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -moz-box-shadow:    1px 2px 8px 3px #ccc;
+    -webkit-box-shadow: 1px 2px 8px 3px #ccc;
+    box-shadow:         1px 2px 8px 3px #ccc;
+    .available_stickers {
+      p {
+        padding: 1em;
+      }
+      .sticker {
+        display: inline-block;
+        cursor: pointer;
+        border: 3px solid #fff;
+        &:hover {
+          border: solid 3px #B87953;
+        }
+      }
+    }
+  }
+}
+
+.childish-button{
+  background: rgba(37, 134, 11, 0.8);
+  padding: .5em;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  @include box-shadow(2px 2px 2px #666);
+  @include rotate(-3deg);
+  font-size: 1.3em;
+  text-shadow: 1px 1px 2px #333;
+  color: #fff;
+}
+
+.shared-locker ul.action_buttons.locker_buttons {
+  width: 150px;
+}
+.show-locker ul.action_buttons.locker_buttons {
+  width: 500px;
+}
+ul.action_buttons.locker_buttons {
+  width: 350px;
+  top: 0;
+  padding: 2em 1em;
+  margin: 2em 0 0 0;
+  a {
+    margin: 0 .5em;
+  }
+  .decorate-locker {
+      @extend .awesome-button;
+      background: rgb(37, 134, 11);
+      @include rotate(-3deg);
+      &:hover {
+          background: rgb(97, 194, 71);
+      /*      background: rgba(37, 134, 11, 1); */
+      }
+  }
+  .share-locker {
+      @extend .awesome-button;
+      background: rgb(255, 151, 86);
+      @include rotate(3deg);
+      &:hover {
+          background: rgba(238, 91, 26,1);
+      }
+  }
+  .visit-locker {
+      @extend .awesome-button;
+      background: rgb(182, 17, 176);
+      @include rotate(1.8deg);
+      &:hover {
+          background: rgb(242, 77, 236);
+      }
   }
 }

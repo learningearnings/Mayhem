@@ -2,7 +2,13 @@
 
 .food-fight-question
   %h4= food_fight_play_command.question_body
+
   = form_for food_fight_play_command do |f|
+    = hidden_field_tag :person_id, params[:person_id]
+    = hidden_field_tag :match_id, @match.id
+    - if params[:action] == 'rematch'
+      = hidden_field_tag :rematch, true
+
     %ul.answers
       - food_fight_play_command.answer_options.each do |answer|
         %li

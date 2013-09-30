@@ -1,4 +1,4 @@
 module Reports
-  class BaseController < LoggedInController
+  class BaseController < Teachers::BaseController
   end
 end

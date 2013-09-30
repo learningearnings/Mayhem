@@ -1,11 +1,13 @@
 /*= require_self */
+/*= require chosen */
+/*= require jquery-ui-1.8.23.custom */
 
+@import 'variables';
 @import 'compass';
 @import 'compass_twitter_bootstrap_awesome';
 @import 'compass_twitter_bootstrap_responsive';
 
 // Site styles
-@import 'variables';
 
 @import 'helpers';
 @import 'layout';
@@ -14,9 +16,15 @@
 @import 'store/products';
 @import 'messages';
 @import 'lockers';
-
-.modal {
-    overflow-y:auto;
-    max-height:90%;
-    margin-top:-45%;
-}
+@import 'reports';
+@import 'people';
+@import 'overrides';
+@import 'restock';
+@import 'classrooms';
+@import 'charities';
+@import 'resp_layout';
+@import 'school/settings';
+@import 'person_badges';
+@import 'teachers/rewards';
+@import 'resp_products';
+@import 'students';

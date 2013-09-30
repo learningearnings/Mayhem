@@ -3,4 +3,159 @@
 
 en:
   add_to_cart: "Buy this"
-  only_logged_in_students_can_purchase: "Only logged in students can purchaes from this store"
+  shopping_cart: "School Store Restocking"
+  sa_your_cart_is_empty: "You don't have a current restocking order"
+  insufficient_funds: "You have too many items in your order.   Please remove some and re-transmit"
+  not_enough_credits_to_purchase: "You don't have enough credits to purchase this reward.  Please reduct the quantity or choose a reward you can afford."
+  sa_continue_shopping: "Shop for Rewards"
+  only_logged_in_students_can_purchase: "Only logged in students can purchase from this store"
+  school_store_is_for_students: "This is the School Store for %{school}.  Only logged in students from %{school} can purchase items from this store with their LE Credits"
+  sa_restock_intro:  This is your school store restocking page.   Now Learning Earnings lets you pick the rewards for your school based
+                     on what motivates your students the most.   Click "Shop for Rewards" below to pick the rewards that are school and 
+                     age appropriate for your students.
+  pending_shipments: "You have Pending Shipments:"
+  transmit_notice: "Learning Earnings has been notified of your order.   You may still update this order until the order moves into the \"Pending Shipments\" list above"
+  time:
+    formats:
+      default: "%a, %b %e, %Y %I:%M %p"
+      david: "%a, %e-%b %Y %I:%M %p"
+      short: "%m/%e/%Y %I:%M %p"
+  date:
+    formats:
+      default: "%a, %b %e, %Y"
+      short: "%m/%e/%Y"
+  subtotal: "Subtotal"
+  restock:
+    index:
+      subtotal: Restock Subtotal
+      continue_shopping: Continue Restocking
+      transmit: Transmit this Order
+      transmit_again: Re-transmit this order
+  lestore:
+    spree:
+      products:
+        index:
+          products:  Restock the LE store for %{school}
+          products_message: &scst1
+                            These are the items that you can purchase for your school store
+                            These items won't appear for students to purchase until they're shipped
+                            to your school.  Only the items you purchase will appear for students
+                            to purchase with their LE Credits.
+  schoolstore:
+    student: &school_store_student
+      spree:
+        products: &scst2
+          index:
+            products: Rewards
+            search_results:  Jimmy's Search Test
+            products_message: Use your LE Credits to buy these rewards!
+      home: *scst2
+      search_results: "Search Results:"
+    teacher: &school_store_teacher
+      spree:
+        products: &school_store_teacher_products
+          index:
+            products_message: Students can purchase these items with their LE Credits
+        home: *school_store_teacher_products
+    schooladmin: *school_store_teacher
+  play_content: Students can take a break here (but keep on learning and earning)
+  banks:
+    show:
+      title: My Bank
+      subtitle: My Accounts
+    transfer_credits:
+      title: Transfer Credits
+      desc: Transfer credits between your checking and savings accounts
+  messages:
+    new:
+      title: Send A New Message
+      desc: Create a new message to send
+  games:
+    base:
+      show:
+        title: Play
+        auction_title: Auctions
+        auction_desc: "Bid on rewards"
+        ff_title: Food Fight
+        ff_desc: "Answer trivia questions correctly and throw food at other schools"
+        nm_title: Number Muncher
+        nm_desc: "Play Number Muncher now to hone your math skills"
+  active_admin:
+    dashboard: "LE Dashboard"
+    dashboard_welcome:
+      welcome: "Welcome to Active Admin. This is the default dashboard page."
+      call_to_action: "To add dashboard sections, checkout 'app/admin/dashboards.rb'"
+    view: "View"
+    edit: "Edit"
+    delete: "Delete"
+    delete_confirmation: "Are you sure you want to delete this?"
+    new_model: "New %{model}"
+    create_model: "New %{model}"
+    edit_model: "Edit %{model}"
+    update_model: "Edit %{model}"
+    delete_model: "Delete %{model}"
+    details: "%{model} Details"
+    cancel: "Cancel"
+    empty: "Empty"
+    previous: "Previous"
+    next: "Next"
+    download: "Download:"
+    has_many_new: "Add New %{model}"
+    has_many_delete: "Delete"
+    filter: "Filter"
+    clear_filters: "Clear Filters"
+    search_field: "Search %{field}"
+    equal_to: "Equal To"
+    greater_than: "Greater Than"
+    less_than: "Less Than"
+    main_content: "Please implement %{model}#main_content to display content."
+    logout: "Logout"
+    sidebars:
+      filters: "Filters"
+    pagination:
+      empty: "No %{model} found"
+      one: "Displaying <b>1</b> %{model}"
+      one_page: "Displaying <b>all %{n}</b> %{model}"
+      multiple: "Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{total}</b> in total"
+      entry:
+        one: "entry"
+        other: "entries"
+    any: "Any"
+    blank_slate:
+      content: "There are no %{resource_name} yet."
+      link: "Create one"
+    batch_actions:
+      button_label: "Batch Actions"
+      delete_confirmation: "Are you sure you want to delete these %{plural_model}? You won't be able to undo this."
+      succesfully_destroyed:
+        one: "Successfully destroyed 1 %{model}"
+        other: "Successfully destroyed %{count} %{plural_model}"
+      selection_toggle_explanation: "(Toggle Selection)"
+      link: "Create one"
+      action_label: "%{title} Selected"
+      labels:
+        destroy: "Delete"
+    comments:
+      body: "Body"
+      author: "Author"
+      title: "Comment"
+      add: "Add Comment"
+      resource: "Resource"
+      no_comments_yet: "No comments yet."
+      title_content: "Comments (%{count})"
+      errors:
+        empty_text: "Comment wasn't saved, text was empty."
+    devise:
+      login:
+        title: "Login"
+        remember_me: "Remember me"
+        submit: "Login"
+      reset_password:
+        title: "Forgot your password?"
+        submit: "Reset My Password"
+      change_password:
+        title: "Change your password"
+        submit: "Change my password"
+      links:
+        sign_in: "Sign in"
+        forgot_your_password: "Forgot your password?"

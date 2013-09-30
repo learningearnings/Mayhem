@@ -1,4 +1,6 @@
 class Message < ActiveRecord::Base
+
+  paginates_per 4
   attr_accessible :from_id, :to_id, :subject, :body, :category, :from, :to
 
   belongs_to :from, class_name: 'Person', foreign_key: :from_id
@@ -6,7 +8,9 @@ class Message < ActiveRecord::Base
 
   has_many :message_images, :through => :message_image_links
   has_many :message_image_links
-  
+  has_many :otu_codes, :through => :message_code_links
+  has_many :message_code_links
+
   validates :from_id,  presence: true, numericality: true
   validates :to_id,    presence: true, numericality: true
   validates :subject,  presence: true
@@ -15,26 +19,36 @@ class Message < ActiveRecord::Base
 
   scope :unread,  where(status: 'unread')
   scope :read,    where(status: 'read')
+  scope :not_hidden,  lambda { where("status != ?", 'hidden') }
 
   scope :from_friend,  where(category: 'friend')
   scope :from_system,  where(category: 'system')
   scope :from_teacher, where(category: 'teacher')
   scope :from_school,  where(category: 'school')
+  scope :for_admin,    where(category: 'le_admin')
+  scope :from_food_fight,  where(category: 'food_fight')
 
   state_machine :status, initial: :unread do
     event :read! do
       transition [:read, :unread] => :read
     end
+    event :hide  do
+      transition [:read, :unread] => :hidden
+    end
     state :unread
     state :read
+    state :hidden
   end
 
   # Describe available canned messages here
+  def unread?
+    self.status == 'unread'
+  end
   def self.canned_messages
     [
       "You're pretty swell, guy.",
-      "You smell worse than my mom.",
-      "I'm going to kill your family...with kindness."
+      "Hope you have a great day",
+      "Good luck on your test!"
     ]
   end
 
@@ -43,7 +57,9 @@ class Message < ActiveRecord::Base
       "friend",
       "school",
       "teacher",
-      "system"
+      "system",
+      "le_admin",
+      "food_fight"
     ]
   end
 end

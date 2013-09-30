@@ -1,15 +1,14 @@
-.side-art-teachers
 .sir-francis-bacon-how-it-works-teachers
-.white-board
 .intro-text
-.join-now-how-it-works-teachers
-.others-say-how-it-works-teachers
-.attention-teachers
-.step1-slide
-.step2-slide
-.step3-slide
-.step4-slide
-%ul.how-nav
+.white-board
+  = link_to "", new_teachers_path, class: 'join-now-how-it-works-teachers'
+  .others-say-how-it-works-teachers
+  .attention-teachers
+  .step1-slide
+  .step2-slide
+  .step3-slide
+  .step4-slide
+%ul.how-nav.non-resp
   %li
     %span= link_to "Attention", "#", class:'attention'
   %li
@@ -21,3 +20,11 @@
   %li
     %span= link_to "Step 4", "#", class:'step-4'
 
+.nav-container
+  %ul.stickies-nav
+    %li
+      %span= link_to "", page_path('not_logged_in_how_it_works'), class: 'students-stickie stickies_nav-students_green_nav_stickie'
+    %li
+      %span= link_to "", parent_page_path('not_logged_in_how_it_works'), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
+    %li
+      %span= link_to "", '#', class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie active'

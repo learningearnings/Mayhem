@@ -21,7 +21,7 @@
 }
 
 .message {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
   .image {
     display: inline-block;
     vertical-align: top;
@@ -65,3 +65,54 @@
     margin-bottom: 2em;
   }
 }
+
+ul.nav-group{
+  margin: 0;
+  padding: 0;
+  li{
+    list-style-type: none;
+    margin: .5em 0;
+  }
+}
+
+.hover-picker{
+  position: relative;
+  vertical-align: top;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border: 1px solid #ddd;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  cursor: pointer;
+  @include box-shadow(rgba(black, 0.4) 0 0 5px);
+  &:hover {
+    @include box-shadow(rgba(black, 0.6) 0 0 5px);
+  }
+  &.active {
+    border-color: red;
+  }
+  .image_wrapper {
+    text-align: center;
+  }
+  .description {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    background-color: #eee;
+    min-height: 40px;
+    width: 100%;
+  }
+}
+
+dl.balance {
+  font-size: 150%;
+  dt {
+    display: inline-block;
+  }
+  dd {
+    display: inline-block;
+  }
+}
+

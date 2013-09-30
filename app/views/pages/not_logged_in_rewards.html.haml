@@ -1,12 +1,25 @@
-.side-art
 .bacon
 .corkboard
+  .rewards-intro
+
 .rewards-highlights-small
+  %ul
+    - Spree::Product.visible_to_all.each do |product|
+      - if product
+        %li{:id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+          .product-image
+            - product_image_url = product.images[0].attachment.url(:product)
+            = resized_image(product_image_url)
+          .product-details
+            = truncate("#{product.name}", :length => 50)
+
 .reward-of-the-week
-.rewards-intro
+
 .nav-container-corkboard
   %ul.stickies-nav
     %li
-      %span= link_to "", "not_logged_in_rewards_parents", class: 'btn parents-stickie stickies_nav-parents_orange_nav_stickie'
+      %span= link_to "", '#', class: 'students-stickie stickies_nav-students_green_nav_stickie active'
     %li
-      %span= link_to "", "not_logged_in_rewards_teachers", class: 'btn teachers-stickie stickies_nav-teachers_blue_nav_stickie'
+      %span= link_to "", parent_page_path("not_logged_in_rewards"), class: 'parents-stickie stickies_nav-parents_orange_nav_stickie'
+    %li
+      %span= link_to "", teacher_page_path("not_logged_in_rewards"), class: 'teachers-stickie stickies_nav-teachers_blue_nav_stickie'
