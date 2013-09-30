@@ -38,9 +38,13 @@ class StudentTransferCommand < ActiveModelCommand
   end
 
   def execute!
-    success = credit_manager.send(transfer_method, student, amount)
-    if success
-      on_success.call()
+    if amount > 0
+      success = credit_manager.send(transfer_method, student, amount)
+      if success
+        on_success.call()
+      else
+        on_failure.call()
+      end
     else
       on_failure.call()
     end

@@ -47,7 +47,6 @@ gem 'high_voltage'
 
 # haml is a templating language we use extensively / exclusively on this project
 gem 'haml-rails', '~> 0.3.5'
-gem 'haml', '3.1.8'
 
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'
@@ -99,7 +98,8 @@ gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails',   '~> 3.2.6'
+  gem 'sass', '~> 3.2.10'
   gem 'compass-rails'
   gem 'animation'
   gem 'coffee-rails', '~> 3.2.1'

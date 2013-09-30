@@ -394,8 +394,7 @@ GEM
     rubyzip (0.9.9)
     rvm-capistrano (1.5.0)
       capistrano (>= 2.15.4)
-    sass (3.3.0.alpha.201)
-      listen (~> 0.7)
+    sass (3.2.11)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -534,7 +533,6 @@ DEPENDENCIES
   guard (~> 1.2.3)
   guard-minitest (~> 0.5.0)
   guard-spinach (~> 0.0.2)
-  haml (= 3.1.8)
   haml-rails (~> 0.3.5)
   has_scope
   hashie
@@ -569,7 +567,8 @@ DEPENDENCIES
   roo (= 1.12.1)
   rubyzip (= 0.9.9)
   rvm-capistrano
-  sass-rails (~> 3.2.3)
+  sass (~> 3.2.10)
+  sass-rails (~> 3.2.6)
   simple_form
   simplecov (~> 0.6.4)
   simplecov-rcov (~> 0.2.3)
