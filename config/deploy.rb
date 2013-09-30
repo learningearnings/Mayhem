@@ -35,6 +35,7 @@ set :unicorn_bin, "unicorn_rails"
 # server details
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
+ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "learning_earnings_prod")]
 set :deploy_to, "/home/deployer/apps/#{application}"
 set :user, "deployer"
 set :use_sudo, false

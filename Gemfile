@@ -62,6 +62,7 @@ gem 'hashie'
 
 # A simple date validator for rails 3
 gem 'date_validator'
+gem "just-datetime-picker"
 
 # Allows easily modifying models provided earlier in the stack without causing
 # any grief
@@ -124,6 +125,8 @@ group :development do
   gem 'capistrano', '~> 2.15.5'
   gem 'rvm-capistrano'
   gem 'capistrano-unicorn', require: false
+  # Generate ERD diagrams from your models
+  gem 'rails-erd'
 end
 
 group :test do

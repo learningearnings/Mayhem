@@ -1,3 +1,4 @@
+$gray: #ddd;
 // SASS variable overrides must be declared before loading up Active Admin's styles.
 //
 // To view the variables that Active Admin provides, take a look at
@@ -11,6 +12,7 @@
 /*= require chosen */
 @import "chosen";
 @import "active_admin/extra/base";
+@import "just_datetime_picker/base";
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -36,5 +38,10 @@
 body.active_admin {
   #title_bar, #active_admin_content {
     max-width: 100%;
+  }
+  thead {
+    th {
+      background-color: $gray;
+    }
   }
 }

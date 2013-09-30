@@ -81,6 +81,14 @@ class School < ActiveRecord::Base
     self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
   end
 
+  def self.grade_range
+    0..12
+  end
+
+  def self.grades
+    self.grade_range.collect do |g| [School::GRADE_NAMES[g], g] end
+  end
+
   # Relationships
   def person_school_links(status = :status_active)
     PersonSchoolLink.where(school_id: self.id).send(status)
@@ -139,7 +147,7 @@ class School < ActiveRecord::Base
   end
 
   def name_and_location
-    [name, first_address.try(:city_and_state)].join(", ")
+    [name, city, state.name].join(", ").truncate(28)
   end
 
   def first_address

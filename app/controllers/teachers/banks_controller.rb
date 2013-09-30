@@ -3,7 +3,7 @@ module Teachers
     include Mixins::Banks
 
     def on_success(obj = nil)
-      flash[:notice] = 'Bucks created!'
+      flash[:notice] = 'Bucks sent!'
       if obj.nil? || !obj.is_a?(BuckBatch)
         redirect_to teachers_bank_path
       else
