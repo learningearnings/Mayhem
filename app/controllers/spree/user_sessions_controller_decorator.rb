@@ -21,4 +21,8 @@ Spree::UserSessionsController.class_eval do
 #      render :new
     end
   end
+ 
+  def new
+    redirect_to main_app.page_path('home')
+  end 
 end
