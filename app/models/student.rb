@@ -18,6 +18,7 @@ class Student < Person
     where(grade: grade_index)
   }
 
+  after_initialize :set_status_to_active
   after_create :create_locker
 
   def main_account(s)
@@ -145,5 +146,9 @@ class Student < Person
     locker = Locker.new
     locker.person = self
     locker.save
+  end
+
+  def set_status_to_active
+    self.status = 'active' # Students should default to active
   end
 end
