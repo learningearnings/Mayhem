@@ -9,8 +9,9 @@
       .row
         .span4
           = render :partial => "moniker", :locals => { :f => f }
-          = f.label :email
-          = f.text_field :email
+          - if !current_person.is_a? Student
+            = f.label :email
+            = f.text_field :email
         .span4
           = f.label :password
           = f.password_field :password

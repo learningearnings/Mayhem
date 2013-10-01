@@ -568,7 +568,7 @@ DEPENDENCIES
   rubyzip (= 0.9.9)
   rvm-capistrano
   sass (~> 3.2.11)
-  sass-rails (~> 3.2.3)
+  sass-rails (~> 3.2.6)
   simple_form
   simplecov (~> 0.6.4)
   simplecov-rcov (~> 0.2.3)

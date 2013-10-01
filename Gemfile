@@ -98,7 +98,7 @@ gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails',   '~> 3.2.6'
   gem 'sass', '~> 3.2.11'
   gem 'compass-rails'
   gem 'animation'
