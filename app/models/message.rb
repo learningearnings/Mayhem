@@ -40,10 +40,15 @@ class Message < ActiveRecord::Base
     state :hidden
   end
 
-  # Describe available canned messages here
   def unread?
     self.status == 'unread'
   end
+
+  def replyable?
+    (category != "system") && (otu_codes.empty?)
+  end
+
+  # Describe available canned messages here
   def self.canned_messages
     [
       "You're pretty swell, guy.",
