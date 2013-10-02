@@ -71,13 +71,19 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       ### TODO - Is this legit?
       retail_product.taxons = @master_product.taxons
       if @master_product && @master_product.master && @master_product.master.images[0]
-        new_image = open(@master_product.master.images[0].attachment.url)
+        begin
+          new_image = open(@master_product.master.images[0].attachment.url)
+        rescue
+          new_image = nil
+        end
 #       def new_image.original_filename; base_uri.path.split('/').last; end
         new_spree_image = spree_image_class.new({:viewable_id => retail_product.master.id,
                                                   :viewable_type => 'Spree::Variant',
                                                   :alt => "position 1",
                                                   :position => 1})
-        new_spree_image.attachment = new_image
+        if(new_image)
+          new_spree_image.attachment = new_image
+        end
         new_spree_image.save
         retail_product.master.images << new_spree_image
       end

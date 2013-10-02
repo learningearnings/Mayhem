@@ -9,7 +9,7 @@
   - if auction.current_bid
     %p
     Current Bid:
-    %span.current_bid= auction.current_bid
+    %span.current_bid= number_with_precision(auction.current_bid, precision: 2)
   - if auction.current_leader.present?
     %p
     High Bidder:
@@ -21,6 +21,6 @@
   - if auction.current_bid == 0.00
     %p
     Starting Bid:
-    %span.current_bid= auction.starting_bid
+    %span.current_bid= number_with_precision(auction.starting_bid, precision: 2)
 - if current_person.is_a?(SchoolAdmin) && auction.created_locally?
   = link_to 'Cancel Auction', cancel_school_auction_path(auction)

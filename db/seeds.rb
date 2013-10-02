@@ -239,7 +239,7 @@ if Rails.env.development? || Rails.env.production?
   Plutus::Liability.create(name: @credit_manager.game_account_name)
 
   # Prepare a school
-  @school = FactoryGirl.create(:school, :address => FactoryGirl.create(:address, :state_id => State.find_by_abbr('AL').id))
+  @school = FactoryGirl.create(:school)
 
   # Create a school_admin
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))

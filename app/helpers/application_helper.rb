@@ -34,7 +34,6 @@ module ApplicationHelper
     school.nil? ? "Unknown School" : school.name
   end
 
-
   def buck_link(buck)
     link_to 'Redeem Buck', "/bank/redeem_bucks", buck
   end
