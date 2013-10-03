@@ -6,12 +6,10 @@
     = link_to(product.name ,edit_teachers_reward_path(product.id))
     .price.selling{:itemprop => "price"}= product.price.to_s + " each"
   .resp-product-classrooms
-    - if product.filter.classrooms.count > 0
-      - if product.filter.classrooms.count > 1
-        = "#{product.filter.classrooms.count} Classrooms"
-      - else
-        %span{:title => product.filter.classrooms[0].teachers.join(',')}
-          = product.filter.classrooms[0].name
+    - if product.classrooms.present? && product.classrooms.count > 1
+      = "#{product.classrooms.count} Classrooms"
+    -elsif product.classrooms.present?
+      = "#{product.classrooms.count} Classroom"
     - else
       Whole School
   .resp-product-moreinfo

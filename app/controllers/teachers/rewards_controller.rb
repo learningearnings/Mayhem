@@ -57,7 +57,7 @@ module Teachers
         else
           format.html { render action: "new" }
           format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
-      end
+        end
       end
     end
 
