@@ -8,6 +8,8 @@ module Teachers
     def create_student
       @student = Student.new(params[:student])
       if @student.save
+        @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
+        @student.school = current_school
         flash[:notice] = 'Student created!'
         redirect_to teachers_dashboard_path
       else
