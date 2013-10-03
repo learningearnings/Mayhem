@@ -100,6 +100,8 @@ group :assets do
   gem 'chosen-rails'
   gem 'sass-rails',   '~> 3.2.6'
   gem 'sass', '~> 3.2.10'
+  #gem 'sass-rails',   '~> 3.2.3'
+  #gem 'sass', '~> 3.2.11'
   gem 'compass-rails'
   gem 'animation'
   gem 'coffee-rails', '~> 3.2.1'

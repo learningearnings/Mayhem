@@ -1974,7 +1974,7 @@ hr {
 }
 
 .numeric {
-    text-align: right;
+  text-align: right;
 }
 
 #send-message-modal {
@@ -1993,4 +1993,8 @@ hr {
   input.amount {
     width: 100px;
   }
+}
+
+dl.details {
+  font-size: 150%;
 }
