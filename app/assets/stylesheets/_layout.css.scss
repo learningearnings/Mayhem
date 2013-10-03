@@ -612,13 +612,13 @@ html.resp, body.resp {
 }
 
 .primary-nav .rewards:hover {
-  background-image: url(asset_path('locker_selected.png', image));
+  background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #b611b0;
 }
 
 .rewards-selected {
-  background-image: url(asset_path('locker_selected.png', image));
+  background-image: url(asset_path('home_selected.png', image));
   background-repeat: no-repeat;
   color: #b611b0;
 }
