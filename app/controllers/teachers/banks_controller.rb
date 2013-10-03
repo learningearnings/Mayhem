@@ -3,7 +3,7 @@ module Teachers
     include Mixins::Banks
 
     def on_success(obj = nil)
-      flash[:notice] = 'Bucks sent!'
+      flash[:notice] = 'Credits sent!'
       if obj.nil? || !obj.is_a?(BuckBatch)
         redirect_to teachers_bank_path
       else
@@ -12,7 +12,7 @@ module Teachers
     end
 
     def on_failure
-      flash[:error] = 'You do not have enough bucks.'
+      flash[:error] = 'You do not have enough credits.'
       redirect_to :back
     end
 
