@@ -14,7 +14,7 @@ class BanksController < LoggedInController
       if !otu_code.expired?
         @bank = Bank.new
         @bank.claim_bucks(person, otu_code)
-        flash[:notice] = 'Bucks claimed!'
+        flash[:notice] = 'Credits claimed!'
         redirect_to bank_path
       else
         flash[:error] = 'Code Expired.'
