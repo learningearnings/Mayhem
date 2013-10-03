@@ -52,6 +52,9 @@ Leror::Application.routes.draw do
     get :delete_student_school_link, :controller => :students, :action => :delete_school_link
     get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
+    post 'import_students' => 'imports#import_students', as: :import_students
+    post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+ 
   end
 
   mount Ckeditor::Engine => '/ckeditor'
