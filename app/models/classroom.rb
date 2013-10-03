@@ -11,6 +11,10 @@ class Classroom < ActiveRecord::Base
   has_many :classroom_filter_links, :inverse_of => :classrooms
   has_many :filters, :through => :classroom_filter_links
 
+  has_many :classroom_product_links
+  has_many :products, :through => :classroom_product_links, :class_name => "Spree::Product", :source => :spree_product
+
+
   attr_accessible :name, :status, :school_id, :legacy_classroom_id
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :created_at, :as => :admin
 

@@ -5,6 +5,9 @@ Spree::ProductsController.class_eval do
     temp_params = params
     temp_params[:filters] = session[:filters]
     temp_params[:current_school] = current_school
+    if current_person.is_a?(Student) && current_person.classrooms.present?
+      temp_params[:classrooms] = current_person.classrooms.map(&:id)
+    end
     @searcher = Spree::Search::Filter.new(temp_params)
     @products = @searcher.retrieve_products
     if current_user.person.is_a?(SchoolAdmin) && params[:current_store_id]

@@ -86,6 +86,7 @@ class ClassroomsController < LoggedInController
     @classroom = Classroom.find(params[:classroom_id])
     @student = Student.new(params[:student])
     if @student.save
+      @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
       psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(@student.id, current_school.id)
       pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
       pscl.activate

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130925212806) do
+ActiveRecord::Schema.define(:version => 20131001185653) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -137,6 +137,13 @@ ActiveRecord::Schema.define(:version => 20130925212806) do
 
   add_index "classroom_filter_links", ["filter_id", "classroom_id"], :name => "index_classroom_filter_links_on_filter_id_and_classroom_id", :unique => true
 
+  create_table "classroom_product_links", :force => true do |t|
+    t.integer  "classroom_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
   create_table "classrooms", :force => true do |t|
     t.string   "name"
     t.string   "status"
@@ -201,9 +208,9 @@ ActiveRecord::Schema.define(:version => 20130925212806) do
 
   create_table "foods", :force => true do |t|
     t.string   "name"
+    t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.string   "image_uid"
   end
 
   create_table "games_answers", :force => true do |t|

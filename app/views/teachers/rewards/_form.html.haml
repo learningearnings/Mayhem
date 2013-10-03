@@ -15,14 +15,7 @@
       .form-inputs.controls-row.span6.clearfix
         %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
 
-
-  %h3
-    Select Classrooms for your reward
-  .row-fluid.controls-row
-    .classrooms
-      - f.collection_check_boxes(:classrooms, [[ 0,"Whole School"]], :first, :last) do |b|
-        %div.classroom-checkbox
-          = b.label(:class => "inline") { b.check_box(:class => 'school-checkbox inline') + b.text}
+  %h3 Select Classrooms for your reward
   .row-fluid.controls-row
     #classrooms.classrooms
       - f.collection_check_boxes :classrooms, current_person.classrooms, :id, :name do |b|

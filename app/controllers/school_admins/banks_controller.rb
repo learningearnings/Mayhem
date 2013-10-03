@@ -6,7 +6,7 @@ module SchoolAdmins
     end
 
     def on_success(batch_id = nil)
-      flash[:notice] = 'Bucks sent!'
+      flash[:notice] = 'Credits sent!'
       if batch_id.nil?
         redirect_to school_admins_bank_path
       else
@@ -15,7 +15,7 @@ module SchoolAdmins
     end
 
     def on_failure
-      flash[:error] = 'You do not have enough bucks.'
+      flash[:error] = 'You do not have enough credits.'
       redirect_to :back
     end
 

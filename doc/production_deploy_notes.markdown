@@ -3,6 +3,15 @@
 ## Initial setup
 Create a new database for the day's import
 
+```
+postgres=# CREATE DATABASE learning_earnings_production_10_1;
+CREATE DATABASE
+postgres=# GRANT ALL PRIVILEGES ON DATABASE learning_earnings_production_10_1 to db_user;
+GRANT
+```
+
+Seed:
+
 ```bash
 RAILS_ENV=production bundle exec rake db:migrate db:seed
 ```

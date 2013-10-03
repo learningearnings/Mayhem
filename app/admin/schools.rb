@@ -1,5 +1,6 @@
 ActiveAdmin.register School do
 
+  filter :name
   index do
     column :id
     column :avatar do |school|

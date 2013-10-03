@@ -9,22 +9,19 @@ module Teachers
     validates :name, presence: true
     validates :price, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
-    validates :classrooms, presence: true
 
-    attr_accessible :name, :price, :classrooms, :image, :end_date, :start_date, :on_hand, :category, :school_id, :classroom_id
+    attr_accessible :name, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id
 
-    attr_accessor :id, :name, :price, :classrooms,:image, :end_date, :start_date, :spree_product_id
+    attr_accessor :id, :name, :price, :classrooms,:image, :spree_product_id
     attr_accessor :on_hand, :spree_product, :teacher, :school, :category, :school_id, :classroom_id
 
     def initialize params = {}
       @name = params[:name] if params[:name]
       @price = params[:price] if params[:price]
       @on_hand = params[:on_hand] if params[:on_hand]
-      @start_date = params[:start_date] if params[:start_date]
-      @end_date = params[:end_date] if params[:end_date]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
-      @classrooms = params[:classrooms].collect{|c| c.to_i} if params[:classrooms] && params[:classrooms].is_a?(Array)
+      @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
     end
 
     def spree_product_id=(id)
@@ -51,14 +48,9 @@ module Teachers
     def spree_product=(p)
       @name = p.name
       @price = p.price.to_int
-      @start_date = p.available_on
-      @end_date = p.deleted_at
       @on_hand = p.on_hand
-      @classrooms = p.filter.classrooms.all.collect {|c| [c.id]}.uniq.flatten
-      if !@classrooms.any?
-        @classrooms = [0]
-      end
       # set classrooms to the classrooms from the filter...
+      
     end
 
     def update(params)
@@ -67,9 +59,8 @@ module Teachers
       p.name = @name = reward_params[:name]
       p.price = @price = reward_params[:price]
       p.on_hand = @on_hand = reward_params[:on_hand]
-      @classrooms = reward_params[:classrooms]
-      p.available_on = @start_date = reward_params[:start_date] if reward_params[:start_date]
-      p.deleted_on = @end_date = reward_params[:end_date] if reward_params[:end_date]
+      # update classrooms
+      
       p.save
     end
 
@@ -85,16 +76,13 @@ module Teachers
       @name = params[:name] if params[:name]
       @price = params[:price] if params[:price]
       @on_hand = params[:on_hand] if params[:on_hand]
-      @start_date = params[:start_date] if params[:start_date]
-      @end_date = params[:end_date] if params[:end_date]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
-      @classrooms = params[:classrooms].collect{|c| c.to_i} if params[:classrooms] && params[:classrooms].is_a?(Array)
+      @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
       if valid?
         self.save
       end
     end
-
 
     def save
       return valid? if !valid?
@@ -106,37 +94,37 @@ module Teachers
         p = Spree::Product.find(@spree_product_id)
         sppl = SpreeProductPersonLink.find_by_product_id(p.id)
       end
+
       p.name = @name
       p.price = @price
       p.on_hand = @on_hand
-      p.available_on = @start_date if @start_date
-      p.deleted_at = @end_date if @end_date
-      p.save
+      p.available_on = Time.now
+      p.store_ids = [@school.store.id]
+      p.fulfillment_type = 'local'
 
       if @image.present?
         p.images.destroy_all if p.images.present?
         p.images.create(attachment: @image)
       end
 
-      p.set_property('reward_type','local')
       p.save
+      p.set_property('reward_type', 'local')
       p.taxons = Spree::Taxon.where(:id => @category)
+      p.save
 
-      fc = FilterConditions.new
-      if @classrooms.count == 1 && @classrooms[0] == 0  #whole school
-        fc.schools << @school
-      elsif classrooms.any?
-        fc.classrooms << @classrooms if @classrooms.any?  #error otherwise
-      end
-      ff = FilterFactory.new
-      filter = ff.find_or_create_filter(fc)
-      spfl = SpreeProductFilterLink.find_by_product_id(@spree_product_id)
-      if spfl.nil?
-        spfl = SpreeProductFilterLink.new(:filter_id => 0, :product_id => p.id)
-      end
 
-      spfl.filter_id = filter.id if spfl
-      spfl.save
+      if @classrooms.present?
+        p.school_product_links.delete_all
+        p.classroom_product_links.delete_all
+        @classrooms.each do |classroom|
+          ClassroomProductLink.create(spree_product_id: p.id, classroom_id: classroom.id)
+        end
+      else
+        p.classroom_product_links.delete_all
+        p.school_product_links.delete_all
+        SchoolProductLink.create(school_id: @school.id, spree_product_id: p.id)
+      end
+      
       sppl.product_id = p.id
       sppl.save
     end

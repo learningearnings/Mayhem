@@ -17,6 +17,10 @@ Spree::Product.class_eval do
   has_many :school_product_links, :foreign_key => :spree_product_id
   has_many :schools, :through => :school_product_links
 
+  has_many :classroom_product_links, :foreign_key => :spree_product_id
+  has_many :classrooms, :through => :classroom_product_links
+
+
   #   # add_search_scope :with_property_value do |property, value|
   #   #   properties = Spree::Property.table_name
   #   #   conditions = case property
@@ -43,6 +47,7 @@ Spree::Product.class_eval do
   scope :shipped_for_school_inventory, where(:fulfillment_type => "Shipped for School Inventory")
   scope :not_shipped_for_school_inventory, where("fulfillment_type != ?", "Shipped for School Inventory")
   scope :visible_to_all, where(:visible_to_all => true)
+  scope :for_classroom, lambda {|classroom| joins({:classrooms => [:classroom_product_links]}).where("classroom_product_links.classroom_id = ?", classroom.id) }
 
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})
