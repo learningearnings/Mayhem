@@ -127,9 +127,9 @@ class Student < Person
   def create_user
     unless self.user
       if username.present?
-        user = Spree::User.create(:username => username, :password => password, :password_confirmation => password_confirmation, :email => email)
+        user = Spree::User.create(:username => username, :password => password, :password_confirmation => password_confirmation)
       else
-        user = Spree::User.create(:email => "student#{self.id}@example.com", :password => 'test123', :password_confirmation => 'test123')
+        user = Spree::User.create(:username => "student#{self.id}", :password => 'test123', :password_confirmation => 'test123')
       end
       user.person_id = self.id
       user.save

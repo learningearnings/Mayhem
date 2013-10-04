@@ -133,13 +133,21 @@ FactoryGirl.define do
     timezone "Central Time (US & Canada)"
     gmt_offset "6.0"
     distribution_model "Delivery"
-#    address
     address1 "123 Foo Street"
     address2 "Unit 2"
     city "Birmingham"
-    state_id 1
+    if State.find 1
+      state_id 1
+    else
+      state_id {FactoryGirl.create(:state).id}
+    end
     zip "35111"
     ad_profile 1
+  end
+
+  factory :state do
+    abbr 'AL'
+    name 'Alabama'
   end
 
   factory :classroom do
@@ -151,7 +159,7 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
-    state_id 1
+    state_id {FactoryGirl.create(:state).id}
     #association :addressable
   end
 

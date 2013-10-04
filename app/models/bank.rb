@@ -98,11 +98,11 @@ class Bank
   end
 
   def send_message(person, student, buck)
-    body = "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
+    body = "Click here to claim your award: #{link_to 'Claim Credits', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
 
     message_params = {from: person,
                          to: student,
-                         subject: "You've been awarded LE Bucks",
+                         subject: "You've been awarded LE Credits",
                          body: body,
                          category: 'teacher',
                          buck_id: buck.id}

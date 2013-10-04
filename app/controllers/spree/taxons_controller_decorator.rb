@@ -7,8 +7,10 @@ Spree::TaxonsController.class_eval do
     with_filters_params = params
     with_filters_params[:searcher_current_person] = current_person
     with_filters_params[:current_school] = current_school
-    with_filters_params[:filters] = session[:filters] || [1]
     with_filters_params[:taxon] = @taxon.id
+    if current_person.is_a?(Student) && current_person.classrooms.present?
+      with_filters_params[:classrooms] = current_person.classrooms.map(&:id)
+    end
     searcher = Spree::Config.searcher_class.new(with_filters_params)
  
     #@searcher = Spree::Config.searcher_class.new(params.merge(:taxon => @taxon.id))
