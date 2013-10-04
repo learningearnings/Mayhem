@@ -33,9 +33,9 @@ module CommonPersonConfig
           end
 
           f.input :username
-          if !f.object.is_a?(Student)
+          #if !f.object.is_a?(Student)
             f.input :email
-          end
+          #end
           f.inputs :password,
             :password_confirmation,
             :name => "Spree::User",
@@ -96,8 +96,11 @@ module CommonPersonConfig
         elsif person.schools.include?(school)
           flash[:error] = "#{person.name} is already associated with #{school.name}"
         else
-          person.school = school
-          flash[:notice] = "Associated #{person.name} with #{school.name}"
+          if PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: person.id, school_id: school.id).valid?
+            flash[:notice] = "Associated #{person.name} with #{school.name}"
+          else
+            flash[:error] = "Username already associated with this school."
+          end
         end
         redirect_to :action => :show
       end

@@ -137,9 +137,14 @@ FactoryGirl.define do
     address1 "123 Foo Street"
     address2 "Unit 2"
     city "Birmingham"
-    state_id 1
+    state_id {FactoryGirl.create(:state).id}
     zip "35111"
     ad_profile 1
+  end
+
+  factory :state do
+    abbr 'AL'
+    name 'Alabama'
   end
 
   factory :classroom do
@@ -151,7 +156,7 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
-    state_id 1
+    state_id {FactoryGirl.create(:state).id}
     #association :addressable
   end
 
