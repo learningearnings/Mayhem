@@ -54,7 +54,7 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
- 
+    match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
   end
 
   mount Ckeditor::Engine => '/ckeditor'

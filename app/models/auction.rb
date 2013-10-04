@@ -66,6 +66,10 @@ class Auction < ActiveRecord::Base
     update_attribute(:notified, true)
   end
 
+  def fulfill!
+    update_attribute(:fulfilled, true)
+  end
+
   def status
     return 'active' if active?
     return 'ended' if ended?
