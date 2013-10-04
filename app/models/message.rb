@@ -26,7 +26,7 @@ class Message < ActiveRecord::Base
   scope :from_teacher, where(category: 'teacher')
   scope :from_school,  where(category: 'school')
   scope :for_admin,    where(category: 'le_admin')
-  scope :from_food_fight,  where(category: 'food_fight')
+  scope :from_games,  where(category: 'games')
 
   state_machine :status, initial: :unread do
     event :read! do
@@ -64,7 +64,7 @@ class Message < ActiveRecord::Base
       "teacher",
       "system",
       "le_admin",
-      "food_fight"
+      "games"
     ]
   end
 end

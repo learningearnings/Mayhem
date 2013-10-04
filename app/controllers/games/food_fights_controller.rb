@@ -38,7 +38,7 @@ module Games
       @match = FoodFightMatch.find(params[:match_id])
       @link = FoodPersonLink.create(:food_id => @food.id, :thrown_by_id => current_person.id, :person_id => @match.loser.person.id)
       @match.update_attributes(:food_person_link_id => @link.id)
-      FoodFightMessageStudentCommand.new(:to_id => @match.loser.person.id, :from_id => @match.winner.person.id, :body => "#{@match.winner.person.name} has thrown food at you.  <a href='/food_hit/#{@match.id}'>Click here for a rematch!</a>", :subject => 'Food Fight Match').execute!
+      GamesMessageStudentCommand.new(:to_id => @match.loser.person.id, :from_id => @match.winner.person.id, :body => "#{@match.winner.person.name} has thrown food at you.  <a href='/food_hit/#{@match.id}'>Click here for a rematch!</a>", :subject => 'Food Fight Match').execute!
       redirect_to games_food_fight_path, flash: { success: "Food Thrown!" }
     end
 

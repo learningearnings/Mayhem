@@ -26,8 +26,8 @@ class MessagesController < LoggedInController
     @messages.map{|x| x.read!}
   end
 
-  def food_fight_messages
-    @messages = @received_messages.from_food_fight.page params[:page]
+  def games_messages
+    @messages = @received_messages.from_games.page params[:page]
     @messages.map{|x| x.read!}
   end
 
