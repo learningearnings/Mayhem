@@ -2,6 +2,7 @@ ActiveAdmin.register Auction do
   scope :active
   scope :ended
   scope :upcoming
+  scope :unfulfilled
 
   controller do
     skip_before_filter :add_current_store_id_to_params

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131004015303) do
+ActiveRecord::Schema.define(:version => 20131004152316) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(:version => 20131004015303) do
     t.integer  "max_grade"
     t.boolean  "created_locally"
     t.boolean  "notified",                                       :default => false
+    t.boolean  "fulfilled",                                      :default => false
   end
 
   create_table "avatars", :force => true do |t|

@@ -20,6 +20,7 @@ class Auction < ActiveRecord::Base
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :not_notified, where("notified IS NOT TRUE")
+  scope :unfulfilled, where("fulfilled IS NOT TRUE")
   scope :ended,  where("NOW() >= end_date")
   scope :upcoming,  where("NOW() < start_date")
   scope :for_school,   lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
@@ -59,6 +60,10 @@ class Auction < ActiveRecord::Base
 
   def upcoming?
     start_date > Time.zone.now
+  end
+
+  def notify!
+    update_attribute(:notified, true)
   end
 
   def status

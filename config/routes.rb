@@ -122,7 +122,7 @@ Leror::Application.routes.draw do
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
   match "inbox/school_messages" => 'messages#school_messages', :as => 'school_messages'
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
-  match "inbox/food_fight_messages" => 'messages#food_fight_messages', :as => 'food_fight_messages'
+  match "inbox/games_messages" => 'messages#games_messages', :as => 'games_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
