@@ -42,7 +42,6 @@ class Person < ActiveRecord::Base
 
   has_many :food_fight_players
 
-
   has_many :votes
 
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
@@ -53,6 +52,8 @@ class Person < ActiveRecord::Base
       .merge(PersonAccountLink.with_main_account)
       .group([:people => :id, :spree_users => :id]) }
   scope :with_transactions_since, lambda { |startdate| with_transactions_between(startdate,1.second.from_now) }
+  scope :with_username, lambda{|username| joins(:spree_user).where("spree_users.username = ?", username) }
+  scope :with_email,    lambda{|email| joins(:spree_user).where("spree_users.email = ?", email) }
 
   # use the above like this (from rails c)
   # 1.9.3p327 :029 > sch = School.find(6)
@@ -66,8 +67,6 @@ class Person < ActiveRecord::Base
   # 1.9.3p327 :032 > student.num_transactions
   #  => "3" 
   # 1.9.3p327 :033 > 
-
-
 
   before_save :ensure_spree_user
   after_destroy :delete_user
@@ -111,7 +110,7 @@ class Person < ActiveRecord::Base
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
   # Relationships
-
+  
   def ensure_spree_user
     self.user = Spree::User.new unless user
   end

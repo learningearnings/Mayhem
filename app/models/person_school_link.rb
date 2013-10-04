@@ -22,6 +22,8 @@ class PersonSchoolLink < ActiveRecord::Base
   attr_accessible :person_id, :school_id, :status, :person, :school
   validates_presence_of :person, :school
   validate :validate_unique_with_status
+  #validate :email_taken?
+  validate :username_taken?
 
   def link(d)
     if d && d.is_a?(Hash)
@@ -66,11 +68,29 @@ class PersonSchoolLink < ActiveRecord::Base
     end
   end
 
-
-
   ################### Validations ########################
+  #def email_taken?
+  #  if person.email.present?
+  #    if school.teachers.with_email(person.email).present?
+  #      errors.add(:base, "Email already assigned for this school.")
+  #    end
+  #    if school.students.with_email(person.email).present?
+  #      errors.add(:base, "Email already assigned for this school.")
+  #    end
+  #  else
+  #    return false
+  #  end
+  #end
 
-  #
+  def username_taken?
+    if school.teachers.with_username(person.username).present?
+      errors.add(:status, "Username already assigned for this school.")
+    end
+    if school.students.with_username(person.username).present?
+      errors.add(:status, "Username already assigned for this school.")
+    end
+  end
+
   # There can be an unlimited number of person_id -> school_id combinations that *don't* have status == "active"
   # but only one active one for a person -> school combination
   def validate_unique_with_status
@@ -79,7 +99,7 @@ class PersonSchoolLink < ActiveRecord::Base
       psl = psl.where("id != #{self.id}")
     end
     if psl.length > 0
-      errors.add(:status, "Person is already associated with this school")
+      errors.add(:status, "Username already associated with this school.")
     end
   end
 end
