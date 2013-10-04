@@ -12,7 +12,7 @@ module Teachers
 
     attr_accessible :name, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id
 
-    attr_accessor :id, :name, :price, :classrooms,:image, :spree_product_id
+    attr_accessor :id, :name, :price, :classrooms, :image, :spree_product_id
     attr_accessor :on_hand, :spree_product, :teacher, :school, :category, :school_id, :classroom_id
 
     def initialize params = {}
@@ -50,7 +50,6 @@ module Teachers
       @price = p.price.to_int
       @on_hand = p.on_hand
       # set classrooms to the classrooms from the filter...
-      
     end
 
     def update(params)
@@ -60,7 +59,6 @@ module Teachers
       p.price = @price = reward_params[:price]
       p.on_hand = @on_hand = reward_params[:on_hand]
       # update classrooms
-      
       p.save
     end
 
@@ -85,7 +83,7 @@ module Teachers
     end
 
     def save
-      return valid? if !valid?
+      return false unless valid?
 
       if @spree_product_id.nil?
         p = Spree::Product.new
@@ -112,7 +110,6 @@ module Teachers
       p.taxons = Spree::Taxon.where(:id => @category)
       p.save
 
-
       if @classrooms.present?
         p.school_product_links.delete_all
         p.classroom_product_links.delete_all
@@ -124,11 +121,9 @@ module Teachers
         p.school_product_links.delete_all
         SchoolProductLink.create(school_id: @school.id, spree_product_id: p.id)
       end
-      
+
       sppl.product_id = p.id
       sppl.save
     end
-
-
   end
 end

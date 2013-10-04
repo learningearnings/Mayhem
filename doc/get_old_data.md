@@ -108,3 +108,36 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 ```
+
+# Rewards LE shipped to schools that are on-site at the school (schoolID)
+SELECT 'school_id', 'reward_detail_id', 'reward_id', 'reward_title', 'quantity'
+UNION ALL
+SELECT rd.schoolID, rd.rewarddetailID, r.rewardID, r.rewardtitle, rd.rewardquantity 
+FROM tbl_rewarddetails rd 
+JOIN tbl_rewards r ON rd.rewardid = r.rewardid 
+WHERE rd.rewardquantity > 0 
+into outfile '/tmp/rewards_already_shipped_to_schools.csv'
+fields terminated by ','
+optionally enclosed by '"'
+escaped by '\\'
+lines terminated by '\n';
+
+# Local rewards created by School Admins or Teachers for the whole School or
+# just 1 Classroom
+SELECT 'reward_id', 'reward', 'category', 'quantity', 'user_id', 'school_id', 'classroom_id'
+UNION ALL
+SELECT rl.id, rl.name 'Reward', lrc.name as 'Category', rl.quantity, rl.userid AS 'Teacher', tfs.schoolid, tfc.classroomid
+FROM tbl_rewardlocals rl
+JOIN tbl_rewards r ON rl.rewardid = r.rewardid
+JOIN tbl_localrewardcategories lrc ON rl.localrewardcategoryID = lrc.id
+JOIN tbl_filters tf ON rl.filterid = tf.id
+JOIN tbl_filterclassrooms tfc on tfc.filterid = tf.id
+JOIN tbl_filterstates tfst on tfst.filterid = tf.id
+JOIN tbl_filterschools tfs on tfs.filterid = tf.id
+JOIN tbl_filterusertypes tfut on tfut.filterid = tf.id
+WHERE rl.quantity > 0 
+into outfile '/tmp/local_rewards.csv'
+fields terminated by ','
+optionally enclosed by '"'
+escaped by '\\'
+lines terminated by '\n';
