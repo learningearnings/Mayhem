@@ -271,8 +271,6 @@ if Rails.env.development? || Rails.env.production?
   @student1.user.password_confirmation = 'spree123'
   @student2.user.password = 'spree123'
   @student2.user.password_confirmation = 'spree123'
-  @student1.activate!
-  @student2.activate!
 
   @classroom = Classroom.create(:name => 'Test Classroom', school_id: @school.id)
   @person_school_classroom_link = PersonSchoolClassroomLink.create(:person_school_link_id => @teacher_link.id,

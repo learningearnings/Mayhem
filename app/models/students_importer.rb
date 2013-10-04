@@ -24,10 +24,6 @@ class StudentsImporter < BaseImporter
     end
   end
 
-  def existing_school(school_id)
-    School.find school_id
-  end
-
   def find_or_create_student(datum)
     existing_student(datum) || create_student(datum)
   end
@@ -35,7 +31,7 @@ class StudentsImporter < BaseImporter
   def create_student(datum)
     begin
       Student.create(datum[:student], as: :admin).tap do |student|
-        student << existing_school(datum[:school_id])
+        student << @school
         user = student.user
         user.username = datum[:user][:username]
         user.password = datum[:user][:password]
