@@ -19,6 +19,7 @@ class Auction < ActiveRecord::Base
   attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_code, :auction_zip_code_ids
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
+  scope :not_notified, where("notified IS NOT TRUE")
   scope :ended,  where("NOW() >= end_date")
   scope :upcoming,  where("NOW() < start_date")
   scope :for_school,   lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
