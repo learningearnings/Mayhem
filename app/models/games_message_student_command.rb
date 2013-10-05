@@ -1,7 +1,7 @@
 require_relative 'active_model_command'
 require_relative '../validators/array_of_integers_validator'
 
-class FoodFightMessageStudentCommand < ActiveModelCommand
+class GamesMessageStudentCommand < ActiveModelCommand
   attr_accessor :to_id, :from_id, :body, :subject
 
   validates :from_id, numericality: true, presence: true
@@ -20,7 +20,7 @@ class FoodFightMessageStudentCommand < ActiveModelCommand
 
   def execute!
     messages = []
-    message = message_class.new to_id: @to_id, from_id: @from_id, subject: @subject, body: @body, category: "food_fight"
+    message = message_class.new to_id: @to_id, from_id: @from_id, subject: @subject, body: @body, category: "games"
     if !message.valid?
       return false
     else
