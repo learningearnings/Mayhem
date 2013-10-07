@@ -13,7 +13,7 @@ class StudentTransferCommandsController < LoggedInController
   end
 
   def on_failure
-    flash[:error] = "Invalid transfer."
+    flash[:error] = "You tried to transfer more credits than you currently have. You cannot transfer more than you have in your account.."
     redirect_to bank_path
   end
 end
