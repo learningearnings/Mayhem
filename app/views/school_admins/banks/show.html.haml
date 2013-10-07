@@ -9,7 +9,7 @@
       %p.credits-available
         %strong
           Credits Available:
-        = current_person.main_account(current_school).balance
+        = number_with_precision(current_person.main_account(current_school).balance, precision: 2)
 
       .distribute-credits
         %h3 Distribute Credits
