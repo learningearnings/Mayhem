@@ -1,0 +1,56 @@
+%h1= auction.product.name
+-if auction.ended? && !auction.fulfilled
+  %h4= link_to 'Fulfill Auction', admin_fulfill_auction_path(auction)
+%table
+  %thead
+    %tr
+      %th ID
+      %th Start Date
+      %th End Date
+      %th Starting Bid
+      %th Current Bid
+      %th Product
+      %th Min Grade
+      %th Max Grade
+      %th Notifed?
+      %th Fulfilled?
+  %tbody
+    %tr
+      %td= auction.id
+      %td= auction.start_date
+      %td= auction.start_date
+      %td= auction.starting_bid
+      %td= auction.current_bid
+      %td= auction.product.name
+      %td= auction.min_grade
+      %td= auction.max_grade
+      %td= auction.notified
+      %td= auction.fulfilled
+
+%table
+  %thead
+    %tr
+      %th States
+  %tbody
+    - auction.states.each do |state|
+      %tr
+        %td= state.name
+
+%table
+  %thead
+    %tr
+      %th Schools
+  %tbody
+    - auction.schools.each do |school|
+      %tr
+        %td= school.name
+
+%table
+  %thead
+    %tr
+      %th Zip Codes
+  %tbody
+    - auction.auction_zip_codes.each do |zip_code|
+      %tr
+        %td= zip_code.zip_code
+
