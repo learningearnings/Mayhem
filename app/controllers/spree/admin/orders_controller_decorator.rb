@@ -54,7 +54,7 @@ Spree::Admin::OrdersController.class_eval do
         distributor.execute!
       end
     end
- 
+
     until order.complete?
       # move order along until complete
       order.next
@@ -66,5 +66,4 @@ Spree::Admin::OrdersController.class_eval do
     @school = School.find(params[:school_id])
     @school_inventory_items = Spree::Product.shipped_for_school_inventory.not_excluded(@school)
   end
-
 end
