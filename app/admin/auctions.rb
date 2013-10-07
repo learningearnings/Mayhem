@@ -2,6 +2,7 @@ ActiveAdmin.register Auction do
   scope :active
   scope :ended
   scope :upcoming
+  scope :unfulfilled
 
   controller do
     skip_before_filter :add_current_store_id_to_params
@@ -39,6 +40,12 @@ ActiveAdmin.register Auction do
         flash[:error] = 'There was a problem updating the auction.'
         render :edit
       end
+    end
+
+    def fulfill_auction
+      @auction = Auction.find params[:auction_id]
+      @auction.fulfill!
+      redirect_to admin_auction_path @auction
     end
   end
 
@@ -79,7 +86,7 @@ ActiveAdmin.register Auction do
     end
     column :actions do |auction|
       link_html = ""
-      link_html += (link_to "Show", admin_auction_path(auction)) + " " if auction.upcoming?
+      link_html += (link_to "Show", admin_auction_path(auction)) + " "# if auction.upcoming?
       link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " if auction.upcoming?
       link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.upcoming?
       link_html.html_safe
@@ -87,29 +94,9 @@ ActiveAdmin.register Auction do
     default_actions
   end
 
-  show do |auction|
-    attributes_table do
-      row :id
-      row :start_date
-      row :end_date
-      row :current_bid
-      row :product
-      row :auction_type
-      row :starting_bid
-      row :min_grade
-      row :max_grade
-      row :states do
-        auction.states.collect{|t| t.name}.join(', ')
-      end
-      row :schools do
-        auction.schools.collect{|t| t.name}.join(', ')
-      end
-      row :auction_zip_codes do
-        auction.auction_zip_codes.collect{|t| t.zip_code}.join(', ')
-      end
- 
-    end
-    render 'links'
+  show do
+    @auction = Auction.find(params[:id])
+    render :partial => 'admin/auctions/show', :locals => { :auction => @auction }
   end
 
   form do |f|
