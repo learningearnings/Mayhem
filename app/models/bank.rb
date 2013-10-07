@@ -64,6 +64,7 @@ class Bank
       otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.')
       otu_code.messages.first.hide!
     end
+    otu_code.update_attribute(:student_id, student.id)
     otu_code.mark_redeemed!
   end
 
