@@ -3,7 +3,7 @@
     %fieldset
       %hr
       .pull-left{:style => "font-size: 1.4em;"}= "School"
-      .pull-right= select_tag :school, options_from_collection_for_select(School.all, :id, :name), :include_blank => true
+      .pull-right= select_tag :school, options_from_collection_for_select(School.order(:name), :id, :name), :include_blank => true
       %hr
       #school_items
         %h3 Please select a school

@@ -91,7 +91,7 @@
       .control-group
         = f.label :schools, "Schools", {:class => "control-label"}
         .pull-right
-          = f.select :schools, options_from_collection_for_select(School.all, :id, :name, :selected => @product.schools.map{|s| s.id} ), {}, {:multiple => true}
+          = f.select :schools, options_from_collection_for_select(School.order(:name), :id, :name, :selected => @product.schools.map{|s| s.id} ), {}, {:multiple => true}
     .control-group
       = f.label :description, "Description", {:class => "control-label"}
       .pull-right
