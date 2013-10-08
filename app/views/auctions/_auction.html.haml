@@ -14,7 +14,6 @@
     %p
     High Bidder:
     %span.current_bid= auction.current_leader.name
-    = auction.current_leader.moniker if auction.current_leader.moniker.present?
     - if auction.current_leader.avatar.present?
       = image_tag auction.current_leader.avatar.image.url
 

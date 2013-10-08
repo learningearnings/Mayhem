@@ -8,8 +8,8 @@
       #avatar_partial= render :partial => 'avatars'
       .row
         .span4
-          = render :partial => "moniker", :locals => { :f => f }
-          - if !current_person.is_a? Student
+          - if !current_person.is_a?(Student)
+            = render :partial => "moniker", :locals => { :f => f }
             = f.label :email
             = f.text_field :email
         .span4

@@ -7,10 +7,16 @@ class Teacher < Person
 
   has_many :reward_distributors, :through => :person_school_links
 
+  after_initialize :set_status_to_active
+
   def after_initialize
     @teacher_main_account = []
     @teacher_undredeemed_account = []
     @teacher_undeposited_account = []
+  end
+
+  def set_status_to_active
+    self.status = 'active' # Teachers should default to active
   end
 
   def primary_account
