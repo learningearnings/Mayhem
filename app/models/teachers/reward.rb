@@ -101,13 +101,13 @@ module Teachers
       p.available_on = Time.now
       p.store_ids = [@school.store.id]
       p.fulfillment_type = 'local'
+      p.save
 
       if @image.present?
         p.images.destroy_all if p.images.present?
         p.images.create(attachment: @image)
       end
 
-      p.save
       p.set_property('reward_type', 'local')
       p.taxons = Spree::Taxon.where(:id => @category)
       p.save
