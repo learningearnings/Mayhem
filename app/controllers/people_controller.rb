@@ -2,7 +2,11 @@ class PeopleController < LoggedInController
   load_and_authorize_resource except: [:get_avatar_results]
 
   def edit
-    @avatars = Avatar.page params[:page]
+    if !current_person.is_a? Student
+      @avatars = Avatar.for_teachers.page params[:page]
+    else
+      @avatars = Avatar.page params[:page]
+    end
     render :layout => 'application'
   end
 
@@ -11,7 +15,11 @@ class PeopleController < LoggedInController
   end
 
   def get_avatar_results
-    @avatars = Avatar.page params[:page]
+    if !current_person.is_a? Student
+      @avatars = Avatar.for_teachers.page params[:page]
+    else
+      @avatars = Avatar.page params[:page]
+    end
     render partial: 'avatars'
   end
 
@@ -31,7 +39,11 @@ class PeopleController < LoggedInController
       flash[:notice] = "#{@person.type} profile updated."
       redirect_to person_path(@person)
     else
-      @avatars = Avatar.page params[:page]
+      if !current_person.is_a? Student
+        @avatars = Avatar.for_teachers.page params[:page]
+      else
+        @avatars = Avatar.page params[:page]
+      end
       flash[:notice] = "#{@person.type} profile not updated."
       render :edit
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131007185334) do
+ActiveRecord::Schema.define(:version => 20131008022118) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -97,8 +97,9 @@ ActiveRecord::Schema.define(:version => 20131007185334) do
     t.string   "image_uid"
     t.string   "image_name"
     t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "teacher_only", :default => false
   end
 
   create_table "buck_batch_links", :force => true do |t|
