@@ -10,20 +10,21 @@ class BanksController < LoggedInController
     person = Student.find_by_id(params[:student_id]) if params[:student_id]
     person = current_person unless person
 
-    if otu_code = OtuCode.active.find_by_code(params[:code])
-      if !otu_code.expired?
+    otu_code = OtuCode.find_by_code(params[:code])
+    if otu_code.present?
+      if otu_code.active? && !otu_code.expired?
         @bank = Bank.new
         @bank.claim_bucks(person, otu_code)
         flash[:notice] = 'Credits claimed!'
-        redirect_to bank_path
-      else
-        flash[:error] = 'Code Expired.'
-        redirect_to bank_path
+      elsif otu_code.student.present? && otu_code.student == current_person
+        flash[:error] = 'You already deposited this credit into your account.'
+      elsif otu_code.student.present?
+        flash[:error] = 'This credit was deposited by another user already'
       end
     else
-      flash[:error] = 'Invalid Code.'
-      render :show
+      flash[:error] = 'This credit is not valid. Please verify you entered it correctly.'
     end
+    redirect_to bank_path
   end
 
   def checking_transactions

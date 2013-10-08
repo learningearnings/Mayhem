@@ -1,5 +1,7 @@
 ActiveAdmin.register Avatar do
-
+  filter :created_at
+  filter :image_name
+  filter :description
   index do
     column :id do |avatar|
       link_to(avatar.id,admin_avatar_path(avatar))
@@ -9,6 +11,7 @@ ActiveAdmin.register Avatar do
     end
     column :image_name
     column :description
+    column :teacher_only
     column :created_at do |avatar|
       l(avatar.created_at)
     end
@@ -25,16 +28,14 @@ ActiveAdmin.register Avatar do
   form do |f|
 
     f.inputs "Details" do
+      f.input :teacher_only
       f.input :image_uid
       f.input :image_name
       f.input :description
-#      f.input :image, as: :dragonfly, input_html: { components: [:preview, :upload, :url, :remove ] }
+      #f.input :image, as: :dragonfly, input_html: { components: [:preview, :upload, :url, :remove ] }
       f.input :image, as: :file
     end
     f.buttons
   end
-
-
-
 
 end

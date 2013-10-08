@@ -6,7 +6,7 @@
       %p Click below to distribute credits to students currently enrolled.  Credits will be automatically deducted from your account and immediately available to students once deposited.  Yippe!
       %dl.balance
         %dt Checking Balance:
-        %dd= current_person.main_account(current_school).balance
+        %dd= number_with_precision(current_person.main_account(current_school).balance, precision: 2)
 
       - if current_person.is_a? SchoolAdmin
         .distribute-credits-link= link_to('Distribute credits', school_admins_bank_path, class: 'btn awesome-button')
