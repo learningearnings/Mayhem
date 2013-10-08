@@ -2,7 +2,7 @@ Spree::Admin::OrdersController.class_eval do
 
   def new
     # Tis should pull in: The currently available rewards where fulfillment_type == "Shipped For School Inventory"
-    @school_inventory_items = Spree::Product.shipped_for_school_inventory
+    @school_inventory_items = Spree::Product.shipped_for_school_inventory.active
   end
 
   def edit
@@ -79,6 +79,6 @@ Spree::Admin::OrdersController.class_eval do
 
   def refresh_school_rewards
     @school = School.find(params[:school_id])
-    @school_inventory_items = Spree::Product.shipped_for_school_inventory.not_excluded(@school)
+    @school_inventory_items = Spree::Product.shipped_for_school_inventory.not_excluded(@school).active
   end
 end
