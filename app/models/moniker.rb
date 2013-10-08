@@ -41,7 +41,7 @@ class Moniker < ActiveRecord::Base
 
   private
   def auto_approve
-    if Moniker.approved.where(:moniker => self.moniker).count > 0
+    if !self.person.is_a? Student
       self.approve!
     end
   end

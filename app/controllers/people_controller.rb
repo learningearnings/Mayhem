@@ -24,9 +24,10 @@ class PeopleController < LoggedInController
     if person_attributes[:email].present?
       @person.user.update_attributes(:email => person_attributes[:email])
     end
-    # If the moniker is either blank or is the existing moniker, don't update
-    # it.
-    if @person.update_attributes(moniker: params[:moniker])
+    if params[:moniker].present?
+      @person.update_attributes(moniker: params[:moniker])
+    end
+    if @person.save
       flash[:notice] = "#{@person.type} profile updated."
       redirect_to person_path(@person)
     else
