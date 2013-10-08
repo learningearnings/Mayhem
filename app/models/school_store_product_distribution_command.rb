@@ -58,7 +58,6 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
     else
       retail_price_property = spree_property_class.find_by_name('retail_price');
       retail_quantity_property = spree_property_class.find_by_name('retail_quantity');
-#      retail_product = @master_product.duplicate
       retail_product = spree_product_class.new()
       retail_product.name = master_product.name # need to set this to avoid "COPY OF ..."
       retail_product.master.price = @retail_price
@@ -94,13 +93,6 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_product.save
       retail_product.set_property('master_product',@master_product.id.to_s)
 
-      fc = filter_conditions_class.new(:schools => [@school.id])
-      factory = filter_factory_class.new
-      filter = factory.find_or_create_filter(fc)
-
-      spree_product_filter_link_class.create(:filter_id => filter.id, :product_id => retail_product.id)
-      #spree_product_person_link_class.create(product_id: retail_product.id, person_id: @person.id)
-      # currently only SchoolAdmin persons can call this method to add products to their school == retail
       retail_product.properties.create(name: "type", presentation: "retail")
     end
     retail_product
