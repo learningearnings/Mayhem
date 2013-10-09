@@ -51,6 +51,8 @@ public/system
 public/spree
 
 .DS_Store
+.ruby-gemset
+.ruby-version
 
 app/assets/images/sprites
 

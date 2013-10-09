@@ -24,7 +24,7 @@ require 'capistrano/ext/multistage'
 
 after 'deploy:start',   'unicorn:start'
 after 'deploy:stop',    'unicorn:stop'
-after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
+#after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
 
 # main details
 set :application,     "Mayhem"
@@ -63,6 +63,12 @@ namespace :deploy do
   task :precompile_assets do
     #precompile the assets
     run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
+  end
+
+  desc "Restart unicorn"
+  task :restart do
+    stop
+    start
   end
 end
 
