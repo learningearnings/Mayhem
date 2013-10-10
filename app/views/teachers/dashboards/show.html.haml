@@ -1,57 +1,61 @@
-%h2= "Student - #{@student.name}"
-= avatar_for(@student, '80x80#')
-%h4= link_to "Back to Classroom", classroom_path(@classroom)
+.student-account-content
+  %h2= "Student - #{@student.name}"
+  .account-info
+    .profile-bank-account
+      .avatar
+        = avatar_for(@student, '80x80#')
+      %h4 Accounts
+      %dl.balance
+        %dt Checking Balance:
+        %dd= @student.checking_balance
+      %dl.balance
+        %dt Savings Balance
+        %dd= @student.savings_balance
 
-/= link_to 'Create Student', teachers_new_student_path
-= form_for @student, :url => teachers_update_student_path do |f|
-  = f.hidden_field :id, :value => @student.id
-  = hidden_field_tag :classroom_id, @classroom.id
-  .row
-    .span4
-      = f.label :first_name
-      = f.text_field :first_name
-      = f.label :last_name
-      = f.text_field :last_name
-      = f.label :username
-      = f.text_field :username
-    .span4
-      = f.label :grade
-      = f.select :grade, School::GRADES
-      = f.label :moniker
-      = f.text_field :moniker
-      = f.label :password
-      = f.text_field :password
-  = f.submit class: 'btn awesome-button'
 
-.bank-account
-  %h4 Accounts
-  %dl.balance
-    %dt Checking Balance:
-    %dd= @student.checking_balance
-  %dl.balance
-    %dt Savings Balance
-    %dd= @student.savings_balance
+  %h4= link_to "Back to Classroom", classroom_path(@classroom)
 
-%br
+  .student-account-form
+    = form_for @student, :url => teachers_update_student_path do |f|
+      = f.hidden_field :id, :value => @student.id
+      = hidden_field_tag :classroom_id, @classroom.id
+      .row
+        .span4
+          = f.label :first_name
+          = f.text_field :first_name
+          = f.label :last_name
+          = f.text_field :last_name
+          = f.label :username
+          = f.text_field :username
+        .span4
+          = f.label :grade
+          = f.select :grade, School::GRADES
+          = f.label :moniker
+          = f.text_field :moniker
+          = f.label :password
+          = f.text_field :password
+      = f.submit class: 'btn awesome-button'
 
-- if @orders.any?
-  %table.table.table-bordered.table-striped.solid-background
-    %thead
-      %tr
-        %th Completed At
-        %th Amount
-        %th Payment State
-        %th Shipment State
-        %th Product Name
-        %th Product Description
-        %th Refund
-    %tbody
-      - @orders.each do |order|
+  %br
+
+  - if @orders.any?
+    %table.table.table-bordered.table-striped.solid-background
+      %thead
         %tr
-          %td= order.completed_at
-          %td= order.amount
-          %td= order.payment_state
-          %td= order.state
-          %td= order.products.first.name
-          %td= order.products.first.description
-          %td= link_to "Refund", refund_purchase_path(reward_delivery_id: order.id), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
+          %th Completed At
+          %th Amount
+          %th Payment State
+          %th Shipment State
+          %th Product Name
+          %th Product Description
+          %th Refund
+      %tbody
+        - @orders.each do |order|
+          %tr
+            %td= order.completed_at
+            %td= order.amount
+            %td= order.payment_state
+            %td= order.state
+            %td= order.products.first.name
+            %td= order.products.first.description
+            %td= link_to "Refund", refund_purchase_path(reward_delivery_id: order.id), :confirm => "Are you sure you want to refund this purchase?", :class => "button"

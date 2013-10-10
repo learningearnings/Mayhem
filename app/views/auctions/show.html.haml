@@ -1,8 +1,8 @@
 .auctions-content
   .span8
     .auctions
-      %ul.action_buttons
-        %li= link_to "Back to Auctions", auctions_path, class: 'btn awesome-button'
+      .auction_links
+        = link_to "Back to Auctions", auctions_path, class: 'btn awesome-button'
       .auction-item
         = render auction
         - unless auction.ended?

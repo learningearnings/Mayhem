@@ -1315,6 +1315,15 @@ html.resp, body.resp {
   padding: 1em;
 }
 
+.profile-bank-account {
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;
+  padding: 1em;
+  text-align: center;
+}
+
 .reward-highlights-sidebar {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
@@ -1448,6 +1457,9 @@ h3 {
         color: #ee5b1a;
         margin-bottom: 1em;
       }
+    }
+    .auction_links {
+      float: right;
     }
   }
 }
@@ -1997,4 +2009,20 @@ hr {
 
 dl.details {
   font-size: 150%;
+}
+
+.student-account-content {
+  .account-info {
+    float:right;
+  }
+  .student-account-form {
+    display: inline-block;
+    position: absolute;
+    input {
+      height: 35px;
+    }
+    .btn {
+      height: 50px;
+    }
+  }
 }
