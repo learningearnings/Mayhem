@@ -44,7 +44,7 @@ class BidOnAuctionCommand < ActiveModelCommand
     success = false
     open_bids = []
     unless valid?
-      @failure_reason = errors.full_messages.to_sentence
+      @failure_reason = errors.full_messages.to_sentence.downcase.capitalize
       on_failure.call(self)
       return false
     end
