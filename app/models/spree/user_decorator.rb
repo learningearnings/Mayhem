@@ -3,8 +3,8 @@ Spree::User.class_eval do
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker, :as => :admin
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :as => :admin
 
   validates_uniqueness_of :email, allow_blank: true
 
@@ -35,14 +35,6 @@ Spree::User.class_eval do
 
   def self.admin_created?
     true
-  end
-
-  def moniker
-    person.moniker
-  end
-
-  def moniker= name
-    person.moniker= name
   end
 
 
