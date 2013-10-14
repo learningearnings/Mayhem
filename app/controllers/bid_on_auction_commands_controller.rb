@@ -20,7 +20,7 @@ class BidOnAuctionCommandsController < LoggedInController
   end
 
   def on_failure(bid)
-    flash[:error] = bid.failure_reason.to_s
+    flash[:error] = bid.failure_reason.to_s.downcase.capitalize
     redirect_to bid.auction
   end
 end
