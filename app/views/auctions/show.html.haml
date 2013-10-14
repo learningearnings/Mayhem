@@ -11,4 +11,6 @@
               = text_field_tag :amount
               = hidden_field_tag :auction_id, auction.id
               = f.submit "Make bid", class: 'btn awesome-button'
+          - else
+            %p You are the high bidder.
 
