@@ -46,7 +46,7 @@
       .row
         .pull-right
           = f.fields_for :images do |i|
-            = i.file_field :attachment
+            = i.file_field :attachment, :required => true
 
     .control-group
       = f.label :visible_to_all, 'Visible to All', {:class => 'control-label'}
