@@ -110,7 +110,7 @@ class CreditManager
   end
 
   def transfer_credits_for_reward_refund student, amount, document = nil
-    return false if main_account.balance < amount
+    #return false if main_account.balance < amount
     transfer_credits "Reward Refund", main_account, student.checking_account, amount, document
   end
 
