@@ -3,7 +3,7 @@ class MessagesController < LoggedInController
   before_filter :get_received_messages
 
   def index
-    redirect_to friend_messages_path
+    redirect_to games_messages_path
   end
 
   def friend_messages

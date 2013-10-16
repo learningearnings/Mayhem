@@ -4,7 +4,7 @@
   = select_tag :school_id, options_for_select(School.order('schools.name asc').all.collect {|s| [s.name, s.id]}), :include_blank => true
   = f.submit (person.is_a?(Student) ? 'Change School' : 'Add School')
 
-%h4 Schools
+%h2 Schools
 %table
   %thead
     %tr
@@ -16,15 +16,16 @@
         %td= link_to school.name, admin_school_path(school)
         %td= link_to 'Remove', delete_school_admin_teacher_path(:school_id => school.id, :teacher => person), :method => :delete
 
-%h4 Accounts
-%table
-  %thead
-    %tr
-      %th Name
-      %th Balance
-      %th Add Credits
-  %tbody
-    - person.schools.each do |school|
+
+- person.schools.each do |school|
+  %h2= school.name + " Accounts"
+  %table
+    %thead
+      %tr
+        %th Name
+        %th Balance
+        %th Add Credits
+    %tbody
       - person.accounts(school).each do |account|
         %tr
           %td= link_to account.name

@@ -15,9 +15,6 @@
           %dd= @person.user.email
     .span3
       %dl.details
-        - if !current_person.is_a?(Student)
-          %dt Moniker
-          %dd= @person.moniker
         %dt School
         %dd= @person.school.name
 

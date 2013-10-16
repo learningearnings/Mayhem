@@ -25,7 +25,6 @@ class Person < ActiveRecord::Base
   has_one  :school, :through => :person_school_links, :order => "#{PersonSchoolLink.table_name}.created_at desc,#{PersonSchoolLink.table_name}.id desc"
 =end
   has_many :person_school_classroom_links
-  has_many :monikers
 #  has_many :buck_batches, :through => :person_buck_batch_links
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true, :order => 'created_at desc, id desc'
@@ -103,8 +102,8 @@ class Person < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :school, :username, :user_attributes, :recovery_password
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :moniker, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
   validates_presence_of :first_name, :last_name
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
@@ -117,22 +116,6 @@ class Person < ActiveRecord::Base
 
   def delete_user
     self.user.delete
-  end
-
-  #Last approved moniker name
-  def moniker
-    moniker_record = monikers.approved.order("created_at DESC").first
-    @moniker ||= moniker_record.nil? ? "" : moniker_record.moniker
-  end
-
-  def requested_moniker
-    moniker_record = monikers.requested.order("created_at DESC").first
-    @requested_moniker ||= moniker_record.nil? ? "" : moniker_record.moniker
-  end
-
-  def moniker= name
-#    monikers.create(:moniker => name)
-    monikers.new(:moniker => name)
   end
 
   def person_school_classroom_links(status = :status_active)
