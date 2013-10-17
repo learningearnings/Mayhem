@@ -20,18 +20,17 @@
       = f.hidden_field :id, :value => @student.id
       = hidden_field_tag :classroom_id, @classroom.id
       .row
-        .span4
+        .span3
           = f.label :first_name
           = f.text_field :first_name
           = f.label :last_name
           = f.text_field :last_name
           = f.label :username
           = f.text_field :username
-        .span4
+        .span3
           = f.label :grade
-          = f.select :grade, School::GRADES
-          = f.label :moniker
-          = f.text_field :moniker
+          .select-grade
+            = f.select :grade, School::GRADES
           = f.label :password
           = f.text_field :password
       = f.submit class: 'btn awesome-button'

@@ -66,7 +66,7 @@ class ClassroomsController < LoggedInController
       redirect_to classrooms_path
     else
       flash[:error] = "Classroom not created."
-      render :new
+      render :index
     end
   end
 
