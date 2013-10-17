@@ -1,4 +1,5 @@
 Spree::Image.class_eval do
+    #validates_attachment_size :attachment, :less_than => 2.megabytes, :message => 'file size maximum 2 mb allowed'
     has_attached_file :attachment,
                       :styles => { :mini => '48x48>', :small => '100x100>', :product => '240x240>', :large => '600x600>' },
                       :default_style => :product,

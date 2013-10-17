@@ -48,7 +48,9 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
       flash[:notice] = "Your reward was created successfully."
       redirect_to admin_rewards_path, :page => (params[:page_id] || 0)
     else
-      flash[:error] = "There was an error saving your Reward, please check the form and try again"
+      #set_vars
+      #flash[:error] = "There was an error saving your Reward, please check the form and try again. " + @product.errors[:base].first
+      flash[:error] = "There was an error saving your Reward, please check the form and try again."
       render 'new'
     end
   end

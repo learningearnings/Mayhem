@@ -2,6 +2,7 @@ module Spree
   class Image < Asset
     validates_attachment_presence :attachment
     validate :no_attachment_errors
+    #validates_attachment_size :attachment, :less_than => 2.megabytes, :message => 'file size maximum 2 mb allowed'
 
     attr_accessible :alt, :attachment, :position, :viewable_type, :viewable_id
 
