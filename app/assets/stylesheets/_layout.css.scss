@@ -606,15 +606,10 @@ html.resp, body.resp {
   color: #b611b0;
 }
 
-.primary-nav .rewards:hover {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
-  color: #b611b0;
-}
-
+.primary-nav .rewards:hover,
 .rewards-selected {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
+  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 5px;
+  background-size:140px auto;
   color: #b611b0;
 }
 
