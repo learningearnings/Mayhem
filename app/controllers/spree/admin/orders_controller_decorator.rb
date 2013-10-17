@@ -2,7 +2,7 @@ Spree::Admin::OrdersController.class_eval do
 
   def new
     # Tis should pull in: The currently available rewards where fulfillment_type == "Shipped For School Inventory"
-    @school_inventory_items = Spree::Product.shipped_for_school_inventory
+    @school_inventory_items = Spree::Product.shipped_for_school_inventory.active
   end
 
   def edit
@@ -35,13 +35,24 @@ Spree::Admin::OrdersController.class_eval do
     end
   end
 
+  def quantities_pass?
+    failed_qtys = []
+    params[:product_quantities].each do |product_id, qty|
+      product = Spree::Product.find product_id
+      unless qty.to_i <= product.count_on_hand
+        failed_qtys << product_id
+      end
+    end
+    failed_qtys.empty?
+  end
+
   def create_manual_order
     order = current_user.orders.create
     order.school_id = params[:school]
     order.shipping_method_id = Spree::ShippingMethod.find_by_name("Shipped To School").id
     order.save
-    params[:product_quantities].each do |product_id, quantity|
-      if quantity.to_i > 0
+    if quantities_pass?
+      params[:product_quantities].each do |product_id, quantity|
         product = Spree::Product.find product_id
         # add line_items to order from product variants
         variant = Spree::Variant.where(:product_id => product_id).first
@@ -53,17 +64,21 @@ Spree::Admin::OrdersController.class_eval do
         distributor = SchoolStoreProductDistributionCommand.new(opts)
         distributor.execute!
       end
-    end
 
-    until order.complete?
-      # move order along until complete
-      order.next
+      until order.complete?
+        # move order along until complete
+        order.next
+      end
+
+      redirect_to admin_orders_path
+    else
+      flash[:error] = "Check quantities.  Count on hand is lower than requested quantity."
+      render :new
     end
-    redirect_to admin_orders_path
   end
 
   def refresh_school_rewards
     @school = School.find(params[:school_id])
-    @school_inventory_items = Spree::Product.shipped_for_school_inventory.not_excluded(@school)
+    @school_inventory_items = Spree::Product.shipped_for_school_inventory.not_excluded(@school).active
   end
 end

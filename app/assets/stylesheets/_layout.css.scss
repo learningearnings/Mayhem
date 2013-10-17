@@ -773,7 +773,62 @@ html.resp, body.resp {
   height: 416px;
   width: 776px;
   margin-left: 130px;
-  position: relative
+  position: relative;
+  .cta-text {
+    margin:0;
+    height: 300px;
+    width: 305px;
+    overflow:hidden;
+    position: absolute;
+    top: 50px;
+    right: 55px;
+    font-family:'sketch_rockwellregular';
+    font-weight:200;
+    text-align:justify;
+    &.students {
+      background:transparent url(asset_path('star.png', image)) no-repeat 50% 98%;
+      text-transform:uppercase;
+      color:#312D68;
+      line-height:1;
+      .large {
+        font-size:85px;
+        text-align:center;
+      }
+      .medium {
+        font-size:31px;
+        color:tint(#312D68, 10);
+        &.bump {
+          text-align:center;
+          font-size:38px;
+        }
+      }
+      .small {
+        font-size:19px;
+        margin:10px;
+        color:tint(#312D68, 20);
+      }
+    }
+    &.parents {
+    }
+    &.teachers {
+      width:320px;
+      text-align:center;
+      font-family:'sketch_wallregular';
+      color:#0D5A02;
+      line-height:1;
+      .large {
+        font-size:86px;
+      }
+      .medium {
+        font-size:44px;
+        color:tint(#0D5A02, 5);
+        margin-bottom:10px;
+      }
+      .small {
+        font-size:34px;
+      }
+    }
+  }
 }
 
 .corkboard {
@@ -822,7 +877,7 @@ html.resp, body.resp {
 }
 
 .product-image-bursts {
-  background-image: url(asset_path('product_image_with_pins_bursts.png', image));
+  background-image: url(asset_path('product_image_with_pins_credits_bursts.png', image));
   height: 293px;
   width: 290px;
   position: absolute;
@@ -833,6 +888,7 @@ html.resp, body.resp {
 
 .kids-credits-cta {
   background-image: url(asset_path('kids_credits_cta.png', image));
+  font-family:'sketch_rockwellregular';
   height: 200px;
   width: 304px;
   position: absolute;
@@ -1315,6 +1371,15 @@ html.resp, body.resp {
   padding: 1em;
 }
 
+.profile-bank-account {
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;
+  padding: 1em;
+  text-align: center;
+}
+
 .reward-highlights-sidebar {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
@@ -1448,6 +1513,9 @@ h3 {
         color: #ee5b1a;
         margin-bottom: 1em;
       }
+    }
+    .auction_links {
+      float: right;
     }
   }
 }
@@ -1997,4 +2065,23 @@ hr {
 
 dl.details {
   font-size: 150%;
+}
+
+.student-account-content {
+  .account-info {
+    float:right;
+  }
+  .student-account-form {
+    display: inline-block;
+    position: absolute;
+    input {
+      height: 35px;
+    }
+    .btn {
+      height: 50px;
+    }
+    select {
+      width: 205px;
+    }
+  }
 }

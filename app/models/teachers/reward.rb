@@ -9,6 +9,7 @@ module Teachers
     validates :name, presence: true
     validates :price, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
+    validates_presence_of :image
 
     attr_accessible :name, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id
 
@@ -101,13 +102,13 @@ module Teachers
       p.available_on = Time.now
       p.store_ids = [@school.store.id]
       p.fulfillment_type = 'local'
+      p.save
 
       if @image.present?
         p.images.destroy_all if p.images.present?
         p.images.create(attachment: @image)
       end
 
-      p.save
       p.set_property('reward_type', 'local')
       p.taxons = Spree::Taxon.where(:id => @category)
       p.save

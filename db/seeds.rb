@@ -245,12 +245,10 @@ if Rails.env.development? || Rails.env.production?
   @school_admin = FactoryGirl.create(:school_admin,:user => FactoryGirl.create(:spree_user,:username => 'schooladmin'))
   @school_admin.user.password = 'spree123'
   @school_admin.user.password_confirmation = 'spree123'
-  @school_admin.activate!
   @school_admin_link = FactoryGirl.create(:person_school_link, school: @school, person: @school_admin)
 
   # Create a teacher
   @teacher = FactoryGirl.create(:teacher,:user => FactoryGirl.create(:spree_user,:username => 'teacher'))
-  @teacher.activate
   @teacher.user.password = 'spree123'
   @teacher.user.password_confirmation = 'spree123'
   @teacher.save

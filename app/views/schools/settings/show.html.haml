@@ -1,10 +1,10 @@
 %h1
   = current_school.name
-%h2 Site Settings
+%h2 Your School's LE Settings
 %hr
 
 .school-settings
-  %h3 Select the teachers that will distribute rewards
+  %h3 Select the teachers that will distribute credits or rewards
   = form_for :teacher, :url => schools_toggle_distributor_path do |f|
     %table.table.table-bordered.table-striped.solid-background
       %thead
@@ -25,4 +25,4 @@
     = f.submit 'Update'
 
   %h3 Manage Reward Exclusions
-  = link_to "Click here to manage your school's reward exclusions.", schools_reward_exclusions_path
+  = link_to "Click here if you would like to remove any rewards from your school's store.", schools_reward_exclusions_path

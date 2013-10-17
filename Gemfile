@@ -27,6 +27,8 @@ gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
 
+gem 'whenever', :require => false
+
 gem 'therubyracer'
 
 gem 'has_scope'

@@ -46,7 +46,7 @@
       .row
         .pull-right
           = f.fields_for :images do |i|
-            = i.file_field :attachment
+            = i.file_field :attachment, :required => true
 
     .control-group
       = f.label :visible_to_all, 'Visible to All', {:class => 'control-label'}
@@ -65,7 +65,7 @@
                 = @product.svg.to_s
                 .svg-container
                   = le_svg_tag @product.svg, :style => "width: 100%; height: 100%;display: inline-block;" do
-                    = render :file => @product.svg.path, :formats => [:svg], :locals => {:name => "Student Name", :school_name => "School Name"}
+                    = render :file => @product.svg.path, :formats => [:svg], :locals => {:name => "Student Name", :school_name => "School Name"} rescue 'error rendering svg'
                 = f.hidden_field :id, value: @product.id
                 = f.hidden_field :filter, :value => 1
   .span6
