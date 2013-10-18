@@ -303,6 +303,7 @@ GEM
       ruby-progressbar
     mocha (0.14.0)
       metaclass (~> 0.0.1)
+    modernizr-rails (2.6.2.3)
     money (5.0.0)
       i18n (~> 0.4)
       json
@@ -553,6 +554,7 @@ DEPENDENCIES
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
   mocha (~> 0.14.0)
+  modernizr-rails (~> 2.6.2.3)
   nested_form!
   pdfkit
   pg (= 0.13.2)
