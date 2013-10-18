@@ -444,16 +444,16 @@ html.resp, body.resp {
     list-style-type: none;
     margin: 0;
     padding:0;
-      li {
-        display: inline;
-        padding: 1.7em 0;
+    li {
+      display: inline;
+      padding: 1.7em 0;
 
-        a {
-          text-decoration: none;
-          font-family: 'sketch_rockwellregular';
-          display: inline-block;
-        }
+      a {
+        text-decoration: none;
+        font-family: 'sketch_rockwellregular';
+        display: inline-block;
       }
+    }
   }
 }
 
@@ -579,15 +579,10 @@ html.resp, body.resp {
   color: #eb731c;
 }
 
-.primary-nav .play:hover {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
-  color: #eb731c;
-}
-
+.primary-nav .play:hover,
 .play-selected {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
+  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 5px;
+  background-size:140px auto;
   color: #eb731c;
 }
 
@@ -611,15 +606,10 @@ html.resp, body.resp {
   color: #b611b0;
 }
 
-.primary-nav .rewards:hover {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
-  color: #b611b0;
-}
-
+.primary-nav .rewards:hover,
 .rewards-selected {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
+  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 5px;
+  background-size:140px auto;
   color: #b611b0;
 }
 
@@ -1094,10 +1084,13 @@ html.resp, body.resp {
   padding-top: 45px;
   ul {
     li {
+      list-style:none;
+      margin:0 0 .25em .35em;
+      font-family: 'king_cool_kcregular';
+      font-size:1.8em;
       .product-image {
         height: inherit;
       }
-      padding-bottom: 10px;
     }
   }
 }
@@ -1118,6 +1111,18 @@ html.resp, body.resp {
   left: 160px;
   height: 241px;
   width: 361px;
+  padding:3.25em 2em 2em;
+  h3 {
+    text-transform:uppercase;
+    font-size:2em;
+    margin:0;
+    color:#333366;
+    padding:0;
+  }
+  p {
+    font-family: 'king_cool_kcregular';
+    font-size:2em;
+  }
 }
 
 .games-board {
