@@ -1,17 +1,9 @@
 .main-content-wrapper
   .primary-content
-    %h2 Teacher Home
-    .distribute-credits
-      %h3 Distribute Credits
-      %p Click below to distribute credits to students currently enrolled.  Credits will be automatically deducted from your account and immediately available to students once deposited.  Yippe!
-      %dl.balance
-        %dt Checking Balance:
-        %dd= number_with_precision(current_person.main_account(current_school).balance, precision: 2)
-
-      - if current_person.is_a? SchoolAdmin
-        .distribute-credits-link= link_to('Distribute credits', school_admins_bank_path, class: 'btn awesome-button')
-      - else
-        .distribute-credits-link= link_to('Distribute credits', teachers_bank_path, class: 'btn awesome-button')
+    %h2 Welcome to the New LE!
+    %p The Team has been working hard for many months to bring you a new, improved and faster LE. We hope you like it and as always we rely on your feedback for even more improvements and features.
+    = image_tag "teacher_landing_bucks_to_credits.png"
+    %p In addition to our new spokespig, Sir Bacon Francis, PhD., “BUCKS” have now become “Credits”. We hope this will allow you to print more per page and stop confusing students that a Buck should be worth at US Dollar. Sir Bacon will still honor older printed and e-Buck codes though so don’t worry!
 
     %h3 Reports
     %hr
@@ -26,4 +18,14 @@
 
 
   .secondary-content
-    %h4 Reward Highlights
+    %h3 Just starting LE?
+    %p
+      1. Create Student or Teacher Accounts
+      %br/
+      2. Create Classrooms (optional)
+      %br/
+      3. Add Some Rewards
+      %br/
+      4. LE Credits Explained
+      %br/
+      5. Reports and Best Practices
