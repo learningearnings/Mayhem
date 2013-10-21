@@ -5,16 +5,10 @@
     = image_tag "teacher_landing_bucks_to_credits.png"
     %p In addition to our new spokespig, Sir Bacon Francis, PhD., “BUCKS” have now become “Credits”. We hope this will allow you to print more per page and stop confusing students that a Buck should be worth at US Dollar. Sir Bacon will still honor older printed and e-Buck codes though so don’t worry!
 
-    %h3 Reports
-    %hr
-    %h4= link_to "Purchases Report", purchases_report_path
-    %h4= link_to "Student Roster",   student_roster_report_path
-    %h4= link_to "Activity Report",  activity_report_path
-    %h4= link_to "Student Credit History Report",  student_credit_history_report_path
     - if current_person.is_a? SchoolAdmin
+      %h3 Teacher Admins Only:
       %hr
       %h4= link_to "School Settings",  schools_settings_path
-      %h4= link_to "Imports", school_admins_dashboard_path
 
 
   .secondary-content
@@ -29,3 +23,6 @@
       4. LE Credits Explained
       %br/
       5. Reports and Best Practices
+    %br/
+    %h3 Need help?
+    = link_to 'Send Message', teachers_leadmin_message_path, :class => 'btn awesome-button'
