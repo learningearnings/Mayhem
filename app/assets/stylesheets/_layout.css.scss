@@ -227,6 +227,10 @@ html.resp, body.resp {
   font-size: 1.4em;
   color: #1f2870;
 }
+.lt-ie9 .form-inline .log-in.text {
+  position:relative;
+  left:-20px;
+}
 
 .login-form-fields input {
   width: 130px;
@@ -247,7 +251,7 @@ html.resp, body.resp {
 }
 
 .forgot-password {
-  margin: -4px 0 0 115px;
+  margin: -4px 0 0 0;
 }
 
 .btn.students,
@@ -262,9 +266,15 @@ html.resp, body.resp {
   background-color: transparent;
   background-position: 0;
   border: none;
-  box-shadow: none;
+  @include box-shadow(none);
   width: 96px;
   height: 37px;
+}
+
+.lt-ie9 .form-inline .login-button {
+  display:inline-block;
+  margin-right:-35px;
+  margin-left:20px;
 }
 
 .btn.students {
@@ -1401,10 +1411,8 @@ html.resp, body.resp {
   text-align: center;
   .alert {
     text-align: center;
-    background-color: rgba(255,255,255, 0);
     border: none;
-    background-image: url(asset_path('message-blue.png', image));
-    background-repeat: no-repeat;
+    background:transparent url(asset_path('message-blue.png', image)) no-repeat 0 0;
     width: 254px;
     height: 259px;
     p {
@@ -1414,34 +1422,37 @@ html.resp, body.resp {
       text-align: left;
       font-family: verdana;
       font-weight: 400;
+      @include text-shadow(none);
       text-shadow: none;
-      -webkit-transform: rotate(6deg);
-      -moz-transform: rotate(6deg);
-      -ms-transform: rotate(6deg);
-      -o-transform: rotate(6deg);
+      @include rotate(6deg);
+      font-size:1.4em;
     }
     .close {
-      margin-top: 20px;
+      position:relative;
+      top:20px;
+      line-height:15px;
+      font-size:2.4em;
       color: #ee5b1a;
-      opacity: .9;
+      @include opacity(.9);
       text-shadow: none;
       height: 25px;
       width: 25px;
       border: solid 2px #ee5b1a;
-      -moz-border-radius: 35px;
-      -webkit-border-radius: 35px;
-      -o-border-radius: 35px;
-      -ms-border-radius: 35px;
-      border-radius: 35px;
+      @include border-radius(35px);
     }
   }
 }
 
+.lt-ie9 .messages-container .alert .close {
+  border:0;
+  font-size:3em;
+}
+
 .flash-message {
-    position: absolute;
-    top: 210px;
-    left: 40%;
-    z-index: 17;
+  position: absolute;
+  top: 210px;
+  left: 40%;
+  z-index: 17;
 }
 
 .pending-credits {

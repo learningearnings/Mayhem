@@ -24,6 +24,7 @@
 //= require chosen-jquery
 //= require custom
 //= require jquery.ui.datepicker
+//= require modernizr
 # Make jquery ajax requests use the csrf token
 $ ->
   $.ajaxSetup
