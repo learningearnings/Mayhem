@@ -30,11 +30,6 @@
 $how-to-active-color: #f05c1a;
 
 
-/* Sprites */
-$stickies_nav-layout:horizontal;
-@import "sprites/stickies_nav/*.png";
-@include all-stickies_nav-sprites;
-
 body {
   font-size: 62.5%;
 }
@@ -293,22 +288,11 @@ html.resp, body.resp {
   position: absolute;
   top: 340px;
   left: 400px;
-    .stickies-nav {
-      list-style-type: none;
-      margin: 0;
-    }
-    .stickies-nav li {
-      display: inline;
-    }
 }
 
 .nav-container {
   top: 380px;
   left: 500px;
-}
-
-.stickies-nav li a:active {
-  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));
 }
 
 
