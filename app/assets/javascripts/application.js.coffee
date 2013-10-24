@@ -14,7 +14,6 @@
 //= require bootstrap-carousel
 //= require bootstrap-typeahead
 //= require bootstrap-transition
-//= require jquery.html5-placeholder-shim
 //= require jquery_nested_form
 //= require ckeditor/init
 //= require jquery.ui.core.js
@@ -24,7 +23,18 @@
 //= require chosen-jquery
 //= require custom
 //= require jquery.ui.datepicker
-//= require modernizr
+//= require modernizr-special
+//= require webshims/polyfiller
+
+$.webshims.debug = true;
+$.webshims.setOptions('forms', {
+  placeholderType: 'value'
+});
+$.webshims.setOptions('forms-ext', {
+  types: 'range date time number month color'
+});
+$.webshims.polyfill('forms forms-ext');
+
 # Make jquery ajax requests use the csrf token
 $ ->
   $.ajaxSetup

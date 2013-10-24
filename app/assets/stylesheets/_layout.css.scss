@@ -249,6 +249,21 @@ html.resp, body.resp {
   margin: -4px 0 0 0;
 }
 
+//webshims polyfill stuffs:
+.placeholder-box-input {
+  vertical-align:baseline;
+}
+.placeholder-text {
+  line-height:20px !important;
+  z-index:1;
+}
+.placeholder-focused.placeholder-visible {
+  .placeholder-text {
+    display:none;
+    color: #fff;
+  }
+}
+
 .btn.students,
 .btn.parents,
 .btn.teachers,
@@ -865,8 +880,8 @@ html.resp, body.resp {
   height: 293px;
   width: 290px;
   position: absolute;
-  top: 75px;
-  left: 250px;
+  top: 60px;
+  left: 265px;
   z-index: 0;
 }
 
