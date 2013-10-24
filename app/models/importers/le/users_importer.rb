@@ -49,6 +49,7 @@ module Importers
             user = person.user
             user.username = datum[:user][:username]
             user.password = datum[:user][:password]
+            user.email = datum[:user][:email]
             user.save(validate: false)
             person.activate!
           end
