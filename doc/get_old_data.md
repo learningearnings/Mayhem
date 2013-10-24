@@ -111,5 +111,13 @@ LINES TERMINATED BY '\n';
 
 ## Otu Codes
 ```sql
-SELECT 'otucodeID', 'issuinguserID', 'schoolID', 'ClassroomID', 'redeeminguserID', 'OTUcode', 'otucodepoint', 'OTUcodeexpires', 'OTUcodeDate', 'OTUcodeRedeemed', 'OTUCodePrinted', 'ebuck', 'status_id', 'TeacherAwardID' UNION ALL SELECT * from tbl_otucodes where OTUcodeexpires > NOW() AND OTUcodeRedeemed = '0000-00-00 00:00:00' INTO OUTFILE '/tmp/otu_codes.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
+SELECT 'otucodeID', 'issuinguserID', 'schoolID', 'ClassroomID', 'redeeminguserID', 'OTUcode', 'otucodepoint', 'OTUcodeexpires', 'OTUcodeDate', 'OTUcodeRedeemed', 'OTUCodePrinted', 'ebuck', 'status_id', 'TeacherAwardID'
+UNION ALL
+SELECT * 
+FROM tbl_otucodes
+WHERE OTUcodeexpires > NOW() AND OTUcodeRedeemed = '0000-00-00 00:00:00'
+INTO OUTFILE '/tmp/otu_codes.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
 ```

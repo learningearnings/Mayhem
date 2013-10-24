@@ -12,12 +12,14 @@ module Importers
           classroom = existing_classroom(datum[:legacy_classroom_id])
           school = existing_school(datum[:legacy_school_id])
           person_school_link = person.person_school_links.where(:school_id => school.id).first
+          student = existing_student(datum[:legacy_student_id])
           otu_code = OtuCode.new
           otu_code.code = datum[[:code]]
           otu_code.person_school_link = person_school_link
           otu_code.points = datum[:points]
           otu_code.expires_at = datum[:expires_at]
           otu_code.ebuck = datum[:ebuck]
+          otu_code.student = student
           otu_code.save!
           print "."
         end
@@ -32,12 +34,17 @@ module Importers
              ebuck: otu_code["ebuck"] == "1" ? true : false,
              legacy_user_id: otu_code["issuinguserID"],
              legacy_school_id: otu_code["schoolID"],
+             legacy_student_id: otu_code["redeeminguserID"]
           }
         end
       end
 
       def existing_person(id)
         Person.where(:legacy_user_id => id).first
+      end
+
+      def existing_student(id)
+        Student.where(:legacy_user_id => id).first
       end
 
       def existing_school(id)
