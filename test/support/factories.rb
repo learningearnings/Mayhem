@@ -34,11 +34,6 @@ FactoryGirl.define do
     school
   end
 
-  factory :moniker do
-    sequence(:moniker) { |n| "moniker#{n}" }
-    user
-  end
-
   factory :student_school_link, class: PersonSchoolLink do
     association :person, factory: :student
     school
