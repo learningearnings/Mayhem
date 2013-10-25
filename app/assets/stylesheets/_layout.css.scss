@@ -590,9 +590,18 @@ html.resp, body.resp {
 
 .primary-nav .play:hover,
 .play-selected {
-  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 5px;
-  background-size:140px auto;
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
   color: #eb731c;
+}
+
+.primary-nav .shop {
+  color: #b611b0;
+}
+
+.primary-nav .shop:hover,
+.shop-selected {
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
+  color: #b611b0;
 }
 
 .primary-nav .charities {
@@ -617,8 +626,9 @@ html.resp, body.resp {
 
 .primary-nav .rewards:hover,
 .rewards-selected {
-  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 5px;
-  background-size:140px auto;
+  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 10px;
+  // background-size:140px auto;
+  background-size:contain;
   color: #b611b0;
 }
 
