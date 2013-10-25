@@ -5,6 +5,7 @@ module Importers
     class LocalRewardsImporter < BaseImporter
       protected
       def run
+        @temp_image = File.open(Rails.root.join("public/image_not_found.jpg"))
         merged_local_rewards_data.each do |datum|
           execute_teachers_reward_on(datum.except(:id))
         end
@@ -16,6 +17,7 @@ module Importers
         rwd = Teachers::Reward.new(datum)
         rwd.school = existing_school(school_id)
         rwd.teacher = existing_teacher(teacher_id)
+        rwd.image = @temp_image
         rwd.save
       end
 
@@ -39,9 +41,10 @@ module Importers
             name: reward["reward"],
             category: category_id_for(reward["category"]),
             on_hand: reward["quantity"],
-            classrooms: [classroom_id_for(reward["classroom_id"])],
+            classrooms: [classroom_id_for(reward["classroom_id"])].compact,
             school_id: reward["school_id"],
-            teacher_id: reward["teacher_id"]
+            teacher_id: reward["teacher_id"],
+            price: reward["points"]
           }
         end
       end
@@ -51,7 +54,7 @@ module Importers
       end
 
       def classroom_id_for(legacy_classroom_id)
-        existing_classroom(legacy_classroom_id).id
+        existing_classroom(legacy_classroom_id).id rescue nil
       end
 
       def existing_classroom(legacy_classroom_id)
@@ -63,7 +66,7 @@ module Importers
       end
 
       def existing_teacher(legacy_teacher_id)
-        Person.where(legacy_teacher_id: legacy_teacher_id).first
+        Person.where(legacy_user_id: legacy_teacher_id).first
       end
     end
   end

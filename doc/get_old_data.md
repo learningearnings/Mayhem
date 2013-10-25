@@ -144,9 +144,9 @@ lines terminated by '\n';
 # just 1 Classroom
 
 ```
-SELECT 'reward_id', 'reward', 'category', 'quantity', 'user_id', 'school_id', 'classroom_id'
+SELECT 'reward_id', 'reward', 'category', 'points', 'quantity', 'user_id', 'school_id', 'classroom_id'
 UNION ALL
-SELECT rl.id, rl.name 'Reward', lrc.name as 'Category', rl.quantity, rl.userid AS 'Teacher', tfs.schoolid, tfc.classroomid
+SELECT rl.id, rl.name 'Reward', lrc.name as 'Category', r.rewardpoints, rl.quantity, rl.userid AS 'Teacher', tfs.schoolid, tfc.classroomid
 FROM tbl_rewardlocals rl
 JOIN tbl_rewards r ON rl.rewardid = r.rewardid
 JOIN tbl_localrewardcategories lrc ON rl.localrewardcategoryID = lrc.id
