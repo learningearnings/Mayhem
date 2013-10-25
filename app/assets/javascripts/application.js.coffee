@@ -1,4 +1,5 @@
 //= require jquery
+//= require jquery.cookie
 //= require jquery_ujs
 //= require ICanHaz
 //= require init
@@ -30,3 +31,10 @@ $ ->
   $.ajaxSetup
     beforeSend: (xhr) ->
       xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+# Set timezone in cookie
+window.BrowserTZone ||= {}
+BrowserTZone.setCookie = ->
+  $.cookie "browser.timezone", jstz.determine().name(), { expires: 365, path: '/' }
+
+jQuery ->
+  BrowserTZone.setCookie()

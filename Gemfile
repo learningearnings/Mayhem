@@ -12,6 +12,8 @@ gem 'rake', '~> 10.1.0'
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
+gem 'tzinfo'
+gem 'tzinfo-data'
 
 # for importing
 #gem 'mysql2'

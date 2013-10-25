@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :subdomain_required
+  around_filter :set_time_zone
   around_filter :track_interaction
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -112,6 +113,34 @@ class ApplicationController < ActionController::Base
     interaction.page = request.path
     # NOTE: Don't know how to get memory usage in here yet
     interaction.save
+  end
+
+  def set_time_zone
+    old_time_zone = Time.zone
+    if browser_timezone.present?
+      Time.zone = browser_timezone
+      Rails.logger.warn "**************************"
+      Rails.logger.warn "Using #{browser_timezone} for this request"
+      Rails.logger.warn "**************************"
+    end
+    yield
+  ensure
+    Time.zone = old_time_zone
+  end
+
+  def browser_timezone
+    convert_from_iana_zone_to_rails cookies["browser.timezone"]
+  end
+
+  # Rails decided to make its own time zones because duh time isn't hard enough already.
+  # There is a mapping constant to convert from IANA
+  def convert_from_iana_zone_to_rails iana_zone
+    mapping = ActiveSupport::TimeZone::MAPPING.detect {|k, v| v == iana_zone}
+    if mapping
+      mapping.first
+    else
+      Time.zone
+    end
   end
 
   def get_reward_highlights highlight_count = 3
