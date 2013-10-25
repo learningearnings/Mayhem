@@ -72,7 +72,7 @@ module Importers
         {
           "1" => "Student",
           "2" => "Teacher",
-          "3" => "LeAdmin",
+          "3" => "SchoolAdmin",
           "5" => "SchoolAdmin"
         }[person_type] || "Student"
       end

@@ -66,8 +66,8 @@ module Games
       if params[:match_id]
         @match = FoodFightMatch.find(params[:match_id])
       else
-        if current_person.food_fight_matches.present? && current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id = params[:person_id]}.first.present?
-          @match = current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id = params[:person_id]}.first.food_fight_match
+        if current_person.food_fight_matches.present? && current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id == params[:person_id]}.first.present?
+          @match = current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id == params[:person_id]}.first.food_fight_match
         else
           @match = FoodFightMatch.create(:active => true)
           @match.food_fight_players.create(:person_id => current_person.id)
