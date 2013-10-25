@@ -18,6 +18,9 @@ gem 'pg', '0.13.2'
 #gem 'taps'
 #gem 'sqlite3'
 
+gem 'modernizr-rails', '~> 2.6.2.3'
+gem "webshims-rails", "~> 1.11.1" # if we move to rails 4, please read https://github.com/whatcould/webshims-rails for changes.
+
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
 gem 'jquery-ui-rails'

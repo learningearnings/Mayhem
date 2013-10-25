@@ -9,5 +9,7 @@ module Games
     validates :correct, inclusion: { in: [true, false] }
 
     scope :correct, where(correct: true)
+
+    attr_accessible :question_id, :answer_id, :correct
   end
 end
