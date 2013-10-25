@@ -32,14 +32,6 @@ class CreditManager
   # NOTE: I am confused about why debits and credits are switched here, but to make
   # my tests pass they needed to be.
   def transfer_credits description, from_account, to_account, amount, document = nil
-    Rails.logger.warn("*" * 20)
-    Rails.logger.warn("transfer_credits")
-    Rails.logger.warn(description)
-    Rails.logger.warn(from_account)
-    Rails.logger.warn(to_account)
-    Rails.logger.warn(amount.to_s)
-    Rails.logger.warn(document)
-    Rails.logger.warn("*" * 20)
     transaction = @transaction_class.build({
       description: description,
       commercial_document: document,
