@@ -2,6 +2,7 @@
 
 ## Users
 ### To select users from the database into CSV
+
 ```sql
 SELECT 'UserID', 'SchoolID', 'grade', 'usertypeID', 'username', 'useremail', 'userfname', 'userlname', 'dateofbirth', 'recoverypassword'
 UNION ALL
@@ -17,6 +18,7 @@ LINES TERMINATED BY '\n';
 
 ## Schools
 ### To select schools from the database into CSV
+
 ```sql
 SELECT 'SchoolID', 'school', 'min_grade', 'max_grade', 'schooladdress', 'schooladdress2', 'city', 'state', 'schoolzip', 'schoolphone', 'lat', 'lon', 'timezone', 'gmtoffset', 'distribution_model'
 UNION ALL
@@ -31,6 +33,7 @@ LINES TERMINATED BY '\n';
 
 ## Classrooms
 ### To select classrooms from the database into CSV
+
 ```sql
 SELECT 'classroomID', 'userID', 'schoolID', 'grade', 'classroomtitle'
 UNION ALL
@@ -44,6 +47,7 @@ LINES TERMINATED BY '\n';
 
 ## Classroom Person Links
 ### To get all the classroom person links from the database into CSV
+
 ```sql
 SELECT 'classroomdetailID', 'classroomID', 'userID'
 UNION ALL
@@ -60,17 +64,28 @@ LINES TERMINATED BY '\n';
 ### From Jimmy:
 Here's how we get the student's balances (tbl_pointtypes.pointtypeID dictates Checking or Savings):
 For checking:
+
+```
 SELECT ROUND(sum(points),2) as points, userID FROM tbl_points WHERE userID=? AND pointtypeID = 1 GROUP BY userID;
+```
 
 For Savings:
+
+```
 SELECT ROUND(sum(points),2) as points, userID FROM tbl_points WHERE userID=? AND pointtypeID = 2 GROUP BY userID;
+```
 
 Here is how me get the teacher/school admin balances:
+
+```
 SELECT SUM(TeacherAwardAmount) as sum FROM tbl_teacherawards WHERE TeacherID = ?;
+```
 
 Let me know if this is not what you're looking for or need something else.  I'm happy to give you access to this code as well if you don't already have it.
+
 ## User Points
 ### To select points from the database into CSV
+
 ```sql
 SELECT 'UserID', 'checking_points'
 UNION ALL
@@ -110,6 +125,8 @@ LINES TERMINATED BY '\n';
 ```
 
 # Rewards LE shipped to schools that are on-site at the school (schoolID)
+
+```
 SELECT 'school_id', 'reward_detail_id', 'reward_id', 'reward_title', 'quantity'
 UNION ALL
 SELECT rd.schoolID, rd.rewarddetailID, r.rewardID, r.rewardtitle, rd.rewardquantity 
@@ -121,9 +138,12 @@ fields terminated by ','
 optionally enclosed by '"'
 escaped by '\\'
 lines terminated by '\n';
+```
 
 # Local rewards created by School Admins or Teachers for the whole School or
 # just 1 Classroom
+
+```
 SELECT 'reward_id', 'reward', 'category', 'quantity', 'user_id', 'school_id', 'classroom_id'
 UNION ALL
 SELECT rl.id, rl.name 'Reward', lrc.name as 'Category', rl.quantity, rl.userid AS 'Teacher', tfs.schoolid, tfc.classroomid
@@ -141,8 +161,10 @@ fields terminated by ','
 optionally enclosed by '"'
 escaped by '\\'
 lines terminated by '\n';
+```
 
 ## Otu Codes
+
 ```sql
 SELECT 'otucodeID', 'issuinguserID', 'schoolID', 'ClassroomID', 'redeeminguserID', 'OTUcode', 'otucodepoint', 'OTUcodeexpires', 'OTUcodeDate', 'OTUcodeRedeemed', 'OTUCodePrinted', 'ebuck', 'status_id', 'TeacherAwardID'
 UNION ALL

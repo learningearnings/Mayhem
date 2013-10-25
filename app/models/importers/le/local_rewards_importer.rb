@@ -11,7 +11,11 @@ module Importers
       end
 
       def execute_teachers_reward_on(datum)
+        school_id = datum.delete(:school_id)
+        teacher_id = datum.delete(:teacher_id)
         rwd = Teachers::Reward.new(datum)
+        rwd.school = existing_school(school_id)
+        rwd.teacher = existing_teacher(teacher_id)
         rwd.save
       end
 
@@ -35,7 +39,9 @@ module Importers
             name: reward["reward"],
             category: category_id_for(reward["category"]),
             on_hand: reward["quantity"],
-            classrooms: [classroom_id_for(reward["classroom_id"])]
+            classrooms: [classroom_id_for(reward["classroom_id"])],
+            school_id: reward["school_id"],
+            teacher_id: reward["teacher_id"]
           }
         end
       end
@@ -50,6 +56,14 @@ module Importers
 
       def existing_classroom(legacy_classroom_id)
         Classroom.where(legacy_classroom_id: legacy_classroom_id).first
+      end
+
+      def existing_school(legacy_school_id)
+        School.where(legacy_school_id: legacy_school_id).first
+      end
+
+      def existing_teacher(legacy_teacher_id)
+        Person.where(legacy_teacher_id: legacy_teacher_id).first
       end
     end
   end
