@@ -18,13 +18,13 @@ before 'deploy:setup', 'rvm:create_wrappers'
 set :bundle_dir, ''
 set :bundle_flags, '--system --quiet'
 
-set :stages, %w(production staging)
+set :stages, %w(production demo staging)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
 after 'deploy:start',   'unicorn:start'
-after 'deploy:stop',    'unicorn:stop'
-after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
+# after 'deploy:stop',    'unicorn:stop'
+#after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
 
 # main details
 set :application,     "Mayhem"
@@ -51,6 +51,7 @@ namespace :deploy do
   task :symlink_shared, :roles => :app do
     run "ln -s #{shared_path}/log #{latest_release}/log"
     run "ln -s #{shared_path}/system #{latest_release}/public/system"
+    run "ln -s #{shared_path}/public/assets #{latest_release}/public/assets"
     run "mkdir #{latest_release}/tmp"
     run "rm -fr #{latest_release}/tmp/cache"
     run "ln -s #{shared_path}/tmp/cache #{latest_release}/tmp/cache"
@@ -63,6 +64,11 @@ namespace :deploy do
   task :precompile_assets do
     #precompile the assets
     run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
+  end
+
+  desc "Restart unicorn"
+  task :restart do
+    unicorn.restart
   end
 end
 

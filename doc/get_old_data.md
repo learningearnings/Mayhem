@@ -141,3 +141,18 @@ fields terminated by ','
 optionally enclosed by '"'
 escaped by '\\'
 lines terminated by '\n';
+
+## Otu Codes
+```sql
+SELECT 'otucodeID', 'issuinguserID', 'schoolID', 'ClassroomID', 'redeeminguserID', 'OTUcode', 'otucodepoint', 'OTUcodeexpires', 'OTUcodeDate', 'OTUcodeRedeemed', 'OTUCodePrinted', 'ebuck', 'status_id', 'TeacherAwardID'
+UNION ALL
+SELECT otucodeID, issuinguserID, schoolID, ClassroomID, redeeminguserID, OTUcode, otucodepoint, OTUcodeexpires, OTUcodeDate, OTUcodeRedeemed, OTUCodePrinted, ebuck, status_id, TeacherAwardID
+FROM tbl_otucodes
+WHERE OTUcodeexpires > NOW()
+AND OTUcodeRedeemed = '0000-00-00 00:00:00'
+AND (status_id = 200 OR status_id = 100)
+INTO OUTFILE '/tmp/otu_codes.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+```

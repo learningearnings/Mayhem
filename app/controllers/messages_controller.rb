@@ -3,7 +3,7 @@ class MessagesController < LoggedInController
   before_filter :get_received_messages
 
   def index
-    redirect_to friend_messages_path
+    redirect_to games_messages_path
   end
 
   def friend_messages
@@ -26,8 +26,8 @@ class MessagesController < LoggedInController
     @messages.map{|x| x.read!}
   end
 
-  def food_fight_messages
-    @messages = @received_messages.from_food_fight.page params[:page]
+  def games_messages
+    @messages = @received_messages.from_games.page params[:page]
     @messages.map{|x| x.read!}
   end
 

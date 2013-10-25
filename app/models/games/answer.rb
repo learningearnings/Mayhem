@@ -5,6 +5,8 @@ module Games
     validates :game_type, presence: true
     validates :body, presence: true
 
+    attr_accessible :game_type, :body
+
     def to_s
       body
     end

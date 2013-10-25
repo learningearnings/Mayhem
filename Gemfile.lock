@@ -161,6 +161,7 @@ GEM
       compass-rails (>= 1.0)
       railties (>= 3.0)
       sass-rails (>= 3.2)
+    chronic (0.10.2)
     chunky_png (1.2.8)
     ckeditor (3.7.3)
       mime-types
@@ -302,10 +303,11 @@ GEM
       ruby-progressbar
     mocha (0.14.0)
       metaclass (~> 0.0.1)
+    modernizr-rails (2.6.2.3)
     money (5.0.0)
       i18n (~> 0.4)
       json
-    multi_json (1.8.0)
+    multi_json (1.8.2)
     multi_xml (0.5.5)
     nested_set (1.7.0)
       activerecord (>= 3.0.0)
@@ -496,7 +498,12 @@ GEM
     uuidtools (2.1.4)
     warden (1.1.1)
       rack (>= 1.0)
+    webshims-rails (1.11.1)
+      rails (> 3.1.0)
     websocket (1.0.7)
+    whenever (0.8.4)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     whereabouts (0.9.1)
       activerecord
       activesupport
@@ -549,6 +556,7 @@ DEPENDENCIES
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
   mocha (~> 0.14.0)
+  modernizr-rails (~> 2.6.2.3)
   nested_form!
   pdfkit
   pg (= 0.13.2)
@@ -587,4 +595,6 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   valid_attribute!
+  webshims-rails (~> 1.11.1)
+  whenever
   whereabouts (~> 0.9.0)

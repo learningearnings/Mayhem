@@ -34,11 +34,6 @@ FactoryGirl.define do
     school
   end
 
-  factory :moniker do
-    sequence(:moniker) { |n| "moniker#{n}" }
-    user
-  end
-
   factory :student_school_link, class: PersonSchoolLink do
     association :person, factory: :student
     school
@@ -136,7 +131,7 @@ FactoryGirl.define do
     address1 "123 Foo Street"
     address2 "Unit 2"
     city "Birmingham"
-    if State.find 1
+    if State.where(id: 1).present?
       state_id 1
     else
       state_id {FactoryGirl.create(:state).id}

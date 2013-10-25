@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131001185653) do
+ActiveRecord::Schema.define(:version => 20131008022118) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -83,20 +83,23 @@ ActiveRecord::Schema.define(:version => 20131001185653) do
     t.decimal  "current_bid",     :precision => 10, :scale => 2
     t.integer  "product_id"
     t.string   "auction_type"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
     t.decimal  "starting_bid",    :precision => 10, :scale => 2
     t.integer  "min_grade"
     t.integer  "max_grade"
     t.boolean  "created_locally"
+    t.boolean  "notified",                                       :default => false
+    t.boolean  "fulfilled",                                      :default => false
   end
 
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"
     t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "teacher_only", :default => false
   end
 
   create_table "buck_batch_links", :force => true do |t|
@@ -402,15 +405,15 @@ ActiveRecord::Schema.define(:version => 20131001185653) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
     t.string   "salutation",             :limit => 10
     t.string   "recovery_password"
-    t.boolean  "can_distribute_credits"
+    t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
   end

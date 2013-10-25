@@ -1,5 +1,8 @@
 ActiveAdmin.register LeAdmin do
   form :partial => "form"
+  filter :first_name
+  filter :last_name
+  filter :username
 
   index do
     selectable_column
