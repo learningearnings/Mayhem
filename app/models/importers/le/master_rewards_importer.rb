@@ -4,21 +4,25 @@ require 'forwardable'
 
 # MasterRewardsImporter should be run like so:
 #
-#     i = Importers::Le::MasterRewards::Importer.new("/home/jadams/tmp/master_rewards.csv", "/home/jadams/tmp/rewards_already_shipped_to_schools.csv")
+#     i = Importers::Le::MasterRewardsImporter.new("/home/jadams/tmp/master_rewards.csv", "/home/jadams/tmp/rewards_already_shipped_to_schools.csv", "/home/jadams/tmp/rewardimage/")
 #     i.call
+#
+# It expects to be passed a directory where the images whose filenames are
+# represented in the master_rewards.csv file can be found.  Should be a string,
+# ending in a slash, because I'm lazy.
 module Importers
   class Le
     class MasterRewardsImporter
       extend Forwardable
       def_delegators :@logger, :warn, :info, :debug
 
-      attr_reader :rewards_file_path, :shipments_file_path, :log_file_path
-      def initialize(rewards_file_path, shipments_file_path, log_file_path='/tmp/le_importer.log')
+      attr_reader :rewards_file_path, :shipments_file_path, :log_file_path, :images_directory
+      def initialize(rewards_file_path, shipments_file_path, images_directory, log_file_path='/tmp/le_importer.log')
         @rewards_file_path = rewards_file_path
         @shipments_file_path = shipments_file_path
+        @images_directory = images_directory
         @log_file = File.open(log_file_path, 'a')
         @log_file_path = log_file_path
-        @temp_image = File.open(Rails.root.join("public/image_not_found.jpg"))
         @logger = Logger.new(@log_file)
       end
 
@@ -52,6 +56,9 @@ module Importers
         product.fulfillment_type = 'Shipped for School Inventory'
         product.purchased_by = "LE"
         product.save
+        if(datum[:image])
+          product.images.create(attachment: datum[:image])
+        end
         product.set_property("reward_type", "wholesale")
         @products[datum[:legacy_id]] = product
       end
@@ -80,7 +87,8 @@ module Importers
             legacy_id: reward["reward_id"],
             name: reward["name"],
             description: reward["description"],
-            price: reward["credits"]
+            price: reward["credits"],
+            image: image_for(reward["image_path"])
           }
         end
       end
@@ -125,6 +133,14 @@ module Importers
 
       def file_data(file_path)
         File.read(file_path).gsub('\"', '""')
+      end
+
+      def image_for(image_path)
+        begin
+          File.open(@images_directory + image_path)
+        rescue
+          nil
+        end
       end
 
       def master_store
