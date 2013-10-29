@@ -8,6 +8,7 @@
 $.webshims.setOptions('forms-ext', {
   types: 'range date time number month color'
 });
+$.webshims.setOptions('basePath', 'assets/webshims/minified/shims/');
 $.webshims.polyfill();
 
 $(document).ready(function(){
