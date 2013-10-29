@@ -49,6 +49,7 @@ module Importers
             user = person.user
             user.username = datum[:user][:username]
             user.password = datum[:user][:password]
+            user.email = datum[:user][:email]
             user.save(validate: false)
             person.activate!
           end
@@ -71,7 +72,7 @@ module Importers
         {
           "1" => "Student",
           "2" => "Teacher",
-          "3" => "LeAdmin",
+          "3" => "SchoolAdmin",
           "5" => "SchoolAdmin"
         }[person_type] || "Student"
       end

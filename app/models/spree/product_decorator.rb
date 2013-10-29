@@ -117,4 +117,5 @@ Spree::Product.class_eval do
     pp.destroy if pp
   end
 
+
 end

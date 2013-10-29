@@ -37,34 +37,6 @@ describe Person do
     p.classrooms.must_include classroom
   end
 
-  describe "Person#moniker" do
-    it "finds the most recent approved moniker" do
-      person = FactoryGirl.create(:person)
-      first_moniker  = person.monikers.create(:moniker => "first")
-      second_moniker = person.monikers.create(:moniker => "second")
-      third_moniker  = person.monikers.create(:moniker => "third")
-
-      second_moniker.approve!
-      assert_equal person.moniker, second_moniker.moniker
-    end
-
-    it "should return a blank string if there are no monikers" do
-      person = FactoryGirl.create(:person)
-      assert person.monikers.empty?
-      assert_equal person.moniker, ""
-    end
-  end
-
-  describe "Person#moniker=" do
-    it "should create a new moniker" do
-      person = FactoryGirl.create(:person)
-      assert_equal person.monikers.count, 0
-      person.moniker= "New Moniker"
-      person.save
-      assert_equal person.monikers.count, 1
-    end
-  end
-
   it "has avatar as the last avatar" do
     p = FactoryGirl.create(:person)
     first_avatar = FactoryGirl.create(:avatar)

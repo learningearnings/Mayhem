@@ -91,7 +91,6 @@ Spree::OrdersController.class_eval do
     redirect_to spree.cart_path
   end
 
-
   def after_save_new_order
     @current_order.special_instructions = {school_id: current_school.id}.to_yaml
     @person = current_person

@@ -1,4 +1,5 @@
 Spree::Order.class_eval do
+  before_create :set_dummy_email # Students don't have emails necessarily, but spree needs them
 
   attr_accessible :school_id
 
@@ -34,7 +35,6 @@ Spree::Order.class_eval do
     output.to_s
   end
 
-
   def unstock_items!
     line_items.each do |line_item|
       Spree::InventoryUnit.increase(self, line_item.variant, line_item.quantity)
@@ -49,8 +49,11 @@ Spree::Order.class_eval do
     variant.save
   end
 
+  def set_dummy_email
+    self.email ||= 'noone@example.com'
+  end
 
-checkout_flow do
+  checkout_flow do
     go_to_state :transmitted
     go_to_state :printed
     # go_to_state :address
@@ -62,5 +65,4 @@ checkout_flow do
     go_to_state :refunded
     #remove_transition :from => :delivery, :to => :confirm
   end
-
 end

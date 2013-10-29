@@ -249,6 +249,21 @@ html.resp, body.resp {
   margin: -4px 0 0 0;
 }
 
+//webshims polyfill stuffs:
+.placeholder-box-input {
+  vertical-align:baseline;
+}
+.placeholder-text {
+  line-height:20px !important;
+  z-index:1;
+}
+.placeholder-focused.placeholder-visible {
+  .placeholder-text {
+    display:none;
+    color: #fff;
+  }
+}
+
 .btn.students,
 .btn.parents,
 .btn.teachers,
@@ -575,9 +590,18 @@ html.resp, body.resp {
 
 .primary-nav .play:hover,
 .play-selected {
-  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 5px;
-  background-size:140px auto;
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
   color: #eb731c;
+}
+
+.primary-nav .shop {
+  color: #b611b0;
+}
+
+.primary-nav .shop:hover,
+.shop-selected {
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
+  color: #b611b0;
 }
 
 .primary-nav .charities {
@@ -602,8 +626,9 @@ html.resp, body.resp {
 
 .primary-nav .rewards:hover,
 .rewards-selected {
-  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 5px;
-  background-size:140px auto;
+  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 10px;
+  // background-size:140px auto;
+  background-size:contain;
   color: #b611b0;
 }
 
@@ -865,8 +890,8 @@ html.resp, body.resp {
   height: 293px;
   width: 290px;
   position: absolute;
-  top: 75px;
-  left: 250px;
+  top: 60px;
+  left: 265px;
   z-index: 0;
 }
 
@@ -1049,7 +1074,7 @@ html.resp, body.resp {
   width: 814px;
   height: 356px;
   position: absolute;
-  top: 200px;
+  top: 250px;
   left: 130px;
 }
 
