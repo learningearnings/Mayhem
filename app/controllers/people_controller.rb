@@ -28,6 +28,9 @@ class PeopleController < LoggedInController
     @person.avatar = Avatar.find(params[:avatar_id]) if !params[:avatar_id].blank?
     if person_attributes[:password].present? && person_attributes[:password_confirmation].present?
       @person.user.update_attributes(:password => person_attributes[:password], :password_confirmation => person_attributes[:password_confirmation])
+
+      # Devise automatically logs out a user upon password change.
+      sign_in(@person.user, bypass: true)
     end
     if person_attributes[:email].present?
       @person.user.update_attributes(:email => person_attributes[:email])
