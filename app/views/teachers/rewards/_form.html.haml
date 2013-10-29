@@ -18,7 +18,7 @@
   %h3 Select Classrooms for your reward
   .row-fluid.controls-row
     #classrooms.classrooms
-      - f.collection_check_boxes :classrooms, current_person.classrooms, :id, :name do |b|
+      - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
         %div.classroom-checkbox
           = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text}
   .control-row
