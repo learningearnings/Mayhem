@@ -11,13 +11,14 @@ module Teachers
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     validates_presence_of :image
 
-    attr_accessible :name, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id
+    attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id
 
-    attr_accessor :id, :name, :price, :classrooms, :image, :spree_product_id
+    attr_accessor :id, :name, :description, :price, :classrooms, :image, :spree_product_id
     attr_accessor :on_hand, :spree_product, :teacher, :school, :category, :school_id, :classroom_id
 
     def initialize params = {}
       @name = params[:name] if params[:name]
+      @description = params[:description] if params[:description]
       @price = params[:price] if params[:price]
       @on_hand = params[:on_hand] if params[:on_hand]
       @image = params[:image] if params[:image]
@@ -57,6 +58,7 @@ module Teachers
       reward_params = params[:teachers_reward]
       p = Spree::Product.find(reward_params[:id])
       p.name = @name = reward_params[:name]
+      p.description = @description = reward_params[:description]
       p.price = @price = reward_params[:price]
       p.on_hand = @on_hand = reward_params[:on_hand]
       # update classrooms
@@ -73,6 +75,7 @@ module Teachers
 
     def update_attributes(params,options = {})
       @name = params[:name] if params[:name]
+      @description = params[:description] if params[:description]
       @price = params[:price] if params[:price]
       @on_hand = params[:on_hand] if params[:on_hand]
       @image = params[:image] if params[:image]
@@ -95,6 +98,7 @@ module Teachers
       end
 
       p.name = @name
+      p.description = @description
       p.price = @price
       p.on_hand = @on_hand
       p.available_on = Time.now

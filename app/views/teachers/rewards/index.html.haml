@@ -1,9 +1,9 @@
 .main-content-wrapper
   .full-content
-    %h1.span5.pull-left
-      Your Rewards
+    %h2 Your Rewards
+    %ul.action_buttons
+      %li= link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
     = paginate @teachers_rewards, :window => 2
-    = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
     .resp-product
       .resp-product-row
         - if @teachers_rewards.any?
