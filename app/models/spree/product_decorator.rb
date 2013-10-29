@@ -117,5 +117,15 @@ Spree::Product.class_eval do
     pp.destroy if pp
   end
 
+  def master_product
+    if property('master_product')
+      Spree::Product.find(property('master_product'))
+    end
+  end
 
+  %w(images name description price).each do |delegated_attribute|
+    define_method delegated_attribute do
+      master_product ? master_product.send(delegated_attribute) : super
+    end
+  end
 end
