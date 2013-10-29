@@ -34,11 +34,11 @@
           .tab-pane#print-credits
             %h4 Print Physical Credits
             = form_for OtuCode.new, :url => teachers_create_print_bucks_path do |f|
-              = label_tag '$1'
+              = label_tag '1'
               = text_field_tag :point1,nil,:min => '0',:step => '1', :type => 'number',:class => 'focus-on-me'
-              = label_tag '$5'
+              = label_tag '5'
               = text_field_tag :point5, nil,:min => '0',:step => '1',:type => "number"
-              = label_tag '$10'
+              = label_tag '10'
               = text_field_tag :point10, nil,:min => '0', :step => '1',:type => "number"
               = f.submit 'Print These Credits', :class => 'awesome-button'
 
