@@ -125,7 +125,7 @@ Spree::Product.class_eval do
 
   %w(images name description price).each do |delegated_attribute|
     define_method delegated_attribute do
-      master_product ? master_product.send(delegated_attribute) : super
+      master_product ? master_product.send(delegated_attribute) : super()
     end
   end
 end
