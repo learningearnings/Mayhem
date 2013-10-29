@@ -33,6 +33,9 @@ $.webshims.setOptions('forms', {
 $.webshims.setOptions('forms-ext', {
   types: 'range date time number month color'
 });
+<% if Rails.env.production? %>
+$.webshims.setOptions('basePath', '/assets/webshims/shims/');
+<% end %>
 $.webshims.polyfill('forms forms-ext');
 
 # Make jquery ajax requests use the csrf token
