@@ -33,7 +33,7 @@ $.webshims.setOptions('forms', {
 $.webshims.setOptions('forms-ext', {
   types: 'range date time number month color'
 });
-$.webshims.setOptions('basePath', 'assets/webshims/shims/');
+$.webshims.setOptions('basePath', '/assets/webshims/shims/');
 $.webshims.polyfill('forms forms-ext');
 
 # Make jquery ajax requests use the csrf token
