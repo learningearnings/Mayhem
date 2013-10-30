@@ -1,8 +1,7 @@
 class ClassroomsController < LoggedInController
+  before_filter :load_classrooms, only: [:index, :create]
 
   def index
-    # FIXME: - Bug in person.classrooms so for now using uniq to get past this.
-    @classrooms = current_person.classrooms.uniq
   end
 
   def new
@@ -98,4 +97,7 @@ class ClassroomsController < LoggedInController
     end
   end
 
+  def load_classrooms
+    @classrooms = current_person.classrooms.uniq
+  end
 end
