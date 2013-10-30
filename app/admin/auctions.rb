@@ -67,6 +67,7 @@ ActiveAdmin.register Auction do
     column :bidders do |auction|
       auction.bidders.count
     end
+=begin
     column :current_bid do |auction|
       bid_text = ""
       auction_session_key = "last_viewed_bid_time_for_auction_#{auction.id}"
@@ -80,6 +81,7 @@ ActiveAdmin.register Auction do
       bid_text += auction.current_bid.to_s
       bid_text.html_safe
     end
+=end
     column :leader do |auction|
       leader = auction.current_leader
       "#{leader} (#{leader.grade}) #{leader.school}" if leader
