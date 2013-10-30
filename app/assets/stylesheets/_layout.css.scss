@@ -626,10 +626,14 @@ html.resp, body.resp {
 
 .primary-nav .rewards:hover,
 .rewards-selected {
-  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 10px;
-  // background-size:140px auto;
-  background-size:contain;
+  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 8px;
+  @include background-size(contain);
   color: #b611b0;
+}
+
+.primary-nav .shop.rewards:hover,
+.shop.rewards-selected {
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 3px;
 }
 
 .primary-nav .reports {
@@ -653,13 +657,13 @@ html.resp, body.resp {
 }
 
 .primary-nav .classrooms:hover {
-  background-image: url(asset_path('locker_selected.png', image));
+  background-image: url(asset_path('classrooms_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08;
 }
 
 .classrooms-selected {
-  background-image: url(asset_path('locker_selected.png', image));
+  background-image: url(asset_path('classrooms_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08;
 }
