@@ -1,5 +1,5 @@
 module PagesHelper
-  def small_image(product, options={})
+  def small_image_pages(product, options={})
     if product.images.empty?
       "No Image"
     else

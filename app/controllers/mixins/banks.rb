@@ -12,6 +12,12 @@ module Mixins
     end
 
     def create_ebucks
+      # TODO: I had to put this in the controller mixin because the error handling assumes a different error.
+      # We should refactor this.
+      if params[:points].present? && params[:points].to_i > 400
+        flash[:error] = "You can not issue more than 400 credits to a student at a time."
+        redirect_to :back and return
+      end
       if params[:student][:id].present? && params[:points].present?
         get_buck_batches
         get_bank
@@ -24,7 +30,7 @@ module Mixins
     end
 
     def create_ebucks_for_classroom
-      if params[:classroom][:id].present? && params[:credits].values.detect{|x| x.present?}.present?
+      if params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure
@@ -45,7 +51,7 @@ module Mixins
         # We should only get here if we failed and the transaction rolled back
         on_failure
       else
-        flash[:error] = "Please ensure a classroom is selected and an amount is entered."
+        flash[:error] = "Please ensure a classroom is selected, has students, and an amount is entered."
         redirect_to :back
       end
     end

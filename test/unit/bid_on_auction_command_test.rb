@@ -24,7 +24,7 @@ describe BidOnAuctionCommand do
     val.stubs(:id).returns(1)
     val
   end
-  
+
   let(:amount){ BigDecimal('5') }
   let(:credit_manager){ mock("credit manager") }
   let(:message_creator){ lambda{|params|} }
@@ -56,6 +56,7 @@ describe BidOnAuctionCommand do
     it 'has an amount greater than the #current_bid on #auction' do
       auction.stubs(:current_bid).returns(BigDecimal('2'))
       subject.wont have_valid(:amount).when(BigDecimal('1'))
+      subject.wont have_valid(:amount).when(BigDecimal('2'))
       subject.must have_valid(:amount).when(BigDecimal('2.01'))
     end
   end
