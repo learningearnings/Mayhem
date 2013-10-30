@@ -24,7 +24,7 @@ module Mixins
     end
 
     def create_ebucks_for_classroom
-      if params[:classroom][:id].present? && params[:credits].values.detect{|x| x.present?}.present?
+      if params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure
@@ -45,7 +45,7 @@ module Mixins
         # We should only get here if we failed and the transaction rolled back
         on_failure
       else
-        flash[:error] = "Please ensure a classroom is selected and an amount is entered."
+        flash[:error] = "Please ensure a classroom is selected, has students, and an amount is entered."
         redirect_to :back
       end
     end
