@@ -12,6 +12,10 @@ module Mixins
     end
 
     def create_ebucks
+      if params[:points].present? && params[:points].to_i > 400
+        flash[:error] = "You can not issue more than 400 points to a student at a time."
+        redirect_to :back and return
+      end
       if params[:student][:id].present? && params[:points].present?
         get_buck_batches
         get_bank
