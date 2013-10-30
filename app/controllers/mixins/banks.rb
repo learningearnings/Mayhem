@@ -12,6 +12,8 @@ module Mixins
     end
 
     def create_ebucks
+      # TODO: I had to put this in the controller mixin because the error handling assumes a different error.
+      # We should refactor this.
       if params[:points].present? && params[:points].to_i > 400
         flash[:error] = "You can not issue more than 400 points to a student at a time."
         redirect_to :back and return
