@@ -1,5 +1,5 @@
 Spree::Order.class_eval do
-  before_create :set_dummy_email # Students don't have emails necessarily, but spree needs them
+  before_create :set_dummy_email # We don't want to send emails, so just changing this to a dummy email all the time
 
   attr_accessible :school_id
 
@@ -50,7 +50,7 @@ Spree::Order.class_eval do
   end
 
   def set_dummy_email
-    self.email ||= 'noone@example.com'
+    self.email = 'nobody@example.com'
   end
 
   checkout_flow do

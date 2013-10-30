@@ -1073,15 +1073,11 @@ html.resp, body.resp {
   background-image: url(asset_path('locker.png', image));
   width: 814px;
   height: 356px;
-  position: absolute;
-  top: 250px;
-  left: 130px;
+  margin: auto;
 }
 
 .locker-desc {
-  position: relative;
-  top: 0;
-  left: 40px;
+  margin-left: 200px;
   padding: 0 10em 3em 0;
     h2 {
       color: #1f2870;
@@ -1907,7 +1903,7 @@ h3 {
       -webkit-transform: rotate(-3deg);
       -moz-transform: rotate(-3deg);
       -o-transform: rotate(-3deg);
-      font-family: Sketch Rockwell;
+      font-family: SketchRockwell;
       font-size: 1.3em;
       text-shadow: 1px 1px 2px #333;
   }
@@ -1924,7 +1920,7 @@ h3 {
     -webkit-transform: rotate(-3deg);
     -moz-transform: rotate(-3deg);
     -o-transform: rotate(-3deg);
-    font-family: Sketch Rockwell;
+    font-family: SketchRockwell;
     font-size: 1.3em;
     text-shadow: 1px 1px 2px #333;
     color: #fff;
