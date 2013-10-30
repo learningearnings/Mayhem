@@ -13,7 +13,7 @@
               = render :partial => 'line_item', :locals => { :product => tr }
         - else
           %p
-            You haven't created any local rewards.   Click the button above to add some!
+            You have not created any school rewards yet. Click Create a New Reward to add your very own school rewards!
     - if @teachers_rewards.count > 3
       = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
 
