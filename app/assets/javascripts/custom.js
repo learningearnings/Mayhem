@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
   var pathArray = window.location.hostname.split( '.' );
   var current_subdomain = pathArray[0];
