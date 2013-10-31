@@ -19,7 +19,7 @@ module Mixins
         redirect_to :back and return
       end
 
-      if BigDecimal(params[:points]) == 0
+      unless BigDecimal(params[:points]) > 0
         flash[:error] = "You must enter a valid number for amount of credits"
         redirect_to :back and return
       end
