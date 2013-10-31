@@ -226,6 +226,10 @@ html.resp, body.resp {
   position:relative;
   left:-20px;
 }
+.form-inline input {
+  padding-top:0;
+  padding-bottom:0;
+}
 
 .login-form-fields input {
   width: 130px;
