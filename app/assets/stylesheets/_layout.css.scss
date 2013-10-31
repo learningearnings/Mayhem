@@ -1525,6 +1525,16 @@ h3 {
   h2 {
     margin-left: 130px;
   }
+  .header-info {
+    p {
+      margin-bottom:0;
+      font-size:1.4em;
+      font-weight:bold;
+      span {
+        font-weight:normal;
+      }
+    }
+  }
   .auctions {
     padding: 1em;
     background-color: #fff;
