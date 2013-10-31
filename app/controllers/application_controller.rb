@@ -129,13 +129,14 @@ class ApplicationController < ActionController::Base
   end
 
   def actual_subdomain
-    request.subdomain.split(".").first
+    request.subdomain(1).split(".").first
   end
   helper_method :actual_subdomain
 
   def not_at_home
     Rails.logger.warn "request.host: #{request.host}"
     Rails.logger.warn "request.subdomain: #{request.subdomain}"
+    Rails.logger.warn "actual subdomain: #{actual_subdomain}"
     return true if request.subdomain.empty?
     first_subdomain = actual_subdomain
     Rails.logger.warn "first subdomain: #{first_subdomain}"
