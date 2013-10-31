@@ -133,7 +133,7 @@ class ApplicationController < ActionController::Base
   helper_method :actual_subdomain
 
   def not_at_home
-    return true if actual_subdomain.empty?
+    return true if actual_subdomain.blank?
     first_subdomain = actual_subdomain
     return first_subdomain != home_subdomain
   end
