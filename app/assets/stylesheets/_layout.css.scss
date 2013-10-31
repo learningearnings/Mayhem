@@ -1752,6 +1752,10 @@ h3 {
 }
 
 .add-to-cart {
+  .title {
+    width:75px;
+    min-width:75px;
+  }
   input {
     width: 4em;
     height: 2.5em;
