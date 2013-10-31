@@ -134,9 +134,9 @@ class ApplicationController < ActionController::Base
   helper_method :actual_subdomain
 
   def not_at_home
+    Rails.logger.warn "request.subdomain: #{request.subdomain}"
     return true if request.subdomain.empty?
     first_subdomain = actual_subdomain
-    Rails.logger.warn "request.subdomain: #{request.subdomain}"
     Rails.logger.warn "first subdomain: #{first_subdomain}"
     return first_subdomain != home_subdomain
   end
