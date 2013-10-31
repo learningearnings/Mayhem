@@ -84,9 +84,5 @@ module Leror
       Spree::Config.searcher_class = Spree::Search::Filter
     end
     config.middleware.use 'Dragonfly::Middleware', :images
-
-    require_relative '../lib/force_ssl'
-    # From: http://stackoverflow.com/questions/3861772/force-ssl-using-ssl-requirement-in-rails-2-app
-    config.middleware.use "ForceSSL"
   end
 end
