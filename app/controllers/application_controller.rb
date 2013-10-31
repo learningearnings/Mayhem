@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
   helper_method :login_schools_list
 
   def school_id_by_subdomain
-    School.find_by_store_subdomain(request.subdomain).try(:id)
+    School.find_by_store_subdomain(actual_subdomain).try(:id)
   end
 
   def last_school_id
@@ -135,9 +135,8 @@ class ApplicationController < ActionController::Base
 
   def not_at_home
     Rails.logger.warn "request.host: #{request.host}"
-    Rails.logger.warn "request.subdomain: #{request.subdomain}"
     Rails.logger.warn "actual subdomain: #{actual_subdomain}"
-    return true if request.subdomain.empty?
+    return true if actual_subdomain.empty?
     first_subdomain = actual_subdomain
     Rails.logger.warn "first subdomain: #{first_subdomain}"
     return first_subdomain != home_subdomain
