@@ -17,7 +17,7 @@ Spree::User.class_eval do
       nil
     else
       encrypted_password = ::BCrypt::Password.create("#{password}#{self.pepper}", :cost => self.stretches).to_s
-      u = Spree::User.where(:username => username).joins(:person).merge(Person.status_active).joins(:schools).merge(School.status_active).where('schools.id = ?',school_id).first
+      u = Spree::User.where("LOWER(spree_users.username) = ?", username.downcase).joins(:person).merge(Person.status_active).joins(:schools).merge(School.status_active).where('schools.id = ?',school_id).first
       if u.nil?
         u = Spree::User.where(:username => username).joins(:person).merge(LeAdmin.status_active).first
       end

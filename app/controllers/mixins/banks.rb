@@ -12,12 +12,19 @@ module Mixins
     end
 
     def create_ebucks
+      params[:points] = sanitize_points(params[:points]) if params[:points]
       # TODO: I had to put this in the controller mixin because the error handling assumes a different error.
       # We should refactor this.
       if params[:points].present? && params[:points].to_i > 400
         flash[:error] = "You can not issue more than 400 credits to a student at a time."
         redirect_to :back and return
       end
+
+      unless BigDecimal(params[:points]) > 0
+        flash[:error] = "You must enter greater than 0 credits"
+        redirect_to :back and return
+      end
+
       if params[:student][:id].present? && params[:points].present?
         get_buck_batches
         get_bank
@@ -86,6 +93,10 @@ module Mixins
     def issue_ebucks_to_student(student)
       @bank.create_ebucks(person, current_school, student, current_school.state.abbr, BigDecimal(params[:points]))
       #@bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:credits][student.id.to_s].gsub(/[^\d]/, '')))
+    end
+
+    def sanitize_points(_points)
+      _points.gsub(/[^0-9.]/, "")
     end
   end
 end

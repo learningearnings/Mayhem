@@ -226,6 +226,10 @@ html.resp, body.resp {
   position:relative;
   left:-20px;
 }
+.form-inline input {
+  padding-top:0;
+  padding-bottom:0;
+}
 
 .login-form-fields input {
   width: 130px;
@@ -1520,6 +1524,16 @@ h3 {
 .auctions-content {
   h2 {
     margin-left: 130px;
+  }
+  .header-info {
+    p {
+      margin-bottom:0;
+      font-size:1.4em;
+      font-weight:bold;
+      span {
+        font-weight:normal;
+      }
+    }
   }
   .auctions {
     padding: 1em;
