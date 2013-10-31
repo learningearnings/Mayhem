@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
     return unless current_user
     return if !current_user.respond_to?(:person)
     return if current_user.person.is_a?(LeAdmin)
-    Rails.logger.warn("home_host: #{home_host}")
     if not_at_home && home_host
       token = Devise.friendly_token
       current_user.authentication_token = token
@@ -134,11 +133,8 @@ class ApplicationController < ActionController::Base
   helper_method :actual_subdomain
 
   def not_at_home
-    Rails.logger.warn "request.host: #{request.host}"
-    Rails.logger.warn "actual subdomain: #{actual_subdomain}"
     return true if actual_subdomain.empty?
     first_subdomain = actual_subdomain
-    Rails.logger.warn "first subdomain: #{first_subdomain}"
     return first_subdomain != home_subdomain
   end
 end
