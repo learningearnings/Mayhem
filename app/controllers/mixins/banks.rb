@@ -18,6 +18,12 @@ module Mixins
         flash[:error] = "You can not issue more than 400 credits to a student at a time."
         redirect_to :back and return
       end
+
+      if BigDecimal(params[:points]) == 0
+        flash[:error] = "You must enter a valid number for amount of credits"
+        redirect_to :back and return
+      end
+
       if params[:student][:id].present? && params[:points].present?
         get_buck_batches
         get_bank
