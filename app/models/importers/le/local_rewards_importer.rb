@@ -7,7 +7,6 @@ require_relative './base_importer'
 #    └── images
 #        ├── localrewards
 #        └── rewardimage
-#            └── certificates
 #
 # To test it out:
 #
@@ -54,7 +53,7 @@ module Importers
       def local_rewards_data
         parsed_doc.map do |reward|
           {
-            id: reward["reward_id"],
+            id: reward["reward_local_id"],
             legacy_reward_local_id: reward["reward_local_id"],
             name: reward["name"],
             description: reward["desc"],
