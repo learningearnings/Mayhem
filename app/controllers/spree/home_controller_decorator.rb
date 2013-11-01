@@ -16,21 +16,18 @@ Spree::HomeController.class_eval do
 
     # If they are a student we need all global products + products that are in their classroom
     if current_person.is_a?(Student) && current_person.classrooms.present?
-      temp_params[:classrooms] = current_person.classrooms.map(&:id)
+      temp_params[:classrooms] = current_person.classrooms.pluck(:id)
       @products.reject! do |product|
         # Products that have no classrooms should not be rejected
         next unless product.classrooms.any?
-        should_reject = true
-        temp_params[:classrooms].each do |classroom_id|
-          # Don't reject if the product is in a classroom i'm in
-          should_reject = false if product.classrooms.map(&:id).include?(classroom_id)
-        end
-        should_reject
+        # If there is an intersection between the products classrooms and my classrooms, don't reject
+        (product.classrooms.pluck(:id) & temp_params[:classrooms]).any? ? false : true
       end
       # To fix pagination we need an active record relation, not an array
       # Why are you laughing?
       @products = Spree::Product.where(:id => @products.map(&:id))
     end
+
     @products = @products.page(params[:page]).per(9)
     respond_with(@products)
   end
