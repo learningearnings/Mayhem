@@ -21,19 +21,19 @@ class BuckDistributor
   end
 
   def amount_for_school school
-    700 * school.number_of_active_students
+    700 * school.students.count
   end
 
   def handle_teachers
     @schools.each do |school|
-      school.active_teachers.each do |teacher|
+      school.teachers.each do |teacher|
         pay_teacher(school, teacher)
       end
     end
   end
 
   def amount_for_teacher(school)
-    school.balance / school.number_of_participating_teachers
+    school.balance / school.teachers.count
   end
 
   def pay_teacher(school, teacher)

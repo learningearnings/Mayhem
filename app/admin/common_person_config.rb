@@ -11,6 +11,7 @@ module CommonPersonConfig
     dsl.run_registration_block do
 
       filter :user_email, :as => :string
+      filter :user_username, :as => :string
       filter :first_name_or_last_name, :as => :string
       filter :last_name
       filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
