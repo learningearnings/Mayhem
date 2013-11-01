@@ -9,7 +9,7 @@ module Teachers
     validates :name, presence: true
     validates :price, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
-    validates_presence_of :image
+    #validates_presence_of :image
 
     attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id, :min_grade, :max_grade
 
