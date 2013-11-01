@@ -20,7 +20,7 @@ module Mixins
         redirect_to :back and return
       end
 
-      unless BigDecimal(params[:points]) > 0
+      unless SanitizingBigDecimal(params[:points]) > 0
         flash[:error] = "You must enter greater than 0 credits"
         redirect_to :back and return
       end
@@ -91,8 +91,7 @@ module Mixins
     end
 
     def issue_ebucks_to_student(student)
-      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, BigDecimal(params[:points]))
-      #@bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:credits][student.id.to_s].gsub(/[^\d]/, '')))
+      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, SanitizingBigDecimal(params[:points]))
     end
 
     def sanitize_points(_points)

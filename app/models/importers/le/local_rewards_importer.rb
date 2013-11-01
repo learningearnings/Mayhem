@@ -17,7 +17,6 @@ module Importers
         rwd = Teachers::Reward.new(datum)
         rwd.school = existing_school(school_id)
         rwd.teacher = existing_teacher(teacher_id)
-        rwd.image = @temp_image
         rwd.save
       end
 

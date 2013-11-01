@@ -7,7 +7,7 @@ class BidOnAuctionCommandsController < LoggedInController
         redirect_to auctions_path and return
     end
     person = current_person
-    amount = BigDecimal(params[:amount])
+    amount = SanitizingBigDecimal(params[:amount])
     bid = BidOnAuctionCommand.new({ auction: auction, person: person, amount: amount, credit_manager: CreditManager.new })
     bid.on_success = method(:on_success)
     bid.on_failure = method(:on_failure)

@@ -163,5 +163,7 @@ end
 
 gem "coffee-filter", '~> 0.1.3'
 
-#### Only here for staging deploymenbts ###
+#### Only here for staging deployments ###
 gem 'factory_girl_rails'
+
+gem 'sanitizing_bigdecimal'

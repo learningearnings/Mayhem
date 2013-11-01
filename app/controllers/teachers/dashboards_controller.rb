@@ -1,10 +1,9 @@
 module Teachers
   class DashboardsController < Teachers::BaseController
-
     def new_student
       @student = Student.new
     end
-   
+
     def create_student
       @student = Student.new(params[:student])
       if @student.save
@@ -38,9 +37,8 @@ module Teachers
       @classroom = Classroom.find(params[:classroom_id])
       @student = Student.find(params[:id])
       @orders = @student.user.orders
+      # We need to just not show orders if there's no first product - this was causing an error
+      @orders = @orders.reject{|o| o.products.empty? }
     end
-
   end
 end
-
-
