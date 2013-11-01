@@ -32,7 +32,10 @@ module Importers
         rwd = Teachers::Reward.new(datum)
         rwd.school = existing_school(school_id)
         rwd.teacher = existing_teacher(teacher_id)
-        rwd.image = image_for(image_path)
+        image = image_for(image_path)
+        if(image)
+          rwd.image = image
+        end
         rwd.save
         rwd.set_property("legacy_reward_local_id", legacy_reward_local_id)
       end
@@ -100,7 +103,7 @@ module Importers
       end
 
       def image_for(image_path)
-        File.open(images_directory + image_path)
+        File.open(images_directory + image_path) rescue nil
       end
     end
   end
