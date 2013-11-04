@@ -54,9 +54,10 @@ module Teachers
 
     def spree_product=(p)
       @name = p.name
+      @description = p.description
       @price = p.price.to_int
       @on_hand = p.on_hand
-      # set classrooms to the classrooms from the filter...
+      @classrooms = p.classrooms.map(&:id)
     end
 
     def update(params)

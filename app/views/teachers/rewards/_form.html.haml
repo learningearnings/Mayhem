@@ -1,4 +1,4 @@
-= simple_form_for(@teachers_reward,html: {class: 'form-horizontal'}) do |f|
+= simple_form_for(@teachers_reward, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
   %h3 Name and Price
   .row-fluid
@@ -21,7 +21,7 @@
     #classrooms.classrooms
       - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
         %div.classroom-checkbox
-          = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text}
+          = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text }
   .control-row
   = f.input :spree_product_id, :as => :hidden
   = f.submit :class => 'btn awesome-button'
