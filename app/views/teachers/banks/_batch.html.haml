@@ -1,9 +1,18 @@
-- buck_image_pdf = Rails.root.join('app', 'assets', 'images', 'buck_blank.png')
+- single_buck_image_base = 'credit_blank.png'
+- plural_buck_image_base = 'credits_blank.png'
+
+- single_buck_image_pdf = Rails.root.join('app', 'assets', 'images', single_buck_image_base)
+- single_buck_image_html = image_path(single_buck_image_base)
+- single_buck_image = params[:format] == 'pdf' ? single_buck_image_pdf : single_buck_image_html
+
+- plural_buck_image_pdf = Rails.root.join('app', 'assets', 'images', plural_buck_image_base)
+- plural_buck_image_html = image_path(plural_buck_image_base)
+- plural_buck_image = params[:format] == 'pdf' ? plural_buck_image_pdf : plural_buck_image_html
+
 - font_url_pdf = Rails.root.join('public', 'SketchRockwell-Bold.ttf')
 - font_url_html = "/SketchRockwell-Bold.ttf"
 - font_url = params[:format] == "pdf" ? font_url_pdf : font_url_html
-- buck_image_html = image_path('buck_blank.png')
-- buck_image = params[:format] == 'pdf' ? buck_image_pdf : buck_image_html
+
 %meta{'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
 :css
   @font-face {
@@ -21,10 +30,7 @@
       page-break-after: always
     .buck
       position: relative
-      //background-image: url(#{buck_image})
-      //background-size: 100%
       display: inline-block
-      //background-color: #eee
       width: 300px
       margin-right: 10px
       .background-image
@@ -44,14 +50,18 @@
         position: absolute
         font-size: 1.8em
         font-family: SketchRockwell
-      .amount1
-        top: 21%
+      .double_digit_amount
+        top: 20.5%
         left: 25%
+        font-size: 3em
+      .single_digit_amount
+        top: 20.5%
+        left: 30%
         font-size: 3em
       .expires
         width: 40%
         position: absolute
-        top: 78%
+        top: 80%
         left: 60%
         font-size: 2em
         font-family: SketchRockwell
@@ -62,7 +72,7 @@
     .break
     - code_group.each do |otu_code|
       .buck
-        %img.background-image{ src: buck_image }
+        %img.background-image{ src: otu_code.points > 1 ? plural_buck_image : single_buck_image }
           .code= otu_code.code
-          .amount.amount1= otu_code.points.to_i
+          .amount{class: otu_code.points > 1 ? "double_digit_amount" : "single_digit_amount" }= otu_code.points.to_i
           .expires= otu_code.expires_at.to_date.to_s(:db)
