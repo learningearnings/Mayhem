@@ -1,6 +1,7 @@
 .main-content-wrapper
   .full-content
     %h2 Your Rewards
+    %p.note NOTE: To deactivate a reward, just set its quantity to 0 and it won't show up in the store.
     %ul.action_buttons
       %li= link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
     = paginate @teachers_rewards, :window => 2
@@ -16,4 +17,3 @@
             You have not created any school rewards yet. Click Create a New Reward to add your very own school rewards!
     - if @teachers_rewards.count > 3
       = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
-

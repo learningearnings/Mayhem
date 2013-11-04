@@ -57,7 +57,7 @@ module Teachers
       @description = p.description
       @price = p.price.to_int
       @on_hand = p.on_hand
-      @classrooms = p.classrooms.map(&:id)
+      @classrooms = p.classrooms
     end
 
     def update(params)
@@ -86,7 +86,11 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
-      @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
+      if params[:classrooms]
+        @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
+      else
+        @classrooms = []
+      end
       if valid?
         self.save
       end
@@ -95,6 +99,10 @@ module Teachers
     def spree_product
       return nil if @spree_product_id.nil?
       Spree::Product.find(@spree_product_id)
+    end
+
+    def whole_school?
+      @classrooms.empty?
     end
 
     def save
