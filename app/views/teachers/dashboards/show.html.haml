@@ -37,7 +37,7 @@
 
   %br
 
-  - if @orders.any?
+  - if @orders && @orders.any?
     %table.table.table-bordered.table-striped.solid-background
       %thead
         %tr
