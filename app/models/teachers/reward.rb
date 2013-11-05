@@ -102,7 +102,7 @@ module Teachers
     end
 
     def whole_school?
-      @classrooms.empty?
+      @classrooms && @classrooms.empty?
     end
 
     def save
