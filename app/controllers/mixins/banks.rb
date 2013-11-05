@@ -20,7 +20,7 @@ module Mixins
         redirect_to :back and return
       end
 
-      unless SanitizingBigDecimal(params[:points]) > 0
+      unless params[:points] && SanitizingBigDecimal(params[:points]) > 0
         flash[:error] = "You must enter greater than 0 credits"
         redirect_to :back and return
       end
