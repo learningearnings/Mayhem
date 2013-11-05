@@ -7,7 +7,7 @@ class PollsController < ApplicationController
       redirect_to @poll
     else
       flash[:error] = "Please provide all the required information to vote in the poll"
-      redirect_to @poll
+      redirect_to :action => :index
     end
   end
 
