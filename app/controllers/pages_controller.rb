@@ -4,20 +4,19 @@ class PagesController < HighVoltage::PagesController
 
   def show
     if params[:id] == 'home'
-      strip_subdomains unless current_person
+      # for not-logged-in users
+      unless current_person
+        # Strip any subdomains off of the url, leaving us at the unhindered root domain
+        if actual_subdomain.present?
+          host_without_subdomain = request.env["HTTP_HOST"].gsub(/#{actual_subdomain}\./, '')
+          redirect_to "#{request.protocol}#{host_without_subdomain}" and return
+        end
+      end
     end
     super
   end
 
   protected
-  # Strip any subdomains off of the url, leaving us at the unhindered root domain
-  def strip_subdomains
-    if actual_subdomain.present?
-      host_without_subdomain = request.env["HTTP_HOST"].gsub(/#{actual_subdomain}\./, '')
-      redirect_to "#{request.protocol}#{host_without_subdomain}"
-    end
-  end
-
   def layout_for_page
     case params[:id]
     when /pdf/
