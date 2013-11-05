@@ -10,7 +10,7 @@ class BanksController < LoggedInController
     person = Student.find_by_id(params[:student_id]) if params[:student_id]
     person = current_person unless person
 
-    otu_code = OtuCode.find_by_code(params[:code])
+    otu_code = OtuCode.find_by_code(params[:code].upcase)
     if otu_code.present?
       if otu_code.active? && !otu_code.expired?
         @bank = Bank.new
