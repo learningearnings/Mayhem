@@ -49,7 +49,8 @@ Spree::Product.class_eval do
   scope :not_local, where("fulfillment_type != ?", "local")
   scope :visible_to_all, where(:visible_to_all => true)
   scope :for_classroom, lambda {|classroom| joins({:classrooms => [:classroom_product_links]}).where("classroom_product_links.classroom_id = ?", classroom.id) }
-  scope :active, where("deleted_at IS NULL")
+  scope :for_any_of_these_classrooms, lambda {|classroom_ids| joins({:classrooms => [:classroom_product_links]}).where("classroom_product_links.classroom_id = ANY(ARRAY[?])", classroom_ids)}
+  scope :active, where(:deleted_at => nil)
 
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})

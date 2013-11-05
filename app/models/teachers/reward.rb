@@ -9,12 +9,15 @@ module Teachers
     validates :name, presence: true
     validates :price, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
-    validates_presence_of :image
+    #validates_presence_of :image
 
-    attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id
+    attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id, :min_grade, :max_grade
 
     attr_accessor :id, :name, :description, :price, :classrooms, :image, :spree_product_id
-    attr_accessor :on_hand, :spree_product, :teacher, :school, :category, :school_id, :classroom_id
+    attr_accessor :on_hand, :teacher, :school, :category, :school_id, :classroom_id
+    attr_accessor :min_grade, :max_grade
+
+    delegate :set_property, to: :spree_product
 
     def initialize params = {}
       @name = params[:name] if params[:name]
@@ -23,6 +26,8 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
+      @min_grade = params[:min_grade] if params[:min_grade]
+      @max_grade = params[:max_grade] if params[:max_grade]
       @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
     end
 
@@ -49,9 +54,10 @@ module Teachers
 
     def spree_product=(p)
       @name = p.name
+      @description = p.description
       @price = p.price.to_int
       @on_hand = p.on_hand
-      # set classrooms to the classrooms from the filter...
+      @classrooms = p.classrooms
     end
 
     def update(params)
@@ -80,20 +86,33 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
-      @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
+      if params[:classrooms]
+        @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
+      else
+        @classrooms = []
+      end
       if valid?
         self.save
       end
     end
 
+    def spree_product
+      return nil if @spree_product_id.nil?
+      Spree::Product.find(@spree_product_id)
+    end
+
+    def whole_school?
+      @classrooms && @classrooms.empty?
+    end
+
     def save
       return false unless valid?
 
-      if @spree_product_id.nil?
+      if spree_product.nil?
         p = Spree::Product.new
         sppl = SpreeProductPersonLink.new(:person_id => @teacher.id)
       else
-        p = Spree::Product.find(@spree_product_id)
+        p = spree_product
         sppl = SpreeProductPersonLink.find_by_product_id(p.id)
       end
 
@@ -103,8 +122,12 @@ module Teachers
       p.on_hand = @on_hand
       p.available_on = Time.now
       p.store_ids = [@school.store.id]
+      p.min_grade = @min_grade
+      p.max_grade = @max_grade
       p.fulfillment_type = 'local'
       p.save
+
+      @spree_product_id = p.id
 
       if @image.present?
         p.images.destroy_all if p.images.present?

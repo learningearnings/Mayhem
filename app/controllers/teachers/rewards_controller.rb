@@ -41,6 +41,7 @@ module Teachers
       @teachers_reward.teacher = current_person
       @teachers_reward.school = current_school
       @teachers_reward.spree_product_id = params[:id]
+      @teachers_reward.classrooms = @teachers_reward.classrooms.map(&:id)
     end
 
     # POST /teachers/rewards

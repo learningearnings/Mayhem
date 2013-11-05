@@ -55,11 +55,14 @@ module Importers
         product.store_ids = [master_store.id]
         product.fulfillment_type = 'Shipped for School Inventory'
         product.purchased_by = "LE"
+        product.min_grade = datum[:min_grade]
+        product.max_grade = datum[:max_grade]
         product.save
         if(datum[:image])
           product.images.create(attachment: datum[:image])
         end
         product.set_property("reward_type", "wholesale")
+        product.set_property("legacy_reward_id", datum[:legacy_id])
         @products[datum[:legacy_id]] = product
       end
 
@@ -88,7 +91,9 @@ module Importers
             name: reward["name"],
             description: reward["description"],
             price: reward["credits"],
-            image: image_for(reward["image_path"])
+            image: image_for(reward["image_path"]),
+            min_grade: reward["min_grade"],
+            max_grade: reward["max_grade"]
           }
         end
       end

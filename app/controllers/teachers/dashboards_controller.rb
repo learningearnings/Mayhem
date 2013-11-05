@@ -38,7 +38,13 @@ module Teachers
       @student = Student.find(params[:id])
       @orders = @student.user.orders
       # We need to just not show orders if there's no first product - this was causing an error
-      @orders = @orders.reject{|o| o.products.empty? }
+      @orders = @orders.reject do |o|
+        begin
+          o.products.empty?
+        rescue
+          true
+        end
+      end
     end
   end
 end
