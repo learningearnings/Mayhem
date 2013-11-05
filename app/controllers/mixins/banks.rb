@@ -47,7 +47,8 @@ module Mixins
         classroom = current_person.classrooms.find(params[:classroom][:id])
         OtuCode.transaction do
           classroom.students.each do |student|
-            issue_ebucks_to_student(student)
+            student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+            issue_ebucks_to_student(student, student_credits) if student_credits > 0
           end
           if failed
             raise ActiveRecord::Rollback
@@ -90,8 +91,9 @@ module Mixins
       @buck_batches = current_person.buck_batches(current_school)
     end
 
-    def issue_ebucks_to_student(student)
-      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, SanitizingBigDecimal(params[:points]))
+    def issue_ebucks_to_student(student, point_value=params[:points])
+      point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
+      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value)
     end
 
     def sanitize_points(_points)
