@@ -10,6 +10,7 @@
         %th Action
     %tbody
       - @reward_exclusions.each do |exclusion|
+        - next unless exclusion.product
         %tr
           %td= exclusion.product.name
           %td= button_to "Remove this exclusion", schools_reward_exclusion_path(exclusion), { method: :delete }
