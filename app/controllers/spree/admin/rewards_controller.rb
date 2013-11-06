@@ -5,7 +5,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :subdomain_required
   after_filter :only => [:index ] { |f| maintain_page(params[:page] || 1) }
 
-
   def index
     if Spree::Config.searcher_class != Spree::Search::Filter
       Spree::Config.searcher_class = Spree::Search::Filter
