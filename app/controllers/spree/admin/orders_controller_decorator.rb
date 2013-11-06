@@ -113,6 +113,6 @@ Spree::Admin::OrdersController.class_eval do
   end
 
   def school
-    School.find(params[:school_id])
+    School.find(params[:school])
   end
 end
