@@ -1,7 +1,7 @@
 class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
   def index
     shipped_to_school = Spree::ShippingMethod.find_by_name("Shipped To School")
-    @shipments = Spree::Order.where(:state => ['cart','transmitted','printed'], :shipping_method_id => [shipped_to_school.id]).order('state desc')
+    @shipments = Spree::Order.where(:state => %w(cart transmitted printed complete), :shipping_method_id => [shipped_to_school.id]).order('state desc')
   end
 
   def print
