@@ -57,6 +57,7 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
 
     @order.create_shipment!
     shipment = @order.shipment
+    shipment.ready
     @order.restock_items!    # shipping below will pull them out again....
     redirect_to admin_le_shipments_path
     shipment.save
