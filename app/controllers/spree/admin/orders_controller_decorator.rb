@@ -53,6 +53,7 @@ Spree::Admin::OrdersController.class_eval do
     order.save
     if quantities_pass?
       params[:product_quantities].each do |product_id, quantity|
+        next if quantity.to_i == 0 # Don't add line items for zero quantity items
         product = Spree::Product.find product_id
         # add line_items to order from product variants
         variant = Spree::Variant.where(:product_id => product_id).first
