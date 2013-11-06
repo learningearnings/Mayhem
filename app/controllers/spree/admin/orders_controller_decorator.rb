@@ -72,6 +72,7 @@ Spree::Admin::OrdersController.class_eval do
         order.next
       end
       order.finalize!
+      order.shipments.first.ready
 
       redirect_to admin_orders_path
     else
@@ -111,7 +112,6 @@ Spree::Admin::OrdersController.class_eval do
       order.bill_address_attributes = shipping_address
     end
     order.save
-    order.shipments.first.ready
   end
 
   def school
