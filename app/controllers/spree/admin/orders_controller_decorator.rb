@@ -72,7 +72,6 @@ Spree::Admin::OrdersController.class_eval do
         order.next
       end
       order.finalize!
-      order.shipments.first.ready
 
       redirect_to admin_orders_path
     else
