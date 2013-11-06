@@ -120,7 +120,6 @@ Spree::OrdersController.class_eval do
     end
   end
 
-
   private
   def current_person
     current_user.person
