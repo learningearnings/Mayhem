@@ -52,6 +52,7 @@ Spree::Admin::OrdersController.class_eval do
     order.shipping_method_id = Spree::ShippingMethod.find_by_name("Shipped To School").id
     order.save
     if quantities_pass?
+      update_shipping_information(order)
       params[:product_quantities].each do |product_id, quantity|
         next if quantity.to_i == 0 # Don't add line items for zero quantity items
         product = Spree::Product.find product_id
@@ -81,5 +82,37 @@ Spree::Admin::OrdersController.class_eval do
   def refresh_school_rewards
     @school = School.find(params[:school_id])
     @school_inventory_items = Spree::Product.shipped_for_school_inventory.not_excluded(@school).active
+  end
+
+  def update_shipping_information(order)
+    person = current_person
+    add = Spree::Address.where(:company => school.name)
+      .where(:firstname => person.first_name)
+      .where(:lastname => person.last_name)
+      .where(:address1 => school.address1)
+      .where(:city => school.city).first
+    if add
+      order.ship_address = add
+      order.bill_address = add
+    else
+      shipping_address = {}
+      shipping_address[:firstname] = person.first_name
+      shipping_address[:lastname] = person.last_name
+      shipping_address[:company] = school.name
+      shipping_address[:address1] = school.address1
+      shipping_address[:address2] = school.address2
+      shipping_address[:city] = school.city
+      shipping_address[:state_name] = school.state.name
+      shipping_address[:zipcode] = school.zip
+      shipping_address[:phone] = school.school_phone
+      shipping_address[:country] = Spree::Country.find_by_iso "US"
+      order.ship_address_attributes = shipping_address
+      order.bill_address_attributes = shipping_address
+    end
+    order.save
+  end
+
+  def school
+    School.find(params[:school_id])
   end
 end
