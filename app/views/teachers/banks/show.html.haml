@@ -9,7 +9,7 @@
       %p.credits-available
         %strong
           Credits Available:
-        = number_with_precision(current_person.main_account(current_school).balance, precision: 2)
+        = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
 
     - if can?(:distribute, :credits)
       .distribute-credits
