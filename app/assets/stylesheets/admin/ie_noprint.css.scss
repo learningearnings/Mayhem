@@ -8,6 +8,9 @@
         -webkit-print-color-adjust:exact;
     }
 
+    .main-content-wrapper {
+      @include box-shadow(none);
+    }
     #header, #admin-menu, #footer {
         display: none;
     }
