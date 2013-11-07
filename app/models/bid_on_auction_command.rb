@@ -89,7 +89,7 @@ class BidOnAuctionCommand < ActiveModelCommand
     bid_creator.call(amount: amount, person: person, auction: auction)
     # move money from the bidder's main account into their holding account
     success = credit_manager.transfer_credits_from_checking_to_hold(person, amount)
-    raise "You don't have enough credits to make this bid.  Check your bid amount and try again." unless success
+    raise "You do not have enough credits to bid this amount!" unless success
   end
 
   def update_auction_with_current_bid
