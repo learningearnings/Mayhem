@@ -29,7 +29,7 @@
       - person.accounts(school).each do |account|
         %tr
           %td= link_to account.name
-          %td= account.balance
+          %td= number_with_precision(account.balance, precision: 2, delimiter: ',')
           %td{:style => "width: 400px;"}
             - if person.is_a?(Teacher) && account.name == person.main_account_name(school)
               = form_for [:admin, person], :url => give_credits_admin_teacher_path, :method => 'post' do |f|
