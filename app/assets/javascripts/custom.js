@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
   var pathArray = window.location.hostname.split( '.' );
   var current_subdomain = pathArray[0];
@@ -110,7 +109,7 @@ $(document).ready(function() {
           return false;
 	});
 
-  function highlightNavigation(path_part, nav_selector,subdomain){
+  function highlightNavigation(path_part, nav_selector, subdomain){
       if((subdomain != undefined && subdomain != current_subdomain) || already_selected) {
           return;
       }
@@ -129,6 +128,7 @@ $(document).ready(function() {
   highlightNavigation('play',    'play');
   highlightNavigation('games',   'play');
   highlightNavigation('rewards', 'rewards');
+  highlightNavigation('shop', 'shop');
   highlightNavigation('restock', 'restock');
   highlightNavigation('store',   'restock', 'le');
   highlightNavigation('reports', 'reports');

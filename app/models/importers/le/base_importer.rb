@@ -18,7 +18,9 @@ module Importers
 
       def call
         begin
-          run
+          #ActiveRecord::Base.transaction do
+            run
+          #end
         ensure
           @log_file.close
         end

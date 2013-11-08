@@ -20,7 +20,7 @@
     - if @product.price
       %div{ "data-hook" => "product_price", class: "columns five #{@product.has_variants? ? 'omega' : 'alpha'}" }
         #product-price
-          %h6.product-section-title= t(:quantity_availalbe)
+          %h6.product-section-title= t(:quantity_available)
           %div
             %span.quantity.selling{ itemprop:"Available" }= @product.count_on_hand
         #product-price

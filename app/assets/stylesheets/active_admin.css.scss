@@ -44,4 +44,12 @@ body.active_admin {
       background-color: $gray;
     }
   }
+
+  ul#tabs.tabs {
+    li.has_nested {
+      ul {
+        background:#E15250;
+      }
+    }
+  }
 }

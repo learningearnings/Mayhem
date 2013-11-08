@@ -14,7 +14,7 @@ module Games
     def play
       match_setup unless @match
       # FIXME: Make this...better
-      question = Games::Question.first
+      question = Games::Question.random
       food_fight_play_command = FoodFightPlayCommand.new(question_id: question.id, :match_id => @match.id)
       question_statistics = Games::QuestionStatisticsPresenter.new(question)
       render 'play', locals: { food_fight_play_command: food_fight_play_command, question_statistics: question_statistics }
@@ -66,8 +66,8 @@ module Games
       if params[:match_id]
         @match = FoodFightMatch.find(params[:match_id])
       else
-        if current_person.food_fight_matches.present? && current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id = params[:person_id]}.first.present?
-          @match = current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id = params[:person_id]}.first.food_fight_match
+        if current_person.food_fight_matches.present? && current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id == params[:person_id]}.first.present?
+          @match = current_person.food_fight_matches.map{|x| x.players}.flatten.select{|x| x.person_id == params[:person_id]}.first.food_fight_match
         else
           @match = FoodFightMatch.create(:active => true)
           @match.food_fight_players.create(:person_id => current_person.id)

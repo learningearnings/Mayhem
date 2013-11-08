@@ -13,7 +13,9 @@ module Reports
     def execute!
       # get recent line items from the school
       reward_deliveries.each do |reward_delivery|
-        @data << generate_row(reward_delivery)
+        if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
+          @data << generate_row(reward_delivery)
+        end
       end
     end
 

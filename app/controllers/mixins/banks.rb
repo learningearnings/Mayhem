@@ -12,6 +12,19 @@ module Mixins
     end
 
     def create_ebucks
+      params[:points] = sanitize_points(params[:points]) if params[:points]
+      # TODO: I had to put this in the controller mixin because the error handling assumes a different error.
+      # We should refactor this.
+      if params[:points].present? && params[:points].to_i > 400
+        flash[:error] = "You can not issue more than 400 credits to a student at a time."
+        redirect_to :back and return
+      end
+
+      unless params[:points] && SanitizingBigDecimal(params[:points]) > 0
+        flash[:error] = "You must enter greater than 0 credits"
+        redirect_to :back and return
+      end
+
       if params[:student][:id].present? && params[:points].present?
         get_buck_batches
         get_bank
@@ -24,7 +37,7 @@ module Mixins
     end
 
     def create_ebucks_for_classroom
-      if params[:classroom][:id].present? && params[:credits].values.detect{|x| x.present?}.present?
+      if params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure
@@ -34,7 +47,8 @@ module Mixins
         classroom = current_person.classrooms.find(params[:classroom][:id])
         OtuCode.transaction do
           classroom.students.each do |student|
-            issue_ebucks_to_student(student)
+            student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+            issue_ebucks_to_student(student, student_credits) if student_credits > 0
           end
           if failed
             raise ActiveRecord::Rollback
@@ -45,7 +59,7 @@ module Mixins
         # We should only get here if we failed and the transaction rolled back
         on_failure
       else
-        flash[:error] = "Please ensure a classroom is selected and an amount is entered."
+        flash[:error] = "Please ensure a classroom is selected, has students, and an amount is entered."
         redirect_to :back
       end
     end
@@ -77,9 +91,13 @@ module Mixins
       @buck_batches = current_person.buck_batches(current_school)
     end
 
-    def issue_ebucks_to_student(student)
-      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, BigDecimal(params[:points]))
-      #@bank.create_ebucks(person, current_school, student, 'AL', BigDecimal(params[:credits][student.id.to_s].gsub(/[^\d]/, '')))
+    def issue_ebucks_to_student(student, point_value=params[:points])
+      point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
+      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value)
+    end
+
+    def sanitize_points(_points)
+      _points.gsub(/[^0-9.]/, "")
     end
   end
 end

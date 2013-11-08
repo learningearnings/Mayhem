@@ -17,6 +17,7 @@
           .sort-by
             = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
         = f.submit 'Run Report', :class => 'awesome-button'
+        = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
     .report
       %h3= report.filters_in_text
@@ -50,4 +51,4 @@
           = p.input :sort_by, :as => :hidden
 
         - if enable_mark_button
-          = submit_tag 'Mark Rewards Delivered', :class => "awesome-button"
+          = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"

@@ -67,7 +67,7 @@ GIT
       activeadmin
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
@@ -209,6 +209,8 @@ GEM
       actionpack (~> 3.2)
       activesupport (~> 3.2)
     erubis (2.7.0)
+    exceptional (2.0.33)
+      rack
     excon (0.25.3)
     execjs (2.0.2)
     factory_girl (4.2.0)
@@ -303,6 +305,7 @@ GEM
       ruby-progressbar
     mocha (0.14.0)
       metaclass (~> 0.0.1)
+    modernizr-rails (2.6.2.3)
     money (5.0.0)
       i18n (~> 0.4)
       json
@@ -395,6 +398,7 @@ GEM
     rubyzip (0.9.9)
     rvm-capistrano (1.5.0)
       capistrano (>= 2.15.4)
+    sanitizing_bigdecimal (0.0.1)
     sass (3.2.11)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -497,6 +501,8 @@ GEM
     uuidtools (2.1.4)
     warden (1.1.1)
       rack (>= 1.0)
+    webshims-rails (1.11.1)
+      rails (> 3.1.0)
     websocket (1.0.7)
     whenever (0.8.4)
       activesupport (>= 2.3.4)
@@ -531,6 +537,7 @@ DEPENDENCIES
   devise
   dragonfly
   draper (= 0.18.0)
+  exceptional
   factory_girl_rails
   fog
   googlecharts
@@ -553,6 +560,7 @@ DEPENDENCIES
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
   mocha (~> 0.14.0)
+  modernizr-rails (~> 2.6.2.3)
   nested_form!
   pdfkit
   pg (= 0.13.2)
@@ -571,6 +579,7 @@ DEPENDENCIES
   roo (= 1.12.1)
   rubyzip (= 0.9.9)
   rvm-capistrano
+  sanitizing_bigdecimal
   sass (~> 3.2.10)
   sass-rails (~> 3.2.6)
   simple_form
@@ -591,5 +600,6 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   valid_attribute!
+  webshims-rails (~> 1.11.1)
   whenever
   whereabouts (~> 0.9.0)

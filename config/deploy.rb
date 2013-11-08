@@ -68,8 +68,7 @@ namespace :deploy do
 
   desc "Restart unicorn"
   task :restart do
-    stop
-    start
+    unicorn.restart
   end
 end
 

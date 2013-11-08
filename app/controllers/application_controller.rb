@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
   helper_method :login_schools_list
 
   def school_id_by_subdomain
-    School.find_by_store_subdomain(request.subdomain).try(:id)
+    School.find_by_store_subdomain(actual_subdomain).try(:id)
   end
 
   def last_school_id
@@ -128,13 +128,12 @@ class ApplicationController < ActionController::Base
   end
 
   def actual_subdomain
-    request.subdomain.split(".").first
+    request.subdomain(1).split(".").first
   end
   helper_method :actual_subdomain
 
   def not_at_home
-    return true if request.subdomain.empty?
-    first_subdomain = actual_subdomain
-    return first_subdomain != home_subdomain
+    return true if actual_subdomain.blank?
+    return actual_subdomain != home_subdomain
   end
 end

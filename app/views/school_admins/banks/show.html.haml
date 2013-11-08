@@ -56,8 +56,6 @@
             = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
               = label_tag 'Classroom'
               = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
-              = label_tag 'Credits'
-              = text_field_tag :points, nil, :min => '0', :step => '1', :type => "number", id: 'classroom_points'
               #classroom_distribution
 
           .tab-pane#transfer-credits

@@ -1,3 +1,4 @@
+set :rails_env, "staging"
 set :branch,  "sandbox"
 role :web,    "162.243.39.36"
 role :app,    "162.243.39.36"

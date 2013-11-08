@@ -3,7 +3,7 @@ require "basic_statuses"
 class School < ActiveRecord::Base
   include BasicStatuses
 
-  after_initialize :set_status_to_active
+  before_create :set_status_to_active
   GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
   GRADE_NAMES = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]
 
