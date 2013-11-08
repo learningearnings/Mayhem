@@ -1,4 +1,4 @@
-set :rails_env, "production"
+set :rails_env, "sandbox"
 set :branch,  "sandbox"
 role :web,    "162.243.39.36"
 role :app,    "162.243.39.36"
