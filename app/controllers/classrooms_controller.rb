@@ -12,7 +12,7 @@ class ClassroomsController < LoggedInController
     @classroom = Classroom.find(params[:id])
     respond_to do |format|
       format.html { render layout: true }
-      format.json { render json: @classroom.students }
+      format.json { render json: @classroom.students.order(:last_name, :first_name)}
     end
   end
 
