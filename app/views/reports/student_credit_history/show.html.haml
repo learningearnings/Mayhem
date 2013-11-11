@@ -2,7 +2,7 @@
   .primary-content-fw
     %h2 Student Credit History Report
 
-    = form_tag student_credit_history_report_path, method: :get do
+    = form_tag student_credit_history_report_path, method: :get, class: "noprint" do
       .filter
         %h4 Filter By
         .all-students
@@ -28,6 +28,7 @@
         = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
         = submit_tag 'Go!'
 
+    = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
     .report
       %table.table.table-bordered.table-striped.solid-background
         %thead
