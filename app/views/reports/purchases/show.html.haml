@@ -12,6 +12,11 @@
             = f.input :reward_status_filter,:label => "Show Rewards", :collection => report.parameters.reward_status_filter_options
           .filter-teachers
             = f.input :teachers_filter, :label => "Show Teachers", :collection => report.parameters.teachers_filter_options(current_school)
+          %h4 Options 
+          .filter-dates
+            = f.input :students_name_option, :label => "Student Name Options", :collection => report.parameters.student_name_options, :include_blank => false
+          .filter-dates
+            = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report.parameters.teacher_name_options, :include_blank => false
         .sorting
           %h4 Sort By
           .sort-by

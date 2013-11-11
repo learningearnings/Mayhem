@@ -5,6 +5,10 @@ class RewardDelivery < ActiveRecord::Base
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
   belongs_to :reward, class_name: "Spree::LineItem", foreign_key: :reward_id
 
+  scope :order_by_student_grade, lambda { order(:to => :grade) }
+  scope :newest_orders, lambda { order("reward_deliveries.created_at DESC") }
+  scope :oldest_orders, lambda { order("reward_deliveries.created_at ASC") }
+
   validates :from_id,   presence: true
   validates :to_id,     presence: true
   validates :reward_id, presence: true
