@@ -3,6 +3,9 @@ module Reports
     include DateFilterable
     include ActionView::Helpers
 
+    # Handle Kaminari
+    delegate :total_pages, :limit_value, :current_page, :to => :reward_deliveries
+
     attr_accessor :parameters
     def initialize params
       super
@@ -47,6 +50,9 @@ module Reports
       potential_filters.each do |filter|
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
+      end
+      if parameters.paginate == "1"
+        base_scope = base_scope.page(parameters.page).per(parameters.per_page)
       end
       base_scope
     end
@@ -136,6 +142,7 @@ module Reports
       attr_accessor :date_filter, :reward_status_filter, :teachers_filter, :students_name_option, :teachers_name_option, :sort_by
 
       def initialize options_in = {}
+        super
         options_in ||= {}
         options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
         [:date_filter, :reward_status_filter, :teachers_filter, :sort_by, :students_name_option, :teachers_name_option].each do |iv|
