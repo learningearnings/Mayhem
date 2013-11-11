@@ -6,8 +6,6 @@ Spree::User.class_eval do
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :as => :admin
 
-  validates_uniqueness_of :email, allow_blank: true
-
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
@@ -57,8 +55,6 @@ Spree::User.class_eval do
 
  protected
    def email_required?
-     false 
+     false
    end
-
-
 end

@@ -14,7 +14,7 @@
       %td= order.state
       %td= order.le_shipment_company
       %td= order.item_count
-      %td= order.line_items.collect do |li| li.product.name end.uniq.join(', ')
+      %td= order.line_items.collect { |li| li.product.name rescue nil }.compact.uniq.join(', ')
       %td= order.total
       %td
         .btn-group
@@ -23,4 +23,3 @@
           = link_to "Edit", edit_admin_order_path(order) , :class => "btn edit"
           &nbsp;&nbsp;|&nbsp;&nbsp;
           = link_to "Ship", admin_le_ship_order_path(order) , :class => "btn ship"
-

@@ -116,9 +116,11 @@ class ApplicationController < ActionController::Base
 
   def get_reward_highlights highlight_count = 3
     with_filters_params = params
+    with_filters_params[:filters] = session[:filters]
     with_filters_params[:searcher_current_person] = current_person
     with_filters_params[:current_school] = current_school
-    searcher = Spree::Config.searcher_class.new(with_filters_params)
+    with_filters_params[:classrooms] = current_person.classrooms.map(&:id)
+    searcher = Spree::Search::Filter.new(with_filters_params)
     searcher.retrieve_products.order('random()').page(1).per(highlight_count)
   end
 
@@ -134,7 +136,6 @@ class ApplicationController < ActionController::Base
 
   def not_at_home
     return true if actual_subdomain.blank?
-    first_subdomain = actual_subdomain
-    return first_subdomain != home_subdomain
+    return actual_subdomain != home_subdomain
   end
 end
