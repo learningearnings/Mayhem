@@ -1,3 +1,7 @@
+- if defined? errors
+  %tr
+    %td{colspan: 7}
+      %strong= errors.full_messages.to_sentence
 %tr
   %td.text= text_field_tag 'students[]first_name', options[:first_name], class: 'first'
   %td.text= text_field_tag 'students[]last_name', options[:last_name], class: 'last'

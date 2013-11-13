@@ -28,8 +28,8 @@
               %th
           %tbody
             - if params["students"]
-              -params["students"].each do |student|
-                = render 'student_row', grades: current_school.grades, options: student
+              -params["students"].each_with_index do |student, index|
+                = render 'student_row', grades: current_school.grades, options: student, errors: @batch_student_creator.students[index].errors
         = submit_tag "Add These Students", class: 'btn awesome-button'
 
     %script#student_row{type: 'text/html'}

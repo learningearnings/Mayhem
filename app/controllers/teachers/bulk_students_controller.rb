@@ -13,13 +13,13 @@ module Teachers
     end
 
     def create
-      batch_student_creator = BatchStudentCreator.new(params["students"])
-      if batch_student_creator.call
+      @batch_student_creator = BatchStudentCreator.new(params["students"])
+      if @batch_student_creator.call
         flash[:notice] = "Students Created!"
-        redirect_to :index
+        redirect_to action: :index
       else
         flash[:error] = "Error creating students"
-        render :index
+        render action: :index
       end
     end
   end
