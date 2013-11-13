@@ -11,3 +11,22 @@
     font-size: 125%;
   }
 }
+
+.grid_edit_students {
+  td.text, th.text, td.text input {
+    width: 130px;
+  }
+  td.select, th.select, td.select select {
+    width: 110px;
+  }
+  .controls {
+    background: #eee;
+    padding: 1em;
+    label {
+      display: inline-block;
+    }
+  }
+  .delete_row{
+    margin-bottom:14px;
+  }
+}

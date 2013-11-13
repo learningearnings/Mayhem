@@ -123,7 +123,7 @@ module Reports
     def name_with_options(person, option = "Last, First")
       name_array = [person.last_name, person.first_name]
       name_array.reverse! if option == "First, Last"
-      option == "Last, First" || "" ? name_array.join(", ") : name_array.join(" ")
+      option == "Last, First" || option == "" ? name_array.join(", ") : name_array.join(" ")
     end
 
     def headers

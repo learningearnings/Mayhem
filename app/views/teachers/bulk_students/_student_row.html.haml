@@ -1,0 +1,13 @@
+- if defined? errors
+  %tr
+    %td{colspan: 99}
+      %strong= errors.full_messages.to_sentence
+%tr
+  %td.text= text_field_tag 'students[]first_name', options[:first_name], class: 'first'
+  %td.text= text_field_tag 'students[]last_name', options[:last_name], class: 'last'
+  %td.text= text_field_tag 'students[]user[username]', options[:username], class: 'username'
+  %td.text= text_field_tag 'students[]user[password]', options[:password], class: 'password'
+  %td.select= select_tag 'students[]grade', options_for_select(grades), class: 'grade'
+  %td.select= select_tag 'students[]gender', options_for_select([nil, 'Male', 'Female']), class: 'gender'
+  %td
+    = link_to 'Remove Row', '#', class: 'delete_row btn'
