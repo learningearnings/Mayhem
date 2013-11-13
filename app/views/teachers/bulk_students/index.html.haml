@@ -27,10 +27,13 @@
               %th.select Gender
               %th
           %tbody
-      = submit_tag "Add These Students", class: 'btn awesome-button'
+            - if params["students"]
+              -params["students"].each do |student|
+                = render 'student_row', grades: current_school.grades, options: student
+        = submit_tag "Add These Students", class: 'btn awesome-button'
 
     %script#student_row{type: 'text/html'}
-      = render 'student_row', grades: current_school.grades, options: { first: '{{first}}', last: '{{last}}', username: '{{username}}', password: '{{password}}', grade: '{{grade}}', gender: '{{gender}}'}
+      = render 'student_row', grades: current_school.grades, options: { first_name: '{{first}}', last_name: '{{last}}', username: '{{username}}', password: '{{password}}', grade: '{{grade}}', gender: '{{gender}}'}
 
     :coffeescript
       insertNewStudentRow = (options) ->
