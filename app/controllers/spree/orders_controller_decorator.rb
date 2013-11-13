@@ -56,8 +56,14 @@ Spree::OrdersController.class_eval do
         redirect_to product and return
       else
         OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-        flash[:notice] = "Purchase Completed."
-        redirect_to "/"
+        message = "Purchase successful!."
+        if params[:variants].is_a?(Hash)
+          variant_id = params[:variants].keys.first
+          product = Spree::Variant.find(variant_id)
+          quantity = params[:variants][variant_id]
+          message = "Congratulations, you bought #{quantity} #{product.name}!"
+        end
+        redirect_to root_path, notice: message
       end
     end
   end

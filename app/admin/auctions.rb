@@ -103,7 +103,7 @@ ActiveAdmin.register Auction do
 
   form do |f|
     f.inputs "Details" do
-      f.input :product, :as => :chosen, :collection => Spree::Product.shipped_for_school_inventory
+      f.input :product, :as => :chosen, :collection => Spree::Product.shipped_on_demand
       f.input :starting_bid
       f.input :start_date, :as => :just_datetime_picker
       f.input :end_date, :as => :just_datetime_picker

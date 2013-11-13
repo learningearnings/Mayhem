@@ -6,7 +6,7 @@
     - if auction.current_bid
       %p
         Current Bid:
-        %span.current_bid= number_with_precision(auction.current_bid, precision: 2)
+        %span.current_bid= number_with_precision(auction.current_bid, precision: 2, delimiter: ',')
     - if auction.current_leader.present?
       %p
         High Bidder:

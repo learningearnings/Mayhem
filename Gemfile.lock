@@ -548,6 +548,7 @@ DEPENDENCIES
   has_scope
   hashie
   high_voltage
+  httparty
   iconv
   jquery-rails!
   jquery-ui-rails

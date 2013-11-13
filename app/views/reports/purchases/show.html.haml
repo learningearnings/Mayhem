@@ -13,15 +13,23 @@
           .filter-teachers
             = f.input :teachers_filter, :label => "Show Teachers", :collection => report.parameters.teachers_filter_options(current_school)
         .sorting
-          %h4 Sort By
+          %h4 Options
+          .filter-dates
+            = f.input :students_name_option, :label => "Student Name Options", :collection => report.parameters.student_name_options, :include_blank => false
+          .filter-dates
+            = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report.parameters.teacher_name_options, :include_blank => false
           .sort-by
             = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
+          %br/
+          .sort-by
+            = f.input :paginate, :label => "Paginate", :as => :boolean
         = f.submit 'Run Report', :class => 'awesome-button'
         = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
     .report
       %h3= report.filters_in_text
 
+      = paginate report if report.parameters.paginate == "1"
       = form_tag DeliverRewardsCommand.new, method: :post do
         %table.table.table-bordered.table-striped.solid-background
           %thead
@@ -52,3 +60,5 @@
 
         - if enable_mark_button
           = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
+      = paginate report if report.parameters.paginate == "1"
+
