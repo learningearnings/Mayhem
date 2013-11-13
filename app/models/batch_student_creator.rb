@@ -1,5 +1,5 @@
-# This class is used to create and update users in the system in bulk.
-class BatchStudentManager
+# This class is used to create users in the system in bulk.
+class BatchStudentCreator
   attr_reader :students
 
   def initialize student_params, student_class=Student
@@ -13,10 +13,11 @@ class BatchStudentManager
       @student_params.each do |student_param|
         student = @student_class.new(student_param)
         student.save
-        raise ActiveRecord::Rollback unless student.valid?
         students << student
+        raise ActiveRecord::Rollback unless student.valid?
       end
     end
     return false if students.select{|s| !s.valid? }.any?
+    return true
   end
 end

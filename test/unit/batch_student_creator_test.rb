@@ -1,6 +1,6 @@
 require_relative '../test_helper_with_rails'
 
-describe BatchStudentManager do
+describe BatchStudentCreator do
   let(:bob) do
     { first_name: "Bob", last_name: "Loblaw", username: "lawblog", grade: 6, gender: "Male", password: "bobloblaw" }
   end
@@ -8,7 +8,7 @@ describe BatchStudentManager do
     # invalid user
     { first_name: nil, last_name: nil, username: nil, grade: nil, gender: nil, password: nil }
   end
-  subject { BatchStudentManager.new(student_params) }
+  subject { BatchStudentCreator.new(student_params) }
 
   describe "creating a single new student" do
     let(:student_params) { [bob] }
