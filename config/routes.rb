@@ -170,6 +170,7 @@ Leror::Application.routes.draw do
 
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   namespace :teachers do
+    resources :bulk_students
     resources :reports
     resource  :bank
     resource  :dashboard
