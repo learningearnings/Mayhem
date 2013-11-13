@@ -25,7 +25,6 @@ class BatchStudentCreator
         raise ActiveRecord::Rollback unless student.valid? || student.user.valid?
       end
     end
-    binding.pry
     return false if students.select{|s| !s.valid? }.any?
     return true
   end
