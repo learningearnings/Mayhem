@@ -168,3 +168,4 @@ gem "coffee-filter", '~> 0.1.3'
 gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
+gem 'httparty'
