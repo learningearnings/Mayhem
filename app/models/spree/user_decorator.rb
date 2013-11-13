@@ -10,8 +10,6 @@ Spree::User.class_eval do
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
 
-  validates_presence_of :username
-
   def self.authenticate_with_school_id(username,password,school_id)
     if username.blank? || password.blank? || school_id.blank?
       nil

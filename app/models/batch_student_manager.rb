@@ -9,11 +9,14 @@ class BatchStudentManager
   end
 
   def call
-    @student_params.each do |student_param|
-      student = @student_class.new(student_param)
-      student.save
-      students << student
+    ActiveRecord::Base.transaction do
+      @student_params.each do |student_param|
+        student = @student_class.new(student_param)
+        student.save
+        raise ActiveRecord::Rollback unless student.valid?
+        students << student
+      end
     end
-    return students.select{|s| !s.valid? }.any?
+    return false if students.select{|s| !s.valid? }.any?
   end
 end
