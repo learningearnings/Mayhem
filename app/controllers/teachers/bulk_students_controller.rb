@@ -16,6 +16,7 @@ module Teachers
     end
 
     def update
+      @batch_student_updater = BatchStudentUpdater.new(params["students"])
     end
 
     def create
