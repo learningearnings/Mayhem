@@ -1,6 +1,6 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Manage Students
+    %h2 New Students
     .grid_edit_students
       .controls
         .control
@@ -21,13 +21,13 @@
         %table
           %thead
             %tr
-              %th.text First
-              %th.text Last
-              %th.text Username
-              %th.text Password
-              %th.select Grade
-              %th.select Classrooms
-              %th.select Gender
+              %th.text.first First
+              %th.text.last Last
+              %th.text.username Username
+              %th.text.password Password
+              %th.select.grade Grade
+              %th.select.classrooms Classrooms
+              %th.select.gender Gender
               %th
           %tbody.students_body
             - if params["students"]

@@ -1,0 +1,23 @@
+- if defined? errors
+  %tr.error_row
+    %td{colspan: 99}
+      %strong= errors.full_messages.to_sentence
+%tr
+  %td.checkbox.selected= check_box_tag 'students[]selected]', options[:id], options[:selected], class: 'selected'
+  %td.text.first
+    .edit= text_field_tag 'students[]first_name', options[:first_name], class: 'first'
+    .display= options[:first_name]
+  %td.text.last
+    .edit= text_field_tag 'students[]last_name', options[:last_name], class: 'last'
+    .display= options[:last_name]
+  %td.text.username
+    .edit= text_field_tag 'students[]user[username]', options[:username], class: 'username'
+    .display= options[:username]
+  %td.select.grade
+    .edit= select_tag 'students[]grade', options_for_select(grades, selected: options[:grade]), class: 'grade'
+    .display= options[:grade]
+  %td.select.gender
+    .edit= select_tag 'students[]gender', options_for_select(['', 'Male', 'Female'], selected: options[:gender]), class: 'gender'
+    .display= options[:gender]
+  %td.text.password
+    .edit= text_field_tag 'students[]user[password]', options[:password], class: 'password'

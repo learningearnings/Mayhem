@@ -18,6 +18,8 @@ class Student < Person
     where(grade: grade_index)
   }
 
+  scope :for_gender, lambda { |gender| where(:gender => gender) }
+
   before_create :set_status_to_active
   after_create :create_locker
 
