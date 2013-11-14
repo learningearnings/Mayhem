@@ -12,8 +12,7 @@ module Teachers
     end
 
     def update
-      binding.pry
-      @batch_student_updater = BatchStudentUpdater.new(params["students"])
+      @batch_student_updater = BatchStudentUpdater.new(params["students"], current_person.schools.first)
       if @batch_student_updater.call
         flash[:notice] = "Students Updated!"
         redirect_to action: :show
@@ -39,8 +38,7 @@ module Teachers
       @actions = [
         "Update Passwords to this Password",
         "Update Passwords = Usernames",
-        "Update Passwords as Indicated",
-        "Edit Students Information"
+        "Update Passwords as Indicated"
       ]
 
       @students = current_school.students

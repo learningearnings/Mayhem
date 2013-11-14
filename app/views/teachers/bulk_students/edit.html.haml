@@ -41,9 +41,11 @@
 :coffeescript
   $('#select_all').on 'click', ->
     if $('#select_all').attr('checked')
+      $('.edit_control').removeAttr('disabled')
       $('input.selected').attr('checked', true)
     else
       $('input.selected').removeAttr('checked')
+      $('.edit_control').attr('disabled', 'disabled')
 
   $('.students_body').on 'click', (evt) ->
     if $(evt.target).hasClass('row_checkbox')
@@ -51,8 +53,8 @@
       if $(evt.target).attr('checked') == "checked"
         children.removeAttr('disabled')
       else
+        $('#select_all').removeAttr('checked')
         children.attr('disabled', 'disabled')
-
 
   chosenAction = ->
     $('#controls_action').val()
@@ -92,7 +94,23 @@
 
   $('#update_these_students').on 'click', (evt) ->
     evt.preventDefault()
+    performSelectedStudentAction()
     $('#update_students_form').submit()
+
+  performSelectedStudentAction = () ->
+    switch chosenAction()
+      when "Update Passwords to this Password"
+        updatePasswordsToPassword($('#controls_password').val())
+      when "Update Passwords = Usernames"
+        updatePasswordsToUsername()
+
+  updatePasswordsToPassword = (password) ->
+    $('input.password').val(password)
+
+  updatePasswordsToUsername = () ->
+    $('input.password').each (elm) ->
+      username = $(this).closest("tr").find("input.username").val()
+      $(this).val(username)
 
   handleInterfaceState()
 
