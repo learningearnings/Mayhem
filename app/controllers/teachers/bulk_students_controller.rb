@@ -12,8 +12,7 @@ module Teachers
     end
 
     def update
-      binding.pry
-      @batch_student_updater = BatchStudentUpdater.new(params["students"])
+      @batch_student_updater = BatchStudentUpdater.new(params["students"], current_person.schools.first)
       if @batch_student_updater.call
         flash[:notice] = "Students Updated!"
         redirect_to action: :show

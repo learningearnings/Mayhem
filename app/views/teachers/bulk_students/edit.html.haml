@@ -3,7 +3,7 @@
     %h2 Edit Students
     .grid_edit_students
       .controls
-        = form_tag '/teachers/bulk_students/edit', method: :get, id: 'update_students_form' do
+        = form_tag '/teachers/bulk_students/edit', method: :get do
           %h5 Optionally Filter List of Students:
           .control
             %label Classroom:
@@ -41,9 +41,20 @@
 :coffeescript
   $('#select_all').on 'click', ->
     if $('#select_all').attr('checked')
+      $('.edit_control').removeAttr('disabled')
       $('input.selected').attr('checked', true)
     else
       $('input.selected').removeAttr('checked')
+      $('.edit_control').attr('disabled', 'disabled')
+
+  $('.students_body').on 'click', (evt) ->
+    if $(evt.target).hasClass('row_checkbox')
+      children = $(evt.target).closest('tr').find('.edit_control')
+      if $(evt.target).attr('checked') == "checked"
+        children.removeAttr('disabled')
+      else
+        $('#select_all').removeAttr('checked')
+        children.attr('disabled', 'disabled')
 
   chosenAction = ->
     $('#controls_action').val()
@@ -60,6 +71,7 @@
   shouldShowEdit = ->
     switch chosenAction()
       when "Update Passwords to this Password" then false
+      when "Edit Students Information" then true
       else false
 
   conditionallyShowEditFields = () ->
@@ -80,7 +92,26 @@
 
   $('#controls_action').on 'change', handleInterfaceState
 
-  $('#update_these_students').on 'click', ->
+  $('#update_these_students').on 'click', (evt) ->
+    evt.preventDefault()
+    performSelectedStudentAction()
     $('#update_students_form').submit()
 
+  performSelectedStudentAction = () ->
+    switch chosenAction()
+      when "Update Passwords to this Password"
+        updatePasswordsToPassword($('#controls_password').val())
+      when "Update Passwords = Usernames"
+        updatePasswordsToUsername()
+
+  updatePasswordsToPassword = (password) ->
+    $('input.password').val(password)
+
+  updatePasswordsToUsername = () ->
+    $('input.password').each (elm) ->
+      username = $(this).closest("tr").find("input.username").val()
+      $(this).val(username)
+
   handleInterfaceState()
+
+  $('.edit_control').attr('disabled', 'disabled')
