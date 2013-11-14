@@ -19,9 +19,9 @@
           %span.password_field.secondary
             %label Password:
             = text_field_tag 'controls_password'
-          = button_tag 'UPDATE These Students', class: 'btn awesome-button'
+          = button_tag 'UPDATE These Students', class: 'btn awesome-button', id: 'update_these_students'
 
-      = form_tag '/teachers/bulk_students/update', method: :post do
+      = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
         %table
           %thead
             %tr
@@ -78,5 +78,8 @@
     conditionallyShowEditFields()
 
   $('#controls_action').on 'change', handleInterfaceState
+
+  $('#update_these_students').on 'click', ->
+    $('#update_students_form').submit()
 
   handleInterfaceState()

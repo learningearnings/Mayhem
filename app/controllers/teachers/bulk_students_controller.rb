@@ -1,5 +1,7 @@
 module Teachers
   class BulkStudentsController < Teachers::BaseController
+    before_filter :load_edit, only: [:edit, :update]
+
     def show
     end
 
@@ -7,16 +9,18 @@ module Teachers
     end
 
     def edit
-      @actions = [
-        "Update Passwords to this Password",
-        "Update Passwords = Usernames",
-        "Update Passwords as Indicated"
-      ]
-      @students = current_school.students
     end
 
     def update
+      binding.pry
       @batch_student_updater = BatchStudentUpdater.new(params["students"])
+      if @batch_student_updater.call
+        flash[:notice] = "Students Updated!"
+        redirect_to action: :show
+      else
+        flash[:error] = "Error updating students"
+        render action: :edit
+      end
     end
 
     def create
@@ -28,6 +32,16 @@ module Teachers
         flash[:error] = "Error creating students"
         render action: :new
       end
+    end
+
+    protected
+    def load_edit
+      @actions = [
+        "Update Passwords to this Password",
+        "Update Passwords = Usernames",
+        "Update Passwords as Indicated"
+      ]
+      @students = current_school.students
     end
   end
 end
