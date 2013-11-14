@@ -2,11 +2,11 @@ require_relative '../test_helper_with_rails'
 
 describe BatchStudentCreator do
   let(:bob) do
-    { first_name: "Bob", last_name: "Loblaw", username: "lawblog", grade: 6, gender: "Male", password: "bobloblaw" }
+    { first_name: "Bob", last_name: "Loblaw", user: {username: "lawblog", password: "bobloblaw"}, grade: 6, gender: "Male" }
   end
   let(:leroy) do
     # invalid user
-    { first_name: nil, last_name: nil, username: nil, grade: nil, gender: nil, password: nil }
+    { first_name: nil, last_name: nil, user: {username: nil, password: nil}, grade: nil, gender: nil }
   end
   subject { BatchStudentCreator.new(student_params) }
 
