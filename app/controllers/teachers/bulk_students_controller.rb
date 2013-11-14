@@ -39,7 +39,8 @@ module Teachers
       @actions = [
         "Update Passwords to this Password",
         "Update Passwords = Usernames",
-        "Update Passwords as Indicated"
+        "Update Passwords as Indicated",
+        "Edit Students Information"
       ]
 
       @students = current_school.students
