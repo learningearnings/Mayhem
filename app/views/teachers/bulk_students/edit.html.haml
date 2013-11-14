@@ -3,15 +3,16 @@
     %h2 Edit Students
     .grid_edit_students
       .controls
-        %h5 Optionally Filter List of Students:
-        .control
-          %label Classroom:
-          = select_tag 'controls_classroom', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name")
-          %label Grade:
-          = select_tag 'controls_grade', options_for_select([nil] | current_school.grades)
-          %label Gender:
-          = select_tag 'controls_gender', options_for_select([nil, 'Male', 'Female'])
-          = button_tag 'Filter List', class: 'btn awesome-button'
+        = form_tag '/teachers/bulk_students/edit', method: :get, id: 'update_students_form' do
+          %h5 Optionally Filter List of Students:
+          .control
+            %label Classroom:
+            = select_tag 'classroom', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name", :selected => params[:classroom]), id: 'controls_classroom'
+            %label Grade:
+            = select_tag 'grade', options_for_select([nil] | current_school.grades.map(&:reverse), :selected => params[:grade]), id: 'controls_grade'
+            %label Gender:
+            = select_tag 'gender', options_for_select([nil, 'Male', 'Female'], :selected => params[:gender]), id: 'controls_gender'
+            = button_tag 'Filter List', class: 'btn awesome-button'
       .controls
         %h5 Action for Selected Students:
         .control

@@ -41,7 +41,18 @@ module Teachers
         "Update Passwords = Usernames",
         "Update Passwords as Indicated"
       ]
+
       @students = current_school.students
+      if params[:classroom].present?
+        classroom = Classroom.find(params[:classroom])
+        @students = classroom.students
+      end
+
+      if params[:gender].present?
+        @students = @students.for_gender(params[:gender])
+      end
+
+      @students = @students.for_grade(params[:grade]) if params[:grade].present?
     end
   end
 end
