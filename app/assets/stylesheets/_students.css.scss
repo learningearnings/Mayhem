@@ -18,6 +18,15 @@
   }
   td.select, th.select, td.select select {
     width: 110px;
+    &.grade, &.grade select {
+      width: 60px;
+    }
+    &.gender, &.gender select {
+      width: 90px;
+    }
+    .classroom, &.classroom select {
+      width: 200px;
+    }
   }
   .controls {
     background: #eee;
@@ -25,8 +34,18 @@
     label {
       display: inline-block;
     }
+    #controls_grade {
+      width: 60px;
+    }
+    #controls_gender {
+      width: 90px;
+    }
   }
   .delete_row{
     margin-bottom:14px;
+  }
+  .grade {
+    margin-left: 0; // Overriding something too generic elsewhere
+    width: 60px;
   }
 }
