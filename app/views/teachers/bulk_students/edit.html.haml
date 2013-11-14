@@ -14,7 +14,10 @@
             = select_tag 'gender', options_for_select([nil, 'Male', 'Female'], :selected => params[:gender]), id: 'controls_gender'
             = button_tag 'Filter List', class: 'btn awesome-button'
       .controls
-        %h5 Action for Selected Students:
+        %h5 
+          Action for
+          %span#number_of_students
+          Selected Students:
         .control
           = select_tag 'controls_action', options_for_select(@actions)
           %span.password_field.secondary
@@ -49,6 +52,7 @@
     else
       $('input.selected').removeAttr('checked')
       $('.edit_control').attr('disabled', 'disabled')
+    updateNumberOfStudents()
 
   $('.students_body').on 'click', (evt) ->
     if $(evt.target).hasClass('row_checkbox')
@@ -58,6 +62,10 @@
       else
         $('#select_all').removeAttr('checked')
         children.attr('disabled', 'disabled')
+      updateNumberOfStudents()
+
+  updateNumberOfStudents = ->
+    $('#number_of_students').html($('.row_checkbox:checked').size())
 
   chosenAction = ->
     $('#controls_action').val()
@@ -124,3 +132,4 @@
   handleInterfaceState()
 
   $('.edit_control').attr('disabled', 'disabled')
+  updateNumberOfStudents()
