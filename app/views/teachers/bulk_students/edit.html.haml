@@ -20,6 +20,9 @@
           %span.password_field.secondary
             %label Password:
             = text_field_tag 'controls_password'
+          %span.classroom_field.secondary
+            %label Classroom:
+            = select_tag 'controls_classroom_selection', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name")
           = button_tag 'UPDATE These Students', class: 'btn awesome-button', id: 'update_these_students'
 
       = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
@@ -62,6 +65,7 @@
   whichSecondaryActionElementToShow = () ->
     switch chosenAction()
       when "Update Passwords to this Password" then $('.control span.secondary.password_field')
+      when "Add to Classroom I select:" then $('.control span.secondary.classroom_field')
       else $([])
 
   showAppropriateSecondaryAction = () ->
@@ -103,6 +107,11 @@
         updatePasswordsToPassword($('#controls_password').val())
       when "Update Passwords = Usernames"
         updatePasswordsToUsername()
+      when "Add to Classroom I select:"
+        updateClassroomsToClassroom($('#controls_classroom_selection').val())
+
+  updateClassroomsToClassroom = (classroom_id) ->
+    $('.edit_control.classroom').val(classroom_id)
 
   updatePasswordsToPassword = (password) ->
     $('input.password').val(password)
