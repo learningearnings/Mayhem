@@ -19,7 +19,7 @@ module Teachers
         redirect_to action: :index
       else
         flash[:error] = "Error creating students"
-        render action: :index
+        render action: :new
       end
     end
   end
