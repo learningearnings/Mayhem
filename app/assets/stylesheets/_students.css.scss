@@ -13,6 +13,9 @@
 }
 
 .grid_edit_students {
+  th {
+    text-align: left;
+  }
   td.text, th.text, td.text input {
     width: 100px;
   }
@@ -31,6 +34,7 @@
   .controls {
     background: #eee;
     padding: 1em;
+    margin-bottom: 1em;
     label {
       display: inline-block;
     }
@@ -39,6 +43,9 @@
     }
     #controls_gender {
       width: 90px;
+    }
+    #controls_action {
+      width: 300px;
     }
   }
   .delete_row{
