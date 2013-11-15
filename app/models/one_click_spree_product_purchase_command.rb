@@ -79,7 +79,7 @@ class OneClickSpreeProductPurchaseCommand
     end
 
     # Delivery
-    if @order.line_items.first.product.shipping_category && (@order.line_items.first.product.shipping_category.shipping_methods.count > 0)
+    if @order.line_items.first && @order.line_items.first.product.shipping_category && (@order.line_items.first.product.shipping_category.shipping_methods.count > 0)
       @order.shipping_method_id = @order.line_items.first.product.shipping_category.shipping_methods.first.id
     else
       @order.shipping_method = Spree::ShippingCategory.find_by_name('In Classroom').shipping_methods.first
