@@ -16,7 +16,7 @@ class OneClickSpreeProductPurchaseCommand
       queue_delivery(@order.line_items)
     end
 
-    if @order.products.first.fulfillment_type != 'Shipped on Demand'
+    if @order.products.first && @order.products.first.fulfillment_type != 'Shipped on Demand'
       mark_as_shipped
     end
   end
