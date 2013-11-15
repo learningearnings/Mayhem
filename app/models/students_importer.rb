@@ -35,6 +35,7 @@ class StudentsImporter < BaseImporter
         user = student.user
         user.username = datum[:user][:username]
         user.password = datum[:user][:password]
+        binding.pry
         user.save(validate: false)
         student.activate!
       end
@@ -46,7 +47,12 @@ class StudentsImporter < BaseImporter
   def existing_student(datum)
     users = Spree::User.where(username: datum[:user][:username])
     if users.present?
-      users.select{|x| x.schools.include?(School.first)}.first.person
+      _users = users.select{|x| x.schools.include?(@school.id)}
+      if _users.present? && _users.first.present?
+        _users.first.person
+      else
+        false
+      end
     else
       false
     end
