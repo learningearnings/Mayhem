@@ -108,7 +108,11 @@
       (
         $.get('/classrooms/' + $('#classroom_id').val() + '.json')
           .success (students) ->
-            html = ich.students_table(students: students)
+            # We have to map the rails-returned data to something more appropriate for mustache
+            mapped_students = $.map students, (student_wrapper) ->
+              student_wrapper.student
+            console.log(mapped_students)
+            html = ich.students_table(students: mapped_students)
             $('#classroom_distribution').html(html)
             distributeCreditsToAllStudents()
       )

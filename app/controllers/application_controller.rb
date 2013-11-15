@@ -121,7 +121,24 @@ class ApplicationController < ActionController::Base
     with_filters_params[:current_school] = current_school
     with_filters_params[:classrooms] = current_person.classrooms.map(&:id)
     searcher = Spree::Search::Filter.new(with_filters_params)
-    searcher.retrieve_products.order('random()').page(1).per(highlight_count)
+    @products = searcher.retrieve_products
+    @products = filter_rewards_by_classroom(@products)
+    @products.order('random()').page(1).per(highlight_count)
+  end
+
+  def filter_rewards_by_classroom(products)
+    if current_person.is_a?(Student) && current_person.classrooms.present?
+      classrooms = current_person.classrooms.pluck(:id)
+      products.reject! do |product|
+        # Products that have no classrooms should not be rejected
+        next unless product.classrooms.any?
+        # If there is an intersection between the products classrooms and my classrooms, don't reject
+        (product.classrooms.pluck(:id) & classrooms).any? ? false : true
+      end
+      # To fix pagination we need an active record relation, not an array
+      # Why are you laughing?
+      products = Spree::Product.where(:id => products.map(&:id))
+    end
   end
 
   protected
