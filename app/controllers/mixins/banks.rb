@@ -7,7 +7,7 @@ module Mixins
         @bank.create_print_bucks(person, current_school, 'AL', bucks)
       else
         flash[:error] = "Please enter an amount."
-        redirect_to :back
+        redirect_to main_app.teachers_bank_path
       end
     end
 
@@ -17,12 +17,12 @@ module Mixins
       # We should refactor this.
       if params[:points].present? && params[:points].to_i > 400
         flash[:error] = "You can not issue more than 400 credits to a student at a time."
-        redirect_to :back and return
+        redirect_to main_app.teachers_bank_path and return
       end
 
       unless params[:points] && SanitizingBigDecimal(params[:points]) > 0
         flash[:error] = "You must enter greater than 0 credits"
-        redirect_to :back and return
+        redirect_to main_app.teachers_bank_path and return
       end
 
       if params[:student][:id].present? && params[:points].present?
@@ -32,7 +32,7 @@ module Mixins
         issue_ebucks_to_student(student)
       else
         flash[:error] = "Please ensure a student is selected and an amount is entered."
-        redirect_to :back
+        redirect_to main_app.teachers_bank_path
       end
     end
 
@@ -60,7 +60,7 @@ module Mixins
         on_failure
       else
         flash[:error] = "Please ensure a classroom is selected, has students, and an amount is entered."
-        redirect_to :back
+        redirect_to main_app.teachers_bank_path
       end
     end
 
@@ -72,7 +72,7 @@ module Mixins
         @bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:transfer_points])
       else
         flash[:error] = "Please choose a teacher for buck transfer.  Also ensure amount is a positive number."
-        redirect_to :back
+        redirect_to main_app.teachers_bank_path
       end
     end
 
