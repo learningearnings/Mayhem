@@ -33,4 +33,16 @@ class BatchStudentUpdater
     end
     return success
   end
+
+  def delete!
+    ActiveRecord::Base.transaction do
+      responses = []
+      @student_params.each do |student_param|
+        student = @student_class.find(student_param.delete(:id))
+        psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(student.id, school.id)
+        psl.deactivate!
+      end
+    end
+    true
+  end
 end
