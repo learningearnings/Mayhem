@@ -1,4 +1,5 @@
 Leror::Application.routes.draw do
+  get '/sti/give_credits' => "sti#give_credits"
   match '/404' => 'errors#not_found'
   match '/422' => 'errors#server_error'
   match '/500', :to => 'errors#server_error'
@@ -170,6 +171,7 @@ Leror::Application.routes.draw do
 
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   namespace :teachers do
+    resource :bulk_students
     resources :reports
     resource  :bank
     resource  :dashboard
