@@ -14,7 +14,7 @@
     .edit= text_field_tag 'students[]user[username]', options[:username], class: 'username edit_control'
     .display= options[:username]
   %td.select.grade
-    .edit= select_tag 'students[]grade', options_for_select(grades, selected: options[:grade]), class: 'grade edit_control'
+    .edit= select_tag 'students[]grade', options_for_select(current_school.grades.map(&:reverse), selected: options[:grade]), class: 'grade edit_control'
     .display= options[:grade]
     = hidden_field_tag 'students[]classroom_id', nil, class: 'classroom edit_control'
   %td.select.gender
