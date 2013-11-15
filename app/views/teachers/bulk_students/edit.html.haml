@@ -29,6 +29,7 @@
           = button_tag 'UPDATE These Students', class: 'btn awesome-button', id: 'update_these_students'
 
       = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
+        = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
         %table
           %thead
             %tr
@@ -65,7 +66,10 @@
       updateNumberOfStudents()
 
   updateNumberOfStudents = ->
-    $('#number_of_students').html($('.row_checkbox:checked').size())
+    $('#number_of_students').html(numberOfStudents())
+
+  numberOfStudents = ->
+    $('.row_checkbox:checked').size()
 
   chosenAction = ->
     $('#controls_action').val()
@@ -106,8 +110,16 @@
 
   $('#update_these_students').on 'click', (evt) ->
     evt.preventDefault()
-    performSelectedStudentAction()
-    $('#update_students_form').submit()
+    if numberOfStudents() > 0
+      performSelectedStudentAction()
+      setFormActionHiddenTag()
+      $('#update_students_form').submit()
+    else
+      alert("You must select at least one student to modify.")
+
+  setFormActionHiddenTag = () ->
+    action = $('#controls_action').val()  
+    $('#form_action_hidden_tag').val(action)
 
   performSelectedStudentAction = () ->
     switch chosenAction()

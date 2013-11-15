@@ -12,8 +12,9 @@ module Teachers
     end
 
     def update
+      updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
       @batch_student_updater = BatchStudentUpdater.new(params["students"], current_person.schools.first)
-      if @batch_student_updater.call
+      if @batch_student_updater.send(updater_method)
         flash[:notice] = "Students Updated!"
         redirect_to action: :show
       else
@@ -39,7 +40,9 @@ module Teachers
         "Update Passwords to this Password",
         "Update Passwords = Usernames",
         "Update Passwords as Indicated",
-        "Add to Classroom I select:"
+        "Add to Classroom I select:",
+        "Edit Students Information",
+        "Delete these students"
       ]
 
       @students = current_school.students
