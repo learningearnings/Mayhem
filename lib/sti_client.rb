@@ -6,7 +6,7 @@ class STIClient
   end
 
   def get_session_token
-    response = HTTParty.get("http://sandbox.sti-k12.com/learningearnings/api/token", :basic_auth => authentication_hash)
+    response = HTTParty.get("http://199.72.151.79/api/token", :basic_auth => authentication_hash)
     @session_token = response["access_token"]
   end
 
@@ -15,7 +15,7 @@ class STIClient
   end
 
   def session_information
-    response = HTTParty.get("http://sandbox.sti-k12.com/learningearnings/api/users/me", :headers => {"Authorization" => "Session #{session_token}"})
+    response = HTTParty.get("http://199.72.151.79/api/users/me", :headers => {"Authorization" => "Session #{session_token}"})
   end
 
   def authentication_hash
