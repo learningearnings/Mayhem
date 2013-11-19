@@ -12,6 +12,13 @@ module Teachers
       end
     end
 
+    def refund_teacher_reward
+      @reward_delivery = RewardDelivery.find(params[:id])
+      @reward_delivery.refund_purchase
+      @product = RewardDelivery.find(params[:id]).reward.variant.product
+      redirect_to teachers_reward_path(@product.id)
+    end
+
     # GET /teachers/rewards/1
     # GET /teachers/rewards/1.json
     def show
