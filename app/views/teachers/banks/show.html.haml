@@ -21,7 +21,7 @@
                 %i{:class => "icon-print"}
                 Print Credits
           %li
-            %a{:href => "#electronic-credits", 'data-toggle' => 'tab'}
+            %a.electronic_credits{:href => "#electronic-credits", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-envelope"}
                 Electronic Credits
@@ -96,7 +96,7 @@
     ($ '#distribute-credits a').click (e) ->
       e.preventDefault()
       ($ this).tab('show')
-    ($ '#distribute-credits a:first').tab('show')
+    ($ '#distribute-credits a.electronic_credits').tab('show')
 
     distributeCreditsToAllStudents = () ->
       points = $('#classroom_points').val()

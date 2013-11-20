@@ -105,11 +105,11 @@ module Reports
       person = reward_delivery.to
       deliverer = reward_delivery.from
       classroom = person.classrooms.first
-      teacher   = classroom.teachers.first
+      teacher   = classroom.try(:teachers).try(:first)
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
-        classroom: (person.classrooms.count > 0 ? "#{teacher.last_name}: #{person.classrooms.first.name}" : ""),
+        classroom: (person.classrooms.count > 0 ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : ""),
         grade: School::GRADE_NAMES[person.grade],
         purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
         reward: reward_delivery.reward.product.name,
