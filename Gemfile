@@ -27,6 +27,8 @@ gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgw
 
 gem 'jquery-ui-rails'
 
+gem 'detect_timezone_rails'
+
 gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
