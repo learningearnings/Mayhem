@@ -16,7 +16,7 @@ module Teachers
       #@batch_student_updater = BatchStudentUpdater.new(params["students"], current_person.schools.first)
       StudentUpdaterWorker.perform_async(params["students"], current_person.schools.first, updater_method)
       #if @batch_student_updater.send(updater_method)
-        flash[:notice] = "Students Updated!"
+        flash[:notice] = "Bulk process is running."
         redirect_to action: :show
       #else
       #  flash[:error] = "Error updating students"
