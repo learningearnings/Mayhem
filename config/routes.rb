@@ -178,6 +178,7 @@ Leror::Application.routes.draw do
     resource  :lounge
     resources :rewards
     match "home" => "home#show", as: 'home'
+    match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'

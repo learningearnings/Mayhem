@@ -35,7 +35,6 @@ class StudentsImporter < BaseImporter
         user = student.user
         user.username = datum[:user][:username]
         user.password = datum[:user][:password]
-        binding.pry
         user.save(validate: false)
         student.activate!
       end

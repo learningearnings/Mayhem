@@ -33,6 +33,7 @@ gem 'cancan'
 gem 'devise'
 
 gem 'whenever', :require => false
+gem 'sidekiq'
 
 gem 'therubyracer'
 

@@ -48,6 +48,6 @@ class STIClient
   end
 
   def base_url
-    "http://sandbox.sti-k12.com/learningearnings/"
+    "http://199.72.151.79/"
   end
 end
