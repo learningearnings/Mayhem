@@ -32,7 +32,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
     @classrooms = @current_school.classrooms
-    @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
+    @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill", "Auction Reward"]
     @purchased_by = ["LE", "Sponsor", "School", "Charity"]
     @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
     @grades = ["K", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
