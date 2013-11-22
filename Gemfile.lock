@@ -511,6 +511,7 @@ GEM
       railties (> 3.2.8, < 4.0.0)
       sprockets (>= 2.0.0)
     tzinfo (0.3.37)
+    tzinfo-data (1.2013.7)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -621,6 +622,8 @@ DEPENDENCIES
   thor (= 0.14.6)
   transaction_retry
   turbo-sprockets-rails3
+  tzinfo
+  tzinfo-data
   uglifier (>= 1.0.3)
   unicorn
   valid_attribute!
