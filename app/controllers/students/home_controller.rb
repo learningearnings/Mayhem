@@ -7,7 +7,9 @@ module Students
       @featured_activity_callout = featured_activity_callout_post
       @our_sponsor = our_sponsor_post
       @our_sponsor_callout = our_sponsor_callout_post
-      @poll = Poll.active.last
+      polls = Poll.active.within_grade(current_person.grade)
+      polls = polls + Poll.no_min_grade.no_max_grade
+      @poll = polls.last
       @charity_donations = honor_roll.charity_purchases_per_person(3)
     end
 

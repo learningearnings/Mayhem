@@ -123,7 +123,11 @@ class ApplicationController < ActionController::Base
     searcher = Spree::Search::Filter.new(with_filters_params)
     @products = searcher.retrieve_products
     @products = filter_rewards_by_classroom(@products)
-    @products.order('random()').page(1).per(highlight_count)
+    if @products.present?
+      @products.order('random()').page(1).per(highlight_count)
+    else
+      @products = []
+    end
   end
 
   def filter_rewards_by_classroom(products)
