@@ -136,10 +136,9 @@ $(document).ready(function() {
   highlightNavigation('news',    'news');
   highlightNavigation('how_it_works', 'how-it-works');
   highlightNavigation('testimonials', 'testimonials');
+  highlightNavigation('bulk_students', 'manage_students');
   highlightNavigation('',        'home');
-  
-  
-   
+
  //detect the width on page load
 $(document).ready(function(){
  var current_width = $(window).width();
