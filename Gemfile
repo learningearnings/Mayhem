@@ -89,6 +89,7 @@ gem "ckeditor", '3.7.3'
 
 # PDFKit provides an interface to wkhtmltopdf from ruby, and a rack middleware
 gem 'pdfkit'
+gem 'wkhtmltopdf'
 
 gem 'thor','0.14.6'
 
