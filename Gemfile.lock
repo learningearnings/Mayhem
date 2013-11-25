@@ -517,7 +517,6 @@ GEM
     whereabouts (0.9.1)
       activerecord
       activesupport
-    wkhtmltopdf (0.1.2)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -613,4 +612,3 @@ DEPENDENCIES
   webshims-rails (~> 1.11.1)
   whenever
   whereabouts (~> 0.9.0)
-  wkhtmltopdf
