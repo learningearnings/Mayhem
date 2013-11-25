@@ -12,7 +12,7 @@ module Games
 
     attr_accessible :body, :grade, :game_type
 
-    scope :for_grade, lambda {|grade|  where("grade = ?", grade) }
+    scope :for_grade, lambda {|grade|  where("grade <= ?", grade) }
 
     def self.random
       order("random()").first
