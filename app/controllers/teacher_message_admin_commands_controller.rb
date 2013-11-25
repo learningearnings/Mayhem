@@ -5,6 +5,7 @@ class TeacherMessageAdminCommandsController < Teachers::BaseController
     command.to_id = LeAdmin.first.id
     if command.valid?
       command.execute!
+      UserMailer.teacher_admin_email(command).deliver
       flash[:success] = "Message sent successfully."
     else
       flash[:error] = "Message not sent."

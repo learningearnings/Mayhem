@@ -83,6 +83,8 @@ class PersonSchoolLink < ActiveRecord::Base
   #end
 
   def username_taken?
+    errors.add(:status, "Person must be present") and return unless person && person.username
+    return if status == "inactive"
     if school.teachers.with_username(person.username).present?
       errors.add(:status, "Username already assigned for this school.")
     end
