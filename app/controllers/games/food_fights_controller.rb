@@ -14,7 +14,7 @@ module Games
     def play
       match_setup unless @match
       # FIXME: Make this...better
-      question = Games::Question.random
+      question = Games::Question.for_grade(current_person.grade).random
       food_fight_play_command = FoodFightPlayCommand.new(question_id: question.id, :match_id => @match.id)
       question_statistics = Games::QuestionStatisticsPresenter.new(question)
       render 'play', locals: { food_fight_play_command: food_fight_play_command, question_statistics: question_statistics }

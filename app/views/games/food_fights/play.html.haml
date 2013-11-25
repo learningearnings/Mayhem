@@ -1,7 +1,8 @@
 = render '/games/food_fights/head'
 
 .food-fight-question
-  %h4= food_fight_play_command.question_body
+  :markdown
+    # **#{food_fight_play_command.question_body}**
 
   = form_for food_fight_play_command do |f|
     = hidden_field_tag :person_id, params[:person_id]
