@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131008022118) do
+ActiveRecord::Schema.define(:version => 20131126144844) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -599,6 +599,7 @@ ActiveRecord::Schema.define(:version => 20131008022118) do
     t.integer  "state_id"
     t.string   "zip"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
   end
 
   create_table "spree_activators", :force => true do |t|
