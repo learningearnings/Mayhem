@@ -1,9 +1,10 @@
 class UserMailer < ActionMailer::Base
   default from: "admin@learningearnings.com"
 
-  def teacher_admin_email(message)
+  def teacher_admin_email(message, school)
     @message = message
-    @teacher = Person.find @message.to_id
+    @school = school
+    @teacher = Person.find @message.from_id
     mail(:to => 'theteam@learningearnings.com', :subject => "#{@message.subject}")
   end
 
