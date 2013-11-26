@@ -29,6 +29,6 @@ every 1.day, :at => '12pm' do
 end
 
 every '0 9 1 * *' do
-  runner "BuckDistributor.new.run
+  runner "BuckDistributor.new.run"
 end
 
