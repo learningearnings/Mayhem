@@ -26,7 +26,7 @@ class BuckDistributor
 
   def handle_teachers
     @schools.each do |school|
-      school.teachers.each do |teacher|
+      school.teachers.logged.each do |teacher|
         revoke_remainder(school, teacher, teacher.main_account(school).balance)
         pay_teacher(school, teacher)
       end
@@ -38,7 +38,7 @@ class BuckDistributor
   end
 
   def amount_for_teacher(school)
-    school.balance / school.teachers.count
+    school.balance / school.teachers.logged.count
   end
 
   def pay_teacher(school, teacher)
