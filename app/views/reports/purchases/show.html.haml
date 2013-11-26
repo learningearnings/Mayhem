@@ -22,7 +22,7 @@
             = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
           %br/
           .sort-by
-            = f.input :paginate, :label => "Paginate", :as => :boolean
+            = f.input :paginate, :label => "Paginate", :as => :boolean, :input_html => { :checked => true }
         = f.submit 'Run Report', :class => 'awesome-button'
         = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
