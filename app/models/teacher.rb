@@ -1,6 +1,7 @@
 class Teacher < Person
-#  has_many :schools, :through => :person_school_links
-  attr_accessible :username, :password, :password_confirmation, :email, :gender
+  #has_many :schools, :through => :person_school_links
+  attr_accessor :username, :password, :password_confirmation, :email
+  attr_accessible :gender, :email, :username
   attr_accessible :status, :can_distribute_credits, :as => :admin
   validates_presence_of :grade
   after_create :create_user
@@ -109,9 +110,12 @@ class Teacher < Person
       else
         user = Spree::User.create(:username => 'test_user', :email => "test_user@example.com", :password => 'test123', :password_confirmation => 'test123')
       end
-      user.person_id = self.id
-      user.save
+    else
+      user = self.user
+      user.update_attributes(:username => username, :email => email, :password => password, :password_confirmation => password_confirmation)
     end
+    user.person_id = self.id
+    user.save
   end
 
   def peers_at(school)
