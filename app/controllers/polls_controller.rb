@@ -12,7 +12,11 @@ class PollsController < ApplicationController
   end
 
   def index
-    @polls = Poll.active.within_grade(current_person.grade)
+    if current_person
+      @polls = Poll.active.within_grade(current_person.grade)
+    else
+      @polls = Poll.active
+    end
     @polls = @polls + Poll.no_min_grade.no_max_grade
   end
 
