@@ -1,7 +1,10 @@
 class Student < Person
   before_save :check_coppa
   after_create :ensure_accounts
+
+  before_validation :ensure_new_user
   after_create :create_user
+
   validates_presence_of :grade
 
   has_many :otu_codes
@@ -126,17 +129,14 @@ class Student < Person
     hold_account     || Plutus::Asset.create(name: hold_account_name)
   end
 
-  def create_user
-    unless self.user
-      if username.present?
-        user = user = Spree::User.create(:username => username, :password => password, :password_confirmation => password_confirmation)
-      else
-        user = user = Spree::User.create(:username => "student#{self.id}", :password => 'test123', :password_confirmation => 'test123')
-      end
-    else
-      user = self.user
-      user.update_attributes(:username => username, :password => password, :password_confirmation => password_confirmation)
+  def ensure_new_user
+    self.user = Spree::User.new(:username => username, :password => password, :password_confirmation => password_confirmation)
+    unless self.user.valid?
+      errors.add(:user, "User is invalid.") and return
     end
+  end
+
+  def create_user
     user.person_id = self.id
     user.save
   end
