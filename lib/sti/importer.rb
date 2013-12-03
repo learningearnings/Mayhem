@@ -36,6 +36,35 @@ module STI
       @api_classrooms = client.sections.parsed_response.each do |api_classroom|
         classroom = Classroom.new(api_classroom_mapping(api_classroom))
         classroom.save
+        teacher = Teacher.where(:sti_id => api_classroom["TeacherId"]).first
+        person_school_link = teacher.person_school_links.includes(:school).where("schools.sti_id" => api_classroom["SchoolId"]).first
+        person_school_classroom_link = PersonSchoolClassroomLink.new(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id)
+        person_school_classroom_link.save
+        puts person_school_classroom_link.errors.full_messages.to_sentence
+      end
+
+      puts "******************************************************"
+      puts "Importing Students"
+      puts "******************************************************"
+      @api_students = client.students.parsed_response.each do |api_student|
+        student = Student.new(api_student_mapping(api_student))
+        student.save
+        school = School.where(:sti_id => api_student["Schools"]).first
+        person_school_link = ::PersonSchoolLink.new(:person_id => student.id, :school_id => school.id, :status => :active)
+        person_school_link.save(:validate => false)
+      end
+
+
+      puts "******************************************************"
+      puts "Importing Students into Classrooms"
+      puts "******************************************************"
+      {"SectionId"=>635, "StudentId"=>1171}
+      client.rosters.parsed_response.each do |api_roster|
+        classroom = Classroom.where(:sti_id => api_roster["SectionId"]).first
+        student = Student.where(:sti_id => api_roster["StudentId"]).first
+        person_school_link = student.person_school_links.where(:school_id => classroom.school.id).first
+        person_school_classroom_link = PersonSchoolClassroomLink.new(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id)
+        person_school_classroom_link.save
       end
     end
 
@@ -60,6 +89,15 @@ module STI
         },
 =end
         sti_id: api_teacher["Id"]
+      }
+    end
+
+    def api_student_mapping api_student
+      {
+        sti_id: api_student["Id"],
+        first_name: api_student["FirstName"],
+        last_name: api_student["LastName"],
+        grade: api_student["GradeLevel"]
       }
     end
 
