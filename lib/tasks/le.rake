@@ -39,7 +39,7 @@ namespace :le do
 
   desc "Build enough codes so there are always 10_000 active codes"
   task :build_otu_codes => :environment do
-    number_of_codes_to_make = 10000 - Code.active.count
+    number_of_codes_to_make = 100000 - Code.active.count
     puts "Building #{number_of_codes_to_make} codes"
     number_of_codes_to_make.times do
       Code.create
