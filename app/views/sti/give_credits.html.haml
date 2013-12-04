@@ -50,7 +50,7 @@
                     %strong
                       Credits Available:
                     = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-                  = form_for OtuCode.new, :url => sti_create_ebucks_for_students_path do |f|
+                  = form_for OtuCode.new, :url => sti_create_ebucks_for_students_path(params), :method => :post do |f|
                     #classroom_distribution
                       %table.table
                         %thead

@@ -60,7 +60,7 @@ module Mixins
         on_failure
       else
         flash[:error] = "Please ensure a classroom is selected, has students, and an amount is entered."
-        redirect_to main_app.teachers_bank_path
+        redirect_to :back
       end
     end
 

@@ -3,11 +3,9 @@ class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
   skip_around_filter :track_interaction
+  before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    sti_client = STI::Client.new
-    sti_client.session_token = params["sti_session_variable"]
-    @client_response = sti_client.session_information.parsed_response
     if @client_response["StaffId"].blank? || current_person.nil?
       render partial: "teacher_not_found"
     else
@@ -41,5 +39,11 @@ class StiController < ApplicationController
 
   def person
     current_person
+  end
+
+  def handle_sti_token
+    sti_client = STI::Client.new
+    sti_client.session_token = params["sti_session_variable"]
+    @client_response = sti_client.session_information.parsed_response
   end
 end
