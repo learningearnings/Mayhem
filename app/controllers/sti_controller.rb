@@ -2,12 +2,18 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
+  skip_around_filter :track_interaction
 
   def give_credits
     sti_client = STI::Client.new
     sti_client.session_token = params["sti_session_variable"]
-    load_students
-    render :layout => false
+    @client_response = sti_client.session_information.parsed_response
+    if @client_response["StaffId"].blank? || current_person.nil?
+      render partial: "teacher_not_found"
+    else
+      load_students
+      render :layout => false
+    end
   end
 
   private
@@ -16,7 +22,7 @@ class StiController < ApplicationController
   end
 
   def current_person
-    Teacher.find(178)
+    Teacher.where(sti_id: @client_response["StaffId"]).first
   end
 
   def current_school
