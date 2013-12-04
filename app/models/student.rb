@@ -130,7 +130,12 @@ class Student < Person
   end
 
   def ensure_new_user
-    self.user = Spree::User.new(:username => username, :password => password, :password_confirmation => password_confirmation)
+    return if self.user.present? && self.user.username.present?
+    if username && password
+      self.user = Spree::User.new(:username => username, :password => password, :password_confirmation => password_confirmation)
+    else
+      errors.add(:user, "User needs a username and password.") and return
+    end
     unless self.user.valid?
       errors.add(:user, "User is invalid.") and return
     end
