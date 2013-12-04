@@ -1,11 +1,11 @@
 class Teacher < Person
   #has_many :schools, :through => :person_school_links
   attr_accessor :username, :password, :password_confirmation, :email
-  attr_accessible :gender, :email, :username, :password
+  attr_accessible :gender, :email, :username
   attr_accessible :status, :can_distribute_credits, :as => :admin
   validates_presence_of :grade
-  before_validation :ensure_new_user
   after_create :create_user
+
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
   has_many :reward_distributors, :through => :person_school_links
@@ -102,17 +102,20 @@ class Teacher < Person
     Plutus::Asset.find_by_name(unredeemed_account_name(school)) || Plutus::Asset.create(name: unredeemed_account_name(school))
     Plutus::Asset.find_by_name(undeposited_account_name(school)) || Plutus::Asset.create(name: undeposited_account_name(school))
   end
-  
-  def ensure_new_user
-    self.user = Spree::User.new(:username => username, :email => email, :password => password, :password_confirmation => password_confirmation)
-    unless self.user.valid?
-      errors.add(:user, "User is invalid.") and return
-    end
-  end
 
   def create_user
-    self.user.person_id = self.id
-    self.user.save
+    unless self.user
+      if username.present?
+        user = Spree::User.create(:username => username, :email => email, :password => password, :password_confirmation => password_confirmation)
+      else
+        user = Spree::User.create(:username => 'test_user', :email => "test_user@example.com", :password => 'test123', :password_confirmation => 'test123')
+      end
+    else
+      user = self.user
+      user.update_attributes(:username => username, :email => email, :password => password, :password_confirmation => password_confirmation)
+    end
+    user.person_id = self.id
+    user.save
   end
 
   def peers_at(school)
