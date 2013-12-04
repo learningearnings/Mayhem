@@ -83,11 +83,6 @@ module STI
         first_name: api_teacher["FirstName"],
         last_name: api_teacher["LastName"],
         grade: 5,
-=begin
-        user: {
-          email_address: api_teacher["EmailAddress"]
-        },
-=end
         sti_id: api_teacher["Id"]
       }
     end
