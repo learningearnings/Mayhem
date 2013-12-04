@@ -9,6 +9,9 @@ if ENV["JENKINS"]
 end
 SimpleCov.start 'rails'
 
+require 'bundler'
+Bundler.require
+
 require 'minitest/matchers'
 require 'minitest/spec'
 require 'minitest/autorun'

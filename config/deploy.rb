@@ -18,7 +18,7 @@ before 'deploy:setup', 'rvm:create_wrappers'
 set :bundle_dir, ''
 set :bundle_flags, '--system --quiet'
 
-set :stages, %w(production demo staging)
+set :stages, %w(production demo staging sandbox)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 

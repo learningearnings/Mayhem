@@ -65,6 +65,14 @@
     (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
     s.parentNode.insertBefore(g,s)}(document,'script'));
+
+    $(document).bind( 'keydown', function ( event ) {
+      var keys = [32, 33, 34, 35, 36, 37, 38, 39, 40, 44];
+      if( keys.indexOf( event.which ) > -1 ) {
+        event.preventDefault();
+        event.stopPropagation();
+      };
+    });
   </script>
 </body>
 </html>
