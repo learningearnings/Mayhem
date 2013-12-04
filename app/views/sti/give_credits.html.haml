@@ -41,8 +41,12 @@
                 .bank_content
 
                 .distribute-credits
-                  %h4 Issue Electronic Credits to each student
+                  %h4 Issue Electronic Credits
                   %p.credits-available
+                    %strong
+                      Teacher:
+                      = current_person.name
+                    %br/
                     %strong
                       Credits Available:
                     = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
