@@ -323,6 +323,7 @@ GEM
     net-ssh (2.7.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    newrelic_rpm (3.6.9.171)
     nokogiri (1.5.10)
     orm_adapter (0.0.7)
     paperclip (2.8.0)
@@ -570,6 +571,7 @@ DEPENDENCIES
   mocha (~> 0.14.0)
   modernizr-rails (~> 2.6.2.3)
   nested_form!
+  newrelic_rpm
   pdfkit
   pg (= 0.13.2)
   plutus!
