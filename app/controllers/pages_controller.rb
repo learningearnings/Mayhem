@@ -8,7 +8,7 @@ class PagesController < HighVoltage::PagesController
         # for not-logged-in users
         unless current_person
           # Strip any subdomains off of the url, leaving us at the unhindered root domain
-          if actual_subdomain.present?
+          if actual_subdomain.present? && actual_subdomain != "demo"
             host_without_subdomain = request.env["HTTP_HOST"].gsub(/#{actual_subdomain}\./, '')
             redirect_to "#{request.protocol}#{host_without_subdomain}" and return
           end
