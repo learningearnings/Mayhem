@@ -14,6 +14,8 @@ gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 gem 'exceptional'
 gem 'transaction_retry'
+gem 'tzinfo'
+gem 'tzinfo-data'
 
 # for importing
 #gem 'mysql2'
@@ -26,8 +28,6 @@ gem "webshims-rails", "~> 1.11.1" # if we move to rails 4, please read https://g
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
 gem 'jquery-ui-rails'
-
-gem 'detect_timezone_rails'
 
 gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
@@ -57,6 +57,7 @@ gem 'high_voltage'
 
 # haml is a templating language we use extensively / exclusively on this project
 gem 'haml-rails', '~> 0.3.5'
+gem 'rdiscount'
 
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'

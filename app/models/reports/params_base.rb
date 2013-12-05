@@ -7,9 +7,9 @@ module Reports
     attr_accessor :per_page, :page, :paginate
 
     def initialize options_in = {}
-      unless options_in
+      if options_in["reports_purchases_params"].present?
         @paginate = options_in["reports_purchases_params"].fetch(:paginate, false)
-        @per_page = options_in.fetch(:per_page, 50).to_i
+        @per_page = options_in.fetch(:per_page, 5).to_i
         @page     = options_in.fetch(:page, 1).to_i
       end
     end

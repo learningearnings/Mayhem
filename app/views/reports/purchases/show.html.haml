@@ -22,7 +22,7 @@
             = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
           %br/
           .sort-by
-            = f.input :paginate, :label => "Paginate", :as => :boolean
+            = f.input :paginate, :label => "Paginate", :as => :boolean, :input_html => { :checked => true }
         = f.submit 'Run Report', :class => 'awesome-button'
         = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
@@ -39,6 +39,7 @@
                 %th= header
               %th Refund
               %th Deliver
+              %th= check_box_tag "reward_deliveries_all", '1', false, :id => 'toggle', :onclick => "toggleAll(this)"
           %tbody
             - report.data_rows do |row|
               %tr
@@ -62,3 +63,24 @@
           = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
       = paginate report if report.parameters.paginate == "1"
 
+:plain
+  <script type="text/javascript">
+    function toggleAll(name) {
+      if(name.checked) {
+        $("input:checkbox").each(function(){
+          $(this).attr('checked', true);
+          $("input:text").each(function(){
+            $(this).attr('disabled', false);
+          });
+        });
+      }
+      else {
+        $("input:checkbox").each(function(){
+          $(this).attr('checked', false);
+          $("input:text").each(function(){
+            $(this).attr('disabled', true);
+          });
+        });
+      }
+    }
+  </script>

@@ -200,8 +200,6 @@ GEM
     deface (0.9.1)
       nokogiri (~> 1.5.0)
       rails (~> 3.1)
-    detect_timezone_rails (0.0.5)
-      railties (>= 3.1)
     devise (2.0.6)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -387,6 +385,7 @@ GEM
     rb-fsevent (0.9.3)
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
+    rdiscount (2.1.7)
     rdoc (3.12.2)
       json (~> 1.4)
     redis (3.0.6)
@@ -511,6 +510,7 @@ GEM
       railties (> 3.2.8, < 4.0.0)
       sprockets (>= 2.0.0)
     tzinfo (0.3.37)
+    tzinfo-data (1.2013.7)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -554,7 +554,6 @@ DEPENDENCIES
   database_cleaner (~> 0.8.0)
   date_validator
   decorators (~> 1.0.0)
-  detect_timezone_rails
   devise
   dragonfly
   draper (= 0.18.0)
@@ -597,6 +596,7 @@ DEPENDENCIES
   ranked-model
   rb-fsevent (~> 0.9.1)
   rb-inotify (~> 0.8.8)
+  rdiscount
   responders
   roo (= 1.12.1)
   rubyzip (= 0.9.9)
@@ -621,6 +621,8 @@ DEPENDENCIES
   thor (= 0.14.6)
   transaction_retry
   turbo-sprockets-rails3
+  tzinfo
+  tzinfo-data
   uglifier (>= 1.0.3)
   unicorn
   valid_attribute!
