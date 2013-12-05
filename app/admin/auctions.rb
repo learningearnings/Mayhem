@@ -3,6 +3,7 @@ ActiveAdmin.register Auction do
   scope :ended
   scope :upcoming
   scope :unfulfilled
+  config.filters = false
 
   controller do
     skip_before_filter :add_current_store_id_to_params
@@ -80,6 +81,7 @@ ActiveAdmin.register Auction do
       bid_text += auction.current_bid.to_s
       bid_text.html_safe
     end
+
     column :leader do |auction|
       leader = auction.current_leader
       "#{leader} (#{leader.grade}) #{leader.school}" if leader
@@ -101,7 +103,7 @@ ActiveAdmin.register Auction do
 
   form do |f|
     f.inputs "Details" do
-      f.input :product, :as => :chosen, :collection => Spree::Product.shipped_for_school_inventory
+      f.input :product, :as => :chosen, :collection => Spree::Product.for_auctions
       f.input :starting_bid
       f.input :start_date, :as => :just_datetime_picker
       f.input :end_date, :as => :just_datetime_picker

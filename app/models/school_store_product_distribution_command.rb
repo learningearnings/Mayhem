@@ -69,6 +69,8 @@ class SchoolStoreProductDistributionCommand < ActiveModelCommand
       retail_product.shipping_category = Spree::ShippingCategory.find_by_name('In Classroom')
       ### TODO - Is this legit?
       retail_product.taxons = @master_product.taxons
+      retail_product.min_grade = @master_product.min_grade
+      retail_product.max_grade = @master_product.max_grade
       if @master_product && @master_product.master && @master_product.master.images[0]
         begin
           new_image = open(@master_product.master.images[0].attachment.url)

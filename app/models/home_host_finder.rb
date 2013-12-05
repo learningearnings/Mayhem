@@ -26,6 +26,7 @@ class HomeHostFinder
 
   def expected_subdomains
     [
+      "",
       "beta",
       "rclements"
     ]

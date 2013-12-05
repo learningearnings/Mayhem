@@ -10,7 +10,7 @@ Spree::OrdersController.class_eval do
   # * Multiple products at once
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => quantity+
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
-  
+
   def insufficient_quantity?
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
@@ -26,7 +26,7 @@ Spree::OrdersController.class_eval do
     if insufficient_quantity?
       flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
       redirect_to :back and return
-    end 
+    end
     @order.restock_items!
     params[:products].each do |product_id,variant_id|
       quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
@@ -56,8 +56,14 @@ Spree::OrdersController.class_eval do
         redirect_to product and return
       else
         OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-        flash[:notice] = "Purchase Completed."
-        redirect_to "/"
+        message = "Purchase successful!."
+        if params[:variants].is_a?(Hash)
+          variant_id = params[:variants].keys.first
+          product = Spree::Variant.find(variant_id)
+          quantity = params[:variants][variant_id]
+          message = "Congratulations, you bought #{quantity} #{product.name}!"
+        end
+        redirect_to root_path, notice: message
       end
     end
   end
@@ -91,7 +97,6 @@ Spree::OrdersController.class_eval do
     redirect_to spree.cart_path
   end
 
-
   def after_save_new_order
     @current_order.special_instructions = {school_id: current_school.id}.to_yaml
     @person = current_person
@@ -120,7 +125,6 @@ Spree::OrdersController.class_eval do
       @current_order.bill_address_attributes = shipping_address
     end
   end
-
 
   private
   def current_person

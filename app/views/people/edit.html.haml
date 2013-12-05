@@ -9,14 +9,14 @@
       .row
         .span4
           - if !current_person.is_a?(Student)
-            = render :partial => "moniker", :locals => { :f => f }
             = f.label :email
             = f.text_field :email
-        .span4
-          = f.label :password
-          = f.password_field :password
-          = f.label :password_confirmation
-          = f.password_field :password_confirmation
+        - if !current_person.is_a?(Student)
+          .span4
+            = f.label :password
+            = f.password_field :password
+            = f.label :password_confirmation
+            = f.password_field :password_confirmation
       = f.submit t(:update), class: 'btn awesome-button'
       = link_to "Cancel", current_person, class: 'btn awesome-button'
 

@@ -67,7 +67,7 @@ GIT
       activeadmin
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
@@ -161,6 +161,7 @@ GEM
       compass-rails (>= 1.0)
       railties (>= 3.0)
       sass-rails (>= 3.2)
+    chronic (0.10.2)
     chunky_png (1.2.8)
     ckeditor (3.7.3)
       mime-types
@@ -196,6 +197,8 @@ GEM
     deface (0.9.1)
       nokogiri (~> 1.5.0)
       rails (~> 3.1)
+    detect_timezone_rails (0.0.5)
+      railties (>= 3.1)
     devise (2.0.6)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -208,6 +211,8 @@ GEM
       actionpack (~> 3.2)
       activesupport (~> 3.2)
     erubis (2.7.0)
+    exceptional (2.0.33)
+      rack
     excon (0.25.3)
     execjs (2.0.2)
     factory_girl (4.2.0)
@@ -302,10 +307,11 @@ GEM
       ruby-progressbar
     mocha (0.14.0)
       metaclass (~> 0.0.1)
+    modernizr-rails (2.6.2.3)
     money (5.0.0)
       i18n (~> 0.4)
       json
-    multi_json (1.8.0)
+    multi_json (1.8.2)
     multi_xml (0.5.5)
     nested_set (1.7.0)
       activerecord (>= 3.0.0)
@@ -394,6 +400,7 @@ GEM
     rubyzip (0.9.9)
     rvm-capistrano (1.5.0)
       capistrano (>= 2.15.4)
+    sanitizing_bigdecimal (0.0.1)
     sass (3.2.11)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -479,6 +486,11 @@ GEM
       ref
     thor (0.14.6)
     tilt (1.4.1)
+    transaction_isolation (1.0.3)
+      activerecord (>= 3.0.11)
+    transaction_retry (1.0.2)
+      activerecord (>= 3.0.11)
+      transaction_isolation (>= 1.0.2)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -496,7 +508,12 @@ GEM
     uuidtools (2.1.4)
     warden (1.1.1)
       rack (>= 1.0)
+    webshims-rails (1.11.1)
+      rails (> 3.1.0)
     websocket (1.0.7)
+    whenever (0.8.4)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     whereabouts (0.9.1)
       activerecord
       activesupport
@@ -524,9 +541,11 @@ DEPENDENCIES
   database_cleaner (~> 0.8.0)
   date_validator
   decorators (~> 1.0.0)
+  detect_timezone_rails
   devise
   dragonfly
   draper (= 0.18.0)
+  exceptional
   factory_girl_rails
   fog
   googlecharts
@@ -549,6 +568,7 @@ DEPENDENCIES
   minitest-matchers (~> 1.2.0)
   minitest-reporters (~> 0.8.0)
   mocha (~> 0.14.0)
+  modernizr-rails (~> 2.6.2.3)
   nested_form!
   pdfkit
   pg (= 0.13.2)
@@ -567,6 +587,7 @@ DEPENDENCIES
   roo (= 1.12.1)
   rubyzip (= 0.9.9)
   rvm-capistrano
+  sanitizing_bigdecimal
   sass (~> 3.2.10)
   sass-rails (~> 3.2.6)
   simple_form
@@ -583,8 +604,11 @@ DEPENDENCIES
   tconsole
   therubyracer
   thor (= 0.14.6)
+  transaction_retry
   turbo-sprockets-rails3
   uglifier (>= 1.0.3)
   unicorn
   valid_attribute!
+  webshims-rails (~> 1.11.1)
+  whenever
   whereabouts (~> 0.9.0)

@@ -6,10 +6,10 @@
       %h4= t('.subtitle')
       %dl.balance
         %dt Checking Balance
-        %dd= current_person.checking_balance
+        %dd= number_with_precision(current_person.checking_balance, precision: 2, delimiter: ',')
       %dl.balance
         %dt Savings Balance
-        %dd= current_person.savings_balance
+        %dd= number_with_precision(current_person.savings_balance, precision: 2, delimiter: ',')
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
@@ -28,7 +28,7 @@
             %tr
               %td= buck.source_string
               %td= buck.created_at.to_s(:db)
-              %td= buck.points
+              %td= number_with_precision(buck.points, precision: 2, delimiter: ',')
               %td= link_to("Claim Credits", redeem_buck_path(current_person.id, buck.code), class: 'btn awesome-button') rescue 'error because no buck code...'
       .actions
         = link_to "Enter Codes", "#enter-codes-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'

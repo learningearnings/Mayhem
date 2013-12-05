@@ -5,7 +5,8 @@ require 'action_view'
 require 'active_record/errors'
 
 class BidOnAuctionCommand < ActiveModelCommand
-  class FailedToCreateAuctionBid < StandardError; end
+  class FailedToCreateAuctionBid < StandardError
+  end
 
   include ActionView::Helpers::UrlHelper
   attr_accessor :person, :auction, :amount, :credit_manager, :on_success, :on_failure, :failure_reason
@@ -44,7 +45,7 @@ class BidOnAuctionCommand < ActiveModelCommand
     success = false
     open_bids = []
     unless valid?
-      @failure_reason = errors.full_messages.to_sentence
+      @failure_reason = errors.full_messages.to_sentence.downcase.capitalize
       on_failure.call(self)
       return false
     end
@@ -88,7 +89,7 @@ class BidOnAuctionCommand < ActiveModelCommand
     bid_creator.call(amount: amount, person: person, auction: auction)
     # move money from the bidder's main account into their holding account
     success = credit_manager.transfer_credits_from_checking_to_hold(person, amount)
-    raise FailedToCreateAuctionBid unless success
+    raise "You do not have enough credits to bid this amount!" unless success
   end
 
   def update_auction_with_current_bid

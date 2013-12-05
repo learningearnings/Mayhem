@@ -1,8 +1,7 @@
 class ClassroomsController < LoggedInController
+  before_filter :load_classrooms, only: [:index, :create]
 
   def index
-    # FIXME: - Bug in person.classrooms so for now using uniq to get past this.
-    @classrooms = current_person.classrooms.uniq
   end
 
   def new
@@ -13,7 +12,7 @@ class ClassroomsController < LoggedInController
     @classroom = Classroom.find(params[:id])
     respond_to do |format|
       format.html { render layout: true }
-      format.json { render json: @classroom.students }
+      format.json { render json: @classroom.students.order(:last_name, :first_name)}
     end
   end
 
@@ -66,7 +65,7 @@ class ClassroomsController < LoggedInController
       redirect_to classrooms_path
     else
       flash[:error] = "Classroom not created."
-      render :new
+      render :index
     end
   end
 
@@ -98,4 +97,7 @@ class ClassroomsController < LoggedInController
     end
   end
 
+  def load_classrooms
+    @classrooms = current_person.classrooms.uniq
+  end
 end

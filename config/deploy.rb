@@ -23,7 +23,7 @@ set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
 after 'deploy:start',   'unicorn:start'
-after 'deploy:stop',    'unicorn:stop'
+# after 'deploy:stop',    'unicorn:stop'
 #after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
 
 # main details
@@ -51,6 +51,7 @@ namespace :deploy do
   task :symlink_shared, :roles => :app do
     run "ln -s #{shared_path}/log #{latest_release}/log"
     run "ln -s #{shared_path}/system #{latest_release}/public/system"
+    run "ln -s #{shared_path}/public/assets #{latest_release}/public/assets"
     run "mkdir #{latest_release}/tmp"
     run "rm -fr #{latest_release}/tmp/cache"
     run "ln -s #{shared_path}/tmp/cache #{latest_release}/tmp/cache"
@@ -67,8 +68,7 @@ namespace :deploy do
 
   desc "Restart unicorn"
   task :restart do
-    stop
-    start
+    unicorn.restart
   end
 end
 

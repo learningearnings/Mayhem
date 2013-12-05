@@ -2,16 +2,16 @@
   .primary-content-fw
     %h2 Student Credit History Report
 
-    = form_tag student_credit_history_report_path, method: :get do
+    = form_tag student_credit_history_report_path, method: :get, class: "noprint" do
       .filter
         %h4 Filter By
         .all-students
           = radio_button_tag :student_filter_type, :all_at_school, params[:student_filter_type] == 'all_at_school'
-          = label_tag "All students at #{current_school}"
+          = label_tag :all_at_school, "All students at #{current_school.name.capitalize}"
         .given-credits
           = radio_button_tag :student_filter_type, :students_ive_given_bucks_to, params[:student_filter_type] == 'students_ive_given_bucks_to'
 
-          = label_tag "Students I've given credits to"
+          = label_tag :students_ive_given_bucks_to, "Students I've given credits to"
         .all-classrooms
           = radio_button_tag :student_filter_type, :all_my_classrooms, params[:student_filter_type] == 'all_my_classrooms'
 
@@ -26,7 +26,9 @@
       .sorting
         %h4 Sort By
         = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
+        = submit_tag 'Go!'
 
+    = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
     .report
       %table.table.table-bordered.table-striped.solid-background
         %thead

@@ -26,14 +26,16 @@ class PeopleController < LoggedInController
   def update
     person_attributes = params[:teacher] || params[:student]
     @person.avatar = Avatar.find(params[:avatar_id]) if !params[:avatar_id].blank?
-    if person_attributes[:password].present? && person_attributes[:password_confirmation].present?
-      @person.user.update_attributes(:password => person_attributes[:password], :password_confirmation => person_attributes[:password_confirmation])
-    end
-    if person_attributes[:email].present?
-      @person.user.update_attributes(:email => person_attributes[:email])
-    end
-    if params[:moniker].present?
-      @person.update_attributes(moniker: params[:moniker])
+    if person_attributes.present?
+      if person_attributes[:password].present? && person_attributes[:password_confirmation].present?
+        @person.user.update_attributes(:password => person_attributes[:password], :password_confirmation => person_attributes[:password_confirmation])
+
+        # Devise automatically logs out a user upon password change.
+        sign_in(@person.user, bypass: true)
+      end
+      if person_attributes[:email].present?
+        @person.user.update_attributes(:email => person_attributes[:email])
+      end
     end
     if @person.save
       flash[:notice] = "#{@person.type} profile updated."

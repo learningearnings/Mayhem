@@ -18,7 +18,7 @@ class Student < Person
     where(grade: grade_index)
   }
 
-  after_initialize :set_status_to_active
+  before_create :set_status_to_active
   after_create :create_locker
 
   def main_account(s)

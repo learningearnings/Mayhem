@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 ruby '2.0.0'
 
@@ -12,20 +12,29 @@ gem 'rake', '~> 10.1.0'
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
+gem 'exceptional'
+gem 'transaction_retry'
 
 # for importing
 #gem 'mysql2'
 #gem 'taps'
 #gem 'sqlite3'
 
+gem 'modernizr-rails', '~> 2.6.2.3'
+gem "webshims-rails", "~> 1.11.1" # if we move to rails 4, please read https://github.com/whatcould/webshims-rails for changes.
+
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
 gem 'jquery-ui-rails'
+
+gem 'detect_timezone_rails'
 
 gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
+
+gem 'whenever', :require => false
 
 gem 'therubyracer'
 
@@ -158,5 +167,7 @@ end
 
 gem "coffee-filter", '~> 0.1.3'
 
-#### Only here for staging deploymenbts ###
+#### Only here for staging deployments ###
 gem 'factory_girl_rails'
+
+gem 'sanitizing_bigdecimal'

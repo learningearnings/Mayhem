@@ -8,6 +8,9 @@
         -webkit-print-color-adjust:exact;
     }
 
+    .main-content-wrapper {
+      @include box-shadow(none);
+    }
     #header, #admin-menu, #footer {
         display: none;
     }
@@ -16,6 +19,12 @@
         width: 100%;
         border: 1px solid black;
         font-size: 1.4em;
+        page-break-inside:auto;
+    }
+
+    tr {
+      page-break-inside:avoid;
+      page-break-after:auto
     }
 
     td, th {

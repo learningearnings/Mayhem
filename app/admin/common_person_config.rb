@@ -10,6 +10,8 @@ module CommonPersonConfig
   def self.included(dsl)
     dsl.run_registration_block do
 
+      filter :user_email, :as => :string
+      filter :user_username, :as => :string
       filter :first_name_or_last_name, :as => :string
       filter :last_name
       filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
@@ -22,6 +24,9 @@ module CommonPersonConfig
           f.input :first_name
           f.input :last_name
           f.input :dob, :as => :datepicker
+          if f.object.is_a?(Student)
+            f.input :gender, as: :select, collection: ['Male', 'Female']
+          end
           f.input :grade, :as => :select, :collection => School.grades, :wrapper_html => {:class => 'horizontal'}
           f.input :status, :label => "Initial Status", :as => :select, :collection => ['new','active','inactive']
 
@@ -60,10 +65,10 @@ module CommonPersonConfig
       member_action :give_credits, :method => :post do
         person = Person.find(params[:id])
         amount = params[:credits][:amount]
-        if amount.nil? || amount.to_f <= 0.0
-          flash[:error] = "Please enter a positive, non-zero amount of credits"
-          redirect_to :action => :show and return
-        end
+        #if amount.nil? || amount.to_f <= 0.0
+        #  flash[:error] = "Please enter a positive, non-zero amount of credits"
+        #  redirect_to :action => :show and return
+        #end
         if person.is_a? Teacher
           if person.is_a? SchoolAdmin
             school = School.find(params[:school_admin][:school_id])

@@ -20,13 +20,13 @@
     - if @product.price
       %div{ "data-hook" => "product_price", class: "columns five #{@product.has_variants? ? 'omega' : 'alpha'}" }
         #product-price
-          %h6.product-section-title= t(:quantity_availalbe)
+          %h6.product-section-title= t(:quantity_available)
           %div
             %span.quantity.selling{ itemprop:"Available" }= @product.count_on_hand
         #product-price
           %h6.product-section-title= t(:price)
           %div
-            %span.price.selling{ itemprop:"price" }= @product.price
+            %span.price.selling{ itemprop:"price" }= number_with_precision(@product.price, precision: 2, delimiter: ',')
 
         .add-to-cart
           - if (!@product.has_stock?)

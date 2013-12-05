@@ -1,6 +1,8 @@
 .main-content-wrapper
   %h2 New Teacher
 
+  %p If you are a teacher and would like to sign-up for Learning Earnings, please email #{mail_to "TheTeam@LearningEarnings.com"} with your information as well as the school you teach at and we will walk you through the process.
+-#
   = form_for @teacher do |f|
     .row
       .span3
@@ -20,7 +22,7 @@
         = f.label :grade
         = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], :grade), :include_blank => true
         = label_tag :school
-        = select_tag :school_id, options_from_collection_for_select(School.all, :id, :to_s), :include_blank => true
+        = select_tag :school_id, options_from_collection_for_select(School.order(:name).all, :id, :to_s), :include_blank => true
         = f.label :password
         = f.password_field :password
         = f.label :password_confirmation

@@ -45,6 +45,7 @@ Spree.config do |config|
   config.s3_bucket = ENV['LE_S3_BUCKET']
   config.s3_access_key = ENV['LE_S3_ACCESS_KEY']
   config.s3_secret = ENV['LE_S3_SECRET_ACCESS_KEY']
+  config.attachment_path = '/spree/products/:id/:style/:basename.:extension'
   config.s3_host_alias = "s3-us-west-2.amazonaws.com"
   config.attachment_url = ":s3_eu_url"
 end

@@ -62,7 +62,7 @@ class Bank
     end
     if otu_code.messages.present?
       otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.')
-      otu_code.messages.first.hide!
+      otu_code.messages.first.hide! rescue nil
     end
     otu_code.update_attribute(:student_id, student.id)
     otu_code.mark_redeemed!
@@ -99,7 +99,7 @@ class Bank
   end
 
   def send_message(person, student, buck)
-    body = "Click here to claim your award: #{link_to 'Claim Credits', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
+    body = "Click here to claim your #{buck.points.to_s} credit(s): #{link_to 'Claim Credits', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
 
     message_params = {from: person,
                          to: student,

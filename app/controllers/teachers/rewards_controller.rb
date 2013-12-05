@@ -12,10 +12,22 @@ module Teachers
       end
     end
 
+    def refund_teacher_reward
+      @reward_delivery = RewardDelivery.find(params[:id])
+      @reward_delivery.refund_purchase
+      @product = RewardDelivery.find(params[:id]).reward.variant.product
+      redirect_to teachers_reward_path(@product.id)
+    end
+
     # GET /teachers/rewards/1
     # GET /teachers/rewards/1.json
     def show
-      @teachers_reward = nil # Teachers::Reward.find(params[:id])
+      @teachers_reward = Teachers::Reward.new
+      @teachers_reward.teacher = current_person
+      @teachers_reward.school = current_school
+      @teachers_reward.spree_product_id = params[:id]
+      @teachers_reward.classrooms = @teachers_reward.classrooms.map(&:id)
+      @line_items = @teachers_reward.product.master.line_items.page(params[:page]).per(3)
 
       respond_to do |format|
         format.html # show.html.haml
@@ -41,6 +53,7 @@ module Teachers
       @teachers_reward.teacher = current_person
       @teachers_reward.school = current_school
       @teachers_reward.spree_product_id = params[:id]
+      @teachers_reward.classrooms = @teachers_reward.classrooms.map(&:id)
     end
 
     # POST /teachers/rewards
