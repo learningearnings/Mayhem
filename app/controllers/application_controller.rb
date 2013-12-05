@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
   end
 
   def home_subdomain
-    current_school ? current_school.store_subdomain : 'demo'
+    current_school ? current_school.store_subdomain : ''
   end
 
   def login_schools_list
