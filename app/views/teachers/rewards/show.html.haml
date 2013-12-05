@@ -35,7 +35,6 @@
                 %tr
                   %td= RewardDelivery.find_by_reward_id(line_item.id).to.name
                   %td= line_item.quantity
-                  %td= RewardDelivery.find_by_reward_id(line_item.id).status
                   - if RewardDelivery.find_by_reward_id(line_item.id).status != 'refunded'
                     %td= link_to 'Refund', teachers_refund_teacher_reward_path(RewardDelivery.find_by_reward_id(line_item.id).id)
                   - else

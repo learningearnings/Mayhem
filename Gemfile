@@ -28,14 +28,13 @@ gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgw
 
 gem 'jquery-ui-rails'
 
-gem 'detect_timezone_rails'
-
 gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
 
 gem 'whenever', :require => false
+gem 'sidekiq'
 
 gem 'therubyracer'
 
@@ -57,6 +56,7 @@ gem 'high_voltage'
 
 # haml is a templating language we use extensively / exclusively on this project
 gem 'haml-rails', '~> 0.3.5'
+gem 'rdiscount'
 
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'
@@ -146,7 +146,7 @@ group :test do
   #gem 'thin'
   gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
-  gem 'minitest-reporters', '~> 0.8.0'
+  gem 'minitest-reporters'
   gem 'minitest-matchers', '~> 1.2.0'
   gem 'spinach', '~> 0.5.2'
   gem 'database_cleaner', '~> 0.8.0'
@@ -172,3 +172,4 @@ gem "coffee-filter", '~> 0.1.3'
 gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
+gem 'httparty'

@@ -8,12 +8,13 @@ require_relative './le/student_savings_importer'
 module Importers
   class Le
     attr_reader :schools_file_path, :users_file_path, :classrooms_file_path, :classroom_details_file_path, :points_file_path
-    def initialize(schools_file_path, users_file_path, classrooms_file_path, classroom_details_file_path, points_file_path)
+    def initialize(schools_file_path, users_file_path, classrooms_file_path, classroom_details_file_path, points_file_path, otu_codes_file_path)
       @schools_file_path = schools_file_path
       @users_file_path = users_file_path
       @classrooms_file_path = classrooms_file_path
       @classroom_details_file_path = classroom_details_file_path
       @points_file_path = points_file_path
+      @otu_codes_file_path = otu_codes_file_path
     end
 
     def call
