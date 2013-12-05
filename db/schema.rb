@@ -523,6 +523,8 @@ ActiveRecord::Schema.define(:version => 20131126144844) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.boolean  "active"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
   end
 
   create_table "posts", :force => true do |t|

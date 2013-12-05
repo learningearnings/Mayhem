@@ -24,7 +24,7 @@
       %tr
         %th Name
         %th Balance
-        %th Add Credits
+        %th Credits
     %tbody
       - person.accounts(school).each do |account|
         %tr
@@ -35,10 +35,10 @@
               = form_for [:admin, person], :url => give_credits_admin_teacher_path, :method => 'post' do |f|
                 = f.hidden_field :school_id, :value => school.id
                 = text_field :credits,:amount, :style => "width: 30%;"
-                = f.submit 'Add Credits'
+                = f.submit 'Update Credits'
             - elsif person.is_a?(Student) && account.name == person.checking_account_name
               = form_for [:admin, person], :url => give_credits_admin_student_path, :method => 'post' do |f|
                 = text_field :credits,:amount, :style => "width: 30%;"
-                = f.submit 'Add Credits'
+                = f.submit 'Update Credits'
 
 

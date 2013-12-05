@@ -65,10 +65,10 @@ module CommonPersonConfig
       member_action :give_credits, :method => :post do
         person = Person.find(params[:id])
         amount = params[:credits][:amount]
-        if amount.nil? || amount.to_f <= 0.0
-          flash[:error] = "Please enter a positive, non-zero amount of credits"
-          redirect_to :action => :show and return
-        end
+        #if amount.nil? || amount.to_f <= 0.0
+        #  flash[:error] = "Please enter a positive, non-zero amount of credits"
+        #  redirect_to :action => :show and return
+        #end
         if person.is_a? Teacher
           if person.is_a? SchoolAdmin
             school = School.find(params[:school_admin][:school_id])
