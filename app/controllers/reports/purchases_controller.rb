@@ -2,7 +2,8 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def show
-      report = Reports::Purchases.new params.merge(school: current_school)
+      params[:page] ||= 1
+      report = Reports::Purchases.new params.merge(school: current_school, :page => params[:page])
       report.execute!
       render 'show', locals: { report: report }
     end
