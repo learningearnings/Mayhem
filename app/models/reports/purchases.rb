@@ -10,6 +10,7 @@ module Reports
     def initialize params
       super
       @school = params[:school]
+      @current_page = params[:page]
       @parameters = Reports::Purchases::Params.new(params)
     end
 
@@ -51,9 +52,7 @@ module Reports
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
-      #if parameters.paginate == "1"
-      base_scope = base_scope.page(parameters.page).per(parameters.per_page)
-      #end
+      base_scope = base_scope.page(@current_page).per(200)
       base_scope
     end
 
