@@ -51,9 +51,9 @@ module Reports
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
-      if parameters.paginate == "1"
-        base_scope = base_scope.page(parameters.page).per(parameters.per_page)
-      end
+      #if parameters.paginate == "1"
+      base_scope = base_scope.page(parameters.page).per(parameters.per_page)
+      #end
       base_scope
     end
 
