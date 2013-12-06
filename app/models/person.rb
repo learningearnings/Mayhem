@@ -207,4 +207,5 @@ class Person < ActiveRecord::Base
       PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl.id)
     end
   end
+
 end
