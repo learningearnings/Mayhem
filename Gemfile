@@ -14,8 +14,7 @@ gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 gem 'exceptional'
 gem 'transaction_retry'
-gem 'tzinfo'
-gem 'tzinfo-data'
+gem 'newrelic_rpm'
 
 # for importing
 #gem 'mysql2'
