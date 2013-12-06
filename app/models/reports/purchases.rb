@@ -52,7 +52,7 @@ module Reports
         base_scope = base_scope.send(*filter_option) if filter_option
       end
       #if parameters.paginate == "1"
-      base_scope = base_scope.page(parameters.page).per(parameters.per_page)
+      base_scope = base_scope.page(params[:page]).per(50)
       #end
       base_scope
     end
