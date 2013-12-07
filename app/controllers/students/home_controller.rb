@@ -6,6 +6,7 @@ module Students
       @featured_activity = featured_activity_post
       @featured_activity_callout = featured_activity_callout_post
       @our_sponsor = our_sponsor_post
+      @our_sponsor = our_sponsor_post
       @our_sponsor_callout = our_sponsor_callout_post
       polls = Poll.active.within_grade(current_person.grade)
       polls = polls + Poll.no_min_grade.no_max_grade
