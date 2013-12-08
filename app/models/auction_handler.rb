@@ -31,7 +31,7 @@ class AuctionHandler
                          category: 'games')
   end
 
-  def notify_admin_of_auciton_end(auction)
+  def notify_admin_of_auction_end(auction)
     body = "The following auction has ended: #{link_to(auction.to_s, Rails.application.routes.url_helpers.auction_path(auction))}."
     message_creator.call(from: auction.current_leader,
                          to: @admin,
