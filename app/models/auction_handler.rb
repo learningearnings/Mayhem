@@ -3,6 +3,7 @@ require 'action_view'
 class AuctionHandler
   include ActionView::Helpers::UrlHelper
   include Rails.application.routes.url_helpers
+  attr_accessor :auctions
 
   def initialize params={}
     params ||= {}
@@ -12,9 +13,11 @@ class AuctionHandler
 
   def run!
     @auctions.each do |auction|
-      notify_student_of_win(auction)
-      notify_admin_of_auciton_end(auction)
-      auction.notify!
+      if auction.product.present?
+        notify_student_of_win(auction)
+        notify_admin_of_auction_end(auction)
+        auction.notify!
+      end
     end 
   end
 
