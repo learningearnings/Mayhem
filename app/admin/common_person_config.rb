@@ -103,7 +103,6 @@ module CommonPersonConfig
           if @psl.valid?
             flash[:notice] = "Associated #{person.name} with #{school.name}"
           else
-            binding.pry
             flash[:error] = @psl.errors.messages[:status]
             #flash[:error] = "Username already associated with this school."
           end
