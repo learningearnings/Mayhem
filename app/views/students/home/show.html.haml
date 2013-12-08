@@ -20,10 +20,12 @@
       = @featured_activity_callout.body.html_safe
   .honor-roll
     .honor-roll-content
-      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%H")) do
+      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%p")) do
+        - honor_roll = HonorRoll.new(current_school, 7.days.ago.beginning_of_day, Date.today.end_of_day)
+        - charity_donations = honor_roll.charity_purchases_per_person(3)
         %h4 Most Credits Donated to Charity
         %ol
-          - @charity_donations.each do |person, amount|
+          - charity_donations.each do |person, amount|
             %li #{person} [#{number_to_bucks amount}]
 
 .student-logged-in-sidebar
