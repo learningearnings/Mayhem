@@ -31,12 +31,23 @@ class StudentsImporter < BaseImporter
   def create_student(datum)
     begin
       Student.create(datum[:student], as: :admin).tap do |student|
-        student << @school
         user = student.user
         user.username = datum[:user][:username]
         user.password = datum[:user][:password]
         user.save(validate: false)
-        student.activate!
+        student.save
+       
+
+
+
+        
+        
+        
+        p = PersonSchoolLink.create(:school_id => @school.id, :person_id => student.id)
+
+
+
+
       end
     rescue Exception => e
       warn "Got exception for #{datum.inspect} - #{e.inspect}"
