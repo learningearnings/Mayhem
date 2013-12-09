@@ -20,7 +20,7 @@ Spree::HomeController.class_eval do
       @products = filter_rewards_by_classroom(@products)
     end
 
-    @products = @products.page(params[:page]).per(9)
+    @products = @products.page(params[:page]).per(10)
     respond_with(@products)
   end
 end
