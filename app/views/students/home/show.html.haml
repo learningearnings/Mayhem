@@ -2,9 +2,20 @@
   .bacon-small
   .corkboard
     .whats-new
-      = @whats_new.body.html_safe
+      - if current_school.name == 'STI'
+        .welcome-sticky
+          = "Welcome to the LE experience!  LE is an easy and effective way for classroom teachers to motivate students with proven results."
+          %br
+          %br
+          .sponsor-list
+            = "Don't forget to pick-up your rewards by Thursday at 4pm at the **LE Store in Magnolia 4**."
+      - else
+        = @whats_new.body.html_safe
     .featured-activity
-      = @featured_activity.body.html_safe
+      - if current_school.name == 'STI'
+        = "Banquet is at 7pm on Thursday.  You have been invited to dinner!  Bring your sleuthing skills to uncover the crime during a night of mystery solving."
+      - else
+        = @featured_activity.body.html_safe
     .featured-activity-callout
       = @featured_activity_callout.body.html_safe
   .honor-roll
@@ -20,7 +31,17 @@
 .student-logged-in-sidebar
   = render_reward_highlights(@products[0..1])
   .our-sponsors
-    = @our_sponsor.body.html_safe
+    - if current_school.name == 'STI'
+      = "STI thanks our sponsors for their support throughout our User Conference:"
+      %p= "Howard Technology Solution"
+      .sponsor-list
+        %p= "infosnap"
+      .sponsor-list
+        %p= "Schoolmessenger"
+      .sponsor-list
+        %p= "TSA"
+    - else
+      = @our_sponsor.body.html_safe
     .our-sponsors-callout
       .our-sponsors-callout-content
         = @our_sponsor_callout.body.html_safe
