@@ -52,7 +52,7 @@ module Reports
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
-      base_scope = base_scope.page(@current_page).per(50)
+      base_scope = base_scope.page(@current_page).per(200)
       base_scope
     end
 
