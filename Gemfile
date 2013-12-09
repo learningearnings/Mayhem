@@ -92,6 +92,7 @@ gem "ckeditor", '3.7.3'
 gem 'pdfkit'
 
 gem 'thor','0.14.6'
+gem "sprockets-image_compressor", "~> 0.2.2"
 
 # Plutus is what we use to manage our General Ledgers throughout this and other apps
 gem 'plutus', :github => 'learningearnings/plutus'
