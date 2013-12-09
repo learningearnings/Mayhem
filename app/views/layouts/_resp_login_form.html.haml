@@ -1,4 +1,4 @@
-= form_tag spree.user_session_path, :class => 'form-inline resp-login-form-fields' do
+= form_tag spree.user_session_path, :class => 'form-inline resp-login-form-fields', autocomplete: 'off' do
   %label.log-in.text
     LOG-IN
   = text_field_tag 'user[username]', nil, :placeholder => 'Username', :class => 'focus-on-me input-medium'
@@ -10,6 +10,7 @@
   .resp-forgot-password
     = link_to "Forgot your password?", spree.new_user_password_path('user')
 
+//$('#timezone').set_timezone(); 
 :coffeescript
   ($ "document").ready ->
     $(".chzn-select").chosen();

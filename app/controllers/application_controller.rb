@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :subdomain_required
+  around_filter :set_time_zone
   around_filter :track_interaction
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -74,7 +75,7 @@ class ApplicationController < ActionController::Base
   helper_method :login_schools_list
 
   def school_id_by_subdomain
-    School.find_by_store_subdomain(request.subdomain).try(:id)
+    School.find_by_store_subdomain(actual_subdomain).try(:id)
   end
 
   def last_school_id
@@ -114,12 +115,63 @@ class ApplicationController < ActionController::Base
     interaction.save
   end
 
+  def set_time_zone
+    old_time_zone = Time.zone
+    if browser_timezone.present?
+      Time.zone = browser_timezone
+      Rails.logger.warn "**************************"
+      Rails.logger.warn "Using #{browser_timezone} for this request"
+      Rails.logger.warn "**************************"
+    end
+    yield
+  ensure
+    Time.zone = old_time_zone
+  end
+
+  def browser_timezone
+    convert_from_iana_zone_to_rails cookies["browser.timezone"]
+  end
+
+  # Rails decided to make its own time zones because duh time isn't hard enough already.
+  # There is a mapping constant to convert from IANA
+  def convert_from_iana_zone_to_rails iana_zone
+    mapping = ActiveSupport::TimeZone::MAPPING.detect {|k, v| v == iana_zone}
+    if mapping
+      mapping.first
+    else
+      Time.zone
+    end
+  end
+
   def get_reward_highlights highlight_count = 3
     with_filters_params = params
+    with_filters_params[:filters] = session[:filters]
     with_filters_params[:searcher_current_person] = current_person
     with_filters_params[:current_school] = current_school
-    searcher = Spree::Config.searcher_class.new(with_filters_params)
-    searcher.retrieve_products.order('random()').page(1).per(highlight_count)
+    with_filters_params[:classrooms] = current_person.classrooms.map(&:id)
+    searcher = Spree::Search::Filter.new(with_filters_params)
+    @products = searcher.retrieve_products
+    @products = filter_rewards_by_classroom(@products)
+    if @products.present?
+      @products.order('random()').page(1).per(highlight_count)
+    else 
+      @products = []
+    end
+  end
+
+  def filter_rewards_by_classroom(products)
+    if current_person.is_a?(Student) && current_person.classrooms.present?
+      classrooms = current_person.classrooms.pluck(:id)
+      products.reject! do |product|
+        # Products that have no classrooms should not be rejected
+        next unless product.classrooms.any?
+        # If there is an intersection between the products classrooms and my classrooms, don't reject
+        (product.classrooms.pluck(:id) & classrooms).any? ? false : true
+      end
+      # To fix pagination we need an active record relation, not an array
+      # Why are you laughing?
+      products = Spree::Product.where(:id => products.map(&:id))
+    end
   end
 
   protected
@@ -128,13 +180,12 @@ class ApplicationController < ActionController::Base
   end
 
   def actual_subdomain
-    request.subdomain.split(".").first
+    request.subdomain(1).split(".").first
   end
   helper_method :actual_subdomain
 
   def not_at_home
-    return true if request.subdomain.empty?
-    first_subdomain = actual_subdomain
-    return first_subdomain != home_subdomain
+    return true if actual_subdomain.blank?
+    return actual_subdomain != home_subdomain
   end
 end

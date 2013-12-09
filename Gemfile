@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 ruby '2.0.0'
 
@@ -12,6 +12,9 @@ gem 'rake', '~> 10.1.0'
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
+gem 'exceptional'
+gem 'transaction_retry'
+gem 'newrelic_rpm'
 
 # for importing
 #gem 'mysql2'
@@ -31,6 +34,7 @@ gem 'cancan'
 gem 'devise'
 
 gem 'whenever', :require => false
+gem 'sidekiq'
 
 gem 'therubyracer'
 
@@ -52,6 +56,7 @@ gem 'high_voltage'
 
 # haml is a templating language we use extensively / exclusively on this project
 gem 'haml-rails', '~> 0.3.5'
+gem 'rdiscount'
 
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'
@@ -141,7 +146,7 @@ group :test do
   #gem 'thin'
   gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
-  gem 'minitest-reporters', '~> 0.8.0'
+  gem 'minitest-reporters'
   gem 'minitest-matchers', '~> 1.2.0'
   gem 'spinach', '~> 0.5.2'
   gem 'database_cleaner', '~> 0.8.0'
@@ -163,5 +168,8 @@ end
 
 gem "coffee-filter", '~> 0.1.3'
 
-#### Only here for staging deploymenbts ###
+#### Only here for staging deployments ###
 gem 'factory_girl_rails'
+
+gem 'sanitizing_bigdecimal'
+gem 'httparty'

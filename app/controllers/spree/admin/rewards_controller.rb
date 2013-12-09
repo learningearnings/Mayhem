@@ -5,7 +5,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   before_filter :subdomain_required
   after_filter :only => [:index ] { |f| maintain_page(params[:page] || 1) }
 
-
   def index
     if Spree::Config.searcher_class != Spree::Search::Filter
       Spree::Config.searcher_class = Spree::Search::Filter
@@ -33,7 +32,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
     @classrooms = @current_school.classrooms
-    @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill"]
+    @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill", "Auction Reward"]
     @purchased_by = ["LE", "Sponsor", "School", "Charity"]
     @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
     @grades = ["K", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -156,14 +155,13 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   end
 
   private
-
   # Users are required to access the application
   # using a subdomain
   def subdomain_required
-    return if current_user && !current_user.respond_to?(:person)
-    if current_user && (request.subdomain.empty? || request.subdomain != home_subdomain && 
-                        (!(current_user.person.is_a?(SchoolAdmin) && [home_subdomain, 'le'].include?(request.subdomain)))
-                        ) && home_host
+    return unless current_user
+    return if !current_user.respond_to?(:person)
+    return if current_user.person.is_a?(LeAdmin)
+    if not_at_home && home_host
       token = Devise.friendly_token
       current_user.authentication_token = token
       my_redirect_url = home_host   + "/store/admin/rewards/?auth_token=#{token}"
@@ -178,55 +176,19 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     "le"
   end
 
+  def not_at_home
+    return true if actual_subdomain.blank?
+    first_subdomain = actual_subdomain
+    return first_subdomain != home_subdomain
+  end
+
+  def actual_subdomain
+    request.subdomain(1).split(".").first
+  end
+  helper_method :actual_subdomain
+
   def home_host
-    return request.protocol + request.host_with_port unless current_user.person
-    if current_user && current_user.person
-      # TODO - figure out a better hostname naming scheme
-      subdomain = home_subdomain
-      if request.host.match /^#{subdomain}\./
-        host = request.protocol + request.host_with_port
-      else
-        if !request.subdomain.empty?
-          host = request.host.gsub /^#{request.subdomain}\./,''
-        else
-          host = request.host
-        end
-        subdomain = subdomain + '.' + host
-
-        # If this is a development environment, check to see if the
-        # hosts file is setup right
-
-        if Rails.env == 'development'
-          match_found = false
-          begin
-            subdomain_address = Addrinfo.getaddrinfo(subdomain,request.port)
-          rescue
-            subdomain_address = nil
-          end
-          original_address =  Addrinfo.getaddrinfo(request.host,request.port)
-          if subdomain_address
-            subdomain_address.each do |sa|
-              original_address.each do |oa|
-                if sa.ip_address == oa.ip_address
-                  match_found = true
-                  break
-                end
-              end
-            end
-          end
-          if !match_found
-            flash[:error] = ("Localhost(s) aren't configured correctly for development - use " + "<a href=\"http://lvh.me:3000\">lvh.me:3000</a>").html_safe
-            return nil
-          end
-        end
-        host = request.protocol + subdomain
-        if request.port && request.port != 80
-          host = host +':' + request.port.to_s
-        end
-      end
-    else
-      request.protocol + request.host_with_port
-    end
+    HomeHostFinder.new.host_for(home_subdomain, request)
   end
 
   def check_saved_page
@@ -261,7 +223,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     if @product.fulfillment_type == "Digitally Delivered Charity Certificate"
       "charity"
     else
-      "global" 
+      "global"
     end
   end
 

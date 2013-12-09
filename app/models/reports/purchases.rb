@@ -3,17 +3,23 @@ module Reports
     include DateFilterable
     include ActionView::Helpers
 
+    # Handle Kaminari
+    delegate :total_pages, :limit_value, :current_page, :to => :reward_deliveries
+
     attr_accessor :parameters
     def initialize params
       super
       @school = params[:school]
+      @current_page = params[:page]
       @parameters = Reports::Purchases::Params.new(params)
     end
 
     def execute!
       # get recent line items from the school
       reward_deliveries.each do |reward_delivery|
-        @data << generate_row(reward_delivery)
+        if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
+          @data << generate_row(reward_delivery)
+        end
       end
     end
 
@@ -46,6 +52,7 @@ module Reports
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
+      base_scope = base_scope.page(@current_page).per(200)
       base_scope
     end
 
@@ -54,15 +61,23 @@ module Reports
       when "Default"
         [:scoped]
       when "Teacher"
-        [:order, :from_id]
+        [:order, "from_id"]
+      when "Grade"
+        # I used people.grade in the following order statement because I wasn't sure
+        # how to get the name of the join rails used for to. In every test I did it was
+        # always people first, then froms_reward_deliveries for the from association
+        # Hope this doesn't bite us :/
+        [:order, "people.grade"]
       when "Student"
         [:order, :to_id]
-      when "Purchased"
-        [:order, :created_at]
+      when "Newest Purchases"
+        [:newest_orders]
+      when "Oldest Purchases"
+        [:oldest_orders]
       when "Reward"
         [:order, "spree_products.name"]
       when "Status"
-        [:order, :status]
+        [:order, "reward_deliveries.status"]
       end
     end
 
@@ -92,17 +107,26 @@ module Reports
     def generate_row(reward_delivery)
       person = reward_delivery.to
       deliverer = reward_delivery.from
+      classroom = person.classrooms.first
+      teacher   = classroom.try(:teachers).try(:first)
       Reports::Row[
-        delivery_teacher: deliverer,
-        student: [person, "(#{person.user.username})"].join(" "),
-        classroom: (person.classrooms.count > 0 ? person.classrooms.first.name : ""),
+        delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
+        student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
+        classroom: (person.classrooms.count > 0 ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : ""),
         grade: School::GRADE_NAMES[person.grade],
         purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
         reward: reward_delivery.reward.product.name,
+        quantity: reward_delivery.reward.quantity,
         status: reward_delivery.status.humanize,
         reward_delivery_id: reward_delivery.id,
         delivery_status: reward_delivery.status
       ]
+    end
+
+    def name_with_options(person, option = "Last, First")
+      name_array = [person.last_name, person.first_name]
+      name_array.reverse! if option == "First, Last"
+      option == "Last, First" || option == "" ? name_array.join(", ") : name_array.join(" ")
     end
 
     def headers
@@ -113,16 +137,18 @@ module Reports
         grade: "Grade",
         purchased: "Purchased",
         reward: "Reward",
+        quantity: "Quantity",
         status: "Status"
       }
     end
     class Params < Reports::ParamsBase
-      attr_accessor :date_filter, :reward_status_filter, :teachers_filter, :sort_by
+      attr_accessor :date_filter, :reward_status_filter, :teachers_filter, :students_name_option, :teachers_name_option, :sort_by
 
       def initialize options_in = {}
+        super
         options_in ||= {}
         options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
-        [:date_filter, :reward_status_filter, :teachers_filter, :sort_by].each do |iv|
+        [:date_filter, :reward_status_filter, :teachers_filter, :sort_by, :students_name_option, :teachers_name_option].each do |iv|
           default_method = (iv.to_s + "_default").to_sym
           default_value = nil
           default_value = send(default_method) if respond_to? default_method
@@ -130,6 +156,13 @@ module Reports
         end
       end
 
+      def student_name_options
+        ["Last, First", "First, Last"]
+      end
+
+      def teacher_name_options
+        ["Last, First", "First, Last"]
+      end
 
       def reward_status_filter_default
         "undelivered"
@@ -152,7 +185,7 @@ module Reports
       end
 
       def teachers_filter_options(school = nil)
-        school.teachers.collect do |t| 
+        school.teachers.order(:last_name, :first_name).collect do |t| 
           [t.name, t.id]
         end if school
       end
@@ -162,7 +195,7 @@ module Reports
       end
 
       def sort_by_options
-        ["Default", "Teacher", "Student", "Purchased", "Reward", "Status"]
+        ["Default", "Teacher", "Student", "Grade", "Newest Purchases","Oldest Purchases", "Reward", "Status"]
       end
 
       def date_filter_default

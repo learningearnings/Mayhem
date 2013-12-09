@@ -7,11 +7,10 @@
       %h4 Accounts
       %dl.balance
         %dt Checking Balance:
-        %dd= @student.checking_balance
+        %dd= number_with_precision(@student.checking_balance, precision: 2, delimiter: ',')
       %dl.balance
         %dt Savings Balance
-        %dd= @student.savings_balance
-
+        %dd= number_with_precision(@student.savings_balance, precision: 2, delimiter: ',')
 
   %h4= link_to "Back to Classroom", classroom_path(@classroom)
 
@@ -31,13 +30,16 @@
           = f.label :grade
           .select-grade
             = f.select :grade, School::GRADES
+          = f.label :gender
+          .select-gender
+            = f.select :gender, ['Male', 'Female'], include_blank: true
           = f.label :password
           = f.text_field :password
       = f.submit class: 'btn awesome-button'
 
   %br
 
-  - if @orders.any?
+  - if @orders && @orders.any?
     %table.table.table-bordered.table-striped.solid-background
       %thead
         %tr

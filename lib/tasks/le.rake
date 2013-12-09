@@ -36,4 +36,13 @@ namespace :le do
     Rake::Task['db:migrate'].invoke
     Rake::Task['db:seed'].invoke
   end
+
+  desc "Build enough codes so there are always 10_000 active codes"
+  task :build_otu_codes => :environment do
+    number_of_codes_to_make = 100000 - Code.active.count
+    puts "Building #{number_of_codes_to_make} codes"
+    number_of_codes_to_make.times do
+      Code.create
+    end
+  end
 end

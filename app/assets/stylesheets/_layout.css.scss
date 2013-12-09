@@ -572,6 +572,13 @@ html.resp, body.resp {
   color: #EB731C
 }
 
+.primary-nav {
+  .manage_students-selected, .manage_students:hover {
+    background-image: url(asset_path('classrooms_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
 .primary-nav .bank {
   color: #470bc1;
 }
@@ -2116,7 +2123,6 @@ dl.details {
   }
   .student-account-form {
     display: inline-block;
-    position: absolute;
     input {
       height: 35px;
     }
@@ -2127,4 +2133,16 @@ dl.details {
       width: 205px;
     }
   }
+}
+
+.auction_product a {
+  color: black;
+}
+
+.sponsor-list {
+  margin: -10px 0 0 0;
+}
+
+.welcome-sticky {
+  font-size: 68%;
 }

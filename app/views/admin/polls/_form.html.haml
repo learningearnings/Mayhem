@@ -24,7 +24,17 @@
   = f.label :active
   = f.check_box :active
   %br
+  = f.label :min_grade
+  = f.select :min_grade, options_for_select(School::GRADES), :include_blank => true
   %br
+  = f.label :max_grade
+  = f.select :max_grade, options_for_select(School::GRADES), :include_blank => true
+  %br
+  %br
+  = f.submit
+
+:javascript
+  $('button.add').on('click', addInput)
   = f.submit
 
 :javascript

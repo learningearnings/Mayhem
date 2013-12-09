@@ -1,7 +1,7 @@
 class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
-
   def index
-    @shipments = Spree::Order.where(:state => ['cart','transmitted','printed']).order('state desc')
+    shipped_to_school = Spree::ShippingMethod.find_by_name("Shipped To School")
+    @shipments = Spree::Order.where(:state => %w(cart transmitted printed complete), :shipping_method_id => [shipped_to_school.id]).order('state desc')
   end
 
   def print
@@ -22,7 +22,6 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
     end
     render :pdf => @order
   end
-
 
   def ship
     @order = Spree::Order.find_by_number(params[:order_number])
@@ -58,6 +57,7 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
 
     @order.create_shipment!
     shipment = @order.shipment
+    shipment.ready
     @order.restock_items!    # shipping below will pull them out again....
     redirect_to admin_le_shipments_path
     shipment.save
@@ -69,7 +69,6 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
     flash[:notice] = "Order #{@order.number} is marked as complete and shipped"
   end
 
-
   private
   def current_person
     current_user.person
@@ -78,7 +77,4 @@ class Spree::Admin::LeShipmentsController < Spree::Admin::BaseController
   def current_school
     ::School.find(session[:current_school_id])
   end
-
-
-
 end

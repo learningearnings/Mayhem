@@ -29,3 +29,10 @@
 @import 'resp_products';
 @import 'students';
 @import 'fonts';
+
+@media screen {
+  .onlyprint {
+    display: none;
+  }
+}
+

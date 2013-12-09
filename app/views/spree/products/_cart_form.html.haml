@@ -26,7 +26,7 @@
         #product-price
           %h6.product-section-title= t(:price)
           %div
-            %span.price.selling{ itemprop:"price" }= @product.price
+            %span.price.selling{ itemprop:"price" }= number_with_precision(@product.price, precision: 2, delimiter: ',')
 
         .add-to-cart
           - if (!@product.has_stock?)
