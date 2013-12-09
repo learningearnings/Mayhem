@@ -61,9 +61,13 @@ module Reports
       when "Default"
         [:scoped]
       when "Teacher"
-        [:order, :from_id]
+        [:order, "from_id"]
       when "Grade"
-        [:order_by_student_grade]
+        # I used people.grade in the following order statement because I wasn't sure
+        # how to get the name of the join rails used for to. In every test I did it was
+        # always people first, then froms_reward_deliveries for the from association
+        # Hope this doesn't bite us :/
+        [:order, "people.grade"]
       when "Student"
         [:order, :to_id]
       when "Newest Purchases"
@@ -73,7 +77,7 @@ module Reports
       when "Reward"
         [:order, "spree_products.name"]
       when "Status"
-        [:order, :status]
+        [:order, "reward_deliveries.status"]
       end
     end
 
