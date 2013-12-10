@@ -7,7 +7,7 @@
           Welcome to the LE experience!  LE is an easy and effective way for classroom teachers to motivate students with proven results.
           %br
           %br
-          .sponsor-list
+          .welcome-callout
             Don't forget to pick-up your rewards by Thursday at 4pm at the 
             %strong LE Store in Magnolia 4.
       - else
@@ -34,13 +34,16 @@
   .our-sponsors
     - if current_school.name == 'STI'
       = "STI thanks our sponsors for their support throughout our User Conference:"
-      %p= "Howard Technology Solution"
+      %br/
+      %br/
       .sponsor-list
-        %p= "infosnap"
+        %strong= "Howard Technology Solution"
       .sponsor-list
-        %p= "Schoolmessenger"
+        %strong= "infosnap"
       .sponsor-list
-        %p= "TSA"
+        %strong= "Schoolmessenger"
+      .sponsor-list
+        %strong= "TSA"
     - else
       = @our_sponsor.body.html_safe
     .our-sponsors-callout
