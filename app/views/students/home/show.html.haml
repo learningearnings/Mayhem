@@ -4,11 +4,12 @@
     .whats-new
       - if current_school.name == 'STI'
         .welcome-sticky
-          = "Welcome to the LE experience!  LE is an easy and effective way for classroom teachers to motivate students with proven results."
+          Welcome to the LE experience!  LE is an easy and effective way for classroom teachers to motivate students with proven results.
           %br
           %br
           .sponsor-list
-            = "Don't forget to pick-up your rewards by Thursday at 4pm at the **LE Store in Magnolia 4**."
+            Don't forget to pick-up your rewards by Thursday at 4pm at the 
+            %strong LE Store in Magnolia 4.
       - else
         = @whats_new.body.html_safe
     .featured-activity
