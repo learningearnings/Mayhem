@@ -92,7 +92,6 @@ gem "ckeditor", '3.7.3'
 gem 'pdfkit'
 
 gem 'thor','0.14.6'
-gem "sprockets-image_compressor", "~> 0.2.2"
 
 # Plutus is what we use to manage our General Ledgers throughout this and other apps
 gem 'plutus', :github => 'learningearnings/plutus'
@@ -119,6 +118,7 @@ group :assets do
   #gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git", :tag => "MayhemV1"
   gem "compass_twitter_bootstrap", :github => "learningearnings/compass-twitter-bootstrap"
   gem 'turbo-sprockets-rails3'
+  gem "sprockets-image_compressor", "~> 0.2.2"
 end
 
 # Use unicorn as the app server
