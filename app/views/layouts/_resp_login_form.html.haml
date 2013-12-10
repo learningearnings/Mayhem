@@ -6,12 +6,11 @@
   %label.log-in.select
     @
     = select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain ), :class => 'chzn-select'
-  = hidden_field_tag :timezone, nil, :id => 'timezone'
   %button.btn.login-button
   .resp-forgot-password
     = link_to "Forgot your password?", spree.new_user_password_path('user')
 
+//$('#timezone').set_timezone(); 
 :coffeescript
   ($ "document").ready ->
     $(".chzn-select").chosen();
-    //$('#timezone').set_timezone(); 

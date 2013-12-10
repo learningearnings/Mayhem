@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131120021809) do
+ActiveRecord::Schema.define(:version => 20131206195623) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -165,6 +165,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
   end
+
+  add_index "codes", ["active"], :name => "index_codes_on_active"
 
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
@@ -392,6 +394,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
   end
+
+  add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
 
   create_table "otu_transaction_links", :force => true do |t|
     t.integer  "otu_code_id"

@@ -7,7 +7,7 @@ class Student < Person
   has_many :otu_codes
   has_one :locker, foreign_key: :person_id
 
-  attr_accessible :username, :password, :password_confirmation, :email
+  attr_accessor :username, :password, :password_confirmation
 
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
@@ -17,6 +17,8 @@ class Student < Person
     grade_index = School::GRADES.index(grade_string)
     where(grade: grade_index)
   }
+
+  scope :for_gender, lambda { |gender| where(:gender => gender) }
 
   before_create :set_status_to_active
   after_create :create_locker
@@ -124,16 +126,31 @@ class Student < Person
     hold_account     || Plutus::Asset.create(name: hold_account_name)
   end
 
+  def ensure_new_user
+    return if self.user.present? && self.user.username.present?
+    if username && password
+      self.user = Spree::User.new(:username => username, :password => password, :password_confirmation => password_confirmation)
+    else
+      errors.add(:user, "User needs a username and password.") and return
+    end
+    unless self.user.valid?
+      errors.add(:user, "User is invalid.") and return
+    end
+  end
+
   def create_user
     unless self.user
       if username.present?
-        user = Spree::User.create(:username => username, :password => password, :password_confirmation => password_confirmation)
+        user = user = Spree::User.create(:username => username, :password => password, :password_confirmation => password_confirmation)
       else
-        user = Spree::User.create(:username => "student#{self.id}", :password => 'test123', :password_confirmation => 'test123')
+        user = user = Spree::User.create(:username => "student#{self.id}", :password => 'test123', :password_confirmation => 'test123')
       end
-      user.person_id = self.id
-      user.save
+    else
+      user = self.user
+      user.update_attributes(:username => username, :password => password, :password_confirmation => password_confirmation)
     end
+    user.person_id = self.id
+    user.save
   end
 
   def check_coppa

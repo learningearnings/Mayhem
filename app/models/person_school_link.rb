@@ -20,7 +20,7 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :reward_distributors
 
   attr_accessible :person_id, :school_id, :status, :person, :school
-  validates_presence_of :person, :school
+  validates_presence_of :person_id, :school_id
   validate :validate_unique_with_status
   #validate :email_taken?
   validate :username_taken?
@@ -69,25 +69,26 @@ class PersonSchoolLink < ActiveRecord::Base
   end
 
   ################### Validations ########################
-  #def email_taken?
-  #  if person.email.present?
-  #    if school.teachers.with_email(person.email).present?
-  #      errors.add(:base, "Email already assigned for this school.")
-  #    end
-  #    if school.students.with_email(person.email).present?
-  #      errors.add(:base, "Email already assigned for this school.")
-  #    end
-  #  else
-  #    return false
-  #  end
-  #end
+  def email_taken?
+    errors.add(:status, "Person must be present") and return unless person && person.user.email
+    return if status == "inactive"
+    if person.user.email.present? && !person.is_a?(Student)
+      if school.teachers.with_email(person.user.email).present?
+        errors.add(:base, "Email already assigned for this school.")
+      end
+    else
+      return false
+    end
+  end
 
   def username_taken?
-    if school.teachers.with_username(person.username).present?
-      errors.add(:status, "Username already assigned for this school.")
+    errors.add(:status, "Person must be present") and return unless person && person.user.username
+    return if status == "inactive"
+    if school.teachers.with_username(person.user.username).present?
+      errors.add(:status, "Username already assigned for this school.") and return
     end
-    if school.students.with_username(person.username).present?
-      errors.add(:status, "Username already assigned for this school.")
+    if school.students.with_username(person.user.username).present?
+      errors.add(:status, "Username already assigned for this school.") and return
     end
   end
 
