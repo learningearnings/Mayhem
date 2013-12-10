@@ -32,13 +32,14 @@
                 %th Refund
             %tbody
               - @line_items.each do |line_item|
-                %tr
-                  %td= RewardDelivery.find_by_reward_id(line_item.id).to.name
-                  %td= line_item.quantity
-                  - if RewardDelivery.find_by_reward_id(line_item.id).status != 'refunded'
-                    %td= link_to 'Refund', teachers_refund_teacher_reward_path(RewardDelivery.find_by_reward_id(line_item.id).id)
-                  - else
-                    %td
+                - if reward_delivery = RewardDelivery.find_by_reward_id(line_item.id)
+                  %tr
+                    %td= reward_delivery.to.name
+                    %td= line_item.quantity
+                    - if reward_delivery.status != 'refunded'
+                      %td= link_to 'Refund', teachers_refund_teacher_reward_path(reward_delivery.id)
+                    - else
+                      %td
 
             = paginate @line_items
 
