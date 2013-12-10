@@ -117,6 +117,7 @@ group :assets do
   #gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git", :tag => "MayhemV1"
   gem "compass_twitter_bootstrap", :github => "learningearnings/compass-twitter-bootstrap"
   gem 'turbo-sprockets-rails3'
+  gem 'sprockets-image_compressor'
 end
 
 # Use unicorn as the app server
