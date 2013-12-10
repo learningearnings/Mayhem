@@ -36,7 +36,7 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
           end
-          f.input :username, :required => true
+          f.input :username, :required => true, :input_html => { :value => f.object.user.username }
           if !f.object.is_a?(Student)
             f.input :email
           end
