@@ -21,11 +21,7 @@ class Person < ActiveRecord::Base
   has_many :plutus_transactions, :through => :plutus_amounts, :class_name => 'Plutus::Transaction', :source => :transaction
   has_many :allperson_school_links, :class_name => 'PersonSchoolLink'
   has_many :allschools, :class_name => 'School', :through => :allperson_school_links, :order => 'id desc', :source => :school
-=begin
-  has_one  :school, :through => :person_school_links, :order => "#{PersonSchoolLink.table_name}.created_at desc,#{PersonSchoolLink.table_name}.id desc"
-=end
   has_many :person_school_classroom_links
-#  has_many :buck_batches, :through => :person_buck_batch_links
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true, :order => 'created_at desc, id desc'
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
@@ -43,6 +39,14 @@ class Person < ActiveRecord::Base
 
   has_many :votes
 
+  accepts_nested_attributes_for :user
+
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
+  validates_presence_of :first_name, :last_name
+
+  delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
+
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
     joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]])
@@ -53,19 +57,6 @@ class Person < ActiveRecord::Base
   scope :with_transactions_since, lambda { |startdate| with_transactions_between(startdate,1.second.from_now) }
   scope :with_username, lambda{|username| joins(:spree_user).where("spree_users.username = ?", username) }
   scope :with_email,    lambda{|email| joins(:spree_user).where("spree_users.email = ?", email) }
-
-  # use the above like this (from rails c)
-  # 1.9.3p327 :029 > sch = School.find(6)
-  #   School Load (0.2ms)  SELECT "schools".* FROM "schools" WHERE "schools"."id" = $1 LIMIT 1  [["id", 6]]
-  #  => #<School id: 6, name: "Caloosa Elementary", school_type_id: 1, min_grade: 0, max_grade: 12, school_phone: "239-574-3113", school_mail_to: "", logo_uid: nil, logo_name: nil, mascot_name: nil, school_demo: false, status: "active", timezone: "America/New_York", gmt_offset: #<BigDecimal:9c349f8,'-0.5E1',9(18)>, distribution_model: "Centralized", ad_profile: 821, created_at: "2010-07-01 05:00:00", updated_at: "2012-12-12 20:32:06", store_subdomain: "al6", legacy_school_id: 821> 
-  # 1.9.3p327 :030 > student = sch.students.with_transactions_since(1.year.ago).group(:people => :id).select("people.*, sum(case when plutus_amounts.type = 'Plutus::DebitAmount' then plutus_amounts.amount else null end) - sum(case when plutus_amounts.type = 'Plutus::CreditAmount' then plutus_amounts.amount else null end) as activity,count(distinct plutus_transactions.id) as num_transactions").first
-  #   Student Load (2.5ms)  SELECT people.*, sum(case when plutus_amounts.type = 'Plutus::DebitAmount' then plutus_amounts.amount else null end) - sum(case when plutus_amounts.type = 'Plutus::CreditAmount' then plutus_amounts.amount else null end) as activity,count(distinct plutus_transactions.id) as num_transactions FROM "people" INNER JOIN "person_school_links" ON "person_school_links"."person_id" = "people"."id" INNER JOIN "person_account_links" ON "person_account_links"."person_school_link_id" = "person_school_links"."id" INNER JOIN "plutus_accounts" ON "plutus_accounts"."id" = "person_account_links"."plutus_account_id" INNER JOIN "plutus_amounts" ON "plutus_amounts"."account_id" = "plutus_accounts"."id" INNER JOIN "plutus_transactions" ON "plutus_transactions"."id" = "plutus_amounts"."transaction_id" WHERE "people"."type" IN ('Student') AND "person_school_links"."school_id" = 6 AND "person_school_links"."status" = 'active' AND "people"."status" = 'active' AND "plutus_transactions"."created_at" BETWEEN '2011-12-14 15:42:02.165571' AND '2012-12-14 15:42:03.165881' AND "person_account_links"."is_main_account" = 't' GROUP BY "people"."id" LIMIT 1
-  #  => #<Student id: 1191, first_name: "Morgan", last_name: "L", dob: nil, grade: 5, created_at: "2010-07-01 05:00:00", updated_at: "2012-12-12 20:32:10", type: "Student", status: "active", legacy_user_id: 168707, gender: "Female", salutation: nil, recovery_password: "i82much"> 
-  # 1.9.3p327 :031 > student.activity
-  #  => "1.0000000000" 
-  # 1.9.3p327 :032 > student.num_transactions
-  #  => "3" 
-  # 1.9.3p327 :033 > 
 
   before_save :ensure_spree_user
   after_destroy :delete_user
@@ -100,16 +91,8 @@ class Person < ActiveRecord::Base
     School.joins(:person_food_school_links).where(person_food_school_links: { id: person_food_school_links.map(&:id) })
   end
 
-  accepts_nested_attributes_for :user
-
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
-  validates_presence_of :first_name, :last_name
-
-  delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
-
   # Relationships
-  
+
   def ensure_spree_user
     self.user = Spree::User.new unless user
   end
