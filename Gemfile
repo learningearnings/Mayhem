@@ -14,8 +14,7 @@ gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 gem 'exceptional'
 gem 'transaction_retry'
-gem 'tzinfo'
-gem 'tzinfo-data'
+gem 'newrelic_rpm'
 
 # for importing
 #gem 'mysql2'
@@ -119,6 +118,7 @@ group :assets do
   #gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git", :tag => "MayhemV1"
   gem "compass_twitter_bootstrap", :github => "learningearnings/compass-twitter-bootstrap"
   gem 'turbo-sprockets-rails3'
+  gem "sprockets-image_compressor", "~> 0.2.2"
 end
 
 # Use unicorn as the app server

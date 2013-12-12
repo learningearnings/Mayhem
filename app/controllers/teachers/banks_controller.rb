@@ -17,7 +17,7 @@ module Teachers
     end
 
     def show
-      @buck_batches = current_person.buck_batches(current_school)
+      #@buck_batches = current_person.buck_batches(current_school)
     end
 
     def print_batch
