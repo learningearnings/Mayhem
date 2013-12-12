@@ -36,21 +36,23 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
           end
-          f.input :username, :required => true
-          if !f.object.is_a?(Student)
-            f.input :email
+          if f.object.new?
+            f.input :username, :required => true
+            if !f.object.is_a?(Student)
+              f.input :email
+            end
+            f.input :password
+            f.input :password_confirmation
+          else
+            f.inputs :for => [:user, f.object.user] do |u|
+              u.input :username, :required => true
+              if !f.object.is_a?(Student)
+                u.input :email
+              end
+              u.input :password
+              u.input :password_confirmation
+            end
           end
-          f.input :password
-          f.input :password_confirmation
-          
-          #f.inputs :for => [:user, f.object.user || Spree::User.new] do |u|
-          #  u.input :username, :required => true
-          #  if !f.object.is_a?(Student)
-          #    u.input :email
-          #  end
-          #  u.input :password
-          #  u.input :password_confirmation
-          #end
         end
         f.actions
       end

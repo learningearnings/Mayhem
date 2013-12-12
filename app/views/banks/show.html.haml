@@ -10,6 +10,7 @@
       %dl.balance
         %dt Savings Balance
         %dd= number_with_precision(current_person.savings_balance, precision: 2, delimiter: ',')
+      = link_to "Enter Codes", "#enter-codes-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
