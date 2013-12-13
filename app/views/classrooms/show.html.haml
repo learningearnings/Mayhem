@@ -43,7 +43,7 @@
         = f.text_field :username
       .span4
         = f.label :grade
-        = f.select :grade, School::GRADES
+        = f.select :grade, (current_school.min_grade..current_school.max_grade)
         = f.label :password
         = f.text_field :password
 
