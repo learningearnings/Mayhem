@@ -14,6 +14,7 @@ gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 gem 'exceptional'
 gem 'newrelic_rpm'
+gem 'transaction_retry'
 
 # for importing
 #gem 'mysql2'
