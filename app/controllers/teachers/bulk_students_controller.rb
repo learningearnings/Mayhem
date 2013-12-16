@@ -14,7 +14,7 @@ module Teachers
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
       #@batch_student_updater = BatchStudentUpdater.new(params["students"], current_person.schools.first)
-      StudentUpdaterWorker.perform_async(params["students"], current_person.schools.first, updater_method)
+      StudentUpdaterWorker.perform_async(current_person, params["students"], current_person.schools.first, updater_method)
       #if @batch_student_updater.send(updater_method)
         flash[:notice] = "Bulk process is running."
         redirect_to action: :show
