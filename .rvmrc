@@ -1,1 +1,1 @@
-rvm use 2.0.0p353@learning_earnings --create
+rvm use 2.0.0-p353@learning_earnings --create
