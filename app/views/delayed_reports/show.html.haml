@@ -1,0 +1,52 @@
+.pending
+  Your report is not completed yet. Once it is completed it will be displayed here.
+%table.delayed_report_table
+  %thead
+  %tbody
+
+:coffeescript
+  loadReportJSON = ->
+    $.get window.location + ".json", (data) ->
+      handleReportJSON(data)
+
+  handleReportJSON = (data) ->
+    switch data.state
+      when "pending"
+        pendingReport()
+      when "processing"
+        pendingReport()
+      when "completed"
+        showReport(data)
+
+
+  pendingReport = ->
+    $('.pending').show()
+    $('.delayed_report_table').hide()
+    setTimeout ->
+      loadReportJSON()
+    , 1000
+
+  showReport = (data) ->
+    $('.pending').hide()
+    $('.delayed_report_table').show()
+
+    keys = Object.keys(data.report_data[0])
+    thead = $('.delayed_report_table > thead')
+    tbody = $('.delayed_report_table > tbody')
+
+    tr = $('<tr>')
+    $.each(keys, (index, value) -> 
+      tr.append("<th>" + value + "</th>")
+    )
+    thead.append(tr)
+
+    $.each data.report_data, (row_index, row) ->
+      tr = $('<tr>')
+      $.each keys, (index, key_name) ->
+        td = $('<td>' + row[key_name] + '</td>')
+        tr.append(td)
+      tbody.append(tr)
+
+    $('.delayed_report_table').dataTable()
+
+  loadReportJSON()
