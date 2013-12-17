@@ -27,8 +27,7 @@ class UserMailer < ActionMailer::Base
   end
 
   def bulk_update_notifier(teacher)
-    @teacher = teacher
-    mail(:to => teacher.email, :subject => "Bulk student update complete.")
+    mail(:to => teacher, :subject => "Bulk student update complete.")
   end
 
 end

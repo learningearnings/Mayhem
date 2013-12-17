@@ -14,6 +14,7 @@ class BatchStudentUpdater
     ActiveRecord::Base.transaction do
       responses = []
       @student_params.each do |student_param|
+        next unless student_param["id"].present?
         classroom_id = student_param.delete("classroom_id")
         student = @student_class.find(student_param.delete("id"))
         user_param = student_param["user"]
@@ -25,8 +26,7 @@ class BatchStudentUpdater
         responses << student.update_attributes(first_name: student_param["first_name"],
                                               last_name: student_param["last_name"],
                                               gender: student_param["gender"],
-                                              grade: student_param["grade"],
-                                              last_name: student_param["last_name"])
+                                              grade: student_param["grade"])
         responses << student.user.update_attributes(username: user_param["username"],
                                                     password: user_param["password"],
                                                     password_confirmation: user_param["password"])

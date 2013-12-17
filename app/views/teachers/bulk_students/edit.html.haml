@@ -43,7 +43,7 @@
               %th
           %tbody.students_body
             - @students.each do |student|
-              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.username, password: '', grade: student.grade, gender: student.gender, id: student.id }
+              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: '', grade: student.grade, gender: student.gender, id: student.id }
 
 :coffeescript
   $('#select_all').on 'click', ->
