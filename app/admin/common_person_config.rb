@@ -36,16 +36,15 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
           end
-
-          #f.input :username
-          #if !f.object.is_a?(Student)
-          #  f.input :email
-          #end
-          #f.inputs :password,
-          #  :password_confirmation,
-          #  :name => "Spree::User",
-          #  :required => true,
-          f.inputs :for => [:user, f.object.user || Spree::User.new] do |u|
+          if f.object.new?
+            f.input :username, :required => true
+            if !f.object.is_a?(Student)
+              f.input :email
+            end
+            f.input :password
+            f.input :password_confirmation
+          else
+            f.inputs :for => [:user, f.object.user] do |u|
               u.input :username, :required => true
               if !f.object.is_a?(Student)
                 u.input :email
@@ -53,6 +52,7 @@ module CommonPersonConfig
               u.input :password
               u.input :password_confirmation
             end
+          end
         end
         f.actions
       end
@@ -101,10 +101,12 @@ module CommonPersonConfig
         elsif person.schools.include?(school)
           flash[:error] = "#{person.name} is already associated with #{school.name}"
         else
-          if PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: person.id, school_id: school.id).valid?
+          @psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: person.id, school_id: school.id)
+          if @psl.valid?
             flash[:notice] = "Associated #{person.name} with #{school.name}"
           else
-            flash[:error] = "Username already associated with this school."
+            flash[:error] = @psl.errors.messages[:status]
+            #flash[:error] = "Username already associated with this school."
           end
         end
         redirect_to :action => :show
@@ -119,7 +121,8 @@ module CommonPersonConfig
         else
           flash[:error] = "Could NOT remove #{person.name} from #{school.name}"
         end
-        redirect_to admin_person_path(person)
+        #redirect_to admin_person_path(person)
+        redirect_to :action => :show and return
       end
 
       index do

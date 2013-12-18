@@ -4,6 +4,7 @@ class StiController < ApplicationController
   helper_method :current_school, :current_person
   skip_around_filter :track_interaction
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
+  http_basic_authenticate_with name: "LearningEarnings", password: "Password", except: :give_credits
 
   def give_credits
     if @client_response["StaffId"].blank? || current_person.nil?
@@ -11,6 +12,23 @@ class StiController < ApplicationController
     else
       load_students
       render :layout => false
+    end
+  end
+
+  def sync
+    if params[:district_guid].blank? || params[:api_url].blank? || params[:sync_key].blank?
+      render :json => {:status => :failure, :message => "You must provide a district_guid, api_url, and sync_key"} and return
+    end
+    @sync = StiSyncToken.where(district_guid: params[:district_guid]).first
+    if @sync
+      if @sync.api_url == params[:api_url]
+        render :json => {:status => :success, :message => "Your information matched our records"} and return
+      else
+        render :json => {:status => :failure, :message => "The api url doesn't match that district_guid record"} and return
+      end
+    else
+      StiSyncToken.create(district_guid: params[:district_guid], api_url: params[:api_url], sync_key: params[:sync_key])
+      render :json => {:status => :success, :message => "The Sync record was created"} and return
     end
   end
 
