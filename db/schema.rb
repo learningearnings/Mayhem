@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131218143837) do
+ActiveRecord::Schema.define(:version => 20131218155353) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -1257,6 +1257,8 @@ ActiveRecord::Schema.define(:version => 20131218143837) do
     t.string   "sync_key"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "username"
+    t.string   "password"
   end
 
   create_table "stickers", :force => true do |t|
