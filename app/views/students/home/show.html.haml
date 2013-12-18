@@ -2,23 +2,50 @@
   .bacon-small
   .corkboard
     .whats-new
-      = @whats_new.body.html_safe
+      - if current_school.name == 'STI'
+        .welcome-sticky
+          Welcome to the LE experience!  LE is an easy and effective way for classroom teachers to motivate students with proven results.
+          %br
+          %br
+          .welcome-callout
+            Don't forget to pick-up your rewards by Thursday at 4pm at the 
+            %strong LE Store in Magnolia 4.
+      - else
+        = @whats_new.body.html_safe
     .featured-activity
-      = @featured_activity.body.html_safe
+      - if current_school.name == 'STI'
+        = "Banquet is at 7pm on Thursday.  You have been invited to dinner!  Bring your sleuthing skills to uncover the crime during a night of mystery solving."
+      - else
+        = @featured_activity.body.html_safe
     .featured-activity-callout
       = @featured_activity_callout.body.html_safe
   .honor-roll
     .honor-roll-content
-      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%H")) do
+      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%p")) do
+        - honor_roll = HonorRoll.new(current_school, 7.days.ago.beginning_of_day, Date.today.end_of_day)
+        - charity_donations = honor_roll.charity_purchases_per_person(3)
         %h4 Most Credits Donated to Charity
         %ol
-          - @charity_donations.each do |person, amount|
+          - charity_donations.each do |person, amount|
             %li #{person} [#{number_to_bucks amount}]
 
 .student-logged-in-sidebar
   = render_reward_highlights(@products[0..1])
   .our-sponsors
-    = @our_sponsor.body.html_safe
+    - if current_school.name == 'STI'
+      = "STI thanks our sponsors for their support throughout our User Conference:"
+      %br/
+      %br/
+      .sponsor-list
+        %strong= "Howard Technology Solution"
+      .sponsor-list
+        %strong= "infosnap"
+      .sponsor-list
+        %strong= "Schoolmessenger"
+      .sponsor-list
+        %strong= "TSA"
+    - else
+      = @our_sponsor.body.html_safe
     .our-sponsors-callout
       .our-sponsors-callout-content
         = @our_sponsor_callout.body.html_safe

@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filter_rewards_by_classroom(products)
-    if current_person.is_a?(Student) && current_person.classrooms.present?
+    if current_person.is_a?(Student)
       classrooms = current_person.classrooms.pluck(:id)
       products.reject! do |product|
         # Products that have no classrooms should not be rejected
@@ -171,6 +171,8 @@ class ApplicationController < ActionController::Base
       # To fix pagination we need an active record relation, not an array
       # Why are you laughing?
       products = Spree::Product.where(:id => products.map(&:id))
+    else
+      products
     end
   end
 
