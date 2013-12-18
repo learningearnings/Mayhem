@@ -3,12 +3,16 @@ class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
   http_basic_authenticate_with name: "LearningEarnings", password: "Password", except: :give_credits
+  skip_around_filter :track_interaction
+  before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    sti_client = STI::Client.new
-    sti_client.session_token = params["sti_session_variable"]
-    load_students
-    render :layout => false
+    if @client_response["StaffId"].blank? || current_person.nil?
+      render partial: "teacher_not_found"
+    else
+      load_students
+      render :layout => false
+    end
   end
 
   def sync
@@ -34,7 +38,7 @@ class StiController < ApplicationController
   end
 
   def current_person
-    Teacher.find(178)
+    Teacher.where(sti_id: @client_response["StaffId"]).first
   end
 
   def current_school
@@ -53,5 +57,11 @@ class StiController < ApplicationController
 
   def person
     current_person
+  end
+
+  def handle_sti_token
+    sti_client = STI::Client.new
+    sti_client.session_token = params["sti_session_variable"]
+    @client_response = sti_client.session_information.parsed_response
   end
 end

@@ -24,8 +24,6 @@
   %body.resp
     .resp-page-content-container
       .resp-head
-        .messages-container
-          = render "layouts/flashes"
         %br/
         %br/
         %br/
@@ -41,27 +39,4 @@
                 .bank_content
 
                 .distribute-credits
-                  %h4 Issue Electronic Credits
-                  %p.credits-available
-                    %strong
-                      Teacher:
-                      = current_person.name
-                    %br/
-                    %strong
-                      Credits Available:
-                    = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-                  = form_for OtuCode.new, :url => sti_create_ebucks_for_students_path(params), :method => :post do |f|
-                    #classroom_distribution
-                      %table.table
-                        %thead
-                          %tr
-                            %th First Name
-                            %th Last Name
-                            %th Credits
-                        %tbody
-                          - @students.each do |student|
-                            %tr
-                              %td= student.first_name
-                              %td= student.last_name
-                              %td= text_field_tag "credits[#{student.id}]", nil, class: "classroom_student_points"
-                      %input.awesome-button{type: "submit", name: "commit", value: "Send These Credits"}
+                  %h4 We could not find the teacher you requested
