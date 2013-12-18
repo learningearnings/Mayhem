@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131211220154) do
+ActiveRecord::Schema.define(:version => 20131218143837) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -1249,6 +1249,14 @@ ActiveRecord::Schema.define(:version => 20131211220154) do
     t.string   "abbr"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "sti_sync_tokens", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "api_url"
+    t.string   "sync_key"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "stickers", :force => true do |t|
