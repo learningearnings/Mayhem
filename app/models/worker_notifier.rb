@@ -8,6 +8,6 @@ class WorkerNotifier
 
   def call
     @block.send(@action.to_sym)
-    UserMailer.bulk_update_notifier(@teacher)
+    UserMailer.bulk_update_notifier(@teacher).deliver
   end
 end
