@@ -7,7 +7,7 @@ class DelayedReportsController < LoggedInController
     @report = current_person.delayed_reports.find(params[:id])
     respond_to do |format|
       format.html
-      format.json { render :json => {state: "completed", report_data: [{:some_key => :some_value, :some_other_key => :value_1}, {:some_key => :some_other_value, :some_other_key => :value_2}]}}
+      format.json { render :json => {state: @report.state, report_data: JSON.parse(@report.report_data) }}
     end
   end
 end

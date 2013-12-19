@@ -10,12 +10,14 @@
       handleReportJSON(data)
 
   handleReportJSON = (data) ->
+    console.log(data.state)
+    console.log(data)
     switch data.state
       when "pending"
         pendingReport()
       when "processing"
         pendingReport()
-      when "completed"
+      when "complete"
         showReport(data)
 
 
