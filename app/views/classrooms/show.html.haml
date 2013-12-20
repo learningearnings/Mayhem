@@ -20,7 +20,7 @@
     - @classroom.students.order("last_name, first_name").each do |student|
       %tr
         %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td= link_to student.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
+        %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
         %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
 = form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|

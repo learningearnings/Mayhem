@@ -23,8 +23,15 @@ module Teachers
 
     def update_student
       @classroom = Classroom.find(params[:classroom_id])
-      @student = Student.find(params[:student][:id])
+      @student = Student.find(params[:student].delete(:id))
+      password = params[:student].delete(:password)
       if @student.update_attributes(params[:student])
+        unless password.blank?
+          user = @student.user
+          user.password = password
+          user.password_confirmation = password
+          user.save
+        end
         flash[:notice] = 'Student updated!'
         redirect_to classroom_path(@classroom)
       else

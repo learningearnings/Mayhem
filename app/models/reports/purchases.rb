@@ -69,7 +69,7 @@ module Reports
         # Hope this doesn't bite us :/
         [:order, "people.grade"]
       when "Student"
-        [:order, :to_id]
+        [:order_by_student_last_name]
       when "Newest Purchases"
         [:newest_orders]
       when "Oldest Purchases"
