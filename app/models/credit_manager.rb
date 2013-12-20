@@ -105,7 +105,7 @@ class CreditManager
 
   def transfer_credits_for_local_purchase student, teacher, amount, document = nil
     return false if student.balance < amount
-    transfer_credits "Reward Purchase", student.checking_account, teacher.main_account(student.school), amount, document
+    transfer_credits "Reward Purchase", student.checking_account, main_account, amount, document
   end
 
   def transfer_credits_for_reward_purchase student, amount, document = nil
