@@ -59,18 +59,24 @@ module Teachers
     # POST /teachers/rewards
     # POST /teachers/rewards.json
     def create
-      @teachers_reward = Teachers::Reward.new(params[:teachers_reward])
-      @teachers_reward.teacher = current_person
-      @teachers_reward.school = current_school
+      unless params[:reward_scope] == 'specific_classrooms' && !params[:teachers_reward][:classrooms].present?
+        @teachers_reward = Teachers::Reward.new(params[:teachers_reward])
+        @teachers_reward.teacher = current_person
+        @teachers_reward.school = current_school
 
-      respond_to do |format|
-        if @teachers_reward.save
-          format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully created." }
-          format.json { render json: @teachers_reward, status: :created, location: @teachers_reward }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
+        respond_to do |format|
+          if @teachers_reward.save
+            format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully created." }
+            format.json { render json: @teachers_reward, status: :created, location: @teachers_reward }
+          else
+            format.html { render action: "new" }
+            format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
+          end
         end
+      else
+        @teachers_reward = Teachers::Reward.new
+        flash[:error] = 'You did not select a classroom for the reward. Hit the back button and try again.'
+        render :new
       end
     end
 
