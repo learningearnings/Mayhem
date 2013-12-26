@@ -1,6 +1,7 @@
 %h2 Classroom: #{@classroom.name}
 %ul.action_buttons
   %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
+  %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
 
 %h3 Select Students to add to #{@classroom.name}
 
