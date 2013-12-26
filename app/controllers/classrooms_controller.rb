@@ -16,6 +16,21 @@ class ClassroomsController < LoggedInController
     end
   end
 
+  def edit
+    @classroom = Classroom.find(params[:id])
+  end
+
+  def update
+    @classroom = Classroom.find(params[:id])
+    if @classroom.update_attributes(params[:classroom])
+      redirect_to @classroom
+      flash[:notice] = 'Classroom was updated.'
+    else
+      render :new
+      flash[:error] = 'There was a problem updating the classroom.'
+    end
+  end
+
   def remove_student
     @student = Student.find(params[:student])
     @school = current_school
