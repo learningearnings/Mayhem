@@ -1,12 +1,13 @@
 class Teacher < Person
   #has_many :schools, :through => :person_school_links
   attr_accessor :username, :password, :password_confirmation, :email
-  attr_accessible :gender, :email, :username
-  attr_accessible :status, :can_distribute_credits, :as => :admin
+  attr_accessible :gender, :email, :username, :game_challengeable
+  attr_accessible :status, :can_distribute_credits, :game_challengeable, :as => :admin
   validates_presence_of :grade
   after_create :create_user
 
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
+  scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
 
   has_many :reward_distributors, :through => :person_school_links
 

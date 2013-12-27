@@ -12,6 +12,11 @@ module Teachers
       @messages.map{|x| x.read!}
     end
 
+    def games_messages
+      @messages = @received_messages.from_games.page params[:page]
+      @messages.map{|x| x.read!}
+    end
+
     def system_messages
       @messages = @received_messages.from_system.page params[:page]
       @messages.map{|x| x.read!}
