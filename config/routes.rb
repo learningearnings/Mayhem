@@ -118,7 +118,9 @@ Leror::Application.routes.draw do
   match '/reports/refund' => 'reports/purchases#refund_purchase', as: 'refund_purchase'
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
   match '/reports/activity' => 'reports/activity#show', as: 'activity_report'
-  match '/reports/student_credit_history' => 'reports/student_credit_history#show', as: 'student_credit_history_report'
+
+  match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
+  get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'
 
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'

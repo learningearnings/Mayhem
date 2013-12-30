@@ -28,15 +28,24 @@
         = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
         = submit_tag 'Go!'
 
-    = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
-    .report
-      %table.table.table-bordered.table-striped.solid-background
-        %thead
-          %tr
-            - report.header_strings.each do |header|
-              %th= header
-        %tbody
-          - report.data_rows do |row|
+    - if report.state == "complete"
+      = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+      .report
+        %table.table.table-bordered.table-striped.solid-background
+          %thead
             %tr
-              - report.header_keys.each do |key|
-                %td= row.send(key)
+              %th Student
+              %th Username
+              %th Checking Balance
+              %th Savings Balance
+          %tbody
+            - report_data = JSON.parse(report.report_data)
+            - report_data.each do |row|
+              %tr
+                %td= row["student"]
+                %td= row["username"]
+                %td= row["checking_balance"]
+                %td= row["savings_balance"]
+    - else 
+      %h2 Your report is currently processing, it will show up here when it is completed.
+      %meta{"http-equiv" => "refresh", :content => "2"}
