@@ -2,8 +2,7 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def new
-      params[:page] ||= 1
-      report = Reports::Purchases.new params.merge(school: current_school, :page => params[:page])
+      report = Reports::Purchases.new params.merge(school: current_school)
       delayed_report = DelayedReport.create(person_id: current_person.id)
       DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
       redirect_to purchases_report_show_path(delayed_report.id)
