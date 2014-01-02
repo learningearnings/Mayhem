@@ -47,7 +47,11 @@ class Auction < ActiveRecord::Base
   end
 
   def to_s
-    "Auction for #{product.name}"
+    if product.present?
+      "Auction for #{product.name}"
+    else
+      "No Product"
+    end
   end
 
   def active?
