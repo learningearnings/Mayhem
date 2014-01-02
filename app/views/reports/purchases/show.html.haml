@@ -2,66 +2,77 @@
   .primary-content-fw
     %h2 Purchases Report
 
-    = simple_form_for report.parameters,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
-      .form-sections
-        .filter
-          %h4 Filter By
-          .filter-dates
-            = f.input :date_filter, :label => "Date Range", :collection => report.parameters.date_filter_options
-          .filter-rewards
-            = f.input :reward_status_filter,:label => "Show Rewards", :collection => report.parameters.reward_status_filter_options
-          .filter-teachers
-            = f.input :teachers_filter, :label => "Show Teachers", :collection => report.parameters.teachers_filter_options(current_school)
-        .sorting
-          %h4 Options
-          .filter-dates
-            = f.input :students_name_option, :label => "Student Name Options", :collection => report.parameters.student_name_options, :include_blank => false
-          .filter-dates
-            = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report.parameters.teacher_name_options, :include_blank => false
-          .sort-by
-            = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
-          %br/
-          /.sort-by
-          /  = f.input :paginate, :label => "Paginate", :as => :boolean, :input_html => { :checked => true }
-        = f.submit 'Run Report', :class => 'awesome-button'
-        = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+    -#
+      = simple_form_for report.parameters,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+        .form-sections
+          .filter
+            %h4 Filter By
+            .filter-dates
+              = f.input :date_filter, :label => "Date Range", :collection => report.parameters.date_filter_options
+            .filter-rewards
+              = f.input :reward_status_filter,:label => "Show Rewards", :collection => report.parameters.reward_status_filter_options
+            .filter-teachers
+              = f.input :teachers_filter, :label => "Show Teachers", :collection => report.parameters.teachers_filter_options(current_school)
+          .sorting
+            %h4 Options
+            .filter-dates
+              = f.input :students_name_option, :label => "Student Name Options", :collection => report.parameters.student_name_options, :include_blank => false
+            .filter-dates
+              = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report.parameters.teacher_name_options, :include_blank => false
+            .sort-by
+              = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
+            %br/
+            /.sort-by
+            /  = f.input :paginate, :label => "Paginate", :as => :boolean, :input_html => { :checked => true }
+          = f.submit 'Run Report', :class => 'awesome-button'
+          = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
     .report
-      %h3= report.filters_in_text
-
-      = paginate report
       = form_tag DeliverRewardsCommand.new, method: :post do
         %table.table.table-bordered.table-striped.solid-background
           %thead
             %tr
               - enable_mark_button = false
-              - report.header_strings.each do |header|
-                %th= header
+              %th Delivery Teacher
+              %th Student (username)
+              %th Classroom
+              %th Grade
+              %th Purchased
+              %th Reward
+              %th Quantity
+              %th Status
               %th Refund
               %th Deliver
               %th= check_box_tag "reward_deliveries_all", '1', false, :id => 'toggle', :onclick => "toggleAll(this)"
           %tbody
-            - report.data_rows do |row|
+            - report_data = JSON.parse(report.report_data)
+            - report_data.each do |row|
               %tr
-                - report.header_keys.each do |key|
-                  %td= row.send(key)
+                %td= row["delivery_teacher"]
+                %td= row["student"]
+                %td= row["classroom"]
+                %td= row["grade"]
+                %td= row["purchased"]
+                %td= row["reward"]
+                %td= row["quantity"]
+                %td= row["status"]
                 %td
-                  - if row.delivery_status == 'pending'
+                  - if row["delivery_status"] == 'pending'
                     = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
                 %td
-                  - if row.delivery_status == 'pending'
+                  - if row["delivery_status"] == 'pending'
                     - enable_mark_button = true
-                    = check_box_tag "reward_deliveries[]", row.reward_delivery_id
+                    = check_box_tag "reward_deliveries[]", row["reward_delivery_id"]
 
-        = simple_fields_for report.parameters do |p|
-          = p.input :date_filter, :as => :hidden
-          = p.input :reward_status_filter, :as => :hidden
-          = p.input :teachers_filter, :as => :hidden
-          = p.input :sort_by, :as => :hidden
+        -#
+          = simple_fields_for report.parameters do |p|
+            = p.input :date_filter, :as => :hidden
+            = p.input :reward_status_filter, :as => :hidden
+            = p.input :teachers_filter, :as => :hidden
+            = p.input :sort_by, :as => :hidden
 
-        - if enable_mark_button
-          = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
-      = paginate report
+          - if enable_mark_button
+            = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
 
 :plain
   <script type="text/javascript">

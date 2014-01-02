@@ -1,11 +1,17 @@
 module Reports
   class PurchasesController < Reports::BaseController
 
-    def show
+    def new
       params[:page] ||= 1
       report = Reports::Purchases.new params.merge(school: current_school, :page => params[:page])
-      report.execute!
-      render 'show', locals: { report: report }
+      delayed_report = DelayedReport.create(person_id: current_person.id)
+      DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
+      redirect_to purchases_report_show_path(delayed_report.id)
+    end
+
+    def show
+      delayed_report = DelayedReport.find(params[:id])
+      render 'show', locals: { report: delayed_report }
     end
 
     def refund_purchase
