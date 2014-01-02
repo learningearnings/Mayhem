@@ -168,6 +168,16 @@ ActiveRecord::Schema.define(:version => 20131227163426) do
 
   add_index "codes", ["active"], :name => "index_codes_on_active"
 
+  create_table "delayed_reports", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "state"
+    t.text     "report_data"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "name"
+    t.string   "render_class"
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
