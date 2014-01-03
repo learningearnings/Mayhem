@@ -20,17 +20,13 @@
               = f.input :students_name_option, :label => "Student Name Options", :collection => report_params.student_name_options, :include_blank => false
             .filter-dates
               = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report_params.teacher_name_options, :include_blank => false
-            .sort-by
-              = f.input :sort_by,:label => "Sorting", :collection => report_params.sort_by_options
             %br/
-            /.sort-by
-            /  = f.input :paginate, :label => "Paginate", :as => :boolean, :input_html => { :checked => true }
           = f.submit 'Run Report', :class => 'awesome-button'
           = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
       .report
         = form_tag DeliverRewardsCommand.new, method: :post do
-          %table.table.table-bordered.table-striped.solid-background
+          %table#report_table.table.table-bordered.table-striped.solid-background
             %thead
               %tr
                 - enable_mark_button = false
@@ -64,6 +60,7 @@
                     - if row["delivery_status"] == 'pending'
                       - enable_mark_button = true
                       = check_box_tag "reward_deliveries[]", row["reward_delivery_id"]
+                  %td
 
           = simple_fields_for report_params do |p|
             = p.input :date_filter, :as => :hidden
@@ -72,11 +69,22 @@
             = p.input :sort_by, :as => :hidden
 
           - if enable_mark_button
+            %br/
             = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
     - else 
       %h3 Your report is currently processing, it will show up here when it is completed.
       %meta{"http-equiv" => "refresh", :content => "2"}
 
+:javascript
+  $(document).ready( function () {
+    $('#report_table').dataTable( {
+      "aoColumnDefs": [
+        { 'bSortable': false, 'aTargets': [ 8, 9, 10 ] }
+       ],
+      "bPaginate": false,
+      "bInfo": false
+    } );
+  } );
 :plain
   <script type="text/javascript">
     function toggleAll(name) {
