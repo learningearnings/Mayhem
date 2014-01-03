@@ -20,11 +20,7 @@
               = f.input :students_name_option, :label => "Student Name Options", :collection => report_params.student_name_options, :include_blank => false
             .filter-dates
               = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report_params.teacher_name_options, :include_blank => false
-            .sort-by
-              = f.input :sort_by,:label => "Sorting", :collection => report_params.sort_by_options
             %br/
-            /.sort-by
-            /  = f.input :paginate, :label => "Paginate", :as => :boolean, :input_html => { :checked => true }
           = f.submit 'Run Report', :class => 'awesome-button'
           = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
