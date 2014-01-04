@@ -47,4 +47,19 @@
                 %td= row["savings_balance"]
     - else 
       %h3 Your report is currently processing, it will show up here when it is completed.
-      %meta{"http-equiv" => "refresh", :content => "2"}
+      :javascript
+        setTimeout(checkReportStatus, 1000);
+
+        function checkReportStatus() {
+          $.get(window.location.pathname + ".json",function(data) {
+            if (data.delayed_report.state == "complete") {
+              loadReport();
+            } else {
+              setTimeout(checkReportStatus, 1000);
+            }
+          });
+        }
+
+        function loadReport() {
+          location.reload();
+        }

@@ -16,10 +16,15 @@ module Reports
 
     def show
       delayed_report = DelayedReport.find(params[:id])
-      render 'show', locals: {
-        report: delayed_report,
-        classrooms: current_person.classrooms_for_school(current_school)
-      }
+      respond_to do |format|
+        format.html {
+          render 'show', locals: {
+            report: delayed_report,
+            classrooms: current_person.classrooms_for_school(current_school)
+          }
+        }
+        format.json { render :json => delayed_report }
+      end
     end
   end
 end
