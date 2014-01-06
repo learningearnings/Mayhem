@@ -1,8 +1,8 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Purchases Report
 
     - if report.state == "complete"
+      %h2 Purchases Report
       - report_params = Reports::Purchases.new(params.merge(school: current_school)).parameters
       = simple_form_for report_params,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
         .form-sections
@@ -72,7 +72,9 @@
             %br/
             = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
     - else 
-      %h3 Your report is currently processing, it will show up here when it is completed.
+      .message.center-content
+        = image_tag "loading.gif"
+        %h3 Your purchase report is currently processing, it will show up here when it is completed.
       :javascript
         setTimeout(checkReportStatus, 1000);
 
