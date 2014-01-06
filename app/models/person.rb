@@ -12,6 +12,7 @@ class Person < ActiveRecord::Base
   has_one  :spree_user, :class_name => 'Spree::User'
 
   has_many :posts
+  has_many :delayed_reports
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
   has_many :person_school_links

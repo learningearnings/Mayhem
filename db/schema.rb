@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131211220154) do
+ActiveRecord::Schema.define(:version => 20131219154225) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -167,6 +167,16 @@ ActiveRecord::Schema.define(:version => 20131211220154) do
   end
 
   add_index "codes", ["active"], :name => "index_codes_on_active"
+
+  create_table "delayed_reports", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "state"
+    t.text     "report_data"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "name"
+    t.string   "render_class"
+  end
 
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
