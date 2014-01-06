@@ -15,7 +15,7 @@ module Reports
     end
 
     def show
-      delayed_report = DelayedReport.find(params[:id])
+      delayed_report = current_person.delayed_reports.find(params[:id])
       respond_to do |format|
         format.html {
           render 'show', locals: {
