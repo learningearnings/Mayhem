@@ -30,7 +30,7 @@
           = submit_tag 'Go!'
       = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
       .report
-        %table.table.table-bordered.table-striped.solid-background
+        %table#report_table.table.table-bordered.table-striped.solid-background
           %thead
             %tr
               %th Student
@@ -65,3 +65,10 @@
         function loadReport() {
           location.reload();
         }
+:javascript
+  $(document).ready( function () {
+    $('#report_table').dataTable( {
+      "bPaginate": false,
+      "bInfo": false
+    } );
+  } );
