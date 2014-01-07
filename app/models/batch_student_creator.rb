@@ -21,6 +21,7 @@ class BatchStudentCreator
         user.update_attributes(user_params)
         user.save
         student.save
+        user.update_attributes(user_params)
         if school
           psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(student.id, school.id)
           pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(classroom_id, psl.id)
