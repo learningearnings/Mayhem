@@ -13,6 +13,7 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
 
   validates_presence_of :person_school_link_id, :classroom_id
   validate :validate_unique_with_status
+  validate :singularity_of_homeroom
 
   def link(d)
     if d && d.is_a?(Hash)
@@ -40,6 +41,12 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
     end
     if pscl.length > 0
       errors.add(:status, "Person is already associated with this classroom")
+    end
+  end
+
+  def singularity_of_homeroom
+    if self.homeroom && pscl = student.person_school_classroom_links.where(homeroom: true).first
+      errors.add(:homeroom, "Person is already in homeroom #{pscl.classroom.name}")
     end
   end
 end
