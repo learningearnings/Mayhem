@@ -107,7 +107,7 @@ class Person < ActiveRecord::Base
   end
 
   def homeroom
-    person_school_classroom_links.where(:homeroom => true)
+    person_school_classroom_links.where(:homeroom => true).map(&:classroom).first
   end
 
   def schools(status = :status_active)
