@@ -54,11 +54,13 @@ class ClassroomsController < LoggedInController
     if params[:student_id].present?
       @student = Student.find(params[:student_id])
       @classroom = Classroom.find(params[:classroom_id])
-      if @student<<(@classroom)
+      psl = @student.person_school_links.where(school_id: @classroom.school.id).first
+      pscl = PersonSchoolClassroomLink.new(:classroom_id => @classroom.id, :person_school_link_id => psl.id, homeroom: params[:homeroom])
+      if pscl.save
         flash[:notice] = "Student added to classroom."
         redirect_to classroom_path(@classroom)
       else
-        flash[:error] = "Student not added to classroom."
+        flash[:error] = pscl.errors.full_messages.to_sentence
         render :show
       end
     else
