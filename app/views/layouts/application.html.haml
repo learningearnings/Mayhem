@@ -13,6 +13,8 @@
     = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'
     = javascript_include_tag 'application'
+    = javascript_include_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
+    = stylesheet_link_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
     = stylesheet_link_tag    'application', media: 'all'
     = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
     - if current_user && current_user.person
