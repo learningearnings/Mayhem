@@ -18,19 +18,24 @@
     %tr
       - if @classroom.students.present?
         %th Student Name
+        %th Homeroom?
         %th Username
         %th Remove
   %tbody
     - @classroom.students.order("last_name, first_name").each do |student|
       %tr
         %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
+        %td= student.homeroom == @classroom ? "Yes" : "No"
         %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
         %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
 = form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
   = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
+  %label.checkbox
+    = check_box_tag :homeroom
+    Homeroom
   = hidden_field_tag :classroom_id, @classroom.id
-  = f.submit 'Add Student', class: 'btn awesome-button'
+  = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
 
 %a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
 %div{:class => "accordion-body collapse", :id => "new-student"}
@@ -55,3 +60,51 @@
 
 :javascript
   $(".chzn-select").chosen();
+
+  function homeroom_check(classroom_id) {
+    var student_id = $('.chzn-select').val();
+    var student = 'student_id='+student_id;
+    var classroom = '&classroom_id='+classroom_id;
+    var url =  '/homeroom_check?'+student+classroom;
+
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: "json",
+      success: function(data){
+        if(data.classroom == null)
+          {
+            change_homeroom(student_id, classroom_id);
+          }
+        else
+          {
+            classroom = data.classroom.classroom
+            if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?"))
+              {
+                change_homeroom(student_id, classroom_id);
+              }
+            else 
+              {
+                alert('No change was made.');
+              }
+          }
+      }
+    });
+  }
+
+  function change_homeroom(student_id, classroom_id) {
+    var student = 'student_id='+student_id;
+    var classroom = '&classroom_id='+classroom_id;
+    var homeroom = document.getElementById('homeroom').checked;
+
+    var url =  '/add_classroom_student?'+student+classroom+'&homeroom='+homeroom;
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: "json",
+      success: function(data){
+        window.location.replace("/classrooms/" + classroom_id);
+      }
+    });
+  }
+

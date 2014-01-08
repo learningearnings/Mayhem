@@ -59,6 +59,7 @@ Leror::Application.routes.draw do
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
   end
 
+  get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.

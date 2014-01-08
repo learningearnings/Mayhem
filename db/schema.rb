@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131227163426) do
+ActiveRecord::Schema.define(:version => 20140107143244) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -480,6 +480,7 @@ ActiveRecord::Schema.define(:version => 20131227163426) do
     t.integer  "classroom_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.boolean  "homeroom"
   end
 
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
