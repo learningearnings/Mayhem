@@ -112,14 +112,17 @@ class ClassroomsController < LoggedInController
   def create_student
     @classroom = Classroom.find(params[:classroom_id])
     @student = Student.new(params[:student])
-    if @student.save
-      @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
-      psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(@student.id, current_school.id)
+    @student.save
+    @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
+    psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(@student.id, current_school.id)
+    if psl.valid?
       pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
       pscl.activate
       flash[:notice] = 'Student created!'
       redirect_to classroom_path(@classroom)
     else
+      @student.user.delete
+      @student.delete
       flash.now[:error] = 'Student not created'
       render :show
     end

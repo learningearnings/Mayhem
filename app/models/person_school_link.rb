@@ -84,10 +84,13 @@ class PersonSchoolLink < ActiveRecord::Base
   def username_taken?
     errors.add(:status, "Person must be present") and return unless person && person.user.username
     return if status == "inactive"
-    if school.teachers.with_username(person.user.username).present?
+    ignored_ids = [person.id]
+    @students = school.students.where("people.id NOT IN (?)", ignored_ids)
+    @teachers = school.students.where("people.id NOT IN (?)", ignored_ids)
+    if @teachers.with_username(person.user.username).present?
       errors.add(:status, "Username already assigned for this school.") and return
     end
-    if school.students.with_username(person.user.username).present?
+    if @students.with_username(person.user.username).present?
       errors.add(:status, "Username already assigned for this school.") and return
     end
   end

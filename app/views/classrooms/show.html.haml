@@ -35,7 +35,6 @@
     = check_box_tag :homeroom
     Homeroom
   = hidden_field_tag :classroom_id, @classroom.id
-  /= f.submit 'Add Student', class: 'btn awesome-button'
   = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
 
 %a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
