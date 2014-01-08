@@ -55,13 +55,24 @@ class ClassroomsController < LoggedInController
       @student = Student.find(params[:student_id])
       @classroom = Classroom.find(params[:classroom_id])
       psl = @student.person_school_links.where(school_id: @classroom.school.id).first
+      PersonSchoolClassroomLink.where(:person_school_link_id => psl.id, homeroom: true).delete_all if params[:homeroom] == "true"
       pscl = PersonSchoolClassroomLink.new(:classroom_id => @classroom.id, :person_school_link_id => psl.id, homeroom: params[:homeroom])
       if pscl.save
-        flash[:notice] = "Student added to classroom."
-        redirect_to classroom_path(@classroom)
+        respond_to do |format|
+          format.html { 
+            flash[:notice] = "Student added to classroom."
+            redirect_to classroom_path(@classroom)
+          }
+          format.json { render :json => {:result => 'success', :flash => 'Student added to classroom.', :request => classroom_path(@classroom) } }
+        end
       else
-        flash[:error] = pscl.errors.full_messages.to_sentence
-        render :show
+        respond_to do |format|
+          format.html { 
+            flash[:error] = pscl.errors.full_messages.to_sentence
+            render :show
+          }
+          format.json { render :json => {:result => 'error', :flash => 'There was an error adding student to classroom.', :request => classroom_path(@classroom) } }
+        end
       end
     else
       flash[:error] = 'Please pick a student.'
@@ -116,5 +127,22 @@ class ClassroomsController < LoggedInController
 
   def load_classrooms
     @classrooms = current_person.classrooms.uniq
+  end
+
+  def homeroom_check
+    @student = Student.find(params[:student_id])
+    @classroom = Classroom.find(params[:classroom_id])
+    psl = @student.person_school_links.where(school_id: @classroom.school.id).first
+    pscl = PersonSchoolClassroomLink.where(:person_school_link_id => psl.id, homeroom: true).first
+    respond_to do |format|
+      format.js do
+        if pscl
+          render :json => {:classroom => pscl.classroom}, :layout => false
+        else
+          render :json => {:classroom => nil}, :layout => false
+        end
+      end
+    end
+
   end
 end
