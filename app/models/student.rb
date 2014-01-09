@@ -1,5 +1,4 @@
 class Student < Person
-  before_save :check_coppa
   after_create :ensure_accounts
   after_create :create_user
   validates_presence_of :grade
