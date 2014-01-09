@@ -1,9 +1,10 @@
 require 'httparty'
 module STI
   class Client
-    attr_accessor :session_token
+    attr_accessor :session_token, :base_url
 
     def initialize options={}
+      @base_url = options.fetch(:base_url, "http://sandbox.sti-k12.com/learningearnings/")
     end
 
     def get_session_token
@@ -41,15 +42,11 @@ module STI
 
     private
     def authorized_headers
-      {"Authorization" => "Session #{session_token}"}
+      {"Authorization" => "Session #{session_token}", "ApplicationKey" => "learningearnings WzvBW2c2suJex6V+Z22NpHZK7+mqCrUpvtw67lE7Js/8fo8E0QYngnQXBwjbs0yTkJ8hnATM/3LOKgZwB4cLsVccfXFOoTgImovQ/S9CP2s+V+AI/zmds3CZF9GD5+y6saxEKjduN/L+YYcKIYIs1UtQZfm/6lcFXPc1etZKGMk="}
     end
 
     def authentication_hash
       {:username => ENV["STI_USERNAME"], :password => ENV["STI_PASSWORD"]}
-    end
-
-    def base_url
-      "http://sandbox.sti-k12.com/learningearnings/"
     end
   end
 end

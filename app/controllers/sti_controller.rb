@@ -15,7 +15,7 @@ class StiController < ApplicationController
     end
   end
 
-  def sync
+  def link
     if params[:district_guid].blank? || params[:api_url].blank? || params[:sync_key].blank? || params[:inow_username].blank? || params[:inow_password].blank?
       render :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, inow_password, and sync_key"} and return
     end
