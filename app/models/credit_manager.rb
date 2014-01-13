@@ -83,6 +83,10 @@ class CreditManager
     transfer_credits "Issue Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
 
+  def monthly_credits_to_teacher school, teacher, amount
+    transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
+  end
+
   def issue_credits_to_student school, teacher, student, amount
     transfer_credits "Issue Credits to Student", teacher.unredeemed_account(school), student.checking_account, amount
   end

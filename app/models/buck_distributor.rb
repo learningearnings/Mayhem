@@ -42,6 +42,6 @@ class BuckDistributor
   end
 
   def pay_teacher(school, teacher)
-    @credit_manager.issue_credits_to_teacher school, teacher, amount_for_teacher(school)
+    @credit_manager.monthly_credits_to_teacher school, teacher, amount_for_teacher(school)
   end
 end

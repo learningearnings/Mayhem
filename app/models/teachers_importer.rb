@@ -42,7 +42,7 @@ class TeachersImporter < BaseImporter
         user.username = datum[:user][:username]
         user.password = datum[:user][:password]
         user.save(validate: false)
-        teacher.activate!
+        PersonSchoolLink.create(person_id: teacher.id, school_id: @school.id)
       end
     rescue Exception => e
       warn "Got exception for #{datum.inspect} - #{e.inspect}"
@@ -51,7 +51,7 @@ class TeachersImporter < BaseImporter
 
   def existing_teacher(datum)
     users = Spree::User.where(username: datum[:user][:username])
-    if users.present?
+    if users.present? && users.select{|x| x.schools.include?(School.first)}.first.present?
       users.select{|x| x.schools.include?(School.first)}.first.person
     else
       false
