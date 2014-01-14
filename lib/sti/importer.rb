@@ -11,7 +11,8 @@ module STI
       puts "Importing Schools"
       puts "******************************************************"
       @api_schools = client.schools.parsed_response.each do |api_school|
-        school = School.new(api_school_mapping(api_school))
+        school = School.where(sti_id: api_school["Id"]).first_or_initialize
+        school.update_attributes(api_school_mapping(api_school))
         school.save
         @imported_schools << school
       end
@@ -23,9 +24,10 @@ module STI
         schools = api_teacher["Schools"].map do |school_id|
           School.where(sti_id: school_id).first.id
         end
-        teacher = Teacher.create(api_teacher_mapping(api_teacher))
+        teacher = Teacher.where(sti_id: api_teacher["Id"]).first_or_initialize
+        teacher.update_attributes(api_teacher_mapping(api_teacher))
         schools.each do |school|
-          person_school_link = ::PersonSchoolLink.new(:person_id => teacher.id, :school_id => school, :status => :active)
+          person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
           person_school_link.save(:validate => false)
         end
       end
@@ -34,11 +36,11 @@ module STI
       puts "Importing Classrooms"
       puts "******************************************************"
       @api_classrooms = client.sections.parsed_response.each do |api_classroom|
-        classroom = Classroom.new(api_classroom_mapping(api_classroom))
-        classroom.save
+        classroom = Classroom.where(sti_id: api_classroom["Id"]).first_or_initialize
+        classroom.update_attributes(api_classroom_mapping(api_classroom))
         teacher = Teacher.where(:sti_id => api_classroom["TeacherId"]).first
         person_school_link = teacher.person_school_links.includes(:school).where("schools.sti_id" => api_classroom["SchoolId"]).first
-        person_school_classroom_link = PersonSchoolClassroomLink.new(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id)
+        person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
         person_school_classroom_link.save
         puts person_school_classroom_link.errors.full_messages.to_sentence
       end
@@ -47,10 +49,10 @@ module STI
       puts "Importing Students"
       puts "******************************************************"
       @api_students = client.students.parsed_response.each do |api_student|
-        student = Student.new(api_student_mapping(api_student))
-        student.save
+        student = Student.where(sti_id: api_student["Id"]).first_or_initialize
+        student.update_attributes(api_student_mapping(api_student))
         school = School.where(:sti_id => api_student["Schools"]).first
-        person_school_link = ::PersonSchoolLink.new(:person_id => student.id, :school_id => school.id, :status => :active)
+        person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
         person_school_link.save(:validate => false)
       end
 
@@ -58,12 +60,11 @@ module STI
       puts "******************************************************"
       puts "Importing Students into Classrooms"
       puts "******************************************************"
-      {"SectionId"=>635, "StudentId"=>1171}
       client.rosters.parsed_response.each do |api_roster|
         classroom = Classroom.where(:sti_id => api_roster["SectionId"]).first
         student = Student.where(:sti_id => api_roster["StudentId"]).first
         person_school_link = student.person_school_links.where(:school_id => classroom.school.id).first
-        person_school_classroom_link = PersonSchoolClassroomLink.new(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id)
+        person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
         person_school_classroom_link.save
       end
     end

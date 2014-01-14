@@ -22,7 +22,7 @@ class StiController < ApplicationController
     @link = StiLinkToken.where(district_guid: params[:district_guid]).first
     password = params[:inow_password] || @link.try(:password)
     link_status = check_link_status(params[:api_url], params[:link_key], params[:inow_username], password)
-    render :status => 400, :json => {:status => :failure, :message => "The link status was not active"} and return unless link_status
+    render :status => 400, :json => {:status => :failure, :message => "The link endpoint returned: #{link_status}"} and return unless link_status == "active"
     if @link
       if @link.api_url == params[:api_url]
         render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
@@ -39,10 +39,11 @@ class StiController < ApplicationController
   def check_link_status url, link_key, username, password
     begin
       sti_client = STI::Client.new(:base_url => url, :username => username, :password => password)
+      link_status = sti_client.link_status(link_key)
     rescue
-      return false
+      return "Connection failed"
     end
-    sti_client.link_status(link_key) == "active"
+    link_status
   end
 
   def load_students
