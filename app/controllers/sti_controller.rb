@@ -20,7 +20,7 @@ class StiController < ApplicationController
       render :status => 400, :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, and link_key"} and return
     end
     @link = StiLinkToken.where(district_guid: params[:district_guid]).first
-    password = params[:inow_password] || @link.password
+    password = params[:inow_password] || @link.try(:password)
     link_status = check_link_status(params[:api_url], params[:link_key], params[:inow_username], password)
     render :status => 400, :json => {:status => :failure, :message => "The link status was not active"} and return unless link_status
     if @link
