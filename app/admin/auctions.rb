@@ -76,7 +76,7 @@ ActiveAdmin.register Auction do
         difference = auction.bid_difference_since(last_viewed_bid_time)
         bid_text += "(+ #{difference}) " unless difference == BigDecimal('0')
       end
-      session[auction_session_key] = Time.zone.now
+      #session[auction_session_key] = Time.zone.now
 
       bid_text += auction.current_bid.to_s
       bid_text.html_safe
