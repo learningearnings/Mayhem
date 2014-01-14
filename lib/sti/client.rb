@@ -48,7 +48,7 @@ module STI
       else
         url = "#{base_url}le/linkstatus"
       end
-      HTTParty.get(url, :headers => authorized_headers).parsed_response
+      HTTParty.get(url, :headers => authorized_headers)
     end
 
     private
