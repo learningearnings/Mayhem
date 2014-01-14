@@ -4,13 +4,13 @@ module STI
     attr_accessor :session_token, :base_url, :username, :password
 
     def initialize options={}
-      @base_url = options.fetch(:base_url, "http://sandbox.sti-k12.com/learningearnings/")
+      @base_url = options.fetch(:base_url, "http://sandbox.sti-k12.com/learningearnings/api/")
       @username = options.fetch(:username, ENV["STI_USERNAME"])
       @password = options.fetch(:password, ENV["STI_PASSWORD"])
     end
 
     def get_session_token
-      response = HTTParty.get("#{base_url}api/token", :basic_auth => authentication_hash)
+      response = HTTParty.get("#{base_url}token", :basic_auth => authentication_hash)
       @session_token = response["access_token"]
     end
 
@@ -19,34 +19,34 @@ module STI
     end
 
     def session_information
-      response = HTTParty.get("#{base_url}api/users/me", :headers => authorized_headers)
+      response = HTTParty.get("#{base_url}users/me", :headers => authorized_headers)
     end
 
     def rosters
-      response = HTTParty.get("#{base_url}api/le/rosters", :headers => authorized_headers)
+      response = HTTParty.get("#{base_url}le/rosters", :headers => authorized_headers)
     end
 
     def schools
-      response = HTTParty.get("#{base_url}api/le/schools", :headers => authorized_headers)
+      response = HTTParty.get("#{base_url}le/schools", :headers => authorized_headers)
     end
 
     def sections
-      response = HTTParty.get("#{base_url}api/le/sections", :headers => authorized_headers)
+      response = HTTParty.get("#{base_url}le/sections", :headers => authorized_headers)
     end
 
     def staff
-      response = HTTParty.get("#{base_url}api/le/staff", :headers => authorized_headers)
+      response = HTTParty.get("#{base_url}le/staff", :headers => authorized_headers)
     end
 
     def students
-      response = HTTParty.get("#{base_url}api/le/students", :headers => authorized_headers)
+      response = HTTParty.get("#{base_url}le/students", :headers => authorized_headers)
     end
 
     def link_status link_key
       if link_key
-        url = "#{base_url}api/le/linkstatus?linkkey=#{link_key}"
+        url = "#{base_url}le/linkstatus?linkkey=#{link_key}"
       else
-        url = "#{base_url}api/le/linkstatus"
+        url = "#{base_url}le/linkstatus"
       end
       HTTParty.get(url, :headers => authorized_headers).parsed_response
     end
