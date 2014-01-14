@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131218155353) do
+ActiveRecord::Schema.define(:version => 20140114014408) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -168,6 +168,16 @@ ActiveRecord::Schema.define(:version => 20131218155353) do
   end
 
   add_index "codes", ["active"], :name => "index_codes_on_active"
+
+  create_table "delayed_reports", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "state"
+    t.text     "report_data"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "name"
+    t.string   "render_class"
+  end
 
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
@@ -1251,10 +1261,10 @@ ActiveRecord::Schema.define(:version => 20131218155353) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "sti_sync_tokens", :force => true do |t|
+  create_table "sti_link_tokens", :force => true do |t|
     t.string   "district_guid"
     t.string   "api_url"
-    t.string   "sync_key"
+    t.string   "link_key"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.string   "username"

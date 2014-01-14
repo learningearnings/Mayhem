@@ -2,7 +2,7 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "Password", except: :give_credits
+  http_basic_authenticate_with name: "LearningEarnings", password: "Password", except: [:give_credits, :create_ebucks_for_students]
   skip_around_filter :track_interaction
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
@@ -16,23 +16,35 @@ class StiController < ApplicationController
   end
 
   def link
-    if params[:district_guid].blank? || params[:api_url].blank? || params[:sync_key].blank? || params[:inow_username].blank? || params[:inow_password].blank?
-      render :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, inow_password, and sync_key"} and return
+    if params[:district_guid].blank? || params[:api_url].blank? || params[:link_key].blank? || params[:inow_username].blank?
+      render :status => 400, :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, and link_key"} and return
     end
-    @sync = StiSyncToken.where(district_guid: params[:district_guid]).first
-    if @sync
-      if @sync.api_url == params[:api_url]
-        render :json => {:status => :success, :message => "Your information matched our records"} and return
+    @link = StiLinkToken.where(district_guid: params[:district_guid]).first
+    password = params[:inow_password] || @link.inow_password
+    link_status = check_link_status(params[:api_url], params[:link_key], params[:inow_username], password)
+    render :status => 400, :json => {:status => :failure, :message => "The link status was not active"} and return unless link_status
+    if @link
+      if @link.api_url == params[:api_url]
+        render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
       else
-        render :json => {:status => :failure, :message => "The api url doesn't match that district_guid record"} and return
+        render :status => 400, :json => {:status => :failure, :message => "The api url doesn't match that district_guid record"} and return
       end
     else
-      StiSyncToken.create(district_guid: params[:district_guid], api_url: params[:api_url], sync_key: params[:sync_key], username: params[:inow_username], password: params[:inow_password])
+      StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password])
       render :json => {:status => :success, :message => "The Sync record was created"} and return
     end
   end
 
   private
+  def check_link_status url, link_key, username, password
+    begin
+      sti_client = STI::Client.new(:base_url => url, :username => username, :password => password)
+    rescue
+      return false
+    end
+    sti_client.link_status(link_key) == "active"
+  end
+
   def load_students
     @students = current_person.schools.first.students.where(sti_id: params["studentIds"].split(","))
   end
