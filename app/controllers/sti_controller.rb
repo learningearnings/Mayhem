@@ -20,15 +20,15 @@ class StiController < ApplicationController
       render :status => 400, :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, and link_key"} and return
     end
     @link = StiLinkToken.where(district_guid: params[:district_guid]).first
-    password = params[:inow_password] || @link.try(:password)
+    password = params[:inow_password].blank? ? @link.try(:password) : params[:inow_password]
+    if @link && @link.api_url != params[:api_url]
+      render :status => 400, :json => {:status => :failure, :message => "The api url doesn't match that district_guid record"} and return
+    end
     link_status = check_link_status(params[:api_url], params[:link_key], params[:inow_username], password)
     render :status => 400, :json => {:status => :failure, :message => "The link endpoint returned: #{link_status}"} and return unless link_status.parsed_response == "active"
-    if @link
-      if @link.api_url == params[:api_url]
-        render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
-      else
-        render :status => 400, :json => {:status => :failure, :message => "The api url doesn't match that district_guid record"} and return
-      end
+    if @link && @link.api_url == params[:api_url]
+      @link.update_attribute(:password, params[:inow_password]) unless params[:inow_password].blank?
+      render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
     else
       StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password])
       render :json => {:status => :success, :message => "The Sync record was created"} and return
