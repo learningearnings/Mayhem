@@ -3,13 +3,14 @@ module STI
   class Importer
 
     def initialize options={}
+      @client = options[:client]
       @imported_schools = []
     end
 
     def run!
-      puts "******************************************************"
-      puts "Importing Schools"
-      puts "******************************************************"
+      Rails.logger.warn "*********************************"
+      Rails.logger.warn "Starting import of schools"
+      Rails.logger.warn "*********************************"
       @api_schools = client.schools.parsed_response.each do |api_school|
         school = School.where(sti_id: api_school["Id"]).first_or_initialize
         school.update_attributes(api_school_mapping(api_school))
@@ -17,9 +18,9 @@ module STI
         @imported_schools << school
       end
 
-      puts "******************************************************"
-      puts "Importing Teachers"
-      puts "******************************************************"
+      Rails.logger.warn "*********************************"
+      Rails.logger.warn "Starting import of teachers"
+      Rails.logger.warn "*********************************"
       @api_teachers = client.staff.parsed_response.each do |api_teacher|
         schools = api_teacher["Schools"].map do |school_id|
           School.where(sti_id: school_id).first.id
@@ -32,9 +33,9 @@ module STI
         end
       end
 
-      puts "******************************************************"
-      puts "Importing Classrooms"
-      puts "******************************************************"
+      Rails.logger.warn "*********************************"
+      Rails.logger.warn "Starting import of classrooms"
+      Rails.logger.warn "*********************************"
       @api_classrooms = client.sections.parsed_response.each do |api_classroom|
         classroom = Classroom.where(sti_id: api_classroom["Id"]).first_or_initialize
         classroom.update_attributes(api_classroom_mapping(api_classroom))
@@ -42,12 +43,11 @@ module STI
         person_school_link = teacher.person_school_links.includes(:school).where("schools.sti_id" => api_classroom["SchoolId"]).first
         person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
         person_school_classroom_link.save
-        puts person_school_classroom_link.errors.full_messages.to_sentence
       end
 
-      puts "******************************************************"
-      puts "Importing Students"
-      puts "******************************************************"
+      Rails.logger.warn "*********************************"
+      Rails.logger.warn "Starting import of students"
+      Rails.logger.warn "*********************************"
       @api_students = client.students.parsed_response.each do |api_student|
         student = Student.where(sti_id: api_student["Id"]).first_or_initialize
         student.update_attributes(api_student_mapping(api_student))
@@ -57,9 +57,9 @@ module STI
       end
 
 
-      puts "******************************************************"
-      puts "Importing Students into Classrooms"
-      puts "******************************************************"
+      Rails.logger.warn "*********************************"
+      Rails.logger.warn "Starting import of students into classrooms"
+      Rails.logger.warn "*********************************"
       client.rosters.parsed_response.each do |api_roster|
         classroom = Classroom.where(:sti_id => api_roster["SectionId"]).first
         student = Student.where(:sti_id => api_roster["StudentId"]).first
