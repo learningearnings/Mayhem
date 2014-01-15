@@ -42,6 +42,11 @@ module STI
       response = HTTParty.get("#{base_url}le/students", :headers => authorized_headers)
     end
 
+    def set_school_synced school_id
+      options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => true, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
+      HTTParty.put("#{base_url}le/schools/#{school_id}", options)
+    end
+
     def link_status link_key
       if link_key
         url = "#{base_url}le/linkstatus?linkkey=#{link_key}"

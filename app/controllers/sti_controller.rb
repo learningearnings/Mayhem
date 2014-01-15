@@ -28,6 +28,7 @@ class StiController < ApplicationController
     render :status => 400, :json => {:status => :failure, :message => "The link endpoint returned: #{link_status}"} and return unless link_status.parsed_response == "active"
     if @link && @link.api_url == params[:api_url]
       @link.update_attribute(:password, params[:inow_password]) unless params[:inow_password].blank?
+      StiImporterWorker.perform_async(@link.api_url, @link.username, @link.password)
       render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
     else
       StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password])
