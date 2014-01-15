@@ -67,6 +67,13 @@ module STI
         person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
         person_school_classroom_link.save
       end
+
+      Rails.logger.warn "*********************************"
+      Rails.logger.warn "Notifying STI of successful sync"
+      Rails.logger.warn "*********************************"
+      @imported_schools.each do |school|
+        client.set_school_synced(school.sti_id)
+      end
     end
 
     private
