@@ -77,7 +77,8 @@ class StiController < ApplicationController
   end
 
   def handle_sti_token
-    sti_client = STI::Client.new
+    sti_link_token = StiLinkTokent.where(:district_guid => params[:districtGUID]).last
+    sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
   end
