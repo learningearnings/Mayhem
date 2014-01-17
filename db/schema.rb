@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115150717) do
+ActiveRecord::Schema.define(:version => 20140116170853) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -624,6 +624,7 @@ ActiveRecord::Schema.define(:version => 20140115150717) do
     t.decimal  "student_interest_rate", :precision => 8, :scale => 2
     t.datetime "created_at",                                          :null => false
     t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
   end
 
   create_table "spree_activators", :force => true do |t|

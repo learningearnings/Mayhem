@@ -179,6 +179,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def site_setting
+    SiteSetting.last
+  end
+
   protected
   def _prefixes
     @_prefixes_with_partials ||= super | %w(/public)
