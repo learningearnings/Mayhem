@@ -7,9 +7,6 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    Rails.logger.warn "**********************************"
-    Rails.logger.warn @client_response.inspect
-    Rails.logger.warn "**********************************"
     if @client_response["StaffId"].blank? || current_person.nil?
       render partial: "teacher_not_found"
     else
