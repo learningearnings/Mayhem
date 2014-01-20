@@ -48,7 +48,7 @@ class StiController < ApplicationController
   end
 
   def load_students
-    @students = current_person.schools.first.students.where(sti_id: params["studentIds"].split(","))
+    @students = current_person.schools.first.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
   end
 
   def current_person
