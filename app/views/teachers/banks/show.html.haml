@@ -66,7 +66,7 @@
               = text_field_tag :transfer_points, nil, :min => '0',:step => '1', :type => "number"
               = hidden_field_tag :from_teacher_id, current_person.id
               = label_tag :to_teacher
-              = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers.reject{|x| x == Teacher.find(current_person.id)} + current_school.school_admins), :id, :to_s), :include_blank => true
+              = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers + current_school.school_admins).uniq.reject{|x| x == Teacher.find(current_person.id)}, :id, :to_s), :include_blank => true
               = f.submit 'Transfer Credits', :class => 'awesome-button'
 
 %script#students_table{ type: 'text/html' }
