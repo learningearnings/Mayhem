@@ -1,6 +1,7 @@
 class OtuCode < ActiveRecord::Base
-  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck, :student, :person_school_link
-  has_many :transactions, :through => :otu_transaction_links
+  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck, :student, :person_school_link, :reason, :otu_transaction_link_id
+  #has_many :transactions, :through => :otu_transaction_links
+  #has_many :otu_transaction_links
   has_many :buck_batches, :through => :buck_batch_links
   has_many :buck_batch_links
   belongs_to :student
@@ -13,6 +14,10 @@ class OtuCode < ActiveRecord::Base
   scope :active, where("active = ?", true)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
+
+  def transaction
+    Plutus::Transaction.find(self.otu_transaction_link_id)
+  end
 
   def expired?
     self.created_at > (Time.now + 45.days)
