@@ -66,6 +66,10 @@ class CreditManager
     transfer_credits "Revoke Credits for Teacher", teacher.main_account(school), main_account, amount
   end
 
+  def revoke_credits_for_student(student, amount)
+    transfer_credits "Revoke Credits for Student", student.checking_account, main_account, amount
+  end
+
   def purchase_printed_bucks school, teacher, amount, buck_batch=nil
     transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account(school), teacher.unredeemed_account(school), amount, buck_batch
    end
