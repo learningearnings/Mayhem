@@ -11,7 +11,7 @@ class StudentInterestHandler
     @credit_manager = CreditManager.new
   end
 
-  def run
+  def call
     # admin can run any day of the week but do not let it run twice even if it
     # has already been processed.
     if @admin && !ran_this_week?
