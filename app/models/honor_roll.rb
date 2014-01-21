@@ -40,20 +40,18 @@ class HonorRoll
     (transactions_in_time_range - savings_to_checking) - checking_to_savings
   end
 
-  def credits_deposited
-    transactions_in_time_range
+  def most_deposited_credits
+    bad = ['Transfer from Checking to Savings', 'Transfer from Savings to Checking', "Reward Refund"]
+    transactions_in_time_range.reject{|x| bad.include? x.description}
   end
   
   def transactions_in_time_range
-    Plutus::Transaction
-      .with_main_account
-      .order('plutus_transactions.created_at desc')
-      .where('plutus_transactions.created_at BETWEEN ? AND ?', start_date, end_date)
+    Plutus::Transaction.with_main_account.order('plutus_transactions.created_at desc').where('plutus_transactions.created_at BETWEEN ? AND ?', start_date, end_date)
   end
 
   def deposits_per_account(count)
     hash_as_key_value_array = Hash.new(BigDecimal('0.0')).tap do |output|
-      most_credits_deposited.each do |transaction|
+      most_deposited_credits.each do |transaction|
         amount = credit_amount_on(transaction)
         account_id = amount.account_id
         output[account_id] = output[account_id] + amount.amount
