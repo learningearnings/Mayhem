@@ -1,6 +1,7 @@
 class OtuCode < ActiveRecord::Base
-  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck, :student, :person_school_link
-  has_many :transactions, :through => :otu_transaction_links
+  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck, :student, :person_school_link, :reason, :otu_transaction_link_id
+  #has_many :transactions, :through => :otu_transaction_links
+  #has_many :otu_transaction_links
   has_many :buck_batches, :through => :buck_batch_links
   has_many :buck_batch_links
   belongs_to :student
@@ -14,6 +15,10 @@ class OtuCode < ActiveRecord::Base
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
 
+  def transaction
+    Plutus::Transaction.find(self.otu_transaction_link_id)
+  end
+
   def expired?
     self.created_at > (Time.now + 45.days)
   end
@@ -23,7 +28,7 @@ class OtuCode < ActiveRecord::Base
   end
 
   def generate_code(prefix)
-    _code = Code.active[rand(Code.active.count)] || Code.create
+    _code = Code.active.where("RANDOM() < 0.01").first || Code.create
     _full_code = prefix + _code.code
     self.update_attribute(:code, _full_code)
     _code.update_attributes(:active => false, :used_date => Time.now)

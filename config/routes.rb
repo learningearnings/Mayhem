@@ -1,4 +1,5 @@
 Leror::Application.routes.draw do
+  get '/sti/give_credits' => "sti#give_credits"
   match '/404' => 'errors#not_found'
   match '/422' => 'errors#server_error'
   match '/500', :to => 'errors#server_error'
@@ -22,6 +23,7 @@ Leror::Application.routes.draw do
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resource :home
+  resources :delayed_reports
 
   resources :people do
     collection do
@@ -32,6 +34,8 @@ Leror::Application.routes.draw do
   resource :games, controller: "games/base", only: [:show]
 
   resources :news_posts, controller: "news", only: [:index, :show]
+  match '/pages/parents/news' => 'news#index', visitor_type: 'parent'
+  match '/pages/teachers/news' => 'news#index', visitor_type: 'teacher'
 
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
@@ -50,8 +54,12 @@ Leror::Application.routes.draw do
     get :delete_student_school_link, :controller => :students, :action => :delete_school_link
     get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
+    post 'import_students' => 'imports#import_students', as: :import_students
+    post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+    match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
   end
 
+  get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.
@@ -60,6 +68,7 @@ Leror::Application.routes.draw do
   #
   # We ask that you don't use the :as option here, as Spree relies on it being the default of "spree"
   mount Spree::Core::Engine, :at => '/store'
+
 
   # Mount the plutus controllers for viewing accounts for basic reporting
   # FIXME: Lock this down before hitting production
@@ -86,6 +95,8 @@ Leror::Application.routes.draw do
         get  'choose_food'
       end
     end
+    resource :number_muncher do
+    end
   end
 
   match 'choose_food/:match_id' => 'games/food_fights#choose_food', :as => :choose_food
@@ -104,17 +115,21 @@ Leror::Application.routes.draw do
   post "/filters/filter_grades_by_classroom" => "filters#filter_grades_by_classroom"
   post "/filters" => "filters#create"
 
-  match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
   match '/reports/refund' => 'reports/purchases#refund_purchase', as: 'refund_purchase'
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
   match '/reports/activity' => 'reports/activity#show', as: 'activity_report'
-  match '/reports/student_credit_history' => 'reports/student_credit_history#show', as: 'student_credit_history_report'
+
+  match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
+  get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'
+
+  match '/reports/purchases' => 'reports/purchases#new', as: 'purchases_report'
+  get '/reports/purchases/:id' => 'reports/purchases#show', as: 'purchases_report_show'
 
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
   match "inbox/school_messages" => 'messages#school_messages', :as => 'school_messages'
   match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
-  match "inbox/food_fight_messages" => 'messages#food_fight_messages', :as => 'food_fight_messages'
+  match "inbox/games_messages" => 'messages#games_messages', :as => 'games_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
@@ -162,12 +177,14 @@ Leror::Application.routes.draw do
 
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   namespace :teachers do
+    resource :bulk_students
     resources :reports
     resource  :bank
     resource  :dashboard
     resource  :lounge
     resources :rewards
     match "home" => "home#show", as: 'home'
+    match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
@@ -239,6 +256,7 @@ end
 Spree::Core::Engine.routes.prepend do
   resources :auctions
   devise_scope :user do
+    post '/reset_password/:resource_name' => 'user_passwords#create', :as => 'reset_password'
     get '/logout' => 'user_sessions#destroy', :as => :get_destroy_user_session
     get '/logout' => 'user_sessions#destroy',:remote => true, :as => :destroy_user_session
   end

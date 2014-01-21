@@ -36,7 +36,6 @@ ActiveAdmin.register Poll do
         render :edit
       end
     end
-
   end
 
   show do |poll|
@@ -48,6 +47,8 @@ ActiveAdmin.register Poll do
       div do
         simple_format poll.poll_choices.map{|x| x.choice}.join(', ')
       end
+      row :min_grade
+      row :max_grade
       row :active
     end
     active_admin_comments

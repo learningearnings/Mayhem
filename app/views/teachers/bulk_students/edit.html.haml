@@ -1,0 +1,147 @@
+.main-content-wrapper
+  .primary-content-fw
+    %h2 Edit Students
+    .grid_edit_students
+      .controls
+        = form_tag '/teachers/bulk_students/edit', method: :get do
+          %h5 Optionally Filter List of Students:
+          .control
+            %label Classroom:
+            = select_tag 'classroom', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name", :selected => params[:classroom]), id: 'controls_classroom'
+            %label Grade:
+            = select_tag 'grade', options_for_select([nil] | current_school.grades.map(&:reverse), :selected => params[:grade]), id: 'controls_grade'
+            %label Gender:
+            = select_tag 'gender', options_for_select([nil, 'Male', 'Female'], :selected => params[:gender]), id: 'controls_gender'
+            = button_tag 'Filter List', class: 'btn awesome-button'
+      .controls
+        %h5 
+          Action for
+          %span#number_of_students
+          Selected Students:
+        .control
+          = select_tag 'controls_action', options_for_select(@actions)
+          %span.password_field.secondary
+            %label Password:
+            = text_field_tag 'controls_password'
+          %span.classroom_field.secondary
+            %label Classroom:
+            = select_tag 'controls_classroom_selection', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name")
+          = button_tag 'UPDATE These Students', class: 'btn awesome-button', id: 'update_these_students'
+
+      = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
+        = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
+        %table
+          %thead
+            %tr
+              %th= check_box_tag 'select_all'
+              %th.text.first First
+              %th.text.last Last
+              %th.text.username Username
+              %th.select.grade Grade
+              %th.select.gender Gender
+              %th.text.password Password
+              %th
+          %tbody.students_body
+            - @students.each do |student|
+              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: '', grade: student.grade, gender: student.gender, id: student.id }
+
+:coffeescript
+  $('#select_all').on 'click', ->
+    if $('#select_all').attr('checked')
+      $('.edit_control').removeAttr('disabled')
+      $('input.selected').attr('checked', true)
+    else
+      $('input.selected').removeAttr('checked')
+      $('.edit_control').attr('disabled', 'disabled')
+    updateNumberOfStudents()
+
+  $('.students_body').on 'click', (evt) ->
+    if $(evt.target).hasClass('row_checkbox')
+      children = $(evt.target).closest('tr').find('.edit_control')
+      if $(evt.target).attr('checked') == "checked"
+        children.removeAttr('disabled')
+      else
+        $('#select_all').removeAttr('checked')
+        children.attr('disabled', 'disabled')
+      updateNumberOfStudents()
+
+  updateNumberOfStudents = ->
+    $('#number_of_students').html(numberOfStudents())
+
+  numberOfStudents = ->
+    $('.row_checkbox:checked').size()
+
+  chosenAction = ->
+    $('#controls_action').val()
+
+  whichSecondaryActionElementToShow = () ->
+    switch chosenAction()
+      when "Update Passwords to this Password" then $('.control span.secondary.password_field')
+      when "Add to Classroom I select:" then $('.control span.secondary.classroom_field')
+      else $([])
+
+  showAppropriateSecondaryAction = () ->
+    $('.control span.secondary').hide()
+    whichSecondaryActionElementToShow().show()
+
+  shouldShowEdit = ->
+    switch chosenAction()
+      when "Update Passwords to this Password" then false
+      when "Edit Students Information" then true
+      else false
+
+  conditionallyShowEditFields = () ->
+    if shouldShowEdit()
+      $('tbody .edit').show()
+      $('tbody .display').hide()
+    else
+      $('tbody .edit').hide()
+      $('tbody .display').show()
+
+    # We also potentially show only the password field, if "as indicated" is chosen
+    if chosenAction() == 'Update Passwords as Indicated'
+      $('tbody td.password .edit').show()
+
+  handleInterfaceState = ->
+    showAppropriateSecondaryAction()
+    conditionallyShowEditFields()
+
+  $('#controls_action').on 'change', handleInterfaceState
+
+  $('#update_these_students').on 'click', (evt) ->
+    evt.preventDefault()
+    if numberOfStudents() > 0
+      performSelectedStudentAction()
+      setFormActionHiddenTag()
+      $('#update_students_form').submit()
+    else
+      alert("You must select at least one student to modify.")
+
+  setFormActionHiddenTag = () ->
+    action = $('#controls_action').val()  
+    $('#form_action_hidden_tag').val(action)
+
+  performSelectedStudentAction = () ->
+    switch chosenAction()
+      when "Update Passwords to this Password"
+        updatePasswordsToPassword($('#controls_password').val())
+      when "Update Passwords = Usernames"
+        updatePasswordsToUsername()
+      when "Add to Classroom I select:"
+        updateClassroomsToClassroom($('#controls_classroom_selection').val())
+
+  updateClassroomsToClassroom = (classroom_id) ->
+    $('.edit_control.classroom').val(classroom_id)
+
+  updatePasswordsToPassword = (password) ->
+    $('input.password').val(password)
+
+  updatePasswordsToUsername = () ->
+    $('input.password').each (elm) ->
+      username = $(this).closest("tr").find("input.username").val()
+      $(this).val(username)
+
+  handleInterfaceState()
+
+  $('.edit_control').attr('disabled', 'disabled')
+  updateNumberOfStudents()

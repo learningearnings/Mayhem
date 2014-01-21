@@ -1,7 +1,7 @@
 %h2 New Student
 
 
-= form_for @student, :url => school_admins_create_student_path do |f|
+= form_for Student.new, :url => school_admins_create_student_path do |f|
   = f.label :first_name
   = f.text_field :first_name
   = f.label :last_name
@@ -12,8 +12,6 @@
   = f.select :gender, options_for_select(['Male', 'Female'], :gender), :include_blank => true
   = f.label :grade
   = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], :grade), :include_blank => true
-  = f.label :email
-  = f.text_field :email
   = f.label :username
   = f.text_field :username
   = f.label :password

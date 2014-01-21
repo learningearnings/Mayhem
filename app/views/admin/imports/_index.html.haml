@@ -1,0 +1,19 @@
+.students_import
+  %h4 Import Students
+  = form_tag admin_import_students_path, :multipart => true do
+    = label_tag 'School'
+    = select_tag :school_id, options_for_select(School.order('schools.name asc').all.collect {|s| [s.name, s.id]})
+    .field
+      = file_field_tag :file
+    = submit_tag 'Import Students'
+%br
+%br
+.teachers_import
+  %h4 Import Teachers
+  = form_tag admin_import_teachers_path, :multipart => true do
+    = label_tag 'School'
+    = select_tag :school_id, options_for_select(School.order('schools.name asc').all.collect {|s| [s.name, s.id]})
+    .field
+      = file_field_tag :file
+    = submit_tag 'Import Teachers'
+

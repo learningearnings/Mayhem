@@ -11,43 +11,67 @@ Spree::OrdersController.class_eval do
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => quantity+
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
 
+  def insufficient_quantity?
+    variant_options = params[:variants].to_a.flatten
+    variant  = Spree::Variant.find variant_options.first
+    quantity = variant_options.last
+    return true if quantity.to_i > variant.count_on_hand
+  end
+
   def populate
-    @order = current_order(true)
-    if current_person.is_a?(Student)
-      @order.empty!
-    end
+    ActiveRecord::Base.transaction do
+      begin
+        @order = current_order(true)
+        if current_person.is_a?(Student)
+          @order.empty!
+        end
+        if insufficient_quantity?
+          flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
+          redirect_to :back and return
+        end
+        @order.restock_items!
+        params[:products].each do |product_id,variant_id|
+          quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
+          quantity = params[:quantity][variant_id].to_i if params[:quantity].is_a?(Hash)
+          @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
+        end if params[:products]
 
-    @order.restock_items!
-    params[:products].each do |product_id,variant_id|
-      quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
-      quantity = params[:quantity][variant_id].to_i if params[:quantity].is_a?(Hash)
-      @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
-    end if params[:products]
+        params[:variants].each do |variant_id, quantity|
+          quantity = quantity.to_i
+          @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
+        end if params[:variants]
+        @order.unstock_items!
 
-    params[:variants].each do |variant_id, quantity|
-      quantity = quantity.to_i
-      @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
-    end if params[:variants]
-    @order.unstock_items!
+        fire_event('spree.cart.add')
+        fire_event('spree.order.contents_changed')
 
-    fire_event('spree.cart.add')
-    fire_event('spree.order.contents_changed')
+        # --- The above code is spree core copied ---
+        # --- Start our customization ---
 
-    # --- The above code is spree core copied ---
-    # --- Start our customization ---
-
-    if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
-      respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
-    else
-      if @order.total > current_person.checking_account.balance
-        flash[:notice] = t(:not_enough_credits_to_purchase)
-        product = @order.line_items.first.product
-        @order.empty!
-        redirect_to product and return
-      else
-        OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-        flash[:notice] = "Purchase Completed."
-        redirect_to "/"
+        if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
+          respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
+        else
+          if @order.total > current_person.checking_account.balance
+            flash[:notice] = t(:not_enough_credits_to_purchase)
+            product = @order.line_items.first.product
+            @order.empty!
+            redirect_to product and return
+          else
+            OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
+            message = "Purchase successful!."
+            if params[:variants].is_a?(Hash)
+              variant_id = params[:variants].keys.first
+              product = Spree::Variant.find(variant_id)
+              quantity = params[:variants][variant_id]
+              message = "Congratulations, you bought #{quantity} #{product.name}!"
+            end
+            redirect_to root_path, notice: message
+          end
+        end
+      rescue
+        message = 'There was an issue placing your order.'
+        redirect_to root_path, notice: message
+        raise ActiveRecord::Rollback
       end
     end
   end
@@ -81,7 +105,6 @@ Spree::OrdersController.class_eval do
     redirect_to spree.cart_path
   end
 
-
   def after_save_new_order
     @current_order.special_instructions = {school_id: current_school.id}.to_yaml
     @person = current_person
@@ -110,7 +133,6 @@ Spree::OrdersController.class_eval do
       @current_order.bill_address_attributes = shipping_address
     end
   end
-
 
   private
   def current_person

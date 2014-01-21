@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 ruby '2.0.0'
 
@@ -12,11 +12,17 @@ gem 'rake', '~> 10.1.0'
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
+gem 'exceptional'
+gem 'newrelic_rpm'
+gem 'transaction_retry'
 
 # for importing
 #gem 'mysql2'
 #gem 'taps'
 #gem 'sqlite3'
+
+gem 'modernizr-rails', '~> 2.6.2.3'
+gem "webshims-rails", "~> 1.11.1" # if we move to rails 4, please read https://github.com/whatcould/webshims-rails for changes.
 
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
@@ -26,6 +32,9 @@ gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
+
+gem 'whenever', :require => false
+gem 'sidekiq'
 
 gem 'therubyracer'
 
@@ -47,13 +56,15 @@ gem 'high_voltage'
 
 # haml is a templating language we use extensively / exclusively on this project
 gem 'haml-rails', '~> 0.3.5'
+gem 'rdiscount'
 
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'
 
 # roo handles reading and converting excel files to csv
 gem 'iconv'
-gem 'roo', '1.12.1'
+gem 'roo'
+#gem 'roo', '1.12.1'
 gem 'spreadsheet'
 gem 'rubyzip', '0.9.9'
 
@@ -62,6 +73,7 @@ gem 'hashie'
 
 # A simple date validator for rails 3
 gem 'date_validator'
+gem "just-datetime-picker"
 
 # Allows easily modifying models provided earlier in the stack without causing
 # any grief
@@ -97,7 +109,8 @@ gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails',   '~> 3.2.6'
+  gem 'sass', '~> 3.2.10'
   gem 'compass-rails'
   gem 'animation'
   gem 'coffee-rails', '~> 3.2.1'
@@ -105,14 +118,12 @@ group :assets do
   #gem "compass_twitter_bootstrap", :git => "git://github.com/vwall/compass-twitter-bootstrap.git"
   #gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git", :tag => "MayhemV1"
   gem "compass_twitter_bootstrap", :github => "learningearnings/compass-twitter-bootstrap"
+  gem 'turbo-sprockets-rails3'
+  gem "sprockets-image_compressor", "~> 0.2.2"
 end
 
 # Use unicorn as the app server
 gem 'unicorn'
-
-# Deploy with Capistrano
-gem 'capistrano', '~> 2.15.5'
-gem 'rvm-capistrano'
 
 # To use debugger
 # gem 'debugger'
@@ -123,6 +134,12 @@ group :development do
   #gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
   gem 'letter_opener'
+  # Deploy with Capistrano
+  gem 'capistrano', '~> 2.15.5'
+  gem 'rvm-capistrano'
+  gem 'capistrano-unicorn', require: false
+  # Generate ERD diagrams from your models
+  gem 'rails-erd'
 end
 
 group :test do
@@ -131,7 +148,7 @@ group :test do
   #gem 'thin'
   gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
-  gem 'minitest-reporters', '~> 0.8.0'
+  gem 'minitest-reporters'
   gem 'minitest-matchers', '~> 1.2.0'
   gem 'spinach', '~> 0.5.2'
   gem 'database_cleaner', '~> 0.8.0'
@@ -153,5 +170,8 @@ end
 
 gem "coffee-filter", '~> 0.1.3'
 
-#### Only here for staging deploymenbts ###
+#### Only here for staging deployments ###
 gem 'factory_girl_rails'
+
+gem 'sanitizing_bigdecimal'
+gem 'httparty'

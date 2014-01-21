@@ -1,8 +1,31 @@
 require 'test_helper'
 require_relative '../../app/models/food_fight_play_command'
 
+class FoodFightMatch; end
+
 describe FoodFightPlayCommand do
-  subject { FoodFightPlayCommand.new }
+  let(:player) do
+    player = mock "FoodFightPlayer"
+    player.stubs(:update_attributes).returns(true)
+    player.stubs(:questions_answered).returns(1)
+    player.stubs(:add_score)
+    player
+  end
+  let(:players_association) do
+    assoc = mock "Players Association"
+    assoc.stubs(:find_by_person_id).returns(player)
+    assoc
+  end
+  let(:match) do
+    match = mock "Match"
+    match.stubs(:players).returns(players_association)
+    match
+  end
+  subject { FoodFightPlayCommand.new(match_id: 1) }
+
+  before do
+    FoodFightMatch.stubs(:find).with(1).returns(match)
+  end
 
   describe 'validations' do
     before do
@@ -13,6 +36,12 @@ describe FoodFightPlayCommand do
       subject.wont have_valid(:question_id).when(nil)
       subject.wont have_valid(:question_id).when('asdf')
       subject.must have_valid(:question_id).when(1)
+    end
+
+    it "requires valid school_id" do
+      subject.wont have_valid(:school_id).when(nil)
+      subject.wont have_valid(:school_id).when('asdf')
+      subject.must have_valid(:school_id).when(1)
     end
 
     it "requires valid answer_id" do
@@ -108,15 +137,17 @@ describe FoodFightPlayCommand do
     subject.stubs(:person_answer_repository).returns(person_answer_repository)
     subject.question_id = 3
     subject.person_id = 1
+    subject.school_id = 9
     person_answer_args = {
       person_id: 1,
       question_answer_id: 2,
-      question_id: 3
+      question_id: 3,
+      school_id: 9
     }
     subject.stubs(:valid?).returns true
     subject.stubs(:correct?).returns true
     on_success = mock "Callback"
-    on_success.expects(:call).with(subject)
+    on_success.expects(:call).with(subject, match, player)
     subject.stubs(:on_success).returns(on_success)
     created_answer = mock "PersonAnswer"
     created_answer.expects(:valid?).returns(true)

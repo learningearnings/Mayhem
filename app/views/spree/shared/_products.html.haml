@@ -12,7 +12,7 @@
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
   - reset_cycle('default')
-  - products.in_groups_of(3) do |grp|
+  - products.in_groups_of(2) do |grp|
     .row
       %ul#products.inline.product-listing{"data-hook" => ""}
         - grp.each do |product|
@@ -23,7 +23,7 @@
                   = link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url'
                 .product-details
                   = link_to truncate("#{product.name}", :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name
-                  .price.selling{:itemprop => "price"}= product.price
+                  .price.selling{:itemprop => "price"}= number_with_precision(product.price, precision: 2, delimiter: ',')
                   .quantity{:itemprop => "on_hand"}= product.on_hand.to_s + " available"
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130904155411) do
+ActiveRecord::Schema.define(:version => 20140120164023) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -83,20 +83,23 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.decimal  "current_bid",     :precision => 10, :scale => 2
     t.integer  "product_id"
     t.string   "auction_type"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
     t.decimal  "starting_bid",    :precision => 10, :scale => 2
     t.integer  "min_grade"
     t.integer  "max_grade"
     t.boolean  "created_locally"
+    t.boolean  "notified",                                       :default => false
+    t.boolean  "fulfilled",                                      :default => false
   end
 
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
     t.string   "image_name"
     t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "teacher_only", :default => false
   end
 
   create_table "buck_batch_links", :force => true do |t|
@@ -137,6 +140,13 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
 
   add_index "classroom_filter_links", ["filter_id", "classroom_id"], :name => "index_classroom_filter_links_on_filter_id_and_classroom_id", :unique => true
 
+  create_table "classroom_product_links", :force => true do |t|
+    t.integer  "classroom_id"
+    t.integer  "spree_product_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
   create_table "classrooms", :force => true do |t|
     t.string   "name"
     t.string   "status"
@@ -154,6 +164,18 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.datetime "used_date"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "codes", ["active"], :name => "index_codes_on_active"
+
+  create_table "delayed_reports", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "state"
+    t.text     "report_data"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "name"
+    t.string   "render_class"
   end
 
   create_table "filters", :force => true do |t|
@@ -253,6 +275,7 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.integer  "elapsed_time"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.integer  "school_id"
   end
 
   create_table "games_question_answers", :force => true do |t|
@@ -380,7 +403,11 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+    t.string   "reason"
   end
+
+  add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
+  add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
     t.integer  "otu_code_id"
@@ -394,17 +421,18 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
     t.string   "salutation",             :limit => 10
     t.string   "recovery_password"
-    t.boolean  "can_distribute_credits"
+    t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
+    t.boolean  "game_challengeable",                   :default => false
   end
 
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
@@ -453,6 +481,7 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.integer  "classroom_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.boolean  "homeroom"
   end
 
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
@@ -512,6 +541,8 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.boolean  "active"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
   end
 
   create_table "posts", :force => true do |t|
@@ -588,6 +619,13 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.integer  "state_id"
     t.string   "zip"
     t.string   "sti_uuid"
+  end
+
+  create_table "site_settings", :force => true do |t|
+    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
   end
 
   create_table "spree_activators", :force => true do |t|
@@ -1169,7 +1207,6 @@ ActiveRecord::Schema.define(:version => 20130904155411) do
     t.string   "username"
   end
 
-  add_index "spree_users", ["email"], :name => "email_idx_unique", :unique => true
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
   add_index "spree_users", ["person_id"], :name => "su_person_id", :unique => true
   add_index "spree_users", ["username"], :name => "su_username"

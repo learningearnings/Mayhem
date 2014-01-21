@@ -1,0 +1,12 @@
+%table
+  %thead
+    %tr
+      %th Date
+      %th Name
+      %th Actions
+  %tbody
+    - @reports.each do |report|
+      %tr
+        %td= report.created_at
+        %td= report.name
+        %td= link_to "View Report", report

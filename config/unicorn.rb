@@ -14,10 +14,10 @@ listen 8080, :tcp_nopush => true
 # Preload our app for more speed
 preload_app true
 
-# nuke workers after 30 seconds instead of 60 seconds (the default)
-timeout 30
+# nuke workers after 60 seconds
+timeout 60
 
-pid "/tmp/unicorn.mayhemstaging.lemirror.com.pid"
+pid "/home/deployer/apps/Mayhem/current/tmp/pids/unicorn.pid"
 
 # Production specific settings
 if env == "production"

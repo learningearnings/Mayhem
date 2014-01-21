@@ -2,6 +2,8 @@ ActiveAdmin.register Auction do
   scope :active
   scope :ended
   scope :upcoming
+  scope :unfulfilled
+  config.filters = false
 
   controller do
     skip_before_filter :add_current_store_id_to_params
@@ -40,19 +42,25 @@ ActiveAdmin.register Auction do
         render :edit
       end
     end
+
+    def fulfill_auction
+      @auction = Auction.find params[:auction_id]
+      @auction.fulfill!
+      redirect_to admin_auction_path @auction
+    end
   end
 
   index do
     column :id
     column :auction_type
     column :product do |auction|
-      auction.product.name
+      auction.product.name if auction.product
     end
     column :start_date
     column :end_date
     column :status
     column :starting_bid do |auction|
-      auction.starting_bid
+      auction.starting_bid if auction
     end
     column :bids do |auction|
       auction.auction_bids.count
@@ -68,54 +76,37 @@ ActiveAdmin.register Auction do
         difference = auction.bid_difference_since(last_viewed_bid_time)
         bid_text += "(+ #{difference}) " unless difference == BigDecimal('0')
       end
-      session[auction_session_key] = Time.zone.now
+      #session[auction_session_key] = Time.zone.now
 
       bid_text += auction.current_bid.to_s
       bid_text.html_safe
     end
+
     column :leader do |auction|
       leader = auction.current_leader
       "#{leader} (#{leader.grade}) #{leader.school}" if leader
     end
     column :actions do |auction|
       link_html = ""
-      link_html += (link_to "Show", admin_auction_path(auction)) + " " if auction.upcoming?
+      link_html += (link_to "Show", admin_auction_path(auction)) + " "# if auction.upcoming?
       link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " if auction.upcoming?
       link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.upcoming?
       link_html.html_safe
     end
+    default_actions
   end
 
-  show do |auction|
-    attributes_table do
-      row :id
-      row :start_date
-      row :end_date
-      row :current_bid
-      row :product
-      row :auction_type
-      row :starting_bid
-      row :min_grade
-      row :max_grade
-      row :states do
-        auction.states.collect{|t| t.name}.join(', ')
-      end
-      row :schools do
-        auction.schools.collect{|t| t.name}.join(', ')
-      end
-      row :auction_zip_codes do
-        auction.auction_zip_codes.collect{|t| t.zip_code}.join(', ')
-      end
- 
-    end
-    render 'links'
+  show do
+    @auction = Auction.find(params[:id])
+    render :partial => 'admin/auctions/show', :locals => { :auction => @auction }
   end
 
   form do |f|
     f.inputs "Details" do
-      f.input :product
-      f.input :start_date, :as => :datepicker
-      f.input :end_date, :as => :datepicker
+      f.input :product, :as => :chosen, :collection => Spree::Product.for_auctions
+      f.input :starting_bid
+      f.input :start_date, :as => :just_datetime_picker
+      f.input :end_date, :as => :just_datetime_picker
       f.input :min_grade, :as => :select, :collection => School::GRADES
       f.input :max_grade, :as => :select, :collection => School::GRADES
       f.input :schools, :as => :chosen

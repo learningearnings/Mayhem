@@ -34,6 +34,22 @@ describe Message do
     end
   end
 
+  it "can be replied to unless it's a system message" do
+    subject.category = 'friend'
+    subject.replyable?.must_equal(true)
+  end
+
+  it "cannot be replied to if it's a system message" do
+    subject.category = 'system'
+    subject.replyable?.must_equal(false)
+  end
+
+  it "cannot be replied to if it has associated bucks" do
+    subject.category = 'friend'
+    def subject.otu_codes; [1,2]; end
+    subject.replyable?.must_equal(false)
+  end
+
   describe 'state machine' do
     before do
       # Here we make one that's not stubbed since state_machine transitions save

@@ -9,22 +9,26 @@ module Teachers
     validates :name, presence: true
     validates :price, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
-    validates :classrooms, presence: true
+    #validates_presence_of :image
 
-    attr_accessible :name, :price, :classrooms, :image, :end_date, :start_date, :on_hand, :category, :school_id, :classroom_id
+    attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id, :min_grade, :max_grade
 
-    attr_accessor :id, :name, :price, :classrooms,:image, :end_date, :start_date, :spree_product_id
-    attr_accessor :on_hand, :spree_product, :teacher, :school, :category, :school_id, :classroom_id
+    attr_accessor :id, :name, :description, :price, :classrooms, :image, :spree_product_id
+    attr_accessor :on_hand, :teacher, :school, :category, :school_id, :classroom_id
+    attr_accessor :min_grade, :max_grade
+
+    delegate :set_property, to: :spree_product
 
     def initialize params = {}
       @name = params[:name] if params[:name]
+      @description = params[:description] if params[:description]
       @price = params[:price] if params[:price]
       @on_hand = params[:on_hand] if params[:on_hand]
-      @start_date = params[:start_date] if params[:start_date]
-      @end_date = params[:end_date] if params[:end_date]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
-      @classrooms = params[:classrooms].collect{|c| c.to_i} if params[:classrooms] && params[:classrooms].is_a?(Array)
+      @min_grade = params[:min_grade] if params[:min_grade]
+      @max_grade = params[:max_grade] if params[:max_grade]
+      @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
     end
 
     def spree_product_id=(id)
@@ -50,26 +54,20 @@ module Teachers
 
     def spree_product=(p)
       @name = p.name
+      @description = p.description
       @price = p.price.to_int
-      @start_date = p.available_on
-      @end_date = p.deleted_at
       @on_hand = p.on_hand
-      @classrooms = p.filter.classrooms.all.collect {|c| [c.id]}.uniq.flatten
-      if !@classrooms.any?
-        @classrooms = [0]
-      end
-      # set classrooms to the classrooms from the filter...
+      @classrooms = p.classrooms
     end
 
     def update(params)
       reward_params = params[:teachers_reward]
       p = Spree::Product.find(reward_params[:id])
       p.name = @name = reward_params[:name]
+      p.description = @description = reward_params[:description]
       p.price = @price = reward_params[:price]
       p.on_hand = @on_hand = reward_params[:on_hand]
-      @classrooms = reward_params[:classrooms]
-      p.available_on = @start_date = reward_params[:start_date] if reward_params[:start_date]
-      p.deleted_on = @end_date = reward_params[:end_date] if reward_params[:end_date]
+      # update classrooms
       p.save
     end
 
@@ -83,64 +81,77 @@ module Teachers
 
     def update_attributes(params,options = {})
       @name = params[:name] if params[:name]
+      @description = params[:description] if params[:description]
       @price = params[:price] if params[:price]
       @on_hand = params[:on_hand] if params[:on_hand]
-      @start_date = params[:start_date] if params[:start_date]
-      @end_date = params[:end_date] if params[:end_date]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
-      @classrooms = params[:classrooms].collect{|c| c.to_i} if params[:classrooms] && params[:classrooms].is_a?(Array)
+      if params[:classrooms]
+        @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
+      else
+        @classrooms = []
+      end
       if valid?
         self.save
       end
     end
 
+    def spree_product
+      return nil if @spree_product_id.nil?
+      Spree::Product.find(@spree_product_id)
+    end
+
+    def whole_school?
+      @classrooms && @classrooms.empty?
+    end
 
     def save
-      return valid? if !valid?
+      return false unless valid?
 
-      if @spree_product_id.nil?
+      if spree_product.nil?
         p = Spree::Product.new
         sppl = SpreeProductPersonLink.new(:person_id => @teacher.id)
       else
-        p = Spree::Product.find(@spree_product_id)
+        p = spree_product
         sppl = SpreeProductPersonLink.find_by_product_id(p.id)
       end
+
       p.name = @name
+      p.description = @description
       p.price = @price
       p.on_hand = @on_hand
-      p.available_on = @start_date if @start_date
-      p.deleted_at = @end_date if @end_date
+      p.available_on = Time.now
+      p.store_ids = [@school.store.id]
+      p.min_grade = @min_grade
+      p.max_grade = @max_grade
+      p.fulfillment_type = 'local'
       p.save
+
+      @spree_product_id = p.id
 
       if @image.present?
         p.images.destroy_all if p.images.present?
         p.images.create(attachment: @image)
       end
 
-      p.set_property('reward_type','local')
-      p.save
+      p.set_property('reward_type', 'local')
       p.taxons = Spree::Taxon.where(:id => @category)
+      p.save
 
-      fc = FilterConditions.new
-      if @classrooms.count == 1 && @classrooms[0] == 0  #whole school
-        fc.schools << @school
-      elsif classrooms.any?
-        fc.classrooms << @classrooms if @classrooms.any?  #error otherwise
-      end
-      ff = FilterFactory.new
-      filter = ff.find_or_create_filter(fc)
-      spfl = SpreeProductFilterLink.find_by_product_id(@spree_product_id)
-      if spfl.nil?
-        spfl = SpreeProductFilterLink.new(:filter_id => 0, :product_id => p.id)
+      if @classrooms.present?
+        p.school_product_links.delete_all
+        p.classroom_product_links.delete_all
+        @classrooms.each do |classroom|
+          ClassroomProductLink.create(spree_product_id: p.id, classroom_id: classroom.id)
+        end
+      else
+        p.classroom_product_links.delete_all
+        p.school_product_links.delete_all
+        SchoolProductLink.create(school_id: @school.id, spree_product_id: p.id)
       end
 
-      spfl.filter_id = filter.id if spfl
-      spfl.save
       sppl.product_id = p.id
       sppl.save
     end
-
-
   end
 end

@@ -67,7 +67,7 @@ GIT
       activeadmin
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
@@ -82,21 +82,20 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active_utils (2.0.0)
+    active_utils (2.0.1)
       activesupport (>= 2.3.11)
       i18n
-    activeadmin (0.6.0)
-      arbre (>= 1.0.1)
-      bourbon (>= 1.0.0)
-      devise (>= 1.1.2)
-      fastercsv
-      formtastic (>= 2.0.0)
-      inherited_resources (>= 1.3.1)
-      jquery-rails (>= 1.0.0)
-      kaminari (>= 0.13.0)
-      meta_search (>= 0.9.2)
-      rails (>= 3.0.0)
-      sass (>= 3.1.0)
+    activeadmin (0.6.1)
+      arbre (~> 1.0)
+      bourbon (>= 1.0.0, < 4)
+      devise (>= 1.5.4, < 4)
+      formtastic (~> 2.0)
+      inherited_resources (~> 1.3)
+      jquery-rails (>= 1.0.0, < 3)
+      kaminari (~> 0.13)
+      meta_search (~> 1.0)
+      rails (>= 3.0.0, < 4)
+      sass (~> 3.1)
     activemerchant (1.28.0)
       active_utils (>= 1.0.2)
       activesupport (>= 2.3.11)
@@ -145,6 +144,8 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    capistrano-unicorn (0.1.10)
+      capistrano
     capybara (1.1.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -152,20 +153,24 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
+    choice (0.1.6)
     chosen-rails (1.0.0)
       coffee-rails (>= 3.2)
       compass-rails (>= 1.0)
       railties (>= 3.0)
       sass-rails (>= 3.2)
+    chronic (0.10.2)
     chunky_png (1.2.8)
     ckeditor (3.7.3)
       mime-types
       orm_adapter
     climate_control (0.0.3)
       activesupport (>= 3.0)
-    cocaine (0.5.1)
+    cocaine (0.5.2)
       climate_control (>= 0.0.3, < 1.0)
     coderay (1.0.9)
     coffee-filter (0.1.3)
@@ -178,13 +183,14 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.3)
-    colorize (0.5.8)
+    colorize (0.6.0)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
+    connection_pool (1.1.0)
     country_select (1.2.0)
     database_cleaner (0.8.0)
     date_validator (0.7.0)
@@ -206,15 +212,15 @@ GEM
       actionpack (~> 3.2)
       activesupport (~> 3.2)
     erubis (2.7.0)
+    exceptional (2.0.33)
+      rack
     excon (0.25.3)
-    execjs (1.4.0)
-      multi_json (~> 1.0)
+    execjs (2.0.2)
     factory_girl (4.2.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.2.1)
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
-    fastercsv (1.5.5)
     ffaker (1.12.1)
     ffi (1.9.0)
     fog (1.15.0)
@@ -247,7 +253,9 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (~> 3.1)
       railties (>= 3.1, < 4.1)
-    has_scope (0.5.1)
+    has_scope (0.6.0.rc)
+      actionpack (>= 3.2, < 5)
+      activesupport (>= 3.2, < 5)
     hashie (2.0.5)
     high_voltage (1.2.4)
     highline (1.6.11)
@@ -257,23 +265,25 @@ GEM
       multi_xml
     i18n (0.6.1)
     iconv (1.0.3)
-    inherited_resources (1.4.0)
-      has_scope (~> 0.5.0)
-      responders (~> 0.9)
+    inherited_resources (1.4.1)
+      has_scope (~> 0.6.0.rc)
+      responders (~> 1.0.0.rc)
     journey (1.0.4)
-    jquery-ui-rails (4.0.4)
-      jquery-rails
+    jquery-ui-rails (4.0.5)
       railties (>= 3.1.0)
     json (1.8.0)
+    just-datetime-picker (0.0.6)
+      activeadmin (>= 0.4.4)
+      formtastic (>= 2.0.0)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    kgio (2.8.0)
+    kgio (2.8.1)
     launchy (2.3.0)
       addressable (~> 2.3)
     letter_opener (1.1.2)
       launchy (~> 2.2)
-    libnotify (0.8.1)
+    libnotify (0.8.2)
       ffi (>= 1.0.11)
     libv8 (3.16.14.3)
     listen (0.7.3)
@@ -298,10 +308,11 @@ GEM
       ruby-progressbar
     mocha (0.14.0)
       metaclass (~> 0.0.1)
+    modernizr-rails (2.6.2.3)
     money (5.0.0)
       i18n (~> 0.4)
       json
-    multi_json (1.7.9)
+    multi_json (1.8.2)
     multi_xml (0.5.5)
     nested_set (1.7.0)
       activerecord (>= 3.0.0)
@@ -310,10 +321,11 @@ GEM
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
-    net-ssh (2.6.8)
+    net-ssh (2.7.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
-    nokogiri (1.5.10)
+    newrelic_rpm (3.6.9.171)
+    nokogiri (1.5.11)
     orm_adapter (0.0.7)
     paperclip (2.8.0)
       activerecord (>= 2.3.0)
@@ -351,6 +363,11 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    rails-erd (1.1.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      choice (~> 0.1.6)
+      ruby-graphviz (~> 1.0.4)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -358,7 +375,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    raindrops (0.11.0)
+    raindrops (0.12.0)
     rake (10.1.0)
     ranked-model (0.3)
       activerecord (>= 3.1.12)
@@ -369,22 +386,28 @@ GEM
     rb-fsevent (0.9.3)
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
+    rdiscount (2.1.7)
     rdoc (3.12.2)
       json (~> 1.4)
+    redis (3.0.6)
+    redis-namespace (1.3.2)
+      redis (~> 3.0.4)
     ref (1.0.5)
-    responders (0.9.3)
-      railties (~> 3.1)
-    roo (1.12.1)
+    responders (1.0.0)
+      railties (>= 3.2, < 5)
+    roo (1.13.2)
       nokogiri
       rubyzip
       spreadsheet (> 0.6.4)
+    ruby-graphviz (1.0.9)
     ruby-hmac (0.4.0)
     ruby-ole (1.2.11.7)
     ruby-progressbar (1.2.0)
     rubyzip (0.9.9)
-    rvm-capistrano (1.4.4)
+    rvm-capistrano (1.5.0)
       capistrano (>= 2.15.4)
-    sass (3.2.10)
+    sanitizing_bigdecimal (0.0.1)
+    sass (3.2.11)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
@@ -396,6 +419,12 @@ GEM
       multi_json (~> 1.0)
       rubyzip (< 1.0.0)
       websocket (~> 1.0.4)
+    sidekiq (2.16.1)
+      celluloid (>= 0.15.2)
+      connection_pool (>= 1.0.0)
+      json
+      redis (>= 3.0.4)
+      redis-namespace (>= 1.3.1)
     simple_form (2.1.0)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
@@ -413,7 +442,7 @@ GEM
       capybara (~> 1)
       railties (>= 3)
       spinach (>= 0.4)
-    spreadsheet (0.8.9)
+    spreadsheet (0.9.6)
       ruby-ole (>= 1.0)
     spree (1.2.0)
       spree_api (= 1.2.0)
@@ -457,6 +486,8 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    sprockets-image_compressor (0.2.2)
+      sprockets
     squeel (1.0.18)
       activerecord (~> 3.0)
       activesupport (~> 3.0)
@@ -469,9 +500,18 @@ GEM
       ref
     thor (0.14.6)
     tilt (1.4.1)
+    timers (1.1.0)
+    transaction_isolation (1.0.3)
+      activerecord (>= 3.0.11)
+    transaction_retry (1.0.2)
+      activerecord (>= 3.0.11)
+      transaction_isolation (>= 1.0.2)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    turbo-sprockets-rails3 (0.3.10)
+      railties (> 3.2.8, < 4.0.0)
+      sprockets (>= 2.0.0)
     tzinfo (0.3.37)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
@@ -483,7 +523,12 @@ GEM
     uuidtools (2.1.4)
     warden (1.1.1)
       rack (>= 1.0)
+    webshims-rails (1.11.1)
+      rails (> 3.1.0)
     websocket (1.0.7)
+    whenever (0.8.4)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     whereabouts (0.9.1)
       activerecord
       activesupport
@@ -499,6 +544,7 @@ DEPENDENCIES
   animation
   cancan
   capistrano (~> 2.15.5)
+  capistrano-unicorn
   capybara
   chosen-rails
   ckeditor (= 3.7.3)
@@ -513,6 +559,7 @@ DEPENDENCIES
   devise
   dragonfly
   draper (= 0.18.0)
+  exceptional
   factory_girl_rails
   fog
   googlecharts
@@ -523,18 +570,22 @@ DEPENDENCIES
   has_scope
   hashie
   high_voltage
+  httparty
   iconv
   jquery-rails!
   jquery-ui-rails
+  just-datetime-picker
   kaminari
   launchy
   letter_opener
   libnotify
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
-  minitest-reporters (~> 0.8.0)
+  minitest-reporters
   mocha (~> 0.14.0)
+  modernizr-rails (~> 2.6.2.3)
   nested_form!
+  newrelic_rpm
   pdfkit
   pg (= 0.13.2)
   plutus!
@@ -543,15 +594,20 @@ DEPENDENCIES
   rack-bug!
   rack-cache
   rails (= 3.2.13)
+  rails-erd
   rake (~> 10.1.0)
   ranked-model
   rb-fsevent (~> 0.9.1)
   rb-inotify (~> 0.8.8)
+  rdiscount
   responders
-  roo (= 1.12.1)
+  roo
   rubyzip (= 0.9.9)
   rvm-capistrano
-  sass-rails (~> 3.2.3)
+  sanitizing_bigdecimal
+  sass (~> 3.2.10)
+  sass-rails (~> 3.2.6)
+  sidekiq
   simple_form
   simplecov (~> 0.6.4)
   simplecov-rcov (~> 0.2.3)
@@ -561,12 +617,17 @@ DEPENDENCIES
   spree (= 1.2.0)
   spree_auth_devise!
   spree_multi_domain!
+  sprockets-image_compressor (~> 0.2.2)
   squeel
   state_machine
   tconsole
   therubyracer
   thor (= 0.14.6)
+  transaction_retry
+  turbo-sprockets-rails3
   uglifier (>= 1.0.3)
   unicorn
   valid_attribute!
+  webshims-rails (~> 1.11.1)
+  whenever
   whereabouts (~> 0.9.0)

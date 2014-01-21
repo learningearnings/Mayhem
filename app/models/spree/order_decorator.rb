@@ -1,4 +1,5 @@
 Spree::Order.class_eval do
+  before_create :set_dummy_email # We don't want to send emails, so just changing this to a dummy email all the time
 
   attr_accessible :school_id
 
@@ -14,6 +15,25 @@ Spree::Order.class_eval do
     end
   end
 
+  # NOTE: I do not think this is good code, but it's an extraction of something
+  # that was (a) in a view, and (b) broken.  This is the 'correct' way to do
+  # what the view was trying and failing to do in one line with comical rescues
+  # and whatnot.
+  def le_shipment_company
+    output = if ship_address
+               ship_address.company
+             else
+               ridiculous_yaml_setup = YAML.load(special_instructions.to_s)
+               if(ridiculous_yaml_setup.is_a?(Hash))
+                 school_id_from_ridiculous_yaml_setup = ridiculous_yaml_setup[:school_id]
+                 school = School.find(school_id_from_ridiculous_yaml_setup)
+                 if(school)
+                   school.name
+                 end
+               end
+             end
+    output.to_s
+  end
 
   def unstock_items!
     line_items.each do |line_item|
@@ -29,8 +49,11 @@ Spree::Order.class_eval do
     variant.save
   end
 
+  def set_dummy_email
+    self.email = 'nobody@example.com'
+  end
 
-checkout_flow do
+  checkout_flow do
     go_to_state :transmitted
     go_to_state :printed
     # go_to_state :address
@@ -42,5 +65,4 @@ checkout_flow do
     go_to_state :refunded
     #remove_transition :from => :delivery, :to => :confirm
   end
-
 end

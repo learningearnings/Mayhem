@@ -1,6 +1,7 @@
 module Games
   class Leaderboard
-    def initialize(game_type)
+    def initialize(school, game_type)
+      @school = school
       @game_type = game_type
     end
 
@@ -11,6 +12,7 @@ module Games
         joins("INNER JOIN games_questions ON games_question_answers.question_id = games_questions.id").
         where("games_question_answers.correct = true").
         where("games_questions.game_type = ?", @game_type).
+        where("games_person_answers.school_id = ?", @school.id).
         group("person_id").
         order("score DESC").
         limit(limit)

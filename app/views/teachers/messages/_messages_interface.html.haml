@@ -1,5 +1,5 @@
 = paginate @messages
-- if @messages.count > 0
+- if @messages.present?
   - @messages.each do |message|
     .message
       .from
@@ -13,7 +13,8 @@
       = link_to "Reply to this message", teachers_reply_message_path(message, refurl: url_for(params)), class: 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
   = paginate @messages
 - else
-  = "You have 0 #{controller.action_name.humanize.titlecase}"
+  /= "You have 0 #{controller.action_name.humanize.titlecase}"
+  = "You have 0 Messages"
 
 
 #read-message-modal.modal.hide

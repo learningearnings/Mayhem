@@ -38,8 +38,7 @@
   .locker_interface {
     display: block;
     width: 804px;
-    height: 160px;
-    margin-left: 130px;
+    height: 260px;
     overflow: scroll;
     background-color: #fff;
     overflow-x: hidden;
@@ -63,10 +62,6 @@
   }
 }
 
-.locker_show {
-  margin-left: 130px;
-}
-
 .childish-button{
   background: rgba(37, 134, 11, 0.8);
   padding: .5em;
@@ -78,8 +73,16 @@
   color: #fff;
 }
 
-.locker_buttons {
-  width: 804px;
+.shared-locker ul.action_buttons.locker_buttons {
+  width: 150px;
+}
+.show-locker ul.action_buttons.locker_buttons {
+  width: 570px;
+}
+ul.action_buttons.locker_buttons {
+  width: 570px;
+  top: 0;
+  right:0;
   padding: 2em 1em;
   margin: 2em 0 0 0;
   a {

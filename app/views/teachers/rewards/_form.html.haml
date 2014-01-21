@@ -1,55 +1,74 @@
-= simple_form_for(@teachers_reward,html: {class: 'form-horizontal'}) do |f|
+= simple_form_for(@teachers_reward, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
   %h3 Name and Price
   .row-fluid
     .form-inputs.controls-row.span6
       = f.input :name, label: "Name", placeholder: 'Your Reward Name', input_html: {class: 'input-large focus-on-me'}
+      = f.input :description, label: "Description", placeholder: 'Your Reward Description', input_html: {class: 'input-large', rows: 10}, as: :text
       = f.input :category do
         = f.select :category, options_from_collection_for_select(Spree::Taxon.where("parent_id IS NOT NULL"), :id, :name, @teachers_reward.category_id), :include_blank => true
       = f.input :image, :as => :file
       = f.input :on_hand, label: "Quantity On Hand", placeholder: 'On Hand', input_html: { :min => "0",class: 'input-small numeric'}
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
-        %span.add-on $
         = f.input_field :price, class: 'input-small numeric'
         %span.add-on .00
     - if @teachers_reward.spree_product_id
       .form-inputs.controls-row.span6.clearfix
         %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
 
+  %h3 Reward Scope
+  %ul.reward-scope
+    %li
+      %label
+        = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
+        Whole School
+    %li
+      %label
+        = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
+        Specific Classrooms
 
-  %h3
-    Select Classrooms for your reward
-  .row-fluid.controls-row
-    .classrooms
-      - f.collection_check_boxes(:classrooms, [[ 0,"Whole School"]], :first, :last) do |b|
-        %div.classroom-checkbox
-          = b.label(:class => "inline") { b.check_box(:class => 'school-checkbox inline') + b.text}
-  .row-fluid.controls-row
-    #classrooms.classrooms
-      - f.collection_check_boxes :classrooms, current_person.classrooms, :id, :name do |b|
-        %div.classroom-checkbox
-          = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text}
+  .classrooms-interface
+    %h3 Select Classrooms for your reward
+    .row-fluid.controls-row
+      #classrooms.classrooms
+        - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
+          %div.classroom-checkbox
+            = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text }
+  .whole-school-interface
+    This reward will be available to every student at the school.
+
   .control-row
   = f.input :spree_product_id, :as => :hidden
   = f.submit :class => 'btn awesome-button'
 
-:javascript
 :coffeescript
   jQuery ->
-
+    conditionally_show_classrooms = ->
+      if($('#reward_scope_whole_school').prop('checked'))
+        $('.classrooms-interface').hide()
+        $('.whole-school-interface').show()
+      else
+        $('.classrooms-interface').show()
+        $('.whole-school-interface').hide()
+      
     toggle_all_classrooms = (_event) ->
       if ($ _event.target).prop('checked') == true
-        ($ ".class-checkbox").prop('checked',false);
-
+        ($ ".class-checkbox").prop('checked',false)
 
     ($ 'select#teachers_reward_image').change (_event) ->
       update_image(_event)
 
-    ($ 'input.school-checkbox').change (_event) ->
+    ($ 'input[name=reward_scope]').change (_event) ->
       toggle_all_classrooms(_event)
+      conditionally_show_classrooms()
+
     whole_school_if_no_classrooms = ->
       num_checked = ($ "input.class-checkbox:checked").length
       if num_checked == 0
         ($ "input.school-checkbox").click()
+
     whole_school_if_no_classrooms()
+
     ($ 'select#teachers_reward_image').change()
+
+    conditionally_show_classrooms()

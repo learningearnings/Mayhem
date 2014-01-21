@@ -3,7 +3,7 @@ module Teachers
     # GET /teachers/rewards
     # GET /teachers/rewards.json
     def index
-      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').joins(:spree_product_person_link).where(:spree_product_person_link => {:person_id => current_person.id}).page(params[:page]).per(9)
+      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').joins(:spree_product_person_link).where(:spree_product_person_link => {:person_id => current_person.id}).order('name').page(params[:page]).per(9)
 #      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').page(params[:page]).per(9)
 
       respond_to do |format|
@@ -12,10 +12,22 @@ module Teachers
       end
     end
 
+    def refund_teacher_reward
+      @reward_delivery = RewardDelivery.find(params[:id])
+      @reward_delivery.refund_purchase
+      @product = RewardDelivery.find(params[:id]).reward.variant.product
+      redirect_to teachers_reward_path(@product.id)
+    end
+
     # GET /teachers/rewards/1
     # GET /teachers/rewards/1.json
     def show
-      @teachers_reward = nil # Teachers::Reward.find(params[:id])
+      @teachers_reward = Teachers::Reward.new
+      @teachers_reward.teacher = current_person
+      @teachers_reward.school = current_school
+      @teachers_reward.spree_product_id = params[:id]
+      @teachers_reward.classrooms = @teachers_reward.classrooms.map(&:id)
+      @line_items = @teachers_reward.product.master.line_items.page(params[:page]).per(10)
 
       respond_to do |format|
         format.html # show.html.haml
@@ -41,23 +53,30 @@ module Teachers
       @teachers_reward.teacher = current_person
       @teachers_reward.school = current_school
       @teachers_reward.spree_product_id = params[:id]
+      @teachers_reward.classrooms = @teachers_reward.classrooms.map(&:id)
     end
 
     # POST /teachers/rewards
     # POST /teachers/rewards.json
     def create
-      @teachers_reward = Teachers::Reward.new(params[:teachers_reward])
-      @teachers_reward.teacher = current_person
-      @teachers_reward.school = current_school
+      unless params[:reward_scope] == 'specific_classrooms' && !params[:teachers_reward][:classrooms].present?
+        @teachers_reward = Teachers::Reward.new(params[:teachers_reward])
+        @teachers_reward.teacher = current_person
+        @teachers_reward.school = current_school
 
-      respond_to do |format|
-        if @teachers_reward.save
-          format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully created." }
-          format.json { render json: @teachers_reward, status: :created, location: @teachers_reward }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
-      end
+        respond_to do |format|
+          if @teachers_reward.save
+            format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully created." }
+            format.json { render json: @teachers_reward, status: :created, location: @teachers_reward }
+          else
+            format.html { render action: "new" }
+            format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
+          end
+        end
+      else
+        @teachers_reward = Teachers::Reward.new
+        flash[:error] = 'You did not select a classroom for the reward. Hit the back button and try again.'
+        render :new
       end
     end
 

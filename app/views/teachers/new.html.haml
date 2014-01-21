@@ -1,32 +1,35 @@
 .main-content-wrapper
-  .primary-content
+  %h2 New Teacher
 
-    %h2 New Teacher
+  %p If you are a teacher and would like to sign-up for Learning Earnings, please email #{mail_to "TheTeam@LearningEarnings.com"} with your information as well as the school you teach at and we will walk you through the process.
+-#
+  = form_for @teacher do |f|
+    .row
+      .span3
+        = f.label :first_name
+        = f.text_field :first_name
+        = f.label :last_name
+        = f.text_field :last_name
+        = f.label :email
+        = f.text_field :email
+        = f.label :username
+        = f.text_field :username
+        = f.label :dob
+        = f.text_field :dob, :class => 'datepicker'
+      .span3
+        = f.label :gender
+        = f.select :gender, options_for_select(['Male', 'Female'], :gender), :include_blank => true
+        = f.label :grade
+        = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], :grade), :include_blank => true
+        = label_tag :school
+        = select_tag :school_id, options_from_collection_for_select(School.order(:name).all, :id, :to_s), :include_blank => true
+        = f.label :password
+        = f.password_field :password
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation
+    = f.submit 'Submit', class: 'btn awesome-button'
 
-    = form_for @teacher do |f|
-      = f.label :first_name
-      = f.text_field :first_name
-      = f.label :last_name
-      = f.text_field :last_name
-      = f.label :email
-      = f.text_field :email
-      = f.label :username
-      = f.text_field :username
-      = f.label :dob
-      = f.text_field :dob, :class => 'datepicker'
-      = f.label :gender
-      = f.select :gender, options_for_select(['Male', 'Female'], :gender), :include_blank => true
-      = f.label :grade
-      = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], :grade), :include_blank => true
-      = label_tag :school
-      = select_tag :school_id, options_from_collection_for_select(School.all, :id, :to_s), :include_blank => true
-      = f.label :password
-      = f.password_field :password
-      = f.label :password_confirmation
-      = f.password_field :password_confirmation
-      = f.submit 'Submit'
-
-    :javascript
-      $(function() {
-        $( ".datepicker" ).datepicker();
-      });
+  :javascript
+    $(function() {
+      $( ".datepicker" ).datepicker();
+    });

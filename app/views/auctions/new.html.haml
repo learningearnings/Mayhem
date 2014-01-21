@@ -1,7 +1,8 @@
 %h2 Create an Auction for your School
 
 = semantic_form_for @auction do |f|
-  = f.inputs :product
+  = f.label :product
+  = f.select :product_id, @products.map{|p| [p.name, p.id] }
   = f.label :start_date
   = f.text_field :start_date, :id => 'datepicker'
   = f.label :end_date
@@ -15,12 +16,8 @@
 
 :javascript
   $(function() {
-    $('#datepicker').datepicker({
-      dateFormat : 'yy-mm-dd'
-    });
+    $('#datepicker').datetimepicker();
   });
   $(function() {
-    $('#datepicker2').datepicker({
-      dateFormat : 'yy-mm-dd'
-    });
+    $('#datepicker2').datetimepicker();
   });

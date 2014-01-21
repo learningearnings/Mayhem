@@ -9,14 +9,14 @@ class OneClickSpreeProductPurchaseCommand
   def execute!
     skip_irrelevant_spree_order_steps
     purchase
-
+ 
     if can_create_school_products?
       create_school_products
     else
       queue_delivery(@order.line_items)
     end
 
-    if @order.products.first.fulfillment_type != 'Shipped on Demand'
+    if @order.products.first && @order.products.first.fulfillment_type != 'Shipped on Demand'
       mark_as_shipped
     end
   end
@@ -70,7 +70,7 @@ class OneClickSpreeProductPurchaseCommand
       shipping_address[:address1] = @school.address1
       shipping_address[:address2] = @school.address2
       shipping_address[:city] = @school.city
-      shipping_address[:state_name] = @school.addresses.first.state.name
+      shipping_address[:state_name] = @school.state.name
       shipping_address[:zipcode] = @school.zip
       shipping_address[:phone] = @school.school_phone
       shipping_address[:country] = Spree::Country.find_by_iso "US"
@@ -79,7 +79,7 @@ class OneClickSpreeProductPurchaseCommand
     end
 
     # Delivery
-    if @order.line_items.first.product.shipping_category && (@order.line_items.first.product.shipping_category.shipping_methods.count > 0)
+    if @order.line_items.first && @order.line_items.first.product.shipping_category && (@order.line_items.first.product.shipping_category.shipping_methods.count > 0)
       @order.shipping_method_id = @order.line_items.first.product.shipping_category.shipping_methods.first.id
     else
       @order.shipping_method = Spree::ShippingCategory.find_by_name('In Classroom').shipping_methods.first

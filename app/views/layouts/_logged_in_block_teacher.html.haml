@@ -9,7 +9,7 @@
       %tbody
         %tr
           %td.table-bordered-tl.table-bordered-bl.cb-heading Main
-          %td.table-bordered-tr.table-bordered-br.cb-value.currency= current_person.main_account(current_school).balance
+          %td.table-bordered-tr.table-bordered-br.cb-value.currency= number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
 
   .person-details
     %h3= current_person.name

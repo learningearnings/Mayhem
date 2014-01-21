@@ -29,6 +29,15 @@ describe StudentTransferCommand do
     subject.must have_valid(:student_id).when(1)
   end
 
+  it "handles commas and dollar signs just fine" do
+    subject = StudentTransferCommand.new(amount: "1,200.00")
+    subject.amount.must_equal BigDecimal('1200')
+    subject = StudentTransferCommand.new(amount: "$1,200.00")
+    subject.amount.must_equal BigDecimal('1200')
+    subject = StudentTransferCommand.new(amount: "$1,200.50")
+    subject.amount.must_equal BigDecimal('1200.5')
+  end
+
   it "knows the type of credit manager transfer to execute based on its direction" do
     subject.direction = "checking_to_savings"
     subject.transfer_method.must_equal :transfer_credits_from_checking_to_savings

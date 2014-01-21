@@ -1,7 +1,7 @@
 Project Mayhem
 =====
 
-Ruby On Rails reimplementation of LearningEarnings.com
+Ruby on Rails reimplementation of LearningEarnings.com.
 
 ### Multi-Domain Spree **** IMPORTANT ****
 
@@ -139,6 +139,9 @@ Right now, you can hit /plutus (as anyone) to view the chart of accounts, balanc
 * STUDENT4 SAVINGS(Asset)
 * STUDENT5 CHECKING(Asset)
 * STUDENT5 SAVINGS(Asset)
+
+#### Cron for Auction notifications(This one runs at 5 every day for now.
+0,17,20,23 * * * export PATH=$PATH:/usr/local/bin/;bash -l -c 'cd /home/deployer/apps/Mayhem/current && script/rails runner -e production '\''AuctionHandler.new.run!'\'''
 
 #### Deploying
 

@@ -2,6 +2,6 @@
 %p= t('.desc')
 
 = form_for StudentTransferCommand.new do |f|
-  = f.text_field :amount, placeholder: "Amount"
+  = f.text_field :amount, placeholder: "Amount", class: 'amount'
   = f.select :direction, options_for_select([["Checking to Savings", "checking_to_savings"], ["Savings to Checking", "savings_to_checking"]])
-  = submit_tag "Transfer"
+  = submit_tag "Transfer", class: 'btn awesome-button'

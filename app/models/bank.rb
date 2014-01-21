@@ -29,16 +29,18 @@ class Bank
     return on_success.call batch
   end
 
-  def create_ebucks(person, school, student, prefix, points)
+  def create_ebucks(person, school, student, prefix, points, reason)
     account = person.main_account(school)
     return @on_failure.call unless account_has_enough_money_for(account, points)
 
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
                    :expires_at => (Time.now + 45.days),
                    :student_id => student.id,
-                   :ebuck => true}
+                   :ebuck => true,
+                   :reason => reason}
     buck = create_buck(prefix, points, buck_params)
-    @credit_manager.purchase_ebucks(school, person, student, points)
+    transaction = @credit_manager.purchase_ebucks(school, person, student, points)
+    buck.update_attributes(:otu_transaction_link_id => transaction.id)
 
     # NOTE: This message sending isn't really the bank's responsibility imo, but i'll
     # leave it here for now - ja
@@ -62,8 +64,9 @@ class Bank
     end
     if otu_code.messages.present?
       otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.')
-      otu_code.messages.first.hide!
+      otu_code.messages.first.hide! rescue nil
     end
+    otu_code.update_attribute(:student_id, student.id)
     otu_code.mark_redeemed!
   end
 
@@ -98,11 +101,11 @@ class Bank
   end
 
   def send_message(person, student, buck)
-    body = "Click here to claim your award: #{link_to 'Claim Bucks', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
+    body = "Click here to claim your #{buck.points.to_s} credit(s): #{link_to 'Claim Credits', ("/redeem_bucks?student_id=#{student.id}&code=#{buck.code}")}"
 
     message_params = {from: person,
                          to: student,
-                         subject: "You've been awarded LE Bucks",
+                         subject: "You've been awarded LE Credits",
                          body: body,
                          category: 'teacher',
                          buck_id: buck.id}

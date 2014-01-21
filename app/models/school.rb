@@ -3,6 +3,7 @@ require "basic_statuses"
 class School < ActiveRecord::Base
   include BasicStatuses
 
+  before_create :set_status_to_active
   GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
   GRADE_NAMES = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]
 
@@ -40,7 +41,13 @@ class School < ActiveRecord::Base
   after_create :ensure_accounts
   after_create :set_default_subdomain
 
+  before_create :set_status_to_active
+
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
+
+  def set_status_to_active
+    self.status = 'active' # Students should default to active
+  end
 
   def address=(newaddress)
     addresses << newaddress
@@ -79,6 +86,14 @@ class School < ActiveRecord::Base
 
   def grades
     self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+  end
+
+  def self.grade_range
+    0..12
+  end
+
+  def self.grades
+    self.grade_range.collect do |g| [School::GRADE_NAMES[g], g] end
   end
 
   # Relationships
@@ -139,7 +154,7 @@ class School < ActiveRecord::Base
   end
 
   def name_and_location
-    [name, first_address.try(:city_and_state)].join(", ")
+    [name, city, state.name].join(", ").truncate(28)
   end
 
   def first_address
@@ -157,6 +172,10 @@ class School < ActiveRecord::Base
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)
     store_account || Plutus::Asset.create(name: store_account_name)
+  end
+
+  def set_status_to_active
+    self.status = 'active' # Teachers should default to active
   end
 
   def set_default_subdomain

@@ -21,22 +21,27 @@ class BuckDistributor
   end
 
   def amount_for_school school
-    700 * school.number_of_active_students
+    700 * school.students.logged.count
   end
 
   def handle_teachers
     @schools.each do |school|
-      school.active_teachers.each do |teacher|
+      school.teachers.logged.each do |teacher|
+        revoke_remainder(school, teacher, teacher.main_account(school).balance)
         pay_teacher(school, teacher)
       end
     end
   end
 
+  def revoke_remainder(school, teacher, amount)
+    @credit_manager.revoke_credits_for_teacher(school, teacher, amount)
+  end
+
   def amount_for_teacher(school)
-    school.balance / school.number_of_participating_teachers
+    school.balance / school.teachers.logged.count
   end
 
   def pay_teacher(school, teacher)
-    @credit_manager.issue_credits_to_teacher school, teacher, amount_for_teacher(school)
+    @credit_manager.monthly_credits_to_teacher school, teacher, amount_for_teacher(school)
   end
 end

@@ -10,6 +10,8 @@ module CommonPersonConfig
   def self.included(dsl)
     dsl.run_registration_block do
 
+      filter :user_email, :as => :string
+      filter :user_username, :as => :string
       filter :first_name_or_last_name, :as => :string
       filter :last_name
       filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
@@ -22,27 +24,35 @@ module CommonPersonConfig
           f.input :first_name
           f.input :last_name
           f.input :dob, :as => :datepicker
-          f.input :grade, :as => :radio, :collection => School::GRADE_NAMES, :wrapper_html => {:class => 'horizontal'}
+          if f.object.is_a?(Student)
+            f.input :gender, as: :select, collection: ['Male', 'Female']
+          end
+          f.input :grade, :as => :select, :collection => School.grades, :wrapper_html => {:class => 'horizontal'}
           f.input :status, :label => "Initial Status", :as => :select, :collection => ['new','active','inactive']
+
           if f.object.is_a?(Teacher)
             f.input :can_distribute_credits
           end
           if f.object.is_a?(Teacher)
             f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
           end
-
-          f.inputs :username,
-            :email,
-            :password,
-            :password_confirmation,
-            :name => "Spree::User",
-            :required => true,
-            :for => [:user, f.object.user || Spree::User.new] do |u|
+          if f.object.new?
+            f.input :username, :required => true
+            if !f.object.is_a?(Student)
+              f.input :email
+            end
+            f.input :password
+            f.input :password_confirmation
+          else
+            f.inputs :for => [:user, f.object.user] do |u|
               u.input :username, :required => true
-              u.input :email
+              if !f.object.is_a?(Student)
+                u.input :email
+              end
               u.input :password
               u.input :password_confirmation
             end
+          end
         end
         f.actions
       end
@@ -55,10 +65,10 @@ module CommonPersonConfig
       member_action :give_credits, :method => :post do
         person = Person.find(params[:id])
         amount = params[:credits][:amount]
-        if amount.nil? || amount.to_f <= 0.0
-          flash[:error] = "Please enter a positive, non-zero amount of credits"
-          redirect_to :action => :show and return
-        end
+        #if amount.nil? || amount.to_f <= 0.0
+        #  flash[:error] = "Please enter a positive, non-zero amount of credits"
+        #  redirect_to :action => :show and return
+        #end
         if person.is_a? Teacher
           if person.is_a? SchoolAdmin
             school = School.find(params[:school_admin][:school_id])
@@ -91,8 +101,13 @@ module CommonPersonConfig
         elsif person.schools.include?(school)
           flash[:error] = "#{person.name} is already associated with #{school.name}"
         else
-          person.school = school
-          flash[:notice] = "Associated #{person.name} with #{school.name}"
+          @psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: person.id, school_id: school.id)
+          if @psl.valid?
+            flash[:notice] = "Associated #{person.name} with #{school.name}"
+          else
+            flash[:error] = @psl.errors.messages[:status]
+            #flash[:error] = "Username already associated with this school."
+          end
         end
         redirect_to :action => :show
       end
@@ -106,7 +121,8 @@ module CommonPersonConfig
         else
           flash[:error] = "Could NOT remove #{person.name} from #{school.name}"
         end
-        redirect_to admin_person_path(person)
+        #redirect_to admin_person_path(person)
+        redirect_to :action => :show and return
       end
 
       index do
@@ -142,6 +158,22 @@ module CommonPersonConfig
       end
       controller do
         skip_before_filter :add_current_store_id_to_params
+      end
+    end
+  end
+end
+
+class ActiveAdmin::Views::TableFor
+  def build_table_body
+    @tbody = tbody do
+      # Build enough rows for our collection
+      #@collection.each{|_| tr(:class => cycle('odd', 'even'), :id => dom_id(_)) }
+      @collection.each do |object|
+        if object.is_a? SchoolAdmin
+          tr(:class => 'bg-red', :id => dom_id(object))
+        else
+          tr(:class => cycle('odd', 'even'), :id => dom_id(object))
+        end
       end
     end
   end

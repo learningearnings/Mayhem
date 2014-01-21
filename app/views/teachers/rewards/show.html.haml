@@ -1,6 +1,45 @@
 %p#notice= notice
 
 
-= link_to 'Edit', edit_teachers_reward_path(@teachers_reward)
-\|
-= link_to 'Back', teachers_rewards_path
+%h5= link_to 'Back', teachers_rewards_path
+.main-content-wrapper
+  .full-content
+    %h1= @teachers_reward.name
+    %h5= link_to 'Edit', edit_teachers_reward_path(@teachers_reward)
+
+    .teachers-reward
+      .resp-product-tile{"data-hook" => "products_list_item", :id => "product_#{@teachers_reward.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+        .resp-product-image
+          - if @teachers_reward.product.images.present?
+            = image_tag(@teachers_reward.product.images.first.attachment.url(:small))
+          .price.selling{:itemprop => "price"}= @teachers_reward.price.to_s + " each"
+        .resp-product-classrooms
+          - if @teachers_reward.classrooms.present? && @teachers_reward.classrooms.count > 1
+            = "#{@teachers_reward.classrooms.count} Classrooms"
+          -elsif @teachers_reward.classrooms.present?
+            = "#{@teachers_reward.classrooms.count} Classroom"
+          - else
+            Whole School
+        .resp-product-moreinfo
+          = "You have #{@teachers_reward.on_hand} left to sell"
+        .resp-product-lineitems
+          %table
+            %thead
+              %tr
+                %th Student
+                %th Quantity
+                %th Status
+                %th Refund
+            %tbody
+              - @line_items.each do |line_item|
+                - if reward_delivery = RewardDelivery.find_by_reward_id(line_item.id)
+                  %tr
+                    %td= reward_delivery.to.name
+                    %td= line_item.quantity
+                    - if reward_delivery.status != 'refunded'
+                      %td= link_to 'Refund', teachers_refund_teacher_reward_path(reward_delivery.id)
+                    - else
+                      %td
+
+            = paginate @line_items
+

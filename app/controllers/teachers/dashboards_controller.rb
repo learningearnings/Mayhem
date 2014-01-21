@@ -1,13 +1,14 @@
 module Teachers
   class DashboardsController < Teachers::BaseController
-
     def new_student
       @student = Student.new
     end
-   
+
     def create_student
       @student = Student.new(params[:student])
       if @student.save
+        @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
+        @student.school = current_school
         flash[:notice] = 'Student created!'
         redirect_to teachers_dashboard_path
       else
@@ -22,8 +23,15 @@ module Teachers
 
     def update_student
       @classroom = Classroom.find(params[:classroom_id])
-      @student = Student.find(params[:student][:id])
+      @student = Student.find(params[:student].delete(:id))
+      password = params[:student].delete(:password)
       if @student.update_attributes(params[:student])
+        unless password.blank?
+          user = @student.user
+          user.password = password
+          user.password_confirmation = password
+          user.save
+        end
         flash[:notice] = 'Student updated!'
         redirect_to classroom_path(@classroom)
       else
@@ -36,9 +44,14 @@ module Teachers
       @classroom = Classroom.find(params[:classroom_id])
       @student = Student.find(params[:id])
       @orders = @student.user.orders
+      # We need to just not show orders if there's no first product - this was causing an error
+      @orders = @orders.reject do |o|
+        begin
+          o.products.empty?
+        rescue
+          true
+        end
+      end
     end
-
   end
 end
-
-

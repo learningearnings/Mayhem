@@ -18,6 +18,7 @@ Leror::Application.configure do
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
+  config.assets.js_compressor = :uglifier
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
@@ -33,7 +34,7 @@ Leror::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = true
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
@@ -52,7 +53,8 @@ Leror::Application.configure do
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( lockers.js avatar_pager.js ckeditor/init.js transaction_pager.js distributor_list.js admin/print.css admin/ie_noprint.css spree_admin.css svgweb/svg.js )
-  config.assets.precompile += %w( schooladmin_background.css person_background.css student_background.css teacher_background.css leadmin_background.css image_pager.js )
+  config.assets.precompile += %w( schooladmin_background.css person_background.css student_background.css teacher_background.css leadmin_background.css image_pager.js store/all.js )
+  config.assets.precompile += %w( admin/icons/icon-plus.png noimage/small.jpg noimage/mini.png )
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.delivery_method = :smtp

@@ -34,11 +34,6 @@ FactoryGirl.define do
     school
   end
 
-  factory :moniker do
-    sequence(:moniker) { |n| "moniker#{n}" }
-    user
-  end
-
   factory :student_school_link, class: PersonSchoolLink do
     association :person, factory: :student
     school
@@ -118,11 +113,6 @@ FactoryGirl.define do
     email "foo@example.com"
   end
 
-  factory :state do
-    sequence(:name) {|n| "State #{n}" }
-    sequence(:abbr) {|n| "S#{n}" }
-  end
-
   factory :school do
     sequence(:name) {|n| "Test School #{n}"}
     min_grade 1
@@ -138,13 +128,21 @@ FactoryGirl.define do
     timezone "Central Time (US & Canada)"
     gmt_offset "6.0"
     distribution_model "Delivery"
-#    address
     address1 "123 Foo Street"
     address2 "Unit 2"
     city "Birmingham"
-    state_id { FactoryGirl.create(:state).id }
+    if State.where(id: 1).present?
+      state_id 1
+    else
+      state_id {FactoryGirl.create(:state).id}
+    end
     zip "35111"
     ad_profile 1
+  end
+
+  factory :state do
+    abbr 'AL'
+    name 'Alabama'
   end
 
   factory :classroom do
@@ -156,7 +154,7 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
-    state_id 1
+    state_id {FactoryGirl.create(:state).id}
     #association :addressable
   end
 

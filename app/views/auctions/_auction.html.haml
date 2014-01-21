@@ -1,23 +1,22 @@
-%h4.product= link_to auction.product.name, auction_path(auction)
-.header-info
-  Starts At:
-  %span.start_date= l(auction.start_date)
-  %p
-  Ends On:
-  %span.end_date= l(auction.end_date)
-  %p
-  Current Bid:
-  %span.current_bid= auction.current_bid
-  %p
-  High Bidder:
-  %span.current_bid= auction.current_leader.name
-  = auction.current_leader.moniker if auction.current_leader.moniker.present?
-  - if auction.current_leader.avatar.present?
-    = image_tag auction.current_leader.avatar.image.url
+- if auction.product
+  %h4.auction_product= link_to auction.product.name, auction_path(auction)
+  = link_to small_image_pages(auction.product, :itemprop => "image"), auction_path(auction)
 
-  - if auction.current_bid == 0.00
+  .header-info
+    - if auction.current_bid
+      %p
+        Current Bid:
+        %span.current_bid= number_with_precision(auction.current_bid, precision: 2, delimiter: ',')
+    - if auction.current_leader.present?
+      %p
+        High Bidder:
+        %span.current_bid= auction.current_leader.name
+        - if auction.current_leader.avatar.present?
+          = image_tag auction.current_leader.avatar.image.url
+
     %p
-    Starting Bid:
-    %span.current_bid= auction.starting_bid
-- if current_person.is_a?(SchoolAdmin) && auction.created_locally?
-  = link_to 'Cancel Auction', cancel_school_auction_path(auction)
+      Ends On:
+      %span.end_date= l(auction.end_date)
+
+  - if current_person.is_a?(SchoolAdmin) && auction.created_locally?
+    = link_to 'Cancel Auction', cancel_school_auction_path(auction)

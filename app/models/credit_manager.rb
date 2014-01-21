@@ -62,6 +62,10 @@ class CreditManager
     transfer_credits "Revoke Credits for School", school.main_account, main_account, amount
   end
 
+  def revoke_credits_for_teacher(school, teacher, amount)
+    transfer_credits "Revoke Credits for Teacher", teacher.main_account(school), main_account, amount
+  end
+
   def purchase_printed_bucks school, teacher, amount, buck_batch=nil
     transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account(school), teacher.unredeemed_account(school), amount, buck_batch
    end
@@ -77,6 +81,10 @@ class CreditManager
 
   def issue_credits_to_teacher school, teacher, amount
     transfer_credits "Issue Credits to Teacher", school.main_account, teacher.main_account(school), amount
+  end
+
+  def monthly_credits_to_teacher school, teacher, amount
+    transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
 
   def issue_credits_to_student school, teacher, student, amount
@@ -101,7 +109,7 @@ class CreditManager
 
   def transfer_credits_for_local_purchase student, teacher, amount, document = nil
     return false if student.balance < amount
-    transfer_credits "Reward Purchase", student.checking_account, teacher.main_account(student.school), amount, document
+    transfer_credits "Reward Purchase", student.checking_account, main_account, amount, document
   end
 
   def transfer_credits_for_reward_purchase student, amount, document = nil
@@ -110,7 +118,7 @@ class CreditManager
   end
 
   def transfer_credits_for_reward_refund student, amount, document = nil
-    return false if main_account.balance < amount
+    #return false if main_account.balance < amount
     transfer_credits "Reward Refund", main_account, student.checking_account, amount, document
   end
 

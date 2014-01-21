@@ -1,0 +1,54 @@
+//= require jquery
+//= require jquery.cookie
+//= require jquery_ujs
+//= require ICanHaz
+//= require init
+//= require bootstrap-modal
+//= require bootstrap-dropdown
+//= require bootstrap-scrollspy
+//= require bootstrap-tab
+//= require bootstrap-tooltip
+//= require bootstrap-popover
+//= require bootstrap-alert
+//= require bootstrap-button
+//= require bootstrap-collapse
+//= require bootstrap-carousel
+//= require bootstrap-typeahead
+//= require bootstrap-transition
+//= require jquery_nested_form
+//= require ckeditor/init
+//= require jquery.ui.core.js
+//= require jquery.ui.mouse.js
+//= require jquery.ui.widget.js
+//= require jquery.ui.draggable.js
+//= require chosen-jquery
+//= require custom
+//= require jquery.ui.datepicker
+//= require jquery_time_picker.js
+//= require modernizr-special
+//= require webshims/polyfiller
+
+$.webshims.debug = true;
+$.webshims.setOptions('forms', {
+  placeholderType: 'value'
+});
+$.webshims.setOptions('forms-ext', {
+  types: 'range date time number month color'
+});
+<% unless Rails.env.development? %>
+$.webshims.setOptions('basePath', '/assets/webshims/shims/');
+<% end %>
+$.webshims.polyfill('forms forms-ext');
+
+# Make jquery ajax requests use the csrf token
+$ ->
+  $.ajaxSetup
+    beforeSend: (xhr) ->
+      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+# Set timezone in cookie
+window.BrowserTZone ||= {}
+BrowserTZone.setCookie = ->
+  $.cookie "browser.timezone", jstz.determine().name(), { expires: 365, path: '/' }
+
+jQuery ->
+  BrowserTZone.setCookie()

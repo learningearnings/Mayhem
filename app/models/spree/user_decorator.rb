@@ -3,10 +3,8 @@ Spree::User.class_eval do
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :moniker, :as => :admin
-
-  validates_uniqueness_of :email, allow_blank: true
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :as => :admin
 
   belongs_to :person
   has_many :person_school_links, :through => :person
@@ -17,7 +15,7 @@ Spree::User.class_eval do
       nil
     else
       encrypted_password = ::BCrypt::Password.create("#{password}#{self.pepper}", :cost => self.stretches).to_s
-      u = Spree::User.where(:username => username).joins(:person).merge(Person.status_active).joins(:schools).merge(School.status_active).where('schools.id = ?',school_id).first
+      u = Spree::User.where("LOWER(spree_users.username) = ?", username.downcase).joins(:person).merge(Person.status_active).joins(:schools).merge(School.status_active).where('schools.id = ?',school_id).first
       if u.nil?
         u = Spree::User.where(:username => username).joins(:person).merge(LeAdmin.status_active).first
       end
@@ -35,14 +33,6 @@ Spree::User.class_eval do
 
   def self.admin_created?
     true
-  end
-
-  def moniker
-    person.moniker
-  end
-
-  def moniker= name
-    person.moniker= name
   end
 
 
@@ -65,8 +55,6 @@ Spree::User.class_eval do
 
  protected
    def email_required?
-     false 
+     false
    end
-
-
 end

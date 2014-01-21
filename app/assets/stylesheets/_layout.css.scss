@@ -30,11 +30,6 @@
 $how-to-active-color: #f05c1a;
 
 
-/* Sprites */
-$stickies_nav-layout:horizontal;
-@import "sprites/stickies_nav/*.png";
-@include all-stickies_nav-sprites;
-
 body {
   font-size: 62.5%;
 }
@@ -227,6 +222,14 @@ html.resp, body.resp {
   font-size: 1.4em;
   color: #1f2870;
 }
+.lt-ie9 .form-inline .log-in.text {
+  position:relative;
+  left:-20px;
+}
+.form-inline input {
+  padding-top:0;
+  padding-bottom:0;
+}
 
 .login-form-fields input {
   width: 130px;
@@ -247,7 +250,22 @@ html.resp, body.resp {
 }
 
 .forgot-password {
-  margin: -4px 0 0 115px;
+  margin: -4px 0 0 0;
+}
+
+//webshims polyfill stuffs:
+.placeholder-box-input {
+  vertical-align:baseline;
+}
+.placeholder-text {
+  line-height:20px !important;
+  z-index:1;
+}
+.placeholder-focused.placeholder-visible {
+  .placeholder-text {
+    display:none;
+    color: #fff;
+  }
 }
 
 .btn.students,
@@ -262,9 +280,15 @@ html.resp, body.resp {
   background-color: transparent;
   background-position: 0;
   border: none;
-  box-shadow: none;
+  @include box-shadow(none);
   width: 96px;
   height: 37px;
+}
+
+.lt-ie9 .form-inline .login-button {
+  display:inline-block;
+  margin-right:-35px;
+  margin-left:20px;
 }
 
 .btn.students {
@@ -283,22 +307,11 @@ html.resp, body.resp {
   position: absolute;
   top: 340px;
   left: 400px;
-    .stickies-nav {
-      list-style-type: none;
-      margin: 0;
-    }
-    .stickies-nav li {
-      display: inline;
-    }
 }
 
 .nav-container {
   top: 380px;
   left: 500px;
-}
-
-.stickies-nav li a:active {
-  background-image: url(asset_path('sprites/stickies_nav-s533a1acd71.png', image));
 }
 
 
@@ -444,16 +457,16 @@ html.resp, body.resp {
     list-style-type: none;
     margin: 0;
     padding:0;
-      li {
-        display: inline;
-        padding: 1.7em 0;
+    li {
+      display: inline;
+      padding: 1.7em 0;
 
-        a {
-          text-decoration: none;
-          font-family: 'sketch_rockwellregular';
-          display: inline-block;
-        }
+      a {
+        text-decoration: none;
+        font-family: 'sketch_rockwellregular';
+        display: inline-block;
       }
+    }
   }
 }
 
@@ -559,6 +572,13 @@ html.resp, body.resp {
   color: #EB731C
 }
 
+.primary-nav {
+  .manage_students-selected, .manage_students:hover {
+    background-image: url(asset_path('classrooms_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
 .primary-nav .bank {
   color: #470bc1;
 }
@@ -579,16 +599,20 @@ html.resp, body.resp {
   color: #eb731c;
 }
 
-.primary-nav .play:hover {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
+.primary-nav .play:hover,
+.play-selected {
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
   color: #eb731c;
 }
 
-.play-selected {
-  background-image: url(asset_path('home_selected.png', image));
-  background-repeat: no-repeat;
-  color: #eb731c;
+.primary-nav .shop {
+  color: #b611b0;
+}
+
+.primary-nav .shop:hover,
+.shop-selected {
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
+  color: #b611b0;
 }
 
 .primary-nav .charities {
@@ -611,16 +635,16 @@ html.resp, body.resp {
   color: #b611b0;
 }
 
-.primary-nav .rewards:hover {
-  background-image: url(asset_path('locker_selected.png', image));
-  background-repeat: no-repeat;
+.primary-nav .rewards:hover,
+.rewards-selected {
+  background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 8px;
+  @include background-size(contain);
   color: #b611b0;
 }
 
-.rewards-selected {
-  background-image: url(asset_path('locker_selected.png', image));
-  background-repeat: no-repeat;
-  color: #b611b0;
+.primary-nav .shop.rewards:hover,
+.shop.rewards-selected {
+  background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 3px;
 }
 
 .primary-nav .reports {
@@ -644,13 +668,13 @@ html.resp, body.resp {
 }
 
 .primary-nav .classrooms:hover {
-  background-image: url(asset_path('locker_selected.png', image));
+  background-image: url(asset_path('classrooms_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08;
 }
 
 .classrooms-selected {
-  background-image: url(asset_path('locker_selected.png', image));
+  background-image: url(asset_path('classrooms_selected.png', image));
   background-repeat: no-repeat;
   color: #EA4E08;
 }
@@ -773,7 +797,62 @@ html.resp, body.resp {
   height: 416px;
   width: 776px;
   margin-left: 130px;
-  position: relative
+  position: relative;
+  .cta-text {
+    margin:0;
+    height: 300px;
+    width: 305px;
+    overflow:hidden;
+    position: absolute;
+    top: 50px;
+    right: 55px;
+    font-family:'sketch_rockwellregular';
+    font-weight:200;
+    text-align:justify;
+    &.students {
+      background:transparent url(asset_path('star.png', image)) no-repeat 50% 98%;
+      text-transform:uppercase;
+      color:#312D68;
+      line-height:1;
+      .large {
+        font-size:85px;
+        text-align:center;
+      }
+      .medium {
+        font-size:31px;
+        color:tint(#312D68, 10);
+        &.bump {
+          text-align:center;
+          font-size:38px;
+        }
+      }
+      .small {
+        font-size:19px;
+        margin:10px;
+        color:tint(#312D68, 20);
+      }
+    }
+    &.parents {
+    }
+    &.teachers {
+      width:320px;
+      text-align:center;
+      font-family:'sketch_wallregular';
+      color:#0D5A02;
+      line-height:1;
+      .large {
+        font-size:86px;
+      }
+      .medium {
+        font-size:44px;
+        color:tint(#0D5A02, 5);
+        margin-bottom:10px;
+      }
+      .small {
+        font-size:34px;
+      }
+    }
+  }
 }
 
 .corkboard {
@@ -822,17 +901,18 @@ html.resp, body.resp {
 }
 
 .product-image-bursts {
-  background-image: url(asset_path('product_image_with_pins_bursts.png', image));
+  background-image: url(asset_path('product_image_with_pins_credits_bursts.png', image));
   height: 293px;
   width: 290px;
   position: absolute;
-  top: 75px;
-  left: 250px;
+  top: 60px;
+  left: 265px;
   z-index: 0;
 }
 
 .kids-credits-cta {
   background-image: url(asset_path('kids_credits_cta.png', image));
+  font-family:'sketch_rockwellregular';
   height: 200px;
   width: 304px;
   position: absolute;
@@ -917,7 +997,7 @@ html.resp, body.resp {
   height: 127px;
   width: 134px;
   top: 50px;
-  left: 1000px;
+  left: 650px;
   position: absolute;
 }
 
@@ -926,7 +1006,7 @@ html.resp, body.resp {
   height: 131px;
   width: 134px;
   top: 190px;
-  left: 1000px;
+  left: 650px;
   position: absolute;
 }
 
@@ -1008,15 +1088,11 @@ html.resp, body.resp {
   background-image: url(asset_path('locker.png', image));
   width: 814px;
   height: 356px;
-  position: absolute;
-  top: 200px;
-  left: 130px;
+  margin: auto;
 }
 
 .locker-desc {
-  position: relative;
-  top: 0;
-  left: 40px;
+  margin-left: 200px;
   padding: 0 10em 3em 0;
     h2 {
       color: #1f2870;
@@ -1035,6 +1111,18 @@ html.resp, body.resp {
   left: 740px;
   height: 173px;
   width: 190px;
+  padding-top: 45px;
+  ul {
+    li {
+      list-style:none;
+      margin:0 0 .25em .35em;
+      font-family: 'king_cool_kcregular';
+      font-size:1.8em;
+      .product-image {
+        height: inherit;
+      }
+    }
+  }
 }
 
 .reward-of-the-week {
@@ -1053,6 +1141,18 @@ html.resp, body.resp {
   left: 160px;
   height: 241px;
   width: 361px;
+  padding:3.25em 2em 2em;
+  h3 {
+    text-transform:uppercase;
+    font-size:2em;
+    margin:0;
+    color:#333366;
+    padding:0;
+  }
+  p {
+    font-family: 'king_cool_kcregular';
+    font-size:2em;
+  }
 }
 
 .games-board {
@@ -1298,22 +1398,21 @@ html.resp, body.resp {
   margin: 5em 0 0 0;
 }
 
-.locker_edit {
-  h2 {
-    margin-left: 130px;
-  }
-  .locker_wrapper {
-    margin-left: 130px;
-  }
-}
-
-
 .bank-account {
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
   box-shadow:         1px 2px 5px 1px #ccc;
   padding: 1em;
+}
+
+.profile-bank-account {
+  background-color: #fff;
+  -moz-box-shadow:    1px 2px 5px 1px #ccc;
+  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+  box-shadow:         1px 2px 5px 1px #ccc;
+  padding: 1em;
+  text-align: center;
 }
 
 .reward-highlights-sidebar {
@@ -1332,10 +1431,8 @@ html.resp, body.resp {
   text-align: center;
   .alert {
     text-align: center;
-    background-color: rgba(255,255,255, 0);
     border: none;
-    background-image: url(asset_path('message-blue.png', image));
-    background-repeat: no-repeat;
+    background:transparent url(asset_path('message-blue.png', image)) no-repeat 0 0;
     width: 254px;
     height: 259px;
     p {
@@ -1345,34 +1442,37 @@ html.resp, body.resp {
       text-align: left;
       font-family: verdana;
       font-weight: 400;
+      @include text-shadow(none);
       text-shadow: none;
-      -webkit-transform: rotate(6deg);
-      -moz-transform: rotate(6deg);
-      -ms-transform: rotate(6deg);
-      -o-transform: rotate(6deg);
+      @include rotate(6deg);
+      font-size:1.4em;
     }
     .close {
-      margin-top: 20px;
+      position:relative;
+      top:20px;
+      line-height:15px;
+      font-size:2.4em;
       color: #ee5b1a;
-      opacity: .9;
+      @include opacity(.9);
       text-shadow: none;
       height: 25px;
       width: 25px;
       border: solid 2px #ee5b1a;
-      -moz-border-radius: 35px;
-      -webkit-border-radius: 35px;
-      -o-border-radius: 35px;
-      -ms-border-radius: 35px;
-      border-radius: 35px;
+      @include border-radius(35px);
     }
   }
 }
 
+.lt-ie9 .messages-container .alert .close {
+  border:0;
+  font-size:3em;
+}
+
 .flash-message {
-    position: absolute;
-    top: 210px;
-    left: 40%;
-    z-index: 17;
+  position: absolute;
+  top: 210px;
+  left: 40%;
+  z-index: 17;
 }
 
 .pending-credits {
@@ -1388,9 +1488,20 @@ html.resp, body.resp {
 }
 
 .news-items-container {
-
   overflow: hidden;
-  margin: 20px 0 0 130px;
+  .news-item {
+    padding-bottom: 2em;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+h3 {
+  .post_date {
+    display: inline-block;
+    font-size: .5em;
+    color: #999;
+    font-weight: normal;
+  }
 }
 
 .play-header-container {
@@ -1421,6 +1532,16 @@ html.resp, body.resp {
   h2 {
     margin-left: 130px;
   }
+  .header-info {
+    p {
+      margin-bottom:0;
+      font-size:1.4em;
+      font-weight:bold;
+      span {
+        font-weight:normal;
+      }
+    }
+  }
   .auctions {
     padding: 1em;
     background-color: #fff;
@@ -1438,6 +1559,9 @@ html.resp, body.resp {
         color: #ee5b1a;
         margin-bottom: 1em;
       }
+    }
+    .auction_links {
+      float: right;
     }
   }
 }
@@ -1547,13 +1671,14 @@ html.resp, body.resp {
 }
 
 .featured-activity {
+  font-size: 1.5em;
   background-image: url(asset_path('featured_activity.png', image));
   position: absolute;
   width: 256px;
   height: 262px;
   top: 280px;
   left: 140px;
-  padding: 50px 70px 30px 30px;
+  padding: 60px 20px 30px 30px;
 }
 
 .featured-activity-callout {
@@ -1583,12 +1708,13 @@ html.resp, body.resp {
     height: 262px;
   }
   .our-sponsors {
+    font-size: 1.4em;
     background-image: url(asset_path('our_sponsors.png', image));
     background-repeat: no-repeat;
     position: relative;
     width: 291px;
     height: 251px;
-    padding: 45px 120px 30px 30px;
+    padding: 45px 90px 0px 20px;
   }
   .our-sponsors-callout {
     position: absolute;
@@ -1649,6 +1775,10 @@ html.resp, body.resp {
 }
 
 .add-to-cart {
+  .title {
+    width:75px;
+    min-width:75px;
+  }
   input {
     width: 4em;
     height: 2.5em;
@@ -1804,7 +1934,7 @@ html.resp, body.resp {
       -webkit-transform: rotate(-3deg);
       -moz-transform: rotate(-3deg);
       -o-transform: rotate(-3deg);
-      font-family: Sketch Rockwell;
+      font-family: SketchRockwell;
       font-size: 1.3em;
       text-shadow: 1px 1px 2px #333;
   }
@@ -1821,7 +1951,7 @@ html.resp, body.resp {
     -webkit-transform: rotate(-3deg);
     -moz-transform: rotate(-3deg);
     -o-transform: rotate(-3deg);
-    font-family: Sketch Rockwell;
+    font-family: SketchRockwell;
     font-size: 1.3em;
     text-shadow: 1px 1px 2px #333;
     color: #fff;
@@ -1964,7 +2094,7 @@ hr {
 }
 
 .numeric {
-    text-align: right;
+  text-align: right;
 }
 
 #send-message-modal {
@@ -1977,4 +2107,49 @@ hr {
       margin-left: 4em;
     }
   }
+}
+
+#transfer-credits-modal {
+  input.amount {
+    width: 100px;
+  }
+}
+
+dl.details {
+  font-size: 150%;
+}
+
+.student-account-content {
+  .account-info {
+    float:right;
+  }
+  .student-account-form {
+    display: inline-block;
+    input {
+      height: 35px;
+    }
+    .btn {
+      height: 50px;
+    }
+    select {
+      width: 205px;
+    }
+  }
+}
+
+.auction_product a {
+  color: black;
+}
+
+.sponsor-list {
+  margin: -10px 0 0 0;
+  white-space:nowrap;
+}
+
+.welcome-callout {
+  margin: -10px 0 0 0;
+}
+
+.welcome-sticky {
+  font-size: 80%;
 }

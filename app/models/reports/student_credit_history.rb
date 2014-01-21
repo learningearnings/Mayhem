@@ -73,13 +73,13 @@ module Reports
     end
 
     def generate_row(student)
-      Reports::Row[
+      {
         grade:     student.grade,
-        student:   student,
+        student:   student.name,
         username:  student.user.username,
         checking_balance: student.checking_balance,
         savings_balance: student.savings_balance
-      ]
+      }
     end
 
     def headers

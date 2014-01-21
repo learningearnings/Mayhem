@@ -20,8 +20,10 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :reward_distributors
 
   attr_accessible :person_id, :school_id, :status, :person, :school
-  validates_presence_of :person, :school
+  validates_presence_of :person_id, :school_id
   validate :validate_unique_with_status
+  #validate :email_taken?
+  validate :username_taken?
 
   def link(d)
     if d && d.is_a?(Hash)
@@ -66,11 +68,33 @@ class PersonSchoolLink < ActiveRecord::Base
     end
   end
 
-
-
   ################### Validations ########################
+  def email_taken?
+    errors.add(:status, "Person must be present") and return unless person && person.user.email
+    return if status == "inactive"
+    if person.user.email.present? && !person.is_a?(Student)
+      if school.teachers.with_email(person.user.email).present?
+        errors.add(:base, "Email already assigned for this school.")
+      end
+    else
+      return false
+    end
+  end
 
-  #
+  def username_taken?
+    errors.add(:status, "Person must be present") and return unless person && person.user.username
+    return if status == "inactive"
+    ignored_ids = [person.id]
+    @students = school.students.where("people.id NOT IN (?)", ignored_ids)
+    @teachers = school.students.where("people.id NOT IN (?)", ignored_ids)
+    if @teachers.with_username(person.user.username).present?
+      errors.add(:status, "Username already assigned for this school.") and return
+    end
+    if @students.with_username(person.user.username).present?
+      errors.add(:status, "Username already assigned for this school.") and return
+    end
+  end
+
   # There can be an unlimited number of person_id -> school_id combinations that *don't* have status == "active"
   # but only one active one for a person -> school combination
   def validate_unique_with_status
@@ -79,7 +103,7 @@ class PersonSchoolLink < ActiveRecord::Base
       psl = psl.where("id != #{self.id}")
     end
     if psl.length > 0
-      errors.add(:status, "Person is already associated with this school")
+      errors.add(:status, "Username already associated with this school.")
     end
   end
 end

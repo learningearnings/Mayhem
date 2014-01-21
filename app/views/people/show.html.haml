@@ -1,14 +1,25 @@
 .full-content
-
   %h2 Your Profile
-  
-  .first-name= @person.first_name + @person.last_name
-  .user-name= @person.user.username
-  .user-name= @person.user.email
-  .moniker= @person.moniker
-  .school= @person.school.name
-  .current-person-avatar.supplemental-part=image_tag @person.avatar.image.url if @person.avatar
-  
-  .link
-    = link_to "Update", edit_person_path(@person.id), class: 'btn awesome-button'
-  
+
+  .row
+    .span2
+      .avatar= image_tag(@person.avatar.image.url) if @person.avatar
+    .span3
+      %dl.details
+        %dt Name
+        %dd= @person.first_name + @person.last_name
+        %dt Username
+        %dd= @person.user.username
+        - if !current_person.is_a? Student
+          %dt Email
+          %dd= @person.user.email
+        - if current_person.is_a? Teacher
+          %dt Game Challengeable?
+          %dd= @person.game_challengeable
+    .span3
+      %dl.details
+        %dt School
+        %dd= @person.school.name
+
+      .link
+        = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'

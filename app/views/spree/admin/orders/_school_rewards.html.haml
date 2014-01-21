@@ -5,6 +5,8 @@
     %th
       %h4 Reward Name
     %th
+      %h4 School Amount
+    %th
       %h4 Count on Hand
     %th
       %h4 Qty to Order
@@ -12,8 +14,13 @@
   - @school_inventory_items.each do |item|
     %tr
       %td= label_tag item.name
+
+      - if @school.store.products.detect{|x| x.name == item.name}.present?
+        %td{:width => 200}= @school.store.products.detect{|x| x.name == item.name}.count_on_hand
+      -else
+        %td{:width => 200} 0
       %td{:width => 200}= item.count_on_hand
-      %td{:width => 200}= number_field_tag "product_quantities[#{item.id}]",  1, :min => 0, :class => 'fullwidth title'
+      %td{:width => 200}= number_field_tag "product_quantities[#{item.id}]",  0, :min => 0, :class => 'fullwidth title'
 
 .pull-right= submit_tag "Create Order", :class => 'button'
 

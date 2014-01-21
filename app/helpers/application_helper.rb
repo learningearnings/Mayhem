@@ -34,7 +34,6 @@ module ApplicationHelper
     school.nil? ? "Unknown School" : school.name
   end
 
-
   def buck_link(buck)
     link_to 'Redeem Buck', "/bank/redeem_bucks", buck
   end
@@ -55,7 +54,6 @@ module ApplicationHelper
     end
   end
 
-
   def render_reward_highlights products
     render 'shared/rewards_highlights', products: products
   end
@@ -70,7 +68,17 @@ module ApplicationHelper
     image_tag(avatar_img.thumb(geometry).url)
   end
 
+  def resized_image(image_file_url, geometry='50x50#')
+    img = image_processor.fetch_url(image_file_url)
+    image_tag(img.thumb(geometry).url)
+  end
+
   def le_svg_tag source, options = {}
+    if is_dragonfly_image?(source)
+      url = source.url
+    else
+      url = source
+    end
     options[:type] = "image/svg+xml" unless options[:type]
     if block_given?
       content_tag(:script,options,nil,false) do
@@ -78,10 +86,10 @@ module ApplicationHelper
       end
     else # source file passed in
       if browser_is?(:webkit) || browser_is?(:firefox)
-        return image_tag(source, options)
+        return image_tag(url, options)
       else
         content_tag(:script,options,nil,false) do
-          Leror::Application.assets.find_asset(source).body.html_safe
+          source.data.html_safe
         end
       end
     end
@@ -141,4 +149,11 @@ module ApplicationHelper
     '%.02f' % number
   end
 
+  def human_date date
+    date.strftime("%B %d, %Y")
+  end
+
+  def is_dragonfly_image?(source)
+    source.inspect =~ /Dragonfly Attachment/ # oh god oh god
+  end
 end
