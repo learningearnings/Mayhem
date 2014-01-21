@@ -20,4 +20,11 @@ ActiveAdmin.register_page "Imports" do
     flash[:notice] = 'Teachers Import Completed.'
     redirect_to '/admin/imports'
   end
+
+  page_action :handle_interest, :method => :get do
+    StudentInterestWorker.perform_async(current_person)
+    flash[:notice] = 'Worker Started'
+    redirect_to '/admin/imports'
+  end
+
 end
