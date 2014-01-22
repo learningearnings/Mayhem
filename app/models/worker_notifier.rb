@@ -10,4 +10,11 @@ class WorkerNotifier
     @block.send(@action.to_sym)
     UserMailer.bulk_update_notifier(@teacher).deliver
   end
+
+
+end
+class Proc
+  def delete!
+    call
+  end
 end
