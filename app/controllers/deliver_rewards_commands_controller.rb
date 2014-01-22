@@ -8,8 +8,9 @@ class DeliverRewardsCommandsController < LoggedInController
       on_success and return
     end
     command = DeliverRewardsCommand.new reward_deliveries: reward_deliveries
-    command.on_success = method(:on_success)
+    #command.on_success = method(:on_success)
     command.execute!
+    redirect_to purchases_report_path(params)
   end
 
   def on_success

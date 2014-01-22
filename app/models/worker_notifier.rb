@@ -11,10 +11,5 @@ class WorkerNotifier
     UserMailer.bulk_update_notifier(@teacher).deliver
   end
 
+end
 
-end
-class Proc
-  def delete!
-    call
-  end
-end
