@@ -2,7 +2,7 @@ require 'chronic'
 
 class StudentInterestHandler
 
-  def initialize(admin=false, forced_run=false)
+  def initialize(admin=nil, forced_run=nil)
     @admin = admin
     @forced_run = forced_run
     @students = Student.logged
