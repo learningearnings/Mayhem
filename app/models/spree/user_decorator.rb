@@ -35,17 +35,6 @@ Spree::User.class_eval do
     true
   end
 
-
-=begin
-  def username
-    if self.person
-      self.person.username
-    else
-      self.email
-    end
-  end
-=end 
-
   # after the redirect for token authentication
   # the token should be killed
   def after_token_authentication
@@ -56,5 +45,9 @@ Spree::User.class_eval do
  protected
    def email_required?
      false
+   end
+
+   def password_required?
+     api_user? ? false : true
    end
 end
