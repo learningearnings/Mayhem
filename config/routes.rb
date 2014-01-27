@@ -25,6 +25,7 @@ Leror::Application.routes.draw do
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resource :home
+  resources :delayed_reports
 
   resources :people do
     collection do
@@ -57,9 +58,11 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+    get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
   end
 
+  get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.
@@ -115,11 +118,15 @@ Leror::Application.routes.draw do
   post "/filters/filter_grades_by_classroom" => "filters#filter_grades_by_classroom"
   post "/filters" => "filters#create"
 
-  match '/reports/purchases' => 'reports/purchases#show', as: 'purchases_report'
   match '/reports/refund' => 'reports/purchases#refund_purchase', as: 'refund_purchase'
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
   match '/reports/activity' => 'reports/activity#show', as: 'activity_report'
-  match '/reports/student_credit_history' => 'reports/student_credit_history#show', as: 'student_credit_history_report'
+
+  match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
+  get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'
+
+  match '/reports/purchases' => 'reports/purchases#new', as: 'purchases_report'
+  get '/reports/purchases/:id' => 'reports/purchases#show', as: 'purchases_report_show'
 
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'

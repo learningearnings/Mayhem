@@ -18,7 +18,7 @@ before 'deploy:setup', 'rvm:create_wrappers'
 set :bundle_dir, ''
 set :bundle_flags, '--system --quiet'
 
-set :stages, %w(production demo staging sandbox)
+set :stages, %w(production demo staging sandbox qa)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
@@ -58,6 +58,7 @@ namespace :deploy do
     run "ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml"
     run "ln -sf #{shared_path}/config/initializers/00_env.rb #{latest_release}/config/initializers"
     run "ln -sf #{shared_path}/config/initializers/setup_mail.rb #{latest_release}/config/initializers"
+    run "ln -sf #{shared_path}/config/initializers/sidekiq.rb #{latest_release}/config/initializers"
   end
 
   desc "Precompile assets"

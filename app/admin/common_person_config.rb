@@ -162,3 +162,19 @@ module CommonPersonConfig
     end
   end
 end
+
+class ActiveAdmin::Views::TableFor
+  def build_table_body
+    @tbody = tbody do
+      # Build enough rows for our collection
+      #@collection.each{|_| tr(:class => cycle('odd', 'even'), :id => dom_id(_)) }
+      @collection.each do |object|
+        if object.is_a? SchoolAdmin
+          tr(:class => 'bg-red', :id => dom_id(object))
+        else
+          tr(:class => cycle('odd', 'even'), :id => dom_id(object))
+        end
+      end
+    end
+  end
+end

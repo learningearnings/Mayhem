@@ -633,6 +633,13 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.datetime "interest_paid_at"
   end
 
+  create_table "site_settings", :force => true do |t|
+    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
+  end
+
   create_table "spree_activators", :force => true do |t|
     t.string   "description"
     t.datetime "expires_at"

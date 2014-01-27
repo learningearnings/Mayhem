@@ -26,4 +26,8 @@ class UserMailer < ActionMailer::Base
     mail(:to => teacher.email, :subject => "Teacher registration denied.")
   end
 
+  def bulk_update_notifier(email)
+    mail(:to => email, :subject => "Batch update complete.")
+  end
+
 end

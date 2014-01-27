@@ -33,6 +33,9 @@ class PeopleController < LoggedInController
         # Devise automatically logs out a user upon password change.
         sign_in(@person.user, bypass: true)
       end
+      if person_attributes[:game_challengeable].present?
+        @person.update_attributes(:game_challengeable => person_attributes[:game_challengeable])
+      end
       if person_attributes[:email].present?
         @person.user.update_attributes(:email => person_attributes[:email])
       end

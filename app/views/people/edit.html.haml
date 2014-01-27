@@ -17,6 +17,10 @@
             = f.password_field :password
             = f.label :password_confirmation
             = f.password_field :password_confirmation
+        - if current_person.is_a?(Teacher)
+          = f.label :game_challengeable
+          = f.check_box :game_challengeable, :value => @person.game_challengeable
+ 
       = f.submit t(:update), class: 'btn awesome-button'
       = link_to "Cancel", current_person, class: 'btn awesome-button'
 

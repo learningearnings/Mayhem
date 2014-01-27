@@ -41,7 +41,13 @@ class School < ActiveRecord::Base
   after_create :ensure_accounts
   after_create :set_default_subdomain
 
+  before_create :set_status_to_active
+
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
+
+  def set_status_to_active
+    self.status = 'active' # Students should default to active
+  end
 
   def address=(newaddress)
     addresses << newaddress

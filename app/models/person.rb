@@ -12,6 +12,7 @@ class Person < ActiveRecord::Base
   has_one  :spree_user, :class_name => 'Spree::User'
 
   has_many :posts
+  has_many :delayed_reports
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
   has_many :received_messages, class_name: "Message", foreign_key: "to_id"
   has_many :person_school_links
@@ -41,7 +42,7 @@ class Person < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
   validates_presence_of :first_name, :last_name
 
@@ -103,6 +104,10 @@ class Person < ActiveRecord::Base
 
   def person_school_classroom_links(status = :status_active)
     PersonSchoolClassroomLink.joins(:person_school_link).where(person_school_link: { id: person_school_links(status).map(&:id) }).send(status)
+  end
+
+  def homeroom
+    person_school_classroom_links.where(:homeroom => true).map(&:classroom).first
   end
 
   def schools(status = :status_active)
