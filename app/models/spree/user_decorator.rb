@@ -35,7 +35,6 @@ Spree::User.class_eval do
       session_information = client.session_information
       return if session_information.response.code == "401"
       sti_staff_id = session_information.parsed_response["StaffId"]
-      # TMP TESTING
       sti_person = Teacher.where(:district_guid => school.district_guid, :sti_id => sti_staff_id).first
       return if sti_person.nil?
       user = sti_person.user
