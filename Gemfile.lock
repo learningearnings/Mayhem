@@ -547,6 +547,7 @@ DEPENDENCIES
   capistrano-unicorn
   capybara
   chosen-rails
+  chronic
   ckeditor (= 3.7.3)
   coffee-filter (~> 0.1.3)
   coffee-rails (~> 3.2.1)

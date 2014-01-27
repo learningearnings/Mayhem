@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20140114014408) do
     t.integer  "processed"
     t.string   "sti_uuid"
     t.integer  "sti_id"
+    t.string   "district_guid"
   end
 
   create_table "codes", :force => true do |t|
@@ -421,8 +422,8 @@ ActiveRecord::Schema.define(:version => 20140114014408) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
@@ -433,6 +434,8 @@ ActiveRecord::Schema.define(:version => 20140114014408) do
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
     t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
+    t.string   "district_guid"
   end
 
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
@@ -620,6 +623,14 @@ ActiveRecord::Schema.define(:version => 20140114014408) do
     t.string   "zip"
     t.string   "sti_uuid"
     t.integer  "sti_id"
+    t.string   "district_guid"
+  end
+
+  create_table "site_settings", :force => true do |t|
+    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
   end
 
   create_table "spree_activators", :force => true do |t|
@@ -1199,6 +1210,7 @@ ActiveRecord::Schema.define(:version => 20140114014408) do
     t.string   "api_key",                :limit => 48
     t.integer  "person_id"
     t.string   "username"
+    t.boolean  "api_user"
   end
 
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"

@@ -58,9 +58,11 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+    get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
   end
 
+  get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.

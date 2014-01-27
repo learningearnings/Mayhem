@@ -56,6 +56,10 @@ class Student < Person
     name
   end
 
+  def reverse_name
+    last_name + ' ' + first_name
+  end
+
   def accounts (school)
     [checking_account, savings_account, hold_account]
   end
