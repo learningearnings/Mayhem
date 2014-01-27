@@ -29,6 +29,7 @@ gem "webshims-rails", "~> 1.11.1" # if we move to rails 4, please read https://g
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
 gem 'jquery-ui-rails'
+gem 'sinatra'
 
 gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
