@@ -11,24 +11,18 @@ Spree::User.class_eval do
   has_many :schools, :through => :person_school_links
 
   def self.authenticate_with_school_id(username,password,school_id)
-    if username.blank? || password.blank? || school_id.blank?
-      nil
-    else
-      encrypted_password = ::BCrypt::Password.create("#{password}#{self.pepper}", :cost => self.stretches).to_s
-      u = Spree::User.where("LOWER(spree_users.username) = ?", username.downcase).joins(:person).merge(Person.status_active).joins(:schools).merge(School.status_active).where('schools.id = ?',school_id).first
-      if u.nil?
-        u = Spree::User.where(:username => username).joins(:person).merge(LeAdmin.status_active).first
-      end
+    return if username.blank? || password.blank? || school_id.blank?
+    user = Spree::User.select("spree_users.*").
+      where("LOWER(spree_users.username) = ?", username.downcase).
+      joins(:person).merge(Person.status_active).
+      joins(:schools).merge(School.status_active).
+      where('schools.id = ?',school_id).first
+    user = Spree::User.select("spree_users.*").where(:username => username).joins(:person).merge(LeAdmin.status_active).first if user.nil?
+    if user && user.valid_password?(password)
+      super_user = Spree::User.find(user.id)
+      super_user.person.recovery_password = password and super_user.person.save if super_user && super_user.person
     end
-    if u.nil?
-      nil
-    elsif u.valid_password?(password)
-      su = Spree::User.find(u.id)
-      su.person.recovery_password = password and su.person.save if su && su.person
-      su
-    else
-      nil
-    end
+    user || super_user
   end
 
   def self.admin_created?

@@ -170,6 +170,16 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
 
   add_index "codes", ["active"], :name => "index_codes_on_active"
 
+  create_table "delayed_reports", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "state"
+    t.text     "report_data"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "name"
+    t.string   "render_class"
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -412,8 +422,8 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
@@ -423,6 +433,7 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
+    t.boolean  "game_challengeable",                   :default => false
     t.integer  "sti_id"
     t.string   "district_guid"
   end
@@ -473,6 +484,7 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.integer  "classroom_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.boolean  "homeroom"
   end
 
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
@@ -612,6 +624,13 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
+  end
+
+  create_table "site_settings", :force => true do |t|
+    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
   end
 
   create_table "spree_activators", :force => true do |t|
