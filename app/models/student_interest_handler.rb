@@ -34,7 +34,7 @@ class StudentInterestHandler
 
   def calculate_and_pay(student)
     if student.savings_account.balance > 0.00
-      amount = student.savings_account.balance * @rate
+      amount = (student.savings_account.balance * @rate).round(2)
       @credit_manager.issue_interest_to_student student, amount
     end
   end
