@@ -13,4 +13,4 @@
       %td.name= commercial_document_link(amount.transaction)
       %td.date= l(amount.transaction.created_at)
       %td.amount
-        .currency= amount.amount
+        .currency= number_to_currency(amount.amount)
