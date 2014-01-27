@@ -99,14 +99,14 @@ class ClassroomsController < LoggedInController
 
   def destroy
     @classroom = Classroom.find(params[:id])
-    if @classroom.destroy
-      pscls = PersonSchoolClassroomLink.find_all_by_classroom_id(@classroom.id)
-      if pscls.present?
-        pscls.map{|x| x.delete}
-      end
-      flash[:notice] = 'Classroom deleted.'
-      redirect_to classrooms_path
-    end
+    #if @classroom.destroy
+    #  pscls = PersonSchoolClassroomLink.find_all_by_classroom_id(@classroom.id)
+    #  if pscls.present?
+    #    pscls.map{|x| x.delete}
+    #  end
+    @classroom.update_attributes(:status => 'inactive')
+    flash[:notice] = 'Classroom deleted.'
+    redirect_to classrooms_path
   end
 
   def create_student
