@@ -433,8 +433,8 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.boolean  "game_challengeable",                   :default => false
     t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"
   end
 
@@ -624,13 +624,6 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
-  end
-
-  create_table "site_settings", :force => true do |t|
-    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-    t.datetime "interest_paid_at"
   end
 
   create_table "site_settings", :force => true do |t|
