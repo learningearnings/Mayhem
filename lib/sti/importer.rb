@@ -116,6 +116,8 @@ module STI
         state_id: State.first.id,
         zip: "35071",
         sti_id: api_school["Id"],
+        min_grade: 1,
+        max_grade: 12,
         district_guid: @district_guid
       }
     end
