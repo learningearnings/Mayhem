@@ -1,62 +1,62 @@
-%h2 Classroom: #{@classroom.name}
 %ul.action_buttons
   %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
   %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
+.main-content
+  %h2 Classroom: #{@classroom.name}
+  %h3 Select Students to add to #{@classroom.name}
 
-%h3 Select Students to add to #{@classroom.name}
+  %p Please Note:
 
-%p Please Note:
+  %p You can only add students from your school.
+  %p If you do not see your students, you may 
+  %p click the New Student button below or email
+  %p= mail_to("theteam@learningearnings.com")
+  %p to request the .csv or Excel template.
 
-%p You can only add students from your school.
-%p If you do not see your students, you may 
-%p click the New Student button below or email
-%p= mail_to("theteam@learningearnings.com")
-%p to request the .csv or Excel template.
-
-%table.table.table-bordered.table-striped.solid-background
-  %thead
-    %tr
-      - if @classroom.students.present?
-        %th Student Name
-        %th Homeroom?
-        %th Username
-        %th Remove
-  %tbody
-    - @classroom.students.order("last_name, first_name").each do |student|
+  %table.table.table-bordered.table-striped.solid-background
+    %thead
       %tr
-        %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td= student.homeroom == @classroom ? "Yes" : "No"
-        %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
+        - if @classroom.students.present?
+          %th Student Name
+          %th Homeroom?
+          %th Username
+          %th Remove
+    %tbody
+      - @classroom.students.order("last_name, first_name").each do |student|
+        %tr
+          %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
+          %td= student.homeroom == @classroom ? "Yes" : "No"
+          %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
+          %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
-= form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
-  = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
-  %label.checkbox
-    = check_box_tag :homeroom
-    Homeroom
-  = hidden_field_tag :classroom_id, @classroom.id
-  = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
-
-%a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
-%div{:class => "accordion-body collapse", :id => "new-student"}
-  %h3 Create Student
-  = form_for :student, :url => '/create_classroom_student' do |f|
+  = form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
+    = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
+    %label.checkbox
+      = check_box_tag :homeroom
+      Homeroom
     = hidden_field_tag :classroom_id, @classroom.id
-    .row
-      .span4
-        = f.label :first_name
-        = f.text_field :first_name
-        = f.label :last_name
-        = f.text_field :last_name
-        = f.label :username
-        = f.text_field :username
-      .span4
-        = f.label :grade
-        = f.select :grade, (current_school.min_grade..current_school.max_grade)
-        = f.label :password
-        = f.text_field :password
+    = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
 
-    = f.submit 'Save', class: 'btn awesome-button'
+  %a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
+  %div{:class => "accordion-body collapse", :id => "new-student"}
+    %h3 Create Student
+    = form_for :student, :url => '/create_classroom_student' do |f|
+      = hidden_field_tag :classroom_id, @classroom.id
+      .row
+        .span4
+          = f.label :first_name
+          = f.text_field :first_name
+          = f.label :last_name
+          = f.text_field :last_name
+          = f.label :username
+          = f.text_field :username
+        .span4
+          = f.label :grade
+          = f.select :grade, (current_school.min_grade..current_school.max_grade)
+          = f.label :password
+          = f.text_field :password
+
+      = f.submit 'Save', class: 'btn awesome-button'
 
 :javascript
   $(".chzn-select").chosen();
