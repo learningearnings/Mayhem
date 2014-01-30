@@ -148,7 +148,7 @@ Spree::OrdersController.class_eval do
 
   private
   def current_person
-    if current_user
+    if current_user.present?
       current_user.person
     else
       nil
