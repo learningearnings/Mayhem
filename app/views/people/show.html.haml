@@ -22,4 +22,7 @@
         %dd= @person.school.name
 
       .link
-        = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
+        - if @person.sti_id
+          This user was imported from iNow and can not be edited. You must edit this user in iNow.
+        - else
+          = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
