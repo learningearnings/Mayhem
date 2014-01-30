@@ -1,7 +1,11 @@
 %h2 Classroom: #{@classroom.name}
 %ul.action_buttons
-  %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
-  %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
+  - if current_person.sti_id
+    %li= link_to_function "Delete classroom", "sti_edit()", class: 'btn awesome-button'
+    %li= link_to_function "Edit classroom", "sti_edit()", class: 'btn awesome-button'
+  - else
+    %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
+    %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
 
 %h3 Select Students to add to #{@classroom.name}
 
@@ -35,9 +39,15 @@
     = check_box_tag :homeroom
     Homeroom
   = hidden_field_tag :classroom_id, @classroom.id
-  = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
+  - if current_person.sti_id
+    = link_to_function 'Add Student', "sti_edit()", class: 'btn awesome-button'
+  - else
+    = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
 
-%a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
+- if current_person.sti_id
+  = link_to_function "New Student", "sti_edit()", class: "btn awesome-button"
+- else
+  %a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
 %div{:class => "accordion-body collapse", :id => "new-student"}
   %h3 Create Student
   = form_for :student, :url => '/create_classroom_student' do |f|
@@ -106,5 +116,9 @@
         window.location.replace("/classrooms/" + classroom_id);
       }
     });
+  }
+
+  function sti_edit() {
+    alert("This classroom was created in iNow. You will have to edit it there") 
   }
 
