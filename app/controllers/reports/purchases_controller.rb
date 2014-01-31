@@ -16,6 +16,12 @@ module Reports
       end
     end
 
+    def export
+      delayed_report = current_person.delayed_reports.find(params[:id])
+      @report = ReportExporter.new(delayed_report).export
+      send_data @report, :type => 'text/csv; charset=iso-8859-1; header=present', :disposition => "attachment; filename=purchase_report_#{params[:id]}.csv"
+    end
+
     def refund_purchase
       reward_delivery = RewardDelivery.find(params[:reward_delivery_id])
       if reward_delivery.refund_purchase
