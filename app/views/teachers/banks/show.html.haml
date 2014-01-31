@@ -55,6 +55,8 @@
             = form_for OtuCode.new, :url => teachers_create_ebucks_for_classroom_path do |f|
               = label_tag 'Classroom'
               = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
+              = label_tag 'Classroom Points'
+              = text_field :class_points, nil, :class => 'class_points'
               #classroom_distribution
 
           .tab-pane#transfer-credits
@@ -115,3 +117,14 @@
       )
 
     $('#classroom_points').on('change', distributeCreditsToAllStudents)
+
+    ($ document).ready ->
+      $('.class_points').on 'keyup', (e) ->
+        (
+          copy_points()
+        )
+:javascript
+  function copy_points() {
+    var points = $('.class_points').val();
+    $('input.classroom_student_points').val(points);
+  }
