@@ -93,6 +93,7 @@ module STI
     def api_teacher_mapping api_teacher
       {
         dob: api_teacher["DateOfBirth"],
+        can_distribute_credits: api_teacher["CanAwardCredits"],
         first_name: api_teacher["FirstName"],
         last_name: api_teacher["LastName"],
         grade: 5,
