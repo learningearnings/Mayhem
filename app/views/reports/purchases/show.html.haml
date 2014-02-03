@@ -23,7 +23,7 @@
             %br/
           = f.submit 'Run Report', :class => 'awesome-button'
           = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
-          = link_to "Export Report", export_report_path(DelayedReport.find(params[:id])) , :class => "awesome-button"
+          = link_to "Export Report", export_report_path(DelayedReport.find(params[:id])) , :class => 'btn awesome-button'
 
       .report
         = form_tag DeliverRewardsCommand.new, method: :post do
