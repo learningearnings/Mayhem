@@ -22,6 +22,9 @@ Leror::Application.routes.draw do
   root to: 'homes#show'
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
+
+  match "/export_report/:id" => "reports/purchases#export", :as => "export_report"
+
   resource :home
   resources :delayed_reports
 
