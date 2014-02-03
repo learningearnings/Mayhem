@@ -103,19 +103,19 @@ class Student < Person
   end
 
   def balance
-    checking_account.balance
+    checking_account.balance.round(2)
   end
 
   def checking_balance
-    checking_account.balance
+    checking_account.balance.round(2)
   end
 
   def savings_balance
-    savings_account.balance
+    savings_account.balance.round(2)
   end
 
   def hold_balance
-    hold_account.balance
+    hold_account.balance.round(2)
   end
 
   def grademates

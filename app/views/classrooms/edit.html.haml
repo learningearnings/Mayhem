@@ -1,8 +1,10 @@
-%h2 Classroom: #{@classroom.name}
 %ul.action_buttons
-  %li= button_to "Back", classroom_path(@classroom), class: 'btn awesome-button'
+  %li= link_to "Back", classroom_path(@classroom), class: 'btn awesome-button'
+  %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
 
-= form_for @classroom do |f|
-  = f.text_field :name
-  = f.submit
- 
+.main-content
+  %h2 Classroom: #{@classroom.name}
+  = form_for @classroom do |f|
+    = f.text_field :name
+    = f.submit
+   
