@@ -15,7 +15,7 @@ gem 'pg', '0.13.2'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transaction_retry'
-
+gem 'uuidtools'
 gem 'chronic'
 
 # for importing

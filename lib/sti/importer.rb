@@ -112,10 +112,11 @@ module STI
     end
 
     def api_student_user_mapping api_student
+      password = UUIDTools::UUID.random_create.to_s[0..3]
       {
         username: api_student["FirstName"][0] + api_student["LastName"][0..4],
-        password: "123456",
-        password_confirmation: "123456"
+        password: password,
+        password_confirmation: password
       }
     end
 
