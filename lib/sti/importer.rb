@@ -52,6 +52,7 @@ module STI
       @api_students = client.students.parsed_response.each do |api_student|
         student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
         student.update_attributes(api_student_mapping(api_student))
+        student.user.update_attributes(api_student_user_mapping(api_student))
         api_student["Schools"].each do |sti_school_id|
           school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
           person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
@@ -107,6 +108,14 @@ module STI
         first_name: api_student["FirstName"],
         last_name: api_student["LastName"],
         grade: api_student["GradeLevel"]
+      }
+    end
+
+    def api_student_user_mapping api_student
+      {
+        username: api_student["FirstName"][0] + api_student["LastName"][0..4],
+        password: "123456",
+        password_confirmation: "123456"
       }
     end
 
