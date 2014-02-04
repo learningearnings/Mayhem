@@ -325,7 +325,7 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     newrelic_rpm (3.6.9.171)
-    nokogiri (1.5.10)
+    nokogiri (1.5.11)
     orm_adapter (0.0.7)
     paperclip (2.8.0)
       activerecord (>= 2.3.0)
@@ -397,7 +397,7 @@ GEM
     ref (1.0.5)
     responders (1.0.0)
       railties (>= 3.2, < 5)
-    roo (1.12.1)
+    roo (1.13.2)
       nokogiri
       rubyzip
       spreadsheet (> 0.6.4)
@@ -448,7 +448,7 @@ GEM
       capybara (~> 1)
       railties (>= 3)
       spinach (>= 0.4)
-    spreadsheet (0.9.0)
+    spreadsheet (0.9.6)
       ruby-ole (>= 1.0)
     spree (1.2.0)
       spree_api (= 1.2.0)
@@ -608,7 +608,7 @@ DEPENDENCIES
   rb-inotify (~> 0.8.8)
   rdiscount
   responders
-  roo (= 1.12.1)
+  roo
   rubyzip (= 0.9.9)
   rvm-capistrano
   sanitizing_bigdecimal

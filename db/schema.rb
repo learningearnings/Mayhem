@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140116170853) do
+ActiveRecord::Schema.define(:version => 20140120164023) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -403,6 +403,7 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+    t.string   "reason"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"

@@ -29,4 +29,8 @@ Plutus::Transaction.class_eval do
     end
     transaction
   end
+
+  def otu_code
+    OtuCode.where(:otu_transaction_link_id => id).first
+  end
 end
