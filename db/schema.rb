@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20140204220432) do
 
   create_table "honor_roll_deposits", :force => true do |t|
     t.integer  "student_id"
+    t.integer  "school_id"
     t.decimal  "amount"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

@@ -29,11 +29,10 @@
           - charity_donations.each do |person, amount|
             %li #{person} [#{number_to_bucks amount}]
 
-      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-deposits%m%d%y-%p")) do
-        %h4 Most Credits Deposited
-        %ol
-          - HonorRollDeposit.all.each do |deposit|
-            %li #{deposit.student.name} [#{number_to_bucks deposit.amount}]
+      %h4 Most Credits Deposited
+      %ol
+        - HonorRollDeposit.find_all_by_school_id(current_school.id).each do |deposit|
+          %li #{deposit.student.name} [#{number_to_bucks deposit.amount}]
 
 
 .student-logged-in-sidebar
