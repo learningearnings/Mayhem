@@ -14,7 +14,10 @@ module STI
       sti_school_ids = sti_schools.map {|school| school["Id"]}
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
         school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
-        school.deactivate! unless school.status == "inactive"
+        unless school.status == "inactive"
+          school.deactivate!
+          client.set_school_synced(school.sti_id, false)
+        end
       end
       @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
