@@ -106,6 +106,7 @@ gem 'state_machine'
 gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
+gem 'sinatra'
 gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
