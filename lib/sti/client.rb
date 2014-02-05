@@ -42,8 +42,8 @@ module STI
       HTTParty.get("#{base_url}le/students", :headers => authorized_headers)
     end
 
-    def set_school_synced school_id
-      options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => true, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
+    def set_school_synced school_id, status = true
+      options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
       HTTParty.put("#{base_url}le/schools/#{school_id}", options)
     end
 
