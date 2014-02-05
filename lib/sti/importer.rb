@@ -44,9 +44,17 @@ module STI
         end
       end
 
-      @api_classrooms = client.sections.parsed_response.each do |api_classroom|
+      sti_classrooms = client.sections.parsed_response
+      current_classrooms_for_district = Classroom.where(district_guid: @district_guid).pluck(:sti_id)
+      sti_classroom_ids = sti_classrooms.map {|classroom| classroom["Id"]}
+      (current_classrooms_for_district - sti_classroom_ids).each do |sti_classroom_id|
+        classroom = Classroom.where(:district_guid => @district_guid, :sti_id => sti_classroom_id).first
+        classroom.deactivate! unless classroom.status == "inactive"
+      end
+      @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
         classroom.update_attributes(api_classroom_mapping(api_classroom))
+        classroom.activate! unless classroom.status == "active"
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
         person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
