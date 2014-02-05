@@ -9,9 +9,18 @@ module STI
     end
 
     def run!
-      @api_schools = client.schools.parsed_response.each do |api_school|
+      sti_schools = client.schools.parsed_response
+      current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+      sti_school_ids = sti_schools.map {|school| school["Id"]}
+      (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+        school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+        school.deactivate! unless school.status == "inactive"
+      end
+      binding.pry
+      @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
         school.update_attributes(api_school_mapping(api_school))
+        school.activate! unless school.status == "active"
         school.save
         @imported_schools << school
       end
@@ -64,9 +73,11 @@ module STI
 
     private
     def api_classroom_mapping api_classroom
+      classroom_name_period_addition = nil
+      classroom_name_period_addition = " " + api_classroom["Periods"] unless api_classroom["Periods"].blank?
       {
         school_id: School.where(district_guid: @district_guid, sti_id: api_classroom["SchoolId"]).first.id,
-        name: api_classroom["Name"],
+        name: api_classroom["Name"] + classroom_name_period_addition,
         sti_id: api_classroom["Id"],
         district_guid: @district_guid
       }
