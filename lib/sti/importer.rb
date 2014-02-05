@@ -61,9 +61,17 @@ module STI
         person_school_classroom_link.save
       end
 
-      @api_students = client.students.parsed_response.each do |api_student|
+      sti_students = client.students.parsed_response
+      current_students_for_district = Student.where(district_guid: @district_guid).pluck(:sti_id)
+      sti_student_ids = sti_students.map {|student| student["Id"]}
+      (current_students_for_district - sti_student_ids).each do |sti_student_id|
+        student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
+        student.deactivate! unless student.status == "inactive"
+      end
+      @api_students = sti_students.each do |api_student|
         student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
         student.update_attributes(api_student_mapping(api_student))
+        student.activate! unless student.status == "active"
         student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
         api_student["Schools"].each do |sti_school_id|
           school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
