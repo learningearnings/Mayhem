@@ -9,9 +9,6 @@ module STI
     end
 
     def run!
-      Rails.logger.warn "*********************************"
-      Rails.logger.warn "Starting import of schools"
-      Rails.logger.warn "*********************************"
       @api_schools = client.schools.parsed_response.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
         school.update_attributes(api_school_mapping(api_school))
@@ -19,9 +16,6 @@ module STI
         @imported_schools << school
       end
 
-      Rails.logger.warn "*********************************"
-      Rails.logger.warn "Starting import of teachers"
-      Rails.logger.warn "*********************************"
       @api_teachers = client.staff.parsed_response.each do |api_teacher|
         schools = api_teacher["Schools"].map do |school_id|
           School.where(district_guid: @district_guid, sti_id: school_id).first.id
@@ -34,9 +28,6 @@ module STI
         end
       end
 
-      Rails.logger.warn "*********************************"
-      Rails.logger.warn "Starting import of classrooms"
-      Rails.logger.warn "*********************************"
       @api_classrooms = client.sections.parsed_response.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
         classroom.update_attributes(api_classroom_mapping(api_classroom))
@@ -46,13 +37,10 @@ module STI
         person_school_classroom_link.save
       end
 
-      Rails.logger.warn "*********************************"
-      Rails.logger.warn "Starting import of students"
-      Rails.logger.warn "*********************************"
       @api_students = client.students.parsed_response.each do |api_student|
         student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
         student.update_attributes(api_student_mapping(api_student))
-        student.user.update_attributes(api_student_user_mapping(api_student))
+        student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
         api_student["Schools"].each do |sti_school_id|
           school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
           person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
@@ -61,9 +49,6 @@ module STI
       end
 
 
-      Rails.logger.warn "*********************************"
-      Rails.logger.warn "Starting import of students into classrooms"
-      Rails.logger.warn "*********************************"
       client.rosters.parsed_response.each do |api_roster|
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => api_roster["SectionId"]).first
         student = Student.where(:district_guid => @district_guid, :sti_id => api_roster["StudentId"]).first
@@ -72,9 +57,6 @@ module STI
         person_school_classroom_link.save
       end
 
-      Rails.logger.warn "*********************************"
-      Rails.logger.warn "Notifying STI of successful sync"
-      Rails.logger.warn "*********************************"
       @imported_schools.each do |school|
         client.set_school_synced(school.sti_id)
       end
@@ -105,6 +87,7 @@ module STI
     def api_student_mapping api_student
       {
         sti_id: api_student["Id"],
+        gender: api_student["Gender"] == "M" ? "Male" : "Female",
         district_guid: @district_guid,
         first_name: api_student["FirstName"],
         last_name: api_student["LastName"],
