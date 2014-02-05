@@ -2,7 +2,7 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "Password", except: [:give_credits, :create_ebucks_for_students]
+  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students]
   skip_around_filter :track_interaction
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
