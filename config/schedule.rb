@@ -36,3 +36,7 @@ every '0 9 1 * *' do
   runner "BuckDistributor.new.run"
 end
 
+every 1.day, :at => '12pm' do
+  runner 'HonorRollWorker.perform_async'
+end
+

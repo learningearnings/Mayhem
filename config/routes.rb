@@ -1,4 +1,7 @@
+require 'sidekiq/web'
 Leror::Application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
+  
   get '/sti/give_credits' => "sti#give_credits"
   match '/404' => 'errors#not_found'
   match '/422' => 'errors#server_error'
