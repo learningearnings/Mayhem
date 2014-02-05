@@ -22,7 +22,7 @@ ActiveAdmin.register_page "Imports" do
   end
 
   page_action :handle_interest, :method => :get do
-    StudentInterestWorker.perform_async(current_person)
+    StudentInterestWorker.perform_async(current_person.email)
     flash[:notice] = 'Worker Started'
     redirect_to '/admin/imports'
   end

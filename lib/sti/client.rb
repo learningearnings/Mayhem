@@ -19,27 +19,27 @@ module STI
     end
 
     def session_information
-      response = HTTParty.get("#{base_url}users/me", :headers => authorized_headers)
+      HTTParty.get("#{base_url}users/me", :headers => authorized_headers)
     end
 
     def rosters
-      response = HTTParty.get("#{base_url}le/rosters", :headers => authorized_headers)
+      HTTParty.get("#{base_url}le/rosters", :headers => authorized_headers)
     end
 
     def schools
-      response = HTTParty.get("#{base_url}le/schools", :headers => authorized_headers)
+      HTTParty.get("#{base_url}le/schools", :headers => authorized_headers)
     end
 
     def sections
-      response = HTTParty.get("#{base_url}le/sections", :headers => authorized_headers)
+      HTTParty.get("#{base_url}le/sections", :headers => authorized_headers)
     end
 
     def staff
-      response = HTTParty.get("#{base_url}le/staff", :headers => authorized_headers)
+      HTTParty.get("#{base_url}le/staff", :headers => authorized_headers)
     end
 
     def students
-      response = HTTParty.get("#{base_url}le/students", :headers => authorized_headers)
+      HTTParty.get("#{base_url}le/students", :headers => authorized_headers)
     end
 
     def set_school_synced school_id

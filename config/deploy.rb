@@ -71,6 +71,13 @@ namespace :deploy do
   task :restart do
     unicorn.restart
   end
+
+  desc "Restart sidekiq"
+  task :restart_sidekiq do
+    run "svc -d /service/sidekiq"
+    run "svc -d /service/sidekiq"
+    run "svstat /service/sidekiq"
+  end
 end
 
 before 'deploy:precompile_assets', 'deploy:symlink_shared'

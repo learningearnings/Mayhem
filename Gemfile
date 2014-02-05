@@ -15,7 +15,7 @@ gem 'pg', '0.13.2'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transaction_retry'
-
+gem 'uuidtools'
 gem 'chronic'
 
 # for importing
@@ -29,7 +29,6 @@ gem "webshims-rails", "~> 1.11.1" # if we move to rails 4, please read https://g
 gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgweb-fix'
 
 gem 'jquery-ui-rails'
-gem 'sinatra'
 
 gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
@@ -107,6 +106,7 @@ gem 'state_machine'
 gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
+gem 'sinatra'
 gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do

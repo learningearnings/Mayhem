@@ -1,4 +1,7 @@
+require 'sidekiq/web'
 Leror::Application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
+  
   get '/sti/give_credits' => "sti#give_credits"
   post '/sti/link' => "sti#link"
   post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
