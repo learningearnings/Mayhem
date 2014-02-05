@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140124055619) do
+ActiveRecord::Schema.define(:version => 20140205030849) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -159,6 +159,8 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.integer  "sti_id"
     t.string   "district_guid"
   end
+
+  add_index "classrooms", ["district_guid", "sti_id"], :name => "index_classrooms_on_district_guid_and_sti_id"
 
   create_table "codes", :force => true do |t|
     t.string   "code"
@@ -438,6 +440,7 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.string   "district_guid"
   end
 
+  add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
 
@@ -487,6 +490,7 @@ ActiveRecord::Schema.define(:version => 20140124055619) do
     t.boolean  "homeroom"
   end
 
+  add_index "person_school_classroom_links", ["person_school_link_id", "classroom_id"], :name => "pscl_pscli_ci"
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
 
   create_table "person_school_links", :force => true do |t|

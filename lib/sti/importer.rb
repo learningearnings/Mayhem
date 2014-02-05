@@ -16,7 +16,6 @@ module STI
         school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
         school.deactivate! unless school.status == "inactive"
       end
-      binding.pry
       @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
         school.update_attributes(api_school_mapping(api_school))
@@ -25,12 +24,20 @@ module STI
         @imported_schools << school
       end
 
-      @api_teachers = client.staff.parsed_response.each do |api_teacher|
+      sti_staff = client.staff.parsed_response
+      current_staff_for_district = Teacher.where(:district_guid => @district_guid).pluck(:sti_id)
+      sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
+      (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
+        teacher = Teacher.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
+        teacher.deactivate! unless teacher.status == "inactive"
+      end
+      @api_teachers = sti_staff.each do |api_teacher|
         schools = api_teacher["Schools"].map do |school_id|
           School.where(district_guid: @district_guid, sti_id: school_id).first.id
         end
         teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
         teacher.update_attributes(api_teacher_mapping(api_teacher))
+        teacher.activate! unless teacher.status == "active"
         schools.each do |school|
           person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
           person_school_link.save(:validate => false)
