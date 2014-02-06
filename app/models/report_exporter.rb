@@ -9,10 +9,18 @@ class ReportExporter
   end
 
   def export
-    @csv = CSV.generate({}) do |csv|
+    old_csv = CSV.generate({}) do |csv|
       csv << @keys
       @report_data.each do |row|
         csv << row.values
+      end
+    end
+    original = CSV.parse(old_csv, { headers: true, return_headers: true })
+    original.delete('Delivery Teacher')
+    original.delete('Delivery Status')
+    @csv = CSV.generate({}) do |csv|
+      original.each do |row|
+        csv << row
       end
     end
   end
