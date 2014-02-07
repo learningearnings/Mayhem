@@ -37,6 +37,16 @@ module Mixins
     end
 
     def create_ebucks_for_students
+      if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
+        flash[:error] = "You can not enter negative values"
+        redirect_to :back and return
+      end
+
+      if params[:credits] && params[:credits].values.detect {|x| x.to_s.include?(".") }
+        flash[:error] = "You can only enter whole values"
+        redirect_to :back and return
+      end
+
       if params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
