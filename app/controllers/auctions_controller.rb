@@ -46,11 +46,14 @@ class AuctionsController < LoggedInController
   def create
     @auction = Auction.new(params[:auction])
     @auction.created_locally = true
+    @auction.start_date = Chronic.parse(params[:auction][:start_date])
+    @auction.end_date = Chronic.parse(params[:auction][:end_date])
     if @auction.save
       AuctionSchoolLink.create(:school_id => current_school.id, :auction_id => @auction.id)
       flash[:notice] = 'Auction created'
       redirect_to auctions_path
     else
+      @products = get_products
       flash[:error] = 'There was a problem creating the auction.'
       render :new
     end
