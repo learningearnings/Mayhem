@@ -10,7 +10,8 @@ module Students
       @our_sponsor_callout = our_sponsor_callout_post
       polls = Poll.active.within_grade(current_person.grade)
       polls = polls + Poll.no_min_grade.no_max_grade
-      @poll = polls.last
+      offset = rand(polls.count)
+      @poll = polls[offset]
     end
 
     private
