@@ -61,6 +61,10 @@ Leror::Application.routes.draw do
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
     get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
+    match "checking_history/get_history/:person_id" => 'checking_history#get_history', :as => :checking_history
+    match "checking_history/get_history" => 'checking_history#get_history', :as => :checking_history
+    match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
+    match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
   end
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
