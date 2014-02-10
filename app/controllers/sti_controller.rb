@@ -15,6 +15,16 @@ class StiController < ApplicationController
     end
   end
 
+  def sync
+    @link = StiLinkToken.where(district_guid: params[:district_guid]).first
+    if @link
+      StiImporterWorker.perform_async(@link.api_url, @link.username, @link.password, @link.district_guid)
+      render :json => {:status => :success}
+    else
+      render :json => {:status => :failure}
+    end
+  end
+
   def link
     if params[:district_guid].blank? || params[:api_url].blank? || params[:link_key].blank? || params[:inow_username].blank?
       render :status => 400, :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, and link_key"} and return
@@ -28,7 +38,6 @@ class StiController < ApplicationController
     render :status => 400, :json => {:status => :failure, :message => "The link endpoint returned: #{link_status}"} and return unless link_status.parsed_response == "active"
     if @link && @link.api_url == params[:api_url]
       @link.update_attribute(:password, params[:inow_password]) unless params[:inow_password].blank?
-      StiImporterWorker.perform_async(@link.api_url, @link.username, @link.password, @link.district_guid)
       render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
     else
       StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password])

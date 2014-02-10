@@ -4,6 +4,7 @@ Leror::Application.routes.draw do
   
   get '/sti/give_credits' => "sti#give_credits"
   post '/sti/link' => "sti#link"
+  post '/sti/sync' => "sti#sync"
   post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
   match '/404' => 'errors#not_found'
   match '/422' => 'errors#server_error'
