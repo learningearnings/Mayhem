@@ -1,6 +1,8 @@
 ActiveAdmin.register School do
 
   filter :name
+  filter :district_guid
+  filter :sti_id
   index do
     column :id
     column :avatar do |school|
@@ -21,6 +23,8 @@ ActiveAdmin.register School do
     column :timezone
     column "Distribution",:distribution_model
     column :store_subdomain
+    column "STI District GUID", :district_guid
+    column "STI id", :sti_id
     default_actions
   end
 
