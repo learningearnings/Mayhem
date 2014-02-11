@@ -17,6 +17,8 @@ module CommonPersonConfig
       filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
       filter :status,:label => "Status", :as => :check_boxes, :collection => proc { Person.new().status_paths.to_states.each do |s| s.to_s end }
       filter :grade,:label => "Grade", :as => :check_boxes, :collection => School::GRADE_NAMES
+      filter :district_guid
+      filter :sti_id
       filter :created_at, :as => :date_range
 
       form do |f|
@@ -36,6 +38,8 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
           end
+          f.input :district_guid
+          f.input :sti_id
           if f.object.new?
             f.input :username, :required => true
             if !f.object.is_a?(Student)
@@ -148,6 +152,8 @@ module CommonPersonConfig
         column :status
         column :gender
         column :salutation
+        column "STI district GUID", :district_guid
+        column "STI id", :sti_id
         column "Created", :created_at do |t|
           t.created_at.strftime("%m/%d/%Y") if t.created_at
         end
