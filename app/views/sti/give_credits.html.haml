@@ -7,10 +7,7 @@
 
     = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
     = javascript_include_tag 'application'
-    = stylesheet_link_tag    'application', media: 'all'
-    = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
-    - if current_user && current_user.person
-      = stylesheet_link_tag current_user.person.type.downcase + '_background', media: 'all'
+    = stylesheet_link_tag    'application'
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
@@ -55,9 +52,9 @@
                       %table.table
                         %thead
                           %tr
-                            %th First Name
-                            %th Last Name
-                            %th Credits
+                            %th.sti_table_heading First Name
+                            %th.sti_table_heading Last Name
+                            %th.sti_table_heading Credits
                         %tbody
                           - @students.each do |student|
                             %tr
