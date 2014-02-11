@@ -16,7 +16,7 @@ Spree::HomeController.class_eval do
 
 
     # If they are a student we need all global products + products that are in their classroom
-    if current_person.is_a?(Student) && current_person.classrooms.present?
+    if (current_person.is_a?(Student) && current_person.classrooms.present?) || current_person.is_a?(Teacher)
       @products = filter_rewards_by_classroom(@products)
     end
 

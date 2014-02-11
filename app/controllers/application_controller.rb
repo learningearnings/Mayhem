@@ -163,7 +163,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filter_rewards_by_classroom(products)
-    if current_person.is_a?(Student)
+    unless current_person.is_a?(LeAdmin)
       classrooms = current_person.classrooms.pluck(:id)
       products.reject! do |product|
         # Products that have no classrooms should not be rejected
