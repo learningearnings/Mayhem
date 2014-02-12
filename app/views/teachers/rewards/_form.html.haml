@@ -12,6 +12,14 @@
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
         = f.input_field :price, class: 'input-small numeric'
         %span.add-on .00
+      .reward_grades
+        = f.input :min_grade do
+          = f.select :min_grade, School::GRADES, :include_blank => true
+        = f.input :max_grade do
+          = f.select :max_grade, School::GRADES, :include_blank => true
+        .red-border
+          .border-content
+            %p This reward will be viewed and can be purchased by any student at your school.  You can use the minimum and maximum grade settings to limit to a particular grade or grades.
     - if @teachers_reward.spree_product_id
       .form-inputs.controls-row.span6.clearfix
         %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
@@ -42,14 +50,18 @@
   = f.submit :class => 'btn awesome-button'
 
 :coffeescript
+
+
   jQuery ->
     conditionally_show_classrooms = ->
       if($('#reward_scope_whole_school').prop('checked'))
         $('.classrooms-interface').hide()
         $('.whole-school-interface').show()
+        $('.reward_grades').show()
       else
         $('.classrooms-interface').show()
         $('.whole-school-interface').hide()
+        $('.reward_grades').hide()
       
     toggle_all_classrooms = (_event) ->
       if ($ _event.target).prop('checked') == true
