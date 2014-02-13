@@ -3,6 +3,8 @@ ActiveAdmin.register School do
   filter :name
   filter :district_guid
   filter :sti_id
+  filter :state
+
   index do
     column :id
     column :avatar do |school|
