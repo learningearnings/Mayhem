@@ -42,6 +42,7 @@ class StiController < ApplicationController
       render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
     else
       StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password])
+      StiImporterWorker.perform_async(@link.api_url, @link.username, @link.password, @link.district_guid)
       render :json => {:status => :success, :message => "The Sync record was created"} and return
     end
   end
