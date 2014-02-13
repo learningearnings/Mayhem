@@ -11,11 +11,11 @@ module Teachers
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     #validates_presence_of :image
 
-    attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id, :min_grade, :max_grade
+    attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id, :min_grade, :max_grade, :time_frame
 
     attr_accessor :id, :name, :description, :price, :classrooms, :image, :spree_product_id
     attr_accessor :on_hand, :teacher, :school, :category, :school_id, :classroom_id
-    attr_accessor :min_grade, :max_grade
+    attr_accessor :min_grade, :max_grade, :time_frame
 
     delegate :set_property, to: :spree_product
 
@@ -29,6 +29,7 @@ module Teachers
       @min_grade = params[:min_grade] if params[:min_grade]
       @max_grade = params[:max_grade] if params[:max_grade]
       @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
+      @time_frame = params[:time_frame]
     end
 
     def spree_product_id=(id)
@@ -67,6 +68,7 @@ module Teachers
       p.description = @description = reward_params[:description]
       p.price = @price = reward_params[:price]
       p.on_hand = @on_hand = reward_params[:on_hand]
+      p.time_frame = @time_frame = reward_params[:time_frame]
       # update classrooms
       p.save
     end
@@ -86,6 +88,7 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
+      @time_frame = params[:time_frame] if params[:time_frame]
       if params[:classrooms]
         @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
       else
@@ -125,6 +128,7 @@ module Teachers
       p.min_grade = @min_grade
       p.max_grade = @max_grade
       p.fulfillment_type = 'local'
+      p.purchase_limit_time_frame = @time_frame
       p.save
 
       @spree_product_id = p.id

@@ -23,6 +23,7 @@
               - if current_school && current_person && (actual_subdomain == current_school.store_subdomain && current_person.is_a?(Student)) || (actual_subdomain == 'le' && current_person.is_a?(SchoolAdmin))
                 #cart-form{ "data-hook" => "cart_form" }
                   = render :partial => 'cart_form'
+                  = "You are only allowed to purchase 1 of these every #{@product.purchase_limit_time_frame}"
               - else
                 - if @product.price
                   %div{ "data-hook" => "product_price", class: "columns five #{@product.has_variants? ? 'omega' : 'alpha'}" }
