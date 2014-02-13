@@ -12,6 +12,8 @@
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
         = f.input_field :price, class: 'input-small numeric'
         %span.add-on .00
+      = f.input :time_frame do
+        = f.select :time_frame, Spree::Product::TIME_FRAMES, :include_blank => true
       .reward_grades
         = f.input :min_grade do
           = f.select :min_grade, School::GRADES, :include_blank => true

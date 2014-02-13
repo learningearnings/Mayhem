@@ -1,7 +1,11 @@
 Spree::Order.class_eval do
   before_create :set_dummy_email # We don't want to send emails, so just changing this to a dummy email all the time
-
   attr_accessible :school_id
+  
+  scope :within_day, lambda{ where('created_at <= ?', (Time.now + 1.day))}
+  scope :within_week, lambda{ where('created_at <= ?', (Time.now + 1.week))}
+  scope :within_2_weeks, lambda{ where('created_at <= ?', (Time.now + 2.weeks))}
+  scope :within_month, lambda{ where('created_at <= ?', (Time.now + 1.month))}
 
   def school
     ::School.find(school_id)

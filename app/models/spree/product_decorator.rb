@@ -1,5 +1,6 @@
 Spree::Product.class_eval do
-  attr_accessible :store_ids, :fulfillment_type, :purchased_by, :min_grade, :max_grade, :visible_to_all
+  attr_accessible :store_ids, :fulfillment_type, :purchased_by, :min_grade, :max_grade, :visible_to_all, :purchase_limit_time_frame
+  TIME_FRAMES = ['1 day', '1 week', '2 weeks', '1 month']
   has_attached_file :svg
   has_many :auctions
 

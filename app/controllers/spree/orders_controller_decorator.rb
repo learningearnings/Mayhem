@@ -24,6 +24,30 @@ Spree::OrdersController.class_eval do
     return true if current_person.checking_account.balance < variant.price
   end
 
+  def purchased_in_time_frame?
+    variant_options = params[:variants].to_a.flatten
+    variant  = Spree::Variant.find variant_options.first
+    product = variant.product
+
+    case product.purchase_limit_time_frame
+    when "1 day"
+      orders = current_person.orders.within_day
+    when '1 week'
+     orders = current_person.orders.within_week
+    when '2 weeks'
+      orders = current_person.orders.within_2_weeks
+    when '1 month'
+      orders = current_person.orders.within_month
+    else
+      return false
+    end
+
+    if orders.map{|x| x.products}.flatten.include? product
+      return true
+    else
+      return false
+    end
+  end
 
   def populate
     if insufficient_quantity?
@@ -32,6 +56,10 @@ Spree::OrdersController.class_eval do
     end
     if insufficient_funds?
       flash[:error] = "Sorry, you do not have enough credits to purchase this item."
+      redirect_to :back and return
+    end
+    if purchased_in_time_frame?
+      flash[:error] = "Sorry, you have already purchased this item in the given time frame."
       redirect_to :back and return
     end
 

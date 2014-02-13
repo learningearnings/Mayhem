@@ -13,6 +13,7 @@
           - if @teachers_reward.product.images.present?
             = image_tag(@teachers_reward.product.images.first.attachment.url(:small))
           .price.selling{:itemprop => "price"}= @teachers_reward.price.to_s + " each"
+          = "You allow students to purchase 1 every #{@teachers_reward.spree_product.purchase_limit_time_frame}"
         .resp-product-classrooms
           - if @teachers_reward.classrooms.present? && @teachers_reward.classrooms.count > 1
             = "#{@teachers_reward.classrooms.count} Classrooms"
