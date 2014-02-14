@@ -8,6 +8,8 @@ class Teacher < Person
 
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
   scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
+  scope :awaiting_approval, lambda{ where('status = ?', 'awaiting_approval')}
+  scope :not_awaiting_approval, lambda{ where('status != ?', 'awaiting_approval')}
 
   has_many :reward_distributors, :through => :person_school_links
 
@@ -20,7 +22,7 @@ class Teacher < Person
   end
 
   def set_status_to_active
-    self.status = 'active' # Teachers should default to active
+    self.status = 'active' unless self.status = 'awaiting_approval'# Teachers should default to active
   end
 
   def primary_account
