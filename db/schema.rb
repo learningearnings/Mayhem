@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140205030849) do
+ActiveRecord::Schema.define(:version => 20140216033030) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -328,6 +328,8 @@ ActiveRecord::Schema.define(:version => 20140205030849) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
+
+  add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
 
   create_table "local_reward_categories", :force => true do |t|
     t.string   "name"
@@ -1292,6 +1294,16 @@ ActiveRecord::Schema.define(:version => 20140205030849) do
     t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "sync_attempts", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "status"
+    t.string   "sync_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "error"
+    t.text     "backtrace"
   end
 
   create_table "uploaded_users", :force => true do |t|
