@@ -87,8 +87,11 @@ module STI
 
       client.rosters.parsed_response.each do |api_roster|
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => api_roster["SectionId"]).first
+        next if classroom.nil?
         student = Student.where(:district_guid => @district_guid, :sti_id => api_roster["StudentId"]).first
+        next if student.nil?
         person_school_link = student.person_school_links.where(:school_id => classroom.school.id).first
+        next if person_school_link.nil?
         person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
         person_school_classroom_link.save
       end
