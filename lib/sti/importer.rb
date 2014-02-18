@@ -22,7 +22,7 @@ module STI
       @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
         school.update_attributes(api_school_mapping(api_school))
-        school.activate! unless school.status == "active"
+        school.reload && school.activate! unless school.status == "active"
         school.save
         @imported_schools << school
       end
@@ -41,7 +41,7 @@ module STI
         teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
         teacher.update_attributes(api_teacher_mapping(api_teacher))
         teacher.user.update_attribute(:api_user, true)
-        teacher.activate! unless teacher.status == "active"
+        teacher.reload && teacher.activate! unless teacher.status == "active"
         schools.each do |school|
           person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
           person_school_link.save(:validate => false)
@@ -58,7 +58,7 @@ module STI
       @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
         classroom.update_attributes(api_classroom_mapping(api_classroom))
-        classroom.activate! unless classroom.status == "active"
+        classroom.reload && classroom.activate! unless classroom.status == "active"
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
         person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
@@ -76,7 +76,7 @@ module STI
         student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
         student.update_attributes(api_student_mapping(api_student))
         student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
-        student.activate! unless student.status == "active"
+        student.reload && student.activate! unless student.status == "active"
         api_student["Schools"].each do |sti_school_id|
           school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
           person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
