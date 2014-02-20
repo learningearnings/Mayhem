@@ -40,7 +40,7 @@ module STI
         end
         teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
         teacher.update_attributes(api_teacher_mapping(api_teacher))
-        teacher.user.update_attribute(:api_user, true)
+        teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
         teacher.reload && teacher.activate! unless teacher.status == "active"
         schools.each do |school|
           person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
