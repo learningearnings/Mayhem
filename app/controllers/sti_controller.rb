@@ -67,7 +67,7 @@ class StiController < ApplicationController
   end
 
   def current_school
-    current_person.schools.where(:district_guid => params[:district_guid]).first
+    current_person.schools.where(:district_guid => params[:districtGUID]).first
   end
 
   def on_success(obj = nil)
