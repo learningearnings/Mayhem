@@ -59,7 +59,7 @@ class StiController < ApplicationController
   end
 
   def load_students
-    @students = current_person.schools.first.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    @students = current_person.schools.where(:district_guid => params[:districtGUID]).students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
   end
 
   def current_person
@@ -67,7 +67,7 @@ class StiController < ApplicationController
   end
 
   def current_school
-    current_person.schools.first
+    current_person.schools.where(:district_guid => params[:district_guid])
   end
 
   def on_success(obj = nil)
