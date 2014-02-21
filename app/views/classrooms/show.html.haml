@@ -1,6 +1,6 @@
 %h2 Classroom: #{@classroom.name}
 %ul.action_buttons
-  - if current_person.sti_id
+  - if @classroom.sti_id
     %li= link_to_function "Delete classroom", "sti_edit()", class: 'btn awesome-button'
     %li= link_to_function "Edit classroom", "sti_edit()", class: 'btn awesome-button'
   - else
@@ -31,7 +31,10 @@
         %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
         %td= student.homeroom == @classroom ? "Yes" : "No"
         %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
+        - if @classroom.sti_id
+          %td= link_to_function 'Remove', "sti_edit()"
+        - else
+          %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
 = form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
   = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
@@ -44,7 +47,7 @@
   - else
     = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
 
-- if current_person.sti_id
+- if @classroom.sti_id
   = link_to_function "New Student", "sti_edit()", class: "btn awesome-button"
 - else
   %a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
