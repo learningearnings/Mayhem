@@ -42,6 +42,7 @@ Spree::OrdersController.class_eval do
         if current_person.is_a?(Student)
           @order.empty!
         end
+
         @order.restock_items!
         params[:products].each do |product_id,variant_id|
           quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
@@ -81,7 +82,7 @@ Spree::OrdersController.class_eval do
             redirect_to root_path, notice: message
           end
         end
-      rescue
+      rescue => e
         message = 'There was an issue placing your order.'
         redirect_to root_path, notice: message
         raise ActiveRecord::Rollback
@@ -140,7 +141,7 @@ Spree::OrdersController.class_eval do
       shipping_address[:city] = @school.city
       shipping_address[:state_name] = @school.state.name
       shipping_address[:zipcode] = @school.zip
-      shipping_address[:phone] = @school.school_phone
+      shipping_address[:phone] = @school.school_phone.blank? ? "1111111111" : @school.school_phone
       shipping_address[:country] = Spree::Country.find_by_iso "US"
       @current_order.ship_address_attributes = shipping_address
       @current_order.bill_address_attributes = shipping_address
