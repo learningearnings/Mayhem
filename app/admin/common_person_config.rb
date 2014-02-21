@@ -6,7 +6,6 @@
 # Also see app/views/admin/common/_school_list.html.haml for the partial
 #
 module CommonPersonConfig
-
   def self.included(dsl)
     dsl.run_registration_block do
 
@@ -162,7 +161,8 @@ module CommonPersonConfig
         end
         #default_actions
         column :actions do |resource|
-          links = link_to I18n.t('active_admin.view'), resource_path(resource)
+          links = ''.html_safe
+          links += link_to I18n.t('active_admin.view'), resource_path(resource)
           links += ' '
           if !resource.district_guid.present?
             links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)

@@ -1,5 +1,18 @@
 ActiveAdmin.register School do
 
+  config.action_items.delete_if { |item| item.display_on?(:show) }
+
+  action_item do
+    if current_page?(:action => 'show') && !school.district_guid.present?
+      link_to 'Edit School', edit_admin_school_path(school)
+    end
+  end
+  action_item do
+    if current_page?(:action => 'show')
+      link_to "Delete School", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
+    end
+  end
+
   filter :name
   filter :district_guid
   filter :sti_id
