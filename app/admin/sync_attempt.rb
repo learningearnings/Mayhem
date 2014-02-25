@@ -1,4 +1,6 @@
 ActiveAdmin.register SyncAttempt do
+  menu :parent => "STI", :priority => 2
+  config.clear_action_items!
   index do
     column :created_at
     column :total_time do |object|
