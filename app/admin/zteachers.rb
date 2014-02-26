@@ -11,7 +11,7 @@ module Admin
       end
     end
     action_item do
-      if current_page?(:action => 'show')
+      if current_page?(:action => 'show') && !teacher.district_guid.present?
         link_to "Delete Teacher", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
       end
     end

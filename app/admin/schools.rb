@@ -8,7 +8,7 @@ ActiveAdmin.register School do
     end
   end
   action_item do
-    if current_page?(:action => 'show')
+    if current_page?(:action => 'show') && !school.district_guid.present?
       link_to "Delete School", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
     end
   end
@@ -47,8 +47,8 @@ ActiveAdmin.register School do
       if !resource.district_guid.present?
         links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)
         links += ' '
+        links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
       end
-      links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
       links
     end
   end
