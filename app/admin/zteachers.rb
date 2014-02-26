@@ -7,7 +7,7 @@ module Admin
     config.action_items.delete_if { |item| item.display_on?(:show) }
     action_item do
       if current_page?(:action => 'show') && !teacher.district_guid.present?
-        link_to 'Edit Teacher', edit_teacher_path(teacher)
+        link_to 'Edit Teacher', edit_resource_path(teacher)
       end
     end
     action_item do
