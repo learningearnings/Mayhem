@@ -47,6 +47,11 @@ module Mixins
         redirect_to :back and return
       end
 
+      if params[:credits] && params[:credits].values.detect {|x| x.to_s =~ /\D/}
+        flash[:error] = "You must only enter numerical values"
+        redirect_to :back and return
+      end
+
       if params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank

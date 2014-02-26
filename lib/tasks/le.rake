@@ -40,7 +40,7 @@ namespace :le do
   desc "STI Nightly Import"
   task :sti_nightly_import => :environment do
     StiLinkToken.all.each do |link_token|
-      StiImporterWorker.perform_async(link_token.api_url, link_token.username, link_token.password, link_token.district_guid)
+      StiImporterWorker.setup_sync(link_token.api_url, link_token.username, link_token.password, link_token.district_guid)
     end
   end
 

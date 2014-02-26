@@ -40,7 +40,7 @@ module STI
         end
         teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
         teacher.update_attributes(api_teacher_mapping(api_teacher))
-        teacher.user.update_attribute(:api_user, true)
+        teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
         teacher.reload && teacher.activate! unless teacher.status == "active"
         schools.each do |school|
           person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
@@ -73,14 +73,19 @@ module STI
         student.deactivate! unless student.status == "inactive"
       end
       @api_students = sti_students.each do |api_student|
-        student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
-        student.update_attributes(api_student_mapping(api_student))
-        student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
-        student.reload && student.activate! unless student.status == "active"
-        api_student["Schools"].each do |sti_school_id|
-          school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-          person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
-          person_school_link.save(:validate => false)
+        begin
+          student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
+          student.update_attributes(api_student_mapping(api_student))
+          student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
+          student.reload && student.activate! unless student.status == "active"
+          api_student["Schools"].each do |sti_school_id|
+            school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
+            person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
+            person_school_link.save(:validate => false)
+          end
+        rescue => e
+          puts "************** Skipped #{api_student} #{e.inspect}"
+          Rails.logger.warn "************** Skipped #{api_student}"
         end
       end
 
@@ -137,9 +142,10 @@ module STI
     end
 
     def api_student_user_mapping api_student
+      username = generate_username_for_district(@district_guid, api_student["FirstName"], api_student["LastName"])
       password = UUIDTools::UUID.random_create.to_s[0..3]
       {
-        username: api_student["FirstName"][0] + api_student["LastName"][0..4],
+        username: username,
         password: password,
         password_confirmation: password
       }
@@ -161,6 +167,17 @@ module STI
 
     def client
       @client ||= Client.new
+    end
+
+    def generate_username_for_district(district_guid, first_name, last_name, iteration = 0)
+      username = first_name.downcase[0] + last_name.downcase[0..4]
+      username += iteration.to_s if iteration > 0
+      return username if username_unique_for_district?(district_guid, username)
+      return generate_username_for_district(district_guid, first_name, last_name, iteration + 1)
+    end
+
+    def username_unique_for_district?(district_guid, username)
+      !Student.joins(:user).where(:district_guid => district_guid, :user => {:username => username}).any?
     end
   end
 end

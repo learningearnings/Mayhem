@@ -19,8 +19,11 @@ class StiController < ApplicationController
   def sync
     @link = StiLinkToken.where(district_guid: params[:district_guid]).first
     if @link
-      StiImporterWorker.perform_async(@link.api_url, @link.username, @link.password, @link.district_guid)
-      render :json => {:status => :success}
+      if StiImporterWorker.setup_sync(@link.api_url, @link.username, @link.password, @link.district_guid)
+        render :json => {:status => :success}
+      else
+        render :json => {:status => :success, :message => "Job was already queued"}
+      end
     else
       render :json => {:status => :failure}
     end
@@ -42,7 +45,7 @@ class StiController < ApplicationController
       render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
     else
       @link = StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password])
-      StiImporterWorker.perform_async(@link.api_url, @link.username, @link.password, @link.district_guid)
+      StiImporterWorker.setup_sync(@link.api_url, @link.username, @link.password, @link.district_guid)
       render :json => {:status => :success, :message => "The Sync record was created"} and return
     end
   end
@@ -59,7 +62,7 @@ class StiController < ApplicationController
   end
 
   def load_students
-    @students = current_person.schools.first.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
   end
 
   def current_person
@@ -67,7 +70,7 @@ class StiController < ApplicationController
   end
 
   def current_school
-    current_person.schools.first
+    current_person.schools.where(:district_guid => params[:districtGUID]).first
   end
 
   def on_success(obj = nil)
