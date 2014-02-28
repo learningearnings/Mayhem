@@ -145,6 +145,7 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-rails'
   gem 'letter_opener'
   gem 'unicorn'
   #gem 'thin'
