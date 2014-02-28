@@ -1,10 +1,19 @@
 module Reports
   class PurchasesController < Reports::BaseController
 
-    def show
+    def new
       report = Reports::Purchases.new params.merge(school: current_school)
-      report.execute!
-      render 'show', locals: { report: report }
+      delayed_report = DelayedReport.create(person_id: current_person.id)
+      DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
+      redirect_to purchases_report_show_path(delayed_report.id, params)
+    end
+
+    def show
+      delayed_report = current_person.delayed_reports.find(params[:id])
+      respond_to do |format|
+        format.html { render 'show', locals: { report: delayed_report } }
+        format.json { render :json => delayed_report }
+      end
     end
 
     def refund_purchase

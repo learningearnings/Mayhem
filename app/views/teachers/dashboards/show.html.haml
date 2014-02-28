@@ -25,7 +25,7 @@
           = f.label :last_name
           = f.text_field :last_name
           = f.label :username
-          = f.text_field :username
+          = f.text_field :username, :value => f.object.user.username
         .span3
           = f.label :grade
           .select-grade

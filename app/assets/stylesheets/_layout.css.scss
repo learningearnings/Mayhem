@@ -574,7 +574,7 @@ html.resp, body.resp {
 
 .primary-nav {
   .manage_students-selected, .manage_students:hover {
-    background-image: url(asset_path('classrooms_selected.png', image));
+    background-image: url(asset_path('locker_selected.png', image));
     background-repeat: no-repeat;
   }
 }
@@ -1671,13 +1671,14 @@ h3 {
 }
 
 .featured-activity {
+  font-size: 1.5em;
   background-image: url(asset_path('featured_activity.png', image));
   position: absolute;
   width: 256px;
   height: 262px;
   top: 280px;
   left: 140px;
-  padding: 50px 70px 30px 30px;
+  padding: 60px 20px 30px 30px;
 }
 
 .featured-activity-callout {
@@ -1707,12 +1708,13 @@ h3 {
     height: 262px;
   }
   .our-sponsors {
+    font-size: 1.4em;
     background-image: url(asset_path('our_sponsors.png', image));
     background-repeat: no-repeat;
     position: relative;
     width: 291px;
     height: 251px;
-    padding: 45px 120px 30px 30px;
+    padding: 45px 90px 0px 20px;
   }
   .our-sponsors-callout {
     position: absolute;
@@ -2133,4 +2135,21 @@ dl.details {
       width: 205px;
     }
   }
+}
+
+.auction_product a {
+  color: black;
+}
+
+.sponsor-list {
+  margin: -10px 0 0 0;
+  white-space:nowrap;
+}
+
+.welcome-callout {
+  margin: -10px 0 0 0;
+}
+
+.welcome-sticky {
+  font-size: 80%;
 }

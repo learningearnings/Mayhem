@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131120021809) do
+ActiveRecord::Schema.define(:version => 20140116170853) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -164,6 +164,18 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "used_date"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "codes", ["active"], :name => "index_codes_on_active"
+
+  create_table "delayed_reports", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "state"
+    t.text     "report_data"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "name"
+    t.string   "render_class"
   end
 
   create_table "filters", :force => true do |t|
@@ -393,6 +405,9 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "updated_at",                                 :null => false
   end
 
+  add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
+  add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
+
   create_table "otu_transaction_links", :force => true do |t|
     t.integer  "otu_code_id"
     t.integer  "transaction_id"
@@ -405,8 +420,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
@@ -416,6 +431,7 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
+    t.boolean  "game_challengeable",                   :default => false
   end
 
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
@@ -464,6 +480,7 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer  "classroom_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.boolean  "homeroom"
   end
 
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
@@ -601,6 +618,13 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer  "state_id"
     t.string   "zip"
     t.string   "sti_uuid"
+  end
+
+  create_table "site_settings", :force => true do |t|
+    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
   end
 
   create_table "spree_activators", :force => true do |t|

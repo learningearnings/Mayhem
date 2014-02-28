@@ -13,9 +13,10 @@ gem 'rake', '~> 10.1.0'
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 gem 'exceptional'
+gem 'newrelic_rpm'
 gem 'transaction_retry'
-gem 'tzinfo'
-gem 'tzinfo-data'
+
+gem 'chronic'
 
 # for importing
 #gem 'mysql2'
@@ -105,6 +106,7 @@ gem 'state_machine'
 gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
+gem 'sinatra'
 gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
@@ -119,6 +121,7 @@ group :assets do
   #gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git", :tag => "MayhemV1"
   gem "compass_twitter_bootstrap", :github => "learningearnings/compass-twitter-bootstrap"
   gem 'turbo-sprockets-rails3'
+  gem "sprockets-image_compressor", "~> 0.2.2"
 end
 
 # Use unicorn as the app server

@@ -10,6 +10,7 @@ module Reports
     def initialize params
       super
       @school = params[:school]
+      @current_page = params[:page]
       @parameters = Reports::Purchases::Params.new(params)
     end
 
@@ -51,9 +52,7 @@ module Reports
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
-      if parameters.paginate == "1"
-        base_scope = base_scope.page(parameters.page).per(parameters.per_page)
-      end
+      #base_scope = base_scope.page(@current_page).per(200)
       base_scope
     end
 
@@ -62,11 +61,15 @@ module Reports
       when "Default"
         [:scoped]
       when "Teacher"
-        [:order, :from_id]
+        [:order, "from_id"]
       when "Grade"
-        [:order_by_student_grade]
+        # I used people.grade in the following order statement because I wasn't sure
+        # how to get the name of the join rails used for to. In every test I did it was
+        # always people first, then froms_reward_deliveries for the from association
+        # Hope this doesn't bite us :/
+        [:order, "people.grade"]
       when "Student"
-        [:order, :to_id]
+        [:order_by_student_last_name]
       when "Newest Purchases"
         [:newest_orders]
       when "Oldest Purchases"
@@ -74,7 +77,7 @@ module Reports
       when "Reward"
         [:order, "spree_products.name"]
       when "Status"
-        [:order, :status]
+        [:order, "reward_deliveries.status"]
       end
     end
 

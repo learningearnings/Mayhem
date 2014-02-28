@@ -26,6 +26,9 @@ class ApplicationController < ActionController::Base
     if not_at_home && home_host
       token = Devise.friendly_token
       current_user.authentication_token = token
+      Rails.logger.warn "**************************************"
+      Rails.logger.warn home_host
+      Rails.logger.warn "**************************************"
       my_redirect_url = home_host + "/home/?auth_token=#{token}"
 
       current_user.save
@@ -160,7 +163,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filter_rewards_by_classroom(products)
-    if current_person.is_a?(Student) && current_person.classrooms.present?
+    if current_person.is_a?(Student)
       classrooms = current_person.classrooms.pluck(:id)
       products.reject! do |product|
         # Products that have no classrooms should not be rejected
@@ -171,7 +174,13 @@ class ApplicationController < ActionController::Base
       # To fix pagination we need an active record relation, not an array
       # Why are you laughing?
       products = Spree::Product.where(:id => products.map(&:id))
+    else
+      products
     end
+  end
+
+  def site_setting
+    SiteSetting.last
   end
 
   protected
