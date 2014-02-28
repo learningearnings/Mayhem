@@ -22,7 +22,7 @@ class Teacher < Person
   end
 
   def set_status_to_active
-    self.status = 'active' unless self.status = 'awaiting_approval'# Teachers should default to active
+    self.status = 'active'
   end
 
   def primary_account
