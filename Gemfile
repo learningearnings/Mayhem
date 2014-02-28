@@ -163,12 +163,12 @@ group :test do
   gem 'mocha', '~> 0.14.0', :require => false
   gem 'valid_attribute', :github => 'learningearnings/valid_attribute', :branch => 'minitest-matchers-11'
   gem 'factory_girl_rails'
-  gem 'libnotify'
   gem 'rb-fsevent', '~> 0.9.1'
   gem 'rb-inotify', '~> 0.8.8', :require => linux_only('rb-inotify')
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
+  gem 'ffaker'
 end
 
 gem "coffee-filter", '~> 0.1.3'
