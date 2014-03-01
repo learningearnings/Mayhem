@@ -384,9 +384,6 @@ GEM
       actionpack (~> 3.0)
       activerecord (~> 3.0)
       polyamorous (~> 0.5.0)
-    rb-fsevent (0.9.3)
-    rb-inotify (0.8.8)
-      ffi (>= 0.5.0)
     rdiscount (2.1.7)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -459,6 +456,10 @@ GEM
       capybara (~> 1)
       railties (>= 3)
       spinach (>= 0.4)
+    spork (1.0.0rc4)
+    spork-rails (4.0.0)
+      rails (>= 3.0.0, < 5)
+      spork (>= 1.0rc0)
     spreadsheet (0.9.0)
       ruby-ole (>= 1.0)
     spree (1.2.0)
@@ -517,6 +518,7 @@ GEM
       ref
     thor (0.14.6)
     tilt (1.4.1)
+    timecop (0.7.1)
     timers (1.1.0)
     transaction_isolation (1.0.3)
       activerecord (>= 3.0.11)
@@ -615,8 +617,6 @@ DEPENDENCIES
   rails-erd
   rake (~> 10.1.0)
   ranked-model
-  rb-fsevent (~> 0.9.1)
-  rb-inotify (~> 0.8.8)
   rdiscount
   responders
   roo (= 1.12.1)
@@ -633,6 +633,7 @@ DEPENDENCIES
   sinatra
   spinach (~> 0.5.2)
   spinach-rails (~> 0.1.7)
+  spork-rails
   spreadsheet
   spree (= 1.2.0)
   spree_auth_devise!
@@ -643,6 +644,7 @@ DEPENDENCIES
   tconsole
   therubyracer
   thor (= 0.14.6)
+  timecop
   transaction_retry
   turbo-sprockets-rails3
   uglifier (>= 1.0.3)

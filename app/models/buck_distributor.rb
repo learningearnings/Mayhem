@@ -1,7 +1,8 @@
 class BuckDistributor
-  def initialize(schools=School.all, credit_manager=CreditManager.new)
+  def initialize(schools=School.all, credit_manager=CreditManager.new, should_prorate=false)
     @schools = schools
     @credit_manager = credit_manager
+    @should_prorate = should_prorate
   end
 
   def run
@@ -14,19 +15,26 @@ class BuckDistributor
       @credit_manager.revoke_credits_for_school(school, school.balance)
       pay_school(school)
     end
-  end  
+  end
 
   def pay_school(school)
     @credit_manager.issue_credits_to_school school, amount_for_school(school)
   end
 
   def amount_for_school school
-    700 * school.students.logged.count
+    initial_amount = 700 * school.students.recently_logged_in.count
+    if @should_prorate
+      days_in_month = Time.days_in_month(Time.now.month)
+      daily_amount = BigDecimal(initial_amount) / BigDecimal(days_in_month)
+      days_left_in_month = (days_in_month - Time.now.day) + 1
+      prorated_amount = (days_left_in_month * daily_amount).round(0, :up).to_i
+    end
+    @should_prorate ? prorated_amount : initial_amount
   end
 
   def handle_teachers
     @schools.each do |school|
-      school.teachers.logged.each do |teacher|
+      school.teachers.recently_logged_in.each do |teacher|
         revoke_remainder(school, teacher, teacher.main_account(school).balance)
         pay_teacher(school, teacher)
       end
@@ -38,7 +46,7 @@ class BuckDistributor
   end
 
   def amount_for_teacher(school)
-    school.balance / school.teachers.logged.count
+    school.balance / school.teachers.recently_logged_in.count
   end
 
   def pay_teacher(school, teacher)
