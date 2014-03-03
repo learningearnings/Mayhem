@@ -84,10 +84,10 @@ describe School do
   describe "#name_and_location" do
     let(:state){ FactoryGirl.create(:state, abbr: "BR") }
     let(:address){ FactoryGirl.create(:address, city: "Footown", state: state) }
-    subject{ FactoryGirl.build(:school, address: address, name: "Schoolington") }
+    subject{ FactoryGirl.build(:school, address: address, name: "Schoolington", city: "Footown") }
 
     it "outputs the name and city and state" do
-      subject.name_and_location.must_equal "Schoolington, Footown, BR"
+      subject.name_and_location.must_equal "Schoolington, Footown, Al..."
     end
   end
 end
