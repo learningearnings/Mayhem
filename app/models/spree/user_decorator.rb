@@ -1,4 +1,5 @@
 load 'lib/sti/client.rb'
+require 'valid_email'
 Spree::User.class_eval do
   devise :database_authenticatable, :token_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable
@@ -6,12 +7,12 @@ Spree::User.class_eval do
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :api_user
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :as => :admin
-
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
 
   before_save :set_recovery_password
+  validates :email, :presence => true, :email => true
 
   def self.authenticate_with_school_id(username,password,school_id)
     return if username.blank? || password.blank? || school_id.blank?
