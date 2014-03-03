@@ -21,7 +21,8 @@ Spree::OrdersController.class_eval do
   def insufficient_funds?
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
-    return true if current_person.checking_account.balance < variant.price
+    quantity = variant_options.last
+    return true if current_person.checking_account.balance < (variant.price * quantity.to_i)
   end
 
 
@@ -148,7 +149,11 @@ Spree::OrdersController.class_eval do
 
   private
   def current_person
-    current_user.person
+    if current_user.present?
+      current_user.person
+    else
+      nil
+    end
   end
 
   def current_school
