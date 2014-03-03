@@ -21,7 +21,8 @@ Spree::OrdersController.class_eval do
   def insufficient_funds?
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
-    return true if current_person.checking_account.balance < variant.price
+    quantity = variant_options.last
+    return true if current_person.checking_account.balance < (variant.price * quantity.to_i)
   end
 
   def purchased_in_time_frame?
