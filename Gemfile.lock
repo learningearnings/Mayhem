@@ -192,7 +192,7 @@ GEM
       compass (>= 0.12.2, < 0.14)
     connection_pool (1.1.0)
     country_select (1.2.0)
-    database_cleaner (0.8.0)
+    database_cleaner (1.2.0)
     date_validator (0.7.0)
       activemodel (>= 3)
     decorators (1.0.3)
@@ -573,7 +573,7 @@ DEPENDENCIES
   compass-rails
   compass_twitter_bootstrap!
   country_select
-  database_cleaner (~> 0.8.0)
+  database_cleaner (~> 1.2.0)
   date_validator
   decorators (~> 1.0.0)
   devise
