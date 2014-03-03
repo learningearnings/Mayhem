@@ -70,14 +70,14 @@ class PersonSchoolLink < ActiveRecord::Base
 
   ################### Validations ########################
   def email_taken?
-    errors.add(:status, "Person must be present") and return unless person && person.user.email
+    errors.add(:status, "Person must be present") and return unless person && person.user.email.present?
     return if status == "inactive"
-    if person.user.email.present? && !person.is_a?(Student)
+    if person.is_a?(Student)
+      return false
+    else
       if school.teachers.with_email(person.user.email).present?
         errors.add(:base, "Email already assigned for this school.")
       end
-    else
-      return false
     end
   end
 
