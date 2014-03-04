@@ -2165,3 +2165,21 @@ dl.details {
   padding: 10px 0 0 20px;
 }
 
+.categories-text {
+  color: #08C;
+  font-weight: normal;
+  font-size: 150%;
+  font-family: 'sketch_rockwellregular';
+}
+.new-category-main {
+  display: inline-block;
+  .new-category-form {
+    padding: 0 0 0 300px;
+    display:none;
+  }
+}
+td.cat-text {
+  text-align:center;
+}
+
+

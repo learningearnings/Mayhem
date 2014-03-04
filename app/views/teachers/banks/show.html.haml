@@ -10,6 +10,7 @@
         %strong
           Credits Available:
         = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, :class => 'btn awesome-button'
 
     - if can?(:distribute, :credits)
       .distribute-credits

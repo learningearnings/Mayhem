@@ -213,7 +213,7 @@ GEM
       railties (~> 3.1)
       warden (~> 1.1.1)
     diff-lcs (1.2.5)
-    dragonfly (1.0.3)
+    dragonfly (0.9.15)
       multi_json (~> 1.0)
       rack
     draper (0.18.0)
@@ -589,7 +589,7 @@ DEPENDENCIES
   date_validator
   decorators (~> 1.0.0)
   devise
-  dragonfly
+  dragonfly (= 0.9.15)
   draper (= 0.18.0)
   exceptional
   factory_girl_rails
