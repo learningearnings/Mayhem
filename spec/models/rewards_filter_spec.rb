@@ -18,7 +18,10 @@ describe RewardsFilter do
       classroom_product       = FactoryGirl.create(:spree_product, name: "Classroom", classrooms: [classroom])
       other_classroom_product = FactoryGirl.create(:spree_product, name: "Other Classroom", classrooms: [other_classroom])
 
-      expect(described_class.by_classroom(student, Spree::Product.scoped)).to eq([non_classroom_product, classroom_product])
+      expected_results = [non_classroom_product, classroom_product]
+      results = described_class.by_classroom(student, Spree::Product.scoped)
+
+      expect(results.order("id ASC")).to eq(expected_results)
     end
   end
 end
