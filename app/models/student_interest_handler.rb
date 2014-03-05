@@ -5,7 +5,7 @@ class StudentInterestHandler
   def initialize(admin=nil, forced_run=nil)
     @admin = admin
     @forced_run = forced_run
-    @students = Student.logged
+    @students = Student.recently_logged_in
     @site_setting = SiteSetting.last
     @rate = ((@site_setting.student_interest_rate / 52) * 0.01)
     @credit_manager = CreditManager.new

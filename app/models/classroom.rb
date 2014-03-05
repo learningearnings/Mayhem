@@ -15,7 +15,7 @@ class Classroom < ActiveRecord::Base
   has_many :products, :through => :classroom_product_links, :class_name => "Spree::Product", :source => :spree_product
 
 
-  attr_accessible :name, :status, :school_id, :legacy_classroom_id, :status
+  attr_accessible :name, :status, :school_id, :legacy_classroom_id, :status, :sti_id, :district_guid
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :created_at, :status, :as => :admin
 
   validates_presence_of :name

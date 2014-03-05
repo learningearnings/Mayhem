@@ -37,6 +37,49 @@ module Mixins
       end
     end
 
+    def create_ebucks_for_students
+      if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
+        flash[:error] = "You can not enter negative values"
+        redirect_to :back and return
+      end
+
+      if params[:credits] && params[:credits].values.detect {|x| x.to_s.include?(".") }
+        flash[:error] = "You can only enter whole values"
+        redirect_to :back and return
+      end
+
+      if params[:credits] && params[:credits].values.detect {|x| x.to_s =~ /\D/}
+        flash[:error] = "You must only enter numerical values"
+        redirect_to :back and return
+      end
+
+      if params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
+        get_buck_batches
+        get_bank
+        # Override on_success and on_failure
+        failed = false # Not thrilled with this...
+        @bank.on_success = lambda{ |x| return true }
+        @bank.on_failure = lambda{ failed = true }
+        OtuCode.transaction do
+          students = current_person.schools.first.students.where(:id => params[:credits].keys)
+          students.each do |student|
+            student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+            issue_ebucks_to_student(student, student_credits) if student_credits > 0
+          end
+          if failed
+            raise ActiveRecord::Rollback
+          else
+            on_success and return
+          end
+        end
+        # We should only get here if we failed and the transaction rolled back
+        on_failure
+      else
+        flash[:error] = "Please ensure a classroom is selected, has students, and an amount is entered."
+        redirect_to :back
+      end
+    end
+
     def create_ebucks_for_classroom
       if params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
