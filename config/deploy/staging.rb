@@ -1,4 +1,4 @@
-set :branch,    "feature/add_oboe"
+set :branch,    "staging"
 set :rails_env, "staging"
 role :web,      "mayhemstaging.isotopecloud.com"
 role :app,      "mayhemstaging.isotopecloud.com"
