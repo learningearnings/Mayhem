@@ -179,3 +179,7 @@ gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
 gem 'httparty'
+
+gem 'oboe', '~> 2.4.0.1' # for tracelytics
+
+gem 'nokogiri', '~> 1.5.10'
