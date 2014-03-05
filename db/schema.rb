@@ -427,7 +427,7 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
-    t.integer  "category_id"
+    t.integer  "otu_code_category_id"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"

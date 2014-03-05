@@ -92,9 +92,10 @@ module Mixins
       @buck_batches = current_person.buck_batches(current_school)
     end
 
-    def issue_ebucks_to_student(student, point_value=params[:points], reason=params[:reason])
+    def issue_ebucks_to_student(student, point_value=params[:points])
+      category = params[:otu_code][:otu_code_category_id]
       point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
-      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value, reason)
+      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value, category)
     end
 
     def sanitize_points(_points)

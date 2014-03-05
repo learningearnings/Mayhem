@@ -1,6 +1,6 @@
 %h3 My Credit Categories
 %p Click on a category to edit or delete it. Or
-= link_to 'New Credit Category', '#', :class => 'btn awesome-button', :onclick => 'show_category_form();'
+= link_to 'New Credit Category', '#', :class => 'btn awesome-button', :onclick => 'show_category_form();return false;'
 
 .new-category-main
   %table
@@ -9,10 +9,10 @@
         %th.categories-text{width: '100'} Type
         %th.categories-text{width: '100'} Category
     %tbody
-      %tr
-        - @categories.each do |category|
-          %td.cat-text= category.otu_code_type.name
-          %td.cat-text= link_to category.name, '#', :onclick => 'edit_category_form();', :id => "#{category.id}"
+      - @categories.each do |category|
+        %tr
+          %td.type-name= category.otu_code_type.name
+          %td= link_to category.name, '#', :onclick => 'set_category_form(this.id);return false;', :id => "#{category.id}", :class => 'cat-name'
 
   .new-category-form
     = form_for @new_category, :url => new_teachers_otu_code_category_path do |f|
@@ -21,7 +21,7 @@
       .categories-text= f.label :category
       = f.text_field :name
       = f.hidden_field :person_id, value: current_person.id
-      .cat_id= hidden_field_tag :otu_code_category_id
+      = hidden_field_tag :otu_code_category_id, nil, :id => 'hidden_category_id'
       = f.submit 'Add', class: 'btn awesome-button'
 
 :javascript
@@ -30,13 +30,8 @@
     $('.new-category-form').show();
   }
 
-  function edit_category_form() {
-    category_id = this.id;
-    get_category(category_id);
-  }
-
-  function get_category(category_id) {
-    var category = 'student_id='+category_id;
+  function set_category_form(category_id){
+    var category = 'category_id='+category_id;
     var url =  '/teachers/get_otu_code_category?'+category;
 
     $.ajax({
@@ -44,13 +39,14 @@
       type: 'GET',
       dataType: "json",
       success: function(data){
-        load_edit_form_data(data)
+        load_edit_form_data(data);
       }
     });
   }
 
   function load_edit_form_data(data) {
     $('.new-category-form').show();
-    $('.cat_id').value('test');
-    $('#otu_code_category_name').text('test')
+    $('#otu_code_category_otu_code_type_id').val(data.type.id);
+    $('#hidden_category_id').val(data.category.id);
+    $('#otu_code_category_name').val(data.category.name);
   }
