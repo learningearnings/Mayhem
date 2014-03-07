@@ -1,4 +1,3 @@
-require 'valid_email'
 Spree::User.class_eval do
   devise :database_authenticatable, :token_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable, :timeoutable
@@ -9,8 +8,6 @@ Spree::User.class_eval do
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
-
-  validates :email, :presence => true, :email => true
 
   def self.authenticate_with_school_id(username,password,school_id)
     if username.blank? || password.blank? || school_id.blank?
