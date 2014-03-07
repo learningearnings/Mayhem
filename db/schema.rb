@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140303161650) do
+ActiveRecord::Schema.define(:version => 20140306181938) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -215,6 +215,8 @@ ActiveRecord::Schema.define(:version => 20140303161650) do
     t.datetime "updated_at",                         :null => false
   end
 
+  add_index "food_fight_players", ["food_fight_match_id"], :name => "index_food_fight_players_on_food_fight_match_id"
+
   create_table "food_person_links", :force => true do |t|
     t.integer  "person_id"
     t.integer  "thrown_by_id"
@@ -392,6 +394,8 @@ ActiveRecord::Schema.define(:version => 20140303161650) do
   end
 
   add_index "messages", ["category"], :name => "index_messages_on_category"
+  add_index "messages", ["to_id", "category", "status"], :name => "index_messages_on_to_id_and_category_and_status"
+  add_index "messages", ["to_id", "status"], :name => "index_messages_on_to_id_and_status"
 
   create_table "monikers", :force => true do |t|
     t.string   "state"
@@ -443,8 +447,8 @@ ActiveRecord::Schema.define(:version => 20140303161650) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.integer  "sti_id"
     t.boolean  "game_challengeable",                   :default => false
+    t.integer  "sti_id"
     t.string   "district_guid"
   end
 

@@ -48,6 +48,9 @@ class PersonSchoolLink < ActiveRecord::Base
     if person.is_a?(Teacher) || person.is_a?(SchoolAdmin)
       person.setup_accounts(school)
     end
+    if person.is_a?(Student)
+      StudentOnboardCreditWorker.perform_async(school.id)
+    end
     connect_plutus_accounts unless person.is_a? LeAdmin
   end
 
