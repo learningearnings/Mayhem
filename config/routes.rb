@@ -186,14 +186,19 @@ Leror::Application.routes.draw do
   match "/charities" => 'charities#index'
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
+  match "/teachers/get_otu_code_category" => "teachers/otu_code_categories#get_category", :as => 'get_otu_code_category'
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   namespace :teachers do
+    match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
+    match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resource :bulk_students
     resources :reports
     resource  :bank
     resource  :dashboard
     resource  :lounge
     resources :rewards
+    resources :otu_code_types
+    resources :otu_code_categories
     match "home" => "home#show", as: 'home'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'

@@ -1,6 +1,6 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-
+['behavior', 'attendance', 'academic'].each{|reason| OtuCodeType.create(:name => reason)}
 State.create([{ :name => "Alabama", :abbr => "AL"},
               { :name => "Alaska", :abbr => "AK"},
               { :name => "Arizona", :abbr => "AZ"},
@@ -154,7 +154,7 @@ if existing.nil?
 end
 
 # Generate some avatars
-["002.png","003.png","004.png","005.png","006.png","007.png","008.png","009.png","010.png","011.png",
+#["002.png","003.png","004.png","005.png","006.png","007.png","008.png","009.png","010.png","011.png",
 #"012.png","013.png","014.png","015.png","016.png","017.png","018.png","019.png","020.png","021.png",
 #"022.png","023.png","024.png","025.png","026.png","027.png","028.png","029.png","030.png","031.png",
 #"032.png","033.png","034.png","035.png","036.png","037.png","038.png","039.png","040.png","041.png",
@@ -203,25 +203,25 @@ end
 #"576.png","577.png","579.png","580.png","581.png","582.png","583.png","584.png","585.png","586.png",
 #"587.png","588.png","589.png","590.png","591.png","592.png","593.png","594.png","595.png","596.png",
 #"597.png","598.png","599.png","600.png","601.png","602.png","603.png","604.png","605.png","606.png",
-"607.png","608.png","609.png","610.png","611.png","614.png","615.png"].each do |ai|
-  a = Avatar.new
-  puts ("Fetching http://lemirror1.com/Development/images/avatars/#{ai}")
-  avatar_image = open('http://lemirror1.com/Development/images/avatars/' + ai)
-  def avatar_image.original_filename; base_uri.path.split('/').last; end
-  a.image = avatar_image.read
-  a.image_name = avatar_image.original_filename
-  a.description = "Avatar"
-  a.save
-end
+#"607.png","608.png","609.png","610.png","611.png","614.png","615.png"].each do |ai|
+#  a = Avatar.new
+#  puts ("Fetching http://lemirror1.com/Development/images/avatars/#{ai}")
+#  avatar_image = open('http://lemirror1.com/Development/images/avatars/' + ai)
+#  def avatar_image.original_filename; base_uri.path.split('/').last; end
+#  a.image = avatar_image.read
+#  a.image_name = avatar_image.original_filename
+#  a.description = "Avatar"
+#  a.save
+#end
 
 
-Dir.foreach('public/avatars/football/college') do |item|
-  next if item.match(/^\./)
-  a = Avatar.new
-  a.image = Rails.root.join("public/avatars/football/college/#{item}")
-  a.description = item.gsub('.jpg', '').gsub('.png', '').gsub('.gif', '').gsub('_', ' ')
-  a.save
-end
+#Dir.foreach('public/avatars/football/college') do |item|
+#  next if item.match(/^\./)
+#  a = Avatar.new
+#  a.image = Rails.root.join("public/avatars/football/college/#{item}")
+#  a.description = item.gsub('.jpg', '').gsub('.png', '').gsub('.gif', '').gsub('_', ' ')
+#  a.save
+#end
 
 
 # Prepare some seed data for use in development
