@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140303185340) do
+ActiveRecord::Schema.define(:version => 20140304160256) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -156,6 +156,16 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
     t.integer  "legacy_classroom_id"
     t.integer  "processed"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
+  end
+
+  add_index "classrooms", ["district_guid", "sti_id"], :name => "index_classrooms_on_district_guid_and_sti_id"
+
+  create_table "code_entry_failures", :force => true do |t|
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "codes", :force => true do |t|
@@ -390,6 +400,7 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
   end
 
   add_index "messages", ["category"], :name => "index_messages_on_category"
+  add_index "messages", ["to_id", "status"], :name => "index_messages_on_to_id_and_status"
 
   create_table "monikers", :force => true do |t|
     t.string   "state"
@@ -457,8 +468,11 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
     t.boolean  "game_challengeable",                   :default => false
+    t.integer  "sti_id"
+    t.string   "district_guid"
   end
 
+  add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
 
@@ -508,6 +522,7 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
     t.boolean  "homeroom"
   end
 
+  add_index "person_school_classroom_links", ["person_school_link_id", "classroom_id"], :name => "pscl_pscli_ci"
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
 
   create_table "person_school_links", :force => true do |t|
@@ -643,6 +658,8 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
     t.integer  "state_id"
     t.string   "zip"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1230,6 +1247,7 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
     t.string   "api_key",                :limit => 48
     t.integer  "person_id"
     t.string   "username"
+    t.boolean  "api_user"
   end
 
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
@@ -1293,10 +1311,30 @@ ActiveRecord::Schema.define(:version => 20140303185340) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "sti_link_tokens", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "api_url"
+    t.string   "link_key"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "username"
+    t.string   "password"
+  end
+
   create_table "stickers", :force => true do |t|
     t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "sync_attempts", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "status"
+    t.string   "sync_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "error"
+    t.text     "backtrace"
   end
 
   create_table "uploaded_users", :force => true do |t|

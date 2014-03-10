@@ -3,6 +3,9 @@ Leror::Application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   
   get '/sti/give_credits' => "sti#give_credits"
+  post '/sti/link' => "sti#link"
+  get '/sti/sync' => "sti#sync"
+  post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
   match '/404' => 'errors#not_found'
   match '/422' => 'errors#server_error'
   match '/500', :to => 'errors#server_error'
