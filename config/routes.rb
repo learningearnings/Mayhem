@@ -95,6 +95,7 @@ Leror::Application.routes.draw do
   match "/create_print_bucks" => 'banks#create_print_bucks'
   match "/create_ebucks" => 'banks#create_ebucks'
   match "/redeem_bucks" => 'banks#redeem_bucks'
+  post "/banks/code_lookup" => 'banks#code_lookup'
 
   # Game routes
   namespace :games do
