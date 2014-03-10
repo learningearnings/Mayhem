@@ -16,8 +16,8 @@ module RewardsFilter
         )
       )
 
-    product_ids = ActiveRecord::Base.connection.execute(product_ids_query.to_sql).map{|result| result["id"] }
-    products.joins(product_ids_query.join_sql).where(product_ids_query.where_sql[6..-1]) #6..-1 to strip WHERE out of the front
+    product_ids = ActiveRecord::Base.connection.execute(product_ids_query.to_sql).map{|result| result["id"] }.uniq
+    products.where(id: product_ids)
   end
 
   def self.ruby_by_classroom(person, products)
