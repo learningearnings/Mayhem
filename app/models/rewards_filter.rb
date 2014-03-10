@@ -11,7 +11,7 @@ module RewardsFilter
       .join(classroom_product_links_table, Arel::Nodes::OuterJoin)
       .on(classroom_product_links_table[:spree_product_id].eq(products_table[:id]))
       .where(
-        classroom_product_links_table[:classroom_id].eq(person.classrooms.pluck(:id)).or(
+        classroom_product_links_table[:classroom_id].in(person.classrooms.pluck(:id)).or(
           classroom_product_links_table[:classroom_id].eq(nil)
         )
       )
