@@ -1,28 +1,31 @@
 %h3 My Credit Categories
-%p Click on a category to edit or delete it. Or
+%p Click on a category to edit or delete it.
 = link_to 'New Credit Category', '#', :class => 'btn awesome-button', :onclick => 'show_category_form();return false;'
 
-.new-category-main
-  %table
-    %thead
-      %tr
-        %th.categories-text{width: '100'} Type
-        %th.categories-text{width: '100'} Category
-    %tbody
-      - @categories.each do |category|
-        %tr
-          %td.type-name= category.otu_code_type.name
-          %td= link_to category.name, '#', :onclick => 'set_category_form(this.id);return false;', :id => "#{category.id}", :class => 'cat-name'
+.main-content-wrapper
+  .primary-content
+    .create-classroom
+      %table
+        %thead
+          %tr
+            %th.categories-text{width: '100'} Type
+            %th.categories-text{width: '100'} Category
+        %tbody
+          - @categories.each do |category|
+            %tr
+              %td.type-name= category.otu_code_type.name
+              %td= link_to category.name, '#', :onclick => 'set_category_form(this.id);return false;', :id => "#{category.id}", :class => 'cat-name'
 
-  .new-category-form
-    = form_for @new_category, :url => new_teachers_otu_code_category_path do |f|
-      .categories-text= f.label :type
-      = f.select :otu_code_type_id, options_for_select(@types.map{|x| [x.name.capitalize, x.id]})
-      .categories-text= f.label :category
-      = f.text_field :name
-      = f.hidden_field :person_id, value: current_person.id
-      = hidden_field_tag :otu_code_category_id, nil, :id => 'hidden_category_id'
-      = f.submit 'Add', class: 'btn awesome-button'
+  .secondary-content
+    .new-category-form
+      = form_for @new_category, :url => new_teachers_otu_code_category_path do |f|
+        .categories-text= f.label :type
+        = f.select :otu_code_type_id, options_for_select(@types.map{|x| [x.name.capitalize, x.id]})
+        .categories-text= f.label :category
+        = f.text_field :name
+        = f.hidden_field :person_id, value: current_person.id
+        = hidden_field_tag :otu_code_category_id, nil, :id => 'hidden_category_id'
+        = f.submit 'Add', class: 'btn awesome-button'
 
 :javascript
 
