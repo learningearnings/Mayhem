@@ -108,6 +108,7 @@ gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref =
 
 gem 'sinatra'
 gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
+gem 'valid_email'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
@@ -178,3 +179,7 @@ gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
 gem 'httparty'
+
+gem 'oboe', '~> 2.4.0.1' # for tracelytics
+
+gem 'nokogiri', '~> 1.5.10'
