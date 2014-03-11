@@ -13,11 +13,11 @@
           %th Approve
           %th Delete
       %tbody
-        %tr
-          - @teachers.each do |teacher|
+        - @teachers.each do |teacher|
+          %tr
             %td= teacher.name
-            %td= teacher.email
-            %td= teacher.username
+            %td= teacher.user.email
+            %td= teacher.user.username
             %td= teacher.dob
             %td= teacher.gender
             %td= teacher.grade
