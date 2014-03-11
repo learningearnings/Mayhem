@@ -6,18 +6,13 @@ class Student < Person
   has_many :otu_codes
   has_one :locker, foreign_key: :person_id
 
-  attr_accessor :username, :password, :password_confirmation
+  attr_accessor :username, :password, :password_confirmation, :coded_recently
+
+  scope :with_active_school, lambda { joins(:person_school_links).where({person_school_links: {status: 'active'}}) }
 
   scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
-  scope :for_grade, lambda { |grade_string|
-    # Map the grade string to the 0..12 interpretation
-    grade_index = School::GRADES.index(grade_string)
-    where(grade: grade_index)
-  }
-
-  scope :for_gender, lambda { |gender| where(:gender => gender) }
 
   before_create :set_status_to_active
   after_create :create_locker

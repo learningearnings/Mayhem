@@ -5,6 +5,16 @@ class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
 
+  scope :active, where({people: {status: 'active'}})
+  scope :with_active_school, lambda { joins(:person_school_links).where({person_school_links: {status: 'active'}}) }
+
+  scope :for_gender, lambda { |gender| where(:gender => gender) }
+  scope :for_grade, lambda { |grade_string|
+    # Map the grade string to the 0..12 interpretation
+    grade_index = School::GRADES.index(grade_string)
+    where(grade: grade_index)
+  }
+
   has_many :otu_code_categories
 
   ## Only useful for the scopes below with_transactions...

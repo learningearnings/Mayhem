@@ -8,6 +8,7 @@ class Teacher < Person
 
   scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
   scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
+  scope :creating_codes, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
 
   has_many :reward_distributors, :through => :person_school_links
 
@@ -96,6 +97,10 @@ class Teacher < Person
   # Don't love that bizlogic is right here, but hey...
   def students_ive_given_ebucks_to
     Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL").where(otu_codes: { teacher: { id: id } })
+  end
+
+  def students_issued_30   
+    Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL").where('otu_codes.created_at > ?', 1.month.ago).where(otu_codes: { teacher: { id: id } })
   end
 
   def setup_accounts(school)

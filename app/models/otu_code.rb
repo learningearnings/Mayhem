@@ -15,6 +15,7 @@ class OtuCode < ActiveRecord::Base
 
   scope :active, where("active = ?", true)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
+  scope :last_30, lambda { where("created_at > ?", Time.now - 30.days)}
   scope :ebuck, where(ebuck: true)
 
   def transaction

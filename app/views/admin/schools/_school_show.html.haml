@@ -1,6 +1,25 @@
 %h2= @school.name
 %h4= "Active Students: #{@school.active_students.count}"
 
+%h4 Participation Metrics
+%table
+  %thead
+    %tr
+      %th Registered Teachers
+      %th Logged in Teachers
+      %th Teachers handling credits
+      %th Registered Students
+      %th Logged in Students
+      %th Students received a buck
+  %tbody
+    %tr
+      %td= @school.teachers.active.count
+      %td= @school.teachers.logged.count
+      %td= @school.teachers.select{|x| x.students_issued_30.present?}.count
+      %td= @school.students.active.count
+      %td= @school.students.logged.count
+      %td= @school.students.includes(:otu_codes).where('otu_codes.created_at > ?', 1.month.ago).where('otu_codes.student_id IS NOT NULL').count
+
 %table
   %thead
     %tr
@@ -58,3 +77,23 @@
     %tr
       %td= link_to @school.store_account.name
       %td= @school.store_account.balance
+
+%h4 Participation Metrics
+%table
+  %thead
+    %tr
+      %th Registered Teachers
+      %th Logged in Teachers
+      %th Teachers handling credits
+      %th Registered Students
+      %th Logged in Students
+      %th Students received a buck
+  %tbody
+    %tr
+      %td= @school.teachers.count
+      %td= @school.teachers.logged.count
+      %td= ''
+      %td= ''
+      %td= ''
+      %td= ''
+

@@ -18,12 +18,15 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :person_account_links
   has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
   has_many :reward_distributors
-
   attr_accessible :person_id, :school_id, :status, :person, :school
   validates_presence_of :person_id, :school_id
   validate :validate_unique_with_status
   #validate :email_taken?
   validate :username_taken?
+
+  def otu_links(person)
+    OtuCode.last_30.where(:person_school_link_id => person.id)
+  end
 
   def link(d)
     if d && d.is_a?(Hash)
