@@ -12,12 +12,13 @@
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
   - reset_cycle('default')
+  - show_zero_stock_products = Spree::Config[:show_zero_stock_products]
   - products.in_groups_of(2) do |grp|
     .row
       %ul#products.inline.product-listing{"data-hook" => ""}
         - grp.each do |product|
           - if product
-            - if Spree::Config[:show_zero_stock_products] || product.has_stock?
+            - if show_zero_stock_products || product.has_stock?
               %li{:class => "product-tile", "data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
                 .product-image
                   = link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url'
