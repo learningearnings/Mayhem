@@ -72,7 +72,7 @@ class OneClickSpreeProductPurchaseCommand
       shipping_address[:city] = @school.city
       shipping_address[:state_name] = @school.state.name
       shipping_address[:zipcode] = @school.zip
-      shipping_address[:phone] = @school.school_phone
+      shipping_address[:phone] = @school.school_phone.blank? ? "1111111111" : @school.school_phone
       shipping_address[:country] = Spree::Country.find_by_iso "US"
       @order.ship_address_attributes = shipping_address
       @order.bill_address_attributes = shipping_address

@@ -6,7 +6,6 @@
 # Also see app/views/admin/common/_school_list.html.haml for the partial
 #
 module CommonPersonConfig
-
   def self.included(dsl)
     dsl.run_registration_block do
 
@@ -17,6 +16,8 @@ module CommonPersonConfig
       filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
       filter :status,:label => "Status", :as => :check_boxes, :collection => proc { Person.new().status_paths.to_states.each do |s| s.to_s end }
       filter :grade,:label => "Grade", :as => :check_boxes, :collection => School::GRADE_NAMES
+      filter :district_guid
+      filter :sti_id
       filter :created_at, :as => :date_range
 
       form do |f|
@@ -36,6 +37,8 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
           end
+          f.input :district_guid
+          f.input :sti_id
           if f.object.new?
             f.input :username, :required => true
             if !f.object.is_a?(Student)
@@ -148,13 +151,26 @@ module CommonPersonConfig
         column :status
         column :gender
         column :salutation
+        column "STI district GUID", :district_guid
+        column "STI id", :sti_id
         column "Created", :created_at do |t|
           t.created_at.strftime("%m/%d/%Y") if t.created_at
         end
         column "Updated", :updated_at do |t|
           t.updated_at.strftime("%m/%d/%Y") if t.updated_at
         end
-        default_actions
+        #default_actions
+        column :actions do |resource|
+          links = ''.html_safe
+          links += link_to I18n.t('active_admin.view'), resource_path(resource)
+          links += ' '
+          if !resource.district_guid.present?
+            links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)
+            links += ' '
+            links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
+          end
+          links
+        end
       end
       controller do
         skip_before_filter :add_current_store_id_to_params

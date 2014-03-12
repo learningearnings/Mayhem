@@ -10,8 +10,7 @@ class Student < Person
 
   scope :with_active_school, lambda { joins(:person_school_links).where({person_school_links: {status: 'active'}}) }
 
-  scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
-  scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
+  scope :recent, lambda{ where('people.created_at >= ?', (Time.now - 1.month)) }
 
 
   before_create :set_status_to_active
