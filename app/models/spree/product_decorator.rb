@@ -126,28 +126,30 @@ Spree::Product.class_eval do
 
   ### Delegate various methods to the master product, if one exists
   def master_product
+    return @master_product if @did_set_master_product
     if property('master_product')
-      Spree::Product.find(property('master_product'))
+      @master_product = Spree::Product.find(property('master_product'))
     end
+    @did_set_master_product = true
+    return @master_product
   end
 
-  %w(name description).each do |delegated_attribute|
-    define_method delegated_attribute do
-      master_product ? master_product.send(delegated_attribute) : super()
-    end
+  def name
+    @memoized_name ||= master_product ? master_product.name : super()
   end
 
-  # Attributes on the spree master variant (yes, that's different than master_product, sigh)
-  %w(price).each do |delegated_attribute|
-    define_method delegated_attribute do
-      master_product ? master_product.send(delegated_attribute) : master.send(delegated_attribute)
-    end
+  def description
+    @memoized_description ||= master_product ? master_product.description : super()
+  end
+
+  def price
+    @memoized_price ||= master_product ? master_product.price : master.price
   end
 
   # #images is an association, and you can't use super when overriding those, so we'll deal with this using alias_method_chain
   def images_with_master_product_delegation
-    images = images_without_master_product_delegation
-    master_product ? master_product.images : images
+    return master_product.images if master_product
+    images_without_master_product_delegation
   end
   alias_method_chain :images, :master_product_delegation
 end

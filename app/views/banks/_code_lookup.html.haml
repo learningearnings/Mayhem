@@ -1,0 +1,27 @@
+#code_lookup_div
+  = form_tag "/banks/code_lookup", remote: true, id: "code-lookup-form" do |f|
+    %h4 Enter the code to lookup:
+    = text_field_tag :code, params[:code]
+    = submit_tag 'Lookup Code', :class => 'awesome-button'
+    -if params[:code] && @looked_up_code.nil?
+      %p We could not find the code you entered
+    -if @looked_up_code
+      %div
+        %span.black_color This code was created on 
+        %span.blue_color= @looked_up_code.created_at.strftime("%a, %B %d, %Y")
+        %span.black_color by 
+        %span.blue_color= @looked_up_code.teacher.name
+      - if @looked_up_code.active?
+        %div
+          %h4 This code has not been used by a student yet
+      - else
+        %div
+          %span.black_color This code was deposited by 
+          %span.blue_color=@looked_up_code.try(:student).try(:name)
+          %span.black_color on 
+          %span.blue_color=@looked_up_code.redeemed_at.strftime("%a, %B %d, %Y")
+:coffeescript
+  $(document).ready ->
+    $("#code-lookup-form").on("ajax:success", (e, data, status, xhr) ->
+      $("#code_lookup_div").replaceWith xhr.responseText
+    )

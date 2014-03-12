@@ -157,26 +157,13 @@ class ApplicationController < ActionController::Base
     @products = filter_rewards_by_classroom(@products)
     if @products.present?
       @products.order('random()').page(1).per(highlight_count)
-    else 
+    else
       @products = []
     end
   end
 
   def filter_rewards_by_classroom(products)
-    unless current_person.is_a?(LeAdmin)
-      classrooms = current_person.classrooms.pluck(:id)
-      products.reject! do |product|
-        # Products that have no classrooms should not be rejected
-        next unless product.classrooms.any?
-        # If there is an intersection between the products classrooms and my classrooms, don't reject
-        (product.classrooms.pluck(:id) & classrooms).any? ? false : true
-      end
-      # To fix pagination we need an active record relation, not an array
-      # Why are you laughing?
-      products = Spree::Product.where(:id => products.map(&:id))
-    else
-      products
-    end
+    RewardsFilter.by_classroom(current_person, products)
   end
 
   def site_setting
