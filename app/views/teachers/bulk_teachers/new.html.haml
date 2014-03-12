@@ -12,8 +12,6 @@
           = select_tag 'controls_grade', options_for_select([nil] | current_school.grades)
           %label Gender:
           = select_tag 'controls_gender', options_for_select([nil, 'Male', 'Female'])
-          %label Classroom:
-          = select_tag 'controls_classroom', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name")
           %label Password:
           = text_field_tag 'controls_password'
           = button_tag 'Go', class: 'btn awesome-button'
@@ -23,27 +21,26 @@
             %tr
               %th.text.first First
               %th.text.last Last
+              %th.text.username Email
               %th.text.username Username
               %th.text.password Password
               %th.select.grade Grade
-              %th.select.classrooms Classrooms
               %th.select.gender Gender
               %th
           %tbody.teachers_body
             - if params["teachers"]
               -params["teachers"].each_with_index do |teacher, index|
-                = render 'teacher_row', grades: current_school.grades, classrooms: [OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, options: teacher, errors: @batch_teacher_creator.teachers[index].errors
+                = render 'teacher_row', grades: current_school.grades, options: teacher, errors: @batch_teacher_creator.teachers[index].errors
         = submit_tag "Add These Teachers", class: 'btn awesome-button add_teachers_button'
 
     %script#teacher_row{type: 'text/html'}
-      = render 'teacher_row', grades: current_school.grades, classrooms: [OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, options: { first_name: '{{first}}', last_name: '{{last}}', username: '{{username}}', password: '{{password}}', grade: '{{grade}}', gender: '{{gender}}', classroom: '{{classroom}}'}
+      = render 'teacher_row', grades: current_school.grades, options: { first_name: '{{first}}', last_name: '{{last}}', username: '{{username}}', password: '{{password}}', grade: '{{grade}}', gender: '{{gender}}'}
 
     :coffeescript
       insertNewTeacherRow = (options) ->
         row = ich['teacher_row'](options)
         $('.grade', row).val(options.grade)
         $('.gender', row).val(options.gender)
-        $('.classroom', row).val(options.classroom)
         $('.grid_edit_teachers tbody').append(row)
         show_add_teachers_button()
 
@@ -57,8 +54,7 @@
         grade = $('#controls_grade').val()
         gender = $('#controls_gender').val()
         password = $('#controls_password').val()
-        classroom = $('#controls_classroom').val()
-        { numberOfTeachers: numberOfTeachers, grade: grade, gender: gender, password: password, classroom: classroom }
+        { numberOfTeachers: numberOfTeachers, grade: grade, gender: gender, password: password}
 
       perhapsDeleteRow = (evt) ->
         if $(evt.target).hasClass('delete_row')

@@ -19,7 +19,6 @@
   %td.select.grade
     .edit= select_tag 'teachers[]grade', options_for_select(current_school.grades.map(&:reverse), selected: options[:grade]), class: 'grade edit_control'
     .display= options[:grade]
-    = hidden_field_tag 'teachers[]classroom_id', nil, class: 'classroom edit_control'
   %td.select.gender
     .edit= select_tag 'teachers[]gender', options_for_select(['', 'Male', 'Female'], selected: options[:gender]), class: 'gender edit_control'
     .display= options[:gender]

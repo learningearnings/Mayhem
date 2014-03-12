@@ -6,8 +6,6 @@
         = form_tag '/teachers/bulk_teachers/edit', method: :get do
           %h5 Optionally Filter List of Teachers:
           .control
-            /%label Classroom:
-            /= select_tag 'classroom', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name", :selected => params[:classroom]), id: 'controls_classroom'
             %label Grade:
             = select_tag 'grade', options_for_select([nil] | current_school.grades.map(&:reverse), :selected => params[:grade]), id: 'controls_grade'
             %label Gender:
@@ -23,9 +21,6 @@
           %span.password_field.secondary
             %label Password:
             = text_field_tag 'controls_password'
-          %span.classroom_field.secondary
-            %label Classroom:
-            = select_tag 'controls_classroom_selection', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name")
           = button_tag 'UPDATE These Teachers', class: 'btn awesome-button', id: 'update_these_teachers'
 
       = form_tag '/teachers/bulk_teachers', method: :put, id: 'update_teachers_form' do
@@ -38,13 +33,13 @@
               %th.text.last Last
               %th.text.email Email
               %th.text.username Username
+              %th.text.username Password
               %th.select.grade Grade
               %th.select.gender Gender
-              %th.text.password Password
               %th
           %tbody.teachers_body
             - @teachers.each do |teacher|
-              = render 'edit_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, password: '', grade: teacher.grade, gender: teacher.gender, id: teacher.id }
+              = render 'edit_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, password: teacher.recovery_password, grade: teacher.grade, gender: teacher.gender, id: teacher.id }
 
 :coffeescript
   $('#select_all').on 'click', ->
@@ -78,7 +73,6 @@
   whichSecondaryActionElementToShow = () ->
     switch chosenAction()
       when "Update Passwords to this Password" then $('.control span.secondary.password_field')
-      when "Add to Classroom I select:" then $('.control span.secondary.classroom_field')
       else $([])
 
   showAppropriateSecondaryAction = () ->
@@ -128,11 +122,6 @@
         updatePasswordsToPassword($('#controls_password').val())
       when "Update Passwords = Usernames"
         updatePasswordsToUsername()
-      when "Add to Classroom I select:"
-        updateClassroomsToClassroom($('#controls_classroom_selection').val())
-
-  updateClassroomsToClassroom = (classroom_id) ->
-    $('.edit_control.classroom').val(classroom_id)
 
   updatePasswordsToPassword = (password) ->
     $('input.password').val(password)

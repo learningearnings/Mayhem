@@ -579,6 +579,13 @@ html.resp, body.resp {
   }
 }
 
+.primary-nav {
+  .manage_teachers-selected, .manage_teachers:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
 .primary-nav .bank {
   color: #470bc1;
 }

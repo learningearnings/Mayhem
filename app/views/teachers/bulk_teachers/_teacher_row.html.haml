@@ -9,7 +9,6 @@
   %td.text.username= text_field_tag 'teachers[]user[username]', options[:username], class: 'username'
   %td.text.password= text_field_tag 'teachers[]user[password]', options[:password], class: 'password'
   %td.select.grade= select_tag 'teachers[]grade', options_for_select(grades), class: 'grade'
-  %td.select.classroom= select_tag 'teachers[]classroom_id', options_from_collection_for_select(classrooms, "id", "name"), class: 'classroom'
   %td.select.gender= select_tag 'teachers[]gender', options_for_select(['Male', 'Female']), class: 'gender'
   %td
     = link_to 'Remove Row', '#', class: 'delete_row btn'
