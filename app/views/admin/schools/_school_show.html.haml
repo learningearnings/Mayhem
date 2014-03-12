@@ -78,22 +78,3 @@
       %td= link_to @school.store_account.name
       %td= @school.store_account.balance
 
-%h4 Participation Metrics
-%table
-  %thead
-    %tr
-      %th Registered Teachers
-      %th Logged in Teachers
-      %th Teachers handling credits
-      %th Registered Students
-      %th Logged in Students
-      %th Students received a buck
-  %tbody
-    %tr
-      %td= @school.teachers.count
-      %td= @school.teachers.logged.count
-      %td= ''
-      %td= ''
-      %td= ''
-      %td= ''
-
