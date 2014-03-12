@@ -91,6 +91,10 @@ class CreditManager
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
 
+  def monthly_credits_for_onboarded_student_to_teacher school, teacher, amount
+    transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
+  end
+
   def issue_interest_to_student student, amount
     transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount
   end
