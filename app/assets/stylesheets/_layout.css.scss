@@ -2184,5 +2184,14 @@ dl.details {
 td.cat-text {
   text-align:center;
 }
-
-
+.bulk_form {
+  .text input {
+    width: 100px;
+  }
+  .grade select {
+    width: 100px;
+  }
+  .gender select {
+    width: 100px;
+  }
+}

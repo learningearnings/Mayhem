@@ -15,23 +15,24 @@
           %label Password:
           = text_field_tag 'controls_password'
           = button_tag 'Go', class: 'btn awesome-button'
-      = form_tag '/teachers/bulk_teachers', method: :post do
-        %table
-          %thead
-            %tr
-              %th.text.first First
-              %th.text.last Last
-              %th.text.username Email
-              %th.text.username Username
-              %th.text.password Password
-              %th.select.grade Grade
-              %th.select.gender Gender
-              %th
-          %tbody.teachers_body
-            - if params["teachers"]
-              -params["teachers"].each_with_index do |teacher, index|
-                = render 'teacher_row', grades: current_school.grades, options: teacher, errors: @batch_teacher_creator.teachers[index].errors
-        = submit_tag "Add These Teachers", class: 'btn awesome-button add_teachers_button'
+      .bulk_form
+        = form_tag '/teachers/bulk_teachers', method: :post do
+          %table
+            %thead
+              %tr
+                %th.text.first First
+                %th.text.last Last
+                %th.text.username Email
+                %th.text.username Username
+                %th.text.password Password
+                %th.select.grade Grade
+                %th.select.gender Gender
+                %th
+            %tbody.teachers_body
+              - if params["teachers"]
+                -params["teachers"].each_with_index do |teacher, index|
+                  = render 'teacher_row', grades: current_school.grades, options: teacher, errors: @batch_teacher_creator.teachers[index].errors
+          = submit_tag "Add These Teachers", class: 'btn awesome-button add_teachers_button'
 
     %script#teacher_row{type: 'text/html'}
       = render 'teacher_row', grades: current_school.grades, options: { first_name: '{{first}}', last_name: '{{last}}', username: '{{username}}', password: '{{password}}', grade: '{{grade}}', gender: '{{gender}}'}

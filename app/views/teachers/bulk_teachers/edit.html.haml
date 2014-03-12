@@ -22,24 +22,24 @@
             %label Password:
             = text_field_tag 'controls_password'
           = button_tag 'UPDATE These Teachers', class: 'btn awesome-button', id: 'update_these_teachers'
-
-      = form_tag '/teachers/bulk_teachers', method: :put, id: 'update_teachers_form' do
-        = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
-        %table
-          %thead
-            %tr
-              %th= check_box_tag 'select_all'
-              %th.text.first First
-              %th.text.last Last
-              %th.text.email Email
-              %th.text.username Username
-              %th.text.username Password
-              %th.select.grade Grade
-              %th.select.gender Gender
-              %th
-          %tbody.teachers_body
-            - @teachers.each do |teacher|
-              = render 'edit_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, password: teacher.recovery_password, grade: teacher.grade, gender: teacher.gender, id: teacher.id }
+      .bulk_form
+        = form_tag '/teachers/bulk_teachers', method: :put, id: 'update_teachers_form' do
+          = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
+          %table
+            %thead
+              %tr
+                %th= check_box_tag 'select_all'
+                %th.text.first First
+                %th.text.last Last
+                %th.text.email Email
+                %th.text.username Username
+                %th.select.grade Grade
+                %th.select.gender Gender
+                %th.text.username Password
+                %th
+            %tbody.teachers_body
+              - @teachers.each do |teacher|
+                = render 'edit_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, password: teacher.recovery_password, grade: teacher.grade, gender: teacher.gender, id: teacher.id }
 
 :coffeescript
   $('#select_all').on 'click', ->
