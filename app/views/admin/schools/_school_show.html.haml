@@ -14,10 +14,10 @@
   %tbody
     %tr
       %td= @school.teachers.active.count
-      %td= @school.teachers.logged.count
+      %td= @school.teachers.recently_logged_in.count
       %td= @school.teachers.select{|x| x.students_issued_30.present?}.count
       %td= @school.students.active.count
-      %td= @school.students.logged.count
+      %td= @school.students.recently_logged_in.count
       %td= @school.students.includes(:otu_codes).where('otu_codes.created_at > ?', 1.month.ago).where('otu_codes.student_id IS NOT NULL').count
 
 %table
