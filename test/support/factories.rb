@@ -149,6 +149,7 @@ FactoryGirl.define do
 
   factory :classroom do
     sequence(:name) {|n| "Test Classroom #{n}"}
+    school
   end
 
   factory :address do
