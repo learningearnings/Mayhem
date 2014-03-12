@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140304160256) do
+ActiveRecord::Schema.define(:version => 20140312143234) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -215,6 +215,8 @@ ActiveRecord::Schema.define(:version => 20140304160256) do
     t.datetime "updated_at",                         :null => false
   end
 
+  add_index "food_fight_players", ["food_fight_match_id"], :name => "index_food_fight_players_on_food_fight_match_id"
+
   create_table "food_person_links", :force => true do |t|
     t.integer  "person_id"
     t.integer  "thrown_by_id"
@@ -400,6 +402,7 @@ ActiveRecord::Schema.define(:version => 20140304160256) do
   end
 
   add_index "messages", ["category"], :name => "index_messages_on_category"
+  add_index "messages", ["to_id", "category", "status"], :name => "index_messages_on_to_id_and_category_and_status"
   add_index "messages", ["to_id", "status"], :name => "index_messages_on_to_id_and_status"
 
   create_table "monikers", :force => true do |t|
@@ -442,6 +445,7 @@ ActiveRecord::Schema.define(:version => 20140304160256) do
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
+  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -915,6 +919,8 @@ ActiveRecord::Schema.define(:version => 20140304160256) do
     t.string   "avs_response"
   end
 
+  add_index "spree_payments", ["order_id", "state"], :name => "index_spree_payments_on_order_id_and_state"
+
   create_table "spree_pending_promotions", :force => true do |t|
     t.integer "user_id"
     t.integer "promotion_id"
@@ -1105,6 +1111,7 @@ ActiveRecord::Schema.define(:version => 20140304160256) do
   end
 
   add_index "spree_shipments", ["number"], :name => "index_shipments_on_number"
+  add_index "spree_shipments", ["order_id", "state"], :name => "index_spree_shipments_on_order_id_and_state"
 
   create_table "spree_shipping_categories", :force => true do |t|
     t.string   "name"

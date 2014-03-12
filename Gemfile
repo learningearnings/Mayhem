@@ -156,7 +156,7 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-matchers', '~> 1.2.0'
   gem 'spinach', '~> 0.5.2'
-  gem 'database_cleaner', '~> 0.8.0'
+  gem 'database_cleaner', '~> 1.2.0'
   gem 'spinach-rails', '~> 0.1.7'
   gem 'launchy'
   gem 'capybara'
@@ -180,3 +180,7 @@ gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
 gem 'httparty'
+
+gem 'oboe', '~> 2.4.0.1' # for tracelytics
+
+gem 'nokogiri', '~> 1.5.10'

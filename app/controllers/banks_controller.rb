@@ -6,6 +6,11 @@ class BanksController < LoggedInController
   def show
   end
 
+  def code_lookup
+    @looked_up_code = OtuCode.for_school(current_school).where(code: params[:code]).first
+    render :partial => "code_lookup"
+  end
+
   def redeem_bucks
     person = Student.find_by_id(params[:student_id]) if params[:student_id]
     person = current_person unless person
