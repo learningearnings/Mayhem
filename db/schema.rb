@@ -445,7 +445,6 @@ ActiveRecord::Schema.define(:version => 20140312143234) do
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
-  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -471,8 +470,8 @@ ActiveRecord::Schema.define(:version => 20140312143234) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.boolean  "game_challengeable",                   :default => false
     t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"
   end
 
