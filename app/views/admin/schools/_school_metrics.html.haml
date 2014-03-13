@@ -1,0 +1,20 @@
+%h4 Participation Metrics
+%table
+  %thead
+    %tr
+      %th Registered Teachers
+      %th Logged in Teachers
+      %th Teachers handling credits
+      %th Registered Students
+      %th Logged in Students
+      %th Students received a buck
+  %tbody
+    %tr
+      %td= @school.teachers.active.count
+      %td= @school.teachers.recently_logged_in.count
+      %td= Teacher.where(id: OtuCode.joins(:teacher).last_30.where(teacher: {id: @school.teachers.pluck(:id)}).pluck("person_school_links.person_id")).count
+      %td= @school.students.active.count
+      %td= @school.students.recently_logged_in.count
+      %td= @school.students.includes(:otu_codes).where('otu_codes.created_at > ?', 1.month.ago).where('otu_codes.student_id IS NOT NULL').count
+
+
