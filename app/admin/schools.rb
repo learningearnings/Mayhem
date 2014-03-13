@@ -56,52 +56,19 @@ ActiveAdmin.register School do
   form :partial => 'form'
 
   show do |school|
-    admin_rows = []
-    current_row = []
-    row_number = column_number = 0
-    admin_count = school.school_admins.count
-    school.school_admins.each do |sa|
-      current_row[column_number] = sa
-      if (column_number += 1) > 7
-        column_number = 0
-        admin_rows[row_number] = current_row
-        current_row = []
-        row_number += 1
-      end
-    end
-    admin_rows[row_number] = current_row if column_number > 0
-    teacher_rows = []
-    current_row = []
-    row_number = column_number = 0
-    teacher_count = school.teachers.count
-    school.teachers.status_active.each do |t|
-      current_row[column_number] = t
-      if (column_number += 1) > 7
-        column_number = 0
-        teacher_rows[row_number] = current_row
-        current_row = []
-        row_number += 1
-      end
-    end
-    teacher_rows[row_number] = current_row if column_number > 0
-    student_rows = []
-    current_row = []
-    row_number = column_number = 0
-    student_count = school.students.status_active.count
-    school.students.includes(:user).status_active.each do |s|
-      current_row[column_number] = s
-      if (column_number += 1) > 7
-        column_number = 0
-        student_rows[row_number] = current_row
-        current_row = []
-        row_number += 1
-      end
-    end
-    student_rows[row_number] = current_row if column_number > 0
-    render 'school_show', teacher_count: teacher_count, admin_count: admin_count, student_count: student_count, admin_rows: admin_rows, teacher_rows: teacher_rows, student_rows: student_rows
+    school_admins = school.school_admins
+    teachers = school.teachers.status_active
+    students = school.students.status_active.includes(:user)
+    render 'school_show', teachers: teachers, students: students, school_admins: school_admins
   end
+
   controller do
     skip_before_filter :add_current_store_id_to_params
+
+    def get_metrics
+      @school = School.find params[:school_id]
+      render :partial => "school_metrics"
+    end
   end
 
 end

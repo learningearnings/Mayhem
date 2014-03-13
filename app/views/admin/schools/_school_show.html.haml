@@ -1,24 +1,10 @@
 %h2= @school.name
 %h4= "Active Students: #{@school.active_students.count}"
 
-%h4 Participation Metrics
-%table
-  %thead
-    %tr
-      %th Registered Teachers
-      %th Logged in Teachers
-      %th Teachers handling credits
-      %th Registered Students
-      %th Logged in Students
-      %th Students received a buck
-  %tbody
-    %tr
-      %td= @school.teachers.active.count
-      %td= @school.teachers.recently_logged_in.count
-      %td= @school.teachers.select{|x| x.students_issued_30.present?}.count
-      %td= @school.students.active.count
-      %td= @school.students.recently_logged_in.count
-      %td= @school.students.includes(:otu_codes).where('otu_codes.created_at > ?', 1.month.ago).where('otu_codes.student_id IS NOT NULL').count
+#get-metrics-div
+  = form_tag "/admin/schools/get_metrics", remote: true, id: "get-metrics-form" do |f|
+    = hidden_field_tag :school_id, @school.id
+    = submit_tag 'Load Metrics', :class => 'awesome-button'
 
 %table
   %thead
@@ -32,11 +18,11 @@
   %thead
     %tr
       %th
-        ="School Admins (#{admin_count})"
+        ="School Admins (#{school_admins.count})"
   %tbody
     %table
       %thead
-        - admin_rows.each do |row|
+        - school_admins.each_slice(7) do |row|
           %tr
             - row.each do |school_admin|
               %td= link_to school_admin.name, admin_school_admin_path(school_admin)
@@ -44,11 +30,11 @@
   %thead
     %tr
       %th
-        ="Teachers (#{teacher_count})"
+        ="Teachers (#{teachers.count})"
   %tbody
     %table
       %thead
-        - teacher_rows.each do |row|
+        - teachers.each_slice(7) do |row|
           %tr
             - row.each do |teacher|
               %td= link_to teacher.name, admin_teacher_path(teacher)
@@ -56,11 +42,11 @@
   %thead
     %tr
       %th
-        ="Students (#{student_count})"
+        ="Students (#{students.count})"
   %tbody
     %table
       %thead
-        - student_rows.each do |row|
+        - students.each_slice(7) do |row|
           %tr
             - row.each do |student|
               %td= link_to "#{student.name} (#{student.user.username})", admin_student_path(student), :title => "#{student.gender} - #{School::GRADE_NAMES[student.grade]}"
@@ -77,4 +63,10 @@
     %tr
       %td= link_to @school.store_account.name
       %td= @school.store_account.balance
+
+:coffeescript
+  $(document).ready ->
+    $("#get-metrics-form").on("ajax:success", (e, data, status, xhr) ->
+      $("#get-metrics-div").replaceWith xhr.responseText
+    )
 

@@ -63,6 +63,7 @@ Leror::Application.routes.draw do
     get :delete_student_school_link, :controller => :students, :action => :delete_school_link
     get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
+    post 'schools/get_metrics' => 'schools#get_metrics', as: :get_metrics
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
     get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
