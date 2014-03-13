@@ -85,8 +85,12 @@ class ApplicationController < ActionController::Base
     session[:last_school_id]
   end
 
+  def last_logged_in_school_cookie
+    cookies[:last_logged_in_school_id]
+  end
+
   def last_school_id_or_by_subdomain
-    last_school_id || school_id_by_subdomain
+    last_logged_in_school_cookie || school_id_by_subdomain
   end
   helper_method :last_school_id_or_by_subdomain
 

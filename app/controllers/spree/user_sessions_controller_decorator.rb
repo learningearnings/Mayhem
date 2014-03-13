@@ -5,6 +5,7 @@ Spree::UserSessionsController.class_eval do
     session[:current_school_id] = params[:user]["school_id"]
 
     if user_signed_in?
+      cookies[:last_logged_in_school_id] = { :value => params[:user]["school_id"], :expires => 1.year.from_now, :domain => "learningearnings.com"}
       respond_to do |format|
         format.html {
           flash.notice = t(:logged_in_succesfully)
@@ -18,11 +19,10 @@ Spree::UserSessionsController.class_eval do
     else
       flash[:error] = "Wrong Username, Password and School combination.  Please make sure you have all 3 credentials correct and try again."
       redirect_to main_app.page_path('home')
-#      render :new
     end
   end
- 
+
   def new
     redirect_to main_app.page_path('home')
-  end 
+  end
 end
