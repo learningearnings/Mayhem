@@ -48,6 +48,7 @@ class Person < ActiveRecord::Base
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
+  scope :recently_logged_in, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
   scope :active, where({people: {status: 'active'}}) 
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
