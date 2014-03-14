@@ -15,14 +15,8 @@ class BatchTeacherUpdater
       responses = []
       @teacher_params.each do |teacher_param|
         next unless teacher_param["id"].present?
-        classroom_id = teacher_param.delete("classroom_id")
         teacher = @teacher_class.find(teacher_param.delete("id"))
         user_param = teacher_param["user"]
-        if classroom_id
-          psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, @school["school"]["id"])
-          pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(classroom_id, psl.id)
-          pscl.activate
-        end
         responses << teacher.update_attributes(first_name: teacher_param["first_name"],
                                               last_name: teacher_param["last_name"],
                                               gender: teacher_param["gender"],
