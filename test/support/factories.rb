@@ -3,6 +3,8 @@ FactoryGirl.define do
     first_name "Testy"
     last_name "McTesterson"
     association :user, factory: :spree_user
+    sequence(:email) {|n| "fooperson#{n}@bar.com"}
+    sequence(:username) {|n| "fooperson#{n}"}
 
     factory :student, class: Student do
       sequence(:first_name) {|n| "Student #{n}"}
@@ -147,6 +149,7 @@ FactoryGirl.define do
 
   factory :classroom do
     sequence(:name) {|n| "Test Classroom #{n}"}
+    school
   end
 
   factory :address do

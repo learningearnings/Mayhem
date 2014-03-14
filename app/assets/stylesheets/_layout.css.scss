@@ -38,6 +38,58 @@ body {
   font-size: 16px;
 }
 
+.sketch_font  {
+  margin-top: 20px;
+  font-family: SketchRockwell;
+  font-size: 25pt;
+  width:110%;
+  color: rgb(228,30,31)
+}
+
+.sketch_font2  {
+  margin-top: 5px;
+  font-family: SketchRockwell;
+  font-size: 22pt;
+  width:110%;
+  color: rgb(228,30,31)
+}
+
+.king_font  {
+  margin-left: 5px;
+  font-weight: bold;
+  font-family: king_cool_kcregular;
+  margin-top: 20px;
+  font-size: 24pt;
+  color: rgb(241,201,252)
+}
+
+.king_font_welcome  {
+  margin-left: 5px;
+  font-weight: bold;
+  font-family: king_cool_kcregular;
+  margin-top: 20px;
+  font-size: 18pt;
+  color: rgb(9,126,186)
+}
+
+.king_font_thanks  {
+
+  text-align: center;
+  font-weight: bold;
+  font-family: king_cool_kcregular;
+  font-size: 16pt;
+}
+
+.sketch_font_welcome  {
+  font-family: SketchRockwell;
+  font-size: 20pt;
+  text-align: center;
+  width:160%;
+  color: rgb(161, 72, 245);
+  margin-top: 10px;
+  margin-left: -60px;
+}
+
 h1, h2, h3, h4, h5, h6,
 .navbar ul.nav li,
 .person-details ul.links li,

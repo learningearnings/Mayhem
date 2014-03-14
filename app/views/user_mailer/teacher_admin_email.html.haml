@@ -1,7 +1,8 @@
 %h1= "Message from #{@teacher.name}"
 %br
 %p= @teacher.name
-%p= @teacher.email
+%p= @teacher.user.email
+%p= @teacher.user.username
 %p= @school.name
 %p= "Grade #{@teacher.grade}"
 %br
