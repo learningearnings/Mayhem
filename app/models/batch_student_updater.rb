@@ -27,9 +27,11 @@ class BatchStudentUpdater
                                               last_name: student_param["last_name"],
                                               gender: student_param["gender"],
                                               grade: student_param["grade"])
-        responses << student.user.update_attributes(username: user_param["username"],
-                                                    password: user_param["password"],
-                                                    password_confirmation: user_param["password"])
+        unless classroom_id.present? && !user_param["password"].present?
+          responses << student.user.update_attributes(username: user_param["username"],
+                                                      password: user_param["password"],
+                                                      password_confirmation: user_param["password"])
+        end
         students << student
       end
       unless responses.select{|r| r == false}.empty?
