@@ -4,7 +4,11 @@ class FoodFightPlayer < ActiveRecord::Base
   belongs_to :person
 
   def winner?
-    score >= 1 && score > opponent.score && opponent.score < opponent.questions_answered
+    if food_fight_match.winner_id.present?
+      food_fight_match.winner_id == self.id
+    else
+      score >= 1 && score > opponent.score && opponent.score < opponent.questions_answered
+    end
   end
 
   def loser?
