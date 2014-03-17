@@ -33,6 +33,7 @@ ActiveAdmin.register LeAdmin do
       if @le_admin.save
         @le_admin.user.update_attributes(:username => params[:le_admin][:username], :password => params[:le_admin][:password], :password_confirmation => params[:le_admin][:password_confirmation])
         @le_admin.activate
+        @le_admin.user.spree_roles << Spree::Role.where(name: 'admin').first
         flash[:notice] = 'LeAdmin Created.'
         redirect_to admin_le_admin_path(@le_admin)
       else
