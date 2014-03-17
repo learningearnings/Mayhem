@@ -42,7 +42,7 @@
     = check_box_tag :homeroom
     Homeroom
   = hidden_field_tag :classroom_id, @classroom.id
-  - if current_person.sti_id
+  - if @classroom.sti_id
     = link_to_function 'Add Student', "sti_edit()", class: 'btn awesome-button'
   - else
     = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
