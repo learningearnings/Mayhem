@@ -7,17 +7,6 @@ describe Student do
     subject.must_be_kind_of Class
   end
 
-  describe "Validations" do
-    it "respects coppa rules" do
-      p = subject.create(first_name: 'TestFirst', last_name: 'TestLast', grade: 9,:user => FactoryGirl.create(:spree_user,:email => 'test_first_test_last@example.com'))
-      p.last_name.must_equal 'TestLast'
-      p.grade = 6
-      p.save
-      p.last_name.must_equal 'T'
-      p.user.email.must_equal 'test_first_test_last@example.com'
-    end
-  end
-
   describe "#grademates" do
     before do
       @student1 = FactoryGirl.build(:student, grade: 4)

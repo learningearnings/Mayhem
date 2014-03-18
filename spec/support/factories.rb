@@ -52,4 +52,14 @@ FactoryGirl.define do
     abbr 'AL'
     name 'Alabama'
   end
+
+  factory :food_fight_match do
+    active true
+  end
+
+  factory :food_fight_player do
+    person_id FactoryGirl.build(:person)
+  end
+
+
 end
