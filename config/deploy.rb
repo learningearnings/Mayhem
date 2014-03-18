@@ -2,6 +2,7 @@ set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
 require "rvm/capistrano"
+require 'sidekiq/capistrano'
 require "rvm/capistrano/selector"
 require "rvm/capistrano/gem_install_uninstall"
 require "rvm/capistrano/alias_and_wrapp"
@@ -16,6 +17,8 @@ before 'deploy:setup', 'rvm:create_alias'
 before 'deploy:setup', 'rvm:create_wrappers'
 
 set :bundle_dir, ''
+set :sidekiq_role, :sidekiq
+set :sidekiq_default_hooks, true
 set :bundle_flags, '--system --quiet'
 
 set :stages, %w(production demo staging sandbox qa demo)
@@ -70,13 +73,6 @@ namespace :deploy do
   desc "Restart unicorn"
   task :restart, :roles => :app do
     unicorn.restart
-  end
-
-  desc "Restart sidekiq"
-  task :restart_sidekiq, :roles => :sidekiq do
-    run "svc -d /service/sidekiq"
-    run "svc -u /service/sidekiq"
-    run "svstat /service/sidekiq"
   end
 end
 
