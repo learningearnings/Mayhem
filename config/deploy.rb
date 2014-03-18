@@ -73,9 +73,9 @@ namespace :deploy do
   end
 
   desc "Restart sidekiq"
-  task :restart_sidekiq do
+  task :restart_sidekiq, :roles => :sidekiq do
     run "svc -d /service/sidekiq"
-    run "svc -d /service/sidekiq"
+    run "svc -u /service/sidekiq"
     run "svstat /service/sidekiq"
   end
 end
