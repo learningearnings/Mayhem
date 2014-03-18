@@ -1,3 +1,4 @@
+require 'ffaker'
 FactoryGirl.define do
   factory :person do
     first_name "Testy"
@@ -143,7 +144,8 @@ FactoryGirl.define do
   end
 
   factory :state do
-    abbr 'AL'
+    #abbr 'AL'
+    abbr {Faker::AddressUS.state_abbr}
     name 'Alabama'
   end
 
@@ -157,7 +159,12 @@ FactoryGirl.define do
     line1 "529 Beacon Parkway"
     city "Birmingham"
     zip "35209"
-    state_id {FactoryGirl.create(:state).id}
+    if State.where(id: 1).present?
+      state_id 1
+    else
+      state_id {FactoryGirl.create(:state).id}
+    end
+
     #association :addressable
   end
 

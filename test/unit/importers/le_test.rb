@@ -29,7 +29,7 @@ describe Importers::Le do
   end
 
   it "instantiates a PointsImporter" do
-    subject.points_importer.must_be_instance_of(Importers::Le::PointsImporter)
+    subject.points_importer.must_be_instance_of(Importers::Le::TeacherPointsImporter)
   end
 
   it "calls each of its importers when called" do
@@ -47,7 +47,7 @@ describe Importers::Le do
     Importers::Le::UsersImporter.stubs(:new).returns(mock_users_importer)
     Importers::Le::ClassroomsImporter.stubs(:new).returns(mock_classrooms_importer)
     Importers::Le::ClassroomDetailsImporter.stubs(:new).returns(mock_classroom_details_importer)
-    Importers::Le::PointsImporter.stubs(:new).returns(mock_points_importer)
+    Importers::Le::TeacherPointsImporter.stubs(:new).returns(mock_points_importer)
     subject.call
     assert mock_schools_importer.verify
     assert mock_users_importer.verify
