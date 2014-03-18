@@ -82,7 +82,8 @@ module Reports
         classroom: classroom,
         grade:     student.grade,
         student:   student.reverse_name,
-        username:  student.user.username
+        username:  student.user.username,
+        password:  student.recovery_password
       ]
     end
 
@@ -91,7 +92,8 @@ module Reports
         classroom: "Classroom",
         grade:     "Grade",
         student:   "Student",
-        username:  "Username"
+        username:  "Username",
+        password:  "Password"
       }
     end
   end

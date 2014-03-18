@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :subdomain_required
+  before_filter :set_last_school_cookie
   around_filter :set_time_zone
   around_filter :track_interaction
 
@@ -34,6 +35,12 @@ class ApplicationController < ActionController::Base
       current_user.save
       sign_out(current_user)
       redirect_to my_redirect_url
+    end
+  end
+
+  def set_last_school_cookie
+    if session[:current_school_id]
+      cookies[:last_logged_in_school_id] = { :value => session[:current_school_id], :expires => 1.year.from_now, :domain => ".learningearnings.com"}
     end
   end
 
@@ -85,8 +92,12 @@ class ApplicationController < ActionController::Base
     session[:last_school_id]
   end
 
+  def last_logged_in_school_cookie
+    cookies[:last_logged_in_school_id]
+  end
+
   def last_school_id_or_by_subdomain
-    last_school_id || school_id_by_subdomain
+    last_logged_in_school_cookie || school_id_by_subdomain
   end
   helper_method :last_school_id_or_by_subdomain
 
@@ -157,26 +168,13 @@ class ApplicationController < ActionController::Base
     @products = filter_rewards_by_classroom(@products)
     if @products.present?
       @products.order('random()').page(1).per(highlight_count)
-    else 
+    else
       @products = []
     end
   end
 
   def filter_rewards_by_classroom(products)
-    if current_person.is_a?(Student)
-      classrooms = current_person.classrooms.pluck(:id)
-      products.reject! do |product|
-        # Products that have no classrooms should not be rejected
-        next unless product.classrooms.any?
-        # If there is an intersection between the products classrooms and my classrooms, don't reject
-        (product.classrooms.pluck(:id) & classrooms).any? ? false : true
-      end
-      # To fix pagination we need an active record relation, not an array
-      # Why are you laughing?
-      products = Spree::Product.where(:id => products.map(&:id))
-    else
-      products
-    end
+    RewardsFilter.by_classroom(current_person, products)
   end
 
   def site_setting

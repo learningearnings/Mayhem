@@ -27,6 +27,7 @@ class Person < ActiveRecord::Base
   has_many :person_avatar_links, :autosave => :true, :order => 'created_at desc, id desc'
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
   has_many :interactions
+  has_many :code_entry_failures
 
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
@@ -42,7 +43,7 @@ class Person < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :password_confirmation
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :as => :admin
   validates_presence_of :first_name, :last_name
 
@@ -58,6 +59,7 @@ class Person < ActiveRecord::Base
   scope :with_transactions_since, lambda { |startdate| with_transactions_between(startdate,1.second.from_now) }
   scope :with_username, lambda{|username| joins(:spree_user).where("spree_users.username = ?", username) }
   scope :with_email,    lambda{|email| joins(:spree_user).where("spree_users.email = ?", email) }
+  scope :recently_logged_in, lambda{ where('last_sign_in_at >= ?', (Time.now - 1.month)).joins(:user) }
 
   before_save :ensure_spree_user
   after_destroy :delete_user
