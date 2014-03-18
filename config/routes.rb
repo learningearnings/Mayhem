@@ -60,6 +60,8 @@ Leror::Application.routes.draw do
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
+    match "/teachers/approve_teacher/:id" => 'new_teachers_requests#activate', as: 'approve_teacher'
+    match "/teachers/deny_teacher/:id" => 'new_teachers_requests#deny', as: 'deny_teacher'
     get :delete_student_school_link, :controller => :students, :action => :delete_school_link
     get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
