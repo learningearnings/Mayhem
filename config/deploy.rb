@@ -68,7 +68,7 @@ namespace :deploy do
   end
 
   desc "Restart unicorn"
-  task :restart :role => :app do
+  task :restart :roles => :app do
     unicorn.restart
   end
 
