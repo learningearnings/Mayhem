@@ -48,7 +48,7 @@ set :branch,          "develop"
 # tasks
 namespace :deploy do
   desc "Symlink shared resources on each release"
-  task :symlink_shared, :roles => :app do
+  task :symlink_shared, :roles => [:app, :sidekiq] do
     run "ln -s #{shared_path}/log #{latest_release}/log"
     run "ln -s #{shared_path}/system #{latest_release}/public/system"
     run "ln -s #{shared_path}/public/assets #{latest_release}/public/assets"
@@ -62,13 +62,13 @@ namespace :deploy do
   end
 
   desc "Precompile assets"
-  task :precompile_assets do
+  task :precompile_assets, :roles => :app do
     #precompile the assets
     run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Restart unicorn"
-  task :restart do
+  task :restart :role => :app do
     unicorn.restart
   end
 
