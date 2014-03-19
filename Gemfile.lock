@@ -386,9 +386,6 @@ GEM
       actionpack (~> 3.0)
       activerecord (~> 3.0)
       polyamorous (~> 0.5.0)
-    rb-fsevent (0.9.4)
-    rb-inotify (0.8.8)
-      ffi (>= 0.5.0)
     rdiscount (2.1.7)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -461,15 +458,11 @@ GEM
       capybara (~> 1)
       railties (>= 3)
       spinach (>= 0.4)
-<<<<<<< HEAD
-    spreadsheet (0.9.6)
-=======
     spork (1.0.0rc4)
     spork-rails (4.0.0)
       rails (>= 3.0.0, < 5)
       spork (>= 1.0rc0)
     spreadsheet (0.9.0)
->>>>>>> b20f0179d2c3e675552ef1532c38a2ff9ca6dcea
       ruby-ole (>= 1.0)
     spree (1.2.0)
       spree_api (= 1.2.0)
@@ -633,7 +626,7 @@ DEPENDENCIES
   ranked-model
   rdiscount
   responders
-  roo (= 1.12.1)
+  roo
   rspec-rails
   rubyzip (= 0.9.9)
   rvm-capistrano
