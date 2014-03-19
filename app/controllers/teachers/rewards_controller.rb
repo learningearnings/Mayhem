@@ -3,7 +3,7 @@ module Teachers
     # GET /teachers/rewards
     # GET /teachers/rewards.json
     def index
-      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').joins(:spree_product_person_link).where(:spree_product_person_link => {:person_id => current_person.id}).order('name').page(params[:page]).per(9)
+      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').joins(:spree_product_person_link).where(:spree_product_person_link => {:person_id => current_person.id}).active.order('name').page(params[:page]).per(9)
 #      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').page(params[:page]).per(9)
 
       respond_to do |format|
@@ -102,7 +102,8 @@ module Teachers
     # DELETE /teachers/rewards/1.json
     def destroy
       product = Spree::Product.find(params[:id])
-      product.destroy
+      #product.destroy
+      product.update_attributes(deleted_at: Time.now)
 
       respond_to do |format|
         format.html { redirect_to teachers_rewards_url }
