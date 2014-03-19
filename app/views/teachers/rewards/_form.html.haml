@@ -28,10 +28,11 @@
 
   %h3 Reward Scope
   %ul.reward-scope
-    %li
-      %label
-        = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
-        Whole School
+    - if current_person.is_a?(SchoolAdmin)
+      %li
+        %label
+          = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
+          Whole School
     %li
       %label
         = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
