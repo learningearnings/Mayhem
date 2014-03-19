@@ -1,7 +1,7 @@
 class HonorRoll
   attr_reader :school, :start_date, :end_date
 
-  def initialize(school, start_date, end_date)
+  def initialize(school, start_date=(Date.today - 7.days), end_date=Date.today)
     @school = school
     @start_date = start_date
     @end_date = end_date
@@ -19,9 +19,10 @@ class HonorRoll
   def deposits_per_person(count=3)
     {}.tap do |output|
       deposits_per_account(count).each do |key, value|
-        binding.pry
-        person = Plutus::Account.find(key).person_account_link.person
-        output[person] = value
+        link = Plutus::Account.find(key).person_account_link
+        if link.present? && link.person.present?
+          output[link.person] = value
+        end
       end
     end
   end
@@ -34,15 +35,16 @@ class HonorRoll
       .merge(Spree::Product.with_property_value('reward_type','charity'))
   end
 
-  def most_credits_deposited
-    checking_to_savings = transactions_in_time_range.select{|x| x.description == 'Transfer from Checking to Savings'}
-    savings_to_checking = transactions_in_time_range.select{|x| x.description == 'Transfer from Savings to Checking'}
-    (transactions_in_time_range - savings_to_checking) - checking_to_savings
+  def deposit_transactions
+    transactions_in_time_range.joins(:amounts => {:account => {:person_account_link => {:person => :person_school_links}}}).where("person_school_links.school_id = ?", @school.id)
+  end
+
+  def deposit_transactions_for_students
+    deposit_transactions.where('people.type = ?', 'Student')
   end
 
   def most_deposited_credits
-    bad = ['Transfer from Checking to Savings', 'Transfer from Savings to Checking', "Reward Refund"]
-    transactions_in_time_range.reject{|x| bad.include? x.description}
+    deposit_transactions_for_students.where("description NOT IN (?)", ['Transfer from Checking to Savings', 'Transfer from Savings to Checking', "Reward Refund"])
   end
   
   def transactions_in_time_range
@@ -54,6 +56,9 @@ class HonorRoll
       most_deposited_credits.each do |transaction|
         amount = credit_amount_on(transaction)
         account_id = amount.account_id
+        account = Plutus::Account.includes(:person_account_link => :person).find(account_id)
+        next unless account.person_account_link.present?
+        next if account.person_account_link.person.is_a?(Teacher) || account.person_account_link.person.is_a?(SchoolAdmin)
         output[account_id] = output[account_id] + amount.amount
       end
     end.sort_by{|key, value| value}.reverse

@@ -29,6 +29,12 @@
           - charity_donations.each do |person, amount|
             %li #{person} [#{number_to_bucks amount}]
 
+      %h4 Most Credits Deposited
+      %ol
+        - HonorRollDeposit.find_all_by_school_id(current_school.id).each do |deposit|
+          %li #{deposit.student.name} [#{number_to_bucks deposit.amount}]
+
+
 .student-logged-in-sidebar
   = render_reward_highlights(@products[0..1])
   .our-sponsors
