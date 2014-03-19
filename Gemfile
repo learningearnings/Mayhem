@@ -15,7 +15,7 @@ gem 'pg', '0.13.2'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transaction_retry'
-
+gem 'uuidtools'
 gem 'chronic'
 
 # for importing
@@ -156,7 +156,7 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-matchers', '~> 1.2.0'
   gem 'spinach', '~> 0.5.2'
-  gem 'database_cleaner', '~> 0.8.0'
+  gem 'database_cleaner', '~> 1.2.0'
   gem 'spinach-rails', '~> 0.1.7'
   gem 'launchy'
   gem 'capybara'
@@ -165,12 +165,12 @@ group :test do
   gem 'mocha', '~> 0.14.0', :require => false
   gem 'valid_attribute', :github => 'learningearnings/valid_attribute', :branch => 'minitest-matchers-11'
   gem 'factory_girl_rails'
-  gem 'libnotify'
-  gem 'rb-fsevent', '~> 0.9.1'
-  gem 'rb-inotify', '~> 0.8.8', :require => linux_only('rb-inotify')
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
+  gem 'ffaker'
+  gem 'spork-rails'
+  gem 'timecop'
 end
 
 gem "coffee-filter", '~> 0.1.3'
@@ -180,3 +180,7 @@ gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
 gem 'httparty'
+
+gem 'oboe', '~> 2.4.0.1' # for tracelytics
+
+gem 'nokogiri', '~> 1.5.10'

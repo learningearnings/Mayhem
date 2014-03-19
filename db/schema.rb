@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140216033030) do
+ActiveRecord::Schema.define(:version => 20140312143234) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -162,6 +162,12 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
 
   add_index "classrooms", ["district_guid", "sti_id"], :name => "index_classrooms_on_district_guid_and_sti_id"
 
+  create_table "code_entry_failures", :force => true do |t|
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "codes", :force => true do |t|
     t.string   "code"
     t.boolean  "active",     :default => true
@@ -208,6 +214,8 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
   end
+
+  add_index "food_fight_players", ["food_fight_match_id"], :name => "index_food_fight_players_on_food_fight_match_id"
 
   create_table "food_person_links", :force => true do |t|
     t.integer  "person_id"
@@ -318,14 +326,6 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
     t.string  "game_type"
   end
 
-  create_table "honor_roll_deposits", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "school_id"
-    t.decimal  "amount"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "interactions", :force => true do |t|
     t.integer  "person_id"
     t.string   "page"
@@ -394,6 +394,8 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
   end
 
   add_index "messages", ["category"], :name => "index_messages_on_category"
+  add_index "messages", ["to_id", "category", "status"], :name => "index_messages_on_to_id_and_category_and_status"
+  add_index "messages", ["to_id", "status"], :name => "index_messages_on_to_id_and_status"
 
   create_table "monikers", :force => true do |t|
     t.string   "state"
@@ -417,10 +419,10 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
-    t.string   "reason"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
+  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -901,6 +903,8 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
     t.string   "avs_response"
   end
 
+  add_index "spree_payments", ["order_id", "state"], :name => "index_spree_payments_on_order_id_and_state"
+
   create_table "spree_pending_promotions", :force => true do |t|
     t.integer "user_id"
     t.integer "promotion_id"
@@ -955,7 +959,7 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
   add_index "spree_product_properties", ["product_id"], :name => "index_product_properties_on_product_id"
 
   create_table "spree_products", :force => true do |t|
-    t.string   "name",                      :default => "",    :null => false
+    t.string   "name",                 :default => "",    :null => false
     t.text     "description"
     t.datetime "available_on"
     t.datetime "deleted_at"
@@ -964,16 +968,15 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
     t.string   "meta_keywords"
     t.integer  "tax_category_id"
     t.integer  "shipping_category_id"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.integer  "count_on_hand",             :default => 0,     :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "count_on_hand",        :default => 0,     :null => false
     t.string   "svg_file_name"
     t.string   "fulfillment_type"
     t.string   "purchased_by"
     t.integer  "min_grade"
     t.integer  "max_grade"
-    t.boolean  "visible_to_all",            :default => false
-    t.string   "purchase_limit_time_frame"
+    t.boolean  "visible_to_all",       :default => false
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1091,6 +1094,7 @@ ActiveRecord::Schema.define(:version => 20140216033030) do
   end
 
   add_index "spree_shipments", ["number"], :name => "index_shipments_on_number"
+  add_index "spree_shipments", ["order_id", "state"], :name => "index_spree_shipments_on_order_id_and_state"
 
   create_table "spree_shipping_categories", :force => true do |t|
     t.string   "name"

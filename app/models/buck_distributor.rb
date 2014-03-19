@@ -1,4 +1,6 @@
 class BuckDistributor
+  DAILY_STUDENT_AMOUNT = 25
+
   def initialize(schools=School.all, credit_manager=CreditManager.new)
     @schools = schools
     @credit_manager = credit_manager
@@ -14,19 +16,22 @@ class BuckDistributor
       @credit_manager.revoke_credits_for_school(school, school.balance)
       pay_school(school)
     end
-  end  
+  end
 
   def pay_school(school)
     @credit_manager.issue_credits_to_school school, amount_for_school(school)
   end
 
+  # 25 dollars per student per day
   def amount_for_school school
-    700 * school.students.logged.count
+    days_in_month = Time.days_in_month(Time.now.month)
+    days_left_in_month = (days_in_month - Time.now.day) + 1
+    DAILY_STUDENT_AMOUNT * days_left_in_month * school.students.recently_logged_in.count
   end
 
   def handle_teachers
     @schools.each do |school|
-      school.teachers.logged.each do |teacher|
+      school.teachers.recently_logged_in.each do |teacher|
         revoke_remainder(school, teacher, teacher.main_account(school).balance)
         pay_teacher(school, teacher)
       end
@@ -38,7 +43,7 @@ class BuckDistributor
   end
 
   def amount_for_teacher(school)
-    school.balance / school.teachers.logged.count
+    school.balance / school.teachers.recently_logged_in.count
   end
 
   def pay_teacher(school, teacher)

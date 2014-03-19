@@ -12,8 +12,10 @@ class OtuCode < ActiveRecord::Base
   has_many :message_code_links
 
   scope :active, where("active = ?", true)
+  scope :inactive, where("active = ?", false)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
+  scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
 
   def transaction
     Plutus::Transaction.find(self.otu_transaction_link_id)
