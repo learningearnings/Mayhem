@@ -1,4 +1,7 @@
+require 'sidekiq/web'
 Leror::Application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
+  
   get '/sti/give_credits' => "sti#give_credits"
   match '/404' => 'errors#not_found'
   match '/422' => 'errors#server_error'
@@ -56,7 +59,12 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+    get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
+    match "checking_history/get_history/:person_id" => 'checking_history#get_history', :as => :checking_history
+    match "checking_history/get_history" => 'checking_history#get_history', :as => :checking_history
+    match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
+    match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
   end
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"

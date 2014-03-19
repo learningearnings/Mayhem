@@ -18,16 +18,29 @@ Spree::OrdersController.class_eval do
     return true if quantity.to_i > variant.count_on_hand
   end
 
+  def insufficient_funds?
+    variant_options = params[:variants].to_a.flatten
+    variant  = Spree::Variant.find variant_options.first
+    quantity = variant_options.last
+    return true if current_person.checking_account.balance < (variant.price * quantity.to_i)
+  end
+
+
   def populate
+    if insufficient_quantity?
+      flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
+      redirect_to :back and return
+    end
+    if insufficient_funds?
+      flash[:error] = "Sorry, you do not have enough credits to purchase this item."
+      redirect_to :back and return
+    end
+
     ActiveRecord::Base.transaction do
       begin
         @order = current_order(true)
         if current_person.is_a?(Student)
           @order.empty!
-        end
-        if insufficient_quantity?
-          flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
-          redirect_to :back and return
         end
         @order.restock_items!
         params[:products].each do |product_id,variant_id|
@@ -136,7 +149,11 @@ Spree::OrdersController.class_eval do
 
   private
   def current_person
-    current_user.person
+    if current_user.present?
+      current_user.person
+    else
+      nil
+    end
   end
 
   def current_school

@@ -205,6 +205,7 @@ GEM
       orm_adapter (~> 0.0.3)
       railties (~> 3.1)
       warden (~> 1.1.1)
+    diff-lcs (1.2.5)
     dragonfly (0.9.15)
       multi_json (~> 1.0)
       rack
@@ -351,6 +352,8 @@ GEM
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-protection (1.5.2)
+      rack
     rack-ssl (1.3.3)
       rack
     rack-test (0.6.2)
@@ -399,6 +402,18 @@ GEM
       nokogiri
       rubyzip
       spreadsheet (> 0.6.4)
+    rspec-core (2.14.8)
+    rspec-expectations (2.14.5)
+      diff-lcs (>= 1.1.3, < 2.0)
+    rspec-mocks (2.14.6)
+    rspec-rails (2.14.1)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 2.14.0)
+      rspec-expectations (~> 2.14.0)
+      rspec-mocks (~> 2.14.0)
     ruby-graphviz (1.0.9)
     ruby-hmac (0.4.0)
     ruby-ole (1.2.11.7)
@@ -434,6 +449,10 @@ GEM
     simplecov-html (0.5.3)
     simplecov-rcov (0.2.3)
       simplecov (>= 0.4.1)
+    sinatra (1.4.4)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
     slop (3.4.6)
     spinach (0.5.2)
       colorize
@@ -521,6 +540,9 @@ GEM
       rack
       raindrops (~> 0.7)
     uuidtools (2.1.4)
+    valid_email (0.0.4)
+      activemodel
+      mail
     warden (1.1.1)
       rack (>= 1.0)
     webshims-rails (1.11.1)
@@ -547,6 +569,7 @@ DEPENDENCIES
   capistrano-unicorn
   capybara
   chosen-rails
+  chronic
   ckeditor (= 3.7.3)
   coffee-filter (~> 0.1.3)
   coffee-rails (~> 3.2.1)
@@ -601,7 +624,8 @@ DEPENDENCIES
   rb-inotify (~> 0.8.8)
   rdiscount
   responders
-  roo
+  roo (= 1.12.1)
+  rspec-rails
   rubyzip (= 0.9.9)
   rvm-capistrano
   sanitizing_bigdecimal
@@ -611,6 +635,7 @@ DEPENDENCIES
   simple_form
   simplecov (~> 0.6.4)
   simplecov-rcov (~> 0.2.3)
+  sinatra
   spinach (~> 0.5.2)
   spinach-rails (~> 0.1.7)
   spreadsheet
@@ -628,6 +653,7 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   valid_attribute!
+  valid_email
   webshims-rails (~> 1.11.1)
   whenever
   whereabouts (~> 0.9.0)

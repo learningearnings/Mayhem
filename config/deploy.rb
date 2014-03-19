@@ -18,7 +18,7 @@ before 'deploy:setup', 'rvm:create_wrappers'
 set :bundle_dir, ''
 set :bundle_flags, '--system --quiet'
 
-set :stages, %w(production demo staging sandbox)
+set :stages, %w(production demo staging sandbox qa)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
 
@@ -70,6 +70,13 @@ namespace :deploy do
   desc "Restart unicorn"
   task :restart do
     unicorn.restart
+  end
+
+  desc "Restart sidekiq"
+  task :restart_sidekiq do
+    run "svc -d /service/sidekiq"
+    run "svc -d /service/sidekiq"
+    run "svstat /service/sidekiq"
   end
 end
 

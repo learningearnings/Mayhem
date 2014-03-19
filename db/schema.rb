@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140120164023) do
+ActiveRecord::Schema.define(:version => 20140216033030) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -156,7 +156,11 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.integer  "legacy_classroom_id"
     t.integer  "processed"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
   end
+
+  add_index "classrooms", ["district_guid", "sti_id"], :name => "index_classrooms_on_district_guid_and_sti_id"
 
   create_table "codes", :force => true do |t|
     t.string   "code"
@@ -314,6 +318,14 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.string  "game_type"
   end
 
+  create_table "honor_roll_deposits", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "school_id"
+    t.decimal  "amount"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "interactions", :force => true do |t|
     t.integer  "person_id"
     t.string   "page"
@@ -324,6 +336,8 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
+
+  add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
 
   create_table "local_reward_categories", :force => true do |t|
     t.string   "name"
@@ -433,8 +447,11 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
     t.boolean  "game_challengeable",                   :default => false
+    t.integer  "sti_id"
+    t.string   "district_guid"
   end
 
+  add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
 
@@ -484,6 +501,7 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.boolean  "homeroom"
   end
 
+  add_index "person_school_classroom_links", ["person_school_link_id", "classroom_id"], :name => "pscl_pscli_ci"
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
 
   create_table "person_school_links", :force => true do |t|
@@ -619,6 +637,15 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.integer  "state_id"
     t.string   "zip"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
+  end
+
+  create_table "site_settings", :force => true do |t|
+    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -928,7 +955,7 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
   add_index "spree_product_properties", ["product_id"], :name => "index_product_properties_on_product_id"
 
   create_table "spree_products", :force => true do |t|
-    t.string   "name",                 :default => "",    :null => false
+    t.string   "name",                      :default => "",    :null => false
     t.text     "description"
     t.datetime "available_on"
     t.datetime "deleted_at"
@@ -937,15 +964,16 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.string   "meta_keywords"
     t.integer  "tax_category_id"
     t.integer  "shipping_category_id"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
-    t.integer  "count_on_hand",        :default => 0,     :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.integer  "count_on_hand",             :default => 0,     :null => false
     t.string   "svg_file_name"
     t.string   "fulfillment_type"
     t.string   "purchased_by"
     t.integer  "min_grade"
     t.integer  "max_grade"
-    t.boolean  "visible_to_all",       :default => false
+    t.boolean  "visible_to_all",            :default => false
+    t.string   "purchase_limit_time_frame"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1205,6 +1233,7 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.string   "api_key",                :limit => 48
     t.integer  "person_id"
     t.string   "username"
+    t.boolean  "api_user"
   end
 
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
@@ -1268,10 +1297,30 @@ ActiveRecord::Schema.define(:version => 20140120164023) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "sti_link_tokens", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "api_url"
+    t.string   "link_key"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "username"
+    t.string   "password"
+  end
+
   create_table "stickers", :force => true do |t|
     t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "sync_attempts", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "status"
+    t.string   "sync_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "error"
+    t.text     "backtrace"
   end
 
   create_table "uploaded_users", :force => true do |t|
