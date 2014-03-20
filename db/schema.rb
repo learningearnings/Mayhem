@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140312143234) do
+ActiveRecord::Schema.define(:version => 20140319134711) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -595,6 +595,14 @@ ActiveRecord::Schema.define(:version => 20140312143234) do
   create_table "reward_exclusions", :force => true do |t|
     t.integer "school_id"
     t.integer "product_id"
+  end
+
+  create_table "reward_templates", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.decimal  "price"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "school_filter_links", :force => true do |t|
