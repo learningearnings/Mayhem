@@ -13,6 +13,8 @@
 
 ActiveRecord::Schema.define(:version => 20140312143234) do
 
+  add_extension "hstore"
+
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
     t.string   "resource_type", :null => false
@@ -326,6 +328,14 @@ ActiveRecord::Schema.define(:version => 20140312143234) do
     t.string  "game_type"
   end
 
+  create_table "honor_roll_deposits", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "school_id"
+    t.decimal  "amount"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "interactions", :force => true do |t|
     t.integer  "person_id"
     t.string   "page"
@@ -419,10 +429,10 @@ ActiveRecord::Schema.define(:version => 20140312143234) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+    t.string   "reason"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
-  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -641,13 +651,6 @@ ActiveRecord::Schema.define(:version => 20140312143234) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
-  end
-
-  create_table "site_settings", :force => true do |t|
-    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
-    t.datetime "created_at",                                          :null => false
-    t.datetime "updated_at",                                          :null => false
-    t.datetime "interest_paid_at"
   end
 
   create_table "site_settings", :force => true do |t|
