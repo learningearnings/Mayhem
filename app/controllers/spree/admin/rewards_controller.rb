@@ -71,6 +71,9 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   def update
     @product = Spree::Product.find(params[:id])
     form_data
+    if params[:product][:svg].present?
+      @product.svg = params[:product][:svg][:svg_file_name]
+    end
     if @product.save
       after_save
       flash[:notice] = "Your reward was updated successfully."
@@ -111,10 +114,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     if params[:product][:images].present?
       @product.images.first.destroy if @product.images.present?
       @product.images.create(params[:product][:images])
-    end
-    if params[:product][:svg].present?
-      @product.svg = params[:product][:svg][:svg_file_name]
-      @product.save
     end
   end
 

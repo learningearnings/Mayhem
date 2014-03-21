@@ -7,7 +7,7 @@ ActiveAdmin.register Student do
 
   action_item do
     if current_page?(:action => 'show') && !student.district_guid.present?
-      link_to 'Edit Student', edit_student_path(student)
+      link_to 'Edit Student', edit_resource_path(resource)
     end
   end
   action_item do
