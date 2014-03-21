@@ -26,7 +26,7 @@ class BuckDistributor
   def amount_for_school school
     days_in_month = Time.days_in_month(Time.now.month)
     days_left_in_month = (days_in_month - Time.now.day) + 1
-    DAILY_STUDENT_AMOUNT * days_left_in_month * active_students.count
+    DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
   end
 
   def handle_teachers
