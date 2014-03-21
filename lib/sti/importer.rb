@@ -35,16 +35,22 @@ module STI
         teacher.deactivate! unless teacher.status == "inactive"
       end
       @api_teachers = sti_staff.each do |api_teacher|
-        schools = api_teacher["Schools"].map do |school_id|
-          School.where(district_guid: @district_guid, sti_id: school_id).first.id
-        end
-        teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
-        teacher.update_attributes(api_teacher_mapping(api_teacher))
-        teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
-        teacher.reload && teacher.activate! unless teacher.status == "active"
-        schools.each do |school|
-          person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
-          person_school_link.save(:validate => false)
+        begin
+          schools = api_teacher["Schools"].map do |school_id|
+            School.where(district_guid: @district_guid, sti_id: school_id).first.id
+          end
+          teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
+          teacher.update_attributes(api_teacher_mapping(api_teacher))
+          teacher.reload
+          teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
+          teacher.reload && teacher.activate! unless teacher.status == "active"
+          schools.each do |school|
+            person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
+            person_school_link.save(:validate => false)
+          end
+        rescue => e
+          puts "************** Skipped #{api_teacher} #{e.inspect}"
+          Rails.logger.warn "************** Skipped #{api_teacher}"
         end
       end
 
@@ -121,7 +127,7 @@ module STI
     def api_teacher_mapping api_teacher
       {
         dob: api_teacher["DateOfBirth"],
-        can_distribute_credits: api_teacher["CanAwardCredits"],
+        can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
         first_name: api_teacher["FirstName"],
         last_name: api_teacher["LastName"],
         grade: 5,

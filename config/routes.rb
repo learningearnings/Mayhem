@@ -1,7 +1,5 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
-  mount Sidekiq::Web => '/sidekiq'
-  
   get '/sti/give_credits' => "sti#give_credits"
   post '/sti/link' => "sti#link"
   get '/sti/sync' => "sti#sync"
