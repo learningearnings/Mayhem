@@ -87,6 +87,7 @@ module STI
           api_student["Schools"].each do |sti_school_id|
             school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
             person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
+            person_school_link.skip_onboard_credits = true if person_school_link.new_record?
             person_school_link.save(:validate => false)
           end
         rescue => e
@@ -107,8 +108,10 @@ module STI
         person_school_classroom_link.save
       end
 
+      BuckDistributor.new(@imported_schools).run
       @imported_schools.each do |school|
-        client.set_school_synced(school.sti_id)
+        request = client.set_school_synced(school.sti_id)
+        raise "Couldn't set school synced got: #{request.response.inspect}" if request.response.code != "204"
       end
     end
 

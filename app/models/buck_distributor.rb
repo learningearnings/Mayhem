@@ -26,12 +26,12 @@ class BuckDistributor
   def amount_for_school school
     days_in_month = Time.days_in_month(Time.now.month)
     days_left_in_month = (days_in_month - Time.now.day) + 1
-    DAILY_STUDENT_AMOUNT * days_left_in_month * school.students.recently_logged_in.count
+    DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
   end
 
   def handle_teachers
     @schools.each do |school|
-      school.teachers.recently_logged_in.each do |teacher|
+      teachers_to_pay(school).each do |teacher|
         revoke_remainder(school, teacher, teacher.main_account(school).balance)
         pay_teacher(school, teacher)
       end
@@ -43,7 +43,15 @@ class BuckDistributor
   end
 
   def amount_for_teacher(school)
-    school.balance / (school.teachers.recently_logged_in + school.teachers.recently_created).uniq.count
+    school.balance / teachers_to_pay(school).count
+  end
+
+  def teachers_to_pay(school)
+    (school.teachers.recently_logged_in + school.teachers.recently_created).uniq
+  end
+
+  def active_students(school)
+    (school.students.recently_logged_in + school.students.recently_created).uniq
   end
 
   def pay_teacher(school, teacher)
