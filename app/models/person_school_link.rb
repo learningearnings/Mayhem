@@ -9,6 +9,7 @@ class PersonSchoolLink < ActiveRecord::Base
   include BasicStatuses
 
   after_create :setup_accounts
+  attr_accessor :skip_onboard_credits
 
   belongs_to :school
   belongs_to :person
@@ -47,6 +48,9 @@ class PersonSchoolLink < ActiveRecord::Base
   def setup_accounts
     if person.is_a?(Teacher) || person.is_a?(SchoolAdmin)
       person.setup_accounts(school)
+    end
+    if person.is_a?(Student) && !skip_onboard_credits
+      StudentOnboardCreditWorker.perform_async(school.id)
     end
     connect_plutus_accounts unless person.is_a? LeAdmin
   end

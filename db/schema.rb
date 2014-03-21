@@ -448,8 +448,8 @@ ActiveRecord::Schema.define(:version => 20140312143234) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.integer  "sti_id"
     t.boolean  "game_challengeable",                   :default => false
+    t.integer  "sti_id"
     t.string   "district_guid"
   end
 

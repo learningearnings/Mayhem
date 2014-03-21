@@ -2,6 +2,7 @@ set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
 require "rvm/capistrano"
+require 'sidekiq/capistrano'
 require "rvm/capistrano/selector"
 require "rvm/capistrano/gem_install_uninstall"
 require "rvm/capistrano/alias_and_wrapp"
@@ -16,6 +17,8 @@ before 'deploy:setup', 'rvm:create_alias'
 before 'deploy:setup', 'rvm:create_wrappers'
 
 set :bundle_dir, ''
+set :sidekiq_role, :sidekiq
+set :sidekiq_default_hooks, true
 set :bundle_flags, '--system --quiet'
 
 set :stages, %w(production demo staging sandbox qa demo)
@@ -48,7 +51,7 @@ set :branch,          "develop"
 # tasks
 namespace :deploy do
   desc "Symlink shared resources on each release"
-  task :symlink_shared, :roles => :app do
+  task :symlink_shared, :roles => [:app, :sidekiq] do
     run "ln -s #{shared_path}/log #{latest_release}/log"
     run "ln -s #{shared_path}/system #{latest_release}/public/system"
     run "ln -s #{shared_path}/public/assets #{latest_release}/public/assets"
@@ -62,21 +65,14 @@ namespace :deploy do
   end
 
   desc "Precompile assets"
-  task :precompile_assets do
+  task :precompile_assets, :roles => :app do
     #precompile the assets
     run "cd #{latest_release}; bundle exec rake assets:precompile RAILS_ENV=#{rails_env}"
   end
 
   desc "Restart unicorn"
-  task :restart do
+  task :restart, :roles => :app do
     unicorn.restart
-  end
-
-  desc "Restart sidekiq"
-  task :restart_sidekiq do
-    run "svc -d /service/sidekiq"
-    run "svc -d /service/sidekiq"
-    run "svstat /service/sidekiq"
   end
 end
 

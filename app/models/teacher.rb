@@ -6,7 +6,6 @@ class Teacher < Person
   validates_presence_of :grade
   after_create :create_user
 
-  scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
   scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
 
   has_many :reward_distributors, :through => :person_school_links
