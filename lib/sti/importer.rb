@@ -87,6 +87,7 @@ module STI
           api_student["Schools"].each do |sti_school_id|
             school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
             person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
+            person_school_link.skip_onboard_credits = true if person_school_link.new_record?
             person_school_link.save(:validate => false)
           end
         rescue => e
