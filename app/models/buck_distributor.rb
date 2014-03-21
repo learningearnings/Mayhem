@@ -43,7 +43,7 @@ class BuckDistributor
   end
 
   def amount_for_teacher(school)
-    school.balance / school.teachers.recently_logged_in.count
+    school.balance / (school.teachers.recently_logged_in + school.teachers.recently_created).uniq.count
   end
 
   def pay_teacher(school, teacher)
