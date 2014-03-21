@@ -110,7 +110,8 @@ module STI
 
       BuckDistributor.new(@imported_schools).run
       @imported_schools.each do |school|
-        client.set_school_synced(school.sti_id)
+        request = client.set_school_synced(school.sti_id)
+        raise "Couldn't set school synced got: #{request.response.inspect}" if request.response.code != "204"
       end
     end
 
