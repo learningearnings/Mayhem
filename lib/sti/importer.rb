@@ -108,6 +108,7 @@ module STI
         person_school_classroom_link.save
       end
 
+      BuckDistributor.new(@imported_schools).run
       @imported_schools.each do |school|
         client.set_school_synced(school.sti_id)
       end
