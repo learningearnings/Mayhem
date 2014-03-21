@@ -11,7 +11,7 @@ class UserMailer < ActionMailer::Base
   def teacher_request_email(teacher)
     @teacher = teacher
     @url  = "http://learningearnings.com/login"
-    mail(:to => 'theteam@learningearnings.com', :subject => "Teacher registration approval.")
+    mail(:to => 'theteam@learningearnings.com', :subject => "JOIN REQUEST.")
   end
 
   def teacher_approval_email(teacher)

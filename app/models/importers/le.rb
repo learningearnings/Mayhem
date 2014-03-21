@@ -4,17 +4,18 @@ require_relative './le/classrooms_importer'
 require_relative './le/classroom_details_importer'
 require_relative './le/student_checking_importer'
 require_relative './le/student_savings_importer'
+require_relative './le/teacher_points_importer'
 
 module Importers
   class Le
     attr_reader :schools_file_path, :users_file_path, :classrooms_file_path, :classroom_details_file_path, :points_file_path
-    def initialize(schools_file_path, users_file_path, classrooms_file_path, classroom_details_file_path, points_file_path, otu_codes_file_path)
+    def initialize(schools_file_path, users_file_path, classrooms_file_path, classroom_details_file_path, points_file_path)
       @schools_file_path = schools_file_path
       @users_file_path = users_file_path
       @classrooms_file_path = classrooms_file_path
       @classroom_details_file_path = classroom_details_file_path
       @points_file_path = points_file_path
-      @otu_codes_file_path = otu_codes_file_path
+      #@otu_codes_file_path = otu_codes_file_path
     end
 
     def call
@@ -42,7 +43,7 @@ module Importers
     end
 
     def points_importer
-      @points_importer ||= Importers::Le::PointsImporter.new(points_file_path)
+      @points_importer ||= Importers::Le::TeacherPointsImporter.new(points_file_path)
     end
   end
 end

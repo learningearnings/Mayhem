@@ -1,7 +1,7 @@
 .main-content-wrapper
   .full-content
     %h2 Your Rewards
-    %p.note NOTE: To deactivate a reward, just set its quantity to 0 and it won't show up in the store.
+    %p.note **NOTE:** A reward with Quantity of 0 will not be shown to students
     %ul.action_buttons
       %li= link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
     = paginate @teachers_rewards, :window => 2

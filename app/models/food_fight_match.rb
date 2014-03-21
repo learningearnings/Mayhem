@@ -1,5 +1,5 @@
 class FoodFightMatch < ActiveRecord::Base
-  attr_accessible :active, :players_turn, :initiated_by, :food_person_link_id
+  attr_accessible :active, :players_turn, :initiated_by, :food_person_link_id, :winner_id
   belongs_to :food_person_link
 
   has_many :food_fight_players
@@ -7,6 +7,14 @@ class FoodFightMatch < ActiveRecord::Base
   scope :active, where("active = ?", true)
 
   def winner
+    if winner_id.present?
+      FoodFightPlayer.find(winner_id)
+    else
+      players.select{|x| x.winner?}.first
+    end
+  end
+
+  def winning_player
     players.select{|x| x.winner?}.first
   end
 
@@ -35,7 +43,7 @@ class FoodFightMatch < ActiveRecord::Base
   end
 
   def end!
-    update_attribute(:active, false)
+    update_attributes(:winner_id => winning_player.id, :active => false)
   end
 
   def turn

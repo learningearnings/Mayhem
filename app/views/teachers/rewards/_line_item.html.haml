@@ -4,7 +4,8 @@
       = image_tag(product.images.first.attachment.url(:small))
   .resp-product-details
     = link_to(product.name ,teachers_reward_path(product.id))
-    .price.selling{:itemprop => "price"}= product.price.to_s + " each"
+    .price.selling{:itemprop => "price"}= number_with_precision(product.price, precision: 2, delimiter: ',').to_s + " each"
+
   .resp-product-classrooms
     - if product.classrooms.present? && product.classrooms.count > 1
       = "#{product.classrooms.count} Classrooms"

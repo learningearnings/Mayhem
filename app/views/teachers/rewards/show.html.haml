@@ -6,13 +6,14 @@
   .full-content
     %h1= @teachers_reward.name
     %h5= link_to 'Edit', edit_teachers_reward_path(@teachers_reward)
+    %h5= link_to 'Delete', teachers_reward_path(@teachers_reward), :method => :delete
 
     .teachers-reward
       .resp-product-tile{"data-hook" => "products_list_item", :id => "product_#{@teachers_reward.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
         .resp-product-image
           - if @teachers_reward.product.images.present?
             = image_tag(@teachers_reward.product.images.first.attachment.url(:small))
-          .price.selling{:itemprop => "price"}= @teachers_reward.price.to_s + " each"
+          .price.selling{:itemprop => "price"}= number_with_precision(@teachers_reward.price, precision: 2, delimiter: ',').to_s + " each"
           = "You allow students to purchase 1 every #{@teachers_reward.spree_product.purchase_limit_time_frame}"
         .resp-product-classrooms
           - if @teachers_reward.classrooms.present? && @teachers_reward.classrooms.count > 1

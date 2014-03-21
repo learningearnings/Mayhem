@@ -35,17 +35,11 @@ module Teachers
         "Update Passwords to this Password",
         "Update Passwords = Usernames",
         "Update Passwords as Indicated",
-        "Add to Classroom I select:",
         "Edit Teachers Information",
         "Delete these teachers"
       ]
 
       @teachers = current_school.teachers
-      if params[:classroom].present?
-        classroom = Classroom.find(params[:classroom])
-        @teachers = classroom.teachers
-      end
-
       if params[:gender].present?
         @teachers = @teachers.for_gender(params[:gender])
       end
