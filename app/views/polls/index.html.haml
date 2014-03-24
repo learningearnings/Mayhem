@@ -3,9 +3,11 @@
     %h5= poll.question
     = form_for Vote.new do |f|
       - poll.poll_choices.each do |choice|
-        = hidden_field_tag :poll_id, poll.id
-        = f.label choice.choice
-        = f.radio_button(:poll_choice_id, choice.id)
-        = "#{choice.votes.count} Votes"
+        .poll-vote-option
+          = hidden_field_tag :poll_id, poll.id
+          = f.label choice.choice
+          = f.radio_button(:poll_choice_id, choice.id)
+          %span
+            = "#{choice.votes.count} Votes"
       %br
       = f.submit 'Vote'
