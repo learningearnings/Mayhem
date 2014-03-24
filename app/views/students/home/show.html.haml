@@ -35,7 +35,7 @@
           - charity_donations.each do |person, amount|
             %li #{person} [#{number_to_bucks amount}]
 
-      %h4 Most Credits Deposited
+      %h4 Most Credits Earned
       %ol
         - HonorRollDeposit.find_all_by_school_id(current_school.id).each do |deposit|
           %li #{deposit.student.name} [#{number_to_bucks deposit.amount}]
