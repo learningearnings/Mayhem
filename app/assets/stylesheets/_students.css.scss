@@ -1,7 +1,6 @@
 .honor-roll-content {
   padding-top: 3em;
   padding-left: 3em;
-  @include rotate(-5deg);
   h4 {
     font-size: 125%;
     color: black;
@@ -9,6 +8,18 @@
   }
   ol {
     font-size: 125%;
+  }
+  .most-donated {
+    @include rotate(-5deg);
+  }
+  .most-deposited {
+    @include rotate(7deg);
+    text-align:right;
+    float:right
+    width:40%;
+    margin-right:1em;
+    position:relative;
+    top:-1em;
   }
 }
 

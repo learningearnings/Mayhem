@@ -1801,6 +1801,23 @@ h3 {
   }
 }
 
+.poll .poll-vote-option {
+  line-height:20px;
+  label, input {
+    display:inline-block;
+  }
+  label {
+    margin:0;
+    line-height:1;
+  }
+  input {
+    margin:-4px 4px 0;
+  }
+  span {
+    color:#aaa;
+  }
+}
+
 .reward-highlights {
   padding-top: 70px;
   .product {
