@@ -30,15 +30,17 @@
       - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%p")) do
         - honor_roll = HonorRoll.new(current_school, 7.days.ago.beginning_of_day, Date.today.end_of_day)
         - charity_donations = honor_roll.charity_purchases_per_person(3)
-        %h4 Most Credits Donated to Charity
-        %ol
-          - charity_donations.each do |person, amount|
-            %li #{person} [#{number_to_bucks amount}]
+        .most-donated
+          %h4 Most Credits Donated to Charity
+          %ol
+            - charity_donations.each do |person, amount|
+              %li #{person} [#{number_to_bucks amount}]
 
-      %h4 Most Credits Earned
-      %ol
-        - HonorRollDeposit.find_all_by_school_id(current_school.id).each do |deposit|
-          %li #{deposit.student.name} [#{number_to_bucks deposit.amount}]
+      .most-earned
+        %h4 Most Credits Earned
+        %ol
+          - HonorRollDeposit.find_all_by_school_id(current_school.id).each do |deposit|
+            %li #{deposit.student.name} [#{number_to_bucks deposit.amount}]
 
 
 .student-logged-in-sidebar
