@@ -336,6 +336,10 @@ GEM
     pdfkit (0.5.4)
     pg (0.13.2)
     pg_array_parser (0.0.9)
+    pg_search (0.7.3)
+      activerecord (>= 3.1)
+      activesupport (>= 3.1)
+      arel
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -386,9 +390,6 @@ GEM
       actionpack (~> 3.0)
       activerecord (~> 3.0)
       polyamorous (~> 0.5.0)
-    rb-fsevent (0.9.4)
-    rb-inotify (0.8.8)
-      ffi (>= 0.5.0)
     rdiscount (2.1.7)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -618,6 +619,7 @@ DEPENDENCIES
   oboe (~> 2.4.0.1)
   pdfkit
   pg (= 0.13.2)
+  pg_search
   plutus!
   postgres_ext
   pry (~> 0.9.10)
