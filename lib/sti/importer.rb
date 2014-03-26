@@ -108,8 +108,10 @@ module STI
         person_school_classroom_link.save
       end
 
-      BuckDistributor.new(@imported_schools).run
-      @imported_schools.each do |school|
+      newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"])}
+      BuckDistributor.new(newly_synced_schools).run
+
+      newly_synced_schools.each do |school|
         request = client.set_school_synced(school.sti_id)
         raise "Couldn't set school synced got: #{request.response.inspect}" if request.response.code != "204"
       end

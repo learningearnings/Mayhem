@@ -1,4 +1,5 @@
 class BuckDistributor
+  extend ActiveSupport::Memoizable
   DAILY_STUDENT_AMOUNT = 25
 
   def initialize(schools=School.all, credit_manager=CreditManager.new)
@@ -28,6 +29,7 @@ class BuckDistributor
     days_left_in_month = (days_in_month - Time.now.day) + 1
     DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
   end
+  memoize :amount_for_school
 
   def handle_teachers
     @schools.each do |school|
@@ -43,16 +45,19 @@ class BuckDistributor
   end
 
   def amount_for_teacher(school)
-    school.balance / teachers_to_pay(school).count
+    amount_for_school(school) / teachers_to_pay(school).count
   end
+  memoize :amount_for_teacher
 
   def teachers_to_pay(school)
     (school.teachers.recently_logged_in + school.teachers.recently_created).uniq
   end
+  memoize :teachers_to_pay
 
   def active_students(school)
     (school.students.recently_logged_in + school.students.recently_created).uniq
   end
+  memoize :active_students
 
   def pay_teacher(school, teacher)
     @credit_manager.monthly_credits_to_teacher school, teacher, amount_for_teacher(school)
