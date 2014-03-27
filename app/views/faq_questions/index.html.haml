@@ -13,6 +13,16 @@
 
 :javascript
   $(document).ready(function() {
+    load_answers();
+
+    $("#search-help").children().on("ajax:success", function(e, data, status, xhr){
+      $("#faqs").replaceWith(xhr.responseText);
+      load_answers();
+    });
+
+  });
+
+  function load_answers() {
     $('#faqs h3').each(function() {
       var tis = $(this), state = false, answer = tis.next('div').hide().css('height','auto').slideUp();
       tis.click(function() {
@@ -21,10 +31,6 @@
         tis.toggleClass('active',state);
       });
     });
+  };
 
-    $("#search-help").children().on("ajax:success", function(e, data, status, xhr){
-      $("#faqs").replaceWith(xhr.responseText);
-    });
-
-  });
 
