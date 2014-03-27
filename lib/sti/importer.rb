@@ -108,7 +108,7 @@ module STI
         person_school_classroom_link.save
       end
 
-      newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"])}
+      newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
       BuckDistributor.new(newly_synced_schools).run
 
       newly_synced_schools.each do |school|
