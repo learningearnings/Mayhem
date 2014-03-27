@@ -21,11 +21,10 @@
         tis.toggleClass('active',state);
       });
     });
-  });
 
-:coffeescript
-  $(document).ready ->
-    $("#faq-search-form").on("ajax:success", (e, data, status, xhr) ->
-      $("#faqs").replaceWith xhr.responseText
-    )
+    $("#search-help").children().on("ajax:success", function(e, data, status, xhr){
+      $("#faqs").replaceWith(xhr.responseText);
+    });
+
+  });
 
