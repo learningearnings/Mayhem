@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140325171816) do
+ActiveRecord::Schema.define(:version => 20140326165745) do
 
   add_extension "hstore"
 
@@ -657,8 +657,8 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -669,6 +669,7 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
+    t.boolean  "can_revoke_credits", :default => false
   end
 
   create_table "site_settings", :force => true do |t|
