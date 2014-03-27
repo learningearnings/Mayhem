@@ -651,6 +651,19 @@ html.resp, body.resp {
     background-repeat: no-repeat;
   }
 }
+.primary-nav {
+  .settings-selected, .settings:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+.primary-nav {
+  .help-selected, .help:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
 
 .primary-nav .bank {
   color: #470bc1;

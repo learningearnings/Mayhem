@@ -138,6 +138,8 @@ $(document).ready(function() {
   highlightNavigation('testimonials', 'testimonials');
   highlightNavigation('bulk_students', 'manage_students');
   highlightNavigation('bulk_teachers', 'manage_teachers');
+  highlightNavigation('settings', 'settings');
+  highlightNavigation('help', 'help');
   highlightNavigation('',        'home');
 
  //detect the width on page load
