@@ -19,7 +19,7 @@ ActiveAdmin.register Student do
   controller do
     def create
       create! do |format|
-        format.html { redirect_to admin_student_path(resource) }
+        format.html { redirect_to resource_path(resource) }
       end
     end
   end
