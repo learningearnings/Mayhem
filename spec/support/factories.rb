@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :person do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }
+    association :user, factory: :spree_user
 
     factory :teacher, class: Teacher do
       dob 25.years.ago
@@ -48,8 +49,31 @@ FactoryGirl.define do
     ad_profile 1
   end
 
+  factory :person_school_link do
+    person
+    school
+  end
+
+  factory :person_school_classroom_link do
+    person_school_link
+    classroom
+  end
+
   factory :state do
     abbr 'AL'
     name 'Alabama'
+  end
+
+  factory :classroom do
+    sequence(:name) {|n| "Test Classroom #{n}"}
+    school
+  end
+
+  factory :spree_product, class: Spree::Product do
+    name "Some Product"
+    available_on "2012-01-01"
+    permalink "some-product"
+    count_on_hand 20
+    price 10
   end
 end
