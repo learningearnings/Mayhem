@@ -2219,3 +2219,27 @@ dl.details {
 .welcome-sticky {
   font-size: 80%;
 }
+
+#reward-templates #template-controls {
+  padding: 30px 0 0 100px; 
+}
+
+#reward-templates-grid {
+  width:100%;
+  height:auto;
+  margin: 0 0 10px 0;
+}
+#reward-templates-grid .template-row {
+  width:100%;
+  margin: 7px 0;
+  padding: 20px 0 0 5px; 
+  float:left;
+  text-align:center;
+}
+#reward-templates-grid .template-row .template {
+  float:right;
+  border:none;
+  width:300px;
+  text-align:center;
+}
+
