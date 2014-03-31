@@ -17,13 +17,13 @@ class Bank
     PersonBuckBatchLink.create(:person_school_link_id => p_school_link.id, :buck_batch_id => batch.id)
   end
 
-  def create_print_bucks(person, school, prefix, bucks={})
+  def create_print_bucks(person, school, prefix, bucks={}, batch)
     points  = amount_of_bucks(bucks)
     account = person.main_account(school)
     return on_failure.call unless account_has_enough_money_for(account, points)
 
     # creates and returns bucks array
-    batch = create_bucks_in_batch(person, school, prefix, bucks)
+    batch = create_bucks_in_batch(person, school, prefix, bucks, batch)
 
     @credit_manager.purchase_printed_bucks(school, person, points, batch)
     return on_success.call batch
@@ -138,11 +138,8 @@ class Bank
     _bucks
   end
 
-  def create_bucks_in_batch(person, school, prefix, bucks)
+  def create_bucks_in_batch(person, school, prefix, bucks, bb)
     _bucks = create_bucks(person, school, prefix, bucks)
-    # add to batch
-    batch_name = person.to_s + " Created " + Date.today.to_s
-    bb = buck_batch_creator.call(:name => batch_name)
     _bucks.map{|x| buck_batch_link_creator.call(:buck_batch_id => bb.id, :otu_code_id => x.id)}
     create_person_buck_batch_link(person_school_link(person, school), bb)
     bb
