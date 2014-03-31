@@ -5,7 +5,7 @@
 #reward-templates
   = form_for 'reward_templates_search', remote: true, id: 'reward-template-form' do |f|
     #template-controls
-      = f.select :grade_filter, options_for_select(School::GRADES)
+      = f.select :grade_filter, options_for_select(School::GRADES), {:prompt => 'Grade'}
       = f.text_field :search
       = hidden_field_tag :page, params[:page]
       = f.submit 'Search', class: 'awesome-button'
@@ -15,7 +15,10 @@
       .template-row
         - reward_templates.each do |reward_template|
           %span.template
-            = link_to image_tag('le_logo.png'), teachers_reward_template_path(reward_template)
+            - if reward_template.image.present?
+              = link_to image_tag(reward_template.image.url, :size => "260x180"), teachers_reward_template_path(reward_template)
+            - else
+              = link_to image_tag('noimage/small.png'), teachers_reward_template_path(reward_template)
             = link_to reward_template.name, teachers_reward_template_path(reward_template)
 
   = paginate @reward_templates

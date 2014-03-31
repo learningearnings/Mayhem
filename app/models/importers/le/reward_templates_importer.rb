@@ -46,10 +46,10 @@ module Importers
         reward_template.name = datum[:name]
         reward_template.min_grade = datum[:min_grade]
         reward_template.max_grade = datum[:max_grade]
+        if datum[:image].present?
+          reward_template.image = datum[:image]
+        end
         reward_template.save
-        #if(datum[:image])
-        #  reward_template.images.create(attachment: datum[:image])
-        #end
       end
 
       def rewards_data

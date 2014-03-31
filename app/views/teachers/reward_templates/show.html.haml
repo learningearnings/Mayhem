@@ -7,7 +7,11 @@
       = f.input :description, label: "Description", placeholder: 'Your Reward Description', input_html: {class: 'input-large', rows: 10}, as: :text
       = f.input :category do
         = f.select :category, options_from_collection_for_select(Spree::Taxon.where("parent_id IS NOT NULL"), :id, :name, @teachers_reward.category_id), :include_blank => true
-      /= f.input :image, :as => :file
+      - if @reward_template.image.present?
+        = f.hidden_field :reward_template_id, :value => @reward_template.id
+        = image_tag @reward_template.image.url
+      - else
+        = f.input :image, :as => :file
       = f.input :on_hand, label: "Quantity On Hand", placeholder: 'On Hand', input_html: { :min => "0",class: 'input-small numeric'}
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
         = f.input_field :price, class: 'input-small numeric'
