@@ -1,1 +1,20 @@
-%h2 Test
+.message.center-content
+  = image_tag "loading.gif"
+  %h3 Your bucks are currently processing, they will show up here when it is completed.
+
+:javascript
+  setTimeout(checkBuckStatus, 1000);
+
+  function checkBuckStatus() {
+    $.get(window.location.pathname + ".json",function(data) {
+      if (data.processed == true) {
+        loadBucks();
+      } else {
+        setTimeout(checkBuckStatus, 1000);
+      }
+    });
+  }
+
+  function loadBucks() {
+    location.replace(window.location.pathname + ".pdf");
+  }

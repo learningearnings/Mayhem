@@ -11,8 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140326165745) do
-
+ActiveRecord::Schema.define(:version => 20140331181154) do
   add_extension "hstore"
 
   create_table "active_admin_comments", :force => true do |t|
@@ -115,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20140326165745) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "processed"
   end
 
   create_table "ckeditor_assets", :force => true do |t|

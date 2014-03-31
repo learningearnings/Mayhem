@@ -4,7 +4,11 @@ module Mixins
       if params[:point1].present? || params[:point5].present? || params[:point10].present?
         get_buck_batches
         get_bank
-        @bank.create_print_bucks(person, current_school, 'AL', bucks)
+        # creates and returns bucks array
+        batch_name = person.to_s + " Created " + Date.today.to_s
+        batch = buck_batch_creator.call(:name => batch_name)
+        BuckBatchWorker.perform_async person.id, current_school.id, 'AL', bucks, batch.id
+        redirect_to teachers_print_batch_path(batch.id)
       else
         flash[:error] = "Please enter an amount."
         redirect_to main_app.teachers_bank_path
@@ -165,6 +169,10 @@ module Mixins
 
     def sanitize_points(_points)
       _points.gsub(/[^0-9.-]/, "")
+    end
+
+    def buck_batch_creator
+      ->(params) { BuckBatch.create params }
     end
   end
 end
