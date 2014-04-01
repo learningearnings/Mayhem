@@ -1,8 +1,11 @@
-.message.center-content
+.message.center-content.loading
   = image_tag "loading.gif"
-  %h3 Your bucks are currently processing, they will show up here when it is completed.
+  %h3 Your credits are currently processing, they will show up here when it is completed.
+.message.center-content.loaded
+  %h3 Your credits have been processed and downloaded.
 
 :javascript
+  $('.loaded').hide();
   setTimeout(checkBuckStatus, 1000);
 
   function checkBuckStatus() {
@@ -16,5 +19,7 @@
   }
 
   function loadBucks() {
+    $('.loading').hide();
+    $('.loaded').show();
     document.location = window.location.pathname + ".pdf";
   }
