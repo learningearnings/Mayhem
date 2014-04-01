@@ -8,8 +8,7 @@ class Student < Person
 
   attr_accessor :username, :password, :password_confirmation
 
-  scope :recent, lambda{ where('people.created_at <= ?', (Time.now + 1.month)) }
-  scope :logged, lambda{ where('last_sign_in_at <= ?', (Time.now + 1.month)).joins(:user) }
+  scope :recent, lambda{ where('people.created_at >= ?', (Time.now - 1.month)) }
 
   scope :for_grade, lambda { |grade_string|
     # Map the grade string to the 0..12 interpretation

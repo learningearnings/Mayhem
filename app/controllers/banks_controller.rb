@@ -6,9 +6,19 @@ class BanksController < LoggedInController
   def show
   end
 
+  def code_lookup
+    @looked_up_code = OtuCode.for_school(current_school).where(code: params[:code]).first
+    render :partial => "code_lookup"
+  end
+
   def redeem_bucks
     person = Student.find_by_id(params[:student_id]) if params[:student_id]
     person = current_person unless person
+
+    if person.code_entry_failures.within_five_minutes.count >= 8
+      flash[:error] = 'You have entered too many incorrect codes. Please try again in 5 minutes'
+      redirect_to bank_path and return
+    end
 
     otu_code = OtuCode.find_by_code(params[:code].upcase) if params[:code]
     if otu_code.present?
@@ -16,13 +26,17 @@ class BanksController < LoggedInController
         @bank = Bank.new
         @bank.claim_bucks(person, otu_code)
         flash[:notice] = 'Credits claimed!'
+        person.code_entry_failures.destroy_all
       elsif otu_code.student.present? && otu_code.student == current_person
         flash[:error] = 'You already deposited this credit into your account.'
+        person.code_entry_failures.create
       elsif otu_code.student.present?
         flash[:error] = 'This credit was deposited by another user already'
+        person.code_entry_failures.create
       end
     else
       flash[:error] = 'This credit is not valid. Please verify you entered it correctly.'
+      person.code_entry_failures.create
     end
     redirect_to bank_path
   end

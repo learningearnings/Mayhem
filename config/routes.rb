@@ -1,8 +1,9 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
-  mount Sidekiq::Web => '/sidekiq'
-  
   get '/sti/give_credits' => "sti#give_credits"
+  post '/sti/link' => "sti#link"
+  get '/sti/sync' => "sti#sync"
+  post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
   match '/404' => 'errors#not_found'
   match '/422' => 'errors#server_error'
   match '/500', :to => 'errors#server_error'
@@ -94,6 +95,7 @@ Leror::Application.routes.draw do
   match "/create_print_bucks" => 'banks#create_print_bucks'
   match "/create_ebucks" => 'banks#create_ebucks'
   match "/redeem_bucks" => 'banks#redeem_bucks'
+  post "/banks/code_lookup" => 'banks#code_lookup'
 
   # Game routes
   namespace :games do
