@@ -12,7 +12,6 @@
 # It's strongly recommended to check this file into your version control system.
 
 ActiveRecord::Schema.define(:version => 20140331181154) do
-  add_extension "hstore"
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -471,21 +470,20 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                                                                               :null => false
-    t.datetime "updated_at",                                                                               :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
-    t.string   "salutation",              :limit => 10
+    t.string   "salutation",             :limit => 10
     t.string   "recovery_password"
-    t.boolean  "can_distribute_credits",                                                :default => true
+    t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.boolean  "game_challengeable",                                                    :default => false
     t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"
-    t.decimal  "first_month_amount_paid",               :precision => 20, :scale => 10
   end
 
   add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
