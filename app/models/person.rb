@@ -60,6 +60,7 @@ class Person < ActiveRecord::Base
   scope :with_username, lambda{|username| joins(:spree_user).where("spree_users.username = ?", username) }
   scope :with_email,    lambda{|email| joins(:spree_user).where("spree_users.email = ?", email) }
   scope :recently_logged_in, lambda{ where('last_sign_in_at >= ?', (Time.now - 1.month)).joins(:user) }
+  scope :logged_in_between, lambda { |start_date, end_date| joins(:user).where('last_sign_in_at >= ? AND last_sign_in_at <= ?', start_date, end_date) }
   scope :recently_created, lambda { where(self.arel_table[:created_at].gt Time.now - 1.month) }
 
   before_save :ensure_spree_user
