@@ -14,7 +14,6 @@ module Reports
       self.bucket = self.bucket.includes(:otu_codes)
       self.bucket = self.bucket.where(OtuCode.arel_table[:created_at].gteq(start_date))
       self.bucket = self.bucket.where(OtuCode.arel_table[:created_at].lteq(end_date))
-      self.bucket = self.bucket.uniq
 
       to_csv
     end
@@ -22,8 +21,8 @@ module Reports
     def to_csv
       CSV.generate do |csv|
         csv << ["School Name", "Teacher First", "Teacher Last", "Teacher Email"]
-        bucket.each_slice(100) do |teacher_slice|
-          teacher_slice.each do |teacher|
+        bucket.find_in_batches do |teacher_batch|
+          teacher_batch.each do |teacher|
             csv << [teacher.schools.first.name, teacher.first_name, teacher.last_name, teacher.user.email]
           end
         end
