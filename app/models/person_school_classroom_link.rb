@@ -8,6 +8,7 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
   belongs_to :classroom
   has_one :teacher, :through => :person_school_link, :source => :person, :class_name => 'Teacher'
   has_one :student, :through => :person_school_link, :source => :person, :class_name => 'Student'
+  has_one :person, through: :person_school_link, source: :person
 
   attr_accessible :owner, :person_school_link_id, :status, :classroom_id, :homeroom
 
@@ -45,7 +46,7 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
   end
 
   def singularity_of_homeroom
-    if self.homeroom && pscl = student.person_school_classroom_links.where(homeroom: true).first
+    if self.homeroom && pscl = person.person_school_classroom_links.where(homeroom: true).first
       errors.add(:homeroom, "Person is already in homeroom #{pscl.classroom.name}")
     end
   end

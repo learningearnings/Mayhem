@@ -67,10 +67,6 @@ class Person < ActiveRecord::Base
   before_save :ensure_spree_user
   after_destroy :delete_user
 
-  def name
-    "#{first_name} #{last_name}"
-  end
-
   def avatar
     avatars.first
   end
@@ -151,9 +147,8 @@ class Person < ActiveRecord::Base
     self.first_name + ' ' + self.last_name
   end
 
-  def to_s
-    full_name
-  end
+  alias_method :name, :full_name
+  alias_method :to_s, :full_name
 
   def store_code
     nil

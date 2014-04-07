@@ -45,7 +45,7 @@ FactoryGirl.define do
     else
       state_id {FactoryGirl.create(:state).id}
     end
-    zip { Faker::AddressUS.zip_code }
+    zip { Faker::Address.zip_code }
     ad_profile 1
   end
 
@@ -60,8 +60,8 @@ FactoryGirl.define do
   end
 
   factory :state do
-    abbr 'AL'
-    name 'Alabama'
+    abbr { Faker::Address.state_abbr }
+    name { Faker::Address.state }
   end
 
   factory :classroom do

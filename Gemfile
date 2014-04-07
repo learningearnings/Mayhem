@@ -167,7 +167,7 @@ group :test do
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
-  gem 'ffaker'
+  gem 'faker'
   gem 'spork-rails'
   gem 'timecop'
 end
