@@ -63,6 +63,7 @@ class Person < ActiveRecord::Base
   scope :recently_logged_in, lambda{ where('last_sign_in_at >= ?', (Time.now - 1.month)).joins(:user) }
   scope :logged_in_between, lambda { |start_date, end_date| joins(:user).where('last_sign_in_at >= ? AND last_sign_in_at <= ?', start_date, end_date) }
   scope :recently_created, lambda { where(self.arel_table[:created_at].gt Time.now - 1.month) }
+  scope :created_between, lambda { |start_date, end_date| where(self.arel_table[:created_at].gteq(start_date)).where(self.arel_table[:created_at].lteq(end_date))}
 
   before_save :ensure_spree_user
   after_destroy :delete_user
