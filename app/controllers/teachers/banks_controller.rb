@@ -4,11 +4,7 @@ module Teachers
 
     def on_success(obj = nil)
       flash[:notice] = 'Credits sent!'
-      if obj.nil? || !obj.is_a?(BuckBatch)
-        redirect_to teachers_bank_path
-      else
-        redirect_to teachers_print_batch_path(obj.id,"pdf")
-      end
+      redirect_to teachers_bank_path
     end
 
     def on_failure
@@ -28,7 +24,8 @@ module Teachers
           kit = PDFKit.new(html)
           send_data(kit.to_pdf, :filename => "LE_Credits_#{batch.id}.pdf", :type => 'application/pdf') and return
         }
-        format.html { render layout: false, action: "_batch.html.haml", locals: { batch: batch } }
+        format.html
+        format.json { render json: {id: batch.id, processed: batch.processed?} }
       end
     end
 

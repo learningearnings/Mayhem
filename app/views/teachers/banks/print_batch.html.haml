@@ -1,1 +1,25 @@
-%h2 Test
+.message.center-content.loading
+  = image_tag "loading.gif"
+  %h3 Your credits are currently processing, they will show up here when it is completed.
+.message.center-content.loaded
+  %h3 Your credits have been processed and downloaded.
+
+:javascript
+  $('.loaded').hide();
+  setTimeout(checkBuckStatus, 1000);
+
+  function checkBuckStatus() {
+    $.get(window.location.pathname + ".json",function(data) {
+      if (data.processed == true) {
+        loadBucks();
+      } else {
+        setTimeout(checkBuckStatus, 1000);
+      }
+    });
+  }
+
+  function loadBucks() {
+    $('.loading').hide();
+    $('.loaded').show();
+    document.location = window.location.pathname + ".pdf";
+  }

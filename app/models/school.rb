@@ -165,7 +165,7 @@ class School < ActiveRecord::Base
     @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
     @distributing_teachers = self.teachers if @distributing_teachers.blank?
-    @distributing_teachers
+    @distributing_teachers.compact
   end
 
   private
