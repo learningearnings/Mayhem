@@ -19,6 +19,7 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :person_account_links
   has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
   has_many :reward_distributors
+  has_many :otu_codes
 
   attr_accessible :person_id, :school_id, :status, :person, :school
   validates_presence_of :person_id, :school_id
@@ -58,6 +59,7 @@ class PersonSchoolLink < ActiveRecord::Base
   # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin
   # Not valid for LE Admins
   def connect_plutus_accounts
+    return if self.person.class == Person
     main_account_id = self.person.main_account(school).id
     accounts = self.person.accounts(school).collect {|a| a.id}
     PersonAccountLink.where(:plutus_account_id => accounts).each do |pal|
