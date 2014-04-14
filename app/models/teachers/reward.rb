@@ -139,7 +139,7 @@ module Teachers
         p.images.destroy_all if p.images.present?
         # FIX ME
         # This isn't copying the image over at all
-        p.images.create(attachment: @reward_template.image.path)
+        p.images.create(attachment: File.open(@reward_template.image.path))
       end
 
       p.set_property('reward_type', 'local')
