@@ -40,13 +40,16 @@ FactoryGirl.define do
     address1 { Faker::Address.street_address }
     address2 { Faker::Address.secondary_address }
     city { Faker::Address.city }
-    if State.where(id: 1).present?
-      state_id 1
-    else
-      state_id {FactoryGirl.create(:state).id}
-    end
-    zip { Faker::AddressUS.zip_code }
+    state_id {FactoryGirl.create(:state).id}
+    zip { Faker::Address.zip_code }
     ad_profile 1
+  end
+
+  factory :address do
+    line1 "529 Beacon Parkway"
+    city "Birmingham"
+    zip "35209"
+    state_id {FactoryGirl.create(:state).id}
   end
 
   factory :person_school_link do
@@ -60,8 +63,8 @@ FactoryGirl.define do
   end
 
   factory :state do
-    abbr 'AL'
-    name 'Alabama'
+    abbr { Faker::Address.state_abbr }
+    name { Faker::Address.state }
   end
 
   factory :food_fight_match do
@@ -84,5 +87,12 @@ FactoryGirl.define do
     permalink "some-product"
     count_on_hand 20
     price 10
+  end
+
+  factory :poll do
+    title { Faker::Lorem.word }
+    question { Faker::Lorem.word }
+    min_grade 1
+    max_grade 12
   end
 end

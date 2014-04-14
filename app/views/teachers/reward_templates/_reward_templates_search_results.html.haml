@@ -1,0 +1,11 @@
+#reward-templates-grid
+  - reward_templates.each_slice(9) do |reward_templates_row|
+    - reward_templates_row.each_slice(3) do |reward_templates|
+      .template-row
+        - reward_templates.each do |reward_template|
+          %span.template
+            - if reward_template.image.present?
+              = link_to image_tag(reward_template.image.url), teachers_reward_template_path(reward_template)
+            = link_to reward_template.name, teachers_reward_template_path(reward_template)
+
+  = paginate reward_templates
