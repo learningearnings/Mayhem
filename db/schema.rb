@@ -13,6 +13,8 @@
 
 ActiveRecord::Schema.define(:version => 20140331181154) do
 
+  add_extension "hstore"
+
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
     t.string   "resource_type", :null => false
@@ -483,7 +485,6 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.string   "sti_uuid"
     t.boolean  "game_challengeable",                                                    :default => false
     t.integer  "sti_id"
-    t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"
     t.decimal  "first_month_amount_paid",               :precision => 20, :scale => 10
   end
