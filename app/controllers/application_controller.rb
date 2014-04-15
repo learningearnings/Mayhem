@@ -159,7 +159,6 @@ class ApplicationController < ActionController::Base
 
   def get_reward_highlights highlight_count = 3
     with_filters_params = params
-    with_filters_params[:filters] = session[:filters]
     with_filters_params[:searcher_current_person] = current_person
     with_filters_params[:current_school] = current_school
     with_filters_params[:classrooms] = current_person.classrooms.map(&:id)

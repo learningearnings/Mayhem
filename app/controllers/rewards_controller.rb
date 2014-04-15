@@ -3,7 +3,6 @@ class RewardsController < LoggedInController
 
   def index
 #    with_filters_params = params
-#    with_filters_params[:filters] = session[:filters] || [1]
 #    @searcher = Spree::Config.searcher_class.new(with_filters_params)
 #    @products = @searcher.retrieve_products
 #    respond_with(@products)
@@ -77,7 +76,6 @@ class RewardsController < LoggedInController
     link = @product.spree_product_filter_link || SpreeProductFilterLink.new(:product_id => @product.id, :filter_id => filter.id)
     link.filter_id = filter.id
     @product.spree_product_filter_link = link
-    session[:filters] = filter_factory.find_filter_membership(current_user.person)
   end
 
   def after_save
