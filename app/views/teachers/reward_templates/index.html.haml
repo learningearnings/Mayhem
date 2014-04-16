@@ -11,12 +11,4 @@
       .clear
 
     #reward-templates
-    = render partial: "reward_templates_search_results", locals: {reward_templates: @reward_templates}
-
-
-:javascript
-  $(document).ready(function() {
-    $("#reward-templates").children().on("ajax:success", function(e, data, status, xhr){
-      $("#reward_template_listings").replaceWith(xhr.responseText);
-    });
-  });
+      = render partial: "reward_templates_search_results", locals: {reward_templates: @reward_templates}
