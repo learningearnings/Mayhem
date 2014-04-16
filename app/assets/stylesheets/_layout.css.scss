@@ -28,11 +28,36 @@
 
 /* Variables */
 $how-to-active-color: #f05c1a;
+.orange {
+  color: #EA4E08 !important;
+}
 
 #reward_template_listings {
   margin-left: 80px;
 }
 
+.reward-template-instructions {
+  display: block;
+  width: 70%;
+  font-size: 14px;
+}
+
+.custom-reward-button {
+  margin-top: 10px !important;
+  margin-left: 40px !important;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
 
 body {
   font-size: 62.5%;
