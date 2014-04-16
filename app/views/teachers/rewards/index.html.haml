@@ -3,7 +3,8 @@
     %h2 Your Rewards
     %p.note **NOTE:** A reward with Quantity of 0 will not be shown to students
     %ul.action_buttons
-      %li= link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
+      %li= link_to 'Create a New Custom Reward', new_teachers_reward_path, :class => "btn awesome-button"
+      %li= link_to 'Create a New Reward from Template', teachers_reward_templates_path, :class => "btn awesome-button"
     = paginate @teachers_rewards, :window => 2
     .resp-product
       .resp-product-row

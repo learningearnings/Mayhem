@@ -212,7 +212,6 @@ Leror::Application.routes.draw do
     resources :otu_code_types
     resources :otu_code_categories
     resources :reward_templates
-    post "/reward_templates_search" => "reward_templates#search", :as => 'reward_templates_search'
     match "home" => "home#show", as: 'home'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch', defaults: { :format => 'html' }
