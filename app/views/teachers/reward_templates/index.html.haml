@@ -1,24 +1,22 @@
 .main-content-wrapper
   .full-content
-    %h1 Reward Templates
+    %h1.orange Reward Templates
 
-    = link_to 'Create a Custom Reward', new_teachers_reward_path, class: 'awesome-button'
+    .custom-reward-instructions
+      %span.reward-template-instructions.float-left
+        Create new rewards for your students. Below we have compiled a list of rewards as templates
+        from the many creative, no-cost rewards created by teachers and used in LE. Click on one to
+        configure it for your store or choose to create a custom reward
+      = link_to 'Create a Custom Reward', new_teachers_reward_path, class: 'awesome-button custom-reward-button float-left'
+      .clear
 
     #reward-templates
-      = form_tag teachers_reward_templates_path, method: :get, remote: true, id: 'reward-template-form' do 
-        #template-controls
-          = select_tag :grade_filter, options_for_select(School::GRADES), {:prompt => 'Grade'}
-          = text_field_tag :q
-          = hidden_field_tag :page, params[:page]
-          = submit_tag 'Search', class: 'awesome-button'
     = render partial: "reward_templates_search_results", locals: {reward_templates: @reward_templates}
 
 
 :javascript
   $(document).ready(function() {
-
     $("#reward-templates").children().on("ajax:success", function(e, data, status, xhr){
       $("#reward_template_listings").replaceWith(xhr.responseText);
     });
-
   });

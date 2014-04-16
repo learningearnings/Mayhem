@@ -1,6 +1,13 @@
 #reward_template_listings
 
   .row
+    %br/
+    #template-controls.float-right
+      = form_tag teachers_reward_templates_path, method: :get, remote: true, id: 'reward-template-form' do 
+        = select_tag :grade_filter, options_for_select(School::GRADES), {:prompt => 'Filter by Grade'}
+        = text_field_tag :q
+        = hidden_field_tag :page, params[:page]
+        = submit_tag 'Search', class: 'awesome-button'
     = paginate reward_templates
     %ul#products.inline.product-listing{"data-hook" => ""}
     - reward_templates.in_groups_of(3) do |reward_templates_row|
