@@ -6,7 +6,7 @@ module Teachers
 
       @reward_templates = @reward_templates.kinda_matching(params[:q]) if params[:q].present?
       @reward_templates = @reward_templates.within_grade(params[:grade_filter]) if params[:grade_filter].present?
-      @reward_templates = @reward_templates.page(params[:page]).per(9)
+      @reward_templates = @reward_templates.page(params[:page]).per(18)
 
       @reward_templates = @reward_templates.order(:name)
       render :partial => "reward_templates_search_results", :locals => {:reward_templates=> @reward_templates} if request.xhr?
