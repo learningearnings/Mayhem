@@ -11,27 +11,14 @@
           = f.text_field :search
           = hidden_field_tag :page, params[:page]
           = f.submit 'Search', class: 'awesome-button'
-      #reward_template_listings
-        .row
-          %ul#products.inline.product-listing{"data-hook" => ""}
-          - @reward_templates.in_groups_of(3) do |reward_templates_row|
-            .row
-              - reward_templates_row.each do |reward_template|
-                %li{:class => "product-tile", "data-hook" => "products_list_item", :itemscope => "", :itemtype => "http://schema.org/Product"}
-                  - if reward_template.image.present?
-                    = link_to image_tag(reward_template.image.url, :size => "260x180"), teachers_reward_template_path(reward_template)
-                  - else
-                    = link_to image_tag('noimage/small.png'), teachers_reward_template_path(reward_template)
-                  = link_to reward_template.name, teachers_reward_template_path(reward_template)
-
-    = paginate @reward_templates
+    = render partial: "reward_templates_search_results", locals: {reward_templates: @reward_templates}
 
 
 :javascript
   $(document).ready(function() {
 
     $("#reward-templates").children().on("ajax:success", function(e, data, status, xhr){
-      $("#reward-templates-grid").replaceWith(xhr.responseText);
+      $("#reward_template_listings").replaceWith(xhr.responseText);
     });
 
   });
