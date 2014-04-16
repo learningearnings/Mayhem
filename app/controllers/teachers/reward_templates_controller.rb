@@ -3,6 +3,7 @@ module Teachers
 
     def index
       @reward_templates = RewardTemplate
+
       @reward_templates = @reward_templates.kinda_matching(params[:q]) if params[:q].present?
       @reward_templates = @reward_templates.within_grade(params[:grade_filter]) if params[:grade_filter].present?
       @reward_templates = @reward_templates.page(params[:page]).per(9)
