@@ -20,16 +20,17 @@
       .form-inputs.controls-row.span6.clearfix
         %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
 
-  %h3 Reward Scope
-  %ul.reward-scope
-    %li
-      %label
-        = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
-        Whole School
-    %li
-      %label
-        = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
-        Specific Classrooms
+  - if current_person.is_a?(SchoolAdmin)
+    %h3 Reward Scope
+    %ul.reward-scope
+      %li
+        %label
+          = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
+          Whole School
+      %li
+        %label
+          = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
+          Specific Classrooms
 
   .classrooms-interface
     %h3 Select Classrooms for your reward
