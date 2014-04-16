@@ -5,12 +5,12 @@
     = link_to 'Create a Custom Reward', new_teachers_reward_path, class: 'awesome-button'
 
     #reward-templates
-      = form_for 'reward_templates_search', remote: true, id: 'reward-template-form' do |f|
+      = form_tag teachers_reward_templates_path, method: :get, remote: true, id: 'reward-template-form' do 
         #template-controls
-          = f.select :grade_filter, options_for_select(School::GRADES), {:prompt => 'Grade'}
-          = f.text_field :search
+          = select_tag :grade_filter, options_for_select(School::GRADES), {:prompt => 'Grade'}
+          = text_field_tag :q
           = hidden_field_tag :page, params[:page]
-          = f.submit 'Search', class: 'awesome-button'
+          = submit_tag 'Search', class: 'awesome-button'
     = render partial: "reward_templates_search_results", locals: {reward_templates: @reward_templates}
 
 
