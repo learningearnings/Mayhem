@@ -154,7 +154,7 @@ class School < ActiveRecord::Base
   end
 
   def name_and_location
-    [name, city, state.name].join(", ").truncate(28)
+    [name, city, state.name].join(", ")
   end
 
   def first_address
