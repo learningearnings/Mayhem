@@ -2,7 +2,7 @@
   .full-content
     %h1 Reward Templates
 
-    = link_to 'Create a Custom Reward', '#', class: 'awesome-button'
+    = link_to 'Create a Custom Reward', new_teachers_reward_path, class: 'awesome-button'
 
     #reward-templates
       = form_for 'reward_templates_search', remote: true, id: 'reward-template-form' do |f|
