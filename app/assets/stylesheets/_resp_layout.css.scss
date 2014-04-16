@@ -221,6 +221,9 @@
 
 }
 
+.resp-login-form-fields {
+  @extends .span12;
+}
 .resp-login-form-fields .log-in {
   font-size: 1.4em;
   color: #1f2870;
@@ -232,6 +235,7 @@
 
 .resp-forgot-password {
   margin: -4px 0 0 0;
+  display:inline-block;
 }
 
 .resp-supplemental-bg {
@@ -266,6 +270,8 @@
   form {
     @extend .pull-right;
   }
+  margin-top:.5em;
+  @extend .span12;
 }
 
 html.resp, body.resp {
