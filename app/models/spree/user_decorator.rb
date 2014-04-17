@@ -13,13 +13,13 @@ Spree::User.class_eval do
   after_save :set_recovery_password
 
   def self.authenticate_with_school_id(username,password,school_id)
-    return if username.blank? || password.blank? || school_id.blank?
+    return if username.blank? || password.blank?
     # Regular teacher or student
     user = Spree::User.select("spree_users.*").
       where("LOWER(spree_users.username) = ?", username.downcase).
       joins(:person).merge(Person.status_active).
       joins(:schools).merge(School.status_active).
-      where('schools.id = ?',school_id).first
+      where(schools: {id: school_id}).first
 
     # LEAdmin user
     user = Spree::User.select("spree_users.*").
