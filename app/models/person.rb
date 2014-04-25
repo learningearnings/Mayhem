@@ -40,6 +40,7 @@ class Person < ActiveRecord::Base
   has_many :food_fight_players
 
   has_many :votes
+  has_many :otu_code_categories
 
   accepts_nested_attributes_for :user
 

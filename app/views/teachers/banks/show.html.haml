@@ -1,4 +1,5 @@
 .main-content-wrapper
+
   .full-content
     .bank_content
       %h2 The Bank
@@ -10,6 +11,7 @@
         %strong
           Credits Available:
         = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, :class => 'btn awesome-button'
 
     - if can?(:distribute, :credits)
       .distribute-credits
@@ -53,13 +55,17 @@
               = label_tag 'Student'
               = select("student", "id", current_school.students.order('last_name, first_name').includes(:user).collect {|p| [ "#{p.name} - #{p.user.username}", p.id ] },{ :include_blank => true},{ class: 'chzn-select'})
               = label_tag :credits
-              = text_field_tag :points, nil,:min => '0',:step => '1',:type => "number"
+              = text_field_tag :points, nil,:step => '1',:type => "number"
+              = f.label :otu_code_category_id
+              = f.select :otu_code_category_id, options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]})
               = f.submit 'Send These Credits', :class => 'awesome-button'
 
             %h4 Issue Electronic Credits to each student in a classroom
             = form_for OtuCode.new, :url => teachers_create_ebucks_for_classroom_path do |f|
               = label_tag 'Classroom'
               = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
+              = label_tag 'Credits'
+              = text_field_tag :class_points, nil,:min => '0',:step => '1',:type => "number", :class => 'class_points', :onclick => 'copy_points();'
               #classroom_distribution
 
           .tab-pane#transfer-credits
@@ -69,7 +75,7 @@
               = text_field_tag :transfer_points, nil, :min => '0',:step => '1', :type => "number"
               = hidden_field_tag :from_teacher_id, current_person.id
               = label_tag :to_teacher
-              = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers.reject{|x| x == Teacher.find(current_person.id)} + current_school.school_admins), :id, :to_s), :include_blank => true
+              = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers + current_school.school_admins).uniq.reject{|x| x == Teacher.find(current_person.id)}, :id, :to_s), :include_blank => true
               = f.submit 'Transfer Credits', :class => 'awesome-button'
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
@@ -123,3 +129,13 @@
 
     $('#classroom_points').on('change', distributeCreditsToAllStudents)
 
+    ($ document).ready ->
+      $('.class_points').on 'keyup', (e) ->
+        (
+          copy_points()
+        )
+:javascript
+  function copy_points() {
+    var points = $('.class_points').val();
+    $('input.classroom_student_points').val(points);
+  }
