@@ -188,7 +188,12 @@ Leror::Application.routes.draw do
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
+  match "/teachers/get_otu_code_category" => "teachers/otu_code_categories#get_category", :as => 'get_otu_code_category'
   namespace :teachers do
+    match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
+    match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
+    resources :otu_code_types
+    resources :otu_code_categories
     resource :bulk_students
     resources :reports
     resource  :bank
