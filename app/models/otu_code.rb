@@ -15,6 +15,10 @@ class OtuCode < ActiveRecord::Base
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
   scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
+  scope :created_between, lambda { |start_date, end_date| 
+    where(OtuCode.arel_table[:created_at].gteq(start_date)).
+    where(OtuCode.arel_table[:created_at].lteq(end_date))
+  }
 
   def expired?
     self.created_at > (Time.now + 45.days)

@@ -24,11 +24,11 @@ class School < ActiveRecord::Base
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
   has_many :reward_exclusions
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
@@ -165,7 +165,7 @@ class School < ActiveRecord::Base
     @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
     @distributing_teachers = self.teachers if @distributing_teachers.blank?
-    @distributing_teachers
+    @distributing_teachers.compact
   end
 
   private

@@ -4,7 +4,11 @@ module Mixins
       if params[:point1].present? || params[:point5].present? || params[:point10].present?
         get_buck_batches
         get_bank
-        @bank.create_print_bucks(person, current_school, 'AL', bucks)
+        # creates and returns bucks array
+        batch_name = person.to_s + " Created " + Date.today.to_s
+        batch = buck_batch_creator.call(:name => batch_name)
+        BuckBatchWorker.perform_async person.id, current_school.id, 'AL', bucks, batch.id
+        redirect_to teachers_print_batch_path(batch.id)
       else
         flash[:error] = "Please enter an amount."
         redirect_to main_app.teachers_bank_path
@@ -13,15 +17,21 @@ module Mixins
 
     def create_ebucks
       params[:points] = sanitize_points(params[:points]) if params[:points]
+      if params[:points].to_i < 0
+        if current_school.can_revoke_credits
+          student = Student.find(params[:student][:id])
+          CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points])
+          flash[:notice] = "The points have been deducted from the student account."
+        else
+          flash[:error] = "You can't enter negative values"
+        end
+        redirect_to main_app.teachers_bank_path and return
+      end
+
       # TODO: I had to put this in the controller mixin because the error handling assumes a different error.
       # We should refactor this.
       if params[:points].present? && params[:points].to_i > 400
         flash[:error] = "You can not issue more than 400 credits to a student at a time."
-        redirect_to main_app.teachers_bank_path and return
-      end
-
-      unless params[:points] && SanitizingBigDecimal(params[:points]) > 0
-        flash[:error] = "You must enter greater than 0 credits"
         redirect_to main_app.teachers_bank_path and return
       end
 
@@ -37,10 +47,10 @@ module Mixins
     end
 
     def create_ebucks_for_students
-      if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
-        flash[:error] = "You can not enter negative values"
-        redirect_to :back and return
-      end
+      #if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
+      #  flash[:error] = "You can not enter negative values"
+      #  redirect_to :back and return
+      #end
 
       if params[:credits] && params[:credits].values.detect {|x| x.to_s.include?(".") }
         flash[:error] = "You can only enter whole values"
@@ -80,6 +90,20 @@ module Mixins
     end
 
     def create_ebucks_for_classroom
+      if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
+        if current_school.can_revoke_credits
+          params[:credits].delete_if do |k, v|
+            if v.to_i < 0
+              student = Student.find(k)
+              CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, v)
+            end
+          end
+        else
+          flash[:error] = "You can't enter negative values"
+          redirect_to main_app.teachers_bank_path and return
+        end
+      end
+
       if params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
@@ -90,8 +114,10 @@ module Mixins
         classroom = current_person.classrooms.find(params[:classroom][:id])
         OtuCode.transaction do
           classroom.students.each do |student|
-            student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
-            issue_ebucks_to_student(student, student_credits) if student_credits > 0
+            if params[:credits][student.id.to_s].present?
+              student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+              issue_ebucks_to_student(student, student_credits) if student_credits.to_i > 0
+            end
           end
           if failed
             raise ActiveRecord::Rollback
@@ -140,7 +166,11 @@ module Mixins
     end
 
     def sanitize_points(_points)
-      _points.gsub(/[^0-9.]/, "")
+      _points.gsub(/[^0-9.-]/, "")
+    end
+
+    def buck_batch_creator
+      ->(params) { BuckBatch.create params }
     end
   end
 end

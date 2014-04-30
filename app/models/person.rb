@@ -40,6 +40,7 @@ class Person < ActiveRecord::Base
   has_many :food_fight_players
 
   has_many :votes
+  has_many :otu_code_categories
 
   accepts_nested_attributes_for :user
 
@@ -49,6 +50,7 @@ class Person < ActiveRecord::Base
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
+  scope :for_schools, lambda {|schools| joins(:person_school_links).where(:person_school_links => {:school_id => schools})}
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
     joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]])
@@ -60,14 +62,12 @@ class Person < ActiveRecord::Base
   scope :with_username, lambda{|username| joins(:spree_user).where("spree_users.username = ?", username) }
   scope :with_email,    lambda{|email| joins(:spree_user).where("spree_users.email = ?", email) }
   scope :recently_logged_in, lambda{ where('last_sign_in_at >= ?', (Time.now - 1.month)).joins(:user) }
+  scope :logged_in_between, lambda { |start_date, end_date| joins(:user).where('last_sign_in_at >= ? AND last_sign_in_at <= ?', start_date, end_date) }
   scope :recently_created, lambda { where(self.arel_table[:created_at].gt Time.now - 1.month) }
+  scope :created_between, lambda { |start_date, end_date| where(self.arel_table[:created_at].gteq(start_date)).where(self.arel_table[:created_at].lteq(end_date))}
 
   before_save :ensure_spree_user
   after_destroy :delete_user
-
-  def name
-    "#{first_name} #{last_name}"
-  end
 
   def avatar
     avatars.first
@@ -149,9 +149,8 @@ class Person < ActiveRecord::Base
     self.first_name + ' ' + self.last_name
   end
 
-  def to_s
-    full_name
-  end
+  alias_method :name, :full_name
+  alias_method :to_s, :full_name
 
   def store_code
     nil

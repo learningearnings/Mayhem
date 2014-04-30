@@ -15,11 +15,12 @@ Spree::User.class_eval do
   def self.authenticate_with_school_id(username,password,school_id)
     return if username.blank? || password.blank?
     # Regular teacher or student
-    user = Spree::User.select("spree_users.*").
-      where("LOWER(spree_users.username) = ?", username.downcase).
-      joins(:person).merge(Person.status_active).
-      joins(:schools).merge(School.status_active).
-      where(schools: {id: school_id}).first
+    # The select here is to fix a read only record issue.
+    # http://stackoverflow.com/questions/639171/what-is-causing-this-activerecordreadonlyrecord-error
+    user = Spree::User.select("spree_users.*").where("LOWER(spree_users.username) = ?", username.downcase)
+      .joins(person: {person_school_links: :school})
+      .where(person: {status: "active"}, schools: {status: "active"})
+      .where(person_school_links: {school_id: school_id, status: "active"}).first
 
     # LEAdmin user
     user = Spree::User.select("spree_users.*").

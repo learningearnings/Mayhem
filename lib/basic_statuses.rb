@@ -6,10 +6,13 @@ module BasicStatuses
     state_machine :status, :initial => :new do
 #    after_transition :new => :active, :do => :after_activate
       event :activate do
-        transition [:new, :inactive] => :active
+        transition [:new, :inactive, :awaiting_approval] => :active
       end
       event :deactivate do
         transition [:new, :active] => :inactive
+      end
+      event :set_awaiting do
+        transition [:new, :active] => :awaiting_approval
       end
       state :new
       state :active
