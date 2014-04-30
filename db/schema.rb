@@ -11,8 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140326165745) do
-
+ActiveRecord::Schema.define(:version => 20140331181154) do
   add_extension "hstore"
 
   create_table "active_admin_comments", :force => true do |t|
@@ -115,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20140326165745) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "processed"
   end
 
   create_table "ckeditor_assets", :force => true do |t|
@@ -426,6 +426,20 @@ ActiveRecord::Schema.define(:version => 20140326165745) do
     t.datetime "updated_at",     :null => false
   end
 
+  create_table "otu_code_categories", :force => true do |t|
+    t.string   "name"
+    t.integer  "otu_code_type_id"
+    t.integer  "person_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "otu_code_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "otu_codes", :force => true do |t|
     t.string   "code"
     t.integer  "person_school_link_id"
@@ -438,7 +452,11 @@ ActiveRecord::Schema.define(:version => 20140326165745) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+<<<<<<< HEAD
     t.string   "reason"
+=======
+    t.integer  "otu_code_category_id"
+>>>>>>> master
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
@@ -467,8 +485,12 @@ ActiveRecord::Schema.define(:version => 20140326165745) do
     t.boolean  "can_distribute_credits",                                                :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
+<<<<<<< HEAD
     t.boolean  "game_challengeable",                                                    :default => false
+=======
+>>>>>>> master
     t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"
     t.decimal  "first_month_amount_paid",               :precision => 20, :scale => 10
   end
@@ -623,6 +645,17 @@ ActiveRecord::Schema.define(:version => 20140326165745) do
   create_table "reward_exclusions", :force => true do |t|
     t.integer "school_id"
     t.integer "product_id"
+  end
+
+  create_table "reward_templates", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.decimal  "price"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.string   "image_uid"
   end
 
   create_table "school_filter_links", :force => true do |t|

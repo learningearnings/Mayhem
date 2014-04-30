@@ -12,6 +12,7 @@ gem 'rake', '~> 10.1.0'
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
+gem 'pg_search'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transaction_retry'
@@ -167,7 +168,7 @@ group :test do
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
-  gem 'ffaker'
+  gem 'faker'
   gem 'spork-rails'
   gem 'timecop'
 end
