@@ -6,34 +6,20 @@ module Reports
         csv << ["", "", "Total Teachers", "Active Teachers", "New Teachers", "Total Students", "Active Students", "New Students", "Total Reemptions", "Total Outstanding Credits", "Credits Issued", "Credits Redeemed"]
 
         # Totals system wide
-        csv_array = []
-        csv_array << "Total"
-        csv_array << ""
-        csv_array << total(Teacher)
-        csv_array << active(Teacher)
-        csv_array << new(Teacher)
-        csv_array << total(Student)
-        csv_array << active(Student)
-        csv_array << new(Student)
-        csv_array << total_redemptions(RewardDelivery)
-        csv << csv_array
+        teacher_scope = Teacher
+        student_scope = Student
+        reward_delivery_scope = RewardDelivery
+        otu_code_scope = OtuCode
+        csv << build_row("Total", teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
 
         # By Grade
         csv << ["By Grade"]
         School::GRADES.each do |grade|
           teacher_scope = Teacher.where(grade: grade)
           student_scope = Student.where(grade: grade)
-          csv_array = []
-          csv_array << grade
-          csv_array << ""
-          csv_array << total(teacher_scope)
-          csv_array << active(teacher_scope)
-          csv_array << new(teacher_scope)
-          csv_array << total(student_scope)
-          csv_array << active(student_scope)
-          csv_array << new(student_scope)
-          csv_array << total_redemptions(RewardDelivery.joins(:to).where(to: {grade: grade}))
-          csv << csv_array
+          otu_code_scope = OtuCode.for_grade(grade)
+          reward_delivery_scope = RewardDelivery.joins(:to).where(to: {grade: grade})
+          csv << build_row(grade, teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
         end
 
         csv << ["By School"]
@@ -41,23 +27,32 @@ module Reports
         School.find_each do |school|
           teacher_scope = school.teachers
           student_scope = school.students
-          csv_array = []
-          csv_array << school.name
-          csv_array << ""
-          csv_array << total(teacher_scope)
-          csv_array << active(teacher_scope)
-          csv_array << new(teacher_scope)
-          csv_array << total(student_scope)
-          csv_array << active(student_scope)
-          csv_array << new(student_scope)
-          csv_array << total_redemptions(RewardDelivery.where(from_id: school.teachers.pluck(:id)))
-          csv << csv_array
+          otu_code_scope = OtuCode.for_school(school)
+          reward_delivery_scope = RewardDelivery.where(from_id: school.teachers.pluck(:id))
+          csv << build_row(school.name, teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
         end
       end
       csv
     end
 
     private
+    def build_row title, teacher_scope, student_scope, reward_delivery_scope, otu_code_scope
+      [].tap do |csv_array|
+        csv_array << title
+        csv_array << ""
+        csv_array << total(teacher_scope)
+        csv_array << active(teacher_scope)
+        csv_array << new(teacher_scope)
+        csv_array << total(student_scope)
+        csv_array << active(student_scope)
+        csv_array << new(student_scope)
+        csv_array << total_redemptions(reward_delivery_scope)
+        csv_array << otu_code_scope.active.sum(:points)
+        csv_array << otu_code_scope.sum(:points)
+        csv_array << otu_code_scope.inactive.sum(:points)
+      end
+    end
+
     def total scope
       scope.count
     end
