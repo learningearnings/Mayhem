@@ -66,6 +66,8 @@
               = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
               = label_tag 'Credits'
               = text_field_tag :class_points, nil,:min => '0',:step => '1',:type => "number", :class => 'class_points', :onclick => 'copy_points();'
+              = f.label :otu_code_category_id
+              = f.select :otu_code_category_id, options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
               #classroom_distribution
 
           .tab-pane#transfer-credits
@@ -88,6 +90,7 @@
           <th>First Name</th>
           <th>Last Name</th>
           <th>Credits</th>
+          <th>Reason</th>
         </tr>
       </thead>
       <tbody>
@@ -97,6 +100,9 @@
             <td>{{last_name}}</td>
             <td>
               <input type='text' name='credits[{{id}}]' class='classroom_student_points' />
+            </td>
+            <td>
+              #{select_tag 'credit_reasons[{{id}}]', options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), class: "classroom_student_reasons", id: "classroom_otu_code_category_{{id}}"}
             </td>
           </tr>
         {{/students}}
@@ -115,6 +121,10 @@
       points = $('#classroom_points').val()
       $('input.classroom_student_points').val(points)
 
+    distributeReasonToAllStudents = () ->
+      reason = $('#classroom_otu_code_category').val()
+      $('.classroom_student_reasons').val(reason)
+
     ($ '#classroom_id').on 'change', (e) ->
       (
         $.get('/classrooms/' + $('#classroom_id').val() + '.json')
@@ -125,9 +135,11 @@
             html = ich.students_table(students: mapped_students)
             $('#classroom_distribution').html(html)
             distributeCreditsToAllStudents()
+            distributeReasonToAllStudents()
       )
 
     $('#classroom_points').on('change', distributeCreditsToAllStudents)
+    $('#classroom_otu_code_category').on('change', distributeReasonToAllStudents)
 
     ($ document).ready ->
       $('.class_points').on 'keyup', (e) ->

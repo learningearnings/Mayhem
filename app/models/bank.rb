@@ -29,14 +29,15 @@ class Bank
     return on_success.call batch
   end
 
-  def create_ebucks(person, school, student, prefix, points)
+  def create_ebucks(person, school, student, prefix, points, category_id=nil)
     account = person.main_account(school)
     return @on_failure.call unless account_has_enough_money_for(account, points)
 
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
                    :expires_at => (Time.now + 45.days),
                    :student_id => student.id,
-                   :ebuck => true}
+                   :ebuck => true,
+                   :otu_code_category_id => category_id}
     buck = create_buck(prefix, points, buck_params)
     @credit_manager.purchase_ebucks(school, person, student, points)
 

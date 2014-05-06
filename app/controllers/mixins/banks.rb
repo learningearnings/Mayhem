@@ -39,7 +39,8 @@ module Mixins
         get_buck_batches
         get_bank
         student = Student.find(params[:student][:id])
-        issue_ebucks_to_student(student)
+        reason_id = params["otu_code"]["otu_code_category_id"]
+        issue_ebucks_to_student(student, params[:points],reason_id)
       else
         flash[:error] = "Please ensure a student is selected and an amount is entered."
         redirect_to main_app.teachers_bank_path
@@ -116,7 +117,8 @@ module Mixins
           classroom.students.each do |student|
             if params[:credits][student.id.to_s].present?
               student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
-              issue_ebucks_to_student(student, student_credits) if student_credits.to_i > 0
+              reason_id = params[:credit_reasons][student.id.to_s]
+              issue_ebucks_to_student(student, student_credits, reason_id) if student_credits.to_i > 0
             end
           end
           if failed
@@ -160,9 +162,9 @@ module Mixins
       @buck_batches = current_person.buck_batches(current_school)
     end
 
-    def issue_ebucks_to_student(student, point_value=params[:points])
+    def issue_ebucks_to_student(student, point_value=params[:points], category_id=nil)
       point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
-      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value)
+      @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value, category_id)
     end
 
     def sanitize_points(_points)
