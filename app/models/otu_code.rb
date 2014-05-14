@@ -11,7 +11,6 @@ class OtuCode < ActiveRecord::Base
   has_many :messages, :through => :message_code_links
   has_many :message_code_links
   belongs_to :otu_code_category
-
   belongs_to :otu_code_category
 
   scope :active, where("active = ?", true)
