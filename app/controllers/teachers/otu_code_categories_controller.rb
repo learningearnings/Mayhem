@@ -26,6 +26,13 @@ module Teachers
       end
     end
 
+    def destroy
+      otu_code_category = OtuCodeCategory.find(params[:id])
+      otu_code_category.destroy
+      #Why do we have two controllers for this? :(
+      redirect_to teachers_otu_code_types_path, notice: "Category Deleted"
+    end
+
     def get_category
       category = OtuCodeCategory.find params[:category_id]
       respond_to do |format|
@@ -33,7 +40,6 @@ module Teachers
           render :json => {:type => {:name => category.otu_code_type.name, :id => category.otu_code_type.id}, :category => {:name => category.name, :id => category.id}}, :layout => false
         end
       end
-
     end
   end
 end

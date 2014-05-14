@@ -10,6 +10,7 @@ class OtuCode < ActiveRecord::Base
   has_one :school, :through => :person_school_link
   has_many :messages, :through => :message_code_links
   has_many :message_code_links
+  belongs_to :otu_code_category
 
   belongs_to :otu_code_category
 
@@ -19,6 +20,7 @@ class OtuCode < ActiveRecord::Base
   scope :last_30, lambda { where(OtuCode.arel_table[:created_at].gt(Time.now - 30.days)) }
   scope :ebuck, where(ebuck: true)
   scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
+  scope :for_grade, lambda { |grade| joins(:student).where(student: {grade: grade})}
   scope :created_between, lambda { |start_date, end_date| 
     where(OtuCode.arel_table[:created_at].gteq(start_date)).
     where(OtuCode.arel_table[:created_at].lteq(end_date))

@@ -19,7 +19,7 @@
     = text_field_tag 'user[username]', nil, :placeholder => 'Username', :class => 'focus-on-me input-medium'
     = password_field_tag 'user[password]', nil, :placeholder => 'Password', :class => 'input-medium'
     .resp-forgot-password
-      = link_to "Forgot your password?", spree.new_user_password_path('user')
+      = link_to "Forgot your password?", spree.new_user_password_path('user'), tabindex: "-1"
   .school-select
     %label.log-in.select
       SCHOOL

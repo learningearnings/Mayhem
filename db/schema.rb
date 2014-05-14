@@ -214,7 +214,6 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.integer  "food_person_link_id"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
-    t.integer  "winner_id"
   end
 
   create_table "food_fight_players", :force => true do |t|
@@ -481,8 +480,8 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.boolean  "game_challengeable",                   :default => false
     t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"
   end
 
@@ -1005,7 +1004,7 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
   add_index "spree_product_properties", ["product_id"], :name => "index_product_properties_on_product_id"
 
   create_table "spree_products", :force => true do |t|
-    t.string   "name",                      :default => "",    :null => false
+    t.string   "name",                 :default => "",    :null => false
     t.text     "description"
     t.datetime "available_on"
     t.datetime "deleted_at"
@@ -1014,16 +1013,15 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.string   "meta_keywords"
     t.integer  "tax_category_id"
     t.integer  "shipping_category_id"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.integer  "count_on_hand",             :default => 0,     :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "count_on_hand",        :default => 0,     :null => false
     t.string   "svg_file_name"
     t.string   "fulfillment_type"
     t.string   "purchased_by"
     t.integer  "min_grade"
     t.integer  "max_grade"
-    t.boolean  "visible_to_all",            :default => false
-    t.string   "purchase_limit_time_frame"
+    t.boolean  "visible_to_all",       :default => false
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
