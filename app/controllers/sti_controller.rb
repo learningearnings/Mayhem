@@ -8,7 +8,7 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    if @client_response["StaffId"].blank? || current_person.nil?
+    if @client_response["StaffId"].blank? || !login_teacher
       render partial: "teacher_not_found"
     else
       load_students
@@ -65,14 +65,6 @@ class StiController < ApplicationController
     @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
   end
 
-  def current_person
-    Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
-  end
-
-  def current_school
-    current_person.schools.where(:district_guid => params[:districtGUID]).first
-  end
-
   def on_success(obj = nil)
     flash[:notice] = 'Credits sent!'
     redirect_to :back
@@ -85,6 +77,16 @@ class StiController < ApplicationController
 
   def person
     current_person
+  end
+
+  def login_teacher
+    teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
+    return false if teacher.nil?
+    school = teacher.schools.where(district_guid: params[:districtGUID]).first
+    session["warden.user.user.session"] = {"last_request_at" => Time.now.to_s}
+    session["warden.user.user.key"] = ["Spree::User", [teacher.user.id], nil]
+    session["current_school_id"] = school.id
+    return true
   end
 
   def handle_sti_token
