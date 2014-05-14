@@ -37,9 +37,16 @@ namespace :le do
     Rake::Task['db:seed'].invoke
   end
 
+  desc "STI Nightly Import"
+  task :sti_nightly_import => :environment do
+    StiLinkToken.all.each do |link_token|
+      StiImporterWorker.setup_sync(link_token.api_url, link_token.username, link_token.password, link_token.district_guid)
+    end
+  end
+
   desc "Build enough codes so there are always 10_000 active codes"
   task :build_otu_codes => :environment do
-    number_of_codes_to_make = 10000 - Code.active.count
+    number_of_codes_to_make = 100000 - Code.active.count
     puts "Building #{number_of_codes_to_make} codes"
     number_of_codes_to_make.times do
       Code.create

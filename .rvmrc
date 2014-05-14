@@ -1,1 +1,1 @@
-rvm ruby-2.0.0-p0@learning_earnings --create
+rvm use ruby-2.0.0-p353@learning_earnings --create

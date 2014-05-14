@@ -9,12 +9,13 @@ module Games
       current_opponents = Person.find current_person.food_fight_matches.map{|x| x.players}.flatten.map{|x| x.person_id}
       ignored_ids = (current_opponents + [current_person]).map(&:id)
       @students = current_school.students.where("people.id NOT IN (?)", ignored_ids).order("people.last_name, people.first_name").page(params[:page])
+      @teachers = current_school.teachers.game_challengeable.order("people.last_name, people.first_name").page(params[:page])
     end
 
     def play
       match_setup unless @match
       # FIXME: Make this...better
-      question = Games::Question.random
+      question = Games::Question.for_grade(current_person.grade).random
       food_fight_play_command = FoodFightPlayCommand.new(question_id: question.id, :match_id => @match.id)
       question_statistics = Games::QuestionStatisticsPresenter.new(question)
       render 'play', locals: { food_fight_play_command: food_fight_play_command, question_statistics: question_statistics }
@@ -38,7 +39,14 @@ module Games
       @match = FoodFightMatch.find(params[:match_id])
       @link = FoodPersonLink.create(:food_id => @food.id, :thrown_by_id => current_person.id, :person_id => @match.loser.person.id)
       @match.update_attributes(:food_person_link_id => @link.id)
-      GamesMessageStudentCommand.new(:to_id => @match.loser.person.id, :from_id => @match.winner.person.id, :body => "#{@match.winner.person.name} has thrown food at you.  <a href='/food_hit/#{@match.id}'>Click here for a rematch!</a>", :subject => 'Food Fight Match').execute!
+      begin
+        GamesMessageStudentCommand.new(
+          :to_id => @match.loser.person.id,
+          :from_id => @match.winner.person.id,
+          :body => "#{@match.winner.person.name} has thrown food at you.  <a href='/food_hit/#{@match.id}'>Click here for a rematch!</a>", :subject => 'Food Fight Match'
+        ).execute!
+      rescue
+      end
       redirect_to games_food_fight_path, flash: { success: "Food Thrown!" }
     end
 

@@ -14,13 +14,12 @@ Spree::HomeController.class_eval do
       @products = @products.with_property_value('reward_type','wholesale') if params[:current_store_id] == le_store.id
     end
 
-
     # If they are a student we need all global products + products that are in their classroom
-    if current_person.is_a?(Student) && current_person.classrooms.present?
+    if current_person.is_a?(Student)
       @products = filter_rewards_by_classroom(@products)
     end
 
-    @products = @products.page(params[:page]).per(9)
+    @products = @products.order(:name).page(params[:page]).per(10)
     respond_with(@products)
   end
 end

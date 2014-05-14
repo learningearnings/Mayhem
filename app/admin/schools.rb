@@ -1,6 +1,23 @@
 ActiveAdmin.register School do
 
+  config.action_items.delete_if { |item| item.display_on?(:show) }
+
+  action_item do
+    if current_page?(:action => 'show') && !school.district_guid.present?
+      link_to 'Edit School', edit_admin_school_path(school)
+    end
+  end
+  action_item do
+    if current_page?(:action => 'show') && !school.district_guid.present?
+      link_to "Delete School", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
+    end
+  end
+
   filter :name
+  filter :district_guid
+  filter :sti_id
+  filter :state
+
   index do
     column :id
     column :avatar do |school|
@@ -21,7 +38,19 @@ ActiveAdmin.register School do
     column :timezone
     column "Distribution",:distribution_model
     column :store_subdomain
-    default_actions
+    column "STI District GUID", :district_guid
+    column "STI id", :sti_id
+    #default_actions
+    column :actions do |resource|
+      links = link_to I18n.t('active_admin.view'), resource_path(resource)
+      links += ' '
+      if !resource.district_guid.present?
+        links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)
+        links += ' '
+        links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
+      end
+      links
+    end
   end
 
   form :partial => 'form'

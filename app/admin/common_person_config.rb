@@ -6,7 +6,6 @@
 # Also see app/views/admin/common/_school_list.html.haml for the partial
 #
 module CommonPersonConfig
-
   def self.included(dsl)
     dsl.run_registration_block do
 
@@ -17,6 +16,8 @@ module CommonPersonConfig
       filter :allschools_name,:label => "School Filter", collection: proc { School.status_active.all.collect {|s|s.name}.sort | School.status_inactive.all.collect {|s| s.name + '( inactive )'} } , as: :select
       filter :status,:label => "Status", :as => :check_boxes, :collection => proc { Person.new().status_paths.to_states.each do |s| s.to_s end }
       filter :grade,:label => "Grade", :as => :check_boxes, :collection => School::GRADE_NAMES
+      filter :district_guid
+      filter :sti_id
       filter :created_at, :as => :date_range
 
       form do |f|
@@ -36,16 +37,17 @@ module CommonPersonConfig
           if f.object.is_a?(Teacher)
             f.input :type, :label => "Type", :as => :select, :collection => ['SchoolAdmin', 'Teacher']
           end
-
-          #f.input :username
-          #if !f.object.is_a?(Student)
-          #  f.input :email
-          #end
-          #f.inputs :password,
-          #  :password_confirmation,
-          #  :name => "Spree::User",
-          #  :required => true,
-          f.inputs :for => [:user, f.object.user || Spree::User.new] do |u|
+          f.input :district_guid
+          f.input :sti_id
+          if f.object.new?
+            f.input :username, :required => true
+            if !f.object.is_a?(Student)
+              f.input :email
+            end
+            f.input :password
+            f.input :password_confirmation
+          else
+            f.inputs :for => [:user, f.object.user] do |u|
               u.input :username, :required => true
               if !f.object.is_a?(Student)
                 u.input :email
@@ -53,6 +55,7 @@ module CommonPersonConfig
               u.input :password
               u.input :password_confirmation
             end
+          end
         end
         f.actions
       end
@@ -101,10 +104,12 @@ module CommonPersonConfig
         elsif person.schools.include?(school)
           flash[:error] = "#{person.name} is already associated with #{school.name}"
         else
-          if PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: person.id, school_id: school.id).valid?
+          @psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(person_id: person.id, school_id: school.id)
+          if @psl.valid?
             flash[:notice] = "Associated #{person.name} with #{school.name}"
           else
-            flash[:error] = "Username already associated with this school."
+            flash[:error] = @psl.errors.messages[:status]
+            #flash[:error] = "Username already associated with this school."
           end
         end
         redirect_to :action => :show
@@ -119,7 +124,8 @@ module CommonPersonConfig
         else
           flash[:error] = "Could NOT remove #{person.name} from #{school.name}"
         end
-        redirect_to admin_person_path(person)
+        #redirect_to admin_person_path(person)
+        redirect_to :action => :show and return
       end
 
       index do
@@ -145,16 +151,52 @@ module CommonPersonConfig
         column :status
         column :gender
         column :salutation
+        column "STI district GUID", :district_guid
+        column "STI id", :sti_id
         column "Created", :created_at do |t|
           t.created_at.strftime("%m/%d/%Y") if t.created_at
         end
         column "Updated", :updated_at do |t|
           t.updated_at.strftime("%m/%d/%Y") if t.updated_at
         end
-        default_actions
+        #default_actions
+        column :actions do |resource|
+          links = ''.html_safe
+          links += link_to I18n.t('active_admin.view'), resource_path(resource)
+          links += ' '
+          if !resource.district_guid.present?
+            links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)
+            links += ' '
+            links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
+          end
+          links
+        end
       end
       controller do
         skip_before_filter :add_current_store_id_to_params
+
+        def create
+          create! do |format|
+            format.html { redirect_to resource_path(resource) }
+          end
+        end
+
+      end
+    end
+  end
+end
+
+class ActiveAdmin::Views::TableFor
+  def build_table_body
+    @tbody = tbody do
+      # Build enough rows for our collection
+      #@collection.each{|_| tr(:class => cycle('odd', 'even'), :id => dom_id(_)) }
+      @collection.each do |object|
+        if object.is_a? SchoolAdmin
+          tr(:class => 'bg-red', :id => dom_id(object))
+        else
+          tr(:class => cycle('odd', 'even'), :id => dom_id(object))
+        end
       end
     end
   end

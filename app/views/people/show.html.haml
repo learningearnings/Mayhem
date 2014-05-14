@@ -13,10 +13,20 @@
         - if !current_person.is_a? Student
           %dt Email
           %dd= @person.user.email
+        - if current_person.is_a? Teacher
+          %dt Game Challengeable?
+          %dd= @person.game_challengeable
     .span3
       %dl.details
         %dt School
         %dd= @person.school.name
 
       .link
-        = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
+        - if @person.sti_id && !@person.is_a?(Student)
+          = link_to_function "Edit", "sti_edit()", class: 'btn awesome-button'
+        - else
+          = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
+:javascript
+  function sti_edit() {
+    alert("This user was created in iNow. You will have to edit it there") 
+  }

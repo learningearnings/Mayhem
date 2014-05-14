@@ -11,7 +11,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131120021809) do
+ActiveRecord::Schema.define(:version => 20140331181154) do
+  add_extension "hstore"
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -113,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "processed"
   end
 
   create_table "ckeditor_assets", :force => true do |t|
@@ -156,6 +158,16 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer  "legacy_classroom_id"
     t.integer  "processed"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
+  end
+
+  add_index "classrooms", ["district_guid", "sti_id"], :name => "index_classrooms_on_district_guid_and_sti_id"
+
+  create_table "code_entry_failures", :force => true do |t|
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "codes", :force => true do |t|
@@ -164,6 +176,27 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "used_date"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "codes", ["active"], :name => "index_codes_on_active"
+
+  create_table "delayed_reports", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "state"
+    t.text     "report_data"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "name"
+    t.string   "render_class"
+  end
+
+  create_table "faq_questions", :force => true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.string   "person_type"
+    t.integer  "place"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "filters", :force => true do |t|
@@ -192,6 +225,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
   end
+
+  add_index "food_fight_players", ["food_fight_match_id"], :name => "index_food_fight_players_on_food_fight_match_id"
 
   create_table "food_person_links", :force => true do |t|
     t.integer  "person_id"
@@ -302,6 +337,14 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.string  "game_type"
   end
 
+  create_table "honor_roll_deposits", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "school_id"
+    t.decimal  "amount"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "interactions", :force => true do |t|
     t.integer  "person_id"
     t.string   "page"
@@ -312,6 +355,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
   end
+
+  add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
 
   create_table "local_reward_categories", :force => true do |t|
     t.string   "name"
@@ -368,6 +413,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
   end
 
   add_index "messages", ["category"], :name => "index_messages_on_category"
+  add_index "messages", ["to_id", "category", "status"], :name => "index_messages_on_to_id_and_category_and_status"
+  add_index "messages", ["to_id", "status"], :name => "index_messages_on_to_id_and_status"
 
   create_table "monikers", :force => true do |t|
     t.string   "state"
@@ -377,6 +424,20 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer  "person_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "otu_code_categories", :force => true do |t|
+    t.string   "name"
+    t.integer  "otu_code_type_id"
+    t.integer  "person_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "otu_code_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "otu_codes", :force => true do |t|
@@ -391,7 +452,12 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+    t.string   "reason"
+    t.integer  "otu_code_category_id"
   end
+
+  add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
+  add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
     t.integer  "otu_code_id"
@@ -405,19 +471,28 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
+    t.datetime "created_at",                                                                               :null => false
+    t.datetime "updated_at",                                                                               :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
-    t.string   "salutation",             :limit => 10
+    t.string   "salutation",              :limit => 10
     t.string   "recovery_password"
-    t.boolean  "can_distribute_credits",               :default => true
+    t.boolean  "can_distribute_credits",                                                :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
+<<<<<<< HEAD
+    t.boolean  "game_challengeable",                                                    :default => false
+=======
+>>>>>>> master
+    t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
+    t.string   "district_guid"
+    t.decimal  "first_month_amount_paid",               :precision => 20, :scale => 10
   end
 
+  add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
 
@@ -464,8 +539,10 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer  "classroom_id"
     t.datetime "created_at",            :null => false
     t.datetime "updated_at",            :null => false
+    t.boolean  "homeroom"
   end
 
+  add_index "person_school_classroom_links", ["person_school_link_id", "classroom_id"], :name => "pscl_pscli_ci"
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
 
   create_table "person_school_links", :force => true do |t|
@@ -478,6 +555,14 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
+
+  create_table "pg_search_documents", :force => true do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
@@ -559,6 +644,17 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer "product_id"
   end
 
+  create_table "reward_templates", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.decimal  "price"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.string   "image_uid"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -591,8 +687,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -601,6 +697,16 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.integer  "state_id"
     t.string   "zip"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
+    t.boolean  "can_revoke_credits", :default => false
+  end
+
+  create_table "site_settings", :force => true do |t|
+    t.decimal  "student_interest_rate", :precision => 8, :scale => 2
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
+    t.datetime "interest_paid_at"
   end
 
   create_table "spree_activators", :force => true do |t|
@@ -849,6 +955,8 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.string   "avs_response"
   end
 
+  add_index "spree_payments", ["order_id", "state"], :name => "index_spree_payments_on_order_id_and_state"
+
   create_table "spree_pending_promotions", :force => true do |t|
     t.integer "user_id"
     t.integer "promotion_id"
@@ -1038,6 +1146,7 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
   end
 
   add_index "spree_shipments", ["number"], :name => "index_shipments_on_number"
+  add_index "spree_shipments", ["order_id", "state"], :name => "index_spree_shipments_on_order_id_and_state"
 
   create_table "spree_shipping_categories", :force => true do |t|
     t.string   "name"
@@ -1180,6 +1289,7 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.string   "api_key",                :limit => 48
     t.integer  "person_id"
     t.string   "username"
+    t.boolean  "api_user"
   end
 
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
@@ -1243,10 +1353,30 @@ ActiveRecord::Schema.define(:version => 20131120021809) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "sti_link_tokens", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "api_url"
+    t.string   "link_key"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "username"
+    t.string   "password"
+  end
+
   create_table "stickers", :force => true do |t|
     t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "sync_attempts", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "status"
+    t.string   "sync_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "error"
+    t.text     "backtrace"
   end
 
   create_table "uploaded_users", :force => true do |t|

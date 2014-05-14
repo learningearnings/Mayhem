@@ -1,42 +1,75 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Student Credit History Report
 
-    = form_tag student_credit_history_report_path, method: :get, class: "noprint" do
-      .filter
-        %h4 Filter By
-        .all-students
-          = radio_button_tag :student_filter_type, :all_at_school, params[:student_filter_type] == 'all_at_school'
-          = label_tag :all_at_school, "All students at #{current_school.name.capitalize}"
-        .given-credits
-          = radio_button_tag :student_filter_type, :students_ive_given_bucks_to, params[:student_filter_type] == 'students_ive_given_bucks_to'
+    - if report.state == "complete"
+      %h2 Student Credit History Report
+      = form_tag student_credit_history_report_path, method: :get, class: "noprint" do
+        .filter
+          %h4 Filter By
+          .all-students
+            = radio_button_tag :student_filter_type, :all_at_school, params[:student_filter_type] == 'all_at_school'
+            = label_tag :all_at_school, "All students at #{current_school.name.capitalize}"
+          .given-credits
+            = radio_button_tag :student_filter_type, :students_ive_given_bucks_to, params[:student_filter_type] == 'students_ive_given_bucks_to'
 
-          = label_tag :students_ive_given_bucks_to, "Students I've given credits to"
-        .all-classrooms
-          = radio_button_tag :student_filter_type, :all_my_classrooms, params[:student_filter_type] == 'all_my_classrooms'
+            = label_tag :students_ive_given_bucks_to, "Students I've given credits to"
+          .all-classrooms
+            = radio_button_tag :student_filter_type, :all_my_classrooms, params[:student_filter_type] == 'all_my_classrooms'
 
-          = label_tag "All my classrooms"
-        .classroom
-          = radio_button_tag :student_filter_type, :classroom, params[:student_filter_type] == 'classroom'
+            = label_tag "All my classrooms"
+          .classroom
+            = radio_button_tag :student_filter_type, :classroom, params[:student_filter_type] == 'classroom'
 
-          = label_tag "Classroom"
-          = select_tag :classroom, options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
+            = label_tag "Classroom"
+            = select_tag :classroom, options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
+            = submit_tag 'Go!'
+
+        .sorting
+          %h4 Sort By
+          = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
           = submit_tag 'Go!'
-
-      .sorting
-        %h4 Sort By
-        = select_tag :sort_by, options_for_select(["Default", "First, Last", "Last, First", "Username"], params[:sort_by])
-        = submit_tag 'Go!'
-
-    = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
-    .report
-      %table.table.table-bordered.table-striped.solid-background
-        %thead
-          %tr
-            - report.header_strings.each do |header|
-              %th= header
-        %tbody
-          - report.data_rows do |row|
+      = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+      .report
+        %p The report can be sorted using the arrows in the heading of the report results. To sort by more than 1 column, sort the first column and then hold shift when clicking the second column. You can also search your report to find something or someone in particular using the search box below.
+        %table#report_table.table.table-bordered.table-striped.solid-background
+          %thead
             %tr
-              - report.header_keys.each do |key|
-                %td= row.send(key)
+              %th Student
+              %th Username
+              %th Checking Balance
+              %th Savings Balance
+          %tbody
+            - report_data = JSON.parse(report.report_data)
+            - report_data.each do |row|
+              %tr
+                %td= row["student"]
+                %td= row["username"]
+                %td= row["checking_balance"]
+                %td= row["savings_balance"]
+    - else 
+      .message.center-content
+        = image_tag "loading.gif"
+        %h3 Your student credit history report is currently processing, it will show up here when it is completed.
+      :javascript
+        setTimeout(checkReportStatus, 1000);
+
+        function checkReportStatus() {
+          $.get(window.location.pathname + ".json",function(data) {
+            if (data.delayed_report.state == "complete") {
+              loadReport();
+            } else {
+              setTimeout(checkReportStatus, 1000);
+            }
+          });
+        }
+
+        function loadReport() {
+          location.reload();
+        }
+:javascript
+  $(document).ready( function () {
+    $('#report_table').dataTable( {
+      "bPaginate": false,
+      "bInfo": false
+    } );
+  } );

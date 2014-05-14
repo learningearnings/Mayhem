@@ -62,6 +62,18 @@ class CreditManager
     transfer_credits "Revoke Credits for School", school.main_account, main_account, amount
   end
 
+  def revoke_credits_for_teacher(school, teacher, amount)
+    transfer_credits "Revoke Credits for Teacher", teacher.main_account(school), main_account, amount
+  end
+
+  def revoke_credits_for_student(student, amount)
+    transfer_credits "Revoke Credits for Student", student.checking_account, main_account, amount
+  end
+
+  def teacher_revoke_credits_from_student(school, teacher, student, amount)
+    transfer_credits "Revoke Credits for Student", teacher.main_account(school), student.checking_account, amount
+  end
+
   def purchase_printed_bucks school, teacher, amount, buck_batch=nil
     transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account(school), teacher.unredeemed_account(school), amount, buck_batch
    end
@@ -77,6 +89,18 @@ class CreditManager
 
   def issue_credits_to_teacher school, teacher, amount
     transfer_credits "Issue Credits to Teacher", school.main_account, teacher.main_account(school), amount
+  end
+
+  def monthly_credits_to_teacher school, teacher, amount
+    transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
+  end
+
+  def monthly_credits_for_onboarded_student_to_teacher school, teacher, amount
+    transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
+  end
+
+  def issue_interest_to_student student, amount
+    transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount
   end
 
   def issue_credits_to_student school, teacher, student, amount
@@ -101,7 +125,7 @@ class CreditManager
 
   def transfer_credits_for_local_purchase student, teacher, amount, document = nil
     return false if student.balance < amount
-    transfer_credits "Reward Purchase", student.checking_account, teacher.main_account(student.school), amount, document
+    transfer_credits "Reward Purchase", student.checking_account, main_account, amount, document
   end
 
   def transfer_credits_for_reward_purchase student, amount, document = nil

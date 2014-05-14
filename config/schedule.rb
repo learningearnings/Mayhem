@@ -24,7 +24,19 @@ every :hour do
   runner "AuctionHandler.new.run!"
 end
 
+every :saturday do
+  runner "StudentInterestHandler.new.run"
+end
+
+every 1.day, :at => '1am' do
+  rake "le:sti_nightly_import"
+end
+
 every 1.day, :at => '12pm' do
   rake "le:build_otu_codes"
+end
+
+every '0 9 1 * *' do
+  runner "BuckDistributor.new.run"
 end
 

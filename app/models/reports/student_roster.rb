@@ -34,6 +34,7 @@ module Reports
           base_hash[classroom] = send(filter, students) || []
         end
       end
+      base_hash.delete("no classroom") if @classroom.present?
       base_hash
     end
 
@@ -80,8 +81,9 @@ module Reports
       Reports::Row[
         classroom: classroom,
         grade:     student.grade,
-        student:   student,
-        username:  student.user.username
+        student:   student.reverse_name,
+        username:  student.user.username,
+        password:  student.recovery_password
       ]
     end
 
@@ -90,7 +92,8 @@ module Reports
         classroom: "Classroom",
         grade:     "Grade",
         student:   "Student",
-        username:  "Username"
+        username:  "Username",
+        password:  "Password"
       }
     end
   end

@@ -1,34 +1,56 @@
 %h2 Classroom: #{@classroom.name}
 %ul.action_buttons
-  %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
+  - if @classroom.sti_id
+    %li= link_to_function "Delete classroom", "sti_edit()", class: 'btn awesome-button'
+    %li= link_to_function "Edit classroom", "sti_edit()", class: 'btn awesome-button'
+  - else
+    %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
+    %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
 
 %h3 Select Students to add to #{@classroom.name}
 
 %p Please Note:
 
 %p You can only add students from your school.
-%p If you don't see your students you may need to first Add Students to My School.
+%p If you do not see your students, you may 
+%p click the New Student button below or email
+%p= mail_to("theteam@learningearnings.com")
+%p to request the .csv or Excel template.
 
 %table.table.table-bordered.table-striped.solid-background
   %thead
     %tr
       - if @classroom.students.present?
         %th Student Name
+        %th Homeroom?
         %th Username
         %th Remove
   %tbody
     - @classroom.students.order("last_name, first_name").each do |student|
       %tr
         %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td= link_to student.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
+        %td= student.homeroom == @classroom ? "Yes" : "No"
+        %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
+        - if @classroom.sti_id
+          %td= link_to_function 'Remove', "sti_edit()"
+        - else
+          %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
 = form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
   = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
+  %label.checkbox
+    = check_box_tag :homeroom
+    Homeroom
   = hidden_field_tag :classroom_id, @classroom.id
-  = f.submit 'Add Student', class: 'btn awesome-button'
+  - if @classroom.sti_id
+    = link_to_function 'Add Student', "sti_edit()", class: 'btn awesome-button'
+  - else
+    = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
 
-%a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
+- if @classroom.sti_id
+  = link_to_function "New Student", "sti_edit()", class: "btn awesome-button"
+- else
+  %a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
 %div{:class => "accordion-body collapse", :id => "new-student"}
   %h3 Create Student
   = form_for :student, :url => '/create_classroom_student' do |f|
@@ -43,7 +65,7 @@
         = f.text_field :username
       .span4
         = f.label :grade
-        = f.select :grade, School::GRADES
+        = f.select :grade, (current_school.min_grade..current_school.max_grade)
         = f.label :password
         = f.text_field :password
 
@@ -51,3 +73,55 @@
 
 :javascript
   $(".chzn-select").chosen();
+
+  function homeroom_check(classroom_id) {
+    var student_id = $('.chzn-select').val();
+    var student = 'student_id='+student_id;
+    var classroom = '&classroom_id='+classroom_id;
+    var url =  '/homeroom_check?'+student+classroom;
+
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: "json",
+      success: function(data){
+        if(data.classroom == null)
+          {
+            change_homeroom(student_id, classroom_id);
+          }
+        else
+          {
+            classroom = data.classroom.classroom
+            if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?"))
+              {
+                change_homeroom(student_id, classroom_id);
+              }
+            else 
+              {
+                alert('No change was made.');
+              }
+          }
+      }
+    });
+  }
+
+  function change_homeroom(student_id, classroom_id) {
+    var student = 'student_id='+student_id;
+    var classroom = '&classroom_id='+classroom_id;
+    var homeroom = document.getElementById('homeroom').checked;
+
+    var url =  '/add_classroom_student?'+student+classroom+'&homeroom='+homeroom;
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: "json",
+      success: function(data){
+        window.location.replace("/classrooms/" + classroom_id);
+      }
+    });
+  }
+
+  function sti_edit() {
+    alert("This classroom was created in iNow. You will have to edit it there") 
+  }
+

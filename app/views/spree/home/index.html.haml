@@ -11,7 +11,7 @@
     - if current_person.is_a?(Teacher)
       %p
         = t('.products_message', :scope => [store_type,current_person.type.downcase])
-        %a{:href => main_app.teachers_rewards_path, :class => 'btn awesome-button'} Add or Manage Your Rewards
+        %a{:href => main_app.teachers_reward_templates_path, :class => 'btn awesome-button'} Add or Manage Your Rewards
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 

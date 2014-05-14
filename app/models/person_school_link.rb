@@ -9,6 +9,7 @@ class PersonSchoolLink < ActiveRecord::Base
   include BasicStatuses
 
   after_create :setup_accounts
+  attr_accessor :skip_onboard_credits
 
   belongs_to :school
   belongs_to :person
@@ -18,9 +19,10 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :person_account_links
   has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
   has_many :reward_distributors
+  has_many :otu_codes
 
   attr_accessible :person_id, :school_id, :status, :person, :school
-  validates_presence_of :person, :school
+  validates_presence_of :person_id, :school_id
   validate :validate_unique_with_status
   #validate :email_taken?
   validate :username_taken?
@@ -48,46 +50,50 @@ class PersonSchoolLink < ActiveRecord::Base
     if person.is_a?(Teacher) || person.is_a?(SchoolAdmin)
       person.setup_accounts(school)
     end
+    if person.is_a?(Student) && !skip_onboard_credits
+      StudentOnboardCreditWorker.perform_async(school.id)
+    end
     connect_plutus_accounts unless person.is_a? LeAdmin
   end
 
   # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin
   # Not valid for LE Admins
   def connect_plutus_accounts
-    self.person.schools.each do |s|
-      main_account_id = self.person.main_account(s).id
-      accounts = self.person.accounts(s).collect {|a| a.id}
-      PersonAccountLink.where(:plutus_account_id => accounts).each do |pal|
-        pal.destroy
-      end
-      psl = self if self.school_id = s.id
-      psl ||= PersonSchoolLink.find_or_create_by_person_id_and_school_id(self.person.id,s.id)
-      accounts.each do |a|
-        pal = PersonAccountLink.create(person_school_link_id: psl.id, plutus_account_id: a, is_main_account: a == main_account_id)
-      end
+    return if self.person.class == Person
+    main_account_id = self.person.main_account(school).id
+    accounts = self.person.accounts(school).collect {|a| a.id}
+    PersonAccountLink.where(:plutus_account_id => accounts).each do |pal|
+      pal.destroy
+    end
+    accounts.each do |a|
+      pal = PersonAccountLink.create(person_school_link_id: self.id, plutus_account_id: a, is_main_account: a == main_account_id)
     end
   end
 
   ################### Validations ########################
-  #def email_taken?
-  #  if person.email.present?
-  #    if school.teachers.with_email(person.email).present?
-  #      errors.add(:base, "Email already assigned for this school.")
-  #    end
-  #    if school.students.with_email(person.email).present?
-  #      errors.add(:base, "Email already assigned for this school.")
-  #    end
-  #  else
-  #    return false
-  #  end
-  #end
+  def email_taken?
+    errors.add(:status, "Person must be present") and return unless person && person.user.email.present?
+    return if status == "inactive"
+    if person.is_a?(Student)
+      return false
+    else
+      if school.teachers.with_email(person.user.email).present?
+        errors.add(:base, "Email already assigned for this school.")
+      end
+    end
+  end
 
   def username_taken?
-    if school.teachers.with_username(person.username).present?
-      errors.add(:status, "Username already assigned for this school.")
+    errors.add(:status, "Person must be present") and return unless person && person.user.username
+    return if status == "inactive"
+    ignored_ids = [person.id]
+    @students = school.students.where("people.id NOT IN (?)", ignored_ids)
+    @teachers = school.students.where("people.id NOT IN (?)", ignored_ids)
+    if @teachers.with_username(person.user.username).present?
+      errors.add(:status, "Username already assigned for this school.") and return
     end
-    if school.students.with_username(person.username).present?
-      errors.add(:status, "Username already assigned for this school.")
+    if @students.with_username(person.user.username).present?
+      errors.add(:status, "Username already assigned for this school.") and return
     end
   end
 

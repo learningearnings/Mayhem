@@ -12,8 +12,12 @@ gem 'rake', '~> 10.1.0'
 # pinned us to 3.2.13 for now.  It affected the ActivityReport in particular.
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
+gem 'pg_search'
 gem 'exceptional'
+gem 'newrelic_rpm'
 gem 'transaction_retry'
+gem 'uuidtools'
+gem 'chronic'
 
 # for importing
 #gem 'mysql2'
@@ -27,14 +31,13 @@ gem 'jquery-rails', :github => 'learningearnings/jquery-rails', :branch => 'svgw
 
 gem 'jquery-ui-rails'
 
-gem 'detect_timezone_rails'
-
 gem 'activeadmin'
 gem 'activeadmin-extra', :github => 'stefanoverna/activeadmin-extra'
 gem 'cancan'
 gem 'devise'
 
 gem 'whenever', :require => false
+gem 'sidekiq'
 
 gem 'therubyracer'
 
@@ -56,6 +59,7 @@ gem 'high_voltage'
 
 # haml is a templating language we use extensively / exclusively on this project
 gem 'haml-rails', '~> 0.3.5'
+gem 'rdiscount'
 
 # whereabouts is an isotope11 open source gem to provide drop in geolocated polymorphi addresses
 gem 'whereabouts', '~> 0.9.0'
@@ -103,7 +107,9 @@ gem 'state_machine'
 gem 'spree', '1.2.0'
 gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref => 'eb0f30380dc83390b52939195bf92b4195f5c5a3'
 
+gem 'sinatra'
 gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
+gem 'valid_email'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
@@ -117,6 +123,7 @@ group :assets do
   #gem "compass_twitter_bootstrap", :git => "git://github.com/learningearnings/compass-twitter-bootstrap.git", :tag => "MayhemV1"
   gem "compass_twitter_bootstrap", :github => "learningearnings/compass-twitter-bootstrap"
   gem 'turbo-sprockets-rails3'
+  gem "sprockets-image_compressor", "~> 0.2.2"
 end
 
 # Use unicorn as the app server
@@ -140,15 +147,16 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-rails'
   gem 'letter_opener'
   gem 'unicorn'
   #gem 'thin'
   gem 'tconsole'
   gem 'minitest', '~> 3.2.0'
-  gem 'minitest-reporters', '~> 0.8.0'
+  gem 'minitest-reporters'
   gem 'minitest-matchers', '~> 1.2.0'
   gem 'spinach', '~> 0.5.2'
-  gem 'database_cleaner', '~> 0.8.0'
+  gem 'database_cleaner', '~> 1.2.0'
   gem 'spinach-rails', '~> 0.1.7'
   gem 'launchy'
   gem 'capybara'
@@ -157,12 +165,12 @@ group :test do
   gem 'mocha', '~> 0.14.0', :require => false
   gem 'valid_attribute', :github => 'learningearnings/valid_attribute', :branch => 'minitest-matchers-11'
   gem 'factory_girl_rails'
-  gem 'libnotify'
-  gem 'rb-fsevent', '~> 0.9.1'
-  gem 'rb-inotify', '~> 0.8.8', :require => linux_only('rb-inotify')
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
+  gem 'faker'
+  gem 'spork-rails'
+  gem 'timecop'
 end
 
 gem "coffee-filter", '~> 0.1.3'
@@ -171,3 +179,8 @@ gem "coffee-filter", '~> 0.1.3'
 gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
+gem 'httparty'
+
+gem 'oboe', '~> 2.4.0.1' # for tracelytics
+
+gem 'nokogiri', '~> 1.5.10'

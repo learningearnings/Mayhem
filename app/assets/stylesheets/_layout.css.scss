@@ -28,10 +28,95 @@
 
 /* Variables */
 $how-to-active-color: #f05c1a;
+.orange {
+  color: #EA4E08 !important;
+}
 
+#reward_template_listings {
+  margin-left: 80px;
+}
+
+.reward-template-instructions {
+  display: block;
+  width: 70%;
+  font-size: 14px;
+}
+
+.custom-reward-button {
+  margin-top: 10px !important;
+  margin-left: 40px !important;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
 
 body {
   font-size: 62.5%;
+}
+
+.sti_table_heading {
+  font-size: 16px;
+}
+
+.sketch_font  {
+  margin-top: 20px;
+  font-family: SketchRockwell;
+  font-size: 25pt;
+  width:110%;
+  color: rgb(228,30,31)
+}
+
+.sketch_font2  {
+  margin-top: 5px;
+  font-family: SketchRockwell;
+  font-size: 22pt;
+  width:110%;
+  color: rgb(228,30,31)
+}
+
+.king_font  {
+  margin-left: 5px;
+  font-weight: bold;
+  font-family: king_cool_kcregular;
+  margin-top: 20px;
+  font-size: 24pt;
+  color: rgb(241,201,252)
+}
+
+.king_font_welcome  {
+  margin-left: 5px;
+  font-weight: bold;
+  font-family: king_cool_kcregular;
+  margin-top: 20px;
+  font-size: 18pt;
+  color: rgb(9,126,186)
+}
+
+.king_font_thanks  {
+
+  text-align: center;
+  font-weight: bold;
+  font-family: king_cool_kcregular;
+  font-size: 16pt;
+}
+
+.sketch_font_welcome  {
+  font-family: SketchRockwell;
+  font-size: 20pt;
+  text-align: center;
+  width:160%;
+  color: rgb(161, 72, 245);
+  margin-top: 10px;
+  margin-left: -60px;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -69,6 +154,16 @@ h4 {
  color: #08C;
 }
 
+.blue_color {
+ color: #08C;
+ font-size: 18px;
+ font-family: sketch_rockwellregular;
+}
+
+.black_color {
+ font-size: 18px;
+ font-family: sketch_rockwellregular;
+}
 
 
 html, body {
@@ -570,6 +665,13 @@ html.resp, body.resp {
   background-image: url(asset_path('locker_selected.png', image));
   background-repeat: no-repeat;
   color: #EB731C
+}
+
+.primary-nav {
+  .manage_students-selected, .manage_students:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
 }
 
 .primary-nav .bank {
@@ -1664,13 +1766,14 @@ h3 {
 }
 
 .featured-activity {
+  font-size: 1.5em;
   background-image: url(asset_path('featured_activity.png', image));
   position: absolute;
   width: 256px;
   height: 262px;
   top: 280px;
   left: 140px;
-  padding: 50px 70px 30px 30px;
+  padding: 60px 20px 30px 30px;
 }
 
 .featured-activity-callout {
@@ -1700,12 +1803,13 @@ h3 {
     height: 262px;
   }
   .our-sponsors {
+    font-size: 1.4em;
     background-image: url(asset_path('our_sponsors.png', image));
     background-repeat: no-repeat;
     position: relative;
     width: 291px;
     height: 251px;
-    padding: 45px 120px 30px 30px;
+    padding: 45px 90px 0px 20px;
   }
   .our-sponsors-callout {
     position: absolute;
@@ -2126,4 +2230,44 @@ dl.details {
       width: 205px;
     }
   }
+}
+
+.auction_product a {
+  color: black;
+}
+
+.sponsor-list {
+  margin: -10px 0 0 0;
+  white-space:nowrap;
+}
+
+.welcome-callout {
+  margin: -10px 0 0 0;
+}
+
+.welcome-sticky {
+  font-size: 80%;
+}
+
+#reward-templates #template-controls {
+  padding: 30px 0 0 100px; 
+}
+
+#reward-templates-grid {
+  width:100%;
+  height:auto;
+  margin: 0 0 10px 0;
+}
+#reward-templates-grid .template-row {
+  width:100%;
+  margin: 7px 0;
+  padding: 20px 0 0 5px; 
+  float:left;
+  text-align:center;
+}
+#reward-templates-grid .template-row .template {
+  float:right;
+  border:none;
+  width:300px;
+  text-align:center;
 }

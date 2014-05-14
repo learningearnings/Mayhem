@@ -1,12 +1,15 @@
+require 'uuidtools'
+
 class Code < ActiveRecord::Base
   scope :active,  lambda { where("active = ?", true) }
-  after_create :gen_code
+  before_validation :gen_code, :on => :create
+  validates_uniqueness_of :code
 
   attr_accessible :used_date, :active
 
   def gen_code
     _code = Code.generate_code(self.id)
-    self.update_attribute(:code, _code)
+    write_attribute(:code, _code)
   end
 
   def self.reverse_code(code)
@@ -19,7 +22,7 @@ class Code < ActiveRecord::Base
 
 
   def self.generate_code(id)
-    ("%6s" % id.to_s(30)).tr(ambiguous_letters, ambiguous_letter_replacements).upcase
+    UUIDTools::UUID.random_create.to_s[0..6].upcase
   end
 
   def self.ambiguous_letters

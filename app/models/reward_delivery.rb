@@ -5,9 +5,12 @@ class RewardDelivery < ActiveRecord::Base
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
   belongs_to :reward, class_name: "Spree::LineItem", foreign_key: :reward_id
 
+  scope :order_by_student_last_name, lambda { order("people.last_name") }
   scope :order_by_student_grade, lambda { order(:to => :grade) }
   scope :newest_orders, lambda { order("reward_deliveries.created_at DESC") }
   scope :oldest_orders, lambda { order("reward_deliveries.created_at ASC") }
+  scope :between, lambda { |start_date, end_date| where(arel_table[:created_at].gteq(start_date)).where(arel_table[:created_at].lteq(end_date)) }
+  scope :in_last_7_days, lambda { between(7.days.ago, Time.zone.now) }
 
   validates :from_id,   presence: true
   validates :to_id,     presence: true
@@ -28,6 +31,7 @@ class RewardDelivery < ActiveRecord::Base
   scope :pending,  where(status: 'pending')
   scope :delivered, where(status: 'delivered')
   scope :refunded, where(status: 'refunded')
+  scope :except_refunded, lambda { where(self.arel_table[:status].not_eq('refunded'))}
 
   def refund_purchase
     if self.reward.order.payment.state != "void"

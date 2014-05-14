@@ -1,11 +1,17 @@
 class Teacher < Person
-#  has_many :schools, :through => :person_school_links
-  attr_accessible :username, :password, :password_confirmation, :email, :gender
-  attr_accessible :status, :can_distribute_credits, :as => :admin
+  has_many :schools, :through => :person_school_links
+  attr_accessor :username, :password, :password_confirmation, :email
+  attr_accessible :gender, :email, :username, :game_challengeable, :can_distribute_credits
+  attr_accessible :status, :can_distribute_credits, :game_challengeable, :as => :admin
   validates_presence_of :grade
   after_create :create_user
 
+  scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
+  scope :awaiting_approval, lambda{ where('status = ?', 'awaiting_approval')}
+  scope :not_awaiting_approval, lambda{ where('status != ?', 'awaiting_approval')}
+
   has_many :reward_distributors, :through => :person_school_links
+  has_many :otu_codes, through: :person_school_links
 
   before_create :set_status_to_active
 
@@ -16,7 +22,7 @@ class Teacher < Person
   end
 
   def set_status_to_active
-    self.status = 'active' # Teachers should default to active
+    self.status = 'active'
   end
 
   def primary_account
@@ -107,9 +113,12 @@ class Teacher < Person
       else
         user = Spree::User.create(:username => 'test_user', :email => "test_user@example.com", :password => 'test123', :password_confirmation => 'test123')
       end
-      user.person_id = self.id
-      user.save
+    else
+      user = self.user
+      user.update_attributes(:username => username, :email => email, :password => password, :password_confirmation => password_confirmation)
     end
+    user.person_id = self.id
+    user.save
   end
 
   def peers_at(school)

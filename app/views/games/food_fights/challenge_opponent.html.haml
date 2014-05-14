@@ -17,6 +17,14 @@
         .name= student.name
   = paginate @students
 
+  %h4 All Teachers
+  %ul.student_list
+    - (@teachers).each do |teacher|
+      %li.student_hover{ id: teacher.id }
+        .avatar= avatar_for(teacher)
+        .name= teacher.name
+  = paginate @teachers
+
 
 :javascript
   $(".student_hover").hover(

@@ -24,11 +24,11 @@ class School < ActiveRecord::Base
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
   has_many :reward_exclusions
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
-                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id
+                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
@@ -41,7 +41,13 @@ class School < ActiveRecord::Base
   after_create :ensure_accounts
   after_create :set_default_subdomain
 
+  before_create :set_status_to_active
+
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
+
+  def set_status_to_active
+    self.status = 'active' # Students should default to active
+  end
 
   def address=(newaddress)
     addresses << newaddress
@@ -110,7 +116,7 @@ class School < ActiveRecord::Base
     Student.joins(:person_school_links).merge(person_school_links(status)).send(status)
   end
   def active_students
-    (self.students.recent + self.students.logged).uniq
+    (self.students.recent + self.students.recently_logged_in).uniq
   end
 
   # End Relationships
@@ -148,7 +154,7 @@ class School < ActiveRecord::Base
   end
 
   def name_and_location
-    [name, city, state.name].join(", ").truncate(28)
+    [name, city, state.name].join(", ")
   end
 
   def first_address
@@ -159,7 +165,7 @@ class School < ActiveRecord::Base
     @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
     @distributing_teachers = self.teachers if @distributing_teachers.blank?
-    @distributing_teachers
+    @distributing_teachers.compact
   end
 
   private
