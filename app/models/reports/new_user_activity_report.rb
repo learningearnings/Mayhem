@@ -27,7 +27,7 @@ module Reports
         School.find_each do |school|
           teacher_scope = school.teachers
           student_scope = school.students
-          next if teacher_scope.count == 0 && student_scope.count  == 0
+          next if teacher_scope.count == 0 || student_scope.count  == 0
           otu_code_scope = OtuCode.for_school(school)
           reward_delivery_scope = RewardDelivery.where(from_id: school.teachers.pluck(:id))
           csv << build_row(school.name, teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
