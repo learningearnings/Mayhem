@@ -102,7 +102,7 @@
               <input type='text' name='credits[{{id}}]' class='classroom_student_points' />
             </td>
             <td>
-              #{select_tag 'credit_reasons[{{id}}]', options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), class: "classroom_student_reasons", id: "classroom_otu_code_category_{{id}}"}
+              #{select_tag 'credit_categories[{{id}}]', options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), class: "classroom_student_reasons", id: "classroom_otu_code_category_{{id}}"}
             </td>
           </tr>
         {{/students}}

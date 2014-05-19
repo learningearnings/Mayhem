@@ -27,6 +27,7 @@ module Reports
         School.find_each do |school|
           teacher_scope = school.teachers
           student_scope = school.students
+          next if teacher_scope.count == 0 || student_scope.count  == 0
           otu_code_scope = OtuCode.for_school(school)
           reward_delivery_scope = RewardDelivery.where(from_id: school.teachers.pluck(:id))
           csv << build_row(school.name, teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
@@ -47,9 +48,9 @@ module Reports
         csv_array << active(student_scope)
         csv_array << new(student_scope)
         csv_array << total_redemptions(reward_delivery_scope)
-        csv_array << otu_code_scope.active.sum(:points)
-        csv_array << otu_code_scope.sum(:points)
-        csv_array << otu_code_scope.inactive.sum(:points)
+        csv_array << otu_code_scope.created_between(30.days.ago.beginning_of_day, Time.zone.now).active.sum(:points)
+        csv_array << otu_code_scope.created_between(30.days.ago.beginning_of_day, Time.zone.now).sum(:points)
+        csv_array << otu_code_scope.created_between(30.days.ago.beginning_of_day, Time.zone.now).inactive.sum(:points)
       end
     end
 
@@ -66,7 +67,7 @@ module Reports
     end
 
     def total_redemptions scope
-      scope.except_refunded.count
+      scope.except_refunded.between(30.days.ago, Time.zone.now).count
     end
   end
 end

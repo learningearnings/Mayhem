@@ -452,6 +452,7 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+    t.string   "reason"
     t.integer  "otu_code_category_id"
   end
 
@@ -481,10 +482,6 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.boolean  "can_distribute_credits",                                                :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-<<<<<<< HEAD
-    t.boolean  "game_challengeable",                                                    :default => false
-=======
->>>>>>> master
     t.integer  "sti_id"
     t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"

@@ -74,7 +74,8 @@ module Mixins
           students = current_person.schools.first.students.where(:id => params[:credits].keys)
           students.each do |student|
             student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
-            issue_ebucks_to_student(student, student_credits) if student_credits > 0
+            category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
+            issue_ebucks_to_student(student, student_credits, category_id) if student_credits > 0
           end
           if failed
             raise ActiveRecord::Rollback
@@ -117,8 +118,8 @@ module Mixins
           classroom.students.each do |student|
             if params[:credits][student.id.to_s].present?
               student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
-              reason_id = params[:credit_reasons][student.id.to_s]
-              issue_ebucks_to_student(student, student_credits, reason_id) if student_credits.to_i > 0
+              category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
+              issue_ebucks_to_student(student, student_credits, category_id) if student_credits.to_i > 0
             end
           end
           if failed
