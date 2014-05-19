@@ -39,7 +39,7 @@ module Mixins
         get_buck_batches
         get_bank
         student = Student.find(params[:student][:id])
-        reason_id = params["otu_code"]["otu_code_category_id"]
+        reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
         issue_ebucks_to_student(student, params[:points],reason_id)
       else
         flash[:error] = "Please ensure a student is selected and an amount is entered."
