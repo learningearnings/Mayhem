@@ -23,12 +23,14 @@
           %tr
             %th Source
             %th Date
+            %th Reason
             %th{ colspan: 99 } Amount
         %tbody
           - @unredeemed_bucks.each do |buck|
             %tr
               %td= buck.source_string
               %td= buck.created_at.to_s(:db)
+              %td= buck.otu_code_category ? buck.otu_code_category.name : "N/A"
               %td= number_with_precision(buck.points, precision: 2, delimiter: ',')
               %td= link_to("Claim Credits", redeem_buck_path(current_person.id, buck.code), class: 'btn awesome-button') rescue 'error because no buck code...'
       .actions
