@@ -39,7 +39,7 @@ class Bank
                    :ebuck => true,
                    :otu_code_category_id => category_id}
     buck = create_buck(prefix, points, buck_params)
-    @credit_manager.purchase_ebucks(school, person, student, points)
+    @credit_manager.purchase_ebucks(school, person, student, points, buck)
 
     # NOTE: This message sending isn't really the bank's responsibility imo, but i'll
     # leave it here for now - ja

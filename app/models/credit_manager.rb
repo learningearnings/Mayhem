@@ -78,8 +78,8 @@ class CreditManager
     transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account(school), teacher.unredeemed_account(school), amount, buck_batch
    end
 
-  def purchase_ebucks school, teacher, student, amount
-    transfer_credits "Teacher#{teacher.id} ebucks for Student#{student.id}", teacher.main_account(school), teacher.undeposited_account(school), amount
+  def purchase_ebucks school, teacher, student, amount, otu_code = nil
+    transfer_credits "Teacher#{teacher.id} ebucks for Student#{student.id}", teacher.main_account(school), teacher.undeposited_account(school), amount, otu_code
    end
 
   def transfer_credits_to_teacher school, from_teacher, to_teacher, amount
