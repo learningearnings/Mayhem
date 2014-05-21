@@ -95,14 +95,23 @@
 
 :javascript
   $(document).ready( function () {
+    var sort = eval($.cookie('purchases_report_order'));
+    sort = sort ? sort : [[0,"desc",0], [1, "desc", 0]]
     $('#report_table').dataTable( {
       "aoColumnDefs": [
         { 'bSortable': false, 'aTargets': [ 8, 9, 10 ] }
        ],
       "bPaginate": false,
-      "bInfo": false
+      "bInfo": false,
+      "bSort": true,
+      "aaSorting": sort
     } );
+
+    $('#report_table').on('sort.DT', function(e,d) {
+      $.cookie('purchases_report_order', JSON.stringify(d.aaSorting));
+    });
   } );
+
 :plain
   <script type="text/javascript">
     function toggleAll(name) {
