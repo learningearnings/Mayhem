@@ -6,4 +6,6 @@ class OtuCodeCategory < ActiveRecord::Base
   belongs_to :otu_code_type
   has_many :otu_codes
 
+  default_scope { joins(:otu_code_type).order("otu_code_types.name, otu_code_categories.name") }
+
 end
