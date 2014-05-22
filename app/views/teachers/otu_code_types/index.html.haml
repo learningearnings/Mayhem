@@ -31,6 +31,16 @@
 
 :javascript
 
+  $(document).ready(function() {
+    $('#new_otu_code_category').on('submit', function(e) {
+      if ($('#otu_code_category_name').val() === "") {
+        alert("You must provide a category name");
+        e.preventDefault();
+        return false;
+      }
+    });
+  });
+
   function show_category_form() {
     $('.new-category-form').show();
   }
