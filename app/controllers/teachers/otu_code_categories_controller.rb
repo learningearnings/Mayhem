@@ -6,7 +6,7 @@ module Teachers
 
     def create
       if params[:otu_code_category_id].present?
-        @category = OtuCodeCategory.find(params[:otu_code_category_id])
+        @category = OtuCodeCategory.unscoped.find(params[:otu_code_category_id])
         if @category.update_attributes(params[:otu_code_category])
           flash[:notice] = 'Category Updated'
           redirect_to teachers_otu_code_types_path
