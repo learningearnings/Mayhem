@@ -40,7 +40,7 @@ namespace :le do
   desc "User Activity Report"
   task :user_activity_report => :environment do
     filename = "user_activity_report_#{Time.zone.now.strftime("%m_%d")}.csv"
-    File.open("tmp/" + filename, "w") {|f| Reports::NewUserActivityReport.new.run }
+    File.open("/tmp/" + filename, "w") {|f| Reports::NewUserActivityReport.new.run }
     AdminMailer.user_activity_report(filename).deliver
   end
 
