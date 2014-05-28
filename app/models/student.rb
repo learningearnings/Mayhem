@@ -29,6 +29,12 @@ class Student < Person
     checking_account
   end
 
+  def associate_accounts
+    self.checking_account_id = checking_account.id
+    self.savings_account_id = savings_account.id
+    self.save(:validate => false)
+  end
+
   def school
     schools.first
   end
@@ -106,11 +112,15 @@ class Student < Person
   end
 
   def checking_balance
-    checking_account.balance
+    balance = checking_account.balance
+    checking_account.update_attribute(:cached_balance, balance)
+    balance
   end
 
   def savings_balance
-    savings_account.balance
+    balance = savings_account.balance
+    savings_account.update_attribute(:cached_balance, balance)
+    balance
   end
 
   def hold_balance
