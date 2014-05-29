@@ -25,6 +25,18 @@ describe Reports::NewUserActivityReport do
     @global_row = report.send(:build_global_row)
   end
 
+  it "should show the approriate new teachers a year ago" do
+    report = Reports::NewUserActivityReport.new :ending_day => 1.year.ago + 1.day
+    old_row = report.send(:build_global_row)
+    expect(old_row[4]).to eq(1)
+  end
+
+  it "should show the appropriate amount of total teachers a year ago" do
+    report = Reports::NewUserActivityReport.new :ending_day => 1.year.ago + 1.day
+    old_row = report.send(:build_global_row)
+    expect(old_row[2]).to eq(1)
+  end
+
   it "should show the appropriate amount of total teachers" do
     expect(@global_row[2]).to eq(3)
   end

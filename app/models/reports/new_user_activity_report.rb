@@ -73,7 +73,7 @@ module Reports
     end
 
     def total scope
-      scope.count
+      scope.created_before(ending_day).count
     end
 
     def active scope
@@ -81,7 +81,7 @@ module Reports
     end
 
     def new scope
-      scope.created_between(7.days.ago, ending_day).count
+      scope.created_between(ending_day - 7.days, ending_day).count
     end
 
     def total_redemptions scope
