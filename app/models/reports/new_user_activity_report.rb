@@ -3,7 +3,7 @@ module Reports
 
     def run
       csv = CSV.generate do |csv|
-        csv << ["", "", "Total Teachers", "Active Teachers", "New Teachers", "Total Students", "Active Students", "New Students", "Total Reemptions", "Total Outstanding Credits", "Credits Issued", "Credits Redeemed"]
+        csv << ["", "", "Teachers Count", "30 Day Active Teachers", "7 Day New Teachers", "Students Count", "30 Day Active Students", "7 Day New Students", "30 Day Purchases Count", "Student Balance", "30 Day Credits Deposited", "30 Day Credits Spent"]
 
         csv << build_global_row
 
