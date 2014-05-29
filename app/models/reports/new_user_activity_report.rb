@@ -1,5 +1,10 @@
 module Reports
   class NewUserActivityReport
+    attr_reader :ending_day
+
+    def initialize options = {}
+      @ending_day = options.fetch(:ending_day, Time.zone.now).end_of_day
+    end
 
     def run
       csv = CSV.generate do |csv|
@@ -62,8 +67,8 @@ module Reports
         csv_array << new(student_scope)
         csv_array << total_redemptions(reward_delivery_scope)
         csv_array << Plutus::Account.where(id: student_scope.pluck(:checking_account_id) + student_scope.pluck(:savings_account_id)).sum(:cached_balance)
-        csv_array << otu_code_scope.redeemed_between(30.days.ago.beginning_of_day, Time.zone.now).sum(:points)
-        csv_array << Spree::LineItem.where(id: reward_delivery_scope.except_refunded.between(30.days.ago, Time.zone.now).pluck(:reward_id)).sum(:price)
+        csv_array << otu_code_scope.redeemed_between(ending_day - 30.days, ending_day).sum(:points)
+        csv_array << Spree::LineItem.where(id: reward_delivery_scope.except_refunded.between(ending_day - 30.days, ending_day).pluck(:reward_id)).sum(:price)
       end
     end
 
@@ -72,15 +77,15 @@ module Reports
     end
 
     def active scope
-      scope.recently_logged_in.count
+      scope.logged_in_between(ending_day - 1.month, ending_day).count
     end
 
     def new scope
-      scope.created_between(7.days.ago, Time.zone.now).count
+      scope.created_between(7.days.ago, ending_day).count
     end
 
     def total_redemptions scope
-      scope.except_refunded.between(30.days.ago, Time.zone.now).count
+      scope.except_refunded.between(ending_day - 30.days, ending_day).count
     end
   end
 end
