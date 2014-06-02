@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140528145201) do
+ActiveRecord::Schema.define(:version => 20140602134555) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -1338,6 +1338,9 @@ ActiveRecord::Schema.define(:version => 20140528145201) do
     t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "school_id"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
   end
 
   create_table "sync_attempts", :force => true do |t|

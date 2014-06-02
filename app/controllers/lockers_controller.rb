@@ -6,7 +6,23 @@ class LockersController < LoggedInController
 
   def edit
     locker_sticker_links = load_locker_sticker_links
-    available_stickers = Sticker.all
+    arel_table         = Sticker.arel_table
+    available_stickers = Sticker.
+      where(
+        arel_table[:school_id].eq(nil).
+        or(
+          arel_table[:school_id].eq(current_school.id)
+        )
+      ).where(
+        arel_table[:min_grade].eq(nil).
+        and(
+          arel_table[:max_grade].eq(nil)
+        ).
+        or(
+          arel_table[:min_grade].lteq(current_person.grade).
+          and(arel_table[:max_grade].gteq(current_person.grade))
+        )
+      )
     render 'edit', locals: { locker_sticker_links: locker_sticker_links, available_stickers: available_stickers }
   end
 
@@ -31,7 +47,6 @@ class LockersController < LoggedInController
   private
   def load_locker_sticker_links
     locker = current_person.locker
-    locker_sticker_links = locker.locker_sticker_links.joins(:sticker)
-    return locker_sticker_links
+    locker.locker_sticker_links.joins(:sticker)
   end
 end
