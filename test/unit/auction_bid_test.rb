@@ -33,11 +33,5 @@ describe AuctionBid do
       subject.status.must_equal 'open'
       subject.open?.must_equal true
     end
-
-    it "transitions to an `invalidated` state with #invalidate!" do
-      bid = FactoryGirl.create(:auction_bid)
-      bid.invalidate!
-      bid.status.must_equal 'invalidated'
-    end
   end
 end

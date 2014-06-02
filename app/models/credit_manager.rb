@@ -70,12 +70,16 @@ class CreditManager
     transfer_credits "Revoke Credits for Student", student.checking_account, main_account, amount
   end
 
+  def teacher_revoke_credits_from_student(school, teacher, student, amount)
+    transfer_credits "Revoke Credits for Student", teacher.main_account(school), student.checking_account, amount
+  end
+
   def purchase_printed_bucks school, teacher, amount, buck_batch=nil
     transfer_credits "Teacher#{teacher.id} printed bucks", teacher.main_account(school), teacher.unredeemed_account(school), amount, buck_batch
    end
 
-  def purchase_ebucks school, teacher, student, amount
-    transfer_credits "Teacher#{teacher.id} ebucks for Student#{student.id}", teacher.main_account(school), teacher.undeposited_account(school), amount
+  def purchase_ebucks school, teacher, student, amount, otu_code = nil
+    transfer_credits "Teacher#{teacher.id} ebucks for Student#{student.id}", teacher.main_account(school), teacher.undeposited_account(school), amount, otu_code
    end
 
   def transfer_credits_to_teacher school, from_teacher, to_teacher, amount
@@ -91,6 +95,10 @@ class CreditManager
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
 
+  def monthly_credits_for_onboarded_student_to_teacher school, teacher, amount
+    transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
+  end
+
   def issue_interest_to_student student, amount
     transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount
   end
@@ -103,16 +111,16 @@ class CreditManager
     transfer_credits "Issue Credits to Student", teacher.unredeemed_account(school), student.checking_account, amount
   end
 
-  def issue_ecredits_to_student school, teacher, student, amount
-    transfer_credits "Issue Credits to Student", teacher.undeposited_account(school), student.checking_account, amount
+  def issue_ecredits_to_student school, teacher, student, amount, otu_code=nil
+    transfer_credits "Issue Credits to Student", teacher.undeposited_account(school), student.checking_account, amount, otu_code
   end
 
   def issue_admin_credits_to_student student, amount
     transfer_credits "Credits issued by LearningEarnings Administrator", main_account, student.checking_account, amount
   end
 
-  def issue_game_credits_to_student game_string, student, amount
-    transfer_credits "Credits Earned for #{game_string}", game_account, student.checking_account, amount
+  def issue_game_credits_to_student game_string, student, amount, otu_code = nil
+    transfer_credits "Credits Earned for #{game_string}", game_account, student.checking_account, amount, otu_code
   end
 
   def transfer_credits_for_local_purchase student, teacher, amount, document = nil

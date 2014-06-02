@@ -5,6 +5,6 @@ class CharitiesController < LoggedInController
   end
   def print
     charities = Plutus::Transaction.where(:id => params[:id]).with_spree_products.merge(Spree::Product.with_property_value('reward_type','charity'))
-    render 'print', locals: {charity: charities.first}
+    render 'print', locals: {charity: charities.first, name: current_person.name}
   end
 end

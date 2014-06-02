@@ -1,6 +1,21 @@
 ActiveAdmin.register School do
 
+  config.action_items.delete_if { |item| item.display_on?(:show) }
+
+  action_item do
+    if current_page?(:action => 'show') && !school.district_guid.present?
+      link_to 'Edit School', edit_admin_school_path(school)
+    end
+  end
+  action_item do
+    if current_page?(:action => 'show') && !school.district_guid.present?
+      link_to "Delete School", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
+    end
+  end
+
   filter :name
+  filter :district_guid
+  filter :sti_id
   filter :state
 
   index do
@@ -23,7 +38,19 @@ ActiveAdmin.register School do
     column :timezone
     column "Distribution",:distribution_model
     column :store_subdomain
-    default_actions
+    column "STI District GUID", :district_guid
+    column "STI id", :sti_id
+    #default_actions
+    column :actions do |resource|
+      links = link_to I18n.t('active_admin.view'), resource_path(resource)
+      links += ' '
+      if !resource.district_guid.present?
+        links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)
+        links += ' '
+        links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
+      end
+      links
+    end
   end
 
   form :partial => 'form'
@@ -47,7 +74,7 @@ ActiveAdmin.register School do
     current_row = []
     row_number = column_number = 0
     teacher_count = school.teachers.count
-    school.teachers.status_active.each do |t|
+    school.teachers.order([:last_name, :first_name]).status_active.each do |t|
       current_row[column_number] = t
       if (column_number += 1) > 7
         column_number = 0
@@ -61,7 +88,7 @@ ActiveAdmin.register School do
     current_row = []
     row_number = column_number = 0
     student_count = school.students.status_active.count
-    school.students.includes(:user).status_active.each do |s|
+    school.students.order([:last_name, :first_name]).includes(:user).status_active.each do |s|
       current_row[column_number] = s
       if (column_number += 1) > 7
         column_number = 0

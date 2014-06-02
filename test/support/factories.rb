@@ -3,6 +3,8 @@ FactoryGirl.define do
     first_name "Testy"
     last_name "McTesterson"
     association :user, factory: :spree_user
+    sequence(:email) {|n| "fooperson#{n}@bar.com"}
+    sequence(:username) {|n| "fooperson#{n}"}
 
     factory :student, class: Student do
       sequence(:first_name) {|n| "Student #{n}"}
@@ -147,6 +149,7 @@ FactoryGirl.define do
 
   factory :classroom do
     sequence(:name) {|n| "Test Classroom #{n}"}
+    school
   end
 
   factory :address do
@@ -211,13 +214,6 @@ FactoryGirl.define do
     person
   end
 
-  factory :otu_code do
-    code            "test"
-    person_school_link
-    student
-    points          BigDecimal("5")
-    expires_at      Time.now + 5.days
-  end
 
   factory :auction do
     start_date Time.now - 1.days

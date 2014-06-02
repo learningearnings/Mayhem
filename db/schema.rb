@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140116170853) do
+ActiveRecord::Schema.define(:version => 20140528145201) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "processed"
   end
 
   create_table "ckeditor_assets", :force => true do |t|
@@ -156,6 +157,16 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.integer  "legacy_classroom_id"
     t.integer  "processed"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
+  end
+
+  add_index "classrooms", ["district_guid", "sti_id"], :name => "index_classrooms_on_district_guid_and_sti_id"
+
+  create_table "code_entry_failures", :force => true do |t|
+    t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "codes", :force => true do |t|
@@ -204,6 +215,8 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
   end
+
+  add_index "food_fight_players", ["food_fight_match_id"], :name => "index_food_fight_players_on_food_fight_match_id"
 
   create_table "food_person_links", :force => true do |t|
     t.integer  "person_id"
@@ -325,6 +338,8 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.datetime "updated_at",           :null => false
   end
 
+  add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
+
   create_table "local_reward_categories", :force => true do |t|
     t.string   "name"
     t.string   "image_uid"
@@ -380,6 +395,8 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
   end
 
   add_index "messages", ["category"], :name => "index_messages_on_category"
+  add_index "messages", ["to_id", "category", "status"], :name => "index_messages_on_to_id_and_category_and_status"
+  add_index "messages", ["to_id", "status"], :name => "index_messages_on_to_id_and_status"
 
   create_table "monikers", :force => true do |t|
     t.string   "state"
@@ -389,6 +406,20 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.integer  "person_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "otu_code_categories", :force => true do |t|
+    t.string   "name"
+    t.integer  "otu_code_type_id"
+    t.integer  "person_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "otu_code_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "otu_codes", :force => true do |t|
@@ -403,6 +434,7 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+    t.integer  "otu_code_category_id"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
@@ -431,9 +463,14 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
     t.boolean  "game_challengeable",                   :default => false
+    t.string   "district_guid"
+    t.integer  "checking_account_id"
+    t.integer  "savings_account_id"
   end
 
+  add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
   add_index "people", ["legacy_user_id"], :name => "ppl_legacy_user_id", :unique => true
   add_index "people", ["type"], :name => "index_people_on_type"
 
@@ -483,6 +520,7 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.boolean  "homeroom"
   end
 
+  add_index "person_school_classroom_links", ["person_school_link_id", "classroom_id"], :name => "pscl_pscli_ci"
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
 
   create_table "person_school_links", :force => true do |t|
@@ -500,8 +538,9 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.string   "name"
     t.string   "type"
     t.boolean  "contra"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.decimal  "cached_balance", :precision => 20, :scale => 10
   end
 
   add_index "plutus_accounts", ["name", "type"], :name => "index_plutus_accounts_on_name_and_type"
@@ -576,6 +615,17 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.integer "product_id"
   end
 
+  create_table "reward_templates", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.decimal  "price"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.string   "image_uid"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -608,8 +658,8 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -618,6 +668,9 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.integer  "state_id"
     t.string   "zip"
     t.string   "sti_uuid"
+    t.integer  "sti_id"
+    t.string   "district_guid"
+    t.boolean  "can_revoke_credits", :default => false
   end
 
   create_table "site_settings", :force => true do |t|
@@ -873,6 +926,8 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.string   "avs_response"
   end
 
+  add_index "spree_payments", ["order_id", "state"], :name => "index_spree_payments_on_order_id_and_state"
+
   create_table "spree_pending_promotions", :force => true do |t|
     t.integer "user_id"
     t.integer "promotion_id"
@@ -1062,6 +1117,7 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
   end
 
   add_index "spree_shipments", ["number"], :name => "index_shipments_on_number"
+  add_index "spree_shipments", ["order_id", "state"], :name => "index_spree_shipments_on_order_id_and_state"
 
   create_table "spree_shipping_categories", :force => true do |t|
     t.string   "name"
@@ -1204,6 +1260,7 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.string   "api_key",                :limit => 48
     t.integer  "person_id"
     t.string   "username"
+    t.boolean  "api_user"
   end
 
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
@@ -1267,10 +1324,30 @@ ActiveRecord::Schema.define(:version => 20140116170853) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "sti_link_tokens", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "api_url"
+    t.string   "link_key"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "username"
+    t.string   "password"
+  end
+
   create_table "stickers", :force => true do |t|
     t.string   "image_uid"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "sync_attempts", :force => true do |t|
+    t.string   "district_guid"
+    t.string   "status"
+    t.string   "sync_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "error"
+    t.text     "backtrace"
   end
 
   create_table "uploaded_users", :force => true do |t|

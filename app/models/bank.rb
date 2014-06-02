@@ -17,28 +17,29 @@ class Bank
     PersonBuckBatchLink.create(:person_school_link_id => p_school_link.id, :buck_batch_id => batch.id)
   end
 
-  def create_print_bucks(person, school, prefix, bucks={})
+  def create_print_bucks(person, school, prefix, bucks={}, batch)
     points  = amount_of_bucks(bucks)
     account = person.main_account(school)
     return on_failure.call unless account_has_enough_money_for(account, points)
 
     # creates and returns bucks array
-    batch = create_bucks_in_batch(person, school, prefix, bucks)
+    batch = create_bucks_in_batch(person, school, prefix, bucks, batch)
 
     @credit_manager.purchase_printed_bucks(school, person, points, batch)
     return on_success.call batch
   end
 
-  def create_ebucks(person, school, student, prefix, points)
+  def create_ebucks(person, school, student, prefix, points, category_id=nil)
     account = person.main_account(school)
     return @on_failure.call unless account_has_enough_money_for(account, points)
 
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
                    :expires_at => (Time.now + 45.days),
                    :student_id => student.id,
-                   :ebuck => true}
+                   :ebuck => true,
+                   :otu_code_category_id => category_id}
     buck = create_buck(prefix, points, buck_params)
-    @credit_manager.purchase_ebucks(school, person, student, points)
+    @credit_manager.purchase_ebucks(school, person, student, points, buck)
 
     # NOTE: This message sending isn't really the bank's responsibility imo, but i'll
     # leave it here for now - ja
@@ -53,9 +54,9 @@ class Bank
   def claim_bucks(student, otu_code)
     if otu_code.is_ebuck?
       if otu_code.teacher.present?
-        @credit_manager.issue_ecredits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+        @credit_manager.issue_ecredits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points, otu_code)
       else
-        @credit_manager.issue_game_credits_to_student(otu_code.source_string, student, otu_code.points)
+        @credit_manager.issue_game_credits_to_student(otu_code.source_string, student, otu_code.points, otu_code)
       end
     else
       @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
@@ -138,11 +139,8 @@ class Bank
     _bucks
   end
 
-  def create_bucks_in_batch(person, school, prefix, bucks)
+  def create_bucks_in_batch(person, school, prefix, bucks, bb)
     _bucks = create_bucks(person, school, prefix, bucks)
-    # add to batch
-    batch_name = person.to_s + " Created " + Date.today.to_s
-    bb = buck_batch_creator.call(:name => batch_name)
     _bucks.map{|x| buck_batch_link_creator.call(:buck_batch_id => bb.id, :otu_code_id => x.id)}
     create_person_buck_batch_link(person_school_link(person, school), bb)
     bb

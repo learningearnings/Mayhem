@@ -4,18 +4,24 @@
     .whats-new
       - if current_school.name == 'STI'
         .welcome-sticky
-          Welcome to the LE experience!  LE is an easy and effective way for classroom teachers to motivate students with proven results.
-          %br
-          %br
           .welcome-callout
-            Don't forget to pick-up your rewards by Thursday at 4pm at the 
-            %strong LE Store in Magnolia 4.
+            .king_font_welcome DON'T FORGET TO PICK-UP YOUR REWARDS BY:
+            .sketch_font_welcome
+              1:15 pm on
+              %br/
+              DAY 2 of the SEMINAR
       - else
         = @whats_new.body.html_safe
-    .featured-activity
-      - if current_school.name == 'STI'
-        = "Banquet is at 7pm on Thursday.  You have been invited to dinner!  Bring your sleuthing skills to uncover the crime during a night of mystery solving."
-      - else
+    - if current_school.name == 'STI'
+      .featured-activity
+        %div.king_font
+          Don't Miss.......
+        %div.sketch_font
+          Social Hour
+        %div.sketch_font2
+          5-6 PM Day 1
+    - else
+      .featured-activity
         = @featured_activity.body.html_safe
     .featured-activity-callout
       = @featured_activity_callout.body.html_safe
@@ -33,17 +39,11 @@
   = render_reward_highlights(@products[0..1])
   .our-sponsors
     - if current_school.name == 'STI'
-      = "STI thanks our sponsors for their support throughout our User Conference:"
-      %br/
-      %br/
-      .sponsor-list
-        %strong= "Howard Technology Solution"
-      .sponsor-list
-        %strong= "infosnap"
-      .sponsor-list
-        %strong= "Schoolmessenger"
-      .sponsor-list
-        %strong= "TSA"
+      .king_font_thanks
+        THANK YOU TO ALL OF OUR WONDERFUL SPONSORS AND SEMINAR PARTICIPANTS!
+        %br/
+        %br/
+        WE HOPE YOU HAVE A GREAT TIME!
     - else
       = @our_sponsor.body.html_safe
     .our-sponsors-callout

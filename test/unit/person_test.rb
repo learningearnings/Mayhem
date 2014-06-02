@@ -18,25 +18,6 @@ describe Person do
     end
   end
 
-  it "can receive a school" do
-    school = FactoryGirl.create(:school)
-    school.activate
-    p = FactoryGirl.create(:student)
-    p << school
-    p.schools.must_include school
-  end
-
-  it "can receive a classroom" do
-    school = FactoryGirl.create(:school)
-    school.activate
-    classroom = FactoryGirl.create(:classroom, school: school)
-    p = FactoryGirl.create(:student)
-    p << school
-    p << classroom
-    p.schools.must_include school
-    p.classrooms.must_include classroom
-  end
-
   it "has avatar as the last avatar" do
     p = FactoryGirl.create(:person)
     first_avatar = FactoryGirl.create(:avatar)
