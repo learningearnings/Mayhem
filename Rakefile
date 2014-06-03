@@ -6,8 +6,9 @@ require File.expand_path('../config/application', __FILE__)
 
 Leror::Application.load_tasks
 
-unless Rails.env.production?
+begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new(:spec)
   task :default => [:spec, :test, :spinach]
+rescue
 end
