@@ -13,9 +13,6 @@
         - if !current_person.is_a? Student
           %dt Email
           %dd= @person.user.email
-        - if current_person.is_a? Teacher
-          %dt Game Challengeable?
-          %dd= @person.game_challengeable
     .span3
       %dl.details
         %dt School

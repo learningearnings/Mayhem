@@ -221,13 +221,6 @@ FactoryGirl.define do
     person
   end
 
-  factory :otu_code do
-    code            "test"
-    person_school_link
-    student
-    points          BigDecimal("5")
-    expires_at      Time.now + 5.days
-  end
 
   factory :auction do
     start_date Time.now - 1.days

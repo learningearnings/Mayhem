@@ -1,4 +1,11 @@
 FactoryGirl.define do
+  factory :otu_code do
+    code            "test"
+    person_school_link
+    student
+    points          BigDecimal("5")
+    expires_at      Time.now + 5.days
+  end
   factory :person do
     first_name { Faker::Name.first_name }
     last_name { Faker::Name.last_name }

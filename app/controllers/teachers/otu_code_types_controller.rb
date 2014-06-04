@@ -2,7 +2,7 @@ module Teachers
   class OtuCodeTypesController < ApplicationController
 
     def index
-      @categories = current_person.otu_code_categories.all
+      @categories = current_person.otu_code_categories
       @new_category = OtuCodeCategory.new
       @types = OtuCodeType.all
     end

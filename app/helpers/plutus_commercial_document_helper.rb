@@ -11,6 +11,8 @@ module PlutusCommercialDocumentHelper
       else
         ""
       end
+      when "OtuCode"
+        transaction.commercial_document.otu_code_category.name rescue nil
     else
       if transaction.commercial_document.respond_to?(name)
         transaction.commercial_document.name

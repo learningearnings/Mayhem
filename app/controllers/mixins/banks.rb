@@ -40,7 +40,7 @@ module Mixins
         get_buck_batches
         get_bank
         student = Student.find(params[:student][:id])
-        reason_id = params["otu_code"]["otu_code_category_id"]
+        reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
         issue_ebucks_to_student(student, params[:points],reason_id)
       else
         flash[:error] = "Please ensure a student is selected and an amount is entered."
@@ -120,7 +120,7 @@ module Mixins
             if params[:credits][student.id.to_s].present?
               student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
               category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-              @transaction = issue_ebucks_to_student(student, student_credits, category_id) if student_credits.to_i > 0
+              issue_ebucks_to_student(student, student_credits, category_id) if student_credits.to_i > 0
             end
           end
           if failed

@@ -10,5 +10,4 @@
     %tr
       %td.source= amount.transaction.description
       %td.date= l(amount.transaction.created_at)
-      %td.amount
-        .currency= number_to_currency(amount.amount)
+      %td.amount.currency= number_with_precision(amount.amount, :precision => 2)

@@ -37,6 +37,13 @@ namespace :le do
     Rake::Task['db:seed'].invoke
   end
 
+  desc "User Activity Report"
+  task :user_activity_report => :environment do
+    filename = "user_activity_report_#{Time.zone.now.strftime("%m_%d")}.csv"
+    File.open("/tmp/" + filename, "w") {|f| Reports::NewUserActivityReport.new.run }
+    AdminMailer.user_activity_report(filename).deliver
+  end
+
   desc "STI Nightly Import"
   task :sti_nightly_import => :environment do
     StiLinkToken.all.each do |link_token|

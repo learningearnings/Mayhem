@@ -4,4 +4,10 @@ Plutus::Account.class_eval do
   def person
     Person.find person_account_link.person_school_link.person_id
   end
+
+  def self.update_cached_balances
+    Plutus::Account.find_each do |account|
+      account.update_attribute(:cached_balance, account.balance)
+    end
+  end
 end

@@ -37,7 +37,7 @@
         - teachers.each_slice(7) do |row|
           %tr
             - row.each do |teacher|
-              %td= link_to teacher.name, admin_teacher_path(teacher)
+              %td= link_to "#{teacher.last_name}, #{teacher.first_name}", admin_teacher_path(teacher)
 %table
   %thead
     %tr
@@ -49,7 +49,7 @@
         - students.each_slice(7) do |row|
           %tr
             - row.each do |student|
-              %td= link_to "#{student.name} (#{student.user.username})", admin_student_path(student), :title => "#{student.gender} - #{School::GRADE_NAMES[student.grade]}"
+              %td= link_to "#{student.last_name}, #{student.first_name} (#{student.user.username})", admin_student_path(student), :title => "#{student.gender} - #{School::GRADE_NAMES[student.grade]}"
 %h4 Accounts
 %table
   %thead

@@ -57,8 +57,8 @@ ActiveAdmin.register School do
 
   show do |school|
     school_admins = school.school_admins
-    teachers = school.teachers.status_active
-    students = school.students.status_active.includes(:user)
+    teachers = school.teachers.status_active.order([:last_name, :first_name])
+    students = school.students.status_active.order([:last_name, :first_name]).includes(:user)
     render 'school_show', teachers: teachers, students: students, school_admins: school_admins
   end
 
