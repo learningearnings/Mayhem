@@ -77,7 +77,8 @@ module Reports
     end
 
     def active scope
-      scope.logged_in_between(ending_day - 1.month, ending_day).count
+      interaction_ids = Interaction.between(ending_day - 1.month, ending_day).pluck(:person_id)
+      scope.where(id: interaction_ids).count
     end
 
     def new scope
