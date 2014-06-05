@@ -74,7 +74,7 @@ ActiveAdmin.register School do
     current_row = []
     row_number = column_number = 0
     teacher_count = school.teachers.count
-    school.teachers.status_active.each do |t|
+    school.teachers.order([:last_name, :first_name]).status_active.each do |t|
       current_row[column_number] = t
       if (column_number += 1) > 7
         column_number = 0
@@ -88,7 +88,7 @@ ActiveAdmin.register School do
     current_row = []
     row_number = column_number = 0
     student_count = school.students.status_active.count
-    school.students.includes(:user).status_active.each do |s|
+    school.students.order([:last_name, :first_name]).includes(:user).status_active.each do |s|
       current_row[column_number] = s
       if (column_number += 1) > 7
         column_number = 0
