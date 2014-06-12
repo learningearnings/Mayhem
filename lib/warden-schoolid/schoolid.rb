@@ -115,6 +115,15 @@ module Warden
           if u.person
             session[:filters] = factory.find_filter_membership(u.person)
           end
+          unless u.person.is_a?(LeAdmin)
+            $redis.multi do
+              time_key = Time.zone.now.strftime("%m%d%y")
+              $redis.hincrby("schoollogincounter:#{time_key}", required_param_values[2], 1)
+              $redis.incr("teacherlogincounter:#{time_key}") if u.person.is_a?(Teacher)
+              $redis.incr("studentlogincounter:#{time_key}") if u.person.is_a?(Student)
+              $redis.incr("schooladminlogincounter:#{time_key}") if u.person.is_a?(SchoolAdmin)
+            end
+          end
           success!(u)
         else
           fail!(config[:error_message])

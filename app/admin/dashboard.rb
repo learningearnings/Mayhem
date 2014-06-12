@@ -3,35 +3,45 @@ ActiveAdmin.register_page "LE Admin Dashboard" do
 
   menu :priority => 1, :label => proc{ I18n.t("active_admin.dashboard") }
 
-  content :title => proc{ I18n.t("active_admin.dashboard") } do
-    div :class => "blank_slate_container", :id => "dashboard_default_message" do
-      span :class => "blank_slate" do
-        span "Welcome to Active Admin. This is the default dashboard page."
-        small "To add dashboard sections, checkout 'app/admin/dashboards.rb'"
-      end
-    end
-
-    controller do 
+    controller do
       skip_before_filter :add_current_store_id_to_params
     end
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
-
-    #   column do
-    #     panel "Info" do
-    #       para "Welcome to ActiveAdmin."
-    #     end
-    #   end
-    # end
-  end # content
-end
+    content do
+      columns do
+        column do
+          panel "Today's Student/Teacher/SchoolAdmin Logins" do
+            table do
+              tr do
+                th "School Admins"
+                th "Teachers"
+                th "Students"
+              end
+              tr do
+                td $redis.get(Time.zone.now.strftime("schooladminlogincounter:%m%d%y")) || 0
+                td $redis.get(Time.zone.now.strftime("teacherlogincounter:%m%d%y")) || 0
+                td $redis.get(Time.zone.now.strftime("studentlogincounter:%m%d%y")) || 0
+              end
+            end
+          end
+        end
+        column do
+          panel "Today's Most Active Schools" do
+            school_logins = $redis.hgetall(Time.zone.now.strftime("schoollogincounter:%m%d%y"))
+            school_logins = school_logins.map {|key, value| [School.find(key), value] }.sort_by {|elm| elm[1] }
+            table do
+              tr do
+                th "School Name"
+                th "User Logins"
+              end
+              school_logins.each do |school_row|
+                tr do
+                  td school_row.first
+                  td school_row.last
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
