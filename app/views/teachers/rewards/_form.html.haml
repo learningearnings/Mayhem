@@ -2,11 +2,12 @@
   = f.error_notification
   %h3 Name and Price
   .row-fluid
-    .form-inputs.controls-row.span6
+    .form-inputs.controls-row.span3.float-left
       = f.input :name, label: "Name", placeholder: 'Your Reward Name', input_html: {class: 'input-large focus-on-me'}
       = f.input :description, label: "Description", placeholder: 'Your Reward Description', input_html: {class: 'input-large', rows: 10}, as: :text
       = f.input :category do
         = f.select :category, options_from_collection_for_select(Spree::Taxon.where("parent_id IS NOT NULL"), :id, :name, @teachers_reward.category_id), :include_blank => true
+    .float-right
       = f.input :image, :as => :file
       = f.input :on_hand, label: "Quantity On Hand", placeholder: 'On Hand', input_html: { :min => "0",class: 'input-small numeric'}
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
@@ -26,27 +27,23 @@
       .form-inputs.controls-row.span6.clearfix
         %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
 
-  %h3 Reward Scope
-  %ul.reward-scope
-    - if current_person.is_a?(SchoolAdmin)
-      %li
-        %label
-          = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
-          Whole School
-    %li
-      %label
-        = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
-        Specific Classrooms
+      - if current_person.is_a?(SchoolAdmin)
+        %ul.reward-scope
+          %li
+            %label
+              = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
+              Whole School
+          %li
+            %label
+              = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
+              Specific Classrooms
+      - else
+        %input{type: "hidden", name: "reward_scope", value: "specific_classrooms"}
+      - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
+        = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + " " + b.text }
 
-  .classrooms-interface
-    %h3 Select Classrooms for your reward
-    .row-fluid.controls-row
-      #classrooms.classrooms
-        - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
-          %div.classroom-checkbox
-            = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text }
-  .whole-school-interface
-    This reward will be available to every student at the school.
+      .whole-school-interface
+        This reward will be available to every student at the school.
 
   .control-row
   = f.input :spree_product_id, :as => :hidden
