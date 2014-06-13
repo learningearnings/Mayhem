@@ -27,13 +27,13 @@ ActiveAdmin.register_page "LE Admin Dashboard" do
         column do
           panel "Today's Most Active Schools" do
             school_logins = $redis.hgetall(Time.zone.now.strftime("schoollogincounter:%m%d%y"))
-            school_logins = school_logins.map {|key, value| [School.find(key), value] }.sort_by {|elm| elm[1] }.reverse
+            school_logins = school_logins.map {|key, value| [School.find(key), value] }
             table do
               tr do
                 th "School Name"
                 th "User Logins"
               end
-              school_logins.each do |school_row|
+              school_logins.sort_by(&:last).each do |school_row|
                 tr do
                   td school_row.first
                   td school_row.last
