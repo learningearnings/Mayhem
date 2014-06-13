@@ -33,7 +33,7 @@ ActiveAdmin.register_page "LE Admin Dashboard" do
                 th "School Name"
                 th "User Logins"
               end
-              school_logins.sort_by(&:last).each do |school_row|
+              school_logins.sort_by(&:last).reverse.each do |school_row|
                 tr do
                   td school_row.first
                   td school_row.last
