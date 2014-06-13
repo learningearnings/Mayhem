@@ -27,7 +27,7 @@ ActiveAdmin.register_page "LE Admin Dashboard" do
         column do
           panel "Today's Most Active Schools" do
             school_logins = $redis.hgetall(Time.zone.now.strftime("schoollogincounter:%m%d%y"))
-            school_logins = school_logins.map {|key, value| [School.find(key), value] }
+            school_logins = school_logins.map {|key, value| [School.find(key), value.to_i] }
             table do
               tr do
                 th "School Name"
