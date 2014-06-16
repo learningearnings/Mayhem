@@ -6,7 +6,7 @@ module Reports
     def run
       csv = CSV.generate do |csv|
         csv << ["State", "School", "Teacher", "Last Login"]
-        Teacher.created_between(7.days.ago, Time.zone.now)find_each do |teacher|
+        Teacher.created_between(7.days.ago, Time.zone.now).find_each do |teacher|
           school = teacher.school
           if school
             csv << [school.state.name, school.name, teacher.name, teacher.last_sign_in_at]
