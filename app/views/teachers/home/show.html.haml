@@ -1,28 +1,39 @@
+:plain
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 .main-content-wrapper
   .primary-content
-    %h2 Welcome to the New LE!
-    %p The Team has been working hard for many months to bring you a new, improved and faster LE. We hope you like it and as always we rely on your feedback for even more improvements and features.
-    = image_tag "teacher_landing_bucks_to_credits.png"
-    %p In addition to our new spokespig, Sir Bacon Francis, PhD., “BUCKS” have now become “Credits”. We hope this will allow you to print more per page and stop confusing students that a Buck should be worth a US Dollar. Sir Bacon will still honor older printed and e-Buck codes though so don’t worry!
+    - teacher_dashboard_report = Reports::TeacherDashboardReport.new(:teacher => current_person).generate
+    :javascript
+      google.load('visualization', '1', {packages:['gauge']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Teachers', #{teacher_dashboard_report.teacher_login_count}],
+        ]);
 
-    - if current_person.is_a? SchoolAdmin
-      %h3 Teacher Admins Only:
-      %hr
-      %h4= link_to "School Settings",  schools_settings_path
+        var options = {
+          max: #{teacher_dashboard_report.total_teacher_count},
+          width: 300, height: 300,
+          minorTicks: 5
+        };
 
+        var chart = new google.visualization.Gauge(document.getElementById('teacher_chart_div'));
+        chart.draw(data, options);
 
-  .secondary-content
-    %h3 Just starting LE?
-    %p
-      1. Create Student or Teacher Accounts
-      %br/
-      2. Create Classrooms (optional)
-      %br/
-      3. Add Some Rewards
-      %br/
-      4. LE Credits Explained
-      %br/
-      5. Reports and Best Practices
-    %br/
-    %h3 Need help?
-    = link_to 'Send Message', teachers_leadmin_message_path, :class => 'btn awesome-button'
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Students', #{teacher_dashboard_report.student_login_count}],
+        ]);
+
+        var options = {
+          max: #{teacher_dashboard_report.total_student_count},
+          width: 300, height: 300,
+          minorTicks: 5
+        };
+
+        chart = new google.visualization.Gauge(document.getElementById('student_chart_div'));
+        chart.draw(data, options);
+      }
+    #teacher_chart_div
+    #student_chart_div
