@@ -2,19 +2,18 @@
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 .main-content-wrapper
   .primary-content
-    - teacher_dashboard_report = Reports::TeacherDashboardReport.new(:teacher => current_person).generate
     :javascript
-      google.load('visualization', '1', {packages:['gauge']});
+      google.load('visualization', '1', {packages:['gauge', 'corechart']});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Label', 'Value'],
-          ['Teachers', #{teacher_dashboard_report.teacher_login_count}],
+          ['Teachers', #{@teacher_dashboard_report.teacher_login_count}],
         ]);
 
         var options = {
-          max: #{teacher_dashboard_report.total_teacher_count},
-          width: 300, height: 300,
+          max: #{@teacher_dashboard_report.total_teacher_count},
+          width: 200, height: 200,
           minorTicks: 5
         };
 
@@ -23,17 +22,27 @@
 
         var data = google.visualization.arrayToDataTable([
           ['Label', 'Value'],
-          ['Students', #{teacher_dashboard_report.student_login_count}],
+          ['Students', #{@teacher_dashboard_report.student_login_count}],
         ]);
 
         var options = {
-          max: #{teacher_dashboard_report.total_student_count},
-          width: 300, height: 300,
+          max: #{@teacher_dashboard_report.total_student_count},
+          width: 200, height: 200,
           minorTicks: 5
         };
 
         chart = new google.visualization.Gauge(document.getElementById('student_chart_div'));
         chart.draw(data, options);
+        var data = google.visualization.arrayToDataTable(#{@teacher_dashboard_report.otu_code_categories.unshift(["Buck Categories", "Number of Instances"]).inspect});
+
+        var options = {
+          title: 'Credits'
+        };
+
+        chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
       }
-    #teacher_chart_div
-    #student_chart_div
+  .charts
+    #teacher_chart_div.chart
+    #student_chart_div.chart
+    #piechart.chart
