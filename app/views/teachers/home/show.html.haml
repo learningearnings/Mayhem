@@ -30,19 +30,23 @@
           width: 200, height: 200,
           minorTicks: 5
         };
-
         chart = new google.visualization.Gauge(document.getElementById('student_chart_div'));
         chart.draw(data, options);
-        var data = google.visualization.arrayToDataTable(#{@teacher_dashboard_report.otu_code_categories.unshift(["Buck Categories", "Number of Instances"]).inspect});
-
-        var options = {
-          title: 'Credits'
-        };
-
-        chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, options);
       }
+
   .charts
     #teacher_chart_div.chart
     #student_chart_div.chart
-    #piechart.chart
+    - current_person.school.grades.each do |grade|
+      %div{id: "piechart_grade_#{grade[0]}", class: "chart"}
+  - otu_code_categories = @teacher_dashboard_report.otu_code_categories
+  - current_person.school.grades.each do |grade|
+    :javascript
+      var data = google.visualization.arrayToDataTable(#{otu_code_categories[grade[0]].unshift(["Buck Categories", "Number of Instances"]).inspect});
+
+      var options = {
+        title: 'Credits #{grade[1]}'
+      };
+
+      chart = new google.visualization.PieChart(document.getElementById('piechart_grade_#{grade[0]}'));
+      chart.draw(data, options);
