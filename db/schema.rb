@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140620151452) do
+ActiveRecord::Schema.define(:version => 20140625184803) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -449,6 +449,7 @@ ActiveRecord::Schema.define(:version => 20140620151452) do
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
   add_index "otu_codes", ["created_at"], :name => "index_otu_codes_on_created_at"
+  add_index "otu_codes", ["otu_code_category_id"], :name => "index_otu_codes_on_otu_code_category_id"
   add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 

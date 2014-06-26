@@ -17,6 +17,7 @@ class School < ActiveRecord::Base
   has_many :filters, :through => :school_filter_links
   has_many :auctions, :through => :auction_school_links
   has_many :auction_school_links
+  has_many :otu_codes, :through => :person_school_links
 
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
