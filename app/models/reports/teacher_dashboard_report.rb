@@ -18,8 +18,17 @@ module Reports
 
     def otu_code_categories
       otu_code_bucket = @teacher.school.otu_codes.joins(:student)
-      otu_code_category_ids = otu_code_bucket.pluck(:otu_code_category_id)
-      otu_code_attributes = otu_code_bucket.joins("LEFT OUTER JOIN otu_code_categories ON otu_code_categories.id = otu_codes.otu_code_category_id").select("DISTINCT people.grade, CASE WHEN otu_code_category_id IS NULL THEN 'N/A' ELSE otu_code_categories.name END as name, SUM(otu_codes.points) as amount").group("otu_code_category_id, people.grade, name").map(&:attributes)
+      otu_code_attributes = otu_code_bucket.
+        joins("LEFT OUTER JOIN otu_code_categories ON otu_code_categories.id = otu_codes.otu_code_category_id").
+        select("DISTINCT people.grade, 
+               CASE WHEN otu_code_category_id IS NULL THEN 
+                'N/A' 
+               ELSE 
+                otu_code_categories.name 
+               END as name,
+               SUM(otu_codes.points) as amount").
+        group("otu_code_category_id, people.grade, name").
+        map(&:attributes)
       category_hash = Hash.new { |h,k| h[k] = [] }
       @teacher.school.grades.each do |grade|
         otu_code_attributes.each do |attribute_array|
