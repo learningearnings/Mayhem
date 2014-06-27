@@ -12,6 +12,8 @@ ActiveAdmin.register SyncAttempt do
     end
     column :district_guid
     column :status
-    column :error
+    column :error do |sync_attempt|
+      link_to sync_attempt.error || "", admin_sync_attempt_path(sync_attempt)
+    end
   end
 end

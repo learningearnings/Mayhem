@@ -58,7 +58,7 @@ describe School do
     subject{ FactoryGirl.build(:school, address: address, name: "Schoolington", city: "Footown") }
 
     it "outputs the name and city and state" do
-      subject.name_and_location.must_equal "Schoolington, Footown, Al..."
+      subject.name_and_location.must_equal "Schoolington, Footown, Alabama"
     end
   end
 end
