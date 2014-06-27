@@ -1,7 +1,7 @@
 class BanksController < LoggedInController
-  before_filter :load_recent_bucks, only: [:show, :redeem_bucks]
-  before_filter :load_unredeemed_bucks, only: [:show, :redeem_bucks]
-  before_filter :load_reward_highlights, only: [:show, :redeem_bucks]
+  before_filter :load_recent_bucks, only: [:show]
+  before_filter :load_unredeemed_bucks, only: [:show]
+  before_filter :load_reward_highlights, only: [:show]
 
   def show
   end
@@ -38,6 +38,7 @@ class BanksController < LoggedInController
       flash[:error] = 'This credit is not valid. Please verify you entered it correctly.'
       person.code_entry_failures.create
     end
+    clear_balance_cache!
     redirect_to bank_path
   end
 
