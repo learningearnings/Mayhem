@@ -42,6 +42,7 @@ module Mixins
         student = Student.find(params[:student][:id])
         reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
         issue_ebucks_to_student(student, params[:points],reason_id)
+        clear_balance_cache!
       else
         flash[:error] = "Please ensure a student is selected and an amount is entered."
         redirect_to main_app.teachers_bank_path
@@ -81,6 +82,7 @@ module Mixins
           if failed
             raise ActiveRecord::Rollback
           else
+            clear_balance_cache!
             on_success and return
           end
         end
@@ -126,6 +128,7 @@ module Mixins
           if failed
             raise ActiveRecord::Rollback
           else
+            clear_balance_cache!
             on_success and return
           end
         end
@@ -143,6 +146,7 @@ module Mixins
         @to_teacher   = Person.find(params[:to_teacher_id])
         get_bank
         @bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:transfer_points])
+        clear_balance_cache!
       else
         flash[:error] = "Please choose a teacher for buck transfer.  Also ensure amount is a positive number."
         redirect_to main_app.teachers_bank_path

@@ -86,7 +86,11 @@ class School < ActiveRecord::Base
   end
 
   def grades
-    self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+    @grades ||= self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+  end
+
+  def grades_name_first
+    @grades_name_first ||= self.grade_range.collect do |g| [School::GRADE_NAMES[g], g] end
   end
 
   def self.grade_range
