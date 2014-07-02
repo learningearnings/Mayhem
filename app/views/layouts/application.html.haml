@@ -9,8 +9,6 @@
     %title Learning Earnings
     = csrf_meta_tags
     %meta{:name => "viewport", :content => "width=device-width"}
-    = oboe_rum_header rescue ""
-
     = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'
     = javascript_include_tag 'application'
@@ -38,4 +36,3 @@
       .resp-content-container
         .resp-side-art
           .resp-side-art-students
-    = oboe_rum_footer rescue ""

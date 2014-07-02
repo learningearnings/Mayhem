@@ -18,6 +18,8 @@ gem 'newrelic_rpm'
 gem 'transaction_retry'
 gem 'uuidtools'
 gem 'chronic'
+gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 # for importing
 #gem 'mysql2'

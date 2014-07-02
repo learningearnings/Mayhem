@@ -272,6 +272,9 @@ GEM
       has_scope (~> 0.6.0.rc)
       responders (~> 1.0.0.rc)
     journey (1.0.4)
+    jquery-turbolinks (2.0.2)
+      railties (>= 3.1.0)
+      turbolinks
     jquery-ui-rails (4.0.5)
       railties (>= 3.1.0)
     json (1.8.0)
@@ -537,6 +540,8 @@ GEM
     turbo-sprockets-rails3 (0.3.10)
       railties (> 3.2.8, < 4.0.0)
       sprockets (>= 2.0.0)
+    turbolinks (2.2.2)
+      coffee-rails
     tzinfo (0.3.37)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
@@ -603,6 +608,7 @@ DEPENDENCIES
   httparty
   iconv
   jquery-rails!
+  jquery-turbolinks
   jquery-ui-rails
   just-datetime-picker
   kaminari
@@ -658,6 +664,7 @@ DEPENDENCIES
   timecop
   transaction_retry
   turbo-sprockets-rails3
+  turbolinks
   uglifier (>= 1.0.3)
   unicorn
   uuidtools
