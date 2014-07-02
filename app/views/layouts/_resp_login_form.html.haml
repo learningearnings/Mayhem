@@ -21,7 +21,7 @@
     .resp-forgot-password
       = link_to "Forgot your password?", spree.new_user_password_path('user'), tabindex: "-1"
   .school-select
-    - cache("school_drop_down", :expires_in => 1.hour ) do
+    - cache(Time.zone.now.strftime("school_dropdown_%d_%m_%y_%H")) do
       %label.log-in.select
         SCHOOL
       = select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "Select...."
