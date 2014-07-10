@@ -5,6 +5,7 @@ class StiController < ApplicationController
   http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
+  skip_before_filter :verify_authenticity_token
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
