@@ -94,6 +94,14 @@ class StiController < ApplicationController
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID]).last
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
+    Rails.logger.warn "***************************************************"
+    Rails.logger.warn sti_client.session_information.parsed_response
+    Rails.logger.warn "***************************************************"
+    Rails.logger.warn "***************************************************"
+    Rails.logger.warn "***************************************************"
+    Rails.logger.warn "***************************************************"
+    Rails.logger.warn "***************************************************"
+    Rails.logger.warn "***************************************************"
     @client_response = sti_client.session_information.parsed_response
   end
 end
