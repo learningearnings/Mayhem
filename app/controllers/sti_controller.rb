@@ -7,6 +7,7 @@ class StiController < ApplicationController
   skip_before_filter :subdomain_required
   skip_before_filter :verify_authenticity_token
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
+  before_filter :debug
 
   def give_credits
     if @client_response["StaffId"].blank? || !login_teacher
@@ -88,6 +89,15 @@ class StiController < ApplicationController
     session["warden.user.user.key"] = ["Spree::User", [teacher.user.id], nil]
     session["current_school_id"] = school.id
     return true
+  end
+
+  def debug
+    Rails.logger.warn "*****************************************************"
+    Rails.logger.warn "*****************************************************"
+    Rails.logger.warn @client_response
+    Rails.logger.warn session.inspect
+    Rails.logger.warn "*****************************************************"
+    Rails.logger.warn "*****************************************************"
   end
 
   def handle_sti_token
