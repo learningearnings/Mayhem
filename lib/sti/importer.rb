@@ -11,7 +11,14 @@ module STI
     def run!
       sti_schools = client.schools.parsed_response
       current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
-      sti_school_ids = sti_schools.map {|school| school["Id"]}
+      begin
+        sti_school_ids = sti_schools.map {|school| school["Id"]}
+      rescue Exception => e
+        Rails.logger.warn "*****************************************"
+        Rails.logger.warn sti_schools
+        Rails.logger.warn "*****************************************"
+        raise e
+      end
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
         school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
         unless school.status == "inactive"
