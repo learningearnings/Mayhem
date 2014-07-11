@@ -44,6 +44,13 @@ namespace :le do
     AdminMailer.user_activity_report(filename).deliver
   end
 
+  desc "Teacher Activity Report"
+  task :teacher_activity_report => :environment do
+    filename = "teacher_activity_report_#{Time.zone.now.strftime("%m_%d")}.csv"
+    File.open("/tmp/" + filename, "w") {|f| f.write Reports::TeacherActivityReport.new.run}
+    AdminMailer.teacher_activity_report(filename).deliver
+  end
+
   desc "STI Nightly Import"
   task :sti_nightly_import => :environment do
     StiLinkToken.all.each do |link_token|
