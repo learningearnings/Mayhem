@@ -15,7 +15,7 @@ module STI
         sti_school_ids = sti_schools.map {|school| school["Id"]}
       rescue Exception => e
         Rails.logger.warn "*****************************************"
-        Rails.logger.warn sti_schools
+        Rails.logger.warn client.schools.response
         Rails.logger.warn "*****************************************"
         raise e
       end
