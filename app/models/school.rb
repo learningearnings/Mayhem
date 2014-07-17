@@ -24,11 +24,11 @@ class School < ActiveRecord::Base
   has_many :reward_distributors, :through => :person_school_links, :include => :teacher
   has_many :reward_exclusions
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid
 
-  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2,
+  attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
@@ -85,7 +85,11 @@ class School < ActiveRecord::Base
   end
 
   def grades
-    self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+    @grades ||= self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+  end
+
+  def grades_name_first
+    @grades_name_first ||= self.grade_range.collect do |g| [School::GRADE_NAMES[g], g] end
   end
 
   def self.grade_range
@@ -154,7 +158,7 @@ class School < ActiveRecord::Base
   end
 
   def name_and_location
-    [name, city, state.name].join(", ").truncate(28)
+    [name, city, state.name].join(", ")
   end
 
   def first_address

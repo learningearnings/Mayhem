@@ -1,5 +1,5 @@
 class OtuCode < ActiveRecord::Base
-  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck, :student, :person_school_link
+  attr_accessible :points, :code, :student_id, :person_school_link_id, :expires_at, :ebuck, :student, :person_school_link, :otu_code_category_id, :redeemed_at
   has_many :transactions, :through => :otu_transaction_links
   has_many :buck_batches, :through => :buck_batch_links
   has_many :buck_batch_links
@@ -9,12 +9,18 @@ class OtuCode < ActiveRecord::Base
   has_one :school, :through => :person_school_link
   has_many :messages, :through => :message_code_links
   has_many :message_code_links
+  belongs_to :otu_code_category
 
   scope :active, where("active = ?", true)
   scope :inactive, where("active = ?", false)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
   scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
+  scope :for_grade, lambda { |grade| joins(:student).where(student: {grade: grade})}
+  scope :redeemed_between, lambda { |start_date, end_date|
+    where(OtuCode.arel_table[:redeemed_at].gteq(start_date)).
+    where(OtuCode.arel_table[:redeemed_at].lteq(end_date))
+  }
   scope :created_between, lambda { |start_date, end_date| 
     where(OtuCode.arel_table[:created_at].gteq(start_date)).
     where(OtuCode.arel_table[:created_at].lteq(end_date))

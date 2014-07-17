@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140331181154) do
+ActiveRecord::Schema.define(:version => 20140610184056) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -338,6 +338,7 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.datetime "updated_at",           :null => false
   end
 
+  add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
   add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
 
   create_table "local_reward_categories", :force => true do |t|
@@ -408,6 +409,21 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.datetime "updated_at",     :null => false
   end
 
+  create_table "otu_code_categories", :force => true do |t|
+    t.string   "name"
+    t.integer  "otu_code_type_id"
+    t.integer  "person_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "school_id"
+  end
+
+  create_table "otu_code_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "otu_codes", :force => true do |t|
     t.string   "code"
     t.integer  "person_school_link_id"
@@ -420,10 +436,10 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
+    t.integer  "otu_code_category_id"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
-  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -449,9 +465,11 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.boolean  "game_challengeable",                   :default => false
     t.integer  "sti_id"
+    t.boolean  "game_challengeable",                   :default => false
     t.string   "district_guid"
+    t.integer  "checking_account_id"
+    t.integer  "savings_account_id"
   end
 
   add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
@@ -522,8 +540,9 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.string   "name"
     t.string   "type"
     t.boolean  "contra"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.decimal  "cached_balance", :precision => 20, :scale => 10
   end
 
   add_index "plutus_accounts", ["name", "type"], :name => "index_plutus_accounts_on_name_and_type"
@@ -598,6 +617,17 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.integer "product_id"
   end
 
+  create_table "reward_templates", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.decimal  "price"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.string   "image_uid"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -630,8 +660,8 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -642,6 +672,7 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
+    t.boolean  "can_revoke_credits", :default => false
   end
 
   create_table "site_settings", :force => true do |t|
@@ -971,6 +1002,7 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.integer  "min_grade"
     t.integer  "max_grade"
     t.boolean  "visible_to_all",       :default => false
+    t.integer  "sticker_id"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1305,10 +1337,22 @@ ActiveRecord::Schema.define(:version => 20140331181154) do
     t.string   "password"
   end
 
-  create_table "stickers", :force => true do |t|
-    t.string   "image_uid"
+  create_table "sticker_purchases", :force => true do |t|
+    t.integer  "sticker_id"
+    t.integer  "person_id"
+    t.datetime "expires_at"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "stickers", :force => true do |t|
+    t.string   "image_uid"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.integer  "school_id"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.boolean  "purchasable", :default => false
   end
 
   create_table "sync_attempts", :force => true do |t|

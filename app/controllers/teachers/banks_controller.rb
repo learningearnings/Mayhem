@@ -27,6 +27,7 @@ module Teachers
         format.html
         format.json { render json: {id: batch.id, processed: batch.processed?} }
       end
+      clear_balance_cache!
     end
 
     protected
