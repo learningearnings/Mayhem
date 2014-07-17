@@ -1,3 +1,4 @@
+# :nocov:
 module Sidekiq
   def self.load_json(string)
     MultiJson.load(string)
@@ -7,3 +8,4 @@ module Sidekiq
     MultiJson.dump(object)
   end
 end
+# :nocov:
