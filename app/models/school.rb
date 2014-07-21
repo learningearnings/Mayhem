@@ -46,6 +46,25 @@ class School < ActiveRecord::Base
   before_create :set_status_to_active
 
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
+  scope :has_automatic_credit_amounts, lambda {
+    where(arel_table[:weekly_perfect_attendance_amount].not_eq(nil).or(
+    arel_table[:monthly_perfect_attendance_amount].not_eq(nil)).or(
+    arel_table[:weekly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:monthly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:weekly_no_infractions_amount].not_eq(nil)).or(
+    arel_table[:monthly_no_infractions_amount].not_eq(nil)))
+  }
+  scope :has_weekly_automatic_credit_amounts, lambda {
+    where(arel_table[:weekly_perfect_attendance_amount].not_eq(nil).or(
+    arel_table[:weekly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:weekly_no_infractions_amount].not_eq(nil)))
+  }
+  scope :has_monthly_automatic_credit_amounts, lambda {
+    where(arel_table[:monthly_perfect_attendance_amount].not_eq(nil).or(
+    arel_table[:monthly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:monthly_no_infractions_amount].not_eq(nil)))
+  }
+  scope :inow_schools, lambda { where(arel_table[:district_guid].not_eq(nil)) }
 
   def is_inow?
     !!district_guid
