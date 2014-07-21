@@ -47,6 +47,10 @@ class School < ActiveRecord::Base
 
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
 
+  def is_inow?
+    !!district_guid
+  end
+
   def set_status_to_active
     self.status = 'active' # Students should default to active
   end
