@@ -77,7 +77,7 @@ describe CreditManager do
         it "issues ecredits to a student" do
           @amount = BigDecimal("500.00")
           @teacher.expects(:undeposited_account).with(@school).returns(@teacher_account)
-          @credit_manager.expects(:transfer_credits).with("Issue Credits to Student", @teacher_account, @student_account, @amount).once
+          @credit_manager.expects(:transfer_credits).with("Issue Credits to Student", @teacher_account, @student_account, @amount, nil).once
           @credit_manager.issue_ecredits_to_student(@school, @teacher, @student, @amount)
         end
 
@@ -86,7 +86,7 @@ describe CreditManager do
           @amount = BigDecimal("500.00")
           game_string = "Food Fight"
           @credit_manager.expects(:game_account).returns(@game_account)
-          @credit_manager.expects(:transfer_credits).with("Credits Earned for #{game_string}", @game_account, @student_account, @amount).once
+          @credit_manager.expects(:transfer_credits).with("Credits Earned for #{game_string}", @game_account, @student_account, @amount, nil).once
           @credit_manager.issue_game_credits_to_student(game_string, @student, @amount)
         end
 

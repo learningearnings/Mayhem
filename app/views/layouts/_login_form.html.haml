@@ -12,7 +12,7 @@
     %li
       %button.btn.login-button
   .forgot-password
-    = link_to "Forgot your password?", spree.new_user_password_path('user')
+    = link_to "Forgot your password?", spree.new_user_password_path('user'), tabindex: "-1"
 
 :coffeescript
   ($ "document").ready ->

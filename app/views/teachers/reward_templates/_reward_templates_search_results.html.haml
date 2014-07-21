@@ -1,0 +1,30 @@
+#reward_template_listings
+  .row
+    %br/
+    #template-controls.float-right
+      = form_tag teachers_reward_templates_path, method: :get, remote: true, id: 'reward-template-form' do 
+        = select_tag :grade_filter, options_for_select(School::GRADES, selected: params[:grade_filter]), {:prompt => 'Filter by Grade'}
+        = text_field_tag :q, params[:q]
+        = submit_tag 'Search', class: 'awesome-button'
+    = paginate reward_templates
+    %ul#products.inline.product-listing{"data-hook" => ""}
+    - reward_templates.in_groups_of(3) do |reward_templates_row|
+      .row
+        - reward_templates_row.compact.each do |reward_template|
+          %li{:class => "product-tile min-height-product", "data-hook" => "products_list_item", :itemscope => "", :itemtype => "http://schema.org/Product"}
+            .product-image
+              - if reward_template.image.present?
+                = link_to image_tag(reward_template.image.url, size: "100x75"), teachers_reward_template_path(reward_template)
+              - else
+                = link_to image_tag('noimage/small.png', size: "100x75"), teachers_reward_template_path(reward_template)
+            .product-details
+              = link_to truncate("#{reward_template.name}", :length => 50), teachers_reward_template_path(reward_template), :class => 'info', :itemprop => "name", :title => reward_template.name
+
+    = paginate reward_templates
+
+:javascript
+  $(document).ready(function() {
+    $("#reward-templates").children().on("ajax:success", function(e, data, status, xhr){
+      $("#reward_template_listings").replaceWith(xhr.responseText);
+    });
+  });

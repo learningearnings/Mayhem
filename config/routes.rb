@@ -41,6 +41,8 @@ Leror::Application.routes.draw do
   match '/pages/parents/news' => 'news#index', visitor_type: 'parent'
   match '/pages/teachers/news' => 'news#index', visitor_type: 'teacher'
 
+  match '/schools/revoke_credits_setting' => 'schools/settings#toggle_revoke_credits', as: 'revoke_credit_setting'
+  match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
     resources :reward_exclusions
@@ -55,6 +57,8 @@ Leror::Application.routes.draw do
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
+    match "/teachers/approve_teacher/:id" => 'new_teachers_requests#activate', as: 'approve_teacher'
+    match "/teachers/deny_teacher/:id" => 'new_teachers_requests#deny', as: 'deny_teacher'
     get :delete_student_school_link, :controller => :students, :action => :delete_school_link
     get :delete_teacher_school_link, :controller => :teachers, :action => :delete_school_link
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
@@ -105,8 +109,8 @@ Leror::Application.routes.draw do
         get  'choose_food'
       end
     end
-    resource :number_muncher do
-    end
+    resource :number_muncher
+    resource :ken_ken
   end
 
   match 'choose_food/:match_id' => 'games/food_fights#choose_food', :as => :choose_food
@@ -186,16 +190,22 @@ Leror::Application.routes.draw do
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
+  match "/teachers/get_otu_code_category" => "teachers/otu_code_categories#get_category", :as => 'get_otu_code_category'
   namespace :teachers do
+    match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
+    match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
+    resources :otu_code_types
+    resources :otu_code_categories
     resource :bulk_students
     resources :reports
     resource  :bank
     resource  :dashboard
     resource  :lounge
     resources :rewards
+    resources :reward_templates
     match "home" => "home#show", as: 'home'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
-    match "/print_batch/:id.:format" => 'banks#print_batch', as: 'print_batch'
+    match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch', defaults: { :format => 'html' }
     match "/create_print_bucks" => 'banks#create_print_bucks'
     match "/create_ebucks" => 'banks#create_ebucks'
     match "/create_ebucks_for_classroom" => 'banks#create_ebucks_for_classroom'

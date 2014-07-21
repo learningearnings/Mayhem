@@ -174,6 +174,13 @@ module CommonPersonConfig
       end
       controller do
         skip_before_filter :add_current_store_id_to_params
+
+        def create
+          create! do |format|
+            format.html { redirect_to resource_path(resource) }
+          end
+        end
+
       end
     end
   end

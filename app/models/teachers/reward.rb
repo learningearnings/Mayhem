@@ -11,9 +11,9 @@ module Teachers
     validates :on_hand, presence: true, numericality: {:greater_than_or_equal_to => 0 }
     #validates_presence_of :image
 
-    attr_accessible :name, :description, :price, :classrooms, :image, :on_hand, :category, :school_id, :classroom_id, :min_grade, :max_grade
+    attr_accessible :name, :description, :price, :classrooms, :template_image, :image, :on_hand, :category, :school_id, :classroom_id, :min_grade, :max_grade
 
-    attr_accessor :id, :name, :description, :price, :classrooms, :image, :spree_product_id
+    attr_accessor :id, :name, :description, :price, :classrooms, :template_image, :image, :spree_product_id
     attr_accessor :on_hand, :teacher, :school, :category, :school_id, :classroom_id
     attr_accessor :min_grade, :max_grade
 
@@ -24,6 +24,7 @@ module Teachers
       @description = params[:description] if params[:description]
       @price = params[:price] if params[:price]
       @on_hand = params[:on_hand] if params[:on_hand]
+      @reward_template = RewardTemplate.find(params[:reward_template_id]) if params[:reward_template_id]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
       @min_grade = params[:min_grade] if params[:min_grade]
@@ -132,6 +133,13 @@ module Teachers
       if @image.present?
         p.images.destroy_all if p.images.present?
         p.images.create(attachment: @image)
+      end
+
+      if @reward_template.present? && @reward_template.image.present?
+        p.images.destroy_all if p.images.present?
+        # FIX ME
+        # This isn't copying the image over at all
+        p.images.create(attachment: File.open(@reward_template.image.path))
       end
 
       p.set_property('reward_type', 'local')
