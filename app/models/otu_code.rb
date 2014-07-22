@@ -36,7 +36,7 @@ class OtuCode < ActiveRecord::Base
 
   def generate_code(prefix)
     _code = Code.active.where("RANDOM() < 0.01").first || Code.create
-    self.update_attribute(:code, _code)
+    self.update_attribute(:code, _code.code)
     _code.update_attributes(:active => false, :used_date => Time.now)
   end
 
