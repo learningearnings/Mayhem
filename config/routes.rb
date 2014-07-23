@@ -193,6 +193,9 @@ Leror::Application.routes.draw do
         get 'link_child'
       end
     end
+
+    resources :registrations, :only => [:new, :create] do
+    end
   end
 
   match "/charities" => 'charities#index'

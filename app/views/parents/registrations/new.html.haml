@@ -1,0 +1,16 @@
+%h2 Parent Sign-Up
+
+.parent-registration-form
+  = form_for @parent, url: parents_registrations_path do |f|
+    = f.label :first_name
+    = f.text_field :first_name
+    = f.label :last_name
+    = f.text_field :last_name
+    = f.label :username
+    = f.text_field :username
+    = f.label :password
+    = f.password_field :password
+    = f.label :password_confirmation
+    = f.password_field :password_confirmation
+    %br/
+    = f.submit
