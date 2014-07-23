@@ -13,6 +13,8 @@
 
 ActiveRecord::Schema.define(:version => 20140715190042) do
 
+  add_extension "hstore"
+
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
     t.string   "resource_type", :null => false
@@ -364,14 +366,6 @@ ActiveRecord::Schema.define(:version => 20140715190042) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "login_events", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "school_id"
-    t.string   "user_type"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "message_code_links", :force => true do |t|
     t.integer  "message_id"
     t.integer  "otu_code_id"
@@ -448,9 +442,6 @@ ActiveRecord::Schema.define(:version => 20140715190042) do
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
-  add_index "otu_codes", ["created_at"], :name => "index_otu_codes_on_created_at"
-  add_index "otu_codes", ["otu_code_category_id"], :name => "index_otu_codes_on_otu_code_category_id"
-  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|

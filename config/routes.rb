@@ -186,6 +186,10 @@ Leror::Application.routes.draw do
     match "home" => "home#show", as: 'home'
   end
 
+  namespace :parents do
+    get "home"  => "home#show", as: 'home'
+  end
+
   match "/charities" => 'charities#index'
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
