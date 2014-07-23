@@ -19,6 +19,7 @@ module STI
         Rails.logger.warn "*****************************************"
         raise e
       end
+      # Schools that are synced in our DB but are no longer listed in the api
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
         school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
         unless school.status == "inactive"
@@ -37,10 +38,12 @@ module STI
       sti_staff = client.staff.parsed_response
       current_staff_for_district = Teacher.where(:district_guid => @district_guid).pluck(:sti_id)
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
+      # Teachers in our system that weren't in their api need to be deactivated
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
         teacher.deactivate! unless teacher.status == "inactive"
       end
+      #TODO: Teachers never seem to get deactivated from a school. We need to deactivate person school links
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           schools = api_teacher["Schools"].map do |school_id|
@@ -61,6 +64,7 @@ module STI
         end
       end
 
+      # Loop through classrooms and sync in much the same way as above
       sti_classrooms = client.sections.parsed_response
       current_classrooms_for_district = Classroom.where(district_guid: @district_guid).pluck(:sti_id)
       sti_classroom_ids = sti_classrooms.map {|classroom| classroom["Id"]}
@@ -104,6 +108,7 @@ module STI
       end
 
 
+      # Rosters is list of students in classroom
       client.rosters.parsed_response.each do |api_roster|
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => api_roster["SectionId"]).first
         next if classroom.nil?
@@ -187,6 +192,7 @@ module STI
       @client ||= Client.new
     end
 
+    # Recursively generate usernames until we find one that is unique
     def generate_username_for_district(district_guid, first_name, last_name, iteration = 0)
       username = first_name.downcase[0] + last_name.downcase[0..4]
       username += iteration.to_s if iteration > 0
