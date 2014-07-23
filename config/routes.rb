@@ -188,6 +188,11 @@ Leror::Application.routes.draw do
 
   namespace :parents do
     get "home"  => "home#show", as: 'home'
+    resources :children do
+      collection do
+        get 'link_child'
+      end
+    end
   end
 
   match "/charities" => 'charities#index'
