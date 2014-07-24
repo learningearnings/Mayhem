@@ -5,7 +5,7 @@
 
 = form_tag teachers_create_parent_student_link_path do
   = label_tag :student_id, "Select the student:"
-  = select_tag :student_id, options_from_collection_for_select(current_school.students.order("first_name ASC"), :id, :name_and_username), include_blank: true
+  = select_tag :student_id, options_from_collection_for_select(current_school.students.includes(:user).order("first_name ASC"), :id, :name_and_username), include_blank: true
   = label_tag :parent_email, "Enter the parent's email:"
   = email_field_tag :parent_email, nil, placeholder: "e.g. parent@example.com"
   %br

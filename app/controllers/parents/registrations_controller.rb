@@ -13,6 +13,7 @@ module Parents
       if @parent.save && @parent.user.update_attributes(params[:user])
         @parent << @parent_student_link.student.school
         @parent_student_link.update_attribute(:parent_id, @parent.id)
+        @parent.activate!
         flash[:notice] = "You have been registered! You may now sign in."
         redirect_to root_path
       else
