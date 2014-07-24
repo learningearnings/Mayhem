@@ -1,3 +1,4 @@
+# Added bogus comment
 require File.expand_path('../boot', __FILE__)
 
 # For PDFKit Middleware
