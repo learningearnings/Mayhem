@@ -194,6 +194,18 @@ Leror::Application.routes.draw do
     match "home" => "home#show", as: 'home'
   end
 
+  namespace :parents do
+    get "home"  => "home#show", as: 'home'
+    resources :children do
+      collection do
+        get 'link_child'
+      end
+    end
+
+    resources :registrations, :only => [:new, :create] do
+    end
+  end
+
   match "/charities" => 'charities#index'
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
@@ -237,7 +249,12 @@ Leror::Application.routes.draw do
     match "/inbox" => 'messages#index'
     match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
     resources :messages
+
+    # Parent Student Links
+    get "/new_parent_student_link" => "dashboards#new_parent_student_link", :as => "new_parent_student_link"
+    post "/create_parent_student_link" => "dashboards#create_parent_student_link", :as => "create_parent_student_link"
   end
+
 
   resources :students
   namespace :school_admins do

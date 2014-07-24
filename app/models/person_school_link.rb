@@ -57,7 +57,7 @@ class PersonSchoolLink < ActiveRecord::Base
     if person.is_a?(Student) && !skip_onboard_credits
       StudentOnboardCreditWorker.perform_async(school.id)
     end
-    connect_plutus_accounts unless person.is_a? LeAdmin
+    connect_plutus_accounts unless (person.is_a?(LeAdmin) || person.is_a?(Parent))
   end
 
   # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin

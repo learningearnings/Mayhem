@@ -11,7 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140625184803) do
+ActiveRecord::Schema.define(:version => 20140715190042) do
+
+  add_extension "hstore"
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -189,6 +191,15 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.string   "render_class"
   end
 
+  create_table "faq_questions", :force => true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.string   "person_type"
+    t.integer  "place"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -205,6 +216,7 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.integer  "food_person_link_id"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.integer  "winner_id"
   end
 
   create_table "food_fight_players", :force => true do |t|
@@ -327,6 +339,14 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.string  "game_type"
   end
 
+  create_table "honor_roll_deposits", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "school_id"
+    t.decimal  "amount"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "interactions", :force => true do |t|
     t.integer  "person_id"
     t.string   "page"
@@ -445,11 +465,11 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
     t.integer  "otu_code_category_id"
+    t.string   "reason"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
   add_index "otu_codes", ["created_at"], :name => "index_otu_codes_on_created_at"
-  add_index "otu_codes", ["otu_code_category_id"], :name => "index_otu_codes_on_otu_code_category_id"
   add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
@@ -458,6 +478,16 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.integer  "transaction_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "parent_student_links", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "student_id"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "guid"
+    t.string   "state"
   end
 
   create_table "people", :force => true do |t|
@@ -546,6 +576,14 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
+
+  create_table "pg_search_documents", :force => true do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
@@ -995,7 +1033,7 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
   add_index "spree_product_properties", ["product_id"], :name => "index_product_properties_on_product_id"
 
   create_table "spree_products", :force => true do |t|
-    t.string   "name",                 :default => "",    :null => false
+    t.string   "name",                      :default => "",    :null => false
     t.text     "description"
     t.datetime "available_on"
     t.datetime "deleted_at"
@@ -1004,15 +1042,17 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.string   "meta_keywords"
     t.integer  "tax_category_id"
     t.integer  "shipping_category_id"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
-    t.integer  "count_on_hand",        :default => 0,     :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.integer  "count_on_hand",             :default => 0,     :null => false
     t.string   "svg_file_name"
     t.string   "fulfillment_type"
     t.string   "purchased_by"
     t.integer  "min_grade"
     t.integer  "max_grade"
-    t.boolean  "visible_to_all",       :default => false
+    t.boolean  "visible_to_all",            :default => false
+    t.string   "purchase_limit_time_frame"
+    t.integer  "sticker_id"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1347,10 +1387,22 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.string   "password"
   end
 
-  create_table "stickers", :force => true do |t|
-    t.string   "image_uid"
+  create_table "sticker_purchases", :force => true do |t|
+    t.integer  "sticker_id"
+    t.integer  "person_id"
+    t.datetime "expires_at"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "stickers", :force => true do |t|
+    t.string   "image_uid"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.integer  "school_id"
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.boolean  "purchasable", :default => false
   end
 
   create_table "sync_attempts", :force => true do |t|

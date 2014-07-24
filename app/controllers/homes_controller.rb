@@ -13,6 +13,8 @@ class HomesController < ApplicationController
       redirect_to main_app.teachers_home_path
     elsif person.is_a?(Teacher)
       redirect_to main_app.teachers_home_path
+    elsif person.is_a?(Parent)
+      redirect_to main_app.parents_home_path
     elsif person.is_a?(LeAdmin)
       redirect_to  "/admin/le_admin_dashboard"
     end
