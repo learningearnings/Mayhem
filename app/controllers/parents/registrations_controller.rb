@@ -10,9 +10,11 @@ module Parents
     def create
       @parent = Parent.new params[:parent]
       @parent_student_link = ::ParentStudentLink.where(guid: session[:parent_student_guid]).first
-      if @parent.save && @parent.user.update_attribute(:username, params[:parent][:username])
+      if @parent.save && @parent.user.update_attributes(params[:user])
+        @parent << @parent_student_link.student.school
+        @parent_student_link.update_attribute(:parent_id, @parent.id)
         flash[:notice] = "You have been registered! You may now sign in."
-        redirect_to parents_home_path
+        redirect_to root_path
       else
         flash.now[:notice] = "There was a problem registering your account"
         render :new

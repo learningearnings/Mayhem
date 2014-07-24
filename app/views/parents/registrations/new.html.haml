@@ -6,11 +6,12 @@
     = f.text_field :first_name
     = f.label :last_name
     = f.text_field :last_name
-    = f.label :username
-    = f.text_field :username
-    = f.label :password
-    = f.password_field :password
-    = f.label :password_confirmation
-    = f.password_field :password_confirmation
+    = fields_for :user do |user|
+      = user.label :username
+      = user.text_field :username
+      = user.label :password
+      = user.password_field :password
+      = user.label :password_confirmation
+      = user.password_field :password_confirmation
     %br/
     = f.submit

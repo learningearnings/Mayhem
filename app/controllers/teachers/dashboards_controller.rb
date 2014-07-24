@@ -53,5 +53,21 @@ module Teachers
         end
       end
     end
+
+    def new_parent_student_link
+      @parent_student_link = ParentStudentLink.new
+    end
+
+    def create_parent_student_link
+      @parent_student_link = ParentStudentLink.new(student_id: params[:student_id])
+      if @parent_student_link.save && params[:parent_email].present?
+        ParentStudentLinkingMailer.link_with_your_child_email(params[:parent_email], @parent_student_link).deliver
+        flash[:notice] = "The student has been linked and the parent has been notified!"
+        redirect_to teachers_home_path
+      else
+        flash[:notice] = "Something went wrong linking the parent!"
+        redirect_to teachers_new_parent_student_link_path
+      end
+    end
   end
 end

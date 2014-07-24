@@ -52,6 +52,10 @@ class Student < Person
   def name
     first_name + ' ' + last_name
   end
+  
+  def name_and_username
+   name  + ' (' + user.username + ')'
+  end
 
   def admin_title
     'Student #' + id.to_s + '( ' + user.username + ')'
