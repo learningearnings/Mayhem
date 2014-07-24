@@ -18,6 +18,8 @@ gem 'newrelic_rpm'
 gem 'transaction_retry'
 gem 'uuidtools'
 gem 'chronic'
+gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 # for importing
 #gem 'mysql2'
@@ -66,7 +68,8 @@ gem 'whereabouts', '~> 0.9.0'
 
 # roo handles reading and converting excel files to csv
 gem 'iconv'
-gem 'roo', '1.12.1'
+gem 'roo'
+#gem 'roo', '1.12.1'
 gem 'spreadsheet'
 gem 'rubyzip', '0.9.9'
 
@@ -84,7 +87,7 @@ gem 'decorators', '~> 1.0.0'
 gem 'ranked-model'
 gem 'squeel'
 gem 'rack-cache', :require => 'rack/cache'
-gem 'dragonfly'
+gem 'dragonfly', '0.9.15'
 gem 'fog'
 gem 'nested_form', :github => 'learningearnings/nested_form'
 gem 'simple_form'
@@ -135,7 +138,7 @@ gem 'unicorn'
 group :development do
   gem 'pry', '~> 0.9.10'
   gem 'unicorn'
-  gem 'thin'
+  #gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
   gem 'letter_opener'
   # Deploy with Capistrano
