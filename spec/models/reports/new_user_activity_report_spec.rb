@@ -4,12 +4,12 @@ describe Reports::NewUserActivityReport do
   before do
     teacher = FactoryGirl.create(:teacher)
     teacher_2 = FactoryGirl.create(:teacher)
-    teacher_2.user.update_attribute(:last_sign_in_at, 1.day.ago)
+    Interaction.create(:person_id => teacher_2.id, :created_at => 1.day.ago)
     teacher_3 = FactoryGirl.create(:teacher, :created_at => 1.year.ago)
 
     student = FactoryGirl.create(:student)
     student_2 = FactoryGirl.create(:student)
-    student_2.user.update_attribute(:last_sign_in_at, 1.day.ago)
+    Interaction.create(:person_id => student_2.id, :created_at => 1.day.ago)
     student_3 = FactoryGirl.create(:student, :created_at => 1.year.ago)
 
     school = FactoryGirl.create(:school)

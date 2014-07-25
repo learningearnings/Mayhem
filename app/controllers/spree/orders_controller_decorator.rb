@@ -91,6 +91,7 @@ Spree::OrdersController.class_eval do
         raise ActiveRecord::Rollback
       end
     end
+    clear_balance_cache!
   end
 
 

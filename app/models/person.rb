@@ -41,7 +41,6 @@ class Person < ActiveRecord::Base
   has_many :food_fight_players
 
   has_many :votes
-  has_many :otu_code_categories
 
   accepts_nested_attributes_for :user
 
@@ -70,6 +69,11 @@ class Person < ActiveRecord::Base
 
   before_save :ensure_spree_user
   after_destroy :delete_user
+
+  def otu_code_categories
+    arel_table = OtuCodeCategory.arel_table
+    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(school.id)))
+  end
 
   def avatar
     avatars.first
@@ -119,8 +123,8 @@ class Person < ActiveRecord::Base
     MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc'))
   end
 
-  def school(status = :status_active)
-    MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc').limit(1))
+  def school status = :status_active
+    schools(status).first
   end
 
   def person_school_links(status = :status_active)
