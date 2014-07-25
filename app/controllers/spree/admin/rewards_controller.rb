@@ -108,14 +108,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
     create_product_person_link unless @product.person
     handle_uploads
-
-    if @product.fulfillment_type == "Locker Sticker"
-      sticker = Sticker.new
-      sticker.purchasable = true
-      sticker.image = params["product"]["images"]["attachment"]
-      sticker.save
-      @product.update_attribute(:sticker_id, sticker.id)
-    end
   end
 
   def handle_uploads
