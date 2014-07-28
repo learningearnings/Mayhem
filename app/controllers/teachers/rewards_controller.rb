@@ -27,6 +27,7 @@ module Teachers
       @teachers_reward.school = current_school
       @teachers_reward.spree_product_id = params[:id]
       @teachers_reward.classrooms = @teachers_reward.classrooms.map(&:id)
+      
       @line_items = @teachers_reward.product.master.line_items.page(params[:page]).per(10)
 
       respond_to do |format|
@@ -63,6 +64,7 @@ module Teachers
         @teachers_reward = Teachers::Reward.new(params[:teachers_reward])
         @teachers_reward.teacher = current_person
         @teachers_reward.school = current_school
+        @teachers_reward.locker_sticker = true if params[:teachers_reward][:locker_sticker]
 
         respond_to do |format|
           if @teachers_reward.save

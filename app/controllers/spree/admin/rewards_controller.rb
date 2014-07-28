@@ -99,6 +99,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.taxons = params[:product][:taxons].map{|s| Spree::Taxon.find(s) if s.present? }.compact
     @product.states = params[:product][:states].map{|s| ::State.find(s) if s.present? }.compact
     @product.schools = params[:product][:schools].map{|s| School.find(s) if s.present? }.compact
+    @product.sticker_image = File.open(params[:product][:images][:attachment].path) if @product.fulfillment_type == "Locker Sticker"
   end
 
   def after_save
@@ -108,14 +109,6 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
 
     create_product_person_link unless @product.person
     handle_uploads
-
-    if @product.fulfillment_type == "Locker Sticker"
-      sticker = Sticker.new
-      sticker.purchasable = true
-      sticker.image = params["product"]["images"]["attachment"]
-      sticker.save
-      @product.update_attribute(:sticker_id, sticker.id)
-    end
   end
 
   def handle_uploads

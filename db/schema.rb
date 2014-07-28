@@ -11,9 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140715190042) do
-
-  add_extension "hstore"
+ActiveRecord::Schema.define(:version => 20140610184056) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false

@@ -138,7 +138,7 @@ gem 'unicorn'
 group :development do
   gem 'pry', '~> 0.9.10'
   gem 'unicorn'
-  #gem 'thin'
+  gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
   gem 'letter_opener'
   # Deploy with Capistrano
