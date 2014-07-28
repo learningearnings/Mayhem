@@ -99,6 +99,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.taxons = params[:product][:taxons].map{|s| Spree::Taxon.find(s) if s.present? }.compact
     @product.states = params[:product][:states].map{|s| ::State.find(s) if s.present? }.compact
     @product.schools = params[:product][:schools].map{|s| School.find(s) if s.present? }.compact
+    @product.sticker_image = File.open(params[:product][:images][:attachment].path) if @product.fulfillment_type == "Locker Sticker"
   end
 
   def after_save
