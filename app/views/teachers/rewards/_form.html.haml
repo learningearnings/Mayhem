@@ -23,9 +23,9 @@
         .red-border
           .border-content
             %p This reward will be viewed and can be purchased by any student at your school.  You can use the minimum and maximum grade settings to limit to a particular grade or grades.
-    - if current_person.is_a?(SchoolAdmin)
-      = f.check_box :locker_sticker
-      = f.label :locker_sticker
+      - if current_person.is_a?(SchoolAdmin)
+        = f.check_box :locker_sticker
+        = f.label :locker_sticker
     - if @teachers_reward.spree_product_id
       .form-inputs.controls-row.span6.clearfix
         %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
