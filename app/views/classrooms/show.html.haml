@@ -3,7 +3,7 @@
     %li= link_to_function "Delete classroom", "sti_edit()", class: 'btn awesome-button'
     %li= link_to_function "Edit classroom", "sti_edit()", class: 'btn awesome-button'
   - else
-    %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
+    %li= button_to "Delete classroom", classroom_path(@classroom), confirm: classroom_delete_confirmation_message, method: :delete, class: 'btn awesome-button'
     %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
 .main-content
   %h2 Classroom: #{@classroom.name}
