@@ -5,6 +5,7 @@ class StudentTransferCommandsController < LoggedInController
     transfer.on_success = method(:on_success)
     transfer.on_failure = method(:on_failure)
     transfer.execute!
+    clear_balance_cache!
   end
 
   def on_success

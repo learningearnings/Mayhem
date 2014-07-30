@@ -18,6 +18,10 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, :alert => exception.message
   end
 
+  def clear_balance_cache!
+    expire_fragment "#{current_person.id}_balances"
+  end
+
   # Users are required to access the application
   # using a subdomain
   def subdomain_required
@@ -49,7 +53,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school
-    School.find(session[:current_school_id])
+    @current_school ||= School.find(session[:current_school_id])
   end
 
   def after_sign_out_path_for(resource_or_scope)
@@ -80,7 +84,7 @@ class ApplicationController < ActionController::Base
   end
 
   def login_schools_list
-    School.includes(:state).order('schools.name asc').all
+    School.includes(:state).status_active.order('schools.name asc').all
   end
   helper_method :login_schools_list
 
@@ -108,11 +112,11 @@ class ApplicationController < ActionController::Base
   # Override this anywhere you need to actually know how to get a current_person
   # - i.e. when logged in :)
   def current_person
-    if current_user
-      current_user.person
-    else
-      nil
-    end
+    @current_person ||= if current_user
+                          current_user.person
+                        else
+                          nil
+                        end
   end
 
   def track_interaction

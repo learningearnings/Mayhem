@@ -17,13 +17,13 @@ module ApplicationHelper
   end
 
   def current_school
-    School.find(session[:current_school_id])
+    @current_school ||= School.find(session[:current_school_id])
   end
 
   def current_school_name
     school = nil
-    if session && session[:current_school_id] && current_user
-      school = School.find(session[:current_school_id])
+    if current_school
+      school = current_school
     end
     if school.nil? && current_user
       school = current_user.person.schools.first
