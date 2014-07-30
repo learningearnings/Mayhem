@@ -3,7 +3,7 @@ require 'macro_reflection_relation_facade'
 
 class Person < ActiveRecord::Base
   include BasicStatuses
-  has_one  :user, :class_name => Spree::User, :autosave => true
+  has_one :user, :class_name => Spree::User
 
   scope :active, where({people: {status: 'active'}})
   scope :with_active_school, lambda { joins(:person_school_links).where({person_school_links: {status: 'active'}}) }

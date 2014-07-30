@@ -175,6 +175,14 @@ module CommonPersonConfig
       controller do
         skip_before_filter :add_current_store_id_to_params
 
+        def update
+          param_key = resource.class.model_name.param_key
+          if params[param_key][:user_attributes][:password].blank?
+            params[param_key].delete(:user_attributes)
+          end
+          super
+        end
+
         def create
           create! do |format|
             format.html { redirect_to resource_path(resource) }
