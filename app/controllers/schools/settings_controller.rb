@@ -4,6 +4,15 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     @distributing_teachers = current_school.distributing_teachers
   end
 
+  def index
+    @school = current_school
+  end
+
+  def toggle_revoke_credits
+    current_school.update_attributes(:can_revoke_credits => params[:school][:can_revoke_credits])
+    redirect_to school_credit_settings_path
+  end
+
   def toggle_distributor
     reward_teachers = Teacher.find(params[:reward_teachers]) if params[:reward_teachers]
     credit_teachers = Teacher.find(params[:credit_teachers]) if params[:credit_teachers]

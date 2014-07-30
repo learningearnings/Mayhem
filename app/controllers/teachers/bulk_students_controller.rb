@@ -40,7 +40,7 @@ module Teachers
         "Delete these students"
       ]
 
-      @students = current_school.students
+      @students = current_school.students.includes(:user)
       if params[:classroom].present?
         classroom = Classroom.find(params[:classroom])
         @students = classroom.students

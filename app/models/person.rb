@@ -22,7 +22,7 @@ class Person < ActiveRecord::Base
   has_many :plutus_transactions, :through => :plutus_amounts, :class_name => 'Plutus::Transaction', :source => :transaction
   has_many :allperson_school_links, :class_name => 'PersonSchoolLink'
   has_many :allschools, :class_name => 'School', :through => :allperson_school_links, :order => 'id desc', :source => :school
-  has_many :person_school_classroom_links
+  has_many :person_school_classroom_links, :through => :person_school_links
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true, :order => 'created_at desc, id desc'
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
@@ -49,6 +49,7 @@ class Person < ActiveRecord::Base
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
+  scope :for_schools, lambda {|schools| joins(:person_school_links).where(:person_school_links => {:school_id => schools})}
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
     joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]])
@@ -60,13 +61,17 @@ class Person < ActiveRecord::Base
   scope :with_username, lambda{|username| joins(:spree_user).where("spree_users.username = ?", username) }
   scope :with_email,    lambda{|email| joins(:spree_user).where("spree_users.email = ?", email) }
   scope :recently_logged_in, lambda{ where('last_sign_in_at >= ?', (Time.now - 1.month)).joins(:user) }
+  scope :logged_in_between, lambda { |start_date, end_date| joins(:user).where('last_sign_in_at >= ? AND last_sign_in_at <= ?', start_date, end_date) }
   scope :recently_created, lambda { where(self.arel_table[:created_at].gt Time.now - 1.month) }
+  scope :created_between, lambda { |start_date, end_date| where(self.arel_table[:created_at].gteq(start_date)).where(self.arel_table[:created_at].lteq(end_date))}
+  scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
 
   before_save :ensure_spree_user
   after_destroy :delete_user
 
-  def name
-    "#{first_name} #{last_name}"
+  def otu_code_categories
+    arel_table = OtuCodeCategory.arel_table
+    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(school.id)))
   end
 
   def avatar
@@ -117,8 +122,8 @@ class Person < ActiveRecord::Base
     MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc'))
   end
 
-  def school(status = :status_active)
-    MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc').limit(1))
+  def school status = :status_active
+    schools(status).first
   end
 
   def person_school_links(status = :status_active)
@@ -149,9 +154,8 @@ class Person < ActiveRecord::Base
     self.first_name + ' ' + self.last_name
   end
 
-  def to_s
-    full_name
-  end
+  alias_method :name, :full_name
+  alias_method :to_s, :full_name
 
   def store_code
     nil
