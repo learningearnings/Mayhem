@@ -18,7 +18,7 @@ module Mixins
     def create_ebucks
       params[:points] = sanitize_points(params[:points]) if params[:points]
       if params[:points].to_i < 0
-        if current_school.can_revoke_credits
+        if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           student = Student.find(params[:student][:id])
           CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points])
           flash[:notice] = "The points have been deducted from the student account."
@@ -96,7 +96,7 @@ module Mixins
 
     def create_ebucks_for_classroom
       if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
-        if current_school.can_revoke_credits
+        if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           params[:credits].delete_if do |k, v|
             if v.to_i < 0
               student = Student.find(k)
