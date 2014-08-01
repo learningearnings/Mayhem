@@ -50,6 +50,10 @@ class CreditManager
     transfer_credits message, school.main_account, student.checking_account, amount
   end
 
+  def issue_monthly_automatic_credits_to_student message, school, student, amount
+    transfer_credits message, school.main_account, student.checking_account, amount
+  end
+
   def issue_credits_to_school school, amount
     transfer_credits "Issue Credits to School", main_account, school.main_account, amount
   end
