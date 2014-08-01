@@ -45,7 +45,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for Perfect Attendance", school, student, SanitizingBigDecimal(school.weekly_perfect_attendance_amount))
+          credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for Perfect Attendance", school, student, school.weekly_perfect_attendance_amount)
         end
       end
 
@@ -54,7 +54,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Tardies", school, student, SanitizingBigDecimal(school.weekly_no_tardies_amount))
+          credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Tardies", school, student, school.weekly_no_tardies_amount)
         end
       end
 
@@ -63,7 +63,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Infractions", school, student, SanitizingBigDecimal(school.weekly_no_infractions_amount))
+          credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Infractions", school, student, school.weekly_no_infractions_amount)
         end
       end
     end
@@ -83,7 +83,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for Perfect Attendance", school, student, SanitizingBigDecimal(school.monthly_perfect_attendance_amount))
+          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for Perfect Attendance", school, student, school.monthly_perfect_attendance_amount)
         end
       end
 
@@ -92,7 +92,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Tardies", school, student, SanitizingBigDecimal(school.monthly_no_tardies_amount))
+          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Tardies", school, student, school.monthly_no_tardies_amount)
         end
       end
 
@@ -101,7 +101,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Infractions", school, student, SanitizingBigDecimal(school.monthly_no_infractions_amount))
+          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Infractions", school, student, school.monthly_no_infractions_amount)
         end
       end
     end
