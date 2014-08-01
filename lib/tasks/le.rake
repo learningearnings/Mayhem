@@ -44,7 +44,7 @@ namespace :le do
         sti_ids = sti_client.perfect_attendance(school.sti_id, start_date, end_date)
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
-          expire_fragment "#{student.id}_balances"
+          ActionController::Base.new.expire_fragment "#{student.id}_balances"
           credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for Perfect Attendance", school, student, SanitizingBigDecimal(school.weekly_perfect_attendance_amount))
         end
       end
@@ -53,7 +53,7 @@ namespace :le do
         sti_ids = sti_client.no_tardies(school.sti_id, start_date, end_date)
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
-          expire_fragment "#{student.id}_balances"
+          ActionController::Base.new.expire_fragment "#{student.id}_balances"
           credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Tardies", school, student, SanitizingBigDecimal(school.weekly_no_tardies_amount))
         end
       end
@@ -62,7 +62,7 @@ namespace :le do
         sti_ids = sti_client.no_infractions(school.sti_id, start_date, end_date)
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
-          expire_fragment "#{student.id}_balances"
+          ActionController::Base.new.expire_fragment "#{student.id}_balances"
           credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Infractions", school, student, SanitizingBigDecimal(school.weekly_no_infractions_amount))
         end
       end
@@ -82,7 +82,7 @@ namespace :le do
         sti_ids = sti_client.perfect_attendance(school.sti_id, start_date, end_date)
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
-          expire_fragment "#{student.id}_balances"
+          ActionController::Base.new.expire_fragment "#{student.id}_balances"
           credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for Perfect Attendance", school, student, SanitizingBigDecimal(school.monthly_perfect_attendance_amount))
         end
       end
@@ -91,7 +91,7 @@ namespace :le do
         sti_ids = sti_client.no_tardies(school.sti_id, start_date, end_date)
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
-          expire_fragment "#{student.id}_balances"
+          ActionController::Base.new.expire_fragment "#{student.id}_balances"
           credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Tardies", school, student, SanitizingBigDecimal(school.monthly_no_tardies_amount))
         end
       end
@@ -100,7 +100,7 @@ namespace :le do
         sti_ids = sti_client.no_infractions(school.sti_id, start_date, end_date)
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
-          expire_fragment "#{student.id}_balances"
+          ActionController::Base.new.expire_fragment "#{student.id}_balances"
           credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Infractions", school, student, SanitizingBigDecimal(school.monthly_no_infractions_amount))
         end
       end
