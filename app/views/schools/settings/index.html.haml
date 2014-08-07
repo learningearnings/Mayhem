@@ -10,3 +10,9 @@
   %p If you allow negative e-Credits to be issued then teachers can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately.
 
   = f.submit
+
+:javascript
+  $(document).ready(function() {
+    $(".home").removeClass("home-selected");
+    $(".settings").addClass("reports-selected");
+  });
