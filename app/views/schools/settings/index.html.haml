@@ -10,7 +10,7 @@
   %p If you allow negative e-Credits to be issued then teachers can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately.
 
   -if current_school.is_inow?
-    %h4 Award Credits for perfect attendance
+    %h4 Award Automatic Credits For: 
     = f.label :weekly_perfect_attendance_amount
     = f.text_field :weekly_perfect_attendance_amount
     = f.label :monthly_perfect_attendance_amount
