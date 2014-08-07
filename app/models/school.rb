@@ -70,6 +70,10 @@ class School < ActiveRecord::Base
     !!district_guid
   end
 
+  def is_inow?
+    !!district_guid
+  end
+
   def set_status_to_active
     self.status = 'active' # Students should default to active
   end
