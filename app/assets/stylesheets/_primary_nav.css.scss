@@ -203,6 +203,22 @@
     color: #470BC1;
   }
 
+  .settings {
+    color: #470BC1;
+  }
+
+  .settings:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470BC1;
+  }
+
+  .settings-selected {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470BC1;
+  }
+
   .classrooms {
     color: #EA4E08;
   }
