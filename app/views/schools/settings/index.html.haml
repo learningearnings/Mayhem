@@ -15,4 +15,7 @@
   $(document).ready(function() {
     $(".home").removeClass("home-selected");
     $(".settings").addClass("reports-selected");
+    window.onbeforeunload = function() {
+      $(".settings").removeClass("reports-selected");
+    }
   });
