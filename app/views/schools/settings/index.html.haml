@@ -2,7 +2,7 @@
 
 = form_for @school, url: revoke_credit_setting_path do |f|
   = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
-  
+
   %h4 Allow Negative Credits
 
   %p You can use this setting to allow or disallow teachers to enter negative credit amounts. If you don't allow negative credits, then teachers will only be allowed to enter positive number values when issuing e-Credits and can only add credits to a students account.
