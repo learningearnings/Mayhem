@@ -67,6 +67,7 @@ module Reports
         end
       end
 
+
       # NOTE: I'm doing this in memory rather than sql, because my sql-fu is
       # weak and this won't be big
       bucket

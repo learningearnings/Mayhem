@@ -123,6 +123,11 @@ class Student < Person
     balance
   end
 
+  def deposit_sum_between(start_date, end_date)
+    transactions = Plutus::Transaction.for_person(self).order('plutus_transactions.created_at desc').where('plutus_transactions.created_at BETWEEN ? AND ?', start_date, end_date)
+    transactions.select{|x| x.description = 'Issue Credits to Student'}.map{|x| x.amounts.first}.flatten.sum(&:amount)
+  end
+
   def hold_balance
     hold_account.balance
   end
