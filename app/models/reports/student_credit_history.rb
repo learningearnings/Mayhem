@@ -10,6 +10,8 @@ module Reports
       @classroom      = params[:classroom]
       @sort_by_filter = params[:sort_by]
       @student_filter_type = params[:student_filter_type]
+      @start_date     = params[:filter_start_date]
+      @end_date     = params[:filter_end_date]
     end
 
     def execute!
@@ -79,7 +81,8 @@ module Reports
         student:   student.name,
         username:  student.user.username,
         checking_balance: student.checking_balance,
-        savings_balance: student.savings_balance
+        savings_balance: student.savings_balance,
+        credits_earned: student.deposit_sum_between((@start_date || student.created_at.to_date), (@end_date || Date.today + 1.days))
       }
     end
 

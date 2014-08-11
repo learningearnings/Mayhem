@@ -27,7 +27,7 @@
 
           .dates
             = label_tag "Begin Date:"
-            = text_field_tag :filter_begin_date, nil, {:id => "begin-date-picker"}
+            = text_field_tag :filter_start_date, nil, {:id => "begin-date-picker"}
 
             = label_tag "End Date:"
             = text_field_tag :filter_end_date, nil, {:id => "end-date-picker"}
@@ -49,14 +49,16 @@
               %th Username
               %th Checking Balance
               %th Savings Balance
+              %th Credits Earned
           %tbody
             - report_data = JSON.parse(report.report_data)
             - report_data.each do |row|
               %tr
                 %td= row["student"]
                 %td= row["username"]
-                %td= row["checking_balance"]
-                %td= row["savings_balance"]
+                %td= number_to_currency(row["checking_balance"], format: "%n")
+                %td= number_to_currency(row["savings_balance"], format: "%n")
+                %td= number_to_currency(row["credits_earned"], format: "%n")
     - else 
       .message.center-content
         = image_tag "loading.gif"
@@ -83,6 +85,6 @@
       "bPaginate": false,
       "bInfo": false
     });
-    $("#begin-date-picker").datepicker({changeMonth: true});
-    $("#end-date-picker").datepicker({changeMonth: true});
+    $("#begin-date-picker").datepicker({changeMonth: true, changeYear: true});
+    $("#end-date-picker").datepicker({changeMonth: true, changeYear: true});
   } );
