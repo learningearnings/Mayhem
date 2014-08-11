@@ -1,6 +1,7 @@
 module Reports
   class StudentCreditHistoryController < Reports::BaseController
     def new
+      binding.pry
       if params[:classroom] && params[:classroom] != "all"
         classroom = Classroom.find(params[:classroom])
       else

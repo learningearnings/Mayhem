@@ -24,6 +24,15 @@
 
             = label_tag "Classroom"
             = select_tag :classroom, options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
+
+          
+          .right
+            = label_tag "Begin Date:"
+            = text_field_tag :filter_begin_date, nil, {:id => "begin-date-picker"}
+
+            = label_tag "End Date:"
+            = text_field_tag :filter_end_date, nil, {:id => "end-date-picker"}
+
             = submit_tag 'Go!'
 
         .sorting
@@ -73,5 +82,7 @@
     $('#report_table').dataTable( {
       "bPaginate": false,
       "bInfo": false
-    } );
+    });
+    $("#begin-date-picker").datepicker();
+    $("#end-date-picker").datepicker();
   } );
