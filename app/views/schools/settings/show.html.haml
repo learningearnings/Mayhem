@@ -22,7 +22,7 @@
             %td= teacher.can_distribute_credits ? 'YES' : 'NO'
             %td= check_box_tag "reward_teachers[]", teacher.id, false
             %td= check_box_tag "credit_teachers[]", teacher.id, false
-    = f.submit 'Update School Attributes'
+    = f.submit 'Update Teachers'
 
   %h3 Manage Reward Exclusions
   = link_to "Click here if you would like to remove any rewards from your school's store.", schools_reward_exclusions_path
