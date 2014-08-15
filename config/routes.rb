@@ -123,6 +123,7 @@ Leror::Application.routes.draw do
 
 
   resources :auctions
+  post "/auctions/create_reward" => "auctions#create_auction_reward", :as => :create_auction_reward
 
   post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"
   post "/filters/filter_classrooms_by_school" => "filters#filter_classrooms_by_school"
