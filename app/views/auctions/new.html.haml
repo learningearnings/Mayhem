@@ -1,3 +1,15 @@
+%h2 Create New Auction Reward
+
+= form_tag create_auction_reward, :method => :post do
+  = f.hidden_field_tag :fullfillment_type, :value => "Auction Reward"
+  = f.label_tag :auction_reward_name
+  = f.text_field_tag :auction_reward_name
+  = f.label_tag :auction_reward_description
+  = f.text_area_tag :auction_reward_description
+  = f.label_tag :auction_reward_image
+  = f.input :auction_reward_image, :as => :file
+
+
 %h2 Create an Auction for your School
 
 = semantic_form_for @auction do |f|

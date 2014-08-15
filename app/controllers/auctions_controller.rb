@@ -4,6 +4,11 @@ class AuctionsController < LoggedInController
     @auction = Auction.new
   end
 
+  def create_auction_reward
+    Rails.logger.warn("AUCTION REWARD PARAMS: #{params.inspect}")
+    redirect_to new_auction_path, :notice => "Done"
+  end
+
   def index
     school_auctions = Auction.active.for_school(current_school)
     state_auctions  = Auction.active.for_state(current_school.state)
