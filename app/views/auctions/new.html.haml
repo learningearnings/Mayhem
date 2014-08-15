@@ -1,13 +1,14 @@
 %h2 Create New Auction Reward
 
-= form_tag create_auction_reward, :method => :post do
-  = f.hidden_field_tag :fullfillment_type, :value => "Auction Reward"
-  = f.label_tag :auction_reward_name
-  = f.text_field_tag :auction_reward_name
-  = f.label_tag :auction_reward_description
-  = f.text_area_tag :auction_reward_description
-  = f.label_tag :auction_reward_image
-  = f.input :auction_reward_image, :as => :file
+= form_tag create_auction_reward_path, :method => :post do
+  = hidden_field_tag :fullfillment_type, :value => "Auction Reward"
+  = label_tag :auction_reward_name
+  = text_field_tag :auction_reward_name
+  = label_tag :auction_reward_description
+  = text_area_tag :auction_reward_description
+  = label_tag :auction_reward_image
+  = file_field_tag :auction_reward_image
+  = submit_tag "Create Auction Reward"
 
 
 %h2 Create an Auction for your School
