@@ -277,6 +277,7 @@ Leror::Application.routes.draw do
     match "/new_teacher_import" => "imports#new_teacher_import", :as => 'new_teacher_import'
     match "/import_students" => "imports#import_students", :as => 'import_students'
     match "/import_teachers" => "imports#import_teachers", :as => 'import_teachers'
+    post "/update_auto_credits" => "banks#update_auto_credits", :as => "update_auto_credits"
   end
 
   # Command routes
