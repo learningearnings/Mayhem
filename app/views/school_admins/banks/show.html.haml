@@ -83,6 +83,29 @@
 
           .tab-pane#auto-credits
             %h4 Assign Automatic Credits
+            = form_for @school, url: school_admins_update_auto_credits_path do |f|
+              -if current_school.is_inow?
+                %h4 Award Automatic Credits For: 
+                = f.label :weekly_perfect_attendance_amount
+                = f.text_field :weekly_perfect_attendance_amount
+                /
+                  = f.label :monthly_perfect_attendance_amount
+                  = f.text_field :monthly_perfect_attendance_amount
+                = f.label :weekly_no_tardies_amount
+                = f.text_field :weekly_no_tardies_amount
+                /
+                  = f.label :monthly_no_tardies_amount
+                  = f.text_field :monthly_no_tardies_amount
+                = f.label :weekly_no_infractions_amount
+                = f.text_field :weekly_no_infractions_amount
+                /
+                  = f.label :monthly_no_infractions_amount
+                  = f.text_field :monthly_no_infractions_amount
+                %br/
+              = f.submit
+            - else
+              %p
+                This functionality is not supported for your school.
 %script#students_table{ type: 'text/html' }
   :plain
     <table class='table'>
