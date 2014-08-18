@@ -92,6 +92,8 @@
           - if current_user.person.is_a?(SchoolAdmin)
             .tab-pane#auto-credits
               %h4 Assign Automatic Credits
+              %p
+                Automatic credits are run at the end of the week on Saturday night for the previous week
               -if current_school.is_inow?
                 = form_for @school, url: school_admins_update_auto_credits_path, :method => :post do |f|
                   = f.label :weekly_perfect_attendance_amount
