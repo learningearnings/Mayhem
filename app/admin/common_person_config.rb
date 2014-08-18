@@ -65,6 +65,16 @@ module CommonPersonConfig
         render :partial => 'admin/common/school_list', :locals => { :person => @person }
       end
 
+      member_action :toggle_school_admin, :method => :put do
+        person = Person.find(params[:id])
+        if person.is_a?(SchoolAdmin)
+          person.update_attributes(:type => "Teacher")
+        elsif person.is_a?(Teacher)
+          person.update_attributes(:type => "SchoolAdmin")
+        end
+        redirect_to admin_teacher_path(person)
+      end
+
       member_action :give_credits, :method => :post do
         person = Person.find(params[:id])
         amount = params[:credits][:amount]

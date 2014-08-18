@@ -132,6 +132,7 @@ $(document).ready(function() {
   highlightNavigation('restock', 'restock');
   highlightNavigation('store',   'restock', 'le');
   highlightNavigation('reports', 'reports');
+  highlightNavigation('settings', 'settings');
   highlightNavigation('store',   'rewards');
   highlightNavigation('news',    'news');
   highlightNavigation('how_it_works', 'how-it-works');
