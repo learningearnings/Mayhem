@@ -86,12 +86,15 @@
             -if current_school.is_inow?
               = form_for @school, url: school_admins_update_auto_credits_path do |f|
                 = f.label :weekly_perfect_attendance_amount
-                = f.text_field :weekly_perfect_attendance_amount
+                = f.text_field :weekly_perfect_attendance_amount, :value => @school.weekly_perfect_attendance_amount
+                %br/, :value => @school.weekly_no_infractions_amount
                 = f.label :weekly_no_tardies_amount
-                = f.text_field :weekly_no_tardies_amount
+                = f.text_field :weekly_no_tardies_amount, :value => @school.weekly_no_tardies_amount
+                %br/%br/, :value => @school.weekly_no_infractions_amount
                 = f.label :weekly_no_infractions_amount
-                = f.text_field :weekly_no_infractions_amount
-                = f.submit 'Update Auto-Credits', :class => 'awesome-button' _path
+                = f.text_field :weekly_no_infractions_amount, :value => @school.weekly_no_infractions_amount
+                %br/
+                = f.submit 'Update Auto-Credits', :class => 'awesome-button'
             - else
               %p
                 This functionality is not supported for your school.
