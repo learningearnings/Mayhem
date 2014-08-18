@@ -30,6 +30,11 @@
               %p
                 %i{:class => "icon-random"}
                 Transfer Credits
+          %li
+            %a{:href => "#auto-credits", 'data-toggle' => 'tab'}
+              %p
+                %i{:class => "icon-random"}
+                Transfer Credits
         .tab-content
           .tab-pane#print-credits
             %h4 Print Physical Credits
@@ -76,6 +81,8 @@
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = f.submit 'Transfer Credits', :class => 'awesome-button'
 
+          .tab-pane#auto-credits
+            %h4 Assign Automatic Credits
 %script#students_table{ type: 'text/html' }
   :plain
     <table class='table'>
