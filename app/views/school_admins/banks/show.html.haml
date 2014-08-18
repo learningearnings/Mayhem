@@ -96,15 +96,15 @@
                 = form_for @school, url: school_admins_update_auto_credits_path, :method => :post do |f|
                   = f.label :weekly_perfect_attendance_amount
                   %br/
-                  = f.text_field :weekly_perfect_attendance_amount, :value => @school.weekly_perfect_attendance_amount
+                  = f.number_field :weekly_perfect_attendance_amount, :value => @school.weekly_perfect_attendance_amount, :min => 0
                   %br/
                   = f.label :weekly_no_tardies_amount
                   %br/
-                  = f.text_field :weekly_no_tardies_amount, :value => @school.weekly_no_tardies_amount
+                  = f.number_field :weekly_no_tardies_amount, :value => @school.weekly_no_tardies_amount, :min => 0
                   %br/
                   = f.label :weekly_no_infractions_amount
                   %br/
-                  = f.text_field :weekly_no_infractions_amount, :value => @school.weekly_no_infractions_amount
+                  = f.number_field :weekly_no_infractions_amount, :value => @school.weekly_no_infractions_amount, :min => 0
                   %br/
                   = f.submit 'Update Auto-Credits', :class => 'awesome-button'
               - else
