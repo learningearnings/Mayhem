@@ -30,7 +30,7 @@
               %p
                 %i{:class => "icon-random"}
                 Transfer Credits
-          - if current_user.person.personis_a?(SchoolAdmin)          
+          - if current_user.person.is_a?(SchoolAdmin)          
             %li
               %a{:href => "#auto-credits", 'data-toggle' => 'tab'}
                 %p
