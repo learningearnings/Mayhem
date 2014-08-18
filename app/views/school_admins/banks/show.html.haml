@@ -36,6 +36,11 @@
                 %p
                   %i{:class => "icon-random"}
                   Auto-Credits
+          %li
+            %a{:href => "#lookup-code", 'data-toggle' => 'tab'}
+              %p
+                %i{:class => "icon-random"}
+                Lookup A Code
         .tab-content
           .tab-pane#print-credits
             %h4 Print Physical Credits
@@ -81,6 +86,8 @@
               = label_tag :to_teacher
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = f.submit 'Transfer Credits', :class => 'awesome-button'
+          .tab-pane#lookup-code
+            =render "/banks/code_lookup"
 
           - if current_user.person.is_a?(SchoolAdmin)
             .tab-pane#auto-credits
