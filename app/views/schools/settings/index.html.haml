@@ -2,7 +2,7 @@
 
 = form_for @school, url: revoke_credit_setting_path do |f|
   = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
-  
+
   %h4 Allow Negative Credits
 
   %p You can use this setting to allow or disallow teachers to enter negative credit amounts. If you don't allow negative credits, then teachers will only be allowed to enter positive number values when issuing e-Credits and can only add credits to a students account.
@@ -13,15 +13,18 @@
     %h4 Award Automatic Credits For: 
     = f.label :weekly_perfect_attendance_amount
     = f.text_field :weekly_perfect_attendance_amount
-    = f.label :monthly_perfect_attendance_amount
-    = f.text_field :monthly_perfect_attendance_amount
+    /
+      = f.label :monthly_perfect_attendance_amount
+      = f.text_field :monthly_perfect_attendance_amount
     = f.label :weekly_no_tardies_amount
     = f.text_field :weekly_no_tardies_amount
-    = f.label :monthly_no_tardies_amount
-    = f.text_field :monthly_no_tardies_amount
+    /
+      = f.label :monthly_no_tardies_amount
+      = f.text_field :monthly_no_tardies_amount
     = f.label :weekly_no_infractions_amount
     = f.text_field :weekly_no_infractions_amount
-    = f.label :monthly_no_infractions_amount
-    = f.text_field :monthly_no_infractions_amount
+    /
+      = f.label :monthly_no_infractions_amount
+      = f.text_field :monthly_no_infractions_amount
     %br/
   = f.submit

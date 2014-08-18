@@ -18,6 +18,18 @@ module STI
       @session_token ||= get_session_token
     end
 
+    def perfect_attendance sti_school_id, start_date, end_date
+      attendance_request("perfectattendance", sti_school_id, start_date, end_date)
+    end
+
+    def no_tardies sti_school_id, start_date, end_date
+      attendance_request("notardies", sti_school_id, start_date, end_date)
+    end
+
+    def no_infractions sti_school_id, start_date, end_date
+      attendance_request("noinfractions", sti_school_id, start_date, end_date)
+    end
+
     def session_information
       HTTParty.get("#{base_url}users/me", :headers => authorized_headers)
     end
@@ -63,6 +75,10 @@ module STI
 
     def authentication_hash
       {:username => username, :password => password}
+    end
+
+    def attendance_request method, sti_school_id, start_date, end_date
+      HTTParty.get("#{base_url}le/#{method}/#{sti_school_id}?startdate=#{start_date}&enddate=#{end_date}", :headers => authorized_headers).parsed_response
     end
   end
 end

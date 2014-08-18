@@ -48,7 +48,7 @@ Leror::Application.routes.draw do
   match '/pages/parents/news' => 'news#index', visitor_type: 'parent'
   match '/pages/teachers/news' => 'news#index', visitor_type: 'teacher'
 
-  match '/schools/revoke_credits_setting' => 'schools/settings#toggle_revoke_credits', as: 'revoke_credit_setting'
+  match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]

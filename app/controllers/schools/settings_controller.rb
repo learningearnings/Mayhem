@@ -14,6 +14,11 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     redirect_to school_settings_path
   end
 
+  def update
+    current_school.update_attributes(params[:school])
+    redirect_to school_credit_settings_path
+  end
+
   def toggle_distributor
     reward_teachers = Teacher.find(params[:reward_teachers]) if params[:reward_teachers]
     credit_teachers = Teacher.find(params[:credit_teachers]) if params[:credit_teachers]
