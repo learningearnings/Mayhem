@@ -82,7 +82,7 @@
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = f.submit 'Transfer Credits', :class => 'awesome-button'
 
-          - if current_user.is_a?(SchoolAdmin)
+          - if current_person.is_a?(SchoolAdmin)
             .tab-pane#auto-credits
               %h4 Assign Automatic Credits
               -if current_school.is_inow?
