@@ -3,6 +3,16 @@ module SchoolAdmins
     include Mixins::Banks
     def show
       @teacher = current_person
+      @school = current_school
+    end
+
+    def update_auto_credits
+      if current_school.update_attributes params[:school]
+        flash[:notice] = "Auto-Credits Updated!" 
+      else
+        flash[:error] = "Auto-Credits Failed To Update!"
+      end
+      redirect_to school_admins_bank_path
     end
 
     def on_success(batch_id = nil)
