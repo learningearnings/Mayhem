@@ -11,6 +11,13 @@ module Teachers
     def edit
     end
 
+    def import_students
+      importer = StudentsImporter.new(params[:school_id], params[:file])
+      importer.call
+      flash[:notice] = 'Students have been submitted.'
+      redirect_to teachers_bulk_students_path
+    end
+
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
       StudentUpdaterWorker.perform_async(current_person.user.email, params["students"], current_person.schools.first, updater_method)
