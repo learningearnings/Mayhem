@@ -30,6 +30,17 @@
               %p
                 %i{:class => "icon-random"}
                 Transfer Credits
+          %li
+            %a{:href => "#lookup-code", 'data-toggle' => 'tab'}
+              %p
+                %i{:class => "icon-search"}
+                Lookup A Code
+          - if current_user.person.is_a?(SchoolAdmin)          
+            %li
+              %a{:href => "#auto-credits", 'data-toggle' => 'tab'}
+                %p
+                  %i{:class => "icon-star"}
+                  Auto-Credits
         .tab-content
           .tab-pane#print-credits
             %h4 Print Physical Credits
@@ -51,7 +62,7 @@
               = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
               = label_tag 'Credits'
               = text_field_tag :points, nil,:step => '1',:type => "number"
-              = f.label :otu_code_category_id
+              = f.label :otu_code_category_id, "Credit Category"
               = f.select :otu_code_category_id, options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]})
               = f.submit 'Send These Credits', :class => 'awesome-button'
 
@@ -61,7 +72,7 @@
               = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
               = label_tag 'Credits'
               = text_field_tag :class_points, nil,:min => '0',:step => '1',:type => "number", :class => 'class_points', :onclick => 'copy_points();'
-              = f.label :otu_code_category_id, "Category"
+              = f.label :otu_code_category_id, "Credit Category"
               = f.select :otu_code_category_id, options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
               #classroom_distribution
 
@@ -75,7 +86,32 @@
               = label_tag :to_teacher
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = f.submit 'Transfer Credits', :class => 'awesome-button'
+          .tab-pane#lookup-code
+            =render "/banks/code_lookup"
 
+          - if current_user.person.is_a?(SchoolAdmin)
+            .tab-pane#auto-credits
+              %h4 Assign Automatic Credits
+              %p
+                Automatic credits are distributed at the end of the week on Saturday night, for the previous week.
+              -if current_school.is_inow?
+                = form_for @school, url: school_admins_update_auto_credits_path, :method => :post do |f|
+                  = f.label :weekly_perfect_attendance_amount
+                  %br/
+                  = f.number_field :weekly_perfect_attendance_amount, :value => @school.weekly_perfect_attendance_amount, :min => 0
+                  %br/
+                  = f.label :weekly_no_tardies_amount
+                  %br/
+                  = f.number_field :weekly_no_tardies_amount, :value => @school.weekly_no_tardies_amount, :min => 0
+                  %br/
+                  = f.label :weekly_no_infractions_amount
+                  %br/
+                  = f.number_field :weekly_no_infractions_amount, :value => @school.weekly_no_infractions_amount, :min => 0
+                  %br/
+                  = f.submit 'Update Auto-Credits', :class => 'awesome-button'
+              - else
+                %p
+                  This functionality is not supported for your school.
 %script#students_table{ type: 'text/html' }
   :plain
     <table class='table'>
