@@ -4,7 +4,7 @@
     %p
       = "Upload the students for #{current_school.name}"
     = form_tag import_students_teachers_bulk_students_path, :multipart => true, :method => :post do
-      = hidden_field_tag :school_id, value: current_school.id
+      = hidden_field_tag :school_id, current_school.id
       .field
         = file_field_tag :file
       = submit_tag 'Import Students', class: "btn awesome-button"
