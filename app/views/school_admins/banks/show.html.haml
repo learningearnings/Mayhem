@@ -39,7 +39,7 @@
             %li
               %a{:href => "#auto-credits", 'data-toggle' => 'tab'}
                 %p
-                  %i{:class => "icon-random"}
+                  %i{:class => "icon-star"}
                   Auto-Credits
         .tab-content
           .tab-pane#print-credits
@@ -94,7 +94,7 @@
             .tab-pane#auto-credits
               %h4 Assign Automatic Credits
               %p
-                Automatic credits are run at the end of the week on Saturday night for the previous week
+                Automatic credits are distributed at the end of the week on Saturday night, for the previous week.
               -if current_school.is_inow?
                 = form_for @school, url: school_admins_update_auto_credits_path, :method => :post do |f|
                   = f.label :weekly_perfect_attendance_amount
