@@ -33,8 +33,14 @@
           %li
             %a{:href => "#lookup-code", 'data-toggle' => 'tab'}
               %p
-                %i{:class => "icon-random"}
+                %i{:class => "icon-search"}
                 Lookup A Code
+          - if current_user.person.is_a?(SchoolAdmin)          
+            %li
+              %a{:href => "#auto-credits", 'data-toggle' => 'tab'}
+                %p
+                  %i{:class => "icon-random"}
+                  Auto-Credits
         .tab-content
           .tab-pane#print-credits
             %h4 Print Physical Credits
@@ -83,6 +89,29 @@
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
 
+          - if current_user.person.is_a?(SchoolAdmin)
+            .tab-pane#auto-credits
+              %h4 Assign Automatic Credits
+              %p
+                Automatic credits are run at the end of the week on Saturday night for the previous week
+              -if current_school.is_inow?
+                = form_for @school, url: school_admins_update_auto_credits_path, :method => :post do |f|
+                  = f.label :weekly_perfect_attendance_amount
+                  %br/
+                  = f.number_field :weekly_perfect_attendance_amount, :value => @school.weekly_perfect_attendance_amount, :min => 0
+                  %br/
+                  = f.label :weekly_no_tardies_amount
+                  %br/
+                  = f.number_field :weekly_no_tardies_amount, :value => @school.weekly_no_tardies_amount, :min => 0
+                  %br/
+                  = f.label :weekly_no_infractions_amount
+                  %br/
+                  = f.number_field :weekly_no_infractions_amount, :value => @school.weekly_no_infractions_amount, :min => 0
+                  %br/
+                  = f.submit 'Update Auto-Credits', :class => 'awesome-button'
+              - else
+                %p
+                  This functionality is not supported for your school.
 %script#students_table{ type: 'text/html' }
   :plain
     <table class='table'>
