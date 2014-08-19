@@ -196,6 +196,7 @@ Leror::Application.routes.draw do
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
     resources :otu_code_categories
+    resource :bulk_teachers
     resource :bulk_students
     resources :reports
     resource  :bank
