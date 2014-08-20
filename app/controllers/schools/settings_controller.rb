@@ -45,10 +45,15 @@ class Schools::SettingsController < SchoolAdmins::BaseController
   end
 
   def import_teachers
-    importer = TeachersImporter.new(params[:school_id], params[:file])
-    importer.call
-    flash[:notice] = 'Teachers Import Completed.'
-    redirect_to '/schools/settings/'
+    begin
+      importer = TeachersImporter.new(params[:school_id], params[:file])
+      importer.call
+      flash[:notice] = "Teachers import complete."
+    rescue Exception => e
+      flash[:error] = "Teachers import Failed. Error: #{e.message}"
+    ensure
+      redirect_to '/schools/settings/'
+    end
   end
 
   private

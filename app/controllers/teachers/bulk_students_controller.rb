@@ -12,10 +12,15 @@ module Teachers
     end
 
     def import_students
-      importer = StudentsImporter.new(params[:school_id], params[:file])
-      importer.call
-      flash[:notice] = 'Students have been submitted.'
-      redirect_to teachers_bulk_students_path
+      begin
+        importer = StudentsImporter.new(params[:school_id], params[:file])
+        importer.call
+        flash[:notice] = 'Students have been submitted.'
+      rescue Exception => e
+        flash[:error] = "Students import failed. Error #{e.message}"
+      ensure
+        redirect_to teachers_bulk_students_path
+      end
     end
 
     def update
