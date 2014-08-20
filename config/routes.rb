@@ -48,6 +48,7 @@ Leror::Application.routes.draw do
     resources :reward_exclusions
     #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
     post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+    post "import_teachers" => 'settings#import_teachers', :as => 'import_teachers'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')

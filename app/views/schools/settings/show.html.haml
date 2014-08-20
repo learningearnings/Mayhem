@@ -3,6 +3,15 @@
 %h2 Your School's LE Settings
 %hr
 
+- if current_user.person.is_a?(SchoolAdmin)
+  .school-settings
+    %h3 Import Teachers
+    = form_tag :url => schools_import_teachers_path, :multipart => true, :method => :post do
+      = hidden_field_tag :school_id, current_school.id
+      .field
+        = file_field_tag :file
+      = submit_tag 'Import Teachers'
+
 .school-settings
   %h3 Select the teachers that will distribute credits or rewards
   = form_for :teacher, :url => schools_toggle_distributor_path do |f|
