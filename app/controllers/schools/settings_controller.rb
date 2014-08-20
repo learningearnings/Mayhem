@@ -44,6 +44,13 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     redirect_to :back
   end
 
+  def import_teachers
+    importer = TeachersImporter.new(params[:school_id], params[:file])
+    importer.call
+    flash[:notice] = 'Teachers Import Completed.'
+    redirect_to '/schools/settings/'
+  end
+
   private
   def distributor_list
     @teachers = current_school.teachers.order(:last_name)
