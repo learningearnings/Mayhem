@@ -1,5 +1,10 @@
 .main-content-wrapper
   .primary-content-fw
+    %h2 Manage Students
+    = link_to "New Students", new_teachers_bulk_students_path, class: 'btn awesome-button'
+    = link_to "Edit Students", edit_teachers_bulk_students_path, class: 'btn awesome-button'
+    = link_to "Link a Parent", teachers_new_parent_student_link_path, class: 'btn awesome-button'
+  .primary-content-fw
     %h2 Import Students
     %p
       = "Upload the students for #{current_school.name}"
@@ -9,8 +14,3 @@
         = file_field_tag :file
       = submit_tag 'Import Students', class: "btn awesome-button"
 
-  .primary-content-fw
-    %h2 Manage Students
-    = link_to "New Students", new_teachers_bulk_students_path, class: 'btn awesome-button'
-    = link_to "Edit Students", edit_teachers_bulk_students_path, class: 'btn awesome-button'
-    = link_to "Link a Parent", teachers_new_parent_student_link_path, class: 'btn awesome-button'

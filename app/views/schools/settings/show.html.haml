@@ -6,7 +6,7 @@
 - if current_user.person.is_a?(SchoolAdmin)
   .school-settings
     %h3 Import Teachers
-    = form_tag :url => schools_import_teachers_path, :multipart => true, :method => :post do
+    = form_tag schools_import_teachers_path, :multipart => true, :method => :post do
       = hidden_field_tag :school_id, current_school.id
       .field
         = file_field_tag :file
