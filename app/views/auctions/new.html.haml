@@ -1,7 +1,7 @@
 %h2 Create New Auction Reward
 
 = form_tag create_auction_reward_path, :method => :post do
-  = hidden_field_tag :fullfillment_type, :value => "Auction Reward"
+  = hidden_field_tag :fullfillment_type, "Auction Reward"
   = label_tag :auction_reward_name
   = text_field_tag :auction_reward_name
   = label_tag :auction_reward_description
