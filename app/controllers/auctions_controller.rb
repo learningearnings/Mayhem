@@ -5,8 +5,16 @@ class AuctionsController < LoggedInController
   end
 
   def create_auction_reward
-    Rails.logger.warn("AUCTION REWARD PARAMS: #{params.inspect}")
-    redirect_to new_auction_path, :notice => "Done"
+    s = Spree::Product.new
+    s.fulfillment_type = "Auction Reward"
+    s.name = params[:auction_reward_name]
+    s.description = params[:auction_reward_description]
+    if s.save
+      s.images.create(attachement: params[:auction_reward_image]) if params[:auction_reward_image].present?
+      redirect_to new_auction_path, :notice => "Auction Reward Created!"
+    else
+      redirect_to new_auction_path, :error => "Auction Reward Failed To Create!"
+    end
   end
 
   def index
