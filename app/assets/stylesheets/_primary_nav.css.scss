@@ -1,0 +1,271 @@
+.primary-nav {
+  li a {
+    padding: 1em .75em;
+    font-size: 1.6em;
+  }
+  .home {
+    color: #25860b;
+  }
+
+  .home:hover {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #25860b;
+  }
+
+  .home-selected {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #25860b;
+  }
+
+  .how-it-works {
+    color: #ea4e08;
+  }
+
+  .how-it-works:hover {
+    background-image: url(asset_path('how_it_works_selected.png', image));
+    background-repeat: no-repeat;
+    color: #ea4e08;
+  }
+
+  .how-it-works-selected {
+    background-image: url(asset_path('how_it_works_selected.png', image));
+    background-repeat: no-repeat;
+    color: #ea4e08;
+  }
+
+  .testimonials {
+    color: #B611B0;
+  }
+
+  .testimonials:hover {
+    background-image: url(asset_path('how_it_works_selected.png', image));
+    background-repeat: no-repeat;
+    color: #B611B0;
+  }
+
+  .testimonials-selected {
+    background-image: url(asset_path('how_it_works_selected.png', image));
+    background-repeat: no-repeat;
+    color: #B611B0;
+  }
+
+  .locker {
+    color: #1f2870;
+  }
+
+  .locker:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #1f2870;
+  }
+
+  .locker-selected {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #1f2870;
+  }
+
+  .inbox {
+    color: #ff2204;
+  }
+
+  .inbox:hover {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #ff2204;
+  }
+
+  .inbox-selected {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #ff2204;
+  }
+
+  .restock {
+    color: #EB731C
+  }
+
+  .restock:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #EB731C
+  }
+
+  .restock-selected {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #EB731C
+  }
+
+  .manage_students-selected, .manage_students:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+
+  .manage_teachers-selected, .manage_teachers:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+
+  .settings-selected, .settings:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+
+  .help-selected, .help:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+
+  .bank {
+    color: #470bc1;
+  }
+
+  .bank:hover {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470bc1;
+  }
+
+  .bank-selected {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470bc1;
+  }
+
+  .play {
+    color: #eb731c;
+  }
+
+  .play:hover,
+  .play-selected {
+    background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
+    color: #eb731c;
+  }
+
+  .shop {
+    color: #b611b0;
+  }
+
+  .shop:hover,
+  .shop-selected {
+    background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
+    color: #b611b0;
+  }
+
+  .charities {
+    color: #470bc1;
+  }
+
+  .charities:hover {
+    background-image: url(asset_path('rewards_selected.png', image));
+    background-repeat: no-repeat;
+    color: #b611b0;
+  }
+
+  .charities-selected {
+    background-image: url(asset_path('rewards_selected.png', image));
+    background-repeat: no-repeat;
+    color: #b611b0;
+  }
+
+  .rewards {
+    color: #b611b0;
+  }
+
+  .rewards:hover,
+  .rewards-selected {
+    background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 8px;
+    @include background-size(contain);
+    color: #b611b0;
+  }
+
+  .shop.rewards:hover,
+  .shop.rewards-selected {
+    background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 3px;
+  }
+
+  .reports {
+    color: #470BC1;
+  }
+
+  .reports:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470BC1;
+  }
+
+  .reports-selected {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470BC1;
+  }
+
+  .settings {
+    color: #470BC1;
+  }
+
+  .settings:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470BC1;
+  }
+
+  .settings-selected {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #470BC1;
+  }
+
+  .classrooms {
+    color: #EA4E08;
+  }
+
+  .classrooms:hover {
+    background-image: url(asset_path('classrooms_selected.png', image));
+    background-repeat: no-repeat;
+    color: #EA4E08;
+  }
+
+  .classrooms-selected {
+    background-image: url(asset_path('classrooms_selected.png', image));
+    background-repeat: no-repeat;
+    color: #EA4E08;
+  }
+
+
+  .lounge {
+    color: #EB731C;
+  }
+
+  .lounge:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #EB731C;
+  }
+
+  .lounge-selected {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+    color: #EB731C;
+  }
+
+  .news {
+    color: #ff2204;
+  }
+
+  .news:hover {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #ff2204;
+  }
+
+  .news-selected {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+    color: #ff2204;
+  }
+  }
+

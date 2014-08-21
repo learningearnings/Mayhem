@@ -2,15 +2,21 @@ class Schools::SettingsController < SchoolAdmins::BaseController
   def show
     @teachers = current_school.teachers.order(:last_name)
     @distributing_teachers = current_school.distributing_teachers
+    @school = current_school
   end
 
   def index
     @school = current_school
   end
 
+  def update
+    current_school.update_attributes(params[:school])
+    redirect_to school_credit_settings_path
+  end
+
   def toggle_revoke_credits
     current_school.update_attributes(:can_revoke_credits => params[:school][:can_revoke_credits])
-    redirect_to school_credit_settings_path
+    redirect_to school_settings_path
   end
 
   def toggle_distributor
