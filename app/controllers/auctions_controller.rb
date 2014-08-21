@@ -9,11 +9,14 @@ class AuctionsController < LoggedInController
     s.fulfillment_type = "Auction Reward"
     s.name = params[:auction_reward_name]
     s.description = params[:auction_reward_description]
+    s.price = BigDecimal.new("500.0")
     if s.save
       s.images.create(attachement: params[:auction_reward_image]) if params[:auction_reward_image].present?
-      redirect_to new_auction_path, :notice => "Auction Reward Created!"
+      flash[:notice] = "Auction Reward Created!"
+      redirect_to new_auction_path
     else
-      redirect_to new_auction_path, :error => "Auction Reward Failed To Create!"
+      flash[:error] = "Auction Reward Failed To Create!"
+      redirect_to new_auction_path
     end
   end
 
