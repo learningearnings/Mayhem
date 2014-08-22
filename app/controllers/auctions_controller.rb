@@ -1,6 +1,6 @@
 class AuctionsController < LoggedInController
   def new
-    @products = get_products
+    @products = current_school.products.for_auctions
     @auction = Auction.new
   end
 
@@ -74,13 +74,5 @@ class AuctionsController < LoggedInController
       flash[:error] = 'There was a problem creating the auction.'
       render :new
     end
-  end
-
-  def get_products
-    with_filters_params = params
-    with_filters_params[:searcher_current_person] = current_person
-    with_filters_params[:current_school] = current_school
-    searcher = Spree::Config.searcher_class.new(with_filters_params)
-    searcher.retrieve_products
   end
 end
