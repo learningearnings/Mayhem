@@ -6,6 +6,28 @@
 - if current_user.person.is_a?(SchoolAdmin)
   .school-settings
     %h3 Import Teachers
+    %h4 Required Format Example:
+    %table
+      %tr
+        %td First
+        %td Last
+        %td Email Address
+        %td Grade
+        %td Gender
+        %td Username
+        %td Password
+        %td LE Admin (Y/N)?
+      %tr
+        %td John
+        %td Doe
+        %td jdoe@example.org
+        %td 1
+        %td m
+        %td jdoe1
+        %td password
+        %td n
+
+
     = form_tag schools_import_teachers_path, :multipart => true, :method => :post do
       = hidden_field_tag :school_id, current_school.id
       .field
