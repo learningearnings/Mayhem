@@ -6,6 +6,24 @@
     = link_to "Link a Parent", teachers_new_parent_student_link_path, class: 'btn awesome-button'
   .primary-content-fw
     %h2 Import Students
+    %h4 Required Format Example:
+    %table
+      %tr
+        %td First
+        %td Last
+        %td Grade
+        %td Gender
+        %td Username
+        %td Password
+      %tr
+        %td John
+        %td Doe
+        %td 1
+        %td m
+        %td jdoe1
+        %td password
+
+      
     %p
       = "Upload the students for #{current_school.name}"
     = form_tag import_students_teachers_bulk_students_path, :multipart => true, :method => :post do
