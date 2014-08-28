@@ -8,6 +8,11 @@ class StiImporterWorker
     begin
       sti_client = STI::Client.new(:base_url => url, :username => username, :password => password, :district_guid => district_guid)
       sti_importer = STI::Importer.new :client => sti_client, :district_guid => district_guid
+      sync_attempt.students_response = sti_client.students.response.inspect
+      sync_attempt.staff_response = sti_client.staff.response.inspect
+      sync_attempt.sections_response = sti_client.sections.response.inspect
+      sync_attempt.rosters_response = sti_client.rosters.response.inspect
+      sync_attempt.schools_response = sti_client.schools.response.inspect
       sti_importer.run!
       sync_attempt.status = "Success"
       sync_attempt.save
