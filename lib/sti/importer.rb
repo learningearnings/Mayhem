@@ -51,7 +51,7 @@ module STI
           end
           teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
           teacher.type = "Teacher" unless teacher.type == "SchoolAdmin"
-          teacher.update_attributes(api_teacher_mapping(api_teacher))
+          teacher.update_attributes(api_teacher_mapping(api_teacher, teacher.new_record?))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
           teacher.reload && teacher.activate! unless teacher.status == "active"
@@ -142,16 +142,27 @@ module STI
       }
     end
 
-    def api_teacher_mapping api_teacher
-      {
-        dob: api_teacher["DateOfBirth"],
-        can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
-        first_name: api_teacher["FirstName"],
-        last_name: api_teacher["LastName"],
-        grade: 5,
-        sti_id: api_teacher["Id"],
-        district_guid: @district_guid
-      }
+    def api_teacher_mapping api_teacher, should_include_can_distribute_credits
+      if should_include_can_distribute_credits
+        {
+          dob: api_teacher["DateOfBirth"],
+          can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
+          first_name: api_teacher["FirstName"],
+          last_name: api_teacher["LastName"],
+          grade: 5,
+          sti_id: api_teacher["Id"],
+          district_guid: @district_guid
+        }
+      else
+        {
+          dob: api_teacher["DateOfBirth"],
+          first_name: api_teacher["FirstName"],
+          last_name: api_teacher["LastName"],
+          grade: 5,
+          sti_id: api_teacher["Id"],
+          district_guid: @district_guid
+        }
+      end
     end
 
     def api_student_mapping api_student
