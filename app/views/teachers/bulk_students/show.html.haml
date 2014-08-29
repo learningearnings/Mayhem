@@ -22,9 +22,7 @@
         %td m
         %td jdoe1
         %td password
-    = link_to "Example Download", "student_sample_template.xls"
-
-      
+    = link_to "Click here to download an example spreadsheet.", "/student_sample_template.xls"
     %p
       = "Upload the students for #{current_school.name}"
     = form_tag import_students_teachers_bulk_students_path, :multipart => true, :method => :post do
