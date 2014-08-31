@@ -27,7 +27,12 @@ class BuckDistributor
   def amount_for_school school
     days_in_month = Time.days_in_month(Time.now.month)
     days_left_in_month = (days_in_month - Time.now.day) + 1
-    DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
+    
+    if school.district_guid
+      DAILY_STUDENT_AMOUNT * days_left_in_month * school.students.count
+    else
+      DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
+    end
   end
   memoize :amount_for_school
 
@@ -50,7 +55,11 @@ class BuckDistributor
   memoize :amount_for_teacher
 
   def teachers_to_pay(school)
-    (school.teachers.recently_logged_in + school.teachers.recently_created).uniq
+    if school.district_guid
+      school.teachers.where(can_distribute_credits: true).uniq
+    else
+      (school.teachers.recently_logged_in + school.teachers.recently_created).uniq
+    end
   end
   memoize :teachers_to_pay
 
