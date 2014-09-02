@@ -1,4 +1,4 @@
-set :branch,    "staging"
+set :branch,    "feature/admin_school_metrics"
 set :rails_env, "staging"
 role :web,      "107.170.87.36"
 role :app,      "107.170.87.36"
