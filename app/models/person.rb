@@ -17,6 +17,8 @@ class Person < ActiveRecord::Base
 
   has_many :otu_code_categories
 
+  scope :active, where({people: {status: 'active'}})
+
   ## Only useful for the scopes below with_transactions...
   ## Don't use for anything else
   ## Need to get rid of spree_users anyway...
