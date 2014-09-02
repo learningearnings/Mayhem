@@ -5,6 +5,8 @@ class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
 
+  scope :active, where({people: {status: 'active'}})
+
   ## Only useful for the scopes below with_transactions...
   ## Don't use for anything else
   ## Need to get rid of spree_users anyway...
