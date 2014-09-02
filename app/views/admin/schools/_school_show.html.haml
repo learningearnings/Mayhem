@@ -2,9 +2,7 @@
 %h4= "Active Students: #{@school.active_students.count}"
 
 #get-metrics-div
-  = form_tag "/admin/schools/get_metrics", remote: true, :method => :post, id: "get-metrics-form" do |f|
-    = hidden_field_tag :school_id, @school.id
-    = submit_tag 'Load Metrics', :class => 'awesome-button'
+  = render "school_metrics"
 
 %table
   %thead
@@ -64,8 +62,3 @@
       %td= link_to @school.store_account.name
       %td= @school.store_account.balance
 
-:coffeescript
-  $(document).ready ->
-    $("#get-metrics-form").on("ajax:success", (e, data, status, xhr) ->
-      $("#get-metrics-div").replaceWith xhr.responseText
-    )
