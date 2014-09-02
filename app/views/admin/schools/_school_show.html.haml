@@ -63,3 +63,9 @@
     %tr
       %td= link_to @school.store_account.name
       %td= @school.store_account.balance
+
+:coffeescript
+  $(document).ready ->
+    $("#get-metrics-form").on("ajax:success", (e, data, status, xhr) ->
+      $("#get-metrics-div").replaceWith xhr.responseText
+    )
