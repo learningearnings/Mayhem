@@ -102,6 +102,11 @@ ActiveAdmin.register School do
   end
   controller do
     skip_before_filter :add_current_store_id_to_params
+
+    def get_metrics
+      @school = School.find params[:school_id]
+      render :partial => "school_metrics"
+    end
   end
 
 end
