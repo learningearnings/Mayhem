@@ -39,11 +39,9 @@
                       - begin
                         = current_person.name
                       - rescue Exception => e
-                        = Rails.logger.warn "----GIVE CREDITS DEBUG:----
-                        = Rails.logger.warn "@current_person:
-                        = Rails.logger.warn @current_person.inspect
-                        = Rails.logger.warn "@client_response:"
-                        = Rails.logger.warn @client_response.inspect
+                        = Rails.logger.warn "----GIVE CREDITS DEBUG:----"
+                        = Rails.logger.warn "@current_person: #{@current_person.inspect}"
+                        = Rails.logger.warn "@client_response: #{@client_response.inspect}"
                     %br/
                     %strong
                       Credits Available:
