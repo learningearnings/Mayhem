@@ -44,6 +44,18 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     redirect_to :back
   end
 
+  def import_teachers
+    begin
+      importer = TeachersImporter.new(params[:school_id], params[:file])
+      importer.call
+      flash[:notice] = "Teachers import complete."
+    rescue Exception => e
+      flash[:error] = "Teachers import Failed. Error: #{e.message}"
+    ensure
+      redirect_to '/schools/settings/'
+    end
+  end
+
   private
   def distributor_list
     @teachers = current_school.teachers.order(:last_name)
