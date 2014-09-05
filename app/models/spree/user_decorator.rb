@@ -36,8 +36,8 @@ Spree::User.class_eval do
       client = STI::Client.new(:base_url => link_token.api_url, :username => username, :password => password)
       session_information = client.session_information
       return if session_information.response.code == "401"
-      sti_staff_id = session_information.parsed_response["StaffId"]
-      sti_person = Teacher.where(:district_guid => school.district_guid, :sti_id => sti_staff_id).first
+      sti_user_id = (session_information.parsed_response["StaffId"] || session_information.parsed_response["StudentId"])
+      sti_person = Person.where(:district_guid => school.district_guid, :sti_id => sti_user_id).first
       sti_person = nil unless sti_person.schools.include?(school)
       return if sti_person.nil?
       user = sti_person.user
