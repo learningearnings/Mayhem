@@ -1,4 +1,4 @@
-class DelayedReportWorker
+class UserActivityReportWorker
   include Sidekiq::Worker
 
   def perform
