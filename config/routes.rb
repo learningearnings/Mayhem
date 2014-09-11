@@ -73,6 +73,7 @@ Leror::Application.routes.draw do
     post 'schools/get_metrics' => 'schools#get_metrics', as: :get_metrics
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+    get 'run_user_activity_report' => "reports#run_user_activity_report", as: :run_user_activity_report
     get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
     match "checking_history/get_history/:person_id" => 'checking_history#get_history', :as => :checking_history
