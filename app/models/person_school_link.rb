@@ -3,6 +3,9 @@ require 'macro_reflection_relation_facade'
 
 class PersonSchoolLink < ActiveRecord::Base
   state_machine :status, :initial => :active do
+    event :deactivate do
+      transition :active => :inactive
+    end
   end
 
   scope :not_this_id, where("id != #{@id}")
