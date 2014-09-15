@@ -3,6 +3,38 @@
 %h2 Your School's LE Settings
 %hr
 
+- if current_user.person.is_a?(SchoolAdmin)
+  .school-settings
+    %h3 Import Teachers
+    %h4 Required Format Example:
+    %table.table.table-bordered.table-striped.solid-background
+      %tr
+        %th First
+        %th Last
+        %th Email Address
+        %th Grade
+        %th Gender
+        %th Username
+        %th Password
+        %th LE Admin (Y/N)?
+      %tr
+        %td John
+        %td Doe
+        %td jdoe@example.org
+        %td 1
+        %td m
+        %td jdoe1
+        %td password
+        %td n
+    = link_to "Click here to download an example spreadsheet.", "/teacher_sample_template.xls"
+
+
+    = form_tag schools_import_teachers_path, :multipart => true, :method => :post do
+      = hidden_field_tag :school_id, current_school.id
+      .field
+        = file_field_tag :file
+      = submit_tag 'Import Teachers', class: "btn awesome-button"
+
 .school-settings
   %h3 Select the teachers that will distribute credits or rewards
   = form_for :teacher, :url => schools_toggle_distributor_path do |f|

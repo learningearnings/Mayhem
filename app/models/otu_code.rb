@@ -15,6 +15,7 @@ class OtuCode < ActiveRecord::Base
   scope :inactive, where("active = ?", false)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
+  scope :last_30, lambda { where(OtuCode.arel_table[:created_at].gt(Time.now - 30.days)) }
   scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
   scope :for_grade, lambda { |grade| joins(:student).where(student: {grade: grade})}
   scope :redeemed_between, lambda { |start_date, end_date|
