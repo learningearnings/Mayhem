@@ -3,7 +3,7 @@ ActiveAdmin.register_page "Reports" do
     render "index"
   end
 
-  page_action :run_student_activity_report, :method => :get do
+  page_action :run_user_activity_report, :method => :get do
     begin
       UserActivityReportWorker.perform_async
       flash[:notice] = 'User activity report has been started.'
