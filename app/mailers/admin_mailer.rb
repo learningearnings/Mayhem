@@ -3,7 +3,7 @@ class AdminMailer < ActionMailer::Base
 
   def user_activity_report filename
     attachments[filename] = File.read("/tmp/" + filename)
-    mail :to => ["david@isotope11.com"], :subject => "User Activity Report", :body => "User Activity Report"
+    mail :to => ["jimmy@learningearnings.com"], :subject => "User Activity Report", :body => "User Activity Report"
   end
 
   def teacher_activity_report filename
