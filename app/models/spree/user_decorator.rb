@@ -71,6 +71,6 @@ Spree::User.class_eval do
    end
 
    def password_required?
-     api_user? ? false : true
+     api_user? ? false : super
    end
 end
