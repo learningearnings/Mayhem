@@ -4,6 +4,7 @@ module Reports
 
     def initialize options = {}
       @ending_day = options.fetch(:ending_day, Time.zone.now).end_of_day
+      @school = options.fetch(:school)
     end
 
     def run
