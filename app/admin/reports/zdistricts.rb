@@ -7,7 +7,8 @@ ActiveAdmin.register_page "District Reports" do
 
   page_action :run, :method => :post do
     begin
-      UserActivityReportWorker.perform_async
+      school_ids = School.where(discrict_guid: params[:id]).pluck(:id)
+      UserActivityReportWorker.perform_async({school_ids: school_ids})
       render json: { :status => 200, :notice => 'User activity report has been started.' }
     rescue Exception => e
       render json: { :status => 422, :notice => 'User activity report failed to start.' }
@@ -16,11 +17,8 @@ ActiveAdmin.register_page "District Reports" do
 
   controller do
     def index
-      @districts = [
-        ["District 1", "1"],
-        ["District 2", "2"],
-        ["District 3", "3"]
-      ]
+      # FIXME: Actually do good things here
+      @districts = School.group(:district_guid, :id).select([:district_guid, :name]).collect{|x| [x.name, x.district_guid]}
     end
   end
 end

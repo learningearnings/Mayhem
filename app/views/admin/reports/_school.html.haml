@@ -1,6 +1,6 @@
 %h4 Choose a school
 %p
-  = select_tag "schools", options_for_select(@schools)
+  = select_tag "schools_select", options_for_select(@schools)
   = button_tag "Run", :class => "run"
 
 :javascript
@@ -8,12 +8,14 @@
     $('.run').click( function(e) {
       e.preventDefault();
 
-      $.post("/admin/school_reports/run", function() {
-        id: $('#districts').val()
+      $.ajax({
+        url: "/admin/school_reports/run",
+        type: "POST",
+        data: { id: $('#schools_select').val() }
       }).done( function() {
         alert('pass');
       }).fail( function() {
         alert('fail');
-      });
+      })
     });
   });

@@ -7,7 +7,7 @@ ActiveAdmin.register_page "School Reports" do
 
   page_action :run, :method => :post do
     begin
-      UserActivityReportWorker.perform_async
+      UserActivityReportWorker.perform_async({school_ids: params[:id]})
       render json: { :status => 200, :notice => 'User activity report has been started.' }
     rescue Exception => e
       render json: { :status => 422, :notice => 'User activity report failed to start.' }
@@ -16,11 +16,7 @@ ActiveAdmin.register_page "School Reports" do
 
   controller do
     def index
-      @schools = [
-        ["School 1", "1"],
-        ["School 2", "2"],
-        ["School 3", "3"]
-      ]
+      @schools = School.select([:id, :name]).collect{|x| [x.name, x.id]}
     end
   end
 end
