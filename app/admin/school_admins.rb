@@ -23,6 +23,10 @@ ActiveAdmin.register SchoolAdmin do
       end
     end
     def update
+      if params[:school_admin][:user_attributes][:password].blank?
+        params[:school_admin][:user_attributes].delete(:password)
+        params[:school_admin][:user_attributes].delete(:password_confirmation)
+      end
       update! do |format|
         format.html { redirect_to admin_school_admins_path }
       end
