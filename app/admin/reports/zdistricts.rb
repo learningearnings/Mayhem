@@ -18,7 +18,7 @@ ActiveAdmin.register_page "District Reports" do
   controller do
     def index
       # FIXME: Actually do good things here
-      @districts = School.group(:district_guid, :id).select([:district_guid, :name]).collect{|x| [x.district_guid, x.district_guid]}
+      @districts = School.group(:district_guid).select(:district_guid).collect{|x| [x.district_guid, x.district_guid]}
     end
   end
 end
