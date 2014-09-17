@@ -136,6 +136,7 @@ gem 'unicorn'
 # gem 'debugger'
 
 group :development do
+  gem 'quiet_assets'
   gem 'pry', '~> 0.9.10'
   gem 'unicorn'
   gem 'thin'
@@ -145,6 +146,7 @@ group :development do
   gem 'capistrano', '~> 2.15.5'
   gem 'rvm-capistrano'
   gem 'capistrano-unicorn', require: false
+  gem 'capistrano-slack', git: 'https://github.com/nextupdate/capistrano-slack'
   # Generate ERD diagrams from your models
   gem 'rails-erd'
 end
