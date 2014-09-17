@@ -9,7 +9,8 @@ require "rvm/capistrano/alias_and_wrapp"
 # Bundler bootstrap
 require 'bundler/capistrano'
 require 'capistrano-unicorn'
-#require 'capistrano/slack'
+require 'capistrano/ext/multistage'
+require 'capistrano/slack'
 
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
@@ -18,12 +19,12 @@ before 'deploy:setup', 'rvm:create_alias'
 before 'deploy:setup', 'rvm:create_wrappers'
 
 # Slack notification settings
-# set :slack_token, '62kjrF5RV1MdkQHy7HhZxHE9'
-# set :slack_subdomain, 'isotope11'
-# set :slack_room, '#learningearnings'
-# set :slack_application, 'Mayhem'
-# set :slack_emoji, ":james:"
-
+set :slack_token, '62kjrF5RV1MdkQHy7HhZxHE9'
+set :slack_subdomain, 'isotope11'
+set :slack_room, '#learningearnings'
+set :slack_application, 'Mayhem'
+set :slack_emoji, ":james:"
+set :slack_username, "jamesbot"
 
 set :bundle_dir, ''
 set :sidekiq_role, :sidekiq
@@ -32,7 +33,6 @@ set :bundle_flags, '--system --quiet'
 
 set :stages, %w(production demo staging sandbox qa demo)
 set :default_stage, "staging"
-require 'capistrano/ext/multistage'
 
 after 'deploy:start',   'unicorn:start'
 # after 'deploy:stop',    'unicorn:stop'
