@@ -143,7 +143,7 @@ group :development do
   gem 'capistrano', '~> 2.15.5'
   gem 'rvm-capistrano'
   gem 'capistrano-unicorn', require: false
-  gem 'capistrano-slack', git: 'https://github.com/nextupdate/capistrano-slack'
+  gem 'capistrano-slack', github: 'nextupdate/capistrano-slack'
   # Generate ERD diagrams from your models
   gem 'rails-erd'
 end

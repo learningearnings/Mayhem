@@ -60,19 +60,19 @@ GIT
     valid_attribute (1.2.0)
 
 GIT
-  remote: git://github.com/stefanoverna/activeadmin-extra.git
-  revision: dfd89d02d8de9aa2c478114ad3e05e6ddb87287d
-  specs:
-    activeadmin-extra (0.1.0)
-      activeadmin
-
-GIT
-  remote: https://github.com/nextupdate/capistrano-slack
+  remote: git://github.com/nextupdate/capistrano-slack.git
   revision: f66debff76b2bff27435a049c470e0875740c889
   specs:
     capistrano-slack (1.2.0)
       capistrano (< 3.0.0)
       capistrano-log_with_awesome (~> 0.0.2)
+
+GIT
+  remote: git://github.com/stefanoverna/activeadmin-extra.git
+  revision: dfd89d02d8de9aa2c478114ad3e05e6ddb87287d
+  specs:
+    activeadmin-extra (0.1.0)
+      activeadmin
 
 GEM
   remote: http://rubygems.org/
