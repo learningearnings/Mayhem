@@ -53,10 +53,10 @@ module Reports
     end
 
     def build_grade_row grade
-      teacher_scope = scoped_teachers.where(grade: grade) #Teacher.where(grade: grade)
-      student_scope = scoped_students.where(grade: grade) #Student.where(grade: grade)
-      otu_code_scope = scoped_otu_codes.for_grade(grade) #OtuCode.for_grade(grade)
-      reward_delivery_scope = scoped_reward_deliveries.joins(:to).where(to: {grade: grade})#RewardDelivery.joins(:to).where(to: {grade: grade})
+      teacher_scope = scoped_teachers.where(grade: grade)
+      student_scope = scoped_students.where(grade: grade)
+      otu_code_scope = scoped_otu_codes.for_grade(grade)
+      reward_delivery_scope = scoped_reward_deliveries.joins(:to).where(to: {grade: grade})
       build_row(grade, teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
     end
 
