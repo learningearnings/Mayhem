@@ -18,8 +18,6 @@ before 'deploy:setup', 'rvm:create_alias'
 before 'deploy:setup', 'rvm:create_wrappers'
 
 # Slack notification settings
-before 'deploy', 'slack:starting'
-after 'deploy', 'slack:finishing'
 set :slack_token, '62kjrF5RV1MdkQHy7HhZxHE9'
 set :slack_subdomain, 'isotope11'
 set :slack_room, '#learningearnings'
