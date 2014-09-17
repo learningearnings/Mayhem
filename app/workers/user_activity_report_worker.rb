@@ -1,9 +1,7 @@
 class UserActivityReportWorker
   include Sidekiq::Worker
 
-  def perform
-    require 'rake'
-    Leror::Application.load_tasks 
-    Rake::Task['le:user_activity_report'].invoke
+  def perform(options)
+    Reports::Processors::NewUserActivityReport.new(options).run
   end
 end

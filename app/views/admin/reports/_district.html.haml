@@ -1,0 +1,19 @@
+%h4 Choose a district
+%p
+  = select_tag "districts", options_for_select(@districts)
+  = button_tag "Run", :class => "run"
+
+:javascript
+  $(document).ready( function() {
+    $('.run').click( function(e) {
+      e.preventDefault();
+
+      $.post("/admin/district_reports/run", function() {
+        id: $('#districts').val()
+      }).done( function() {
+        alert('pass');
+      }).fail( function() {
+        alert('fail');
+      });
+    });
+  });

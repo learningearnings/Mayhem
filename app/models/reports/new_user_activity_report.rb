@@ -1,9 +1,23 @@
 module Reports
   class NewUserActivityReport
-    attr_reader :ending_day
+    attr_reader :ending_day, :scoped_schools, :scoped_teachers, :scoped_students, :scoped_reward_deliveries, :scoped_otu_codes
 
     def initialize options = {}
       @ending_day = options.fetch(:ending_day, Time.zone.now).end_of_day
+      school_ids = options.fetch(:school_ids, nil)
+      if school_ids
+        @scoped_schools = School.where(id: school_ids)
+        @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { school_id: school_ids })
+        @scoped_students = Student.joins(:person_school_links).where(person_school_links: { school_id: school_ids })
+        @scoped_otu_codes = OtuCode.joins(:person_school_link).where(person_school_link: { school_id: school_ids })
+        @scoped_reward_deliveries = RewardDelivery.where(from_id: @scoped_teachers.pluck(:id))
+      else
+        @scoped_schools = School
+        @scoped_teachers = Teacher
+        @scoped_students = Student
+        @scoped_otu_codes = OtuCode
+        @scoped_reward_deliveries = RewardDelivery
+      end
     end
 
     def run
@@ -20,7 +34,7 @@ module Reports
 
         csv << ["By School"]
         # By School
-        School.find_each do |school|
+        scoped_schools.find_each do |school|
           school_row = build_school_row(school)
           csv << school_row unless school_row.nil?
         end
@@ -31,18 +45,18 @@ module Reports
     private
     def build_global_row
       # Totals system wide
-      teacher_scope = Teacher
-      student_scope = Student
-      reward_delivery_scope = RewardDelivery
-      otu_code_scope = OtuCode
+      teacher_scope = scoped_teachers #Teacher
+      student_scope = scoped_students #Student
+      reward_delivery_scope = scoped_reward_deliveries #RewardDelivery
+      otu_code_scope = scoped_otu_codes #OtuCode
       build_row("Total", teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
     end
 
     def build_grade_row grade
-      teacher_scope = Teacher.where(grade: grade)
-      student_scope = Student.where(grade: grade)
-      otu_code_scope = OtuCode.for_grade(grade)
-      reward_delivery_scope = RewardDelivery.joins(:to).where(to: {grade: grade})
+      teacher_scope = scoped_teachers.where(grade: grade) #Teacher.where(grade: grade)
+      student_scope = scoped_students.where(grade: grade) #Student.where(grade: grade)
+      otu_code_scope = scoped_otu_codes.for_grade(grade) #OtuCode.for_grade(grade)
+      reward_delivery_scope = scoped_reward_deliveries.joins(:to).where(to: {grade: grade})#RewardDelivery.joins(:to).where(to: {grade: grade})
       build_row(grade, teacher_scope, student_scope, reward_delivery_scope, otu_code_scope)
     end
 
