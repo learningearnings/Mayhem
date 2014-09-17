@@ -12,10 +12,9 @@
         url: "/admin/school_reports/run",
         type: "POST",
         data: { id: $('#schools_select').val() }
-      }).done( function() {
-        alert('pass');
-      }).fail( function() {
-        alert('fail');
-      })
+      }).done( function(data) {
+        $('.flashes').remove();
+        $('.title_bar').after('<div class="flashes"><div class="flash flash_notice">'+ data.notice +'</div></div>');
+      });
     });
   });

@@ -4,7 +4,7 @@ module Reports
 
     def initialize options = {}
       @ending_day = options.fetch(:ending_day, Time.zone.now).end_of_day
-      school_ids = options.fetch(:school_ids, nil)
+      school_ids = options.fetch("school_ids", nil)
       if school_ids
         @scoped_schools = School.where(id: school_ids)
         @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { school_id: school_ids })
