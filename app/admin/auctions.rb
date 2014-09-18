@@ -24,10 +24,10 @@ ActiveAdmin.register Auction do
 
     def update
       @auction = Auction.find(params[:id])
+      create_auction_zip_codes
+      @auction.auction_state_links.delete_all
+      @auction.auction_school_links.delete_all
       if @auction.update_attributes(params[:auction].except(:auction_zip_code_ids))
-        create_auction_zip_codes
-        @auction.auction_state_links.delete_all
-        @auction.auction_school_links.delete_all
         flash[:notice] = 'Auction updated'
         redirect_to admin_auction_path(@auction)
       else
