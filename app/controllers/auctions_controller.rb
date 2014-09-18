@@ -9,7 +9,7 @@ class AuctionsController < LoggedInController
     p.fulfillment_type = "Auction Reward"
     p.name = params[:auction_reward_name]
     p.description = params[:auction_reward_description]
-    p.price = BigDecimal.new("500.0")
+    p.price = BigDecimal.new("500.0") # The price is set, because of price validations in Spree::Product
     if p.save
       p.images.create(attachement: params[:auction_reward_image]) if params[:auction_reward_image].present?
       p.schools << current_school
