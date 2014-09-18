@@ -62,6 +62,7 @@ class AuctionsController < LoggedInController
 
   def create
     @auction = Auction.new(params[:auction])
+    @auction.creator = current_person
     @auction.created_locally = true
     @auction.start_date = Chronic.parse(params[:auction][:start_date])
     @auction.end_date = Chronic.parse(params[:auction][:end_date])
