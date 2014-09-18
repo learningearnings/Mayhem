@@ -8,12 +8,8 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    if @client_response["StaffId"].blank? || !login_teacher
-      render partial: "teacher_not_found"
-    else
-      load_students
-      render :layout => false
-    end
+    load_students
+    render :layout => false
   end
 
   def sync
@@ -93,5 +89,8 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
+    if @client_response["StaffId"].blank? || !login_teacher
+      render partial: "teacher_not_found"
+    end
   end
 end
