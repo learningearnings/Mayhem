@@ -70,7 +70,7 @@ class AuctionsController < LoggedInController
       flash[:notice] = 'Auction created'
       redirect_to auctions_path
     else
-      @products = get_products
+      @products = current_school.products.for_auctions
       flash[:error] = 'There was a problem creating the auction.'
       render :new
     end
