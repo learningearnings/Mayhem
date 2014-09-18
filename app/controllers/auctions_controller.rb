@@ -64,8 +64,8 @@ class AuctionsController < LoggedInController
     @auction = Auction.new(params[:auction])
     @auction.creator = current_person
     @auction.created_locally = true
-    @auction.start_date = Time.zone.strptime(params[:auction][:start_date], "%m/%d/%Y %H:%M")
-    @auction.end_date = Time.zone.strptime(params[:auction][:end_date], "%m/%d/%Y %H:%M")
+    @auction.start_date = Time.zone.parse(params[:auction][:start_date])
+    @auction.end_date = Time.zone.parse(params[:auction][:end_date])
     if @auction.save
       AuctionSchoolLink.create(:school_id => current_school.id, :auction_id => @auction.id)
       flash[:notice] = 'Auction created'
