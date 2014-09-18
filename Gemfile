@@ -133,6 +133,8 @@ gem 'unicorn'
 # gem 'debugger'
 
 group :development do
+  gem 'slack-notify'
+  gem 'quiet_assets'
   gem 'pry', '~> 0.9.10'
   gem 'unicorn'
   gem 'thin'

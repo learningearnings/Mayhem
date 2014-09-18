@@ -83,9 +83,8 @@ class StiController < ApplicationController
     teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
     return false if teacher.nil?
     school = teacher.schools.where(district_guid: params[:districtGUID]).first
-    session["warden.user.user.session"] = {"last_request_at" => Time.now.to_s}
-    session["warden.user.user.key"] = ["Spree::User", [teacher.user.id], nil]
     session["current_school_id"] = school.id
+    sign_in(teacher.user)
     return true
   end
 
