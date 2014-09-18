@@ -36,12 +36,7 @@
                   %p.credits-available
                     %strong
                       Teacher:
-                      - begin
-                        = current_person.name
-                      - rescue Exception => e
-                        = Rails.logger.warn "----GIVE CREDITS DEBUG:----"
-                        = Rails.logger.warn "@current_person: #{@current_person.inspect}"
-                        = Rails.logger.warn "@client_response: #{@client_response.inspect}"
+                      = current_person.name
                     %br/
                     %strong
                       Credits Available:
@@ -49,7 +44,7 @@
                   - unless current_person.otu_code_categories.any?
                     %strong If you would like to use the credit categories feature, you must create categories through the main learning earnings site
                   = form_for OtuCode.new, :url => "#", :html => {:id => "global_populate"} do |f|
-                    %h4 Populate all fields with: 
+                    %h4 Populate all fields with:
                     = label_tag 'Credits'
                     = text_field_tag :class_points, nil,:min => '0',:step => '1',:type => "number", :class => 'class_points', :style => "width: 50px;"
                     - if current_person.otu_code_categories.any?
@@ -82,4 +77,4 @@
     ($ '.class_points').keyup (e) ->
       $('.classroom_student_points').val($(this).val())
     ($ '.global_category').change (e) ->
-      $('.student_category').val($(this).val()) 
+      $('.student_category').val($(this).val())
