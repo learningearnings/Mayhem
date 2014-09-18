@@ -1,7 +1,24 @@
 class AuctionsController < LoggedInController
   def new
-    @products = get_products
+    @products = current_school.products.for_auctions
     @auction = Auction.new
+  end
+
+  def create_auction_reward
+    p = Spree::Product.new
+    p.fulfillment_type = "Auction Reward"
+    p.name = params[:auction_reward_name]
+    p.description = params[:auction_reward_description]
+    p.price = BigDecimal.new("500.0") # The price is set, because of price validations in Spree::Product
+    if p.save
+      p.images.create(attachement: params[:auction_reward_image]) if params[:auction_reward_image].present?
+      p.schools << current_school
+      flash[:notice] = "Auction Reward Created!"
+      redirect_to new_auction_path
+    else
+      flash[:error] = "Auction Reward Failed To Create!"
+      redirect_to new_auction_path
+    end
   end
 
   def index
@@ -57,13 +74,5 @@ class AuctionsController < LoggedInController
       flash[:error] = 'There was a problem creating the auction.'
       render :new
     end
-  end
-
-  def get_products
-    with_filters_params = params
-    with_filters_params[:searcher_current_person] = current_person
-    with_filters_params[:current_school] = current_school
-    searcher = Spree::Config.searcher_class.new(with_filters_params)
-    searcher.retrieve_products
   end
 end

@@ -10,14 +10,11 @@ ActiveAdmin.register Auction do
     with_role :le_admin
 
     def create
-      options = params[:auction].dup
-      options.delete(:auction_zip_code_ids)
-      @auction = Auction.new(options)
+      @auction = Auction.new(params[:auction].except(:auction_zip_code_ids))
+      @auction.creator = current_person
       if @auction.save
-        params[:auction][:auction_zip_code_ids].each do |zip|
-          @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
-        end
-        flash[:notice] = 'Auction updated'
+        create_auction_zip_codes
+        flash[:notice] = 'Auction updated.'
         redirect_to admin_auction_path(@auction)
       else
         flash[:error] = 'There was a problem updating the auction.'
@@ -27,14 +24,10 @@ ActiveAdmin.register Auction do
 
     def update
       @auction = Auction.find(params[:id])
+      create_auction_zip_codes
       @auction.auction_state_links.delete_all
       @auction.auction_school_links.delete_all
-      @auction.auction_zip_codes.delete_all
-      params[:auction][:auction_zip_code_ids].each do |zip|
-        @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
-      end
-      params[:auction].delete(:auction_zip_code_ids)
-      if @auction.update_attributes(params[:auction])
+      if @auction.update_attributes(params[:auction].except(:auction_zip_code_ids))
         flash[:notice] = 'Auction updated'
         redirect_to admin_auction_path(@auction)
       else
@@ -44,9 +37,16 @@ ActiveAdmin.register Auction do
     end
 
     def fulfill_auction
-      @auction = Auction.find params[:auction_id]
-      @auction.fulfill!
-      redirect_to admin_auction_path @auction
+      auction = Auction.find(params[:auction_id])
+      auction.fulfill!
+      redirect_to admin_auction_path(auction)
+    end
+
+    def create_auction_zip_codes
+      @auction.auction_zip_codes.delete_all
+      params[:auction][:auction_zip_code_ids].each do |zip|
+        @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
+      end
     end
   end
 
@@ -76,7 +76,6 @@ ActiveAdmin.register Auction do
         difference = auction.bid_difference_since(last_viewed_bid_time)
         bid_text += "(+ #{difference}) " unless difference == BigDecimal('0')
       end
-      #session[auction_session_key] = Time.zone.now
 
       bid_text += auction.current_bid.to_s
       bid_text.html_safe
@@ -111,7 +110,7 @@ ActiveAdmin.register Auction do
       f.input :max_grade, :as => :select, :collection => School::GRADES
       f.input :schools, :as => :chosen
       f.input :states, :as => :chosen
-      f.input :auction_zip_codes, :as => :chosen, :collection => Address.all.map{|x| x.zip}
+      f.input :auction_zip_codes, :as => :chosen, :collection => Address.pluck(:zip)
     end
     f.buttons
   end
