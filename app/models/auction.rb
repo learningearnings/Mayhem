@@ -1,13 +1,16 @@
 class Auction < ActiveRecord::Base
   validates :product_id, numericality: true
+  validates :person_id, presence: true
   validates :end_date, date: { after: :start_date }
   validates :current_bid, numericality: true
   validates :auction_type, inclusion: { in: ["traditional"] }
+
   after_initialize :set_defaults
   just_define_datetime_picker :start_date, :add_to_attr_accessible => true
   just_define_datetime_picker :end_date, :add_to_attr_accessible => true
 
   belongs_to :product, class_name: "Spree::Product", foreign_key: :product_id
+  belongs_to :creator, class_name: "Person", foreign_key: :person_id
   has_many :auction_bids
   has_many :states, :through => :auction_state_links
   has_many :auction_state_links
@@ -15,8 +18,8 @@ class Auction < ActiveRecord::Base
   has_many :auction_school_links
   has_many :auction_zip_codes
 
-  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_codes, :auction_zip_code_ids, as: :le_admin
-  attr_accessible :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_code, :auction_zip_code_ids
+  attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_codes, :auction_zip_code_ids, as: :le_admin
+  attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_code, :auction_zip_code_ids
 
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :not_notified, where("notified IS NOT TRUE")

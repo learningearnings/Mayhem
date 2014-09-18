@@ -13,6 +13,7 @@ class Person < ActiveRecord::Base
   ##
   has_one  :spree_user, :class_name => 'Spree::User'
 
+  has_many :auctions
   has_many :posts
   has_many :delayed_reports
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
