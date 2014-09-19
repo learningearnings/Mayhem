@@ -36,18 +36,7 @@ class StudentsImporter < BaseImporter
         user.password = datum[:user][:password]
         user.save(validate: false)
         student.save
-       
-
-
-
-        
-        
-        
         p = PersonSchoolLink.create(:school_id => @school.id, :person_id => student.id)
-
-
-
-
       end
     rescue Exception => e
       warn "Got exception for #{datum.inspect} - #{e.inspect}"
