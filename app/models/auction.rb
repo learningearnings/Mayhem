@@ -26,12 +26,22 @@ class Auction < ActiveRecord::Base
   scope :unfulfilled, where("fulfilled IS NOT TRUE")
   scope :ended,  where("NOW() >= end_date")
   scope :upcoming,  where("NOW() < start_date")
-  scope :for_school,   lambda {|school| joins({:schools => [:auction_school_links]}).where("auction_school_links.school_id = ?", school.id) }
-  scope :for_state,    lambda {|state|  joins({:states =>  [:auction_state_links] }).where("auction_state_links.state_id = ?", state.id) }
+  scope :for_school,   lambda {|school| joins({:auction_school_links => :school}).where("auction_school_links.school_id = ?", school.id)}
+  scope :for_state,    lambda {|state|  joins({:auction_state_links => :state}).where("auction_state_links.state_id = ?", state.id)}
   scope :for_zip,      lambda {|zip|    joins(:auction_zip_codes).where("auction_zip_codes.zip_code= ?", zip) }
   scope :within_grade, lambda {|grade|  where("? BETWEEN min_grade AND max_grade", grade) }
   scope :no_min_grade, where("min_grade IS NULL")
   scope :no_max_grade, where("max_grade IS NULL")
+
+  def self.viewable_for(person)
+    # TODO: Actually make this cleaner and faster
+    ((active.for_school(person.school) |
+     active.for_state(person.school.state) |
+     active.for_zip(person.school.zip)) +
+     active.within_grade(person.grade) +
+     active.no_min_grade +
+     active.no_max_grade).uniq
+  end
 
   def global?
     !schools.present? && !states.present? && !auction_zip_codes.present?
@@ -75,6 +85,10 @@ class Auction < ActiveRecord::Base
 
   def fulfill!
     update_attribute(:fulfilled, true)
+  end
+
+  def set_local
+    created_locally = true
   end
 
   def status

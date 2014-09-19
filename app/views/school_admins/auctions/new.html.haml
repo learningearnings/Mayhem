@@ -1,6 +1,6 @@
 %h2 Create New Auction Reward
 
-= form_tag create_auction_reward_path, :method => :post do
+= form_tag create_auction_reward_school_admins_auctions_path, :method => :post do
   = hidden_field_tag :fullfillment_type, "Auction Reward"
   = label_tag :auction_reward_name
   = text_field_tag :auction_reward_name
@@ -12,7 +12,7 @@
 
 %h2 Create an Auction for your School
 
-= semantic_form_for @auction do |f|
+= semantic_form_for [:school_admins, @auction] do |f|
   = f.label :product
   = f.select :product_id, @products.map{|p| [p.name, p.id] }
   = f.label :start_date
