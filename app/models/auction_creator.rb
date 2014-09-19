@@ -9,8 +9,8 @@ class AuctionCreator
   def execute!
     @auction = Auction.new(@params)
     auction.creator = @current_person
-    auction.start_date = Time.zone.parse(@params[:start_date])
-    auction.end_date = Time.zone.parse(@params[:end_date])
+    auction.start_date = Time.zone.parse(@params[:start_date]) if @params[:start_date].present?
+    auction.end_date = Time.zone.parse(@params[:end_date]) if @params[:end_date].present?
     auction.set_local if current_person.is_a?(SchoolAdmin)
     create_school_links if auction.save
   end
