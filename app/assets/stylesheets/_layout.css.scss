@@ -729,6 +729,22 @@ html.resp, body.resp {
   color: #470BC1;
 }
 
+.primary-nav .help {
+  color: #470BC1;
+}
+
+.primary-nav .help:hover {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470BC1;
+}
+
+.help-selected {
+  background-image: url(asset_path('home_selected.png', image));
+  background-repeat: no-repeat;
+  color: #470BC1;
+}
+
 .primary-nav .classrooms {
   color: #EA4E08;
 }

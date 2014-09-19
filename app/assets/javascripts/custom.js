@@ -137,6 +137,7 @@ $(document).ready(function() {
   highlightNavigation('how_it_works', 'how-it-works');
   highlightNavigation('testimonials', 'testimonials');
   highlightNavigation('bulk_students', 'manage_students');
+  highlightNavigation('help', 'help');
   highlightNavigation('',        'home');
 
  //detect the width on page load
@@ -150,7 +151,7 @@ $(document).ready(function(){
    $(".side-art").css( "display","block" );
  }
 });
-//update the width value when the browser is resized 
+//update the width value when the browser is resized
 $(window).resize(function(){
  var current_width = $(window).width();
 //do something with the width value here!
@@ -161,7 +162,6 @@ $(window).resize(function(){
    $(".side-art").css( "display","block" );
  }
 });
-      
+
 
 });
-
