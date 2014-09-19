@@ -1,6 +1,6 @@
 - if auction.product
-  %h4.auction_product= link_to auction.product.name, auction_path(auction)
-  = link_to small_image_pages(auction.product, :itemprop => "image"), auction_path(auction)
+  %h4.auction_product= link_to auction.product.name, edit_school_admins_auction_path(auction)
+  = link_to small_image_pages(auction.product, :itemprop => "image"), school_admins_auction_path(auction)
 
   .header-info
     - if auction.current_bid
@@ -17,3 +17,5 @@
     %p
       Ends On:
       %span.end_date= l(auction.end_date)
+
+  = link_to 'Cancel Auction', cancel_school_auction_school_admins_auction_path(auction), { class: 'btn awesome-button' }

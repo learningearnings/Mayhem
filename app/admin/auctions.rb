@@ -10,12 +10,12 @@ ActiveAdmin.register Auction do
     with_role :le_admin
 
     def create
-      @auction = Auction.new(params[:auction].except(:auction_zip_code_ids))
-      @auction.creator = current_person
-      if @auction.save
+      auction_creator = AuctionCreator.new(params[:auction].except(:auction_zip_code_ids), current_person)
+      auction_creator.execute!
+      if auction.created?
         create_auction_zip_codes
         flash[:notice] = 'Auction updated.'
-        redirect_to admin_auction_path(@auction)
+        redirect_to admin_auction_path(auction_creator.auction)
       else
         flash[:error] = 'There was a problem updating the auction.'
         render :edit
@@ -40,6 +40,13 @@ ActiveAdmin.register Auction do
       auction = Auction.find(params[:auction_id])
       auction.fulfill!
       redirect_to admin_auction_path(auction)
+    end
+
+    def cancel_auction
+      auction = Auction.find(params[:id])
+      auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
+      auction.update_attribute(:end_date, Time.now)
+      redirect_to admin_auctions_path
     end
 
     def create_auction_zip_codes
