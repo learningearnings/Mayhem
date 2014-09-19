@@ -19,7 +19,7 @@ module SchoolAdmins
     end
 
     def create
-      auction_creator = AuctionCreator.new(params, current_person)
+      auction_creator = AuctionCreator.new(params[:auction], current_person)
       auction_creator.execute!
       if auction_creator.created?
         flash[:notice] = 'Auction created'
