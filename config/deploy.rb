@@ -12,6 +12,11 @@ require 'capistrano-unicorn'
 require 'capistrano/ext/multistage'
 require 'slack-notify'
 
+# Setup whenever to work right in staging
+set :whenever_command, "bundle exec whenever"
+set :whenever_environment, defer { stage }
+require 'whenever/capistrano'
+
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 before 'deploy:setup', 'rvm:create_gemset'
