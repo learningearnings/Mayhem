@@ -22,6 +22,6 @@ class AuctionCreator
   private
   def create_school_links
     # TODO: Replace this with parameter being passed in
-    AuctionSchoolLink.create(:school_id => current_person.school.id, :auction_id => auction.id)
+    AuctionSchoolLink.create(:school_id => @current_person.school.id, :auction_id => auction.id)
   end
 end
