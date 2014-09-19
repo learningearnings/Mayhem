@@ -120,6 +120,9 @@ GEM
       multi_json (~> 1.0)
     acts_as_list (0.1.4)
     addressable (2.3.5)
+    airbrake (4.1.0)
+      builder
+      multi_json
     animation (0.1.alpha.3)
       compass (>= 0.12.0)
       sass (>= 3.2.0.alpha.95)
@@ -215,8 +218,6 @@ GEM
       activesupport (~> 3.2)
     erubis (2.7.0)
     eventmachine (1.0.3)
-    exceptional (2.0.33)
-      rack
     excon (0.25.3)
     execjs (2.0.2)
     factory_girl (4.2.0)
@@ -583,6 +584,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin
   activeadmin-extra!
+  airbrake
   animation
   cancan
   capistrano (~> 2.15.5)
@@ -602,7 +604,6 @@ DEPENDENCIES
   devise
   dragonfly
   draper (= 0.18.0)
-  exceptional
   factory_girl_rails
   faker
   fog
