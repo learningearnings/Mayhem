@@ -11,10 +11,11 @@
 
 %p Please Note:
 
-%p
-  You can only add students from your school that have already been added to
-  Learning Earnings. If you need to add or upload students for your school visit
-  the #{link_to("Students", teachers_bulk_students_path)} page.
+%p You can only add students from your school.
+%p If you do not see your students, you may 
+%p click the New Student button below or email
+%p= mail_to("theteam@learningearnings.com")
+%p to request the .csv or Excel template.
 
 %table.table.table-bordered.table-striped.solid-background
   %thead
@@ -95,7 +96,7 @@
               {
                 change_homeroom(student_id, classroom_id);
               }
-            else
+            else 
               {
                 alert('No change was made.');
               }
@@ -121,5 +122,6 @@
   }
 
   function sti_edit() {
-    alert("This classroom was created in iNow. You will have to edit it there")
+    alert("This classroom was created in iNow. You will have to edit it there") 
   }
+
