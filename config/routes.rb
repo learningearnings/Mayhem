@@ -53,8 +53,6 @@ Leror::Application.routes.draw do
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
-  match "/cancel_auction/:id" => 'auctions#cancel_auction', :as => 'cancel_auction'
-  match "/cancel_school_auction/:id" => 'auctions#cancel_school_auction', :as => 'cancel_school_auction'
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
@@ -124,7 +122,6 @@ Leror::Application.routes.draw do
 
 
   resources :auctions
-  post "/auctions/create_reward" => "auctions#create_auction_reward", :as => :create_auction_reward
 
   post "/filters/filter_schools_by_state" => "filters#filter_schools_by_state"
   post "/filters/filter_classrooms_by_school" => "filters#filter_classrooms_by_school"
@@ -183,7 +180,6 @@ Leror::Application.routes.draw do
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
   match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
-
   namespace :students do
     match "home" => "home#show", as: 'home'
   end
@@ -233,6 +229,10 @@ Leror::Application.routes.draw do
 
   resources :students
   namespace :school_admins do
+    resources :auctions do
+      get "cancel_school_auction", on: :member
+      post 'create_auction_reward', on: :collection
+    end
     resource :bank
     resource :dashboard
     resources :reports
