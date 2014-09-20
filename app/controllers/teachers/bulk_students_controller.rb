@@ -11,9 +11,21 @@ module Teachers
     def edit
     end
 
+    def import_students
+      begin
+        importer = StudentsImporter.new(params[:school_id], params[:file])
+        importer.call
+        flash[:notice] = 'Students have been submitted.'
+      rescue Exception => e
+        flash[:error] = "Students import failed. Error #{e.message}"
+      ensure
+        redirect_to teachers_bulk_students_path
+      end
+    end
+
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
-      StudentUpdaterWorker.perform_async(current_person.user.email, params["students"], current_person.schools.first, updater_method)
+      StudentUpdaterWorker.perform_async(current_person.user.email, params["students"], current_school.id, updater_method)
       flash[:notice] = "Bulk process is running."
       redirect_to action: :show
     end

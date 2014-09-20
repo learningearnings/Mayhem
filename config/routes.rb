@@ -48,12 +48,11 @@ Leror::Application.routes.draw do
     resources :reward_exclusions
     #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
     post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+    post "import_teachers" => 'settings#import_teachers', :as => 'import_teachers'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
-  match "/cancel_auction/:id" => 'auctions#cancel_auction', :as => 'cancel_auction'
-  match "/cancel_school_auction/:id" => 'auctions#cancel_school_auction', :as => 'cancel_school_auction'
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
@@ -181,7 +180,6 @@ Leror::Application.routes.draw do
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
   match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
-
   namespace :students do
     match "home" => "home#show", as: 'home'
   end
@@ -196,7 +194,9 @@ Leror::Application.routes.draw do
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
     resources :otu_code_categories
-    resource :bulk_students
+    resource :bulk_students do
+      post "import_students" => "bulk_students#import_students", :as => :import_students
+    end
     resources :reports
     resource  :bank
     resource  :dashboard
@@ -229,6 +229,10 @@ Leror::Application.routes.draw do
 
   resources :students
   namespace :school_admins do
+    resources :auctions do
+      get "cancel_school_auction", on: :member
+      post 'create_auction_reward', on: :collection
+    end
     resource :bank
     resource :dashboard
     resources :reports

@@ -1,0 +1,7 @@
+.auctions-content
+  .span8
+    .auctions
+      .auction_links
+        = link_to "Back to Auctions", school_admins_auctions_path, class: 'btn awesome-button'
+      .auction-item
+        = render @auction
