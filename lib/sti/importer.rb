@@ -36,21 +36,22 @@ module STI
       end
 
       sti_staff = client.staff.parsed_response
-      current_staff_for_district = Teacher.where(:district_guid => @district_guid).pluck(:sti_id)
+      current_staff_for_district = Person.where(:district_guid => @district_guid).pluck(:sti_id)
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
-      # Teachers in our system that weren't in their api need to be deactivated
+      # Persons in our system that weren't in their api need to be deactivated
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
-        teacher = Teacher.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
+        teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
         teacher.deactivate! unless teacher.status == "inactive"
       end
-      #TODO: Teachers never seem to get deactivated from a school. We need to deactivate person school links
+      #TODO: Persons never seem to get deactivated from a school. We need to deactivate person school links
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           schools = api_teacher["Schools"].map do |school_id|
             School.where(district_guid: @district_guid, sti_id: school_id).first.id
           end
-          teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
-          teacher.update_attributes(api_teacher_mapping(api_teacher))
+          teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
+          teacher.type = "Teacher" unless teacher.type == "SchoolAdmin"
+          teacher.update_attributes(api_teacher_mapping(api_teacher, teacher.new_record?))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
           teacher.reload && teacher.activate! unless teacher.status == "active"
@@ -141,16 +142,27 @@ module STI
       }
     end
 
-    def api_teacher_mapping api_teacher
-      {
-        dob: api_teacher["DateOfBirth"],
-        can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
-        first_name: api_teacher["FirstName"],
-        last_name: api_teacher["LastName"],
-        grade: 5,
-        sti_id: api_teacher["Id"],
-        district_guid: @district_guid
-      }
+    def api_teacher_mapping api_teacher, should_include_can_distribute_credits
+      if should_include_can_distribute_credits
+        {
+          dob: api_teacher["DateOfBirth"],
+          can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
+          first_name: api_teacher["FirstName"],
+          last_name: api_teacher["LastName"],
+          grade: 5,
+          sti_id: api_teacher["Id"],
+          district_guid: @district_guid
+        }
+      else
+        {
+          dob: api_teacher["DateOfBirth"],
+          first_name: api_teacher["FirstName"],
+          last_name: api_teacher["LastName"],
+          grade: 5,
+          sti_id: api_teacher["Id"],
+          district_guid: @district_guid
+        }
+      end
     end
 
     def api_student_mapping api_student

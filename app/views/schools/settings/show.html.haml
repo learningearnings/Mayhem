@@ -3,6 +3,38 @@
 %h2 Your School's LE Settings
 %hr
 
+- if current_user.person.is_a?(SchoolAdmin)
+  .school-settings
+    %h3 Import Teachers
+    %h4 Required Format Example:
+    %table.table.table-bordered.table-striped.solid-background
+      %tr
+        %th First
+        %th Last
+        %th Email Address
+        %th Grade
+        %th Gender
+        %th Username
+        %th Password
+        %th LE Admin (Y/N)?
+      %tr
+        %td John
+        %td Doe
+        %td jdoe@example.org
+        %td 1
+        %td m
+        %td jdoe1
+        %td password
+        %td n
+    = link_to "Click here to download an example spreadsheet.", "/teacher_sample_template.xls"
+
+
+    = form_tag schools_import_teachers_path, :multipart => true, :method => :post do
+      = hidden_field_tag :school_id, current_school.id
+      .field
+        = file_field_tag :file
+      = submit_tag 'Import Teachers', class: "btn awesome-button"
+
 .school-settings
   %h3 Select the teachers that will distribute credits or rewards
   = form_for :teacher, :url => schools_toggle_distributor_path do |f|
@@ -22,7 +54,20 @@
             %td= teacher.can_distribute_credits ? 'YES' : 'NO'
             %td= check_box_tag "reward_teachers[]", teacher.id, false
             %td= check_box_tag "credit_teachers[]", teacher.id, false
-    = f.submit 'Update'
+    = f.submit 'Update Teachers'
 
   %h3 Manage Reward Exclusions
   = link_to "Click here if you would like to remove any rewards from your school's store.", schools_reward_exclusions_path
+
+.school-settings
+
+= form_for @school, url: revoke_credit_setting_path do |f|
+  = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
+  
+  %h4 Allow Negative Credits
+
+  %p You can use this setting to allow or disallow teachers to enter negative credit amounts. If you don't allow negative credits, then teachers will only be allowed to enter positive number values when issuing e-Credits and can only add credits to a students account.
+
+  %p If you allow negative e-Credits to be issued then teachers can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately.
+
+  = f.submit "Update Negative Credits Setting"
