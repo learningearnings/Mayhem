@@ -1,6 +1,9 @@
 %h2= @school.name
 %h4= "Active Students: #{@school.active_students.count}"
 
+#get-metrics-div
+  = render "school_metrics"
+
 %table
   %thead
     %tr
@@ -58,3 +61,4 @@
     %tr
       %td= link_to @school.store_account.name
       %td= @school.store_account.balance
+

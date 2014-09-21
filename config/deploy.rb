@@ -9,12 +9,27 @@ require "rvm/capistrano/alias_and_wrapp"
 # Bundler bootstrap
 require 'bundler/capistrano'
 require 'capistrano-unicorn'
+require 'capistrano/ext/multistage'
+require 'slack-notify'
+
+# Setup whenever to work right in staging
+set :whenever_command, "bundle exec whenever"
+set :whenever_environment, defer { stage }
+require 'whenever/capistrano'
 
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
 before 'deploy:setup', 'rvm:create_gemset'
 before 'deploy:setup', 'rvm:create_alias'
 before 'deploy:setup', 'rvm:create_wrappers'
+
+# Slack notification settings
+set :slack_token, '62kjrF5RV1MdkQHy7HhZxHE9'
+set :slack_subdomain, 'isotope11'
+set :slack_room, '#learningearnings'
+set :slack_application, 'Mayhem'
+set :slack_emoji, ":james:"
+set :slack_username, "jamesbot"
 
 set :bundle_dir, ''
 set :sidekiq_role, :sidekiq
@@ -23,7 +38,6 @@ set :bundle_flags, '--system --quiet'
 
 set :stages, %w(production demo staging sandbox qa demo)
 set :default_stage, "staging"
-require 'capistrano/ext/multistage'
 
 after 'deploy:start',   'unicorn:start'
 # after 'deploy:stop',    'unicorn:stop'
@@ -48,6 +62,16 @@ set :scm,             :git
 set :repository,      "git@github.com:learningearnings/Mayhem.git"
 set :branch,          "develop"
 
+# Slack config
+set :slack_token, "62kjrF5RV1MdkQHy7HhZxHE9"
+set :slack_subdomain, "isotope11"
+set :slack_channel, '#learningearnings'
+set :slack_application, 'Mayhem'
+set :slack_emoji, ":james:"
+set :slack_username, "jamesbot"
+set :slack_local_user, `git config user.name`.chomp
+
+
 # tasks
 namespace :deploy do
   desc "Symlink shared resources on each release"
@@ -64,6 +88,15 @@ namespace :deploy do
     run "ln -sf #{shared_path}/config/initializers/sidekiq.rb #{latest_release}/config/initializers"
   end
 
+  desc "Sends deployment notification to Slack."
+  task :notify_slack, :roles => :app do
+    ::SlackNotify::Client.new(slack_subdomain, slack_token, {
+      channel: slack_channel,
+      username: slack_username,
+      icon_emoji: slack_emoji
+    }).notify("#{slack_local_user} is deploying #{slack_application}'s #{branch} to #{fetch(:stage, 'production')}")
+  end
+
   desc "Precompile assets"
   task :precompile_assets, :roles => :app do
     #precompile the assets
@@ -78,3 +111,4 @@ end
 
 before 'deploy:precompile_assets', 'deploy:symlink_shared'
 before 'deploy:finalize_update', 'deploy:precompile_assets'
+before 'deploy', 'deploy:notify_slack'
