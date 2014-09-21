@@ -11,9 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140715190042) do
-
-  add_extension "hstore"
+ActiveRecord::Schema.define(:version => 20140918150200) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -93,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20140715190042) do
     t.boolean  "created_locally"
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
+    t.integer  "person_id"
   end
 
   create_table "avatars", :force => true do |t|
@@ -672,8 +671,8 @@ ActiveRecord::Schema.define(:version => 20140715190042) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -684,7 +683,13 @@ ActiveRecord::Schema.define(:version => 20140715190042) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
-    t.boolean  "can_revoke_credits", :default => false
+    t.boolean  "can_revoke_credits",                :default => false
+    t.integer  "weekly_perfect_attendance_amount"
+    t.integer  "monthly_perfect_attendance_amount"
+    t.integer  "weekly_no_tardies_amount"
+    t.integer  "monthly_no_tardies_amount"
+    t.integer  "weekly_no_infractions_amount"
+    t.integer  "monthly_no_infractions_amount"
   end
 
   create_table "site_settings", :force => true do |t|
