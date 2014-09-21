@@ -190,6 +190,15 @@ ActiveRecord::Schema.define(:version => 20140918150200) do
     t.string   "render_class"
   end
 
+  create_table "faq_questions", :force => true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.string   "person_type"
+    t.integer  "place"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -546,6 +555,14 @@ ActiveRecord::Schema.define(:version => 20140918150200) do
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
+
+  create_table "pg_search_documents", :force => true do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
