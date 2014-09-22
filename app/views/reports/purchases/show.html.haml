@@ -23,7 +23,7 @@
             .filter-dates
               = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report_params.teacher_name_options, :include_blank => false
             %br/
-          = f.submit 'Run Report', :class => 'awesome-button'
+          = f.submit 'Run Report', :class => 'awesome-button', :id => "run_report_button"
           = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
       .report
@@ -55,7 +55,15 @@
                   %td= row["purchased"]
                   %td= row["reward"]
                   %td= row["quantity"]
-                  %td= row["status"]
+                  %td
+                    - if row["status"] == "Delivered"
+                      = row["status"]
+                      %br/
+                      (
+                      = link_to_function 'undo', "undeliverReward($(this), #{row['reward_delivery_id']})"
+                      )
+                    - else
+                      = row["status"]
                   %td
                     - if row["delivery_status"] == 'pending'
                       = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
@@ -133,5 +141,21 @@
           });
         });
       }
+    }
+
+    function undeliverReward(element, reward_delivery_id) {
+      $.ajax({
+        type: "POST",
+        url: "#{undeliver_reward_path}",
+        data: {reward_delivery_id: reward_delivery_id},
+        success: function(response) {
+          if(response.success) {
+            alert("The reward was undelivered.");
+            $("#run_report_button").click();
+          } else {
+            alert("There was a problem undelivering the reward.");
+          }
+        }
+      })
     }
   </script>
