@@ -1353,10 +1353,15 @@ ActiveRecord::Schema.define(:version => 20140918150200) do
     t.string   "district_guid"
     t.string   "status"
     t.string   "sync_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "error"
     t.text     "backtrace"
+    t.text     "students_response"
+    t.text     "rosters_response"
+    t.text     "schools_response"
+    t.text     "sections_response"
+    t.text     "staff_response"
   end
 
   create_table "uploaded_users", :force => true do |t|

@@ -17,7 +17,7 @@ module STI
         Rails.logger.warn "*****************************************"
         Rails.logger.warn client.schools.response
         Rails.logger.warn "*****************************************"
-        raise e
+        raise "ERROR ON SCHOOLS -- CLIENT: #{client.inspect} -- RESPONSE: #{client.schools.response}"
       end
       # Schools that are synced in our DB but are no longer listed in the api
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
