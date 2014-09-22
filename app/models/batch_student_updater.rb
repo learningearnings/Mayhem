@@ -29,12 +29,14 @@ class BatchStudentUpdater
           gender: student_param["gender"],
           grade: student_param["grade"]
         )
-        user_attributes = {
-          username: user_param["username"],
-          password: user_param["password"],
-          password_confirmation: user_param["password"]
-        }.delete_if{ |k, v| v.blank? }
-        responses << student.user.update_attributes(user_attributes)
+        if user_param.present?
+          user_attributes = {
+            username: user_param["username"],
+            password: user_param["password"],
+            password_confirmation: user_param["password"]
+          }.delete_if{ |k, v| v.blank? }
+          responses << student.user.update_attributes(user_attributes)
+        end
         students << student
       end
       unless responses.select{|r| r == false}.empty?
