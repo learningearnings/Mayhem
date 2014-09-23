@@ -13,11 +13,12 @@ module Teachers
 
     def import_students
       begin
+        raise "Please upload a spreadsheet first" if params[:file].nil?
         importer = StudentsImporter.new(params[:school_id], params[:file])
         importer.call
         flash[:notice] = 'Students have been submitted.'
       rescue Exception => e
-        flash[:error] = "Students import failed. Error #{e.message}"
+        flash[:error] = "Students import failed. #{e.message}"
       ensure
         redirect_to teachers_bulk_students_path
       end
