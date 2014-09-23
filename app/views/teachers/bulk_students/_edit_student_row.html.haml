@@ -21,4 +21,4 @@
     .edit= select_tag 'students[]gender', options_for_select(['', 'Male', 'Female'], selected: options[:gender]), class: 'gender edit_control'
     .display= options[:gender]
   %td.text.password
-    .edit= text_field_tag 'students[]user[password]', options[:password], class: 'password edit_control'
+    .display= text_field_tag 'students[]user[password]', options[:password], class: 'password edit_control'
