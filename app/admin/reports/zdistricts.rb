@@ -17,7 +17,7 @@ ActiveAdmin.register_page "District Reports" do
 
   controller do
     def index
-      @districts = District.all.collect{|x| [x.name, x.guid]}
+      @districts = District.order(:name).all.collect{|x| [x.name, x.guid]}
     end
   end
 end
