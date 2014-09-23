@@ -16,7 +16,7 @@ ActiveAdmin.register_page "School Reports" do
 
   controller do
     def index
-      @schools = School.status_active.select([:id, :name]).collect{|x| [x.name, x.id]}.unshift(["All Schools", nil])
+      @schools = School.status_active.order(:name).select([:id, :name]).collect{|x| [x.name, x.id]}.unshift(["All Schools", nil])
     end
   end
 end
