@@ -59,7 +59,7 @@ class ClassroomsController < LoggedInController
       pscl = PersonSchoolClassroomLink.new(:classroom_id => @classroom.id, :person_school_link_id => psl.id, homeroom: params[:homeroom])
       if pscl.save
         respond_to do |format|
-          format.html { 
+          format.html {
             flash[:notice] = "Student added to classroom."
             redirect_to classroom_path(@classroom)
           }
@@ -67,7 +67,7 @@ class ClassroomsController < LoggedInController
         end
       else
         respond_to do |format|
-          format.html { 
+          format.html {
             flash[:error] = pscl.errors.full_messages.to_sentence
             render :show
           }
@@ -98,12 +98,8 @@ class ClassroomsController < LoggedInController
   end
 
   def destroy
-    @classroom = Classroom.find(params[:id])
-    if @classroom.destroy
-      pscls = PersonSchoolClassroomLink.find_all_by_classroom_id(@classroom.id)
-      if pscls.present?
-        pscls.map{|x| x.delete}
-      end
+    classroom_deactivator = ClassroomDeactivator.new(params[:id])
+    if classroom_deactivator.execute!
       flash[:notice] = 'Classroom deleted.'
       redirect_to classrooms_path
     end

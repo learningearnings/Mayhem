@@ -2,6 +2,7 @@
 %br
 %p= @teacher.name
 %p= @teacher.user.email
+%p= "Alternate Email: #{@alternate_email}" if @alternate_email.present?
 %p= @teacher.user.username
 %p= @school.name
 %p= "Grade #{@teacher.grade}"
