@@ -1,0 +1,20 @@
+%h4 Choose a school
+%p
+  = select_tag "schools_select", options_for_select(@schools)
+  = button_tag "Run", :class => "run"
+
+:javascript
+  $('#schools_select').chosen();
+
+  $('.run').click( function(e) {
+    e.preventDefault();
+
+    $.ajax({
+      url: "/admin/school_reports/run",
+      type: "POST",
+      data: { id: $('#schools_select').val() }
+    }).done( function(data) {
+      $('.flashes').remove();
+      $('.title_bar').after('<div class="flashes"><div class="flash flash_notice">'+ data.notice +'</div></div>');
+    });
+  });

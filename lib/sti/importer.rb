@@ -17,8 +17,9 @@ module STI
         Rails.logger.warn "*****************************************"
         Rails.logger.warn client.schools.response
         Rails.logger.warn "*****************************************"
-        raise e
+        raise "ERROR ON SCHOOLS -- CLIENT: #{client.inspect} -- RESPONSE: #{client.schools.response}"
       end
+      # Schools that are synced in our DB but are no longer listed in the api
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
         school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
         unless school.status == "inactive"
@@ -35,19 +36,22 @@ module STI
       end
 
       sti_staff = client.staff.parsed_response
-      current_staff_for_district = Teacher.where(:district_guid => @district_guid).pluck(:sti_id)
+      current_staff_for_district = Person.where(:district_guid => @district_guid).pluck(:sti_id)
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
+      # Persons in our system that weren't in their api need to be deactivated
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
-        teacher = Teacher.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
+        teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
         teacher.deactivate! unless teacher.status == "inactive"
       end
+      #TODO: Persons never seem to get deactivated from a school. We need to deactivate person school links
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           schools = api_teacher["Schools"].map do |school_id|
             School.where(district_guid: @district_guid, sti_id: school_id).first.id
           end
-          teacher = Teacher.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
-          teacher.update_attributes(api_teacher_mapping(api_teacher))
+          teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
+          teacher.type = "Teacher" unless teacher.type == "SchoolAdmin"
+          teacher.update_attributes(api_teacher_mapping(api_teacher, teacher.new_record?))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
           teacher.reload && teacher.activate! unless teacher.status == "active"
@@ -61,12 +65,13 @@ module STI
         end
       end
 
+      # Loop through classrooms and sync in much the same way as above
       sti_classrooms = client.sections.parsed_response
       current_classrooms_for_district = Classroom.where(district_guid: @district_guid).pluck(:sti_id)
       sti_classroom_ids = sti_classrooms.map {|classroom| classroom["Id"]}
       (current_classrooms_for_district - sti_classroom_ids).each do |sti_classroom_id|
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => sti_classroom_id).first
-        classroom.deactivate! unless classroom.status == "inactive"
+        ClassroomDeactivator.new(classroom_id).execute!
       end
       @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
@@ -104,6 +109,7 @@ module STI
       end
 
 
+      # Rosters is list of students in classroom
       client.rosters.parsed_response.each do |api_roster|
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => api_roster["SectionId"]).first
         next if classroom.nil?
@@ -136,16 +142,27 @@ module STI
       }
     end
 
-    def api_teacher_mapping api_teacher
-      {
-        dob: api_teacher["DateOfBirth"],
-        can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
-        first_name: api_teacher["FirstName"],
-        last_name: api_teacher["LastName"],
-        grade: 5,
-        sti_id: api_teacher["Id"],
-        district_guid: @district_guid
-      }
+    def api_teacher_mapping api_teacher, should_include_can_distribute_credits
+      if should_include_can_distribute_credits
+        {
+          dob: api_teacher["DateOfBirth"],
+          can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
+          first_name: api_teacher["FirstName"],
+          last_name: api_teacher["LastName"],
+          grade: 5,
+          sti_id: api_teacher["Id"],
+          district_guid: @district_guid
+        }
+      else
+        {
+          dob: api_teacher["DateOfBirth"],
+          first_name: api_teacher["FirstName"],
+          last_name: api_teacher["LastName"],
+          grade: 5,
+          sti_id: api_teacher["Id"],
+          district_guid: @district_guid
+        }
+      end
     end
 
     def api_student_mapping api_student
@@ -187,6 +204,7 @@ module STI
       @client ||= Client.new
     end
 
+    # Recursively generate usernames until we find one that is unique
     def generate_username_for_district(district_guid, first_name, last_name, iteration = 0)
       username = first_name.downcase[0] + last_name.downcase[0..4]
       username += iteration.to_s if iteration > 0

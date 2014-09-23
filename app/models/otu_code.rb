@@ -15,6 +15,7 @@ class OtuCode < ActiveRecord::Base
   scope :inactive, where("active = ?", false)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
+  scope :last_30, lambda { where(OtuCode.arel_table[:created_at].gt(Time.now - 30.days)) }
   scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
   scope :for_grade, lambda { |grade| joins(:student).where(student: {grade: grade})}
   scope :redeemed_between, lambda { |start_date, end_date|
@@ -36,8 +37,7 @@ class OtuCode < ActiveRecord::Base
 
   def generate_code(prefix)
     _code = Code.active.where("RANDOM() < 0.01").first || Code.create
-    _full_code = prefix + _code.code
-    self.update_attribute(:code, _full_code)
+    self.update_attribute(:code, _code.code)
     _code.update_attributes(:active => false, :used_date => Time.now)
   end
 

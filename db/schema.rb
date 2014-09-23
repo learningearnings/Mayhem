@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140610184056) do
+ActiveRecord::Schema.define(:version => 20140923152740) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20140610184056) do
     t.boolean  "created_locally"
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
+    t.integer  "person_id"
   end
 
   create_table "avatars", :force => true do |t|
@@ -187,6 +188,23 @@ ActiveRecord::Schema.define(:version => 20140610184056) do
     t.datetime "updated_at",   :null => false
     t.string   "name"
     t.string   "render_class"
+  end
+
+  create_table "districts", :force => true do |t|
+    t.string   "guid"
+    t.string   "name"
+    t.boolean  "alsde_study"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "faq_questions", :force => true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.string   "person_type"
+    t.integer  "place"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "filters", :force => true do |t|
@@ -449,6 +467,16 @@ ActiveRecord::Schema.define(:version => 20140610184056) do
     t.datetime "updated_at",     :null => false
   end
 
+  create_table "parent_student_links", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "student_id"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "guid"
+    t.string   "state"
+  end
+
   create_table "people", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -535,6 +563,14 @@ ActiveRecord::Schema.define(:version => 20140610184056) do
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
+
+  create_table "pg_search_documents", :force => true do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
@@ -660,8 +696,8 @@ ActiveRecord::Schema.define(:version => 20140610184056) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -672,7 +708,13 @@ ActiveRecord::Schema.define(:version => 20140610184056) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
-    t.boolean  "can_revoke_credits", :default => false
+    t.boolean  "can_revoke_credits",                :default => false
+    t.integer  "weekly_perfect_attendance_amount"
+    t.integer  "monthly_perfect_attendance_amount"
+    t.integer  "weekly_no_tardies_amount"
+    t.integer  "monthly_no_tardies_amount"
+    t.integer  "weekly_no_infractions_amount"
+    t.integer  "monthly_no_infractions_amount"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1359,10 +1401,15 @@ ActiveRecord::Schema.define(:version => 20140610184056) do
     t.string   "district_guid"
     t.string   "status"
     t.string   "sync_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "error"
     t.text     "backtrace"
+    t.text     "students_response"
+    t.text     "rosters_response"
+    t.text     "schools_response"
+    t.text     "sections_response"
+    t.text     "staff_response"
   end
 
   create_table "uploaded_users", :force => true do |t|

@@ -10,12 +10,8 @@ class StiController < ApplicationController
   before_filter :debug
 
   def give_credits
-    if @client_response["StaffId"].blank? || !login_teacher
-      render partial: "teacher_not_found"
-    else
-      load_students
-      render :layout => false
-    end
+    load_students
+    render :layout => false
   end
 
   def sync
@@ -85,9 +81,8 @@ class StiController < ApplicationController
     teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
     return false if teacher.nil?
     school = teacher.schools.where(district_guid: params[:districtGUID]).first
-    session["warden.user.user.session"] = {"last_request_at" => Time.now.to_s}
-    session["warden.user.user.key"] = ["Spree::User", [teacher.user.id], nil]
-    session["current_school_id"] = school.id
+    sign_in(teacher.user)
+    session[:current_school_id] = school.id
     return true
   end
 
@@ -113,5 +108,8 @@ class StiController < ApplicationController
     Rails.logger.warn "***************************************************"
     Rails.logger.warn "***************************************************"
     @client_response = sti_client.session_information.parsed_response
+    if @client_response["StaffId"].blank? || !login_teacher
+      render partial: "teacher_not_found"
+    end
   end
 end
