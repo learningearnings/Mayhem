@@ -198,15 +198,6 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "faq_questions", :force => true do |t|
-    t.text     "question"
-    t.text     "answer"
-    t.string   "person_type"
-    t.integer  "place"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -467,16 +458,6 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.datetime "updated_at",     :null => false
   end
 
-  create_table "parent_student_links", :force => true do |t|
-    t.integer  "parent_id"
-    t.integer  "student_id"
-    t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "guid"
-    t.string   "state"
-  end
-
   create_table "people", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -493,8 +474,8 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.integer  "sti_id"
     t.boolean  "game_challengeable",                   :default => false
+    t.integer  "sti_id"
     t.string   "district_guid"
     t.integer  "checking_account_id"
     t.integer  "savings_account_id"
@@ -563,14 +544,6 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
-
-  create_table "pg_search_documents", :force => true do |t|
-    t.text     "content"
-    t.integer  "searchable_id"
-    t.string   "searchable_type"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
