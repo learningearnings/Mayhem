@@ -22,3 +22,11 @@
   %h4 Run Student Interest Worker
   = link_to 'Run Interest Worker', admin_handle_interest_path
 
+
+:javascript
+  $('input:submit').click(function(e) {
+    if ($(e.currentTarget).closest('form').find('input:file').val() == "") {
+      e.preventDefault();
+      alert('Please select a file to upload.')
+    }
+  });

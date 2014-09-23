@@ -6,10 +6,12 @@
         .select-message
           = f.label :subject
           = f.text_field :subject
+          - if current_school.sti_id.present?
+            = f.label :alternate_email
+            = f.text_field :alternate_email
           = f.label :body
           = f.text_area :body
-      
+
         = f.submit "Send Message", class: 'btn awesome-button'
   .secondary-content
     = render 'boxes_nav'
-

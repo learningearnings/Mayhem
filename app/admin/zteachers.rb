@@ -22,6 +22,14 @@ ActiveAdmin.register Teacher do
         format.html { redirect_to resource_path(resource) }
       end
     end
+
+    def update
+      if params[:teacher][:user_attributes][:password].blank?
+        params[:teacher][:user_attributes].delete(:password)
+        params[:teacher][:user_attributes].delete(:password_confirmation)
+      end
+      super
+    end
   end
 
 end
