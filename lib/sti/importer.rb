@@ -71,7 +71,7 @@ module STI
       sti_classroom_ids = sti_classrooms.map {|classroom| classroom["Id"]}
       (current_classrooms_for_district - sti_classroom_ids).each do |sti_classroom_id|
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => sti_classroom_id).first
-        classroom.deactivate! unless classroom.status == "inactive"
+        ClassroomDeactivator.new(classroom_id).execute!
       end
       @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize

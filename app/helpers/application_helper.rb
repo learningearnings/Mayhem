@@ -156,4 +156,13 @@ module ApplicationHelper
   def is_dragonfly_image?(source)
     source.inspect =~ /Dragonfly Attachment/ # oh god oh god
   end
+
+  def classroom_delete_confirmation_message
+    reward_count = @classroom.classroom_product_links.count
+    if reward_count == 0
+      "Are you sure?"
+    else
+      "Are you sure? There are currently #{reward_count} reward(s) for this classroom."
+    end
+  end
 end
