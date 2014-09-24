@@ -7,14 +7,14 @@ module Reports
       school_ids = options.fetch("school_ids", nil)
       if school_ids
         @scoped_schools = School.where(id: school_ids)
-        @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { school_id: school_ids })
-        @scoped_students = Student.joins(:person_school_links).where(person_school_links: { school_id: school_ids })
+        @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { school_id: school_ids, status: "active" })
+        @scoped_students = Student.joins(:person_school_links).where(person_school_links: { school_id: school_ids, status: "active" })
         @scoped_otu_codes = OtuCode.joins(:person_school_link).where(person_school_link: { school_id: school_ids })
         @scoped_reward_deliveries = RewardDelivery.where(from_id: @scoped_teachers.pluck(:id))
       else
         @scoped_schools = School
-        @scoped_teachers = Teacher
-        @scoped_students = Student
+        @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { status: "active" })
+        @scoped_students = Student.joins(:person_school_links).where(person_school_links: { status: "active" })
         @scoped_otu_codes = OtuCode
         @scoped_reward_deliveries = RewardDelivery
       end
