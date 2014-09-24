@@ -26,6 +26,7 @@ module SchoolAdmins
         redirect_to school_admins_auctions_path
       else
         @products = current_school.products.for_auctions
+        @auction = auction_creator.auction
         flash[:error] = 'There was a problem creating the auction.'
         render :new
       end
