@@ -86,14 +86,14 @@ module Reports
         csv_array << Spree::LineItem.where(id: reward_delivery_scope.except_refunded.between(ending_day - 30.days, ending_day).pluck(:reward_id)).sum(:price)
         csv_array << teacher_issued_credits_count(teacher_scope)
         # FIXME: Don't do stupid stuff like this
-        csv_array << otu_codes_in_range.where(student_id: student_scope.map(&:id)).count
+        csv_array << otu_codes_in_range.where(student_id: student_scope.pluck(:id)).count
       end
     end
 
     # FIXME: Understand how this works better, so that this can be done better
     def teacher_issued_credits_count teacher_scope
       count = 0
-      teacher_scope.each do |teacher|
+      teacher_scope.find_each do |teacher|
         count += 1 if teacher.plutus_transactions.where("commercial_document_id IS NOT NULL").where(created_at: (ending_day - 30.days)..ending_day).any?
       end
       count
