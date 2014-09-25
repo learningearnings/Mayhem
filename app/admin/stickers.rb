@@ -22,7 +22,11 @@ ActiveAdmin.register Sticker do
 
   form do |f|
     f.inputs "Details" do
-      f.input :image, as: :file, label: image_tag(f.object.image.thumb('100x75!').url)
+      if f.object.image
+        f.input :image, as: :file, label: image_tag(f.object.image.thumb('100x75!').url)
+      else
+        f.input :image, as: :file, label: "Upload an Image"
+      end
       f.input :min_grade
       f.input :max_grade
       f.input :school, as: :select, collection: School.order(:name)
