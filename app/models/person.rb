@@ -31,7 +31,6 @@ class Person < ActiveRecord::Base
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
   has_many :interactions
   has_many :code_entry_failures
-  has_many :sticker_purchases
 
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
