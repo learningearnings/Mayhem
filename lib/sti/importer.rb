@@ -17,7 +17,7 @@ module STI
         Rails.logger.warn "*****************************************"
         Rails.logger.warn client.schools.response
         Rails.logger.warn "*****************************************"
-        raise e
+        raise "ERROR ON SCHOOLS -- CLIENT: #{client.inspect} -- RESPONSE: #{client.schools.response}"
       end
       # Schools that are synced in our DB but are no longer listed in the api
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
@@ -71,7 +71,7 @@ module STI
       sti_classroom_ids = sti_classrooms.map {|classroom| classroom["Id"]}
       (current_classrooms_for_district - sti_classroom_ids).each do |sti_classroom_id|
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => sti_classroom_id).first
-        classroom.deactivate! unless classroom.status == "inactive"
+        ClassroomDeactivator.new(classroom_id).execute!
       end
       @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize

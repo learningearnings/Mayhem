@@ -63,6 +63,7 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+    get 'run_user_activity_report' => "reports#run_user_activity_report", as: :run_user_activity_report
     get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
     match "checking_history/get_history/:person_id" => 'checking_history#get_history', :as => :checking_history
@@ -189,6 +190,8 @@ Leror::Application.routes.draw do
 
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   match "/teachers/get_otu_code_category" => "teachers/otu_code_categories#get_category", :as => 'get_otu_code_category'
+
+  post "/undeliver_reward" => "deliver_rewards_commands#undeliver", :as => :undeliver_reward
   namespace :teachers do
     match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
@@ -295,4 +298,5 @@ Spree::Core::Engine.routes.prepend do
     match 'undelete_reward/:id' => 'rewards#undelete', :as => :undelete_reward
     resources :le_shipments
   end
+
 end

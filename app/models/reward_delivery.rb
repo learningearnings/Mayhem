@@ -23,6 +23,9 @@ class RewardDelivery < ActiveRecord::Base
     event :deliver do
       transition :pending => :delivered
     end
+    event :undeliver do
+      transition :delivered => :pending
+    end
     event :refund do
       transition :pending => :refunded
     end

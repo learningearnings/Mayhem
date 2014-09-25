@@ -1,6 +1,6 @@
 class Schools::SettingsController < SchoolAdmins::BaseController
   def show
-    @teachers = current_school.teachers.order(:last_name)
+    @teachers = current_school.teachers.order(:first_name, :last_name)
     @distributing_teachers = current_school.distributing_teachers
     @school = current_school
   end
