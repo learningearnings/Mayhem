@@ -4,6 +4,8 @@
   = button_tag "Run", :class => "run"
 
 :javascript
+  $('#schools_select').chosen();
+
   $('.run').click( function(e) {
     e.preventDefault();
 

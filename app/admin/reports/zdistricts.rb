@@ -17,8 +17,7 @@ ActiveAdmin.register_page "District Reports" do
 
   controller do
     def index
-      # FIXME: Actually do good things here
-      @districts = School.status_active.group(:district_guid).select(:district_guid).collect{|x| [x.district_guid, x.district_guid]}
+      @districts = District.order(:name).all.collect{|x| [x.name, x.guid]}
     end
   end
 end
