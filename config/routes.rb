@@ -200,6 +200,9 @@ Leror::Application.routes.draw do
     resource :bulk_students do
       post "import_students" => "bulk_students#import_students", :as => :import_students
     end
+    resource :bulk_teachers do
+      post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers
+    end
     resources :reports
     resource  :bank
     resource  :dashboard
