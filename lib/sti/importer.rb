@@ -41,9 +41,11 @@ module STI
       # Persons in our system that weren't in their api need to be deactivated
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
         teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
-        teacher.deactivate! unless teacher.status == "inactive"
+        if teacher.present?
+          teacher.person_school_links.map(&:deactivate!)
+          teacher.deactivate! unless teacher.status == "inactive"
+        end
       end
-      #TODO: Persons never seem to get deactivated from a school. We need to deactivate person school links
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           schools = api_teacher["Schools"].map do |school_id|
@@ -86,9 +88,13 @@ module STI
       sti_students = client.students.parsed_response
       current_students_for_district = Student.where(district_guid: @district_guid).pluck(:sti_id)
       sti_student_ids = sti_students.map {|student| student["Id"]}
+      # Deactivate students who are no longer in the school's data
       (current_students_for_district - sti_student_ids).each do |sti_student_id|
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
-        student.deactivate! unless student.status == "inactive"
+        if student.present? && student.school.present?
+          student.person_school_links.map(&:deactivate!)
+          student.deactivate! unless student.status == "inactive"
+        end
       end
       @api_students = sti_students.each do |api_student|
         begin
@@ -108,17 +114,31 @@ module STI
         end
       end
 
-
       # Rosters is list of students in classroom
-      client.rosters.parsed_response.each do |api_roster|
-        classroom = Classroom.where(:district_guid => @district_guid, :sti_id => api_roster["SectionId"]).first
-        next if classroom.nil?
-        student = Student.where(:district_guid => @district_guid, :sti_id => api_roster["StudentId"]).first
-        next if student.nil?
-        person_school_link = student.person_school_links.where(:school_id => classroom.school.id).first
-        next if person_school_link.nil?
-        person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
-        person_school_classroom_link.save
+      # Munge the data so that we can loop over each student and create all of
+      # their classrooms at once and also, we can remove them from classrooms
+      # they are not suppose to be in.
+      #  Output of hash should be {student_id: [classroom_id, classroom_id]}
+      students_hash = {}
+      students_hash.default = []
+      client.rosters.parsed_response.each do |entry|
+        # An entry currently looks like this {"SectionId" => 1000, "StudentId" => 1208}
+        students_hash[entry["StudentId"]] = students_hash[entry["StudentId"]] + [entry["SectionId"]]
+      end
+
+      students_hash.each_pair do |sti_student_id, sti_classroom_ids|
+        next if sti_student_id.nil?
+        student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
+        next unless student.present? && student.school.present?
+        # Deactivate all existing classroom links
+        student.person_school_classroom_links.map(&:deactivate!)
+        # Update the new classrooms for the student
+        sti_classroom_ids.compact.each do |sti_classroom_id|
+          classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
+          next unless classroom.present?
+          pscl = PersonSchoolClassroomLink.where(:person_school_link_id: student.person_school_links.first, classroom_id: classroom.id).first_or_create
+          pscl.activate! if pscl.inactive?
+        end
       end
 
       newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
