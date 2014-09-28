@@ -136,7 +136,7 @@ module STI
         sti_classroom_ids.compact.each do |sti_classroom_id|
           classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
           next unless classroom.present?
-          pscl = PersonSchoolClassroomLink.where(:person_school_link_id: student.person_school_links.first, classroom_id: classroom.id).first_or_create
+          pscl = PersonSchoolClassroomLink.where(person_school_link_id: student.person_school_links.first, classroom_id: classroom.id).first_or_create
           pscl.activate! if pscl.inactive?
         end
       end
