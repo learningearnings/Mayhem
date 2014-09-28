@@ -5,8 +5,6 @@
     .form-inputs.controls-row.span6
       = f.input :name, label: "Name", input_html: {:value => @reward_template.name}
       = f.input :description, label: "Description", placeholder: 'Your Reward Description', input_html: {class: 'input-large', rows: 10}, as: :text
-      = f.input :category do
-        = f.select :category, options_from_collection_for_select(Spree::Taxon.where("parent_id IS NOT NULL"), :id, :name, @teachers_reward.category_id), :include_blank => true
       - if @reward_template.image.present?
         = f.hidden_field :reward_template_id, :value => @reward_template.id
         = image_tag @reward_template.image.url
