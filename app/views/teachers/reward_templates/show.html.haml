@@ -40,7 +40,12 @@
           %div.classroom-checkbox
             = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + b.text }
   .whole-school-interface
-    This reward will be available to every student at the school.
+    %p This reward will be available to every student at the school.
+    %p
+      Grade Range:
+      = f.select :min_grade, current_school.grades.map(&:reverse), { include_blank: true }, { class: 'input-medium' }
+      to
+      = f.select :max_grade, current_school.grades.map(&:reverse), { include_blank: true }, { class: 'input-medium' }
 
   .control-row
   = f.input :spree_product_id, :as => :hidden
@@ -55,7 +60,7 @@
       else
         $('.classrooms-interface').show()
         $('.whole-school-interface').hide()
-      
+
     toggle_all_classrooms = (_event) ->
       if ($ _event.target).prop('checked') == true
         ($ ".class-checkbox").prop('checked',false)
