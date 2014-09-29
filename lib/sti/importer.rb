@@ -42,7 +42,13 @@ module STI
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
         teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
         if teacher.present?
-          teacher.person_school_links.map(&:deactivate!)
+          # FIXME: Get this working correctly, possibly has something to do
+          # with the fact that there are 2 different person_school_link associations
+          # in the model.
+          # But, we're somehow getting person_school_link objects without a
+          # person_id associated to them.
+          #teacher.person_school_links.map(&:deactivate!)
+          PersonSchoolLink.where(person_id: teacher.id).map(&:deactivate!)
           teacher.deactivate! unless teacher.status == "inactive"
         end
       end
