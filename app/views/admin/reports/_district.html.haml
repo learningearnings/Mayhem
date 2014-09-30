@@ -1,16 +1,24 @@
 %h4 Choose a district
 %p
+  = text_field_tag :start_date, {}, value: (Time.zone.now - 30.days).strftime("%m/%d/%Y")
+  = text_field_tag :end_date, {}, value: (Time.zone.now).strftime("%m/%d/%Y")
   = select_tag "districts_select", options_for_select(@districts)
   = button_tag "Run", :class => "run"
 
 :javascript
+  $('#start_date').datepicker();
+  $('#end_date').datepicker();
   $('.run').click( function(e) {
     e.preventDefault();
 
     $.ajax({
       url: "/admin/district_reports/run",
       type: "POST",
-      data: { id: $('#districts_select').val() }
+      data: {
+        id: $('#districts_select').val(),
+        start_date: $('#start_date').val(),
+        end_date: $('#end_date').val()
+      }
     }).done( function(data) {
       $('.flashes').remove();
       $('.title_bar').after('<div class="flashes"><div class="flash flash_notice">'+ data.notice +'</div></div>');
