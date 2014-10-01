@@ -22,7 +22,7 @@ module Reports
               student.id,
               student.grade,
               student.status,
-              student.interactions.first,
+              student.interactions.first.try(:created_at),
               student.user.sign_in_count,
               # TODO: Make sure this is right
               student.otu_codes.where('redeemed_at IS NOT NULL').sum(:points).to_s,
