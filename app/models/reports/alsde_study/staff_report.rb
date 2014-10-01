@@ -23,7 +23,7 @@ module Reports
               staff_member.user.id,
               staff_member.id,
               staff_member.status,
-              staff_member.interactions.first.created_at,
+              staff_member.interactions.first.try(:created_at),
               staff_member.user.sign_in_count,
               # TODO: Make sure this is right
               staff_member.otu_codes.sum(:points).to_s,
