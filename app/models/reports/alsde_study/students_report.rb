@@ -18,7 +18,7 @@ module Reports
           students.each do |student|
             csv << [
               student.district_guid,
-              student.school.sti_id,
+              student.school.try(:sti_id),
               student.sti_id,
               student.id,
               student.grade,
