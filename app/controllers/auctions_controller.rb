@@ -1,16 +1,26 @@
 class AuctionsController < LoggedInController
 
   def index
-    @auctions = Auction.viewable_for(current_person)
+    @auctions = available_auctions
   end
 
   def show
+    @auction = Auction.find(params[:id])
+    unless available_auctions.include?(@auction)
+      redirect_to auctions_path and return
+    end
+
     begin
-      @auction = Auction.find(params[:id])
       @bid = BidOnAuctionCommand.new
     rescue
       flash[:error] = "This auction has already ended."
       redirect_to auctions_path and return
     end
+  end
+
+  private
+
+  def available_auctions
+    Auction.viewable_for(current_person)
   end
 end

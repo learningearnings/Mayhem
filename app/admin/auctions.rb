@@ -12,7 +12,7 @@ ActiveAdmin.register Auction do
     def create
       auction_creator = AuctionCreator.new(params[:auction].except(:auction_zip_code_ids), current_person)
       auction_creator.execute!
-      if auction.created?
+      if auction_creator.created?
         create_auction_zip_codes
         flash[:notice] = 'Auction updated.'
         redirect_to admin_auction_path(auction_creator.auction)
