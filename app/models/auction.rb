@@ -33,10 +33,8 @@ class Auction < ActiveRecord::Base
   scope :no_max_grade, where("max_grade IS NULL")
 
   def self.viewable_for(person)
-    # TODO: Actually make this cleaner and faster
-    # ((active.for_school(person.school) | active.for_state(person.school.state) | active.for_zip(person.school.zip)) +
-    #  active.within_grade(person.grade)).uniq
-    # FIXME: Do something other than this.
+    # FIXME: Move this to arel, or possibly find a better solution for
+    # how viewable auctions are handled.
     includes(:auction_school_links, :auction_state_links, :auction_zip_codes).
     where("? BETWEEN min_grade AND max_grade AND
            ( auction_school_links.school_id = ? OR
