@@ -49,7 +49,7 @@ module STI
           # person_id associated to them.
           #teacher.person_school_links.map(&:deactivate!)
           PersonSchoolLink.where(person_id: teacher.id).each do |psl|
-            psl.update_attribute(:status, "inactive")
+            psl.deactivate! if psl.valid?
           end
           teacher.deactivate! unless teacher.status == "inactive"
         end
@@ -100,9 +100,7 @@ module STI
       (current_students_for_district - sti_student_ids).each do |sti_student_id|
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
         if student.present? && student.school.present?
-          student.person_school_links.each do |psl|
-            psl.update_attribute(:status, "inactive")
-          end
+          student.person_school_links.map(&:deactivate!)
           student.deactivate! unless student.status == "inactive"
         end
       end
