@@ -7,12 +7,21 @@
       %p
         Current Bid:
         %span.current_bid= number_with_precision(auction.current_bid, precision: 2, delimiter: ',')
-    - if auction.current_leader.present?
-      %p
-        High Bidder:
-        %span.current_bid= auction.current_leader.name
-        - if auction.current_leader.avatar.present?
-          = image_tag auction.current_leader.avatar.image.url
+
+    - unless current_person == auction.current_leader
+      - if auction.current_leader.present?
+        %p
+          High Bidder:
+          %span.current_bid= auction.current_leader.name
+          - if auction.current_leader.avatar.present?
+            = image_tag auction.current_leader.avatar.image.url
+
+      = form_for BidOnAuctionCommand.new do |f|
+        = text_field_tag :amount
+        = hidden_field_tag :auction_id, auction.id
+        = f.submit "Make bid", class: 'btn awesome-button'
+    - else
+      %p You are the high bidder.
 
     %p
       Ends On:
