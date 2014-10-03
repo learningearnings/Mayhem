@@ -9,13 +9,6 @@ class AuctionsController < LoggedInController
     unless available_auctions.include?(@auction)
       redirect_to auctions_path and return
     end
-
-    begin
-      @bid = BidOnAuctionCommand.new
-    rescue
-      flash[:error] = "This auction has already ended."
-      redirect_to auctions_path and return
-    end
   end
 
   private
