@@ -14,7 +14,7 @@
             = select_tag 'gender', options_for_select([nil, 'Male', 'Female'], :selected => params[:gender]), id: 'controls_gender'
             = button_tag 'Filter List', class: 'btn awesome-button'
       .controls
-        %h5 
+        %h5
           Action for
           %span#number_of_students
           Selected Students:
@@ -43,7 +43,7 @@
               %th
           %tbody.students_body
             - @students.each do |student|
-              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: '', grade: student.grade, gender: student.gender, id: student.id }
+              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id }
 
 :coffeescript
   $('#select_all').on 'click', ->
@@ -118,7 +118,7 @@
       alert("You must select at least one student to modify.")
 
   setFormActionHiddenTag = () ->
-    action = $('#controls_action').val()  
+    action = $('#controls_action').val()
     $('#form_action_hidden_tag').val(action)
 
   performSelectedStudentAction = () ->
