@@ -48,7 +48,9 @@ module STI
           # But, we're somehow getting person_school_link objects without a
           # person_id associated to them.
           #teacher.person_school_links.map(&:deactivate!)
-          PersonSchoolLink.where(person_id: teacher.id).map(&:deactivate!)
+          PersonSchoolLink.where(person_id: teacher.id).each do |psl|
+            psl.deactivate! if psl.valid?
+          end
           teacher.deactivate! unless teacher.status == "inactive"
         end
       end
