@@ -5,16 +5,16 @@ module Reports
     def initialize options = {}
       @ending_day = options.fetch(:ending_day, Time.zone.now).end_of_day
       school_ids = options.fetch("school_ids", nil)
-      if school_ids
+      if school_ids.present?
         @scoped_schools = School.where(id: school_ids)
-        @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { school_id: school_ids })
-        @scoped_students = Student.joins(:person_school_links).where(person_school_links: { school_id: school_ids })
+        @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { school_id: school_ids, status: "active" })
+        @scoped_students = Student.joins(:person_school_links).where(person_school_links: { school_id: school_ids, status: "active" })
         @scoped_otu_codes = OtuCode.joins(:person_school_link).where(person_school_link: { school_id: school_ids })
         @scoped_reward_deliveries = RewardDelivery.where(from_id: @scoped_teachers.pluck(:id))
       else
         @scoped_schools = School
-        @scoped_teachers = Teacher
-        @scoped_students = Student
+        @scoped_teachers = Teacher.joins(:person_school_links).where(person_school_links: { status: "active" })
+        @scoped_students = Student.joins(:person_school_links).where(person_school_links: { status: "active" })
         @scoped_otu_codes = OtuCode
         @scoped_reward_deliveries = RewardDelivery
       end
@@ -81,19 +81,17 @@ module Reports
         csv_array << new(student_scope)
         csv_array << total_redemptions(reward_delivery_scope)
         csv_array << Plutus::Account.where(id: student_scope.pluck(:checking_account_id) + student_scope.pluck(:savings_account_id)).sum(:cached_balance)
-        otu_codes_in_range = otu_code_scope.redeemed_between(ending_day - 30.days, ending_day)
-        csv_array << otu_codes_in_range.sum(:points)
+        csv_array << otu_code_scope.redeemed_between(ending_day - 30.days, ending_day).sum(:points)
         csv_array << Spree::LineItem.where(id: reward_delivery_scope.except_refunded.between(ending_day - 30.days, ending_day).pluck(:reward_id)).sum(:price)
         csv_array << teacher_issued_credits_count(teacher_scope)
-        # FIXME: Don't do stupid stuff like this
-        csv_array << otu_codes_in_range.where(student_id: student_scope.map(&:id)).count
+        csv_array << otu_code_scope.redeemed_between(ending_day - 30.days, ending_day).where(student_id: student_scope.pluck(:id)).count
       end
     end
 
     # FIXME: Understand how this works better, so that this can be done better
     def teacher_issued_credits_count teacher_scope
       count = 0
-      teacher_scope.each do |teacher|
+      teacher_scope.find_each do |teacher|
         count += 1 if teacher.plutus_transactions.where("commercial_document_id IS NOT NULL").where(created_at: (ending_day - 30.days)..ending_day).any?
       end
       count

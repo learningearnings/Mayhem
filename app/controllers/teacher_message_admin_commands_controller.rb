@@ -1,6 +1,6 @@
 class TeacherMessageAdminCommandsController < Teachers::BaseController
   def create
-    alternate_email = params[:teacher_message_admin].delete(:alternate_email)
+    alternate_email = params[:teacher_message_admin_command].delete(:alternate_email)
     command = TeacherMessageAdminCommand.new(params[:teacher_message_admin_command])
     command.from_id = current_person.id
     command.to_id = LeAdmin.first.id
