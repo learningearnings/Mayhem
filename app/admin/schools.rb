@@ -22,7 +22,7 @@ ActiveAdmin.register School do
   }
   filter :city, as: :select, collection: proc {
     # Narrow cities down if the user has selected a state
-    (params[:q] && params[:q][:state_id_eq].present?) ?  School.uniq.where(state_id: params[:q][:state_id_eq]).pluck(:city) : School.uniq.pluck(:city).sort
+    (params[:q] && params[:q][:state_id_eq].present?) ?  School.uniq.where(state_id: params[:q][:state_id_eq]).pluck(:city).sort : School.uniq.pluck(:city).sort
   }
 
   index do
