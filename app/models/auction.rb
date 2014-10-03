@@ -34,8 +34,15 @@ class Auction < ActiveRecord::Base
 
   def self.viewable_for(person)
     # TODO: Actually make this cleaner and faster
-    ((active.for_school(person.school) | active.for_state(person.school.state) | active.for_zip(person.school.zip)) +
-     active.within_grade(person.grade)).uniq
+    # ((active.for_school(person.school) | active.for_state(person.school.state) | active.for_zip(person.school.zip)) +
+    #  active.within_grade(person.grade)).uniq
+    # FIXME: Do something other than this.
+    .includes(:auction_school_links, :auction_state_links, :auction_zip_codes)
+    .where("? BETWEEN min_grade AND max_grade AND
+           ( auction_school_links.school_id = ? OR
+             auction_state_links.state_id = ? OR
+             auction_zip_codes.zip_code = ?
+           )", person.grade, person.school.id, person.school.state.id, person.school.zip)
   end
 
   def self.within_grade(grade)
