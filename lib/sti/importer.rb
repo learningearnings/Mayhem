@@ -22,16 +22,14 @@ module STI
       # Schools that are synced in our DB but are no longer listed in the api
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
         school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
-        unless school.status == "inactive"
-          school.deactivate!
-          client.set_school_synced(school.sti_id, false)
-        end
+        school.deactivate
+        client.set_school_synced(school.sti_id, false)
       end
       @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
         school.update_attributes(api_school_mapping(api_school))
-        school.reload && school.activate! unless school.status == "active"
-        school.save
+        school.reload
+        school.activate
         @imported_schools << school
       end
 
@@ -40,33 +38,24 @@ module STI
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
       # Persons in our system that weren't in their api need to be deactivated
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
-        teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
-        if teacher.present?
-          # FIXME: Get this working correctly, possibly has something to do
-          # with the fact that there are 2 different person_school_link associations
-          # in the model.
-          # But, we're somehow getting person_school_link objects without a
-          # person_id associated to them.
-          #teacher.person_school_links.map(&:deactivate!)
-          PersonSchoolLink.where(person_id: teacher.id).each do |psl|
-            psl.update_attribute(:status, "inactive")
-          end
-          teacher.deactivate! unless teacher.status == "inactive"
+        if teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
+          teacher.person_school_links.map(&:deactivate)
+          teacher.deactivate
         end
       end
       @api_teachers = sti_staff.each do |api_teacher|
         begin
-          schools = api_teacher["Schools"].map do |school_id|
-            School.where(district_guid: @district_guid, sti_id: school_id).first.id
-          end
           teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
-          teacher.type = "Teacher" unless teacher.type == "SchoolAdmin"
+          teacher.type ||= "Teacher"
+          teacher.status = "active"
           teacher.update_attributes(api_teacher_mapping(api_teacher, teacher.new_record?))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
-          teacher.reload && teacher.activate! unless teacher.status == "active"
-          schools.each do |school|
-            person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school, :status => "active").first_or_initialize
+
+          school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+          school_ids.each do |school_id|
+            person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school_id).first_or_initialize
+            person_school_link.status = "active"
             person_school_link.save(:validate => false)
           end
         rescue => e
@@ -86,11 +75,11 @@ module STI
       @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
         classroom.update_attributes(api_classroom_mapping(api_classroom))
-        classroom.reload && classroom.activate! unless classroom.status == "active"
+        classroom.reload
+        ClassroomActivator.new(classroom.id).execute!
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
-        person_school_classroom_link = PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_initialize
-        person_school_classroom_link.save
+        PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create
       end
 
       sti_students = client.students.parsed_response
@@ -99,12 +88,8 @@ module STI
       # Deactivate students who are no longer in the school's data
       (current_students_for_district - sti_student_ids).each do |sti_student_id|
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
-        if student.present? && student.school.present?
-          student.person_school_links.each do |psl|
-            psl.update_attribute(:status, "inactive")
-          end
-          student.deactivate! unless student.status == "inactive"
-        end
+        student.person_school_links.map(&:deactivate)
+        student.deactivate
       end
       @api_students = sti_students.each do |api_student|
         begin
@@ -114,8 +99,8 @@ module STI
           student.reload && student.activate! unless student.status == "active"
           api_student["Schools"].each do |sti_school_id|
             school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-            person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id, :status => "active").first_or_initialize
-            person_school_link.skip_onboard_credits = true if person_school_link.new_record?
+            person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initialize(skip_onboard_credits: true)
+            person_school_link.status = "active"
             person_school_link.save(:validate => false)
           end
         rescue => e
@@ -139,15 +124,17 @@ module STI
       students_hash.each_pair do |sti_student_id, sti_classroom_ids|
         next if sti_student_id.nil?
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
-        next unless student.present? && student.school.present?
         # Deactivate all existing classroom links
-        student.person_school_classroom_links.map(&:deactivate!)
+        PersonSchoolClassroomLink.where(id: student.person_school_classroom_links.pluck(:id)).each do |pscl|
+          pscl.update_attribute(:status, "inactive")
+        end
         # Update the new classrooms for the student
         sti_classroom_ids.compact.each do |sti_classroom_id|
-          classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
-          next unless classroom.present?
-          pscl = PersonSchoolClassroomLink.where(person_school_link_id: student.person_school_links.first, classroom_id: classroom.id).first_or_create
-          pscl.activate! if pscl.inactive?
+          if classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
+            psl = student.person_school_links.where(school_id: student.school.id).first
+            pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_create
+            pscl.activate
+          end
         end
       end
 
