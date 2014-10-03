@@ -11,7 +11,7 @@ class Auction < ActiveRecord::Base
 
   belongs_to :product, class_name: "Spree::Product", foreign_key: :product_id
   belongs_to :creator, class_name: "Person", foreign_key: :person_id
-  has_many :auction_bids
+  has_many :auction_bids, order: "created_at ASC"
   has_many :states, :through => :auction_state_links
   has_many :auction_state_links
   has_many :schools, :through => :auction_school_links
@@ -29,18 +29,27 @@ class Auction < ActiveRecord::Base
   scope :for_school,   lambda {|school| joins({:auction_school_links => :school}).where("auction_school_links.school_id = ?", school.id)}
   scope :for_state,    lambda {|state|  joins({:auction_state_links => :state}).where("auction_state_links.state_id = ?", state.id)}
   scope :for_zip,      lambda {|zip|    joins(:auction_zip_codes).where("auction_zip_codes.zip_code= ?", zip) }
-  scope :within_grade, lambda {|grade|  where("? BETWEEN min_grade AND max_grade", grade) }
   scope :no_min_grade, where("min_grade IS NULL")
   scope :no_max_grade, where("max_grade IS NULL")
 
   def self.viewable_for(person)
-    # TODO: Actually make this cleaner and faster
-    ((active.for_school(person.school) |
-     active.for_state(person.school.state) |
-     active.for_zip(person.school.zip)) +
-     active.within_grade(person.grade) +
-     active.no_min_grade +
-     active.no_max_grade).uniq
+    # FIXME: Move this to arel, or possibly find a better solution for
+    # how viewable auctions are handled.
+    includes(:auction_school_links, :auction_state_links, :auction_zip_codes).
+    where("? BETWEEN min_grade AND max_grade AND
+           ( auction_school_links.school_id = ? OR
+             auction_state_links.state_id = ? OR
+             auction_zip_codes.zip_code = ?
+           )", person.grade, person.school.id, person.school.state.id, person.school.zip)
+  end
+
+  def self.within_grade(grade)
+    # This should be auctions that are not for a school, state, or zip
+    self.includes(:auction_school_links, :auction_state_links, :auction_zip_codes)
+        .where(auction_school_links: { id: nil })
+        .where(auction_state_links: { id: nil })
+        .where(auction_zip_codes: { id: nil })
+        .where("? BETWEEN min_grade AND max_grade", grade)
   end
 
   def global?
