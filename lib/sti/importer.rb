@@ -82,24 +82,22 @@ module STI
         PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create
       end
 
-      sti_students = client.students.parsed_response
-      current_students_for_district = Student.where(district_guid: @district_guid).pluck(:sti_id)
-      sti_student_ids = sti_students.map {|student| student["Id"]}
-      # Deactivate students who are no longer in the school's data
-      (current_students_for_district - sti_student_ids).each do |sti_student_id|
-        student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
-        student.person_school_links.map(&:deactivate)
-        student.deactivate
-      end
-      @api_students = sti_students.each do |api_student|
+      # Deactivate all students for school and just let the Sync reactivate students
+      school_ids = School.where(district_guid: @district_guid).pluck(:id).uniq
+      psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
+      students = Student.where(id: psls.pluck(:person_id)).update_all(status: "inactive")
+      psls.update_all(status: "inactive")
+
+      # Activate/Create students that we pull from STI
+      client.students.parsed_response.each do |api_student|
         begin
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
-          student.update_attributes(api_student_mapping(api_student))
+          student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
-          student.reload && student.activate! unless student.status == "active"
           api_student["Schools"].each do |sti_school_id|
             school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-            person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initialize(skip_onboard_credits: true)
+            person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initialize
+            person_school_link.skip_onboard_credits = true
             person_school_link.status = "active"
             person_school_link.save(:validate => false)
           end
@@ -189,7 +187,8 @@ module STI
         district_guid: @district_guid,
         first_name: api_student["FirstName"],
         last_name: api_student["LastName"],
-        grade: api_student["GradeLevel"]
+        grade: api_student["GradeLevel"],
+        status: "active"
       }
     end
 
