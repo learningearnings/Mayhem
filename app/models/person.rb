@@ -150,7 +150,7 @@ class Person < ActiveRecord::Base
 
   # Only return the classrooms for the given school
   def classrooms_for_school(school)
-    classrooms.select{|c| c.school == school}
+    classrooms.order(:name).select{|c| c.school == school}
   end
 
   def full_name

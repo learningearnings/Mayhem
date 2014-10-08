@@ -32,7 +32,7 @@
             %tr
               %td= student.classrooms.first ? student.classrooms.first : "No Classroom"
               %td= student.grade
-              %td= student.name
+              %td= student.name_last_first
               %td= student.user.username
               %td= student.recovery_password
 
@@ -40,6 +40,7 @@
   $(document).ready( function () {
     $('#report_table').dataTable( {
       "bPaginate": false,
-      "bInfo": false
+      "bInfo": false,
+      "aaSorting": [[2, "asc"]] 
     } );
   } );

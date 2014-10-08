@@ -186,7 +186,7 @@ module Reports
 
       def teachers_filter_options(school = nil)
         school.teachers.order(:last_name, :first_name).collect do |t|
-          [t.name, t.id]
+          [t.name_last_first, t.id]
         end if school
       end
 
