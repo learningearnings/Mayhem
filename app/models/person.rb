@@ -159,6 +159,10 @@ class Person < ActiveRecord::Base
 
   alias_method :name, :full_name
   alias_method :to_s, :full_name
+  
+  def name_last_first
+    self.last_name + ', ' + self.first_name
+  end
 
   def store_code
     nil
