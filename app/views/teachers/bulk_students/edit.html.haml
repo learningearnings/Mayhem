@@ -25,7 +25,7 @@
             = text_field_tag 'controls_password'
           %span.classroom_field.secondary
             %label Classroom:
-            = select_tag 'controls_classroom_selection', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name")
+            = select_tag 'controls_classroom_selection', options_from_collection_for_select(current_person.assignable_classrooms_for_school(current_school).uniq.to_a, "id", "name"), prompt: "Select Classroom"
           = button_tag 'UPDATE These Students', class: 'btn awesome-button', id: 'update_these_students'
 
       = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
@@ -87,7 +87,7 @@
   shouldShowEdit = ->
     switch chosenAction()
       when "Update Passwords to this Password" then false
-      when "Edit Students Information" then true
+      when "Edit Student Information" then true
       else false
 
   conditionallyShowEditFields = () ->

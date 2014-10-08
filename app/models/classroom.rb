@@ -18,6 +18,9 @@ class Classroom < ActiveRecord::Base
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :sti_id, :district_guid
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :created_at, :as => :admin
 
+  scope :synced,     lambda { where(arel_table[:district_guid].not_eq(nil).and(arel_table[:sti_id].not_eq(nil))) }
+  scope :not_synced, lambda { where(arel_table[:district_guid].eq(nil).or(arel_table[:sti_id].eq(nil))) }
+
   validates_presence_of :name
   validates_uniqueness_of :sti_uuid, allow_blank: true
 
