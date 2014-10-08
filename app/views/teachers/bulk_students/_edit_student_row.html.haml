@@ -4,12 +4,12 @@
       %strong= errors.full_messages.to_sentence
 %tr
   %td.checkbox.selected= check_box_tag 'students[][id]', options[:id], options[:selected], class: 'selected row_checkbox'
-  %td.text.first
-    .edit= text_field_tag 'students[]first_name', options[:first_name], class: 'first edit_control'
-    .display= options[:first_name]
   %td.text.last
     .edit= text_field_tag 'students[]last_name', options[:last_name], class: 'last edit_control'
     .display= options[:last_name]
+  %td.text.first
+    .edit= text_field_tag 'students[]first_name', options[:first_name], class: 'first edit_control'
+    .display= options[:first_name]
   %td.text.username
     .edit= text_field_tag 'students[]user[username]', options[:username], class: 'username edit_control'
     .display= options[:username]
