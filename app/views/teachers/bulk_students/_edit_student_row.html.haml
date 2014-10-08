@@ -28,7 +28,7 @@
     = hidden_field_tag 'students[]classroom_id', nil, class: 'classroom edit_control'
   %td.select.gender
     - if current_school.synced?
-      .display= options[:gender]
+      .edit= options[:gender]
     - else
       .edit= select_tag 'students[]gender', options_for_select(['', 'Male', 'Female'], selected: options[:gender]), class: 'gender edit_control'
     .display= options[:gender]
