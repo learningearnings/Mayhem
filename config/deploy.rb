@@ -23,14 +23,6 @@ before 'deploy:setup', 'rvm:create_gemset'
 before 'deploy:setup', 'rvm:create_alias'
 before 'deploy:setup', 'rvm:create_wrappers'
 
-# Slack notification settings
-set :slack_token, '62kjrF5RV1MdkQHy7HhZxHE9'
-set :slack_subdomain, 'isotope11'
-set :slack_room, '#learningearnings'
-set :slack_application, 'Mayhem'
-set :slack_emoji, ":james:"
-set :slack_username, "jamesbot"
-
 set :bundle_dir, ''
 set :sidekiq_role, :sidekiq
 set :sidekiq_default_hooks, true
@@ -71,9 +63,17 @@ set :slack_emoji, ":james:"
 set :slack_username, "jamesbot"
 set :slack_local_user, `git config user.name`.chomp
 
-
 # tasks
 namespace :deploy do
+  desc "Sends deployment notification to Slack."
+  task :notify_slack, :roles => :app do
+    ::SlackNotify::Client.new(slack_subdomain, slack_token, {
+      channel: slack_channel,
+      username: slack_username,
+      icon_emoji: slack_emoji
+    }).notify("#{slack_local_user} started deploying #{slack_application}'s #{branch} to #{fetch(:stage, 'production')}")
+  end
+
   desc "Symlink shared resources on each release"
   task :symlink_shared, :roles => [:app, :sidekiq] do
     run "ln -s #{shared_path}/log #{latest_release}/log"
@@ -88,15 +88,6 @@ namespace :deploy do
     run "ln -sf #{shared_path}/config/initializers/sidekiq.rb #{latest_release}/config/initializers"
   end
 
-  desc "Sends deployment notification to Slack."
-  task :notify_slack, :roles => :app do
-    ::SlackNotify::Client.new(slack_subdomain, slack_token, {
-      channel: slack_channel,
-      username: slack_username,
-      icon_emoji: slack_emoji
-    }).notify("#{slack_local_user} is deploying #{slack_application}'s #{branch} to #{fetch(:stage, 'production')}")
-  end
-
   desc "Precompile assets"
   task :precompile_assets, :roles => :app do
     #precompile the assets
@@ -106,6 +97,15 @@ namespace :deploy do
   desc "Restart unicorn"
   task :restart, :roles => :app do
     unicorn.restart
+  end
+  
+  desc "Sends deployment notification to Slack."
+  task :notify_slack, :roles => :app do
+    ::SlackNotify::Client.new(slack_subdomain, slack_token, {
+      channel: slack_channel,
+      username: slack_username,
+      icon_emoji: slack_emoji
+    }).notify("#{slack_local_user} has finished deploying #{slack_application}'s #{branch} to #{fetch(:stage, 'production')}")
   end
 end
 
