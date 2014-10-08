@@ -66,7 +66,7 @@ set :slack_local_user, `git config user.name`.chomp
 # tasks
 namespace :deploy do
   desc "Sends deployment notification to Slack."
-  task :notify_slack, :roles => :app do
+  task :start_notify_slack, :roles => :app do
     ::SlackNotify::Client.new(slack_subdomain, slack_token, {
       channel: slack_channel,
       username: slack_username,
@@ -100,7 +100,7 @@ namespace :deploy do
   end
   
   desc "Sends deployment notification to Slack."
-  task :notify_slack, :roles => :app do
+  task :end_notify_slack, :roles => :app do
     ::SlackNotify::Client.new(slack_subdomain, slack_token, {
       channel: slack_channel,
       username: slack_username,
@@ -111,4 +111,5 @@ end
 
 before 'deploy:precompile_assets', 'deploy:symlink_shared'
 before 'deploy:finalize_update', 'deploy:precompile_assets'
-before 'deploy', 'deploy:notify_slack'
+before 'deploy', 'deploy:start_notify_slack'
+after 'deploy', 'deploy:end_notify_slack'
