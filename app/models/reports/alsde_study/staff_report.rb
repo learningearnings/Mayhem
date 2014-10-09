@@ -19,8 +19,8 @@ module Reports
             csv << [
               staff_member.district_guid,
               # TODO: This might be incorrect if a staff_member belongs to multiple schools
-              staff_member.school.id,
-              staff_member.user.id,
+              staff_member.school.sti_id,
+              staff_member.sti_id,
               staff_member.id,
               staff_member.status,
               staff_member.interactions.first.try(:created_at).try(:strftime, "%m/%d/%Y"),

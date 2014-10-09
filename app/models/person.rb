@@ -190,6 +190,14 @@ class Person < ActiveRecord::Base
     user.orders
   end
 
+  def assignable_classrooms_for_school(school)
+    if school.synced?
+      classrooms.not_synced
+    else
+      classrooms
+    end
+  end
+
   def charities
     charities = []
     user.orders.each do |order|

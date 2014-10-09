@@ -5,7 +5,10 @@
 %tr
   %td.checkbox.selected= check_box_tag 'students[][id]', options[:id], options[:selected], class: 'selected row_checkbox'
   %td.text.last
-    .edit= text_field_tag 'students[]last_name', options[:last_name], class: 'last edit_control'
+    - if current_school.synced?
+      .edit= options[:last_name]
+    - else
+      .edit= text_field_tag 'students[]last_name', options[:last_name], class: 'last edit_control'
     .display= options[:last_name]
   %td.text.first
     .edit= text_field_tag 'students[]first_name', options[:first_name], class: 'first edit_control'
@@ -14,11 +17,18 @@
     .edit= text_field_tag 'students[]user[username]', options[:username], class: 'username edit_control'
     .display= options[:username]
   %td.select.grade
-    .edit= select_tag 'students[]grade', options_for_select(current_school.grades_name_first, selected: options[:grade]), class: 'grade edit_control'
+    - if current_school.synced?
+      .edit= options[:grade]
+    - else
+      .edit= select_tag 'students[]grade', options_for_select(current_school.grades_name_first, selected: options[:grade]), class: 'grade edit_control'
     .display= options[:grade]
     = hidden_field_tag 'students[]classroom_id', nil, class: 'classroom edit_control'
   %td.select.gender
-    .edit= select_tag 'students[]gender', options_for_select(['', 'Male', 'Female'], selected: options[:gender]), class: 'gender edit_control'
+    - if current_school.synced?
+      .edit= options[:gender]
+    - else
+      .edit= select_tag 'students[]gender', options_for_select(['', 'Male', 'Female'], selected: options[:gender]), class: 'gender edit_control'
     .display= options[:gender]
   %td.text.password
     .edit= text_field_tag 'students[]user[password]', options[:password], class: 'password edit_control'
+    .display= options[:password]

@@ -14,11 +14,12 @@ module Reports
         school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
         students = Student.joins(:allperson_school_links).where(allperson_school_links: { school_id: school_ids })
         CSV.generate do |csv|
-          csv << ["sti_district_guid", "sti_user_id", "le_person_id", "grade", "status", "first_login_date", "login_count", "sum_credits_deposited", "sum_credits_spent_on_purchases"]
+          csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "grade", "status", "first_login_date", "login_count", "sum_credits_deposited", "sum_credits_spent_on_purchases"]
           students.each do |student|
             csv << [
               student.district_guid,
-              student.user.id,
+              student.school.try(:sti_id),
+              student.sti_id,
               student.id,
               student.grade,
               student.status,
