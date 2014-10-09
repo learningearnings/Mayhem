@@ -1,6 +1,10 @@
 module SchoolAdmins
   class AuctionsController < SchoolAdmins::BaseController
     def index
+      @auctions = Auction.active_viewable_for(current_person)
+    end
+    
+    def all
       @auctions = Auction.viewable_for(current_person)
     end
 
