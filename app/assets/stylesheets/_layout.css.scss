@@ -1594,6 +1594,13 @@ h3 {
   .product {
     width: 240px;
     margin: 0 0 0 50px;
+    .product-title {
+      a.info {
+        font-family: 'sketch_rockwellregular';
+        font-size: 1.35em;
+        font-weight: bold;
+      }
+    }
     .product-image {
       display: inline-block;
     }
