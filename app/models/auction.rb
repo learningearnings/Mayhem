@@ -42,6 +42,18 @@ class Auction < ActiveRecord::Base
              auction_zip_codes.zip_code = ?
            )", person.grade, person.school.id, person.school.state.id, person.school.zip)
   end
+  
+  def self.active_viewable_for(person)
+    # FIXME: Move this to arel, or possibly find a better solution for
+    # how viewable auctions are handled.
+    includes(:auction_school_links, :auction_state_links, :auction_zip_codes).
+    where("NOW() BETWEEN start_date AND end_date AND
+             ? BETWEEN min_grade AND max_grade AND
+           ( auction_school_links.school_id = ? OR
+             auction_state_links.state_id = ? OR
+             auction_zip_codes.zip_code = ?
+           )", person.grade, person.school.id, person.school.state.id, person.school.zip)
+  end
 
   def self.within_grade(grade)
     # This should be auctions that are not for a school, state, or zip

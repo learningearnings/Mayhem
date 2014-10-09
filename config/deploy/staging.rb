@@ -1,4 +1,4 @@
-set :branch,    "staging"
+set :branch,    "staging-9-26-2014"
 set :rails_env, "staging"
 set :unicorn_rack_env, "staging"
 role :web,      "107.170.87.36"

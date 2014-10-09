@@ -128,4 +128,8 @@ class Teacher < Person
   def synced?
     district_guid.present? && sti_id.present?
   end
+
+  def editable_rewards(school)
+    self.products.active.with_property_value('reward_type', 'local')
+  end
 end

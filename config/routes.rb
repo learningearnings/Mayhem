@@ -238,6 +238,7 @@ Leror::Application.routes.draw do
     resources :auctions do
       get "cancel_school_auction", on: :member
       post 'create_auction_reward', on: :collection
+      get 'all', on: :collection
     end
     resource :bank
     resource :dashboard
