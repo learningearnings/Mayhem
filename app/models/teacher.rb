@@ -124,4 +124,8 @@ class Teacher < Person
   def peers_at(school)
     school.teachers - [self]
   end
+
+  def synced?
+    district_guid.present? && sti_id.present?
+  end
 end
