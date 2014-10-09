@@ -1,5 +1,6 @@
 module Teachers
   class BulkTeachersController < Teachers::BaseController
+    before_filter :redirect_for_synced_schools
     before_filter :load_edit, only: [:edit, :update]
 
     def show
@@ -57,6 +58,10 @@ module Teachers
       end
 
       @teachers = @teachers.for_grade(params[:grade]) if params[:grade].present?
+    end
+
+    def redirect_for_synced_schools
+      redirect_to root_path if current_school.synced?
     end
   end
 end
