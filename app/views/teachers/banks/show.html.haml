@@ -133,6 +133,7 @@
             # We have to map the rails-returned data to something more appropriate for mustache
             mapped_students = $.map students, (student_wrapper) ->
               student_wrapper.student
+            ich.grabTemplates()
             html = ich.students_table(students: mapped_students)
             $('#classroom_distribution').html(html)
             distributeCreditsToAllStudents()
