@@ -3,7 +3,7 @@ class TeachersImporter < BaseImporter
 
   protected
   def run
-    check_headers(teacher_data.headers)
+    check_header(parsed_doc.headers)
     teacher_data.each do |datum|
       find_or_create_teacher(datum)
     end
