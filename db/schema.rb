@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140923152740) do
+ActiveRecord::Schema.define(:version => 20141013142345) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -86,8 +86,8 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
     t.decimal  "starting_bid",    :precision => 10, :scale => 2
-    t.integer  "min_grade"
-    t.integer  "max_grade"
+    t.integer  "min_grade",                                      :default => 0
+    t.integer  "max_grade",                                      :default => 12
     t.boolean  "created_locally"
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
@@ -345,6 +345,7 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.integer  "memory_usage_kb"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.integer  "school_id"
   end
 
   add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
@@ -1017,7 +1018,6 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.integer  "min_grade"
     t.integer  "max_grade"
     t.boolean  "visible_to_all",       :default => false
-    t.integer  "sticker_id"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1352,22 +1352,10 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.string   "password"
   end
 
-  create_table "sticker_purchases", :force => true do |t|
-    t.integer  "sticker_id"
-    t.integer  "person_id"
-    t.datetime "expires_at"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "stickers", :force => true do |t|
     t.string   "image_uid"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-    t.integer  "school_id"
-    t.integer  "min_grade"
-    t.integer  "max_grade"
-    t.boolean  "purchasable", :default => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "sync_attempts", :force => true do |t|

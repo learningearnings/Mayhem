@@ -122,9 +122,8 @@ class ApplicationController < ActionController::Base
   def track_interaction
     start_time = Time.now
     interaction = Interaction.new ip_address: request.ip
-    if current_person
-      interaction.person = current_person
-    end
+    interaction.person = current_person if current_person
+    interaction.school = current_school if current_school
     yield
     end_time = Time.now
     interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
