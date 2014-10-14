@@ -34,7 +34,7 @@ end
 
 #TODO Remove once we are receiving the data over the STI API
 every 1.day, :at => '6am' do
-  rake "update_city_state_after_sync:"
+  rake "update_city_state_after_sync:run"
 end
 ########################################
 
