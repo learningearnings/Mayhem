@@ -38,7 +38,7 @@ Spree::User.class_eval do
       return if session_information.response.code == "401"
       sti_user_id = (session_information.parsed_response["StaffId"] || session_information.parsed_response["StudentId"])
       sti_person = Person.where(:district_guid => school.district_guid, :sti_id => sti_user_id).first
-      sti_person = nil unless sti_person.schools.include?(school)
+      sti_person = nil unless sti_person.present? && sti_person.schools.include?(school)
       return if sti_person.nil?
       user = sti_person.user
       user.api_user = true
