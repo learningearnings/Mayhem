@@ -1,9 +1,13 @@
 %h4 Choose a school
 %p
+  = text_field_tag :start_date, {}, value: (Time.zone.now - 30.days).strftime("%m/%d/%Y")
+  = text_field_tag :end_date, {}, value: (Time.zone.now).strftime("%m/%d/%Y")
   = select_tag "schools_select", options_for_select(@schools)
   = button_tag "Run", :class => "run"
 
 :javascript
+  $('#start_date').datepicker();
+  $('#end_date').datepicker();
   $('#schools_select').chosen();
 
   $('.run').click( function(e) {

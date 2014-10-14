@@ -7,16 +7,18 @@ ActiveAdmin.register School do
       link_to 'Edit School', edit_admin_school_path(school)
     end
   end
-  action_item do
-    if current_page?(:action => 'show') && !school.district_guid.present?
-      link_to "Delete School", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
-    end
-  end
 
   filter :name
   filter :district_guid
   filter :sti_id
-  filter :state
+  filter :state, collection: proc {
+    # Narrow states down if the user has selected a city
+    (params[:q] && params[:q][:city_eq].present?) ? State.where(id: School.where(city: params[:q][:city_eq]).pluck(:state_id)) : State.all
+  }
+  filter :city, as: :select, collection: proc {
+    # Narrow cities down if the user has selected a state
+    (params[:q] && params[:q][:state_id_eq].present?) ?  School.uniq.where(state_id: params[:q][:state_id_eq]).pluck(:city).sort : School.uniq.pluck(:city).sort
+  }
 
   index do
     column :id
@@ -46,8 +48,6 @@ ActiveAdmin.register School do
       links += ' '
       if !resource.district_guid.present?
         links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)
-        links += ' '
-        links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
       end
       links
     end

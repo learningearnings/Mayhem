@@ -201,6 +201,10 @@ class School < ActiveRecord::Base
     @distributing_teachers.compact
   end
 
+  def synced?
+    district_guid.present? && sti_id.present?
+  end
+
   private
   def ensure_accounts
     main_account || Plutus::Asset.create(name: main_account_name)

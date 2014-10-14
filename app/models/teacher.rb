@@ -124,4 +124,12 @@ class Teacher < Person
   def peers_at(school)
     school.teachers - [self]
   end
+
+  def synced?
+    district_guid.present? && sti_id.present?
+  end
+
+  def editable_rewards(school)
+    self.products.active.with_property_value('reward_type', 'local')
+  end
 end

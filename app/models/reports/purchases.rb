@@ -112,8 +112,8 @@ module Reports
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
-        classroom: (person.classrooms.count > 0 ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : ""),
-        grade: School::GRADE_NAMES[person.grade],
+        classroom: (person.classrooms.any? ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : ""),
+        grade: School::GRADE_NAMES[person.try(:grade)],
         purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
         reward: reward_delivery.reward.product.name,
         quantity: reward_delivery.reward.quantity,
@@ -124,7 +124,7 @@ module Reports
     end
 
     def name_with_options(person, option = "Last, First")
-      name_array = [person.last_name, person.first_name]
+      name_array = [person.try(:last_name), person.try(:first_name)]
       name_array.reverse! if option == "First, Last"
       option == "Last, First" || option == "" ? name_array.join(", ") : name_array.join(" ")
     end
@@ -185,8 +185,8 @@ module Reports
       end
 
       def teachers_filter_options(school = nil)
-        school.teachers.order(:last_name, :first_name).collect do |t| 
-          [t.name, t.id]
+        school.teachers.order(:last_name, :first_name).collect do |t|
+          [t.name_last_first, t.id]
         end if school
       end
 

@@ -1,8 +1,9 @@
 .auctions-content
-  %h2 Auctions
+  %h2 Active Auctions
   .span8
     .auctions
       = link_to 'New Auction', new_school_admins_auction_path, { class: 'btn awesome-button' }
+      = link_to 'Ended Auctions', all_school_admins_auctions_path, { class: 'btn awesome-button' }
       - if @auctions.any? && current_school.name != 'STI'
         %p
           %h4 Here are the currently-open auctions.

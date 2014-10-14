@@ -150,7 +150,7 @@ class Person < ActiveRecord::Base
 
   # Only return the classrooms for the given school
   def classrooms_for_school(school)
-    classrooms.select{|c| c.school == school}
+    classrooms.order(:name).select{|c| c.school == school}
   end
 
   def full_name
@@ -159,6 +159,10 @@ class Person < ActiveRecord::Base
 
   alias_method :name, :full_name
   alias_method :to_s, :full_name
+  
+  def name_last_first
+    self.last_name + ', ' + self.first_name
+  end
 
   def store_code
     nil
@@ -184,6 +188,14 @@ class Person < ActiveRecord::Base
 
   def orders
     user.orders
+  end
+
+  def assignable_classrooms_for_school(school)
+    if school.synced?
+      classrooms.not_synced
+    else
+      classrooms
+    end
   end
 
   def charities

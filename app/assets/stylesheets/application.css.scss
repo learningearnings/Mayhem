@@ -11,6 +11,7 @@
 
 @import 'helpers';
 @import 'layout';
+@import 'primary_nav';
 @import 'components';
 @import 'games';
 @import 'store/products';
@@ -28,6 +29,7 @@
 @import 'teachers/rewards';
 @import 'resp_products';
 @import 'students';
+@import 'teachers/teachers';
 @import 'fonts';
 
 @media screen {
@@ -35,4 +37,3 @@
     display: none;
   }
 }
-

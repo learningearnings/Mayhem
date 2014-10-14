@@ -7,7 +7,17 @@ ActiveAdmin.register_page "School Reports" do
 
   page_action :run, :method => :post do
     begin
-      UserActivityReportWorker.perform_async({school_ids: params[:id]})
+      options = {}
+      if params[:start_date]
+        start_date = Time.strptime(params[:start_date], "%m/%d/%Y")
+        options.merge!(beginning_day: start_date)
+      end
+      if params[:end_date]
+        end_date = Time.strptime(params[:end_date], "%m/%d/%Y")
+        options.merge!(ending_day: end_date)
+      end
+      options.merge!(school_ids: params[:id])
+      UserActivityReportWorker.perform_async(options)
       render json: { :status => 200, :notice => "User activity report has been started." }
     rescue Exception => e
       render json: { :status => 422, :notice => 'User activity report failed to start.' }
