@@ -32,6 +32,12 @@ every 1.day, :at => '1am' do
   rake "le:sti_nightly_import"
 end
 
+#TODO Remove once we are receiving the data over the STI API
+every 1.day, :at => '6am' do
+  rake "update_city_state_after_sync:"
+end
+########################################
+
 every 1.day, :at => '12pm' do
   rake "le:build_otu_codes"
 end
@@ -39,4 +45,3 @@ end
 every '0 9 1 * *' do
   runner "BuckDistributor.new.run"
 end
-
