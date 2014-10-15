@@ -123,7 +123,7 @@ class ApplicationController < ActionController::Base
     start_time = Time.now
     interaction = Interaction.new ip_address: request.ip
     interaction.person = current_person if current_person
-    interaction.school = current_school if current_school
+    interaction.school_id = session[:current_school_id]
     yield
     end_time = Time.now
     interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
