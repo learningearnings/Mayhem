@@ -1,7 +1,7 @@
 #TODO Remove once we are receiving the data over the STI API
 namespace :update_city_state_after_sync do
   desc "Update the City, ST of a few synced schools outside of AL since these fields are not coming over in the sync"
-  task :run => do
+  task :run => :environment do
     s = School.find(1712)
     s.city = "Kings"
     s.state_id = 14
