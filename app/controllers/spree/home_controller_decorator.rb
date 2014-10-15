@@ -14,7 +14,7 @@ Spree::HomeController.class_eval do
       @products = filter_rewards_by_classroom(@products)
     end
 
-    @products = @products.order(:name).page(params[:page]).per(12)
+    @products = @products.order(:name).page(params[:page]).per(9)
     respond_with(@products)
   end
 end
