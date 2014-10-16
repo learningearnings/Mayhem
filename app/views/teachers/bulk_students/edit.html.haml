@@ -101,6 +101,7 @@
     # We also potentially show only the password field, if "as indicated" is chosen
     if chosenAction() == 'Update Passwords as Indicated'
       $('tbody td.password .edit').show()
+      $('tbody td.password .display').hide()
 
   handleInterfaceState = ->
     showAppropriateSecondaryAction()
