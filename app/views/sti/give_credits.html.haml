@@ -6,6 +6,7 @@
     %meta{:name => "viewport", :content => "width=device-width"}
 
     = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
+    = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'
     = javascript_include_tag 'application'
     = stylesheet_link_tag    'application'
     :javascript
@@ -40,6 +41,15 @@
                     %strong
                       Credits Available:
                     = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+                  - unless current_person.otu_code_categories.any?
+                    %strong If you would like to use the credit categories feature, you must create categories through the main learning earnings site
+                  = form_for OtuCode.new, :url => "#", :html => {:id => "global_populate"} do |f|
+                    %h4 Populate all fields with:
+                    = label_tag 'Credits'
+                    = text_field_tag :class_points, nil,:min => '0',:step => '1',:type => "number", :class => 'class_points', :style => "width: 50px;"
+                    - if current_person.otu_code_categories.any?
+                      = label_tag 'Category'
+                      %td= select_tag "credit_categories", options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), prompt: "Select Category", class: "global_category"
                   = form_for OtuCode.new, :url => sti_create_ebucks_for_students_path(params), :method => :post do |f|
                     #classroom_distribution
                       %table.table
@@ -48,10 +58,23 @@
                             %th.sti_table_heading First Name
                             %th.sti_table_heading Last Name
                             %th.sti_table_heading Credits
+                            - if current_person.otu_code_categories.any?
+                              %th.sti_table_heading Category
                         %tbody
                           - @students.each do |student|
                             %tr
                               %td= student.first_name
                               %td= student.last_name
-                              %td= text_field_tag "credits[#{student.id}]", nil, class: "classroom_student_points"
+                              %td= text_field_tag "credits[#{student.id}]", nil, class: "classroom_student_points", style: "width: 50px"
+                              - if current_person.otu_code_categories.any?
+                                %td= select_tag "credit_categories[#{student.id}]", options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), prompt: "Select Category", class: "student_category"
                       %input.awesome-button{type: "submit", name: "commit", value: "Send These Credits"}
+:coffeescript
+  jQuery ->
+    ($ '#global_populate').submit (e) ->
+      e.preventDefault()
+
+    ($ '.class_points').keyup (e) ->
+      $('.classroom_student_points').val($(this).val())
+    ($ '.global_category').change (e) ->
+      $('.student_category').val($(this).val())

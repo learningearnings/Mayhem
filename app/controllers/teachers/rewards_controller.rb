@@ -3,8 +3,7 @@ module Teachers
     # GET /teachers/rewards
     # GET /teachers/rewards.json
     def index
-      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').joins(:spree_product_person_link).where(:spree_product_person_link => {:person_id => current_person.id}).order('name').page(params[:page]).per(9)
-#      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').page(params[:page]).per(9)
+      @teachers_rewards = current_person.editable_rewards(current_school).order('name').page(params[:page]).per(9)
 
       respond_to do |format|
         format.html # index.html.haml

@@ -65,6 +65,16 @@ module CommonPersonConfig
         render :partial => 'admin/common/school_list', :locals => { :person => @person }
       end
 
+      member_action :toggle_school_admin, :method => :put do
+        person = Person.find(params[:id])
+        if person.is_a?(SchoolAdmin)
+          person.update_attributes(:type => "Teacher")
+        elsif person.is_a?(Teacher)
+          person.update_attributes(:type => "SchoolAdmin")
+        end
+        redirect_to admin_teacher_path(person)
+      end
+
       member_action :give_credits, :method => :post do
         person = Person.find(params[:id])
         amount = params[:credits][:amount]
@@ -166,14 +176,19 @@ module CommonPersonConfig
           links += ' '
           if !resource.district_guid.present?
             links += link_to I18n.t('active_admin.edit'), edit_resource_path(resource)
-            links += ' '
-            links += link_to "Delete", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
           end
           links
         end
       end
       controller do
         skip_before_filter :add_current_store_id_to_params
+
+        def create
+          create! do |format|
+            format.html { redirect_to resource_path(resource) }
+          end
+        end
+
       end
     end
   end

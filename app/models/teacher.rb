@@ -7,8 +7,11 @@ class Teacher < Person
   after_create :create_user
 
   scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
+  scope :awaiting_approval, lambda{ where('status = ?', 'awaiting_approval')}
+  scope :not_awaiting_approval, lambda{ where('status != ?', 'awaiting_approval')}
 
   has_many :reward_distributors, :through => :person_school_links
+  has_many :otu_codes, through: :person_school_links
 
   before_create :set_status_to_active
 
@@ -19,7 +22,7 @@ class Teacher < Person
   end
 
   def set_status_to_active
-    self.status = 'active' # Teachers should default to active
+    self.status = 'active'
   end
 
   def primary_account
@@ -120,5 +123,13 @@ class Teacher < Person
 
   def peers_at(school)
     school.teachers - [self]
+  end
+
+  def synced?
+    district_guid.present? && sti_id.present?
+  end
+
+  def editable_rewards(school)
+    self.products.active.with_property_value('reward_type', 'local')
   end
 end

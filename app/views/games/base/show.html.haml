@@ -9,7 +9,7 @@
   .span6
     .game.row
       .span2
-        = link_to "Play Now", auctions_path, class: 'btn awesome-button play-now'
+        = link_to "Play Now", current_person.is_a?(SchoolAdmin) ? school_admins_auctions_path : auctions_path, class: 'btn awesome-button play-now'
       .span4
         %h4= t('.auction_title')
         %p
@@ -30,6 +30,13 @@
         %h4= t('.nm_title')
         %p
           = t('.nm_desc')
+
+    .game.row
+      .span2
+        = link_to "Play Now", games_ken_ken_path, class: 'btn awesome-button play-now'
+      .span4
+        %h4 KenKen&reg;
+        %p Play this sudoku like math game
 
 
 .row.games-footer

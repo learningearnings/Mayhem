@@ -11,9 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140325171816) do
-
-  add_extension "hstore"
+ActiveRecord::Schema.define(:version => 20141013142345) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -88,11 +86,12 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
     t.decimal  "starting_bid",    :precision => 10, :scale => 2
-    t.integer  "min_grade"
-    t.integer  "max_grade"
+    t.integer  "min_grade",                                      :default => 0
+    t.integer  "max_grade",                                      :default => 12
     t.boolean  "created_locally"
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
+    t.integer  "person_id"
   end
 
   create_table "avatars", :force => true do |t|
@@ -115,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.boolean  "processed"
   end
 
   create_table "ckeditor_assets", :force => true do |t|
@@ -195,6 +195,14 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.text     "answer"
     t.string   "person_type"
     t.integer  "place"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "districts", :force => true do |t|
+    t.string   "guid"
+    t.string   "name"
+    t.boolean  "alsde_study"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -354,8 +362,10 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.integer  "memory_usage_kb"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.integer  "school_id"
   end
 
+  add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
   add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
 
   create_table "local_reward_categories", :force => true do |t|
@@ -426,6 +436,21 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.datetime "updated_at",     :null => false
   end
 
+  create_table "otu_code_categories", :force => true do |t|
+    t.string   "name"
+    t.integer  "otu_code_type_id"
+    t.integer  "person_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "school_id"
+  end
+
+  create_table "otu_code_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "otu_codes", :force => true do |t|
     t.string   "code"
     t.integer  "person_school_link_id"
@@ -438,7 +463,7 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.integer  "otu_transaction_link_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
-    t.string   "reason"
+    t.integer  "otu_code_category_id"
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
@@ -470,7 +495,8 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.boolean  "game_challengeable",                                                    :default => false
     t.integer  "sti_id"
     t.string   "district_guid"
-    t.decimal  "first_month_amount_paid",               :precision => 20, :scale => 10
+    t.integer  "checking_account_id"
+    t.integer  "savings_account_id"
   end
 
   add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
@@ -549,8 +575,9 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.string   "name"
     t.string   "type"
     t.boolean  "contra"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.decimal  "cached_balance", :precision => 20, :scale => 10
   end
 
   add_index "plutus_accounts", ["name", "type"], :name => "index_plutus_accounts_on_name_and_type"
@@ -625,6 +652,17 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.integer "product_id"
   end
 
+  create_table "reward_templates", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.decimal  "price"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.string   "image_uid"
+  end
+
   create_table "school_filter_links", :force => true do |t|
     t.integer  "school_id"
     t.integer  "filter_id"
@@ -657,8 +695,8 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -669,6 +707,13 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
+    t.boolean  "can_revoke_credits",                :default => false
+    t.integer  "weekly_perfect_attendance_amount"
+    t.integer  "monthly_perfect_attendance_amount"
+    t.integer  "weekly_no_tardies_amount"
+    t.integer  "monthly_no_tardies_amount"
+    t.integer  "weekly_no_infractions_amount"
+    t.integer  "monthly_no_infractions_amount"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1342,10 +1387,15 @@ ActiveRecord::Schema.define(:version => 20140325171816) do
     t.string   "district_guid"
     t.string   "status"
     t.string   "sync_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "error"
     t.text     "backtrace"
+    t.text     "students_response"
+    t.text     "rosters_response"
+    t.text     "schools_response"
+    t.text     "sections_response"
+    t.text     "staff_response"
   end
 
   create_table "uploaded_users", :force => true do |t|

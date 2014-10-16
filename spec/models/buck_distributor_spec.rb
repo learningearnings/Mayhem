@@ -22,7 +22,7 @@ describe BuckDistributor do
       end
 
       it "should calculate the correct amount" do
-        expect(@buck_distributor.amount_for_school(@school)).to eq(1550)
+        expect(@buck_distributor.amount_for_school(@school)).to eq(2325)
       end
     end
 

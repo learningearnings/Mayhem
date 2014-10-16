@@ -52,42 +52,13 @@ describe School do
       assert_equal school.store_subdomain, "#{school.state.abbr}#{school.id}".downcase
     end
   end
-
-  describe "#distributing_teachers" do
-    subject{ FactoryGirl.create(:school) }
-    let(:school_admin){ FactoryGirl.create(:school_admin, status: 'active') }
-    let(:some_other_teacher){ FactoryGirl.create(:school_admin, status: 'active') }
-
-    before do
-      @person_school_link = FactoryGirl.create(:school_admin_school_link, person: school_admin, school: subject)
-      @some_other_person_school_link = FactoryGirl.create(:school_admin_school_link, person: some_other_teacher, school: subject)
-    end
-
-    it "lists school admins that can deliver rewards" do
-      RewardDistributor.create(:person_school_link_id => @some_other_person_school_link.id)
-      RewardDistributor.create(:person_school_link_id => @person_school_link.id)
-      subject.distributing_teachers.include?(school_admin).must_equal true
-    end
-
-    it "lists everyone if there are no RewardDistributor links" do
-      subject.distributing_teachers.include?(school_admin).must_equal true
-    end
-
-    it "doesn't list school admins that can't deliver rewards" do
-      # NOTE: This requires at least one reward distributor or else 'all
-      # teachers' can distribute rewards
-      RewardDistributor.create(:person_school_link_id => @some_other_person_school_link.id)
-      subject.distributing_teachers.include?(school_admin).must_equal false
-    end
-  end
-
   describe "#name_and_location" do
     let(:state){ FactoryGirl.create(:state, abbr: "BR") }
     let(:address){ FactoryGirl.create(:address, city: "Footown", state: state) }
     subject{ FactoryGirl.build(:school, address: address, name: "Schoolington", city: "Footown") }
 
     it "outputs the name and city and state" do
-      subject.name_and_location.must_equal "Schoolington, Footown, Al..."
+      subject.name_and_location.must_equal "Schoolington, Footown, Alabama"
     end
   end
 end

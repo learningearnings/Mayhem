@@ -5,12 +5,15 @@ class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
 
+  scope :active, where({people: {status: 'active'}})
+
   ## Only useful for the scopes below with_transactions...
   ## Don't use for anything else
   ## Need to get rid of spree_users anyway...
   ##
   has_one  :spree_user, :class_name => 'Spree::User'
 
+  has_many :auctions
   has_many :posts
   has_many :delayed_reports
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
@@ -22,7 +25,7 @@ class Person < ActiveRecord::Base
   has_many :plutus_transactions, :through => :plutus_amounts, :class_name => 'Plutus::Transaction', :source => :transaction
   has_many :allperson_school_links, :class_name => 'PersonSchoolLink'
   has_many :allschools, :class_name => 'School', :through => :allperson_school_links, :order => 'id desc', :source => :school
-  has_many :person_school_classroom_links
+  has_many :person_school_classroom_links, :through => :person_school_links
   has_many :person_buck_batch_links
   has_many :person_avatar_links, :autosave => :true, :order => 'created_at desc, id desc'
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
@@ -43,12 +46,13 @@ class Person < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type, :can_distribute_credits
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :district_guid, :sti_id, :as => :admin
   validates_presence_of :first_name, :last_name
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
+  scope :for_schools, lambda {|schools| joins(:person_school_links).where(:person_school_links => {:school_id => schools})}
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
     joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]])
@@ -60,13 +64,17 @@ class Person < ActiveRecord::Base
   scope :with_username, lambda{|username| joins(:spree_user).where("spree_users.username = ?", username) }
   scope :with_email,    lambda{|email| joins(:spree_user).where("spree_users.email = ?", email) }
   scope :recently_logged_in, lambda{ where('last_sign_in_at >= ?', (Time.now - 1.month)).joins(:user) }
+  scope :logged_in_between, lambda { |start_date, end_date| joins(:user).where('last_sign_in_at >= ? AND last_sign_in_at <= ?', start_date, end_date) }
   scope :recently_created, lambda { where(self.arel_table[:created_at].gt Time.now - 1.month) }
+  scope :created_between, lambda { |start_date, end_date| where(self.arel_table[:created_at].gteq(start_date)).where(self.arel_table[:created_at].lteq(end_date))}
+  scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
 
   before_save :ensure_spree_user
   after_destroy :delete_user
 
-  def name
-    "#{first_name} #{last_name}"
+  def otu_code_categories
+    arel_table = OtuCodeCategory.arel_table
+    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(school.id)))
   end
 
   def avatar
@@ -117,8 +125,8 @@ class Person < ActiveRecord::Base
     MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc'))
   end
 
-  def school(status = :status_active)
-    MacroReflectionRelationFacade.new(School.joins(:person_school_links).where(person_school_links: { id: person_school_links(status).map(&:id) }).send(status).order('created_at desc').limit(1))
+  def school status = :status_active
+    schools(status).first
   end
 
   def person_school_links(status = :status_active)
@@ -142,15 +150,18 @@ class Person < ActiveRecord::Base
 
   # Only return the classrooms for the given school
   def classrooms_for_school(school)
-    classrooms.select{|c| c.school == school}
+    classrooms.order(:name).select{|c| c.school == school}
   end
 
   def full_name
     self.first_name + ' ' + self.last_name
   end
 
-  def to_s
-    full_name
+  alias_method :name, :full_name
+  alias_method :to_s, :full_name
+  
+  def name_last_first
+    self.last_name + ', ' + self.first_name
   end
 
   def store_code
@@ -177,6 +188,14 @@ class Person < ActiveRecord::Base
 
   def orders
     user.orders
+  end
+
+  def assignable_classrooms_for_school(school)
+    if school.synced?
+      classrooms.not_synced
+    else
+      classrooms
+    end
   end
 
   def charities

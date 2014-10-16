@@ -10,11 +10,6 @@ ActiveAdmin.register SchoolAdmin do
       link_to 'Edit School Admin', edit_admin_school_admin_path(school_admin)
     end
   end
-  action_item do
-    if current_page?(:action => 'show') && !school_admin.district_guid.present?
-      link_to "Delete School Admin", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
-    end
-  end
 
   controller do
     def create
@@ -23,6 +18,10 @@ ActiveAdmin.register SchoolAdmin do
       end
     end
     def update
+      if params[:school_admin][:user_attributes][:password].blank?
+        params[:school_admin][:user_attributes].delete(:password)
+        params[:school_admin][:user_attributes].delete(:password_confirmation)
+      end
       update! do |format|
         format.html { redirect_to admin_school_admins_path }
       end

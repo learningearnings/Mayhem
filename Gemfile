@@ -13,7 +13,7 @@ gem 'rake', '~> 10.1.0'
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 gem 'pg_search'
-gem 'exceptional'
+gem 'airbrake'
 gem 'newrelic_rpm'
 gem 'transaction_retry'
 gem 'uuidtools'
@@ -133,9 +133,11 @@ gem 'unicorn'
 # gem 'debugger'
 
 group :development do
+  gem 'slack-notify'
+  gem 'quiet_assets'
   gem 'pry', '~> 0.9.10'
   gem 'unicorn'
-  #gem 'thin'
+  gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
   gem 'letter_opener'
   # Deploy with Capistrano
@@ -168,7 +170,7 @@ group :test do
   gem 'guard', '~> 1.2.3'
   gem 'guard-minitest', '~> 0.5.0'
   gem 'guard-spinach', '~> 0.0.2'
-  gem 'ffaker'
+  gem 'faker'
   gem 'spork-rails'
   gem 'timecop'
 end
@@ -180,7 +182,5 @@ gem 'factory_girl_rails'
 
 gem 'sanitizing_bigdecimal'
 gem 'httparty'
-
-gem 'oboe', '~> 2.4.0.1' # for tracelytics
 
 gem 'nokogiri', '~> 1.5.10'

@@ -10,29 +10,30 @@
       %dl.balance
         %dt Savings Balance
         %dd= number_with_precision(current_person.savings_balance, precision: 2, delimiter: ',')
-      = link_to "Enter Codes", "#enter-codes-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
+      = link_to "Deposit Printed Codes", "#enter-codes-modal", class: 'modal-button btn awesome-button', 'data-toggle' => 'modal'
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Savings History", "#savings-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
 
     .pending-credits
-      %h4 Pending Credits
+      %h4 e-Credits to Deposit
       %table.table.table-bordered.solid-background
         %thead
           %tr
             %th Source
             %th Date
+            %th Reason
             %th{ colspan: 99 } Amount
         %tbody
           - @unredeemed_bucks.each do |buck|
             %tr
               %td= buck.source_string
-              %td= buck.created_at.to_s(:db)
+              %td= buck.created_at.strftime("%m-%d-%Y %I:%M %P")
+              %td= buck.otu_code_category ? buck.otu_code_category.name : "N/A"
               %td= number_with_precision(buck.points, precision: 2, delimiter: ',')
-              %td= link_to("Claim Credits", redeem_buck_path(current_person.id, buck.code), class: 'btn awesome-button') rescue 'error because no buck code...'
+              %td= link_to("Deposit e-Credit", redeem_buck_path(current_person.id, buck.code), class: 'btn awesome-button') rescue 'error because no buck code...'
       .actions
-        = link_to "Enter Codes", "#enter-codes-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
 
   .secondary-content
     = render_reward_highlights(@products[0..3])
@@ -63,9 +64,13 @@
     .span6
       %dl.balance
         %dt Checking Balance
-        %dd= current_person.checking_balance
+        %dd= number_with_precision(current_person.checking_balance, :precision => 2)
       %dl.balance
         %dt Savings Balance
-        %dd= current_person.savings_balance
+        %dd= number_with_precision(current_person.savings_balance, :precision => 2)
 
 = javascript_include_tag 'transaction_pager'
+:javascript
+  $('#enter-codes-modal').on('shown.bs.modal', function() {
+    $('#code').focus();
+  });

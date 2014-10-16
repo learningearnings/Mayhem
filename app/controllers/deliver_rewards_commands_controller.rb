@@ -16,4 +16,9 @@ class DeliverRewardsCommandsController < LoggedInController
   def on_success
     redirect_to purchases_report_path(params)
   end
+
+  def undeliver
+    reward_delivery = RewardDelivery.find(params[:reward_delivery_id])
+    render :json => {success: reward_delivery.undeliver}
+  end
 end

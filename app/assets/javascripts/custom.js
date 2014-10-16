@@ -114,31 +114,33 @@ $(document).ready(function() {
           return;
       }
       if(window.location.href.indexOf(path_part) > -1) {
-	  $("." + nav_selector).toggleClass(nav_selector + "-selected");
+	  $("." + nav_selector).toggleClass("active");
           already_selected = 1;
       }
   }
 	// Primary Nav Selected
-  highlightNavigation('locker',  'locker');
-  highlightNavigation('charities', 'charities')
-  highlightNavigation('inbox',   'inbox');
-  highlightNavigation('bank',    'bank');
+  highlightNavigation('locker',        'locker');
+  highlightNavigation('charities',     'charities')
+  highlightNavigation('inbox',         'inbox');
+  highlightNavigation('bank',          'bank');
   highlightNavigation('classrooms',    'classrooms');
-  highlightNavigation('lounge',    'lounge');
-  highlightNavigation('play',    'play');
-  highlightNavigation('games',   'play');
-  highlightNavigation('rewards', 'rewards');
-  highlightNavigation('shop', 'shop');
-  highlightNavigation('restock', 'restock');
-  highlightNavigation('store',   'restock', 'le');
-  highlightNavigation('reports', 'reports');
-  highlightNavigation('store',   'rewards');
-  highlightNavigation('news',    'news');
-  highlightNavigation('how_it_works', 'how-it-works');
-  highlightNavigation('testimonials', 'testimonials');
+  highlightNavigation('lounge',        'lounge');
+  highlightNavigation('play',          'play');
+  highlightNavigation('games',         'play');
+  highlightNavigation('rewards',       'rewards');
+  highlightNavigation('shop',          'shop');
+  highlightNavigation('restock',       'restock');
+  highlightNavigation('store',         'restock', 'le');
+  highlightNavigation('reports',       'reports');
+  highlightNavigation('settings',      'settings');
+  highlightNavigation('store',         'rewards');
+  highlightNavigation('news',          'news');
+  highlightNavigation('how_it_works',  'how-it-works');
+  highlightNavigation('testimonials',  'testimonials');
   highlightNavigation('bulk_students', 'manage_students');
-  highlightNavigation('help', 'help');
-  highlightNavigation('',        'home');
+  highlightNavigation('bulk_teachers', 'manage_teachers');
+  highlightNavigation('',              'home');
+  highlightNavigation('help',          'help');
 
  //detect the width on page load
 $(document).ready(function(){

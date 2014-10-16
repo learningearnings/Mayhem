@@ -1,0 +1,150 @@
+%small-circle {
+  &.active, &:hover {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%medium-circle {
+  &.active, &:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%medium-circle2 {
+  &.active, &:hover {
+    background-image: url(asset_path('rewards_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%large-circle {
+  &.active, &:hover {
+    background-image: url(asset_path('how_it_works_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%large-circle2 {
+  &.active, &:hover {
+    background-image: url(asset_path('classrooms_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+$green: #25860b;
+$orange: #ea4e08;
+$fadedOrange: #EB731C;
+$purple: #B611B0;
+$darkBlue: #1f2870;
+$blue: #470bc1;
+$red: #ff2204;
+
+
+.primary-nav {
+  li a {
+    padding: 1em 1em 1em 1em;
+    font-size: 1.6em;
+  }
+
+  .home {
+    color: $green;
+    @extend %small-circle;
+  }
+
+  .how-it-works {
+    color: $orange;
+    @extend %large-circle;
+  }
+
+  .testimonials {
+    color: $purple;
+    @extend %large-circle;
+  }
+
+  .locker {
+    color: $darkBlue;
+    @extend %medium-circle;
+  }
+
+  .inbox {
+    color: $purple;
+    @extend %small-circle;
+  }
+
+  .inbox_with_count {
+    color: $purple;
+    @extend %medium-circle2;
+  }
+
+  .restock {
+    color: $fadedOrange;
+    @extend %medium-circle;
+  }
+
+  .manage_students {
+    color: $fadedOrange;
+    @extend %medium-circle;
+  }
+
+  .manage_teachers {
+    color: $green;
+    @extend %medium-circle2;
+  }
+
+  .help {
+    color: $red;
+    @extend %small-circle;
+  }
+
+  .bank {
+    color: $blue;
+    @extend %small-circle;
+  }
+
+  .play {
+    color: $fadedOrange;
+    @extend %small-circle;
+  }
+
+  .shop {
+    color: $purple;
+    @extend %small-circle;
+  }
+
+  .charities {
+    color: $blue;
+    @extend %medium-circle2;
+  }
+
+  .rewards {
+    color: $purple;
+    @extend %large-circle;
+  }
+
+  .reports {
+    color: $blue;
+    @extend %medium-circle;
+  }
+
+  .settings {
+    color: $orange;
+    @extend %medium-circle;
+  }
+
+  .classrooms {
+    color: $orange;
+    @extend %large-circle2;
+  }
+
+  .lounge {
+    color: $fadedOrange;
+    @extend %medium-circle;
+  }
+
+  .news {
+    color: $red;
+    @extend %small-circle;
+  }
+}

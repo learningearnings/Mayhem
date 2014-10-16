@@ -13,13 +13,14 @@ Spree::User.class_eval do
   after_save :set_recovery_password
 
   def self.authenticate_with_school_id(username,password,school_id)
-    return if username.blank? || password.blank? || school_id.blank?
+    return if username.blank? || password.blank?
     # Regular teacher or student
-    user = Spree::User.select("spree_users.*").
-      where("LOWER(spree_users.username) = ?", username.downcase).
-      joins(:person).merge(Person.status_active).
-      joins(:schools).merge(School.status_active).
-      where('schools.id = ?',school_id).first
+    # The select here is to fix a read only record issue.
+    # http://stackoverflow.com/questions/639171/what-is-causing-this-activerecordreadonlyrecord-error
+    user = Spree::User.select("spree_users.*").where("LOWER(spree_users.username) = ?", username.downcase)
+      .joins(person: {person_school_links: :school})
+      .where(person: {status: "active"}, schools: {status: "active"})
+      .where(person_school_links: {school_id: school_id, status: "active"}).first
 
     # LEAdmin user
     user = Spree::User.select("spree_users.*").
@@ -35,9 +36,9 @@ Spree::User.class_eval do
       client = STI::Client.new(:base_url => link_token.api_url, :username => username, :password => password)
       session_information = client.session_information
       return if session_information.response.code == "401"
-      sti_staff_id = session_information.parsed_response["StaffId"]
-      sti_person = Teacher.where(:district_guid => school.district_guid, :sti_id => sti_staff_id).first
-      sti_person = nil unless sti_person.schools.include?(school)
+      sti_user_id = (session_information.parsed_response["StaffId"] || session_information.parsed_response["StudentId"])
+      sti_person = Person.where(:district_guid => school.district_guid, :sti_id => sti_user_id).first
+      sti_person = nil unless sti_person.present? && sti_person.schools.include?(school)
       return if sti_person.nil?
       user = sti_person.user
       user.api_user = true
@@ -70,6 +71,6 @@ Spree::User.class_eval do
    end
 
    def password_required?
-     api_user? ? false : true
+     api_user? ? false : super
    end
 end
