@@ -18,7 +18,7 @@ module Mixins
     def create_ebucks
       params[:points] = sanitize_points(params[:points]) if params[:points]
       if params[:points].to_i < 0
-        if current_school.can_revoke_credits
+        if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           student = Student.find(params[:student][:id])
           CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points])
           flash[:notice] = "The points have been deducted from the student account."
@@ -41,6 +41,7 @@ module Mixins
         student = Student.find(params[:student][:id])
         reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
         issue_ebucks_to_student(student, params[:points],reason_id)
+        clear_balance_cache!
       else
         flash[:error] = "Please ensure a student is selected and an amount is entered."
         redirect_to main_app.teachers_bank_path
@@ -80,6 +81,7 @@ module Mixins
           if failed
             raise ActiveRecord::Rollback
           else
+            clear_balance_cache!
             on_success and return
           end
         end
@@ -93,7 +95,7 @@ module Mixins
 
     def create_ebucks_for_classroom
       if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
-        if current_school.can_revoke_credits
+        if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           params[:credits].delete_if do |k, v|
             if v.to_i < 0
               student = Student.find(k)
@@ -125,6 +127,7 @@ module Mixins
           if failed
             raise ActiveRecord::Rollback
           else
+            clear_balance_cache!
             on_success and return
           end
         end
@@ -142,6 +145,7 @@ module Mixins
         @to_teacher   = Person.find(params[:to_teacher_id])
         get_bank
         @bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:transfer_points])
+        clear_balance_cache!
       else
         flash[:error] = "Please choose a teacher for buck transfer.  Also ensure amount is a positive number."
         redirect_to main_app.teachers_bank_path

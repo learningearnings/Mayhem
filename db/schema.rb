@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140625184803) do
+ActiveRecord::Schema.define(:version => 20141013142345) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -86,11 +86,12 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
     t.decimal  "starting_bid",    :precision => 10, :scale => 2
-    t.integer  "min_grade"
-    t.integer  "max_grade"
+    t.integer  "min_grade",                                      :default => 0
+    t.integer  "max_grade",                                      :default => 12
     t.boolean  "created_locally"
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
+    t.integer  "person_id"
   end
 
   create_table "avatars", :force => true do |t|
@@ -187,6 +188,14 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.datetime "updated_at",   :null => false
     t.string   "name"
     t.string   "render_class"
+  end
+
+  create_table "districts", :force => true do |t|
+    t.string   "guid"
+    t.string   "name"
+    t.boolean  "alsde_study"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "filters", :force => true do |t|
@@ -336,6 +345,7 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.integer  "memory_usage_kb"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.integer  "school_id"
   end
 
   add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
@@ -476,8 +486,8 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.integer  "sti_id"
     t.boolean  "game_challengeable",                   :default => false
+    t.integer  "sti_id"
     t.string   "district_guid"
     t.integer  "checking_account_id"
     t.integer  "savings_account_id"
@@ -671,8 +681,8 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.decimal  "gmt_offset"
     t.string   "distribution_model"
     t.integer  "ad_profile"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.string   "store_subdomain"
     t.integer  "legacy_school_id"
     t.string   "address1"
@@ -683,7 +693,13 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.string   "sti_uuid"
     t.integer  "sti_id"
     t.string   "district_guid"
-    t.boolean  "can_revoke_credits", :default => false
+    t.boolean  "can_revoke_credits",                :default => false
+    t.integer  "weekly_perfect_attendance_amount"
+    t.integer  "monthly_perfect_attendance_amount"
+    t.integer  "weekly_no_tardies_amount"
+    t.integer  "monthly_no_tardies_amount"
+    t.integer  "weekly_no_infractions_amount"
+    t.integer  "monthly_no_infractions_amount"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1357,10 +1373,15 @@ ActiveRecord::Schema.define(:version => 20140625184803) do
     t.string   "district_guid"
     t.string   "status"
     t.string   "sync_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "error"
     t.text     "backtrace"
+    t.text     "students_response"
+    t.text     "rosters_response"
+    t.text     "schools_response"
+    t.text     "sections_response"
+    t.text     "staff_response"
   end
 
   create_table "uploaded_users", :force => true do |t|

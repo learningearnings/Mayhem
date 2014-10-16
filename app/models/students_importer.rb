@@ -1,8 +1,18 @@
 class StudentsImporter < BaseImporter
+  REQUIRED_HEADERS = ["First", "Last", "Gender", "Username", "Password"]
+
   protected
   def run
+    check_header(parsed_doc.headers)
     student_data.each do |datum|
       find_or_create_student(datum)
+    end
+  end
+
+  def check_header(headers)
+    err_msg = "Please provide the correct headers with the student spreadsheet"
+    REQUIRED_HEADERS.each do |h|
+      raise err_msg unless headers.include?(h)
     end
   end
 
@@ -36,18 +46,7 @@ class StudentsImporter < BaseImporter
         user.password = datum[:user][:password]
         user.save(validate: false)
         student.save
-       
-
-
-
-        
-        
-        
         p = PersonSchoolLink.create(:school_id => @school.id, :person_id => student.id)
-
-
-
-
       end
     rescue Exception => e
       warn "Got exception for #{datum.inspect} - #{e.inspect}"

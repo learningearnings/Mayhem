@@ -17,13 +17,13 @@ module ApplicationHelper
   end
 
   def current_school
-    School.find(session[:current_school_id])
+    @current_school ||= School.find(session[:current_school_id])
   end
 
   def current_school_name
     school = nil
-    if session && session[:current_school_id] && current_user
-      school = School.find(session[:current_school_id])
+    if current_school
+      school = current_school
     end
     if school.nil? && current_user
       school = current_user.person.schools.first
@@ -155,5 +155,14 @@ module ApplicationHelper
 
   def is_dragonfly_image?(source)
     source.inspect =~ /Dragonfly Attachment/ # oh god oh god
+  end
+
+  def classroom_delete_confirmation_message
+    reward_count = @classroom.classroom_product_links.count
+    if reward_count == 0
+      "Are you sure?"
+    else
+      "Are you sure? There are currently #{reward_count} reward(s) for this classroom."
+    end
   end
 end

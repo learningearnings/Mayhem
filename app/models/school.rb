@@ -27,7 +27,9 @@ class School < ActiveRecord::Base
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
-                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid
+                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid,
+                  :weekly_perfect_attendance_amount, :monthly_perfect_attendance_amount, :weekly_no_tardies_amount, :monthly_no_tardies_amount,
+                  :weekly_no_infractions_amount, :monthly_no_infractions_amount
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
@@ -45,6 +47,33 @@ class School < ActiveRecord::Base
   before_create :set_status_to_active
 
   scope :for_states, lambda {|states| joins(:addresses => :state).where("states.id" => Array(states).map(&:id) ) }
+  scope :has_automatic_credit_amounts, lambda {
+    where(arel_table[:weekly_perfect_attendance_amount].not_eq(nil).or(
+    arel_table[:monthly_perfect_attendance_amount].not_eq(nil)).or(
+    arel_table[:weekly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:monthly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:weekly_no_infractions_amount].not_eq(nil)).or(
+    arel_table[:monthly_no_infractions_amount].not_eq(nil)))
+  }
+  scope :has_weekly_automatic_credit_amounts, lambda {
+    where(arel_table[:weekly_perfect_attendance_amount].not_eq(nil).or(
+    arel_table[:weekly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:weekly_no_infractions_amount].not_eq(nil)))
+  }
+  scope :has_monthly_automatic_credit_amounts, lambda {
+    where(arel_table[:monthly_perfect_attendance_amount].not_eq(nil).or(
+    arel_table[:monthly_no_tardies_amount].not_eq(nil)).or(
+    arel_table[:monthly_no_infractions_amount].not_eq(nil)))
+  }
+  scope :inow_schools, lambda { where(arel_table[:district_guid].not_eq(nil)) }
+
+  def is_inow?
+    !!district_guid
+  end
+
+  def is_inow?
+    !!district_guid
+  end
 
   def set_status_to_active
     self.status = 'active' # Students should default to active
@@ -86,7 +115,11 @@ class School < ActiveRecord::Base
   end
 
   def grades
-    self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+    @grades ||= self.grade_range.collect do |g| [g,School::GRADE_NAMES[g]] end
+  end
+
+  def grades_name_first
+    @grades_name_first ||= self.grade_range.collect do |g| [School::GRADE_NAMES[g], g] end
   end
 
   def self.grade_range
@@ -167,6 +200,10 @@ class School < ActiveRecord::Base
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
     @distributing_teachers = self.teachers if @distributing_teachers.blank?
     @distributing_teachers.compact
+  end
+
+  def synced?
+    district_guid.present? && sti_id.present?
   end
 
   private

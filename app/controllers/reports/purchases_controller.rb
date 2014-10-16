@@ -19,11 +19,26 @@ module Reports
     def refund_purchase
       reward_delivery = RewardDelivery.find(params[:reward_delivery_id])
       if reward_delivery.refund_purchase
-        flash[:notice] = "Successfully refunded purchase"
+        respond_to do |format|
+          format.html {
+            flash[:notice] = "Successfully refunded purchase"
+            redirect_to purchases_report_path
+          }
+          format.json {
+            render json: { status: 200, notice: 'Successfully refunded purchase'}
+          }
+        end
       else
-        flash[:alert] = "Could not refund the purchase you selected"
+        respond_to do |format|
+          format.html {
+            flash[:alert] = "Could not refund the purchase you selected"
+            redirect_to purchases_report_path
+          }
+          format.json {
+            render json: { status: 422, notice: "Could not refund the purchase you selected"}
+          }
+        end
       end
-      redirect_to purchases_report_path
     end
 
   end

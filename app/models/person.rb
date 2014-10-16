@@ -5,12 +5,15 @@ class Person < ActiveRecord::Base
   include BasicStatuses
   has_one  :user, :class_name => Spree::User, :autosave => true
 
+  scope :active, where({people: {status: 'active'}})
+
   ## Only useful for the scopes below with_transactions...
   ## Don't use for anything else
   ## Need to get rid of spree_users anyway...
   ##
   has_one  :spree_user, :class_name => 'Spree::User'
 
+  has_many :auctions
   has_many :posts
   has_many :delayed_reports
   has_many :sent_messages, class_name: "Message", foreign_key: "from_id"
@@ -43,7 +46,7 @@ class Person < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type, :can_distribute_credits
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :district_guid, :sti_id, :as => :admin
   validates_presence_of :first_name, :last_name
 
@@ -147,7 +150,7 @@ class Person < ActiveRecord::Base
 
   # Only return the classrooms for the given school
   def classrooms_for_school(school)
-    classrooms.select{|c| c.school == school}
+    classrooms.order(:name).select{|c| c.school == school}
   end
 
   def full_name
@@ -156,6 +159,10 @@ class Person < ActiveRecord::Base
 
   alias_method :name, :full_name
   alias_method :to_s, :full_name
+  
+  def name_last_first
+    self.last_name + ', ' + self.first_name
+  end
 
   def store_code
     nil
@@ -181,6 +188,14 @@ class Person < ActiveRecord::Base
 
   def orders
     user.orders
+  end
+
+  def assignable_classrooms_for_school(school)
+    if school.synced?
+      classrooms.not_synced
+    else
+      classrooms
+    end
   end
 
   def charities

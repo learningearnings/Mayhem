@@ -1,3 +1,5 @@
+= javascript_include_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
+= stylesheet_link_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
 .main-content-wrapper
   .primary-content-fw
 
@@ -21,7 +23,7 @@
             .filter-dates
               = f.input :teachers_name_option, :label => "Teachers Name Options", :collection => report_params.teacher_name_options, :include_blank => false
             %br/
-          = f.submit 'Run Report', :class => 'awesome-button'
+          = f.submit 'Run Report', :class => 'awesome-button', :id => "run_report_button"
           = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
 
       .report
@@ -53,10 +55,18 @@
                   %td= row["purchased"]
                   %td= row["reward"]
                   %td= row["quantity"]
-                  %td= row["status"]
+                  %td
+                    - if row["status"] == "Delivered"
+                      = row["status"]
+                      %br/
+                      (
+                      = link_to_function 'undo', "undeliverReward($(this), #{row['reward_delivery_id']})"
+                      )
+                    - else
+                      = row["status"]
                   %td
                     - if row["delivery_status"] == 'pending'
-                      = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
+                      = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button refund"
                   %td
                     - if row["delivery_status"] == 'pending'
                       - enable_mark_button = true
@@ -72,7 +82,7 @@
           - if enable_mark_button
             %br/
             = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
-    - else 
+    - else
       .message.center-content
         = image_tag "loading.gif"
         %h3 Your purchase report is currently processing, it will show up here when it is completed.
@@ -107,6 +117,20 @@
       "aaSorting": sort
     } );
 
+    $('.refund').click(function(e) {
+      e.preventDefault();
+
+      $.ajax(e.currentTarget.href, {
+        dataType: "JSON",
+      }).always(function(data) {
+        if (data.status == "200") {
+          $(e.currentTarget).closest('tr').remove()
+        }
+        alert(data.notice);
+      });
+
+    });
+
     $('#report_table').on('sort.DT', function(e,d) {
       $.cookie('purchases_report_order', JSON.stringify(d.aaSorting));
     });
@@ -131,5 +155,21 @@
           });
         });
       }
+    }
+
+    function undeliverReward(element, reward_delivery_id) {
+      $.ajax({
+        type: "POST",
+        url: "#{undeliver_reward_path}",
+        data: {reward_delivery_id: reward_delivery_id},
+        success: function(response) {
+          if(response.success) {
+            alert("The reward was undelivered.");
+            $("#run_report_button").click();
+          } else {
+            alert("There was a problem undelivering the reward.");
+          }
+        }
+      })
     }
   </script>
