@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school
-    @current_school ||= School.find(session[:current_school_id])
+    @current_school ||= School.find(session[:current_school_id]) if session[:current_school_id]
   end
 
   def after_sign_out_path_for(resource_or_scope)
@@ -122,9 +122,8 @@ class ApplicationController < ActionController::Base
   def track_interaction
     start_time = Time.now
     interaction = Interaction.new ip_address: request.ip
-    if current_person
-      interaction.person = current_person
-    end
+    interaction.person = current_person if current_person
+    interaction.school_id = session[:current_school_id]
     yield
     end_time = Time.now
     interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
