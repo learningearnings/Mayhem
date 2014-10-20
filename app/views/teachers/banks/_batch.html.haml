@@ -9,6 +9,12 @@
 - plural_buck_image_html = image_path(plural_buck_image_base)
 - plural_buck_image = params[:format] == 'pdf' ? plural_buck_image_pdf : plural_buck_image_html
 
+- school = batch.otu_codes.first.school
+- default_credit_logo = Rails.root.join('app', 'assets', 'images', 'default_credit_logo.png')
+- logo_image_pdf = school.logo.present? ? school.logo.thumb('100x100').path : default_credit_logo
+- logo_image_html = image_path(logo_image_pdf)
+- logo_image = params[:format] == 'pdf' ? logo_image_pdf : logo_image_html
+
 - font_url_pdf = Rails.root.join('public', 'SketchRockwell-Bold.ttf')
 - font_url_html = "/SketchRockwell-Bold.ttf"
 - font_url = params[:format] == "pdf" ? font_url_pdf : font_url_html
@@ -33,6 +39,12 @@
       display: inline-block
       width: 300px
       margin-right: 10px
+      .logo
+        max-width: 150px
+        position: absolute
+        bottom: 10px
+        left: 10%
+        right: 90%
       .background-image
         width: 100%
       .code
@@ -71,6 +83,7 @@
     - code_group.each do |otu_code|
       .buck
         %img.background-image{ src: otu_code.points > 1 ? plural_buck_image : single_buck_image }
+          %img.logo{src: logo_image }
           .code= otu_code.code
           .amount{class: otu_code.points > 1 ? "double_digit_amount" : "single_digit_amount" }= otu_code.points.to_i
           .expires= otu_code.expires_at.to_date.strftime("%m-%d-%Y")
