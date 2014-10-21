@@ -12,7 +12,7 @@
 - school = batch.otu_codes.first.school
 - default_credit_logo = Rails.root.join('app', 'assets', 'images', 'default_credit_logo.png')
 - logo_image_pdf = school.logo.present? ? school.logo.thumb('100x100').path : default_credit_logo
-- logo_image_html = image_path(logo_image_pdf)
+- logo_image_html = school.logo.present? ? image_path(school.logo.thumb('100x100').url) : image_path('default_credit_logo.png')
 - logo_image = params[:format] == 'pdf' ? logo_image_pdf : logo_image_html
 
 - font_url_pdf = Rails.root.join('public', 'SketchRockwell-Bold.ttf')
@@ -27,14 +27,15 @@
   }
 %style{type: 'text/css'}
   :sass
-    body
+    .container
       margin: 0mm
       padding: 0mm
-      font-size: 70%
       width: 945px
     .break
       page-break-after: always
     .buck
+      line-height: 1
+      font-size: 70%
       position: relative
       display: inline-block
       width: 300px
@@ -77,13 +78,14 @@
         font-family: SketchRockwell
         color: #C04814
 
-.bucks
-  - batch.otu_codes.in_groups_of(18,false) do |code_group|
-    .break
-    - code_group.each do |otu_code|
-      .buck
-        %img.background-image{ src: otu_code.points > 1 ? plural_buck_image : single_buck_image }
-          %img.logo{src: logo_image }
-          .code= otu_code.code
-          .amount{class: otu_code.points > 1 ? "double_digit_amount" : "single_digit_amount" }= otu_code.points.to_i
-          .expires= otu_code.expires_at.to_date.strftime("%m-%d-%Y")
+.container
+  .bucks
+    - batch.otu_codes.in_groups_of(18,false) do |code_group|
+      .break
+      - code_group.each do |otu_code|
+        .buck
+          %img.background-image{ src: otu_code.points > 1 ? plural_buck_image : single_buck_image }
+            %img.logo{src: logo_image }
+            .code= otu_code.code
+            .amount{class: otu_code.points > 1 ? "double_digit_amount" : "single_digit_amount" }= otu_code.points.to_i
+            .expires= otu_code.expires_at.to_date.strftime("%m-%d-%Y")

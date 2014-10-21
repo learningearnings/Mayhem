@@ -10,6 +10,14 @@
     = f.input :state_id, :as => :select, :collection => State.all
     = f.input :zip
     = f.input :logo, :as => :file
+    - if @school.logo.present?
+      %li.optional.input
+        %label.label Logo Preview
+        = image_tag @school.logo.thumb('100x100#').url
+      %li.optional.input
+        %label.label Printed Credit Preview
+        - batch = OpenStruct.new(otu_codes: [OpenStruct.new(code: "Test", points: 10, expires_at: Time.current, school: @school)])
+        = render partial: "teachers/banks/batch", locals: { batch: batch }
     = f.input :store_subdomain, :input_html => {:disabled => true}
     = f.input :mascot_name
     = f.input :school_demo
