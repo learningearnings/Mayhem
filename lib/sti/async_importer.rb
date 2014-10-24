@@ -21,25 +21,30 @@ module STI
     def run!
       district = District.where(district_guid: @district_guid).first
 
+
       ##### Update Schools ######
       sti_schools = client.schools.parsed_response
       school_synchronizer = STI::Synchronizers::SchoolSynchronizer.new(sti_schools, @district_guid)
       school_synchronizer.execute!
 
       ##### Update Staff #####
-      staff_synchronizer = STI::Synchronizers::StaffSynchronizer.new(client.async_staff(district.current_staff_version).parsed_response, @district_guid)
+      staff_response = client.async_staff(district.current_staff_version).parsed_response
+      staff_synchronizer = STI::Synchronizers::StaffSynchronizer.new(staff_response, @district_guid)
       staff_synchronizer.execute!
 
       ##### Update Classrooms #####
-      classroom_synchronizer = STI::Synchronizers::ClassroomSynchronizer.new(client.async_sections.parsed_response(district.current_section_version), @district_guid)
+      section_response = client.async_sections(district.current_section_version).parsed_response
+      classroom_synchronizer = STI::Synchronizers::ClassroomSynchronizer.new(section_response, @district_guid)
       classroom_synchronizer.execute!
 
       ##### Update Students #####
-      student_synchronizer = STI::Synchronizers::StudentSynchronizer.new(client.async_students.parsed_response(district.current_student_version), @district_guid)
+      student_response = client.async_students(district.current_student_version).parsed_response
+      student_synchronizer = STI::Synchronizers::StudentSynchronizer.new(student_response, @district_guid)
       student_synchronizer.execute!
 
       ##### Update Rosters #####
-      roster_synchronizer = STI::Synchronizers::RosterSynchronizer.new(client.async_rosters.parsed_response(district.current_roster_version), @district_guid)
+      roster_response = client.async_rosters(district.current_roster_version).parsed_response
+      roster_synchronizer = STI::Synchronizers::RosterSynchronizer.new(roster_response, @district_guid)
       roster_synchronizer.execute!
 
       ##### Update API #####
