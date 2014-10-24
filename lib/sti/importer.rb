@@ -33,7 +33,7 @@ module STI
         @imported_schools << school
       end
 
-      sti_staff = client.staff.parsed_response
+      sti_staff = client.async_staff.parsed_response["Rows"]
       current_staff_for_district = Person.where(:district_guid => @district_guid).pluck(:sti_id)
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
       # Persons in our system that weren't in their api need to be deactivated
@@ -65,7 +65,7 @@ module STI
       end
 
       # Loop through classrooms and sync in much the same way as above
-      sti_classrooms = client.sections.parsed_response
+      sti_classrooms = client.async_sections.parsed_response["Rows"]
       current_classrooms_for_district = Classroom.where(district_guid: @district_guid).pluck(:sti_id)
       sti_classroom_ids = sti_classrooms.map {|classroom| classroom["Id"]}
       (current_classrooms_for_district - sti_classroom_ids).each do |sti_classroom_id|
@@ -89,7 +89,7 @@ module STI
       psls.update_all(status: "inactive")
 
       # Activate/Create students that we pull from STI
-      client.students.parsed_response.each do |api_student|
+      client.async_students.parsed_response["Rows"].each do |api_student|
         begin
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
           student.update_attributes(api_student_mapping(api_student), as: :admin)
@@ -114,7 +114,7 @@ module STI
       #  Output of hash should be {student_id: [classroom_id, classroom_id]}
       students_hash = {}
       students_hash.default = []
-      client.rosters.parsed_response.each do |entry|
+      client.async_rosters.parsed_response["Rows"].each do |entry|
         # An entry currently looks like this {"SectionId" => 1000, "StudentId" => 1208}
         students_hash[entry["StudentId"]] = students_hash[entry["StudentId"]] + [entry["SectionId"]]
       end

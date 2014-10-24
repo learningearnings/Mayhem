@@ -1,11 +1,6 @@
 module STI
   module Synchronizers
-    class SchoolSynchronizer
-      def initialize(data, district_guid)
-        @data = data
-        @district_guid = district_guid
-      end
-
+    class SchoolSynchronizer < BaseSynchronizer
       def execute!
         current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
         sti_school_ids = @data.map {|school| school["Id"]}

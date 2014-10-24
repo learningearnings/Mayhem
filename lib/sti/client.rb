@@ -58,30 +58,29 @@ module STI
       self.class.get("#{base_url}le/students", :headers => authorized_headers)
     end
 
-    # Async api
-    def async_rosters(version=nil)
-      url = "#{base_url}le/sync/rosters"
+    ##### Async api #####
+    def async_request(endpoint, version=nil)
+      url = "#{base_url}le/sync/#{endpoint}"
       url += "/#{version}" if version
-      self.class.get(url, :headers => authorized_headers)
+      self.class.get(url, headers: authorized_headers)
+    end
+
+    def async_rosters(version=nil)
+      async_request("rosters", version)
     end
 
     def async_sections(version=nil)
-      url = "#{base_url}le/sync/sections"
-      url += "/#{version}" if version
-      self.class.get(url, :headers => authorized_headers)
+      async_request("sections", version)
     end
 
     def async_staff(version=nil)
-      url = "#{base_url}le/sync/staff"
-      url += "/#{version}" if version
-      self.class.get(url, :headers => authorized_headers)
+      async_request("staff", version)
     end
 
     def async_students(version=nil)
-      url = "#{base_url}le/sync/students"
-      url += "/#{version}" if version
-      self.class.get(url, :headers => authorized_headers)
+      async_request("students", version)
     end
+    ##### End Async api #####
 
     def set_school_synced school_id, status = true
       options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
