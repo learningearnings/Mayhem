@@ -3,6 +3,10 @@ module STI
   class Client
     attr_accessor :session_token, :base_url, :username, :password
 
+    include HTTParty
+
+    format :json
+
     def initialize options={}
       @base_url = options.fetch(:base_url, "http://sandbox.sti-k12.com/learningearnings/api/")
       @username = options.fetch(:username, ENV["STI_USERNAME"])
@@ -10,7 +14,7 @@ module STI
     end
 
     def get_session_token
-      response = HTTParty.get("#{base_url}token", :basic_auth => authentication_hash)
+      response = self.class.get("#{base_url}token", :basic_auth => authentication_hash)
       @session_token = response["access_token"]
     end
 
@@ -31,32 +35,56 @@ module STI
     end
 
     def session_information
-      HTTParty.get("#{base_url}users/me", :headers => authorized_headers)
+      self.class.get("#{base_url}users/me", :headers => authorized_headers)
     end
 
     def rosters
-      HTTParty.get("#{base_url}le/rosters", :headers => authorized_headers)
+      self.class.get("#{base_url}le/rosters", :headers => authorized_headers)
     end
 
     def schools
-      HTTParty.get("#{base_url}le/schools", :headers => authorized_headers)
+      self.class.get("#{base_url}le/schools", :headers => authorized_headers)
     end
 
     def sections
-      HTTParty.get("#{base_url}le/sections", :headers => authorized_headers)
+      self.class.get("#{base_url}le/sections", :headers => authorized_headers)
     end
 
     def staff
-      HTTParty.get("#{base_url}le/staff", :headers => authorized_headers)
+      self.class.get("#{base_url}le/staff", :headers => authorized_headers)
     end
 
     def students
-      HTTParty.get("#{base_url}le/students", :headers => authorized_headers)
+      self.class.get("#{base_url}le/students", :headers => authorized_headers)
     end
+
+    ##### Async api #####
+    def async_request(endpoint, version=nil)
+      url = "#{base_url}le/sync/#{endpoint}"
+      url += "/#{version}" if version
+      self.class.get(url, headers: authorized_headers)
+    end
+
+    def async_rosters(version=nil)
+      async_request("rosters", version)
+    end
+
+    def async_sections(version=nil)
+      async_request("sections", version)
+    end
+
+    def async_staff(version=nil)
+      async_request("staff", version)
+    end
+
+    def async_students(version=nil)
+      async_request("students", version)
+    end
+    ##### End Async api #####
 
     def set_school_synced school_id, status = true
       options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
-      HTTParty.put("#{base_url}le/schools/#{school_id}", options)
+      self.class.put("#{base_url}le/schools/#{school_id}", options)
     end
 
     def link_status link_key
@@ -65,7 +93,7 @@ module STI
       else
         url = "#{base_url}le/linkstatus"
       end
-      HTTParty.get(url, :headers => authorized_headers)
+      self.class.get(url, :headers => authorized_headers)
     end
 
     private
@@ -78,7 +106,7 @@ module STI
     end
 
     def attendance_request method, sti_school_id, start_date, end_date
-      HTTParty.get("#{base_url}le/#{method}/#{sti_school_id}?startdate=#{start_date}&enddate=#{end_date}", :headers => authorized_headers).parsed_response
+      self.class.get("#{base_url}le/#{method}/#{sti_school_id}?startdate=#{start_date}&enddate=#{end_date}", :headers => authorized_headers).parsed_response
     end
   end
 end
