@@ -1,10 +1,10 @@
-= paginate amounts, :window => 2
+= paginate amounts, :window => 2, :remote => true
 
 %table.table.table-bordered
   %thead
     %tr
       %th.source Source
-      %th.name 
+      %th.name
       %th.date Date
       %th.amount Amount
   - amounts.each do |amount|
