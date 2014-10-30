@@ -40,8 +40,8 @@
           = f.select :max_grade, current_school.grades.map(&:reverse), { include_blank: true }, { class: 'input-medium' }
 
   .control-row
-  = f.input :spree_product_id, :as => :hidden
-  = f.submit :class => 'btn awesome-button'
+    = f.input :spree_product_id, :as => :hidden
+    = f.submit :class => 'btn awesome-button'
 
 :coffeescript
   jQuery ->
