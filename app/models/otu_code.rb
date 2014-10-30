@@ -71,8 +71,9 @@ class OtuCode < ActiveRecord::Base
   end
 
   def mark_redeemed!
+    # Don't run validations, because legacy codes are not unique.
     self.active = false
     self.redeemed_at = Time.zone.now
-    self.save
+    self.save(validate: false)
   end
 end
