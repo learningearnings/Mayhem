@@ -20,18 +20,15 @@ class BanksController < LoggedInController
       redirect_to bank_path and return
     end
 
-    otu_code = OtuCode.find_by_code(params[:code].upcase) if params[:code]
+    otu_code = current_person.otu_codes.where(code: params[:code].upcase) if params[:code]
     if otu_code.present?
       if otu_code.active? && !otu_code.expired?
         @bank = Bank.new
         @bank.claim_bucks(person, otu_code)
         flash[:notice] = 'Credits claimed!'
         person.code_entry_failures.destroy_all
-      elsif otu_code.student.present? && otu_code.student == current_person
+      else
         flash[:error] = 'You already deposited this credit into your account.'
-        person.code_entry_failures.create
-      elsif otu_code.student.present?
-        flash[:error] = 'This credit was deposited by another user already'
         person.code_entry_failures.create
       end
     else
