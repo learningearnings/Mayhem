@@ -1,0 +1,1 @@
+$('#savings-history').html('#{escape_javascript render(partial: 'banks/savings_ledger_table', locals: { amounts: @recent_savings_amounts})}');

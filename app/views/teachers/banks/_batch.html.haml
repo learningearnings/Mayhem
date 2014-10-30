@@ -15,16 +15,7 @@
 - logo_image_html = school.logo.present? ? image_path(school.logo.thumb('100x100').url) : image_path('default_credit_logo.png')
 - logo_image = params[:format] == 'pdf' ? logo_image_pdf : logo_image_html
 
-- font_url_pdf = Rails.root.join('public', 'SketchRockwell-Bold.ttf')
-- font_url_html = "/SketchRockwell-Bold.ttf"
-- font_url = params[:format] == "pdf" ? font_url_pdf : font_url_html
-
 %meta{'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
-:css
-  @font-face {
-    font-family: 'SketchRockwell';
-    src: url('#{font_url}') format('truetype');
-  }
 %style{type: 'text/css'}
   :sass
     .container
@@ -55,14 +46,14 @@
         top: 52%
         left: 55%
         font-size: 2em
-        font-family: SketchRockwell
+        font-family: Arial
         color: #EE5B1A
       .amount
         width: 5%
         text-align: center
         position: absolute
         font-size: 3.5em
-        font-family: SketchRockwell
+        font-family: Arial
       .double_digit_amount
         top: 19%
         left: 24%
@@ -75,7 +66,7 @@
         top: 81%
         left: 58%
         font-size: 2.1em
-        font-family: SketchRockwell
+        font-family: Arial
         color: #EE5B1A
 
 .container

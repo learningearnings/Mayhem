@@ -44,11 +44,11 @@
             - report_data = JSON.parse(report.report_data)
             - report_data.each do |row|
               %tr
-                %td= row["student"]
+                %td= link_to(row["student"], "#history-modal", class: 'history-action', 'data-id' => row["id"], 'data-name' => row["student"], 'data-toggle' => 'modal')
                 %td= row["username"]
                 %td= row["checking_balance"]
                 %td= row["savings_balance"]
-    - else 
+    - else
       .message.center-content
         = image_tag "loading.gif"
         %h3 Your student credit history report is currently processing, it will show up here when it is completed.
@@ -68,10 +68,52 @@
         function loadReport() {
           location.reload();
         }
+
+#history-modal.modal.hide
+  .modal-header
+    %h3.title
+  %ul.nav.nav-tabs
+    %li.active
+      %a{"href" => "#checking-history", "data-toggle" => "tab"} Checking History
+    %li
+      %a{"href" => "#savings-history", "data-toggle" => "tab"} Savings History
+
+  .tab-content
+    #checking-history.tab-pane.active
+      Loading Checking History...
+
+    #savings-history.tab-pane
+      Loading Savings History...
+
 :javascript
-  $(document).ready( function () {
-    $('#report_table').dataTable( {
+  $(document).ready(function () {
+    $('#report_table').dataTable({
       "bPaginate": false,
       "bInfo": false
-    } );
-  } );
+    });
+
+    // On click of student name, we will setup spinners
+    //  and load checkings/savings data to return to the
+    //  modal.
+    $('.history-action').click(function(e) {
+      var el = $(e.currentTarget);
+      // Set title for modal
+      $('#history-modal .title').html("Student: " + el.data("name"));
+
+      // Get Checking History
+      $.get('/reports/student_credit_history/checking_transactions/'+el.data('id'), function(data) {
+        $("#checking-history").html(data);
+      });
+
+      // Get Savings History
+      $.get('/reports/student_credit_history/savings_transactions/'+el.data('id'), function(data) {
+        $("#savings-history").html(data);
+      });
+    });
+
+    // On hide of modal, we need to clear out the student's data
+    $('#history-modal').on('hidden', function() {
+      $('#checking-history').html("Loading Checking History...");
+      $('#savings-history').html("Loading Savings History...");
+    });
+  });

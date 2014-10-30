@@ -74,6 +74,7 @@ module Reports
 
     def generate_row(student)
       {
+        id:        student.id,
         grade:     student.grade,
         student:   student.name,
         username:  student.user.username,
