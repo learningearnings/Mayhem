@@ -20,7 +20,7 @@ class BanksController < LoggedInController
       redirect_to bank_path and return
     end
 
-    otu_code = current_person.otu_codes.where(code: params[:code].upcase) if params[:code]
+    otu_code = current_person.otu_codes.where(code: params[:code].upcase).first if params[:code]
     if otu_code.present?
       if otu_code.active? && !otu_code.expired?
         @bank = Bank.new
