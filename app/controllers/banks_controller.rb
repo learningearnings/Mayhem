@@ -20,7 +20,8 @@ class BanksController < LoggedInController
       redirect_to bank_path and return
     end
 
-    otu_code = current_person.otu_codes.where(code: params[:code].upcase).first if params[:code]
+    # scoping by student_id of [id, nil] is because ecredits have an id associated, but printed credits don't
+    otu_code = OtuCode.where(code: params[:code].upcase, student_id: [person.id, nil], redeemed_at: nil).first if params[:code]
     if otu_code.present?
       if otu_code.active? && !otu_code.expired?
         @bank = Bank.new
