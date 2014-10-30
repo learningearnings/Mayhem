@@ -23,7 +23,7 @@ ActiveAdmin.register School do
   index do
     column :id
     column :avatar do |school|
-      image_tag(school.logo.thumb('100x75!').url) if school.logo
+      image_tag(school.logo.thumb('100x100#').url) if school.logo
     end
     column :name do |school|
       link_to(school.name, admin_school_path(school))
