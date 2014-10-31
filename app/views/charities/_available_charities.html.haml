@@ -1,0 +1,5 @@
+.charities-row
+  = paginate available_charities, param_name: "available_charities_page"
+  %ul.products.inline.products-listing
+    - available_charities.each do |charity|
+      = render 'available_item', charity: charity
