@@ -1,11 +1,10 @@
 .main-content-wrapper
   .full-content
     %h2 Your Rewards
-    %p.note NOTE: To deactivate a reward, just set its quantity to 0 and it won't show up in the store.
     %ul.action_buttons
       %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "btn awesome-button"
-    = paginate @teachers_rewards, :window => 2
     .resp-product
+      = paginate @teachers_rewards, :window => 2
       .resp-product-row
         - if @teachers_rewards.any?
           - @teachers_rewards.in_groups_of(2) do |grp|

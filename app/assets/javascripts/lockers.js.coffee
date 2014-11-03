@@ -48,6 +48,7 @@ $ ->
         # have to refresh
         link_id = data.id
         locker = $('.locker_wrapper.editable')
+        ich.grabTemplates()
         sticker_div = ich["sticker_template"](
           x: x
           y: y

@@ -39,6 +39,7 @@
 
 :coffeescript
   insertNewTeacherRow = (options) ->
+    ich.grabTemplates()
     row = ich['teacher_row'](options)
     $('.grade', row).val(options.grade)
     $('.gender', row).val(options.gender)
