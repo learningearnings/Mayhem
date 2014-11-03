@@ -20,5 +20,11 @@
       %br/
       5. Reports and Best Practices
     %br/
+    %h3 New Features
+    %p
+      %ul
+        - @features.each do |feature|
+          %li= feature.description
+    %br/
     %h3 Need help?
     = link_to 'Send Message', teachers_leadmin_message_path, :class => 'btn awesome-button'
