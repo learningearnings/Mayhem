@@ -22,8 +22,8 @@ class Schools::SettingsController < SchoolAdmins::BaseController
   # TODO: Refactor
   def update_setting
     value = params["value"] == "true" ? true : false
-    person = Person.find(params["person-id"])
-    person_school_link = person.person_school_links.where(school_id: current_school.id).first
+    person = Person.includes(:person_school_links).find(params["person-id"])
+    person_school_link = PersonSchoolLink.where(person_id: current_person.id, school_id: current_school.id).first
     if params["setting"] == "can_distribute_credits"
       person.update_attribute(:can_distribute_credits, value)
     elsif params["setting"] == "can_distribute_rewards"
