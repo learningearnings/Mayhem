@@ -8,6 +8,10 @@ module ApplicationHelper
     end
   end
 
+  def current_person_school_link
+    current_person.person_school_links.where(school_id: current_school.id).first
+  end
+
   def active_if(visitor_type)
     # We don't set visitor_type for students, but we want the helper to be sensible
     visitor_type = '' if visitor_type == 'student'

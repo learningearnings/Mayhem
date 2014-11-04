@@ -19,29 +19,26 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     redirect_to school_settings_path
   end
 
-  def toggle_distributor
-    reward_teachers = Teacher.find(params[:reward_teachers]) if params[:reward_teachers]
-    credit_teachers = Teacher.find(params[:credit_teachers]) if params[:credit_teachers]
-    if reward_teachers.present?
-      reward_teachers.each do |teacher|
-        psl = teacher.person_school_links.where(:school_id => current_school.id).first
-        if teacher.can_distribute_rewards? current_school
-          RewardDistributor.where(:person_school_link_id => psl.id).delete_all
-        else
-          rd = RewardDistributor.create(:person_school_link_id => psl.id)
-        end
+  # TODO: Refactor
+  def update_setting
+    value = params["value"] == "true" ? true : false
+    person = Person.find(params["person-id"])
+    person_school_link = person.person_school_links.where(school_id: current_school.id).first
+    if params["setting"] == "can_distribute_credits"
+      person.update_attribute(:can_distribute_credits, value)
+    elsif params["setting"] == "can_distribute_rewards"
+      if value
+        RewardDistributor.create(person_school_link_id: person_school_link.id)
+      else
+        RewardDistributor.where(person_school_link_id: person_school_link.id).delete_all
       end
+    elsif params["setting"] == "ignore_teacher"
+      person_school_link.update_attribute(:ignore, value)
+    else
+      # Handle Failure
     end
-    if credit_teachers.present?
-      credit_teachers.each do |teacher|
-        if teacher.can_distribute_credits
-          teacher.update_attribute(:can_distribute_credits, false)
-        else
-          teacher.update_attribute(:can_distribute_credits, true)
-        end
-      end
-    end
-    redirect_to :back
+
+    render json: { status: 200 }
   end
 
   def import_teachers
@@ -62,7 +59,7 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     @distributing_teachers = current_school.distributing_teachers
     respond_to do |format|
       format.js do
-        render :partial => 'distributor_list', :locals => {:distributing_teachers => @distributing_teachers, :teachers => @teachers,  :last_changed_id => @last_changed_id } do |page| 
+        render :partial => 'distributor_list', :locals => {:distributing_teachers => @distributing_teachers, :teachers => @teachers,  :last_changed_id => @last_changed_id } do |page|
           page.replace_html('distributor-list')
         end
       end
