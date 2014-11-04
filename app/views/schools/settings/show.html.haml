@@ -37,24 +37,20 @@
 
 .school-settings
   %h3 Select the teachers that will distribute credits or rewards
-  = form_for :teacher, :url => schools_toggle_distributor_path do |f|
-    %table.table.table-bordered.table-striped.solid-background
-      %thead
+  %table.table.table-bordered.table-striped.solid-background
+    %thead
+      %tr
+        %td Teacher Name
+        %td Can Distribute Rewards?
+        %td Can Distribute Credits?
+        %td Ignored?
+    %body
+      - @teachers.each do |teacher|
         %tr
-          %td Teacher Name
-          %td Reward Distributor
-          %td Credit Distributor
-          %td Can Deliver Rewards?
-          %td Can Distribute Credits?
-      %body
-        - @teachers.each do |teacher|
-          %tr
-            %td= teacher.name
-            %td= teacher.can_distribute_rewards?(current_school) ? 'YES' : 'NO'
-            %td= teacher.can_distribute_credits ? 'YES' : 'NO'
-            %td= check_box_tag "reward_teachers[]", teacher.id, false
-            %td= check_box_tag "credit_teachers[]", teacher.id, false
-    = f.submit 'Update Teachers'
+          %td= teacher.name
+          %td= select_tag "[teachers][#{teacher.id}][can_distribute_rewards]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_rewards?(current_school)), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_rewards" }
+          %td= select_tag "[teachers][#{teacher.id}][can_distribute_credits]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
+          %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
 
   %h3 Manage Reward Exclusions
   = link_to "Click here if you would like to remove any rewards from your school's store.", schools_reward_exclusions_path
@@ -63,7 +59,7 @@
 
 = form_for @school, url: revoke_credit_setting_path do |f|
   = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
-  
+
   %h4 Allow Negative Credits
 
   %p You can use this setting to allow or disallow teachers to enter negative credit amounts. If you don't allow negative credits, then teachers will only be allowed to enter positive number values when issuing e-Credits and can only add credits to a students account.
@@ -71,3 +67,29 @@
   %p If you allow negative e-Credits to be issued then teachers can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately.
 
   = f.submit "Update Negative Credits Setting"
+
+:javascript
+  $('.auto-update').change( function(e) {
+    var element = $(e.currentTarget);
+    $.ajax({
+      type: "POST",
+      url: element.data("url"),
+      data: {
+        "setting": element.data("setting"),
+        "person-id": element.data("person-id"),
+        "value": element.val()
+      }
+    }).done( function(data, textStatus, jqXHR) {
+      element.closest('td').animateHighlight("#FFFF9C", 250);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR);
+    });
+  });
+
+  $('.can-distribute-credits').change( function(e) {
+    console.log(e.currentTarget);
+  });
+
+  $('.ignore-teacher').change( function(e) {
+    console.log(e.currentTarget);
+  });
