@@ -50,7 +50,7 @@
           %td= teacher.name
           %td= select_tag "[teachers][#{teacher.id}][can_distribute_rewards]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_rewards?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_rewards" }
           %td= select_tag "[teachers][#{teacher.id}][can_distribute_credits]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
-          %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
+          %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], current_person_school_link.ignore ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
 
   %h3 Manage Reward Exclusions
   = link_to "Click here if you would like to remove any rewards from your school's store.", schools_reward_exclusions_path
