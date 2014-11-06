@@ -33,7 +33,11 @@ class Schools::SettingsController < SchoolAdmins::BaseController
         RewardDistributor.where(person_school_link_id: person_school_link.id).delete_all
       end
     elsif params["setting"] == "ignore_teacher"
-      person_school_link.update_attribute(:ignore, value)
+      if value
+        PersonSchoolLinkIgnorer.new(person_school_link.id).execute!
+      else
+        PersonSchoolLinkUnignorer.new(person_school_link.id).execute!
+      end
     else
       # Handle Failure
     end

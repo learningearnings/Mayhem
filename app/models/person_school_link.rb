@@ -112,4 +112,3 @@ class PersonSchoolLink < ActiveRecord::Base
     end
   end
 end
-
