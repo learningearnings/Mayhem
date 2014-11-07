@@ -20,6 +20,9 @@
   height: 150px;
   display: inline-block;
   vertical-align: top;
+  & svg {
+    height: 100%;
+  }
 }
 
 .product-actions {
