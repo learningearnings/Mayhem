@@ -13,8 +13,10 @@ ActiveAdmin.register Post do
         ['Featured Activity', 'FeaturedActivityPost'],
         ['Featured Activity Callout', 'FeaturedActivityCalloutPost'],
         ['Our Sponsor', 'OurSponsorPost'],
-        ['Our Sponsor Callout', 'OurSponsorCalloutPost']
+        ['Our Sponsor Callout', 'OurSponsorCalloutPost'],
+        ['Release Note', 'ReleaseNote']
       ]
+      f.input :featured
       f.input :status,:required => true,:label => "Initial Status", :as => :select, :collection => ['submitted','published','archived','flagged']
     end
     f.inputs "Post Body" do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141103161553) do
+ActiveRecord::Schema.define(:version => 20141108003322) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -559,8 +559,9 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "ignore",     :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
@@ -631,8 +632,9 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.integer  "person_id"
     t.integer  "filter_id"
     t.integer  "published_by"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "featured",     :default => false
   end
 
   create_table "reward_deliveries", :force => true do |t|

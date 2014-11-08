@@ -1,0 +1,19 @@
+.release-notes {
+  padding-top: 20px;
+  font-family: sketch_rockwellregular;
+  .title {
+    font-size: 3.5em;
+    color: #25860B;
+  }
+  .release-note {
+    padding: 15px;
+    .title {
+      font-size: 1.8em;
+      color: #470BC1;
+    }
+    .body {
+      font-size: 1.1em;
+      color: #EA4E08;
+    }
+  }
+}

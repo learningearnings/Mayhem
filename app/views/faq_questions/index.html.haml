@@ -1,8 +1,8 @@
 %h1 FAQ
 
 #search-help
-  = form_for 'faq_question_search', remote: true, id: 'faq-search-form' do |f|
-    = f.text_field :search
+  = form_for 'search', remote: true, id: 'faq-search-form' do |f|
+    = f.text_field :q
     = submit_tag 'Search', :class => 'awesome-button'
 
 #faqs
@@ -10,6 +10,13 @@
     %h3= question.question
     %div
       %p= question.answer
+
+.release-notes
+  .title Release Notes
+  - @release_notes.each do |release_note|
+    .release-note{id: "#{release_note.type}-#{release_note.id}"}
+      .title= release_note.title
+      .body= release_note.body
 
 :javascript
   $(document).ready(function() {
@@ -32,5 +39,3 @@
       });
     });
   };
-
-
