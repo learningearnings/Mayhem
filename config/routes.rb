@@ -29,9 +29,10 @@ Leror::Application.routes.draw do
   resource :home
   resources :delayed_reports
 
-  resources :faq_questions
-  match "/help" => "faq_questions#index", :as => 'help'
-  post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
+  # FaqQuestions
+  get '/help' => "faq_questions#index", as: :help
+  post '/help' => 'faq_questions#search'
+  # End FaqQuestions
 
   resources :people do
     collection do

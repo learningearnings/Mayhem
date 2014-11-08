@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141103161553) do
+ActiveRecord::Schema.define(:version => 20141108003322) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -180,15 +180,6 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.string   "render_class"
   end
 
-  create_table "faq_questions", :force => true do |t|
-    t.text     "question"
-    t.text     "answer"
-    t.string   "person_type"
-    t.integer  "place"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
   create_table "districts", :force => true do |t|
     t.string   "guid"
     t.string   "name"
@@ -201,9 +192,11 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.integer  "current_staff_version",   :limit => 8
   end
 
-  create_table "features", :force => true do |t|
-    t.string   "description"
-    t.boolean  "shown"
+  create_table "faq_questions", :force => true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.string   "person_type"
+    t.integer  "place"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -346,14 +339,6 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.string  "game_type"
   end
 
-  create_table "honor_roll_deposits", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "school_id"
-    t.decimal  "amount"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "interactions", :force => true do |t|
     t.integer  "person_id"
     t.string   "page"
@@ -492,18 +477,18 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.string   "last_name"
     t.datetime "dob"
     t.integer  "grade"
-    t.datetime "created_at",                                                                               :null => false
-    t.datetime "updated_at",                                                                               :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
     t.string   "type"
     t.string   "status"
     t.integer  "legacy_user_id"
     t.string   "gender"
-    t.string   "salutation",              :limit => 10
+    t.string   "salutation",             :limit => 10
     t.string   "recovery_password"
-    t.boolean  "can_distribute_credits",                                                :default => true
+    t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.boolean  "game_challengeable",                                                    :default => false
+    t.boolean  "game_challengeable",                   :default => false
     t.integer  "sti_id"
     t.string   "district_guid"
     t.integer  "checking_account_id"
@@ -567,8 +552,9 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "ignore",     :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
@@ -639,8 +625,9 @@ ActiveRecord::Schema.define(:version => 20141103161553) do
     t.integer  "person_id"
     t.integer  "filter_id"
     t.integer  "published_by"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "featured",     :default => false
   end
 
   create_table "reward_deliveries", :force => true do |t|

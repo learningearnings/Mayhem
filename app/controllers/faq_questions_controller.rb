@@ -1,28 +1,18 @@
 class FaqQuestionsController < LoggedInController
+  before_filter :set_questions
 
   def index
-    get_questions.order(:place)
+    @release_notes = ReleaseNote.published
   end
 
-  def create
-    if params[:faq_question_search][:search].present?
-      @questions = FaqQuestion.kinda_matching(params[:faq_question_search][:search]).order(:place)
-      render :partial => "faq_search_results", :locals => {:questions => @questions}
-    else
-      get_questions
-      @questions.kinda_matching(params[:faq_question_search][:search]).order(:place)
-      render :partial => "faq_search_results", :locals => {:questions => @questions}
-    end
+  def search
+    questions = params[:search][:q].present? ? @questions.kinda_matching(params[:search][:q]) : @questions
+    render partial: "faq_search_results", locals: { questions: questions }
   end
 
-  def get_questions
-    if current_person.is_a?(Student)
-      @questions = FaqQuestion.for_student
-    elsif current_person.is_a?(SchoolAdmin)
-      @questions = FaqQuestion.for_school_admin
-    elsif current_person.is_a?(Teacher)
-      @questions = FaqQuestion.for_teacher
-    end
-  end
+  private
 
+  def set_questions
+    @questions ||= FaqQuestion.for_person_type(current_person.type).order(:place)
+  end
 end
