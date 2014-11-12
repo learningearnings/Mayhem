@@ -25,7 +25,7 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     person = Person.find(params["person-id"])
     person_school_link = PersonSchoolLink.where(person_id: person.id, school_id: current_school.id).first
     if params["setting"] == "can_distribute_credits"
-      person.update_attribute(:can_distribute_credits, value)
+      person_school_link.update_attribute(:can_distribute_credits, value)
     elsif params["setting"] == "can_distribute_rewards"
       if value
         RewardDistributor.create(person_school_link_id: person_school_link.id)

@@ -1,8 +1,8 @@
 class Teacher < Person
   has_many :schools, :through => :person_school_links
   attr_accessor :username, :password, :password_confirmation, :email
-  attr_accessible :gender, :email, :username, :game_challengeable, :can_distribute_credits
-  attr_accessible :status, :can_distribute_credits, :game_challengeable, :as => :admin
+  attr_accessible :gender, :email, :username, :game_challengeable
+  attr_accessible :status, :game_challengeable, :as => :admin
   validates_presence_of :grade
   after_create :create_user
 
