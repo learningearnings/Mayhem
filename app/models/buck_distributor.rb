@@ -58,7 +58,7 @@ class BuckDistributor
 
   def teachers_to_pay(school, options={})
     if school.district_guid
-      teachers = school.teachers.where(can_distribute_credits: true).uniq
+      teachers = school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
       options[:hide_ignored] ? teachers.not_ignored(school.id) : teachers
     else
       (school.teachers.recently_logged_in + school.teachers.recently_created).uniq
