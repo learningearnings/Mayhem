@@ -46,7 +46,7 @@ module STI
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
-          is_new_teacher? = teacher.new_record?
+          is_new_teacher = teacher.new_record?
           teacher.type ||= "Teacher"
           teacher.status = "active"
           teacher.update_attributes(api_teacher_mapping(api_teacher))
@@ -57,7 +57,7 @@ module STI
           school_ids.each do |school_id|
             person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school_id).first_or_initialize
             person_school_link.status = "active"
-            if is_new_teacher?
+            if is_new_teacher
               person_school_link.can_distribute_credits = api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"]
             end
             person_school_link.save(:validate => false)
