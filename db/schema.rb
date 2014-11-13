@@ -13,6 +13,7 @@
 
 ActiveRecord::Schema.define(:version => 20141029162007) do
 ActiveRecord::Schema.define(:version => 20141112182017) do
+ActiveRecord::Schema.define(:version => 20141112210053) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -548,6 +549,7 @@ ActiveRecord::Schema.define(:version => 20141112182017) do
     t.datetime "updated_at", :null => false
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
+    t.boolean  "can_distribute_rewards", :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true

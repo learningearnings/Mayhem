@@ -31,7 +31,7 @@ class Teacher < Person
 
   def can_distribute_rewards? s
     return false unless (s && s.is_a?(School))
-    self.person_school_links.joins(:reward_distributors).exists?(:school_id => s.id)
+    self.person_school_links.where(school_id: s.id).first.can_distribute_credits
   end
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
