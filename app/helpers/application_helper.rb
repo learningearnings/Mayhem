@@ -8,6 +8,10 @@ module ApplicationHelper
     end
   end
 
+  def current_otu_code_categories
+    @code_categories ||= current_person.otu_code_categories(current_school.id)
+  end
+
   def active_if(visitor_type)
     # We don't set visitor_type for students, but we want the helper to be sensible
     visitor_type = '' if visitor_type == 'student'
