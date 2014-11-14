@@ -10,13 +10,13 @@
       %dl.balance
         %dt Savings Balance
         %dd= number_with_precision(current_person.savings_balance, precision: 2, delimiter: ',')
-      = link_to "Deposit Printed Codes", "#enter-codes-modal", class: 'modal-button btn awesome-button', 'data-toggle' => 'modal'
+      = link_to "Deposit Printed Codes", "#enter-codes-modal", class: 'modal-button btn awesome-button', 'data-toggle' => 'modal', 'data-step' => 2, 'data-intro' => 'Click this button to deposit a printed code you earned', 'data-position' => 'right'
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Savings History", "#savings-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
 
-    .pending-credits
+    .pending-credits.1{'data-step' => 1 , 'data-intro' => 'This is where you can deposit an e-Credit you receive'}
       %h4 e-Credits to Deposit
       %table.table.table-bordered.solid-background
         %thead
@@ -71,6 +71,9 @@
 
 = javascript_include_tag 'transaction_pager'
 :javascript
+  $(document).ready( function() {
+    introJs().start();
+  } );
   $('#enter-codes-modal').on('shown.bs.modal', function() {
     $('#code').focus();
   });
