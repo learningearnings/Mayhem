@@ -74,9 +74,9 @@ class Person < ActiveRecord::Base
   before_save :ensure_spree_user
   after_destroy :delete_user
 
-  def otu_code_categories
+  def otu_code_categories(current_school_id)
     arel_table = OtuCodeCategory.arel_table
-    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(school.id)))
+    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(current_school_id)))
   end
 
   def avatar
