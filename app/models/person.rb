@@ -76,7 +76,7 @@ class Person < ActiveRecord::Base
 
   def otu_code_categories(current_school_id)
     arel_table = OtuCodeCategory.arel_table
-    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(current_school_id)))
+    OtuCodeCategory.where(arel_table[:school_id].eq(current_school_id).and(arel_table[:person_id].in([self.id, nil])))
   end
 
   def avatar
