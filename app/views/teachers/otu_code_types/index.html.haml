@@ -33,7 +33,7 @@
           .categories-text= f.label "Scope"
           = f.select :person_id, options_for_select([["Just Me", current_person.id], ["School Wide", nil]])
         - else
-          = f.hidden_field :person_id, current_person.id
+          = f.hidden_field :person_id, value: current_person.id
         = hidden_field_tag :otu_code_category_id, nil, :id => 'hidden_category_id'
         = f.submit 'Add', class: 'btn awesome-button'
 
