@@ -18,10 +18,6 @@
               %td.type-name= category.otu_code_type.name
               %td= link_to category.name, '#', :onclick => 'set_category_form(this.id);return false;', :id => "#{category.id}", :class => 'cat-name'
               %td= category.school_wide? ? "✓" : "No"
-              - if current_person.is_a?(SchoolAdmin)
-                = f.select :person_id, options_for_select([["Just Me", current_person.id], ["School Wide", nil]])
-              - else
-                = f.hidden_field :person_id, value: current_person.id
               - if current_person.is_a?(SchoolAdmin) || !category.school_wide?
                 %td= link_to "Delete", teachers_otu_code_category_path(category), method: :delete, confirm: "Are you sure you want to delete this category?"
 
