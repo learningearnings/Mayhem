@@ -3,7 +3,7 @@
 
 .main-content-wrapper
   .primary-content
-    .create-classroom
+    .create-classroom.table.table-striped
       %table
         %thead
           %tr
@@ -71,4 +71,5 @@
     $('#otu_code_category_otu_code_type_id').val(data.type.id);
     $('#hidden_category_id').val(data.category.id);
     $('#otu_code_category_name').val(data.category.name);
+    $('#otu_code_category_person_id').val(data.category.person_id);
   }

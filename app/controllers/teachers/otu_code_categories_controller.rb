@@ -36,7 +36,7 @@ module Teachers
       category = current_school.otu_code_categories.find(params[:category_id])
       respond_to do |format|
         format.js do
-          render :json => {:type => {:name => category.otu_code_type.name, :id => category.otu_code_type.id}, :category => {:name => category.name, :id => category.id}}, :layout => false
+          render :json => {:type => {:name => category.otu_code_type.name, :id => category.otu_code_type.id}, :category => {:name => category.name, :id => category.id, :person_id => category.person_id}}, :layout => false
         end
       end
     end
