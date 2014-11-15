@@ -10,7 +10,7 @@ class OtuCodeCategory < ActiveRecord::Base
   default_scope { joins(:otu_code_type).order("otu_code_types.name, otu_code_categories.name") }
 
   def school_wide?
-    school_id.present?
+    person_id.present?
   end
 
 end
