@@ -111,6 +111,6 @@ end
 
 before 'deploy:precompile_assets', 'deploy:symlink_shared'
 before 'deploy:finalize_update',   'deploy:precompile_assets'
-before 'deploy:started',           'deploy:start_notify_slack'
-after  'deploy:finished',          'deploy:end_notify_slack'
-after  'deploy:finishing',         'deploy:cleanup'
+before 'deploy:update_code',       'deploy:start_notify_slack'
+after  'deploy:restart',           'deploy:end_notify_slack'
+after  'deploy:restart',           'deploy:cleanup'
