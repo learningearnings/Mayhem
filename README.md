@@ -12,7 +12,7 @@ Currently, we're using the schools id as the domain, so the domain would be (for
 
 This requires that you put 1.localhost in your hosts file.
 
-If you do not want to manually update your localhost for development, you can use [Pow](http://pow.cx) for Mac OS X or [Prax](https://github.com/ysbaddaden/prax) for Linux.
+If you do not want to manually update your hosts file for development, you can use [Pow](http://pow.cx) for Mac OS X or [Prax](https://github.com/ysbaddaden/prax) for Linux.
 
 Once installed, you should be able to visit **mayhem.dev** and subdomains work out of the box.
 
