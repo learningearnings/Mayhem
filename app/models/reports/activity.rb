@@ -98,7 +98,7 @@ module Reports
         username: person.person_username,
         account_activity: (person.activity_balance || 0),
         type: person.type,
-        last_sign_in_at: time_ago_in_words(person.last_sign_in_at) + " ago"
+        last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
       ]
     end
 
@@ -143,7 +143,7 @@ module Reports
       end
 
       def date_filter_default
-        date_filter_options[0][1]
+        date_filter_options[7][1]
       end
 
     end
