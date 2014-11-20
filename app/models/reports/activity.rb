@@ -4,6 +4,7 @@ module Reports
     include ActionView::Helpers
 
     attr_accessor :parameters
+    attr_reader :school, :data
     def initialize params
       super
       @parameters = Reports::Activity::Params.new(params)
@@ -12,14 +13,10 @@ module Reports
       @data = []
     end
 
-    def data
-      @data
-    end
-
     def execute!
       begin
         people.each do |person|
-          @data << generate_row(person)
+          data << generate_row(person)
         end
       rescue StandardError => e
         Rails.logger.fatal("Something went bad wrong")
@@ -82,14 +79,6 @@ module Reports
 
     def activity_credits_base_scope(person)
       person.primary_account.credit_amounts.joins(:transaction)
-    end
-
-
-
-    def person_base_scope
-      @school.students
-        .includes(:user)
-#        .where("person_account_links.plutus_account_id" => Plutus::Account.includes(:transaction).includes(:accounts).select("plutus_accounts.id"))
     end
 
     def generate_row(person)
