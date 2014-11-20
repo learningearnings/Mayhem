@@ -10,15 +10,11 @@ Currently, we're using the schools id as the domain, so the domain would be (for
 
     1.localhost:3000
 
-This requires that you put 1.localhost in your hosts file.   If your on the Interwebs, then you can use
-the domain lvh.me (local virtual host - resolves to 127.0.0.1) which has a subdomain wildcard so `*.lvh.me`
-resolves to 127.0.0.1
+This requires that you put 1.localhost in your hosts file.
 
-Everything might not be working right, but development from here on should use the below url:
+If you do not want to manually update your hosts file for development, you can use [Pow](http://pow.cx) for Mac OS X or [Prax](https://github.com/ysbaddaden/prax) for Linux.
 
-    lvh.me:3000
-
-The app now will try to redirect you to 1.lvh.me:3000 if you come in without a subdomain.
+Once installed, you should be able to visit **mayhem.dev** and subdomains work out of the box.
 
 ### New Spree and custom Order flow
  * Upgraded to Spree 1.2.0
@@ -116,9 +112,9 @@ To Test out:
 
     a = Person.create
     a.status    # should equal 'new'
-    a.activate 
+    a.activate
     a.status    # should now equal 'active'
-    a.deactivate 
+    a.deactivate
     a.status    # should now equal 'inactive'
 
 #### Plutus
@@ -140,8 +136,8 @@ Right now, you can hit /plutus (as anyone) to view the chart of accounts, balanc
 * STUDENT5 CHECKING(Asset)
 * STUDENT5 SAVINGS(Asset)
 
-#### Cron for Auction notifications(This one runs at 5 every day for now.
-0,17,20,23 * * * export PATH=$PATH:/usr/local/bin/;bash -l -c 'cd /home/deployer/apps/Mayhem/current && script/rails runner -e production '\''AuctionHandler.new.run!'\'''
+#### Cron for Auction notifications(This one runs at 5 every day for now.)
+    0,17,20,23 * * * export PATH=$PATH:/usr/local/bin/;bash -l -c 'cd /home/deployer/apps/Mayhem/current && script/rails runner -e production '\''AuctionHandler.new.run!'\'''
 
 #### Deploying
 
