@@ -5,6 +5,7 @@ class BatchStudentUpdater
   def initialize student_params, school_id, student_class=Student
     @students       = []
     @school_id      = school_id
+    @school = School.find(@school_id)
     @student_params = student_params.dup
     @student_class  = student_class
   end
@@ -23,12 +24,14 @@ class BatchStudentUpdater
           pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(classroom_id, psl.id)
           pscl.activate
         end
-        responses << student.update_attributes(
-          first_name: student_param["first_name"],
-          last_name: student_param["last_name"],
-          gender: student_param["gender"],
-          grade: student_param["grade"]
-        )
+        if !@school.synced?
+          responses << student.update_attributes(
+            first_name: student_param["first_name"],
+            last_name: student_param["last_name"],
+            gender: student_param["gender"],
+            grade: student_param["grade"]
+          )
+        end
         if user_param.present?
           user_attributes = {
             username: user_param["username"],
