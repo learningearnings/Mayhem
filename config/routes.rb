@@ -71,6 +71,9 @@ Leror::Application.routes.draw do
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
   end
+  
+  # route to view sidekiq worker status
+  mount Sidekiq::Web => '/sidekiq'
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
   mount Ckeditor::Engine => '/ckeditor'
