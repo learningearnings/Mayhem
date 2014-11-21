@@ -1,11 +1,7 @@
 Spree::Product.class_eval do
-  after_create :handle_locker_sticker_on_create
   attr_accessible :store_ids, :fulfillment_type, :purchased_by, :min_grade, :max_grade, :visible_to_all
-  attr_accessor :sticker_image
   has_attached_file :svg
   has_many :auctions
-
-  belongs_to :sticker
 
   has_many :plutus_transactions, :as => :commercial_document, :class_name => 'Plutus::Transaction'
 
@@ -156,15 +152,7 @@ Spree::Product.class_eval do
   end
   alias_method_chain :images, :master_product_delegation
 
-  def handle_locker_sticker_on_create
-    if fulfillment_type == "Locker Sticker"
-      sticker = Sticker.new
-      sticker.purchasable = true
-      if sticker_image
-        sticker.image = sticker_image
-      end
-      sticker.save
-      update_attribute(:sticker_id, sticker.id)
-    end
+  def destroy
+    update_attribute(:deleted_at, Time.current)
   end
 end

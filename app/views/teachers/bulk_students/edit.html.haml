@@ -14,7 +14,7 @@
             = select_tag 'gender', options_for_select([nil, 'Male', 'Female'], :selected => params[:gender]), id: 'controls_gender'
             = button_tag 'Filter List', class: 'btn awesome-button'
       .controls
-        %h5 
+        %h5
           Action for
           %span#number_of_students
           Selected Students:
@@ -25,7 +25,7 @@
             = text_field_tag 'controls_password'
           %span.classroom_field.secondary
             %label Classroom:
-            = select_tag 'controls_classroom_selection', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name")
+            = select_tag 'controls_classroom_selection', options_from_collection_for_select(current_person.assignable_classrooms_for_school(current_school).uniq.to_a, "id", "name"), prompt: "Select Classroom"
           = button_tag 'UPDATE These Students', class: 'btn awesome-button', id: 'update_these_students'
 
       = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
@@ -34,8 +34,8 @@
           %thead
             %tr
               %th= check_box_tag 'select_all'
-              %th.text.first First
               %th.text.last Last
+              %th.text.first First
               %th.text.username Username
               %th.select.grade Grade
               %th.select.gender Gender
@@ -43,7 +43,7 @@
               %th
           %tbody.students_body
             - @students.each do |student|
-              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: '', grade: student.grade, gender: student.gender, id: student.id }
+              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id }
 
 :coffeescript
   $('#select_all').on 'click', ->
@@ -87,7 +87,7 @@
   shouldShowEdit = ->
     switch chosenAction()
       when "Update Passwords to this Password" then false
-      when "Edit Students Information" then true
+      when "Edit Student Information" then true
       else false
 
   conditionallyShowEditFields = () ->
@@ -101,6 +101,7 @@
     # We also potentially show only the password field, if "as indicated" is chosen
     if chosenAction() == 'Update Passwords as Indicated'
       $('tbody td.password .edit').show()
+      $('tbody td.password .display').hide()
 
   handleInterfaceState = ->
     showAppropriateSecondaryAction()
@@ -118,7 +119,7 @@
       alert("You must select at least one student to modify.")
 
   setFormActionHiddenTag = () ->
-    action = $('#controls_action').val()  
+    action = $('#controls_action').val()
     $('#form_action_hidden_tag').val(action)
 
   performSelectedStudentAction = () ->

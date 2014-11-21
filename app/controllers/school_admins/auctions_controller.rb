@@ -1,7 +1,11 @@
 module SchoolAdmins
   class AuctionsController < SchoolAdmins::BaseController
     def index
-      @auctions = Auction.viewable_for(current_person)
+      @auctions = Auction.active_viewable_for(current_person).order("end_date desc")
+    end
+    
+    def all
+      @auctions = Auction.viewable_for(current_person).order("end_date desc")
     end
 
     def edit
@@ -26,6 +30,7 @@ module SchoolAdmins
         redirect_to school_admins_auctions_path
       else
         @products = current_school.products.for_auctions
+        @auction = auction_creator.auction
         flash[:error] = 'There was a problem creating the auction.'
         render :new
       end

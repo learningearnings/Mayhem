@@ -26,5 +26,23 @@ module Reports
         format.json { render :json => delayed_report }
       end
     end
+
+    def checking_transactions
+      student = Student.find(params[:student_id])
+      @recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: student.checking_account).joins(:transaction).order({ transaction: :created_at }).reverse_order.page(params[:page]).per(5))
+      respond_to do |format|
+        format.html { render partial: 'banks/checking_ledger_table', layout: false,  locals: { amounts: @recent_checking_amounts } }
+        format.js
+      end
+    end
+
+    def savings_transactions
+      student = Student.find(params[:student_id])
+      @recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: student.savings_account).joins(:transaction).order({ transaction: :created_at }).reverse_order.page(params[:page]).per(5))
+      respond_to do |format|
+        format.html { render partial: 'banks/savings_ledger_table', layout: false, locals: { amounts: @recent_savings_amounts } }
+        format.js
+      end
+    end
   end
 end

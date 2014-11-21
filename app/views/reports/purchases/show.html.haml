@@ -66,7 +66,7 @@
                       = row["status"]
                   %td
                     - if row["delivery_status"] == 'pending'
-                      = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
+                      = link_to "Refund", refund_purchase_path(reward_delivery_id: row["reward_delivery_id"]), :confirm => "Are you sure you want to refund this purchase?", :class => "button refund"
                   %td
                     - if row["delivery_status"] == 'pending'
                       - enable_mark_button = true
@@ -82,7 +82,7 @@
           - if enable_mark_button
             %br/
             = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
-    - else 
+    - else
       .message.center-content
         = image_tag "loading.gif"
         %h3 Your purchase report is currently processing, it will show up here when it is completed.
@@ -116,6 +116,20 @@
       "bSort": true,
       "aaSorting": sort
     } );
+
+    $('.refund').click(function(e) {
+      e.preventDefault();
+
+      $.ajax(e.currentTarget.href, {
+        dataType: "JSON",
+      }).always(function(data) {
+        if (data.status == "200") {
+          $(e.currentTarget).closest('tr').remove()
+        }
+        alert(data.notice);
+      });
+
+    });
 
     $('#report_table').on('sort.DT', function(e,d) {
       $.cookie('purchases_report_order', JSON.stringify(d.aaSorting));

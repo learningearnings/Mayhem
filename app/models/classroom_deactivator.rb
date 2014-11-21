@@ -8,9 +8,8 @@ class ClassroomDeactivator
   def execute!
     return true if classroom.inactive?
     Classroom.transaction do
-      classroom.deactivate!
+      classroom.deactivate
       deactivate_orphaned_products
-      classroom.classroom_product_links.destroy_all
     end
     classroom.reload.inactive?
   end

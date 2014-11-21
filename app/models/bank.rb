@@ -114,7 +114,6 @@ class Bank
 
   def create_buck(prefix, points, params)
     buck = buck_creator.call(params.merge(:points => BigDecimal.new(points)))
-    buck.generate_code(prefix)
     buck
   end
 

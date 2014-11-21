@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140923152740) do
+ActiveRecord::Schema.define(:version => 20141029162007) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -86,8 +86,8 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
     t.decimal  "starting_bid",    :precision => 10, :scale => 2
-    t.integer  "min_grade"
-    t.integer  "max_grade"
+    t.integer  "min_grade",                                      :default => 0
+    t.integer  "max_grade",                                      :default => 12
     t.boolean  "created_locally"
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
@@ -170,16 +170,6 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "codes", :force => true do |t|
-    t.string   "code"
-    t.boolean  "active",     :default => true
-    t.datetime "used_date"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-  end
-
-  add_index "codes", ["active"], :name => "index_codes_on_active"
-
   create_table "delayed_reports", :force => true do |t|
     t.integer  "person_id"
     t.string   "state"
@@ -194,17 +184,12 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.string   "guid"
     t.string   "name"
     t.boolean  "alsde_study"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "faq_questions", :force => true do |t|
-    t.text     "question"
-    t.text     "answer"
-    t.string   "person_type"
-    t.integer  "place"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.integer  "current_student_version", :limit => 8
+    t.integer  "current_roster_version",  :limit => 8
+    t.integer  "current_section_version", :limit => 8
+    t.integer  "current_staff_version",   :limit => 8
   end
 
   create_table "filters", :force => true do |t|
@@ -354,6 +339,7 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.integer  "memory_usage_kb"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.integer  "school_id"
   end
 
   add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
@@ -378,6 +364,14 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
 
   create_table "lockers", :force => true do |t|
     t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "login_events", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "school_id"
+    t.string   "user_type"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -458,6 +452,8 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
+  add_index "otu_codes", ["created_at"], :name => "index_otu_codes_on_created_at"
+  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -465,16 +461,6 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.integer  "transaction_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
-  end
-
-  create_table "parent_student_links", :force => true do |t|
-    t.integer  "parent_id"
-    t.integer  "student_id"
-    t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "guid"
-    t.string   "state"
   end
 
   create_table "people", :force => true do |t|
@@ -493,8 +479,8 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
     t.boolean  "can_distribute_credits",               :default => true
     t.boolean  "can_deliver_rewards"
     t.string   "sti_uuid"
-    t.integer  "sti_id"
     t.boolean  "game_challengeable",                   :default => false
+    t.integer  "sti_id"
     t.string   "district_guid"
     t.integer  "checking_account_id"
     t.integer  "savings_account_id"
@@ -563,14 +549,6 @@ ActiveRecord::Schema.define(:version => 20140923152740) do
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
-
-  create_table "pg_search_documents", :force => true do |t|
-    t.text     "content"
-    t.integer  "searchable_id"
-    t.string   "searchable_type"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"

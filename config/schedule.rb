@@ -25,7 +25,7 @@ every :hour do
 end
 
 every :saturday do
-  runner "StudentInterestHandler.new.run"
+  runner "StudentInterestHandler.new.call"
 end
 
 every 1.day, :at => '1am' do
@@ -39,4 +39,3 @@ end
 every '0 9 1 * *' do
   runner "BuckDistributor.new.run"
 end
-

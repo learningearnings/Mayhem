@@ -135,6 +135,8 @@ Leror::Application.routes.draw do
 
   match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
   get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'
+  get '/reports/student_credit_history/checking_transactions/:student_id' => 'reports/student_credit_history#checking_transactions'
+  get '/reports/student_credit_history/savings_transactions/:student_id' => 'reports/student_credit_history#savings_transactions'
 
   match '/reports/purchases' => 'reports/purchases#new', as: 'purchases_report'
   get '/reports/purchases/:id' => 'reports/purchases#show', as: 'purchases_report_show'
@@ -200,6 +202,9 @@ Leror::Application.routes.draw do
     resource :bulk_students do
       post "import_students" => "bulk_students#import_students", :as => :import_students
     end
+    resource :bulk_teachers do
+      post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers
+    end
     resources :reports
     resource  :bank
     resource  :dashboard
@@ -235,6 +240,7 @@ Leror::Application.routes.draw do
     resources :auctions do
       get "cancel_school_auction", on: :member
       post 'create_auction_reward', on: :collection
+      get 'all', on: :collection
     end
     resource :bank
     resource :dashboard

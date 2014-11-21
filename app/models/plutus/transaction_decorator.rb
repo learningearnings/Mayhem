@@ -10,6 +10,7 @@ Plutus::Transaction.class_eval do
   scope :for_accounts, lambda {|accounts| joins(:amounts).where("#{Plutus::Amount.table_name}.account_id" => accounts)}
   scope :for_person, lambda {|person_id| joins(:person_school_links).where("#{PersonSchoolLink.table_name}.person_id" => person_id)}
   scope :with_main_account, joins(:person_account_links).where("#{PersonAccountLink.table_name}.is_main_account" => true)
+  scope :created_between, lambda {|start_date, end_date| where(created_at: start_date..end_date)}
 
   has_many :product_properties, :through => :spree_product, :class_name => 'Spree::ProductProperty'
   has_many :properties, :through => :product_properties, :class_name => 'Spree::Property'

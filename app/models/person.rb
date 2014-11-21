@@ -31,7 +31,6 @@ class Person < ActiveRecord::Base
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
   has_many :interactions
   has_many :code_entry_failures
-  has_many :sticker_purchases
 
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
@@ -73,9 +72,15 @@ class Person < ActiveRecord::Base
   before_save :ensure_spree_user
   after_destroy :delete_user
 
-  def otu_code_categories
+  def otu_code_categories(current_school_id)
     arel_table = OtuCodeCategory.arel_table
-    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(school.id)))
+    OtuCodeCategory.where(
+      arel_table[:school_id].eq(current_school_id).and(
+        arel_table[:person_id].eq(self.id).or(
+          arel_table[:person_id].eq(nil)
+        )
+      )
+    )
   end
 
   def avatar
@@ -151,7 +156,7 @@ class Person < ActiveRecord::Base
 
   # Only return the classrooms for the given school
   def classrooms_for_school(school)
-    classrooms.select{|c| c.school == school}
+    classrooms.order(:name).select{|c| c.school == school}
   end
 
   def full_name
@@ -160,6 +165,10 @@ class Person < ActiveRecord::Base
 
   alias_method :name, :full_name
   alias_method :to_s, :full_name
+  
+  def name_last_first
+    self.last_name + ', ' + self.first_name
+  end
 
   def store_code
     nil
@@ -185,6 +194,14 @@ class Person < ActiveRecord::Base
 
   def orders
     user.orders
+  end
+
+  def assignable_classrooms_for_school(school)
+    if school.synced?
+      classrooms.not_synced
+    else
+      classrooms
+    end
   end
 
   def charities

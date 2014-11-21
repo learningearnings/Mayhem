@@ -17,6 +17,7 @@ class School < ActiveRecord::Base
   has_many :filters, :through => :school_filter_links
   has_many :auctions, :through => :auction_school_links
   has_many :auction_school_links
+  has_many :otu_code_categories
 
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
@@ -199,6 +200,10 @@ class School < ActiveRecord::Base
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
     @distributing_teachers = self.teachers if @distributing_teachers.blank?
     @distributing_teachers.compact
+  end
+
+  def synced?
+    district_guid.present? && sti_id.present?
   end
 
   private

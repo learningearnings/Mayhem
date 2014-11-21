@@ -1,10 +1,9 @@
 %h3 My Credit Categories
 %p Click on a category to edit or delete it.
-= link_to 'New Credit Category', '#', :class => 'btn awesome-button', :onclick => 'show_category_form();return false;'
 
 .main-content-wrapper
   .primary-content
-    .create-classroom
+    .create-classroom.table.table-striped
       %table
         %thead
           %tr
@@ -17,11 +16,11 @@
             %tr
               %td.type-name= category.otu_code_type.name
               %td= link_to category.name, '#', :onclick => 'set_category_form(this.id);return false;', :id => "#{category.id}", :class => 'cat-name'
-              %td= category.school_id ? "✓" : "No"
-              - if category.school_id.nil?
-                %td= link_to "Delete", teachers_otu_code_category_path(category), method: :delete, confirm: "Are you sure you want to delete this category?"
-              - elsif current_person.is_a?(SchoolAdmin)
-                %td= link_to "Delete", teachers_otu_code_category_path(category), method: :delete, confirm: "Are you sure you want to delete this category?"
+              %td= category.school_wide? ? "✓" : "No"
+              %td
+                - if current_person.is_a?(SchoolAdmin) || !category.school_wide?
+                  = link_to "Delete", teachers_otu_code_category_path(category), method: :delete, confirm: "Are you sure you want to delete this category?"
+
 
   .secondary-content
     .new-category-form
@@ -32,8 +31,9 @@
         = f.text_field :name
         - if current_person.is_a?(SchoolAdmin)
           .categories-text= f.label "Scope"
-          = f.select :school_id, options_for_select([["Just Me", nil], ["School Wide", current_school.id]])
-        = f.hidden_field :person_id, value: current_person.id
+          = f.select :person_id, options_for_select([["Just Me", current_person.id], ["School Wide", nil]])
+        - else
+          = f.hidden_field :person_id, value: current_person.id
         = hidden_field_tag :otu_code_category_id, nil, :id => 'hidden_category_id'
         = f.submit 'Add', class: 'btn awesome-button'
 
@@ -72,4 +72,5 @@
     $('#otu_code_category_otu_code_type_id').val(data.type.id);
     $('#hidden_category_id').val(data.category.id);
     $('#otu_code_category_name').val(data.category.name);
+    $('#otu_code_category_person_id').val(data.category.person_id);
   }

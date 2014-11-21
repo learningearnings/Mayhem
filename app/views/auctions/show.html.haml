@@ -5,11 +5,3 @@
         = link_to "Back to Auctions", auctions_path, class: 'btn awesome-button'
       .auction-item
         = render @auction
-        - unless @auction.ended?
-          - unless current_person == @auction.current_leader
-            = form_for @bid do |f|
-              = text_field_tag :amount
-              = hidden_field_tag :auction_id, @auction.id
-              = f.submit "Make bid", class: 'btn awesome-button'
-          - else
-            %p You are the high bidder.
