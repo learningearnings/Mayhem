@@ -33,7 +33,8 @@ module STI
         @imported_schools << school
       end
 
-      sti_staff = client.staff.parsed_response
+      staff_response = client.async_staff.parsed_response
+      sti_staff = staff_response["Rows"]
       current_staff_for_district = Person.where(:district_guid => @district_guid).pluck(:sti_id)
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
       # Persons in our system that weren't in their api need to be deactivated
@@ -65,7 +66,8 @@ module STI
       end
 
       # Loop through classrooms and sync in much the same way as above
-      sti_classrooms = client.sections.parsed_response
+      classrooms_response = client.async_sections.parsed_response
+      sti_classrooms = classrooms_response["Rows"]
       current_classrooms_for_district = Classroom.where(district_guid: @district_guid).pluck(:sti_id)
       sti_classroom_ids = sti_classrooms.map {|classroom| classroom["Id"]}
       (current_classrooms_for_district - sti_classroom_ids).each do |sti_classroom_id|
@@ -89,7 +91,8 @@ module STI
       psls.update_all(status: "inactive")
 
       # Activate/Create students that we pull from STI
-      client.students.parsed_response.each do |api_student|
+      students_response = client.async_students.parsed_response
+      students_response["Rows"].each do |api_student|
         begin
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
           student.update_attributes(api_student_mapping(api_student), as: :admin)
@@ -114,7 +117,8 @@ module STI
       #  Output of hash should be {student_id: [classroom_id, classroom_id]}
       students_hash = {}
       students_hash.default = []
-      client.rosters.parsed_response.each do |entry|
+      rosters_response = client.async_rosters.parsed_response
+      rosters_response["Rows"].each do |entry|
         # An entry currently looks like this {"SectionId" => 1000, "StudentId" => 1208}
         students_hash[entry["StudentId"]] = students_hash[entry["StudentId"]] + [entry["SectionId"]]
       end
@@ -143,6 +147,15 @@ module STI
         request = client.set_school_synced(school.sti_id)
         raise "Couldn't set school synced got: #{request.response.inspect}" if request.response.code != "204"
       end
+
+      ##### Set current versions #####
+      district = District.where(guid: @district_guid).first
+      district.update_attributes({
+        current_staff_version:   staff_response["CurrentVersion"],
+        current_student_version: students_response["CurrentVersion"],
+        current_section_version: classrooms_response["CurrentVersion"],
+        current_roster_version:  rosters_response["CurrentVersion"]
+      })
     end
 
     private
