@@ -1620,18 +1620,36 @@ h3 {
 }
 
 .reward-content {
-  .product-image {
-    float: left;
-    min-height: 300px;
-    margin-right: 10px;
+  .product-image{
+    height: auto;
+    width: 100%;
+    #main-image {
+      width: 100%;
+      border: none;
+      img {
+        width: auto;
+        height: auto;
+        max-height: 200px;
+        padding-bottom: 1em;
+      }
+    }
   }
   .product-item {
+    text-align: center;
     padding: 1em;
     max-width: 90%;
     background-color: #fff;
     -moz-box-shadow:    1px 2px 5px 1px #ccc;
     -webkit-box-shadow: 1px 2px 5px 1px #ccc;
     box-shadow:         1px 2px 5px 1px #ccc;
+  }
+  .product-meta {
+    .price {
+      padding-top: 2em;
+    }
+    .add-to-cart {
+      padding-top: 2em;
+    }
   }
 }
 
@@ -1645,18 +1663,6 @@ h3 {
     height: 2.5em;
   }
 }
-
-#main-image {
-  width: 200px;
-  height: 200px;
-  padding: .5em;
-  border: solid 1px #ccc;
-  img {
-      width: 100%;
-  }
-}
-
-
 
 #product-description {
   font-size: 1.5em;
