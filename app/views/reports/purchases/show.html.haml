@@ -18,7 +18,7 @@
               = f.input :teachers_filter, :label => "Show Teacher", :collection => report_params.teachers_filter_options(current_school)
             .filter-teachers
               = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
-          .sorting
+          .sorting2
             %h4 Options
             .filter-dates
               = f.input :students_name_option, :label => "Student Name", :collection => report_params.student_name_options, :include_blank => false
