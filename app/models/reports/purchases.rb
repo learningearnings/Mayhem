@@ -17,7 +17,7 @@ module Reports
     def execute!    
       reward_deliveries.each do |reward_delivery|
         if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
-            @data << generate_row(reward_delivery)
+          @data << generate_row(reward_delivery)
         end
       end
     end

@@ -2,13 +2,9 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def new
-      #Rails.logger.warn("AKT PurchasesController begin")
       report = Reports::Purchases.new params.merge(school: current_school)
-      #Rails.logger.warn("AKT PurchasesController report: #{report.inspect}")
       delayed_report = DelayedReport.create(person_id: current_person.id)
-      #Rails.logger.warn("AKT PurchasesController delayed report")
       DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
-      #Rails.logger.warn("AKT PurchasesController worker")
       redirect_to purchases_report_show_path(delayed_report.id, params)
     end
 
