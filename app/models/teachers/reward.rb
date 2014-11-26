@@ -15,7 +15,7 @@ module Teachers
 
     attr_accessor :id, :name, :description, :price, :classrooms, :template_image, :image, :spree_product_id
     attr_accessor :on_hand, :teacher, :school, :category, :school_id, :classroom_id
-    attr_accessor :min_grade, :max_grade
+    attr_accessor :min_grade, :max_grade, :locker_sticker
 
     delegate :set_property, to: :spree_product
 
@@ -26,6 +26,7 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @reward_template = RewardTemplate.find(params[:reward_template_id]) if params[:reward_template_id]
       @image = params[:image] if params[:image]
+      @sticker_image = File.open(@image.path) if @image
       @category = params[:category] if params[:category]
       @min_grade = params[:min_grade] if params[:min_grade]
       @max_grade = params[:max_grade] if params[:max_grade]
@@ -125,7 +126,8 @@ module Teachers
       p.store_ids = [@school.store.id]
       p.min_grade = @min_grade
       p.max_grade = @max_grade
-      p.fulfillment_type = 'local'
+      p.fulfillment_type = locker_sticker ? "Locker Sticker" : "local"
+      p.sticker_image = @sticker_image
       p.save
 
       @spree_product_id = p.id
