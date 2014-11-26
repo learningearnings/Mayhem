@@ -1,5 +1,6 @@
 Spree::Product.class_eval do
   attr_accessible :store_ids, :fulfillment_type, :purchased_by, :min_grade, :max_grade, :visible_to_all
+  attr_accessor :sticker_image
   has_attached_file :svg
   has_many :auctions
 
@@ -20,6 +21,7 @@ Spree::Product.class_eval do
   has_many :classroom_product_links, :foreign_key => :spree_product_id
   has_many :classrooms, :through => :classroom_product_links
 
+  belongs_to :sticker
 
   #   # add_search_scope :with_property_value do |property, value|
   #   #   properties = Spree::Property.table_name
@@ -52,9 +54,10 @@ Spree::Product.class_eval do
   scope :visible_to_all, where(:visible_to_all => true)
   scope :for_classroom, lambda {|classroom| joins({:classrooms => [:classroom_product_links]}).where("classroom_product_links.classroom_id = ?", classroom.id) }
   scope :not_charity, where("fulfillment_type != ?","Digitally Delivered Charity Certificate")
-
   scope :for_any_of_these_classrooms, lambda {|classroom_ids| joins({:classrooms => [:classroom_product_links]}).where("classroom_product_links.classroom_id = ANY(ARRAY[?])", classroom_ids)}
   scope :active, where(:deleted_at => nil)
+
+  after_create :handle_locker_sticker_on_create
 
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})
@@ -65,6 +68,18 @@ Spree::Product.class_eval do
       where("spree_products.id NOT IN (?)", school.reward_exclusions.map(&:product_id))
     else
       scoped
+    end
+  end
+
+  def handle_locker_sticker_on_create
+    if fulfillment_type == "Locker Sticker"
+      sticker = Sticker.new
+      sticker.purchasable = true
+      if sticker_image
+        sticker.image = sticker_image
+      end
+      sticker.save
+      update_attribute(:sticker_id, sticker.id)
     end
   end
 
