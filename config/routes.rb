@@ -48,6 +48,7 @@ Leror::Application.routes.draw do
 
   match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
+  match '/schools/settings/update_sponsors_text' => 'schools/settings#update_sponsors_text'
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
     resources :reward_exclusions
