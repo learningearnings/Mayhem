@@ -1,8 +1,8 @@
 %ul.primary-nav
   %li= link_to "Home",            main_app.home_path, class: 'home'
-  %li= link_to "Inbox",           main_app.teachers_inbox_path, class: 'inbox'
-  %li= link_to "Bank",            main_app.teachers_bank_path, class: 'bank'
+  %li= link_to "Inbox",           main_app.teachers_inbox_path, class: 'inbox','data-step' => 1 , 'data-intro' => Tour.text('MenuInbox',current_person)
+  %li= link_to "Bank",            main_app.teachers_bank_path, class: 'bank','data-step' => 2 , 'data-intro' => Tour.text('MenuBank',current_person)
   %li= link_to "Students",        students_path, class: 'manage_students'
-  %li= link_to "Classrooms",      main_app.classrooms_path, class: 'classrooms'
-  %li= link_to "Shop",            '/store', class: 'shop'
-  %li= link_to "Reports",         main_app.teachers_reports_path, class: 'reports'
+  %li= link_to "Classrooms",      main_app.classrooms_path, class: 'classrooms','data-step' => 3 , 'data-intro' => Tour.text('MenuClassrooms',current_person)
+  %li= link_to "Shop",            '/store', class: 'shop','data-step' => 4 , 'data-intro' => Tour.text('MenuShop',current_person)
+  %li= link_to "Reports",         main_app.teachers_reports_path, class: 'reports','data-step' => 5 , 'data-intro' => Tour.text('MenuReports',current_person)

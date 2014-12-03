@@ -1,7 +1,7 @@
 .main-content-wrapper
   .primary-content-fw
     %h2 Manage Students
-    = link_to "New Students", new_teachers_bulk_students_path, class: 'btn awesome-button'
+    = link_to "New Students", new_teachers_bulk_students_path, class: 'btn awesome-button','data-step' => 1 , 'data-intro' => Tour.text('AddingStudents',current_person), 'data-position' => 'right'
     = link_to "Edit Students", edit_teachers_bulk_students_path, class: 'btn awesome-button'
   .primary-content-fw
     %h2 Import Students
@@ -30,3 +30,8 @@
         = file_field_tag :file
       = submit_tag 'Import Students', class: "btn awesome-button"
 
+:javascript
+  $(document).ready( function() {
+    introJs().start();
+  } );
+  
