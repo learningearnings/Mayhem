@@ -8,4 +8,5 @@
   %li= link_to "Play",       main_app.games_path, class: 'play','data-step' => 5 , 'data-intro' => Tour.text('MenuPlay',current_person)
   %li= link_to "Shop",       '/store', class: 'shop','data-step' => 6 , 'data-intro' => Tour.text('MenuShop',current_person)
   %li= link_to "Reports",    main_app.school_admins_reports_path, class: 'reports','data-step' => 7 , 'data-intro' => Tour.text('MenuReports',current_person)
+  %li= link_to "Help",       main_app.help_path, class: 'help'
   %li= link_to "Settings",   '/schools/settings/', class: 'settings'

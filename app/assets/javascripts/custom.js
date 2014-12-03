@@ -140,6 +140,7 @@ $(document).ready(function() {
   highlightNavigation('bulk_students', 'manage_students');
   highlightNavigation('bulk_teachers', 'manage_teachers');
   highlightNavigation('',              'home');
+  highlightNavigation('help',          'help');
 
  //detect the width on page load
 $(document).ready(function(){
