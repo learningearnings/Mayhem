@@ -67,11 +67,14 @@ namespace :le do
     end
   end
 
+  # Note that this runs the previous month, because it is much easier to setup a cron job to run
+  # at the first of the month, than the end of the month, because months have different numbers
+  # of days and you have to also take into account leap year.
   desc "Award monthly automatic credits"
   task :award_monthly_automatic_credits => :environment do
     School.inow_schools.has_monthly_automatic_credit_amounts.each do |school|
-      start_date = Time.zone.now.beginning_of_month.strftime("%Y-%m-%d")
-      end_date = Time.zone.now.end_of_month.strftime("%Y-%m-%d")
+      start_date = 1.month.ago.beginning_of_month.strftime("%Y-%m-%d")
+      end_date = 1.month.ago.end_of_month.strftime("%Y-%m-%d")
       credit_manager = CreditManager.new
       sti_link_token = StiLinkToken.where(district_guid: school.district_guid).first
       next unless sti_link_token
