@@ -6,20 +6,17 @@
 %div{role: "tabpanel"}
   %ul.nav.nav-tabs{role: "tablist"}
     %li.active{role: "presentation"}
+      %a{"href" => "#edit-sponsors-text", "aria-controls" => "manage-sponsors-text", "role" => "tab", "data-toggle" => "tab"}
+        <strong>Edit Sponsors Text</strong>
+    %li{role: "presentation"}
+      %a{"href" => "#edit-teachers", "aria-controls" => "edit-teachers", "role" => "tab", "data-toggle" => "tab"}
+        <strong>Edit Teacher Permissions</strong>
+    %li{role: "presentation"}
       %a{"href" => "#import-teachers", "aria-controls" => "import-teachers", "role" => "tab", "data-toggle" => "tab"}
         <strong>Import Teachers</strong>
     %li{role: "presentation"}
-      %a{"href" => "#edit-teachers", "aria-controls" => "edit-teachers", "role" => "tab", "data-toggle" => "tab"}
-        <strong>Edit Teachers</strong>
-    %li{role: "presentation"}
-      %a{"href" => "#manage-reward-exclusions", "aria-controls" => "manage-reward-exclusions", "role" => "tab", "data-toggle" => "tab"}
-        <strong>Manage Reward Exclusions</strong>
-    %li{role: "presentation"}
       %a{"href" => "#manage-negative-credits", "aria-controls" => "manage-negative-credits", "role" => "tab", "data-toggle" => "tab"}
         <strong>Manage Negative Credits</strong>
-    %li{role: "presentation"}
-      %a{"href" => "#edit-sponsors-text", "aria-controls" => "manage-sponsors-text", "role" => "tab", "data-toggle" => "tab"}
-        <strong>Edit Sponsors Text</strong>
 
   %div.tab-content
     #import-teachers.tab-pane.active{role: "tabpanel"}
@@ -71,31 +68,29 @@
                 %td= select_tag "[teachers][#{teacher.id}][can_distribute_credits]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.person_school_links.where(school_id: current_school.id).first.can_distribute_credits ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
                 %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.person_school_links.where(school_id: current_school.id).first.ignore ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
 
-    #manage-reward-exclusions.tab-pane{"role" => "tabpanel"}
-      .school-settings
-        %h3 Manage Reward Exclusions
-        = link_to "Click here if you would like to remove any rewards from your school's store.", schools_reward_exclusions_path
-
     #manage-negative-credits.tab-pane{"role" => "tabpanel"}
       .school-settings
         .allow-negative-credits
           %h3 Allow Negative Credits
           = form_for @school, url: revoke_credit_setting_path do |f|
             = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
-            = f.label :can_revoke_credits
+            = f.label :allow_negative_credits
             = f.submit "Update Negative Credits Setting"
 
           .alert.alert-info
             Note:
             %ul
               %li
-                You can use this setting to allow or disallow teachers to enter negative credit amounts. If you don't allow negative credits, then teachers will only be allowed to enter positive number values when issuing e-Credits and can only add credits to a students account.
+                You can use this setting to allow or disallow LE School Admins (NOT Teachers) to enter negative credit amounts. 
               %li
-                If you allow negative e-Credits to be issued then teachers can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately.
-
-
+                If you DON'T ALLOW NEGATIVE credits, then LE School Admins will only be allowed to enter positive number values when issuing e-Credits and therefore can only add credits to a students account.
+              %li
+                If you ALLOW NEGATIVE e-Credits to be issued then LE School Admins can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately (since a student most likely wouldn't deposit a negative e-Credit - at least we wouldn't).
+               
+    
     #edit-sponsors-text.tab-pane{"role" => "tabpanel"}
       %h3 Manage Sponsors Text
+      %p This is displayed on all student's home pages.  Any updates here will be seen by all students and potentially their parents.
       .school-settings
         .manage-sponsors-text
           = simple_form_for @sponsor_post, url: "update_sponsors_text" do |f|
@@ -103,7 +98,7 @@
             = f.button :submit, "Update"
         .sponsors-text-preview
           .our-sponsors
-            = @sponsor_post.body
+            = @sponsor_post.body.html_safe
 
 :javascript
   // Javascript to enable link to tab
