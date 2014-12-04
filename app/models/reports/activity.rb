@@ -85,9 +85,9 @@ module Reports
       Reports::Row[
         person: person.name,
         username: person.person_username,
-        account_activity: (person.activity_balance || 0),
+        account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
         type: person.type,
-        last_sign_in_at: time_ago_in_words(person.last_sign_in_at) + " ago"
+        last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
       ]
     end
 
@@ -97,7 +97,7 @@ module Reports
         username: "Username",
         type: "Type",
         last_sign_in_at: "Last Sign In",
-        account_activity: "Account Activity"
+        account_activity: "Account Balance"
       }
     end
     def data_classes
@@ -132,7 +132,7 @@ module Reports
       end
 
       def date_filter_default
-        date_filter_options[0][1]
+        date_filter_options[7][1]
       end
 
     end
