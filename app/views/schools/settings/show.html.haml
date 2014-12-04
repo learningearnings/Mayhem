@@ -107,7 +107,7 @@
             = f.button :submit, "Update"
         .sponsors-text-preview
           .our-sponsors
-            = @sponsor_post.body
+            = @sponsor_post.body.html_safe
 
 :javascript
   // Javascript to enable link to tab

@@ -45,7 +45,7 @@
         %br/
         WE HOPE YOU HAVE A GREAT TIME!
     - else
-      = @our_sponsor.body
+      = @our_sponsor.body.html_safe
     .our-sponsors-callout
       .our-sponsors-callout-content
         = @our_sponsor_callout.body.html_safe
