@@ -72,7 +72,7 @@ module Mixins
         @bank.on_success = lambda{ |x| return true }
         @bank.on_failure = lambda{ failed = true }
         OtuCode.transaction do
-          students = current_person.schools.first.students.where(:id => params[:credits].keys)
+          students = Student.includes(:person_school_links).where(id: params[:credits].keys, person_school_links: { school_id: current_person.schools.pluck(:id) })
           students.each do |student|
             student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
