@@ -18,7 +18,41 @@
       %a{"href" => "#manage-negative-credits", "aria-controls" => "manage-negative-credits", "role" => "tab", "data-toggle" => "tab"}
         <strong>Manage Negative Credits</strong>
 
-  %div.tab-content
+  %div.tab-content    
+    #edit-sponsors-text.tab-pane{role: "tabpanel"}
+      .school-settings
+        %h3 Manage Sponsors Text
+        %p This is displayed on all student's home pages.  Any updates here will be seen by all students and potentially their parents.
+        .manage-sponsors-text
+          = simple_form_for @sponsor_post, url: "update_sponsors_text" do |f|
+            = f.input_field :body, value: @sponsor_post.body, rows: 3
+            = f.button :submit, "Update"
+        .sponsors-text-preview
+          .our-sponsors
+            = @sponsor_post.body.html_safe
+
+    #edit-teachers.tab-pane{role: "tabpanel"}
+      .school-settings
+        %h3 Select the teachers that will distribute credits or rewards
+        = form_for :teacher, :url => schools_toggle_distributor_path do |f|
+          %table.table.table-bordered.table-striped.solid-background
+            %thead
+              %tr
+                %td Teacher Name
+                %td Reward Distributor
+                %td Credit Distributor
+                %td Can Deliver Rewards?
+                %td Can Distribute Credits?
+            %body
+              - @teachers.each do |teacher|
+                %tr
+                  %td= teacher.name
+                  %td= teacher.can_distribute_rewards?(current_school) ? 'YES' : 'NO'
+                  %td= teacher.can_distribute_credits ? 'YES' : 'NO'
+                  %td= check_box_tag "reward_teachers[]", teacher.id, false
+                  %td= check_box_tag "credit_teachers[]", teacher.id, false
+          = f.submit 'Update Teachers'
+            
     #import-teachers.tab-pane.active{role: "tabpanel"}
       .school-settings
         %h3 Import Teachers
@@ -50,29 +84,7 @@
             = file_field_tag :file
           = submit_tag 'Import Teachers', class: "btn awesome-button"
 
-    #edit-teachers.tab-pane{role: "tabpanel"}
-      .school-settings
-        %h3 Select the teachers that will distribute credits or rewards
-        = form_for :teacher, :url => schools_toggle_distributor_path do |f|
-          %table.table.table-bordered.table-striped.solid-background
-            %thead
-              %tr
-                %td Teacher Name
-                %td Reward Distributor
-                %td Credit Distributor
-                %td Can Deliver Rewards?
-                %td Can Distribute Credits?
-            %body
-              - @teachers.each do |teacher|
-                %tr
-                  %td= teacher.name
-                  %td= teacher.can_distribute_rewards?(current_school) ? 'YES' : 'NO'
-                  %td= teacher.can_distribute_credits ? 'YES' : 'NO'
-                  %td= check_box_tag "reward_teachers[]", teacher.id, false
-                  %td= check_box_tag "credit_teachers[]", teacher.id, false
-          = f.submit 'Update Teachers'
-
-    #manage-negative-credits.tab-pane{"role" => "tabpanel"}
+    #manage-negative-credits.tab-pane{role: "tabpanel"}
       .school-settings
         .allow-negative-credits
           %h3 Allow Negative Credits
@@ -90,19 +102,6 @@
                 If you DON'T ALLOW NEGATIVE credits, then LE School Admins will only be allowed to enter positive number values when issuing e-Credits and therefore can only add credits to a students account.
               %li
                 If you ALLOW NEGATIVE e-Credits to be issued then LE School Admins can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately (since a student most likely wouldn't deposit a negative e-Credit - at least we wouldn't).
-               
-    
-    #edit-sponsors-text.tab-pane{"role" => "tabpanel"}
-      %h3 Manage Sponsors Text
-      %p This is displayed on all student's home pages.  Any updates here will be seen by all students and potentially their parents.
-      .school-settings
-        .manage-sponsors-text
-          = simple_form_for @sponsor_post, url: "update_sponsors_text" do |f|
-            = f.input_field :body, value: @sponsor_post.body, rows: 3
-            = f.button :submit, "Update"
-        .sponsors-text-preview
-          .our-sponsors
-            = @sponsor_post.body.html_safe
 
 :javascript
   // Javascript to enable link to tab
