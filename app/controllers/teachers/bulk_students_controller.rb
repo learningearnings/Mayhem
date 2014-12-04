@@ -25,13 +25,10 @@ module Teachers
 
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
-      StudentUpdaterWorker.perform_async(current_person.user.email, params["students"], current_school.id, updater_method)
-      flash[:notice] = "Bulk process is running."
-      if current_school.synced?
-        redirect_to action: :edit
-      else
-        redirect_to action: :show
-      end
+      
+      @delayed_report = DelayedReport.create(person_id: current_person.id)
+      StudentUpdaterWorker.perform_async(params["students"], current_school.id, updater_method, @delayed_report.id)
+      redirect_to action: :edit    
     end
 
     def create
@@ -44,7 +41,7 @@ module Teachers
         render action: :new
       end
     end
-
+    
     protected
     def load_edit
       @actions = [

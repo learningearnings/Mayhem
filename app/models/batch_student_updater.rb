@@ -1,11 +1,11 @@
-# This class is used to updater students in the system in bulk.
+# This class is used to update student accounts in the system in bulk by teachers and/or school admins.
 class BatchStudentUpdater
   attr_reader :students, :school_id
 
   def initialize student_params, school_id, student_class=Student
     @students       = []
     @school_id      = school_id
-    @school = School.find(@school_id)
+    @school         = School.find(@school_id)
     @student_params = student_params.dup
     @student_class  = student_class
   end
