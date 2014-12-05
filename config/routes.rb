@@ -190,7 +190,7 @@ Leror::Application.routes.draw do
   namespace :students do
     match "home" => "home#show", as: 'home'
   end
-  
+
   match "/charities" => 'charities#index'
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 

@@ -12,5 +12,5 @@ class StudentUpdaterWorker
     delayed_report.report_data = delayed_report.instance_variable_get("@data").to_json
     delayed_report.complete
   end
-  
+
 end
