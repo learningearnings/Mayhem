@@ -37,7 +37,7 @@
                 Lookup A Code
           - if current_user.person.is_a?(SchoolAdmin)
             %li
-              %a{:href => "#auto-credits", intro_tour(1,'AutoCredits',current_person,{'data-toggle' => 'tab'})
+              %a{intro_tour(1,'AutoCredits',current_person,{'href' => "#auto-credits", 'data-toggle' => 'tab'})}
                 %p
                   %i{:class => "icon-star"}
                   Auto-Credits
