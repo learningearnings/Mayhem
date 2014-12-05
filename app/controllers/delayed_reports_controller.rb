@@ -11,10 +11,10 @@ class DelayedReportsController < LoggedInController
     end
   end
   
-  def status delayed_report_id
+  def status
     delayed_report_status = current_person.delayed_reports.find(params[:id]).state
     respond_to do |format|
-      format.json { render :json => delayed_report_status }
+      format.json { render :json => { status: delayed_report_status } }
     end
   end
 
