@@ -28,8 +28,8 @@ Leror::Application.routes.draw do
 
   resource :home
   resources :delayed_reports do
-    collection do
-      get "status/:id" => "delayed_reports#status"
+    member do
+      get :status
     end
   end
 

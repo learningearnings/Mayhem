@@ -25,10 +25,12 @@ module Teachers
 
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
+      delayed_report = DelayedReport.create(person_id: current_person.id)
+      StudentUpdaterWorker.perform_async(params["students"], current_school.id, updater_method, delayed_report.id)
       
-      @delayed_report = DelayedReport.create(person_id: current_person.id)
-      StudentUpdaterWorker.perform_async(params["students"], current_school.id, updater_method, @delayed_report.id)
-      redirect_to action: :edit    
+      respond_to do |format|
+        format.json { render json: { delayed_report_id: delayed_report.id } }
+      end
     end
 
     def create
