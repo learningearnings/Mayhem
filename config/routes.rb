@@ -27,7 +27,11 @@ Leror::Application.routes.draw do
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resource :home
-  resources :delayed_reports
+  resources :delayed_reports do
+    member do
+      get :status
+    end
+  end
 
 
   # FaqQuestions
@@ -201,7 +205,7 @@ Leror::Application.routes.draw do
   namespace :students do
     match "home" => "home#show", as: 'home'
   end
-
+  
   match "/charities" => 'charities#index'
   match "/charity/print/:id" => 'charities#print', :as => :charity_print
 
