@@ -184,17 +184,12 @@ ActiveRecord::Schema.define(:version => 20141202053859) do
     t.string   "guid"
     t.string   "name"
     t.boolean  "alsde_study"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "faq_questions", :force => true do |t|
-    t.text     "question"
-    t.text     "answer"
-    t.string   "person_type"
-    t.integer  "place"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.integer  "current_student_version", :limit => 8
+    t.integer  "current_roster_version",  :limit => 8
+    t.integer  "current_section_version", :limit => 8
+    t.integer  "current_staff_version",   :limit => 8
   end
 
   create_table "faq_questions", :force => true do |t|
@@ -558,7 +553,6 @@ ActiveRecord::Schema.define(:version => 20141202053859) do
     t.datetime "updated_at",                                :null => false
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
-    t.boolean  "can_distribute_rewards", :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
