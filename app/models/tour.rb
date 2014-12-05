@@ -1,82 +1,81 @@
 class Tour
-  attr_accessor :id, :role, :integrated, :text
-  @@tour_texts = []
-  
-
-  def initialize( params )
-    @id = params[:id]
-    @role = params[:role]
-    @integrated = params[:integrated]
-    @text = params[:text]  
-  end
-
+ 
   def self.text(id, person)
-    text = @@tour_texts.detect { | tour | tour.id == id && tour.role == person.type  && (tour.integrated == nil || tour.integrated == person.try(:school).try(:synced?)) }.try(:text) 
+    if person.is_a?(Student)
+      text = @@tour_texts[id + ":Student"]
+    elsif person.is_a?(SchoolAdmin)
+      text = (person.try(:school).try(:synced?)) ? (@@tour_texts[id + ":SchoolAdmin:I"]) : (@@tour_texts[id + ":SchoolAdmin:NI"])
+    elsif person.is_a?(Teacher)
+      text = (person.try(:school).try(:synced?)) ? (@@tour_texts[id + ":Teacher:I"]) : (@@tour_texts[id + ":Teacher:NI"])
+    else
+      text = nil
+    end
     if text == nil
       text = "No intro text found for id: #{id} and role: #{person.type} and integrated: #{person.try(:school).try(:synced?)}"
     end
     text
   end
   
-  def self.all_text(person)
-    #@@tour_texts.select { | tour | tour.role == person.type && tour.status = person.school.syncd? } 
-  end
+  @@tour_texts = {
+    
+      #Student
+      'MenuBank:Student' => 'Bank page is where you deposit your hard earned credits.',
+      'DepositPrintedCodes:Student' => 'If you received a printed code. Press the Deposit Printed Codes button to deposit the credits into your account.',
+      'ViewCheckingHistory:Student' => 'You may view your checking account history by viewing the checking account history.',
+      'MenuInbox:Student' => 'If your teacher sends you an electronic credit, you will receive a message below. You can deposit electronic credits by clicking on the Claim Credits link in the message.',
+      'MenuShop:Student' => 'The shopping page displays all of the rewards your teacher(s) are offering. Click on a reward to make a purchase.',      
+ 
+       #SchoolAdmin Non-Integrated
+      'MenuBank:SchoolAdmin:NI' => 'The bank page is where you print LE credits and issue electronic LE credits.',
+      'AutoCredits:SchoolAdmin:NI' => 'This tab allows you to set parameters for iNow to automatically send electronic credits to your students.',  
+      'MenuStudents:SchoolAdmin:NI' => 'The students page is where you manage your students.',
+      'AddingStudents:SchoolAdmin:NI' => 'Click the new students button to add students. Or upload a file below to import students.',
+      'AddingTeachers:SchoolAdmin:NI' => 'You may add teachers by clicking the new teachers button.',
+      'MenuClassrooms:SchoolAdmin:NI' => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.',
+      'MenuPlay:SchoolAdmin:NI' => 'This page allows you to create auctions for your school.',
+      'MenuShop:SchoolAdmin:NI' => 'This page allows you to create rewards for your students.',
+      'AddOrManageYourRewards:SchoolAdmin:NI' => 'This button allows you to add or manage a reward.',
+      'CreateNewCustomReward:SchoolAdmin:NI' => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.',
+      'MenuReports:SchoolAdmin:NI' => 'You may run a purchase report or earnings report for your students.',
+      
+      #SchoolAdmin Teacher Integrated
+      'MenuBank:SchoolAdmin:I' => 'The bank page is where you print LE credits and issue electronic LE credits.',
+      'AutoCredits:SchoolAdmin:I' => 'This tab allows you to set parameters for iNow to automatically send electronic credits to your students.',
+      'MenuStudents:SchoolAdmin:I' => 'The students page is where you manage your students. Or upload a file below to import students.',
+      'AddingStudents:SchoolAdmin:I' => 'Click the new students button to add students. Or upload a file below to import students.',
+      'AddingTeachers:SchoolAdmin:I' => 'You may add teachers by clicking the new teachers button.',
+      'MenuClassrooms:SchoolAdmin:I' => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.',
+      'MenuPlay:SchoolAdmin:I' => 'This page allows you to create auctions for your school.',
+      'MenuShop:SchoolAdmin:I' => 'This page allows you to create rewards for your students.',
+      'AddOrManageYourRewards:SchoolAdmin:I' => 'This button allows you to add or manage a reward.',
+      'CreateNewCustomReward:SchoolAdmin:I' => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.',
+      'MenuReports:SchoolAdmin:I' => 'You may run a purchase report or earnings report for your students.',
+    
+      #Teacher Non-Integrated
+      'MenuBank:Teacher:NI' => 'The bank page is where you print LE credits and issue electronic LE credits.',
+      'MenuStudents:Teacher:NI' => 'The students page is where you manage your students. Or upload a file below to import students.',
+      'AddingStudents:Teacher:NI' => 'Click the new students button to add students. Or upload a file below to import students.',
+      'AddingTeachers:Teacher:NI' => 'You may add teachers by clicking the new teachers button.',
+      'MenuClassrooms:Teacher:NI' => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.',
+      'MenuPlay:Teacher:NI' => 'This page allows you to create auctions for your school.',
+      'MenuShop:Teacher:NI' => 'This page allows you to create rewards for your students.',
+      'AddOrManageYourRewards:Teacher:NI' => 'This button allows you to add or manage a reward.',
+      'CreateNewCustomReward:Teacher:NI' => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.',
+      'MenuReports:Teacher:NI' => 'You may run a purchase report or earnings report for your students.',
+    
+      #Teacher Integrated
+      'MenuBank:Teacher:I' => 'The bank page is where you print LE credits and issue electronic LE credits.',
+      'MenuStudents:Teacher:I' => 'The students page is where you manage your students. Or upload a file below to import students.',
+      'AddingStudents:Teacher:I' => 'Click the new students button to add students. Or upload a file below to import students.',
+      'AddingTeachers:Teacher:I' => 'You may add teachers by clicking the new teachers button.',
+      'MenuClassrooms:Teacher:I' => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.',
+      'MenuPlay:Teacher:I' => 'This page allows you to create auctions for your school.',
+      'MenuShop:Teacher:I' => 'This page allows you to create rewards for your students.',
+      'AddOrManageYourRewards:Teacher:I' => 'This button allows you to add or manage a reward.',
+      'CreateNewCustomReward:Teacher:I' => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.',
+      'MenuReports:Teacher:I' => 'You may run a purchase report or earnings report for your students.'
   
-  #Student
-  @@tour_texts << Tour.new({:id => "MenuBank",:role => "Student", :text => 'Bank page is where you deposit your hard earned credits.'})
-  @@tour_texts << Tour.new({:id => "DepositPrintedCodes",:role => "Student", :text => 'If you received a printed code. Press the Deposit Printed Codes button to deposit the credits into your account.'})
-  @@tour_texts << Tour.new({:id => "ViewCheckingHistory",:role => "Student", :text => 'You may view your checking account history by viewing the checking account history.'})
-  @@tour_texts << Tour.new({:id => "MenuInbox",:role => "Student", :text => 'If your teacher sends you an electronic credit, you will receive a message below. You can deposit electronic credits by clicking on the Claim Credits link in the message.'})
-  @@tour_texts << Tour.new({:id => "MenuShop",:role => "Student", :text => 'The shopping page displays all of the rewards your teacher(s) are offering. Click on a reward to make a purchase.'})
-  
-  #Admin Teacher Non-Integrated
-  @@tour_texts << Tour.new({:id => "MenuBank",:role => "SchoolAdmin", :integrated => false, :text => 'The bank page is where you print LE credits and issue electronic LE credits.'})
-  @@tour_texts << Tour.new({:id => "MenuStudents",:role => "SchoolAdmin", :integrated => false, :text => 'The students page is where you manage your students.'})
-  @@tour_texts << Tour.new({:id => "AddingStudents",:role => "SchoolAdmin", :integrated => false, :text => 'Click the new students button to add students. Or upload a file below to import students.'})
-  @@tour_texts << Tour.new({:id => "AddingTeachers",:role => "SchoolAdmin", :integrated => false, :text => 'You may add teachers by clicking the new teachers button.'})
-  @@tour_texts << Tour.new({:id => "MenuClassrooms",:role => "SchoolAdmin", :integrated => false, :text => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.'})
-  @@tour_texts << Tour.new({:id => "MenuPlay",:role => "SchoolAdmin", :integrated => false, :text => 'This page allows you to create auctions for your school.'})
-  @@tour_texts << Tour.new({:id => "MenuShop",:role => "SchoolAdmin", :integrated => false, :text => 'This page allows you to create rewards for your students.'})
-  @@tour_texts << Tour.new({:id => "AddOrManageYourRewards",:role => "SchoolAdmin", :integrated => false, :text => 'This button allows you to add or manage a reward.'})
-  @@tour_texts << Tour.new({:id => "CreateNewCustomReward",:role => "SchoolAdmin", :integrated => false, :text => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.'})
-  @@tour_texts << Tour.new({:id => "MenuReports",:role => "SchoolAdmin", :integrated => false, :text => 'You may run a purchase report or earnings report for your students.'})
-  
-  #SchoolAdmin Teacher Integrated
-  @@tour_texts << Tour.new({:id => "MenuBank",:role => "SchoolAdmin", :integrated => true, :text => 'The bank page is where you print LE credits and issue electronic LE credits.'})
-  @@tour_texts << Tour.new({:id => "AutoCredits",:role => "SchoolAdmin", :integrated => true, :text => 'This tab allows you to set parameters for iNow to automatically send electronic credits to your students.'})
-  @@tour_texts << Tour.new({:id => "MenuStudents",:role => "SchoolAdmin", :integrated => true, :text => 'The students page is where you manage your students. Or upload a file below to import students.'})
-  @@tour_texts << Tour.new({:id => "AddingStudents",:role => "SchoolAdmin", :integrated => true, :text => 'Click the new students button to add students. Or upload a file below to import students.'})
-  @@tour_texts << Tour.new({:id => "AddingTeachers",:role => "SchoolAdmin", :integrated => true, :text => 'You may add teachers by clicking the new teachers button.'})
-  @@tour_texts << Tour.new({:id => "MenuClassrooms",:role => "SchoolAdmin", :integrated => true, :text => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.'})
-  @@tour_texts << Tour.new({:id => "MenuPlay",:role => "SchoolAdmin", :integrated => true, :text => 'This page allows you to create auctions for your school.'})
-  @@tour_texts << Tour.new({:id => "MenuShop",:role => "SchoolAdmin", :integrated => true, :text => 'This page allows you to create rewards for your students.'})
-  @@tour_texts << Tour.new({:id => "AddOrManageYourRewards",:role => "SchoolAdmin", :integrated => true, :text => 'This button allows you to add or manage a reward.'})
-  @@tour_texts << Tour.new({:id => "CreateNewCustomReward",:role => "SchoolAdmin", :integrated => true, :text => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.'})
-  @@tour_texts << Tour.new({:id => "MenuReports",:role => "SchoolAdmin", :integrated => true, :text => 'You may run a purchase report or earnings report for your students.'})
-
-  #Teacher Non-Integrated
-  @@tour_texts << Tour.new({:id => "MenuBank",:role => "Teacher", :integrated => false, :text => 'The bank page is where you print LE credits and issue electronic LE credits.'})
-  @@tour_texts << Tour.new({:id => "MenuStudents",:role => "Teacher", :integrated => false, :text => 'The students page is where you manage your students. Or upload a file below to import students.'})
-  @@tour_texts << Tour.new({:id => "AddingStudents",:role => "Teacher", :integrated => false, :text => 'Click the new students button to add students. Or upload a file below to import students.'})
-  @@tour_texts << Tour.new({:id => "AddingTeachers",:role => "Teacher", :integrated => false, :text => 'You may add teachers by clicking the new teachers button.'})
-  @@tour_texts << Tour.new({:id => "MenuClassrooms",:role => "Teacher", :integrated => false, :text => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.'})
-  @@tour_texts << Tour.new({:id => "MenuPlay",:role => "Teacher", :integrated => false, :text => 'This page allows you to create auctions for your school.'})
-  @@tour_texts << Tour.new({:id => "MenuShop",:role => "Teacher", :integrated => false, :text => 'This page allows you to create rewards for your students.'})
-  @@tour_texts << Tour.new({:id => "AddOrManageYourRewards",:role => "Teacher", :integrated => false, :text => 'This button allows you to add or manage a reward.'})
-  @@tour_texts << Tour.new({:id => "CreateNewCustomReward",:role => "Teacher", :integrated => false, :text => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.'})
-  @@tour_texts << Tour.new({:id => "MenuReports",:role => "Teacher", :integrated => false, :text => 'You may run a purchase report or earnings report for your students.'})
-
-  #Teacher Integrated
-  @@tour_texts << Tour.new({:id => "MenuBank",:role => "Teacher", :integrated => true, :text => 'The bank page is where you print LE credits and issue electronic LE credits.'})
-  @@tour_texts << Tour.new({:id => "MenuStudents",:role => "Teacher", :integrated => true, :text => 'The students page is where you manage your students. Or upload a file below to import students.'})
-  @@tour_texts << Tour.new({:id => "AddingStudents",:role => "Teacher", :integrated => true, :text => 'Click the new students button to add students. Or upload a file below to import students.'})
-  @@tour_texts << Tour.new({:id => "AddingTeachers",:role => "Teacher", :integrated => true, :text => 'You may add teachers by clicking the new teachers button.'})
-  @@tour_texts << Tour.new({:id => "MenuClassrooms",:role => "Teacher", :integrated => true, :text => 'The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name.'})
-  @@tour_texts << Tour.new({:id => "MenuPlay",:role => "Teacher", :integrated => true, :text => 'This page allows you to create auctions for your school.'})
-  @@tour_texts << Tour.new({:id => "MenuShop",:role => "Teacher", :integrated => true, :text => 'This page allows you to create rewards for your students.'})
-  @@tour_texts << Tour.new({:id => "AddOrManageYourRewards",:role => "Teacher", :integrated => true, :text => 'This button allows you to add or manage a reward.'})
-  @@tour_texts << Tour.new({:id => "CreateNewCustomReward",:role => "Teacher", :integrated => true, :text => 'Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below.'})
-  @@tour_texts << Tour.new({:id => "MenuReports",:role => "Teacher", :integrated => true, :text => 'You may run a purchase report or earnings report for your students.'})
+  }
 
 
   

@@ -127,7 +127,6 @@
       for (var i = 0, elmsLength = allIntroSteps.length; i < elmsLength; i++) {
         var currentElement = allIntroSteps[i];
         var step = parseInt(currentElement.getAttribute('data-step'), 10);
-
         if (step > 0) {
           introItems[step - 1] = {
             element: currentElement,
@@ -621,6 +620,7 @@
    * @param {Object} helperLayer
    */
   function _setHelperLayerPosition(helperLayer) {
+
     if (helperLayer) {
       //prevent error when `this._currentStep` in undefined
       if (!this._introItems[this._currentStep]) return;
@@ -628,11 +628,9 @@
       var currentElement  = this._introItems[this._currentStep],
           elementPosition = _getOffset(currentElement.element),
           widthHeightPadding = 10;
-
       if (currentElement.position == 'floating') {
         widthHeightPadding = 0;
       }
-
       //set new position to helper layer
       helperLayer.setAttribute('style', 'width: ' + (elementPosition.width  + widthHeightPadding)  + 'px; ' +
                                         'height:' + (elementPosition.height + widthHeightPadding)  + 'px; ' +
@@ -1100,6 +1098,10 @@
    */
   function _getOffset(element) {
     var elementPosition = {};
+    
+    var rect = element.getBoundingClientRect();
+    var docE1 = document.documentElement;
+    elementPosition.left = rect.left + window.pageXOffset - docE1.clientLeft;
 
     //set width
     elementPosition.width = element.offsetWidth;
@@ -1118,7 +1120,7 @@
     //set top
     elementPosition.top = _y;
     //set left
-    elementPosition.left = _x;
+    //elementPosition.left = _x;
 
     return elementPosition;
   }

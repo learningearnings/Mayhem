@@ -24,5 +24,21 @@ class FaqQuestionsController < LoggedInController
       @questions = FaqQuestion.for_teacher
     end
   end
+  
+  def tour
+
+  end
+  
+  def begin_tour
+    session[:tour] = "Y"
+    redirect_to main_app.home_path
+  end
+  
+  def end_tour
+    session[:tour] = nil
+    redirect_to main_app.home_path
+  end
+  
+  
 
 end

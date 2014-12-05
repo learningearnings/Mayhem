@@ -11,7 +11,7 @@
     - if current_person.is_a?(Teacher)
       %p
         = t('.products_message', :scope => [store_type,current_person.type.downcase])
-        %a{:href => main_app.teachers_rewards_path, :class => 'btn awesome-button', 'data-step' => 1 , 'data-intro' => Tour.text('AddOrManageYourRewards',current_person)} Add or Manage Your Rewards
+        %a{:href => main_app.teachers_rewards_path, intro_tour(1,'AddOrManageYourRewards',current_person,{:class => 'btn awesome-button'})
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 
@@ -20,8 +20,3 @@
     %h2 School Auctions
     %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
     %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
-
-:javascript
-  $(document).ready( function() {
-    introJs().start();
-  } );
