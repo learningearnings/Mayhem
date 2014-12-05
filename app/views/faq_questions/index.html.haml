@@ -1,3 +1,16 @@
+%h1 Help 
+
+%ul
+  %li
+    %h3 
+      = link_to "Browse online help", :tour
+    = "Click the above link to see a comprehensive guide to LE pages and features.  "      
+  %li
+    %h3 
+      = link_to "LE Tour", :begin_tour
+    = "Click the above link to take a guided tour of LE.  At any time you can come back to the help page and click the following link to disable the tour:"
+    = link_to "End Tour", :end_tour
+
 %h1 FAQ
 
 #search-help
