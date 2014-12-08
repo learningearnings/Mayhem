@@ -27,6 +27,9 @@ Spree::OrdersController.class_eval do
 
 
   def populate
+    @order = current_order(true)
+    @order.lock!
+        
     if insufficient_quantity?
       flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
       redirect_to :back and return
@@ -38,7 +41,7 @@ Spree::OrdersController.class_eval do
 
     ActiveRecord::Base.transaction do
       begin
-        @order = current_order(true)
+
         if current_person.is_a?(Student)
           @order.empty!
         end
