@@ -7,13 +7,6 @@ module PagesHelper
     end
   end
   
-  def tour_text(id, person)
-    if id.start_with?('Menu') && controller.action_name != 'home'
-      return ""
-    end
-    text = Tour.text(id,person)
-  end
-  
   def intro_tour(step, id, person, options)
     if id.start_with?('Menu') && controller.controller_name != 'home'
       return options
