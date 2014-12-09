@@ -159,3 +159,57 @@ en:
       links:
         sign_in: "Sign in"
         forgot_your_password: "Forgot your password?"
+  tour:
+    student:
+      menu_bank: "Bank page is where you deposit your hard earned credits."
+      deposit_printed_codes: "If you received a printed code. Press the Deposit Printed Codes button to deposit the credits into your account."
+      view_checking_history: "You may view your checking account history by viewing the checking account history."
+      menu_inbox: "If your teacher sends you an electronic credit, you will receive a message below. You can deposit electronic credits by clicking on the Claim Credits link in the message."
+      menu_shop: "The shopping page displays all of the rewards your teacher(s) are offering. Click on a reward to make a purchase."     
+    school_admin:
+      integrated:
+        menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
+        auto_credits: "This tab allows you to set parameters for iNow to automatically send electronic credits to your students."  
+        menu_students: "The students page is where you manage your students."
+        adding_students: "Click the new students button to add students. Or upload a file below to import students."
+        adding_teachers: "You may add teachers by clicking the new teachers button."
+        menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
+        menu_play: "This page allows you to create auctions for your school."
+        menu_shop: "This page allows you to create rewards for your students."
+        add_or_manage_your_rewards: "This button allows you to add or manage a reward."
+        create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
+        menu_reports: "You may run a purchase report or earnings report for your students."          
+      non_integrated:
+        menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
+        menu_students: "The students page is where you manage your students."
+        adding_students: "Click the new students button to add students. Or upload a file below to import students."
+        adding_teachers: "You may add teachers by clicking the new teachers button."
+        menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
+        menu_play: "This page allows you to create auctions for your school."
+        menu_shop: "This page allows you to create rewards for your students."
+        add_or_manage_your_rewards: "This button allows you to add or manage a reward."
+        create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
+        menu_reports: "You may run a purchase report or earnings report for your students."
+    teacher:
+      integrated:
+        menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
+        menu_students: "The students page is where you manage your students."
+        adding_students: "Click the new students button to add students. Or upload a file below to import students."
+        menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
+        menu_play: "This page allows you to create auctions for your school."
+        menu_shop: "This page allows you to create rewards for your students."
+        add_or_manage_your_rewards: "This button allows you to add or manage a reward."
+        create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
+        menu_reports: "You may run a purchase report or earnings report for your students."                 
+      non-integrated:
+        menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
+        menu_students: "The students page is where you manage your students."
+        adding_students: "Click the new students button to add students. Or upload a file below to import students."
+        menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
+        menu_play: "This page allows you to create auctions for your school."
+        menu_shop: "This page allows you to create rewards for your students."
+        add_or_manage_your_rewards: "This button allows you to add or manage a reward."
+        create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
+        menu_reports: "You may run a purchase report or earnings report for your students."          
+          
+

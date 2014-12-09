@@ -10,13 +10,13 @@
       %dl.balance
         %dt Savings Balance
         %dd= number_with_precision(current_person.savings_balance, precision: 2, delimiter: ',')
-      = link_to "Deposit Printed Codes", "#enter-codes-modal", intro_tour(1,'DepositPrintedCodes',current_person,{:class => 'modal-button btn awesome-button', 'data-toggle' => 'modal', 'data-position' => 'right'})
+      = link_to "Deposit Printed Codes", "#enter-codes-modal", intro_tour(1,'deposit_printed_codes',current_person,{:class => 'modal-button btn awesome-button', 'data-toggle' => 'modal', 'data-position' => 'right'})
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Savings History", "#savings-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
 
-    .pending-credits.1{intro_tour(2,'ViewCheckingHistory',current_person,{})} 
+    .pending-credits.1{intro_tour(2,'view_checking_history',current_person,{})} 
       %h4 e-Credits to Deposit
       %table.table.table-bordered.solid-background
         %thead
