@@ -22,13 +22,15 @@ Spree::OrdersController.class_eval do
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
     quantity = variant_options.last
+    #reload the product to refresh count_on_hand to account for another student purchasing at the same time 
+    variant.reload    
     return true if current_person.checking_account.balance < (variant.price * quantity.to_i)
   end
 
 
   def populate
-    #If another student is purchasing this reward, wait 3 seconds and then return an error if the reward has not freed up
-    mutex = RedisMutex.new('orders-blocking', block: 3)
+    #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up
+    mutex = RedisMutex.new('orders-blocking', block: 1)
     if mutex.lock
       begin
         if insufficient_quantity?
