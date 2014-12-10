@@ -15,6 +15,9 @@ Spree::OrdersController.class_eval do
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
     quantity = variant_options.last
+    logger.warn("AKT: quantity check: Quantity requested: #{quantity.to_i}, Quantity on hand: #{variant.count_on_hand}") 
+    variant.reload
+    logger.warn("AKT: quantity check: Quantity requested: #{quantity.to_i}, Quantity on hand: #{variant.count_on_hand}")        
     return true if quantity.to_i > variant.count_on_hand
   end
 
