@@ -15,9 +15,8 @@ Spree::OrdersController.class_eval do
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
     quantity = variant_options.last
-    logger.warn("AKT: quantity check: Quantity requested: #{quantity.to_i}, Quantity on hand: #{variant.count_on_hand}") 
+    #reload the product to refresh count_on_hand to account for another student purchasing at the same time 
     variant.reload
-    logger.warn("AKT: quantity check: Quantity requested: #{quantity.to_i}, Quantity on hand: #{variant.count_on_hand}")        
     return true if quantity.to_i > variant.count_on_hand
   end
 
@@ -33,11 +32,8 @@ Spree::OrdersController.class_eval do
     variant  = Spree::Variant.find variant_options.first
 
     #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up    
-    logger.warn("Student: " + current_person.inspect)
-    logger.warn("AKT: lock: #{variant.product_id}")
     mutex = RedisMutex.new("orders-blocking-#{variant.product_id}", block: 10)
     if mutex.lock
-       logger.warn("AKT: student #{current_person.full_name} has lock")
        begin
         if insufficient_quantity?
           flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
@@ -73,12 +69,6 @@ Spree::OrdersController.class_eval do
     
             # --- The above code is spree core copied ---
             # --- Start our customization ---
-            
-            if !@order.line_items.first 
-              message = 'Another student has purchased all available quantities of this reward. Please choose another reward..'
-              redirect_to root_path, notice: message
-              return             
-            end
             if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
               respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
             else
@@ -105,8 +95,6 @@ Spree::OrdersController.class_eval do
           rescue => e
             message = 'There was an issue placing your order.'
             redirect_to root_path, notice: message
-            logger.error("AKT: " + e.message)
-            logger.error("AKT: " + e.backtrace.inspect)
             raise ActiveRecord::Rollback
           end
         end
