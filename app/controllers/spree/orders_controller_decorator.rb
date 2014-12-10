@@ -70,7 +70,12 @@ Spree::OrdersController.class_eval do
     
             # --- The above code is spree core copied ---
             # --- Start our customization ---
-    
+            
+            if !@order.line_items.first 
+              message = 'Another student has purchased all available quantities of this reward. Please choose another reward..'
+              redirect_to root_path, notice: message
+              return             
+            end
             if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
               respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
             else
