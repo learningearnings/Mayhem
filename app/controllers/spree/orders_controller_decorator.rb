@@ -30,8 +30,11 @@ Spree::OrdersController.class_eval do
     variant  = Spree::Variant.find variant_options.first
 
     #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up    
+    logger.warn("Student: " + current_person.inspect)
+    logger.warn("AKT: lock: #{variant.product_id}")
     mutex = RedisMutex.new("orders-blocking-#{variant.product_id}", block: 10)
     if mutex.lock
+       logger.warn("AKT: student #{current_person.full_name} has lock")
        begin
         if insufficient_quantity?
           flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
@@ -94,6 +97,8 @@ Spree::OrdersController.class_eval do
           rescue => e
             message = 'There was an issue placing your order.'
             redirect_to root_path, notice: message
+            logger.error("AKT: " + e.message)
+            logger.error("AKT: " + e.backtrace.inspect)
             raise ActiveRecord::Rollback
           end
         end
