@@ -1,0 +1,1 @@
+RedisClassy.redis = Redis.new
