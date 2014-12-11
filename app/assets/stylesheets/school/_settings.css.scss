@@ -2,29 +2,61 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .school-settings {
-    h3 {
-        text-align: left;
+  font-size: 1em;
+  h3 {
+    text-align: left;
+  }
+  #distributor-list {
+    @extend .row-fluid;
+  }
+  .teacher-tile {
+    text-align: left;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    min-width: 180px;
+    overflow: hidden;
+    @include ctb-fluid-span(4);
+    @extend .thumbnail !optional;
+    display: inline-block;
+    background-color: white;
+    @include box-shadow(1px 2px 5px 1px #ccc);
+    img, i.icon-remove, i.icon-plus {
+      float: right;
     }
-    #distributor-list {
-        @extend .row-fluid;
+  }
+  .teacher-tile.changed {
+    background-color: lightgreen;
+  }
+  .manage-sponsors-text {
+    float: left;
+    width: 45%;
+    textarea {
+      width: 100%;
     }
-    .teacher-tile {
-        text-align: left;
-        font-size: 1.2em;
-        margin-bottom: 10px;
-        margin-left: 5px;
-        min-width: 180px;
-        overflow: hidden;
-        @include ctb-fluid-span(4);
-        @extend .thumbnail !optional;
-        display: inline-block;
-        background-color: white;
-        @include box-shadow(1px 2px 5px 1px #ccc);
-        img, i.icon-remove, i.icon-plus {
-            float: right;
-        }
+  }
+
+  .allow-negative-credits {
+    input[type="submit"] {
+      display: block;
+      margin-top: 1em;
     }
-    .teacher-tile.changed {
-        background-color: lightgreen;
+    label {
+      display: inline-block;
     }
+  }
+  .sponsors-text-preview {
+    width: 45%;
+    float: left;
+    padding-left: 2em;
+    .our-sponsors {
+      font-size: 1.4em;
+      background-image: url(asset_path('our_sponsors.png', image));
+      background-repeat: no-repeat;
+      position: relative;
+      width: 291px;
+      height: 251px;
+      padding: 45px 90px 0px 20px;
+    }
+  }
 }
