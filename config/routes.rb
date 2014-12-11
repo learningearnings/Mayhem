@@ -27,7 +27,11 @@ Leror::Application.routes.draw do
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resource :home
-  resources :delayed_reports
+  resources :delayed_reports do
+    member do
+      get :status
+    end
+  end
 
   resources :people do
     collection do
