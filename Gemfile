@@ -91,6 +91,8 @@ gem 'simple_form'
 gem 'country_select'
 gem "ckeditor", '3.7.3'
 
+gem 'redis-mutex'
+
 # PDFKit provides an interface to wkhtmltopdf from ruby, and a rack middleware
 gem 'pdfkit'
 
