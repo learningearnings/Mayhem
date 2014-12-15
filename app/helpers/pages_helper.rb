@@ -8,13 +8,13 @@ module PagesHelper
   end
   
   def intro_tour(step, id, person, options)
-    if id.start_with?('menu_') && controller.controller_name != 'home'
+    if id.start_with?('menu') && !request.path.include?('home')
       return options
     end
     if params[:tour] || first_time_logged_in || session[:tour] == "Y"
       {'data-step' => step, 'data-intro' => tour_text(id,person)}.merge!(options)
     else
-      options
+      return options
     end
   end
   
@@ -26,7 +26,11 @@ module PagesHelper
     elsif person.is_a?(Teacher)
       text = (person.try(:school).try(:synced?)) ? t("tour.teacher.integrated." + id) : t("tour.teacher.non-integrated." + id)
     else
+      text = "Unknown person type: #{person.type}"
+    end
+    if text.include?("translation_missing")
       text = "No intro text found for id: #{id} and role: #{person.type} and integrated: #{person.try(:school).try(:synced?)}"
     end
+    return text
   end
 end

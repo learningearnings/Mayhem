@@ -168,6 +168,8 @@ en:
       menu_shop: "The shopping page displays all of the rewards your teacher(s) are offering. Click on a reward to make a purchase."     
     school_admin:
       integrated:
+        create_classroom: "Click the create button to add a new classroom"   
+        add_students_to_class: "Click the Classroom name to add students to your class"               
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
         auto_credits: "This tab allows you to set parameters for iNow to automatically send electronic credits to your students."  
         menu_students: "The students page is where you manage your students."
@@ -180,6 +182,8 @@ en:
         create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
         menu_reports: "You may run a purchase report or earnings report for your students."          
       non_integrated:
+        create_classroom: "Click the create button to add a new classroom"          
+        add_students_to_class: "Click the Classroom name to add students to your class"
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
         menu_students: "The students page is where you manage your students."
         adding_students: "Click the new students button to add students. Or upload a file below to import students."
@@ -192,6 +196,8 @@ en:
         menu_reports: "You may run a purchase report or earnings report for your students."
     teacher:
       integrated:
+        create_classroom: "Click the create button to add a new classroom"  
+        add_students_to_class: "Click the Classroom name to add students to your class"                        
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
         menu_students: "The students page is where you manage your students."
         adding_students: "Click the new students button to add students. Or upload a file below to import students."
@@ -202,6 +208,8 @@ en:
         create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
         menu_reports: "You may run a purchase report or earnings report for your students."                 
       non-integrated:
+        create_classroom: "Click the create button to add a new classroom"           
+        add_students_to_class: "Click the Classroom name to add students to your class"        
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
         menu_students: "The students page is where you manage your students."
         adding_students: "Click the new students button to add students. Or upload a file below to import students."
