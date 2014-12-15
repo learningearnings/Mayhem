@@ -8,12 +8,17 @@
         = f.label :classroom_name
         = f.text_field :name, :class => 'focus-on-me'
         = f.hidden_field :school_id, :value => current_school.id
-        = f.submit 'Create', :class => "awesome-button"
+        = f.submit 'Create', intro_tour(1,'create_classroom',current_person,{:class => "awesome-button" })
 
 
   .secondary-content
     %h2 Classrooms
     #classrooms
       - if @classrooms.present?
-        - @classrooms.each do |classroom|
-          %h3= link_to classroom.name, classroom_path(classroom)
+        - @classrooms.each_with_index do |classroom, index|
+          - if (index == 0)
+            %h3
+              = link_to classroom.name, classroom_path(classroom), intro_tour(2,'add_students_to_class',current_person,{:class => "" })
+          - else 
+            %h3
+              = link_to classroom.name, classroom_path(classroom)

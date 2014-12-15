@@ -89,7 +89,7 @@ tr.introjs-showElement > th {
   top: -16px;
   left: -16px;
   z-index: 9999999999 !important;
-  padding: 2px;
+  padding: 0px;
   font-family: Arial, verdana, tahoma;
   font-size: 13px;
   font-weight: bold;
@@ -106,11 +106,15 @@ tr.introjs-showElement > th {
   width: 20px;
   height:20px;
   line-height: 20px;
-  border: 3px solid white;
+  border: 1px solid white;
   border-radius: 50%;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3019', endColorstr='#cf0404', GradientType=0); /* IE6-9 */
   filter: progid:DXImageTransform.Microsoft.Shadow(direction=135, strength=2, color=ff0000); /* IE10 text shadows */
   box-shadow: 0 2px 5px rgba(0,0,0,.4);
+}
+
+.introjs-tooltiptext {
+  font-size: initial;
 }
 
 .introjs-arrow {
