@@ -22,73 +22,90 @@ Spree::OrdersController.class_eval do
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
     quantity = variant_options.last
+    #reload the product to refresh count_on_hand to account for another student purchasing at the same time 
+    variant.reload    
     return true if current_person.checking_account.balance < (variant.price * quantity.to_i)
   end
 
 
   def populate
-    if insufficient_quantity?
-      flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
-      redirect_to :back and return
-    end
-    if insufficient_funds?
-      flash[:error] = "Sorry, you do not have enough credits to purchase this item."
-      redirect_to :back and return
-    end
+    variant_options = params[:variants].to_a.flatten
+    variant  = Spree::Variant.find variant_options.first
 
-    ActiveRecord::Base.transaction do
+    #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up    
+    mutex = RedisMutex.new("orders-blocking-#{variant.product_id}", block: 10)
+
+    if mutex.lock
       begin
-        @order = current_order(true)
-        if current_person.is_a?(Student)
-          @order.empty!
+        if insufficient_quantity?
+          flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
+          redirect_to :back and return
         end
-
-        @order.restock_items!
-        params[:products].each do |product_id,variant_id|
-          quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
-          quantity = params[:quantity][variant_id].to_i if params[:quantity].is_a?(Hash)
-          @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
-        end if params[:products]
-
-        params[:variants].each do |variant_id, quantity|
-          quantity = quantity.to_i
-          @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
-        end if params[:variants]
-        @order.unstock_items!
-
-        fire_event('spree.cart.add')
-        fire_event('spree.order.contents_changed')
-
-        # --- The above code is spree core copied ---
-        # --- Start our customization ---
-
-        if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
-          respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
-        else
-          if @order.total > current_person.checking_account.balance
-            flash[:notice] = t(:not_enough_credits_to_purchase)
-            product = @order.line_items.first.product
-            @order.empty!
-            redirect_to product and return
-          else
-            OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
-            message = "Purchase successful!."
-            if params[:variants].is_a?(Hash)
-              variant_id = params[:variants].keys.first
-              product = Spree::Variant.find(variant_id)
-              quantity = params[:variants][variant_id]
-              message = "Congratulations, you bought #{quantity} #{product.name}!"
+        if insufficient_funds?
+          flash[:error] = "Sorry, you do not have enough credits to purchase this item."
+          redirect_to :back and return
+        end
+    
+        ActiveRecord::Base.transaction do
+          begin
+            @order = current_order(true)
+            if current_person.is_a?(Student)
+              @order.empty!
             end
+    
+            @order.restock_items!
+            params[:products].each do |product_id,variant_id|
+              quantity = params[:quantity].to_i if !params[:quantity].is_a?(Hash)
+              quantity = params[:quantity][variant_id].to_i if params[:quantity].is_a?(Hash)
+              @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
+            end if params[:products]
+    
+            params[:variants].each do |variant_id, quantity|
+              quantity = quantity.to_i
+              @order.add_variant(Spree::Variant.find(variant_id), quantity) if quantity > 0
+            end if params[:variants]
+            @order.unstock_items!
+    
+            fire_event('spree.cart.add')
+            fire_event('spree.order.contents_changed')
+    
+            # --- The above code is spree core copied ---
+            # --- Start our customization ---
+    
+            if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
+              respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
+            else
+              if @order.total > current_person.checking_account.balance
+                flash[:notice] = t(:not_enough_credits_to_purchase)
+                product = @order.line_items.first.product
+                @order.empty!
+                redirect_to product and return
+              else
+                OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
+                message = "Purchase successful!."
+                if params[:variants].is_a?(Hash)
+                  variant_id = params[:variants].keys.first
+                  product = Spree::Variant.find(variant_id)
+                  quantity = params[:variants][variant_id]
+                  message = "Congratulations, you bought #{quantity} #{product.name}!"
+                end
+                redirect_to root_path, notice: message
+              end
+            end
+          rescue => e
+            message = 'There was an issue placing your order.'
             redirect_to root_path, notice: message
+            raise ActiveRecord::Rollback
           end
         end
-      rescue => e
-        message = 'There was an issue placing your order.'
-        redirect_to root_path, notice: message
-        raise ActiveRecord::Rollback
+        clear_balance_cache!
+      ensure
+            mutex.unlock
       end
+    else
+      message = 'Another student is purchasing this reward. Please try again later..'
+      redirect_to root_path, notice: message     
     end
-    clear_balance_cache!
   end
 
 

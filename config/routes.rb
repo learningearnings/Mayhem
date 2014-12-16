@@ -27,7 +27,11 @@ Leror::Application.routes.draw do
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resource :home
-  resources :delayed_reports
+  resources :delayed_reports do
+    member do
+      get :status
+    end
+  end
 
   resources :people do
     collection do
@@ -43,6 +47,7 @@ Leror::Application.routes.draw do
 
   match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
+  match '/schools/settings/update_sponsors_text' => 'schools/settings#update_sponsors_text'
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
     resources :reward_exclusions

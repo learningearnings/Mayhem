@@ -3,6 +3,7 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     @teachers = current_school.teachers.order(:first_name, :last_name)
     @distributing_teachers = current_school.distributing_teachers
     @school = current_school
+    @sponsor_post = current_school.sponsor_post
   end
 
   def index
@@ -12,6 +13,19 @@ class Schools::SettingsController < SchoolAdmins::BaseController
   def update
     current_school.update_attributes(params[:school])
     redirect_to school_credit_settings_path
+  end
+
+  def update_sponsors_text
+    sponsor_post = current_school.sponsor_post
+    sponsor_post.body = params[:our_sponsor_post][:body]
+    sponsor_post.person = current_person
+    sponsor_post.published_by = current_person
+    if sponsor_post.save
+      flash[:notice] = "Sponsor section updated successfully."
+    else
+      flash[:notice] = "Could not update sponsor section."
+    end
+    redirect_to '/schools/settings/#tab_edit-sponsors-text'
   end
 
   def toggle_revoke_credits
@@ -52,7 +66,7 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     rescue Exception => e
       flash[:error] = "Teachers import Failed. Error: #{e.message}"
     ensure
-      redirect_to '/schools/settings/'
+      redirect_to '/schools/settings/#tab_import-teachers'
     end
   end
 
