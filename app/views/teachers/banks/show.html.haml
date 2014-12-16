@@ -11,18 +11,18 @@
         %strong
           Credits Available:
         = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, :class => 'btn awesome-button'
+        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, intro_tour(2,'credit_categories',current_person,{:class => 'btn awesome-button', 'data-position' => 'right'})
     - if current_person.try(:can_distribute_credits)
       .distribute-credits
         %h3 Distribute Credits
         %ul#distribute-credits{:class => "nav nav-tabs"}
           %li
-            %a{:href => "#print-credits", 'data-toggle' => 'tab'}
+            %a{ intro_tour(3,'print_credits',current_person,{:href => "#print-credits", 'data-toggle' => 'tab', 'data-position' => 'right'})}
               %p
                 %i{:class => "icon-print"}
                 Print Credits
           %li
-            %a.electronic_credits{:href => "#electronic-credits", 'data-toggle' => 'tab'}
+            %a.electronic_credits{ intro_tour(4,'e_credits',current_person,{:href => "#electronic-credits", 'data-toggle' => 'tab', 'data-position' => 'right'})}
               %p
                 %i{:class => "icon-envelope"}
                 Electronic Credits
