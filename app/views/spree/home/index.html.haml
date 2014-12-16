@@ -11,7 +11,7 @@
     - if current_person.is_a?(Teacher)
       %p
         = t('.products_message', :scope => [store_type,current_person.type.downcase])
-        %a{intro_tour(1, 'add_or_manage_your_rewards', current_person, {:href => main_app.teachers_rewards_path, :class => 'btn awesome-button'})} Add or Manage Your Rewards
+        %a{intro_tour(2, 'add_or_manage_your_rewards', current_person, {:href => main_app.teachers_rewards_path, :class => 'btn awesome-button'})} Add or Manage Your Rewards
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 
@@ -20,3 +20,15 @@
     %h2 School Auctions
     %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
     %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
+
+- if current_person.is_a? SchoolAdmin
+  :javascript
+    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
+      window.location.href = "/school_admins/reports?multipage=true&tour=Y";
+    });  
+
+- if current_person.is_a? Teacher
+  :javascript
+    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
+      window.location.href = "/teachers/reports?multipage=true&tour=Y";
+    });      

@@ -153,3 +153,8 @@
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
+
+:javascript
+  introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
+    window.location.href = "/classrooms?multipage=true&tour=Y";
+  }); 
