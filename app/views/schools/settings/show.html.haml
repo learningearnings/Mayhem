@@ -113,7 +113,17 @@
       window.location.hash = e.target.hash.replace("#", "#" + prefix);
   });
 
+  // Update the preview as the user types
+  $('#our_sponsor_post_body').keyup(function() {
+    $('.our-sponsors').html(
+      $('#our_sponsor_post_body').val()
+    );
+  });
+  
   $('.auto-update').change( function(e) {
+  
+    console.log("auto update");
+    
     var element = $(e.currentTarget);
     $.ajax({
       type: "POST",
@@ -123,15 +133,12 @@
         "person-id": element.data("person-id"),
         "value": element.val()
       }
-    }).done( function(data, textStatus, jqXHR) {
+    })
+    .done( function(data, textStatus, jqXHR) {
       element.closest('td').animateHighlight("#FFFF9C", 250);
-    }).fail(function(jqXHR, textStatus, errorThrown) {
-      console.log(jqXHR);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR); 
     });
-
-  // Update the preview as the user types
-  $('#our_sponsor_post_body').keyup(function() {
-    $('.our-sponsors').html(
-      $('#our_sponsor_post_body').val()
-    );
   });
+
