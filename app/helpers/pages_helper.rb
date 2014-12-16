@@ -8,8 +8,12 @@ module PagesHelper
   end
   
   def intro_tour(step, id, person, options)
-    if id.start_with?('menu') && !request.path.include?('home')
-      return options
+    #only highlight menu option of current page
+    if id.start_with?('menu') 
+      page = id.split("_")[1]
+      if !request.path.include?(page)
+        return options
+      end
     end
     if params[:tour] || first_time_logged_in || session[:tour] == "Y"
       {'data-step' => step, 'data-intro' => tour_text(id,person)}.merge!(options)
@@ -22,9 +26,9 @@ module PagesHelper
     if person.is_a?(Student)
       text = t("tour.student." + id)
     elsif person.is_a?(SchoolAdmin)
-      text = (person.try(:school).try(:synced?)) ? t("tour.school_admin.integrated." + id) : t("tour.school_admin.non-integrated." + id)
+      text = (person.try(:school).try(:synced?)) ? t("tour.school_admin.integrated." + id) : t("tour.school_admin.non_integrated." + id)
     elsif person.is_a?(Teacher)
-      text = (person.try(:school).try(:synced?)) ? t("tour.teacher.integrated." + id) : t("tour.teacher.non-integrated." + id)
+      text = (person.try(:school).try(:synced?)) ? t("tour.teacher.integrated." + id) : t("tour.teacher.non_integrated." + id)
     else
       text = "Unknown person type: #{person.type}"
     end
@@ -33,4 +37,5 @@ module PagesHelper
     end
     return text
   end
+  
 end
