@@ -78,8 +78,6 @@
    * @returns {Boolean} Success or not?
    */
   function _introForElement(targetElm) {
-  	console.log("_introForElement");
-  	console.log(targetElm);
     var introItems = [],
         self = this;
 
@@ -194,7 +192,7 @@
           nextStepButton = targetElm.querySelector('.introjs-nextbutton');
 
       self._onKeyDown = function(e) {
-      	console.log("Key code is: " + e.keyCode);
+ 
         if (e.keyCode === 27 && self._options.exitOnEsc == true) {
           //escape key pressed, exit the intro
           _exitIntro.call(self, targetElm);
@@ -344,7 +342,7 @@
    * @param {Object} targetElement
    */
   function _exitIntro(targetElement) {
-  	console.log("exitIntro");
+
     //remove overlay layer from the page
     var overlayLayer = targetElement.querySelector('.introjs-overlay');
 
@@ -352,10 +350,10 @@
     if (overlayLayer == null) {
       return;
     }
-console.log("exitIntro: set overlay opacity...");
+
     //for fade-out animation
     overlayLayer.style.opacity = 0;
-    console.log(overlayLayer);
+
     setTimeout(function () {
       if (overlayLayer.parentNode) {
         overlayLayer.parentNode.removeChild(overlayLayer);
@@ -1051,7 +1049,7 @@ console.log("exitIntro: set overlay opacity...");
    * @param {Object} targetElm
    */
   function _addOverlayLayer(targetElm) {
-  	console.log("addOverlayLayer...")
+
     var overlayLayer = document.createElement('div'),
         styleText = '',
         self = this;
