@@ -8,3 +8,8 @@
     - if current_person.is_a?(SchoolAdmin)
       %h4= link_to "Teacher Activity Report", teacher_activity_report_path
     %h4= link_to "Student Credit History Report",  student_credit_history_report_path
+    
+:javascript
+  $(document).ready( function() {
+    introJs().start();
+  } );  
