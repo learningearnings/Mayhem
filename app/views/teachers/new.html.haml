@@ -1,36 +1,34 @@
 .main-content-wrapper
   %h2 New Teacher
 
-  %p If you are a teacher and would like to sign-up for Learning Earnings, please email #{mail_to "TheTeam@LearningEarnings.com"} with your information as well as the school where you teach and we will walk you through the process.
-
--#
-  = form_for @teacher do |f|
+  = bootstrap_form_for @teacher_signup_form do |f|
     .row
-      .span3
-        = f.label :first_name
+      .span4
+        %h3 Teacher
         = f.text_field :first_name
-        = f.label :last_name
         = f.text_field :last_name
-        = f.label :email
         = f.text_field :email
-        = f.label :username
         = f.text_field :username
-        = f.label :dob
-        = f.text_field :dob, :class => 'datepicker'
-      .span3
-        = f.label :gender
-        = f.select :gender, options_for_select(['Male', 'Female'], :gender), :include_blank => true
-        = f.label :grade
-        = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], :grade), :include_blank => true
-        = label_tag :school
-        = select_tag :school_id, options_from_collection_for_select(School.order(:name).all, :id, :to_s), :include_blank => true
-        = f.label :password
+        = f.text_field :dob, :class => 'datepicker', label: "Date of Birth"
+        = f.select :gender, options_for_select(['Male', 'Female'], selected: @teacher_signup_form.gender), :include_blank => true
+        = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], selected: @teacher_signup_form.grade), :include_blank => true
         = f.password_field :password
-        = f.label :password_confirmation
         = f.password_field :password_confirmation
+      .span4
+        %h3 School
+        = f.text_field :name
+        = f.text_field :address1, label: "Address"
+        = f.text_field :city
+        = f.select :state_id, options_from_collection_for_select(State.all, 'id', 'abbr', selected: @teacher_signup_form.state_id), include_blank: true
+        = f.text_field :zip
     = f.submit 'Submit', class: 'btn awesome-button'
 
   :javascript
     $(function() {
       $( ".datepicker" ).datepicker();
+    });
+
+    // Set username to user's email
+    $('#teacher_email').blur( function(e) {
+      $('#teacher_username').val($(e.currentTarget).val());
     });

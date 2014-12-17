@@ -24,6 +24,8 @@ Spree::OrdersController.class_eval do
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
     quantity = variant_options.last
+    #reload the product to refresh count_on_hand to account for another student purchasing at the same time 
+    variant.reload    
     return true if current_person.checking_account.balance < (variant.price * quantity.to_i)
   end
 
@@ -34,7 +36,7 @@ Spree::OrdersController.class_eval do
     #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up    
     mutex = RedisMutex.new("orders-blocking-#{variant.product_id}", block: 10)
     if mutex.lock
-       begin
+      begin
         if insufficient_quantity?
           flash[:error] = "Sorry, we don't have enough of that! Please try your order again."
           redirect_to :back and return
@@ -46,7 +48,7 @@ Spree::OrdersController.class_eval do
     
         ActiveRecord::Base.transaction do
           begin
-             @order = current_order(true)
+            @order = current_order(true)
             if current_person.is_a?(Student)
               @order.empty!
             end
@@ -69,6 +71,7 @@ Spree::OrdersController.class_eval do
     
             # --- The above code is spree core copied ---
             # --- Start our customization ---
+    
             if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
               respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
             else
@@ -102,7 +105,7 @@ Spree::OrdersController.class_eval do
       ensure
         mutex.unlock
       end
-   else
+    else
       message = 'Another student is purchasing this reward. Please try again later..'
       redirect_to root_path, notice: message     
     end        

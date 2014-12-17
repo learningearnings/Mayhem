@@ -44,7 +44,7 @@ module Teachers
         render action: :new
       end
     end
-    
+
     protected
     def load_edit
       @actions = [
