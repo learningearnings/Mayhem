@@ -15,13 +15,12 @@ class FaqQuestionsController < LoggedInController
   end
   
   def begin_tour
-    session[:tour] = "Y"
     if current_person.is_a?(Student)
-      redirect_to main_app.inbox_path
-    elsif current_person.is_a?(SchoolAdmin)
-      redirect_to main_app.school_admins_bank_path      
+      redirect_to "/inbox/teacher_messages?tour=Y"
+    elsif current_person.is_a?(SchoolAdmin) 
+      redirect_to "/school_admins/bank?tour=Y"    
     elsif current_person.is_a?(Teacher)
-      redirect_to main_app.teachers_bank_path
+      redirect_to "/teachers/bank?tour=Y"
     else
       redirect_to main_app.home_path
     end
@@ -29,7 +28,6 @@ class FaqQuestionsController < LoggedInController
   end
   
   def end_tour
-    session[:tour] = nil
     redirect_to main_app.home_path
   end
   
