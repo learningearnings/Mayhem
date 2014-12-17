@@ -185,6 +185,7 @@ en:
         create_classroom: "Click the create button to add a new classroom"          
         add_students_to_class: "Click the Classroom name to add students to your class"
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
+        auto_credits: "This tab allows you to set parameters for iNow to automatically send electronic credits to your students."          
         menu_students: "The students page is where you manage your students."
         adding_students: "Click the new students button to add students. Or upload a file below to import students."
         adding_teachers: "You may add teachers by clicking the new teachers button."
