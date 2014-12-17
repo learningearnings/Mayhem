@@ -35,6 +35,7 @@ Spree::OrdersController.class_eval do
 
     #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up    
     mutex = RedisMutex.new("orders-blocking-#{variant.product_id}", block: 10)
+
     if mutex.lock
       begin
         if insufficient_quantity?
@@ -83,9 +84,6 @@ Spree::OrdersController.class_eval do
               else
                 OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
                 message = "Purchase successful!."
-                if @order.line_items.first.product.fulfillment_type == "Locker Sticker"
-                  StickerPurchase.create(sticker_id: @order.line_items.first.product.sticker_id, person_id: current_person.id, expires_at: Time.zone.now + 30.days)
-                end
                 if params[:variants].is_a?(Hash)
                   variant_id = params[:variants].keys.first
                   product = Spree::Variant.find(variant_id)
@@ -108,7 +106,7 @@ Spree::OrdersController.class_eval do
     else
       message = 'Another student is purchasing this reward. Please try again later..'
       redirect_to root_path, notice: message     
-    end        
+    end
   end
 
 
