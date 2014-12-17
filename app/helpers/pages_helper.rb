@@ -15,7 +15,7 @@ module PagesHelper
         return options
       end
     end
-    if params[:tour] || first_time_logged_in || session[:tour] == "Y"
+    if params[:tour] || first_time_logged_in
       {'data-step' => step, 'data-intro' => tour_text(id,person)}.merge!(options)
     else
       return options
