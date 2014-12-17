@@ -21,6 +21,7 @@ class TeacherSignupForm
   validates :zip,                   presence: true
   validate  :uniqueness_of_email
   validate  :uniqueness_of_school
+  validate  :password_matches_confirmation
 
   def initialize(attributes={})
     attributes.each do |name, value|
@@ -70,6 +71,12 @@ class TeacherSignupForm
   def uniqueness_of_school
     if School.exists?(['LOWER(name) = LOWER(?) AND LOWER(city) = LOWER(?) AND state_id = ?', name, city, state_id])
       errors.add(:school, "is already registered")
+    end
+  end
+
+  def password_matches_confirmation
+    unless password.present? && password == password_confirmation
+      errors.add(:password_confirmation, "doesn't match the password.")
     end
   end
 
