@@ -9,6 +9,7 @@ class TeachersController < ApplicationController
     setup_fake_data
     @teacher_signup_form = TeacherSignupForm.new(params[:teacher])
     if @teacher_signup_form.save
+      request.env["devise.skip_trackable"] = true
       sign_in(@teacher_signup_form.person.user)
       session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
