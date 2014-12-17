@@ -6,6 +6,7 @@ class TeachersController < ApplicationController
   end
 
   def create
+    setup_fake_data
     @teacher_signup_form = TeacherSignupForm.new(params[:teacher])
     if @teacher_signup_form.save
       sign_in(@teacher_signup_form.person.user)
@@ -49,5 +50,13 @@ class TeachersController < ApplicationController
       flash[:error] = "Teacher account already active."
     end
     redirect_to '/'
+  end
+
+  private
+
+  def setup_fake_data
+    params[:teacher][:grade] = 5
+    params[:teacher][:address1] = "Fake Address"
+    params[:teacher][:zip] = 12345
   end
 end

@@ -68,7 +68,7 @@ class TeacherSignupForm
   end
 
   def uniqueness_of_school
-    if School.exists?(['LOWER(name) = LOWER(?) AND LOWER(address1) = LOWER(?)', name, address1])
+    if School.exists?(['LOWER(name) = LOWER(?) AND LOWER(city) = LOWER(?) AND state_id = ?', name, city, state_id])
       errors.add(:school, "is already registered")
     end
   end

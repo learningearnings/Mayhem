@@ -9,18 +9,13 @@
         = f.text_field :last_name
         = f.text_field :email
         = f.text_field :username
-        = f.text_field :dob, :class => 'datepicker', label: "Date of Birth"
-        = f.select :gender, options_for_select(['Male', 'Female'], selected: @teacher_signup_form.gender), :include_blank => true
-        = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], selected: @teacher_signup_form.grade), :include_blank => true
         = f.password_field :password
         = f.password_field :password_confirmation
       .span4
         %h3 School
         = f.text_field :name
-        = f.text_field :address1, label: "Address"
         = f.text_field :city
         = f.select :state_id, options_from_collection_for_select(State.all, 'id', 'abbr', selected: @teacher_signup_form.state_id), include_blank: true
-        = f.text_field :zip
     = f.submit 'Submit', class: 'btn awesome-button'
 
   :javascript
