@@ -773,6 +773,9 @@ html.resp, body.resp {
   top: 60px;
   left: 265px;
   z-index: 0;
+  &:hover {
+    -webkit-filter: saturate(500%);
+  }
 }
 
 .kids-credits-cta {
