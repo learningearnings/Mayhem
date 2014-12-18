@@ -22,5 +22,14 @@
     %br/
     %h3 Need help?
     = link_to 'Send Message', teachers_leadmin_message_path, :class => 'btn awesome-button'
-    
 
+- if current_person.is_a? SchoolAdmin
+  :javascript
+    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
+      window.location.href = "/school_admins/bank?multipage=true&tour=Y";
+    });  
+- else
+  :javascript
+    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
+      window.location.href = "/teachers/bank?multipage=true&tour=Y";
+    });      

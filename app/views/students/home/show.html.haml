@@ -63,3 +63,8 @@
             = "#{choice.votes.count} Votes"
           %br
           = f.submit 'Vote'
+          
+:javascript
+  introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
+    window.location.href = "/inbox/teacher_messages?multipage=true&tour=Y";
+  });      
