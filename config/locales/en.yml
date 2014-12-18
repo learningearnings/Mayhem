@@ -161,13 +161,15 @@ en:
         forgot_your_password: "Forgot your password?"
   tour:
     student:
+      menu_home: "The home page is where you will find details about new LE features"       
       menu_bank: "Bank page is where you deposit your hard earned credits."
-      deposit_printed_codes: "If you received a printed code. Press the Deposit Printed Codes button to deposit the credits into your account."
+      deposit_printed_codes: "If you received a printed Credit. Press the Deposit Printed Codes button to deposit the credits into your account."
       view_checking_history: "You may view your checking account history by viewing the checking account history."
       menu_inbox: "If your teacher sends you an electronic credit, you will receive a message below. You can deposit electronic credits by clicking on the Claim Credits link in the message."
       menu_store: "The shopping page displays all of the rewards your teacher(s) are offering. Click on a reward to make a purchase."     
     school_admin:
       integrated:
+        menu_home: "The home page is where you will find details about new LE features"         
         create_classroom: "Click the create button to add a new classroom"   
         add_students_to_class: "Click the Classroom name to add students to your class"               
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
@@ -182,6 +184,7 @@ en:
         create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
         menu_reports: "You may run a purchase report or earnings report for your students."          
       non_integrated:
+        menu_home: "The home page is where you will find details about new LE features"         
         create_classroom: "Click the create button to add a new classroom"          
         add_students_to_class: "Click the Classroom name to add students to your class"
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
@@ -197,6 +200,7 @@ en:
         menu_reports: "You may run a purchase report or earnings report for your students."
     teacher:
       integrated:
+        menu_home: "The home page is where you will find details about new LE features"         
         create_classroom: "Click the create button to add a new classroom"  
         add_students_to_class: "Click the Classroom name to add students to your class"                        
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
@@ -212,6 +216,7 @@ en:
         create_new_custom_reward: "Click this button to add a reward to your classroom. You may also customize an existing reward template by clicking on it below."
         menu_reports: "You may run a purchase report or earnings report for your students."                 
       non_integrated:
+        menu_home: "The home page is where you will find details about new LE features"         
         create_classroom: "Click the create button to add a new classroom"           
         add_students_to_class: "Click the Classroom name to add students to your class"        
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."

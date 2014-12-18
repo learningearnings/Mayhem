@@ -1,5 +1,5 @@
 %ul.primary-nav
-  %li= link_to "Home",      main_app.home_path, class: 'home'
+  %li= link_to "Home",      main_app.home_path, intro_tour(1,'menu_home',current_person,{:class => 'home', 'data-position' => 'right'})
   %li= link_to "Locker",    main_app.locker_path, class: 'locker' unless current_person.is_a?(Student) && current_person.grade > 8
   %li= link_to inbox_label_with_message_count("Inbox", current_person.received_messages), main_app.inbox_path, intro_tour(1,'menu_inbox',current_person,{:class => 'inbox_with_count'})
   %li= link_to "Bank",      main_app.bank_path, intro_tour(1,'menu_bank',current_person,{:class => 'bank'})

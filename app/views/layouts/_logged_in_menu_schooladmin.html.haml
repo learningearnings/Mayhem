@@ -1,5 +1,5 @@
 %ul.primary-nav
-  %li= link_to "Home",       main_app.home_path, class: 'home'
+  %li= link_to "Home",       main_app.home_path, intro_tour(1,'menu_home',current_person,{:class => 'home', 'data-position' => 'right'})
   %li= link_to "Inbox",      main_app.teachers_inbox_path, :class => 'inbox'
   %li= link_to "Bank",       main_app.school_admins_bank_path, intro_tour(1,'menu_bank',current_person,{:class => 'bank'})
   %li= link_to "Students",   students_path, intro_tour(1,'menu_students',current_person,{:class =>'manage_students'})

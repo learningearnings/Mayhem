@@ -16,15 +16,10 @@ class FaqQuestionsController < LoggedInController
   
   def begin_tour
     if current_person.is_a?(Student)
-      redirect_to "/inbox/teacher_messages?tour=Y"
-    elsif current_person.is_a?(SchoolAdmin) 
-      redirect_to "/school_admins/bank?tour=Y"    
-    elsif current_person.is_a?(Teacher)
-      redirect_to "/teachers/bank?tour=Y"
-    else
-      redirect_to main_app.home_path
+      redirect_to "/students/home?tour=Y"
+    else 
+      redirect_to "/teachers/home?tour=Y"
     end
-    
   end
   
   def end_tour
