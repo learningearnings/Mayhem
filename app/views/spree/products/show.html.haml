@@ -5,6 +5,8 @@
       - @body_id = 'product-details'
 
       .product-item
+        %h1.product-title{itemprop: "name"}
+          = accurate_title
         .product-image{"data-hook" => "product_left_part"}
           %div{ "data-hook" => "product_left_part_wrap" }
             #product-images{"data-hook" => "product_images" }
@@ -16,8 +18,6 @@
         .product-meta{ "data-hook" => "product_right_part" }
           %div{ "data-hook" => "product_right_part_wrap" }
             #product-description{ "data-hook" => "product_description" }
-              %h1.product-title{ itemprop: "name" }= accurate_title
-
               %div{ "itemprop" => "description", "data-hook" => "description" }
                 = @product.description || t(:product_has_no_description)
               - if current_school && current_person && (actual_subdomain == current_school.store_subdomain && current_person.is_a?(Student)) || (actual_subdomain == 'le' && current_person.is_a?(SchoolAdmin))

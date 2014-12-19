@@ -1,8 +1,8 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Activity Report
+    %h2 Teacher Activity Report
     %h3= report.range if report.range
-    = simple_form_for report.parameters,  :url => activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+    = simple_form_for report.parameters,  :url => teacher_activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
         = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
       .sorting

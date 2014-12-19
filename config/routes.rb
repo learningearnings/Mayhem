@@ -27,7 +27,11 @@ Leror::Application.routes.draw do
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resource :home
-  resources :delayed_reports
+  resources :delayed_reports do
+    member do
+      get :status
+    end
+  end
 
   resources :people do
     collection do
@@ -43,6 +47,7 @@ Leror::Application.routes.draw do
 
   match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
+  match '/schools/settings/update_sponsors_text' => 'schools/settings#update_sponsors_text'
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
     resources :reward_exclusions
@@ -131,7 +136,8 @@ Leror::Application.routes.draw do
 
   match '/reports/refund' => 'reports/purchases#refund_purchase', as: 'refund_purchase'
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
-  match '/reports/activity' => 'reports/activity#show', as: 'activity_report'
+  match '/reports/student_activity' => 'reports/student_activity#show', as: 'student_activity_report'
+  match '/reports/teacher_activity' => 'reports/teacher_activity#show', as: 'teacher_activity_report'
 
   match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
   get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'

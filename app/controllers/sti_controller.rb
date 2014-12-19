@@ -82,7 +82,22 @@ class StiController < ApplicationController
     return false if teacher.nil?
     school = teacher.schools.where(district_guid: params[:districtGUID]).first
     sign_in(teacher.user)
-    session[:current_school_id] = school.id
+    #session[:current_school_id] = school.id
+    # Current workaround for loading up the correct school
+    #  This is based off of looking up the school that a
+    #  student is associated with
+    student_sti_id = params["studentIds"].split(",").first if params["studentIds"].present?
+    if student_sti_id.present?
+      student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id).first
+      # Use the latest school the student was linked with
+      #  this fixes yet another bug where a student can be
+      #  associated to multiple schools, even though they are
+      #  only suppose to be associated to 1.
+      session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
+    else
+      # This is left in, just so the iFrame doesn't break if there are no studentIds
+      session[:current_school_id] = school.id
+    end
     return true
   end
 
