@@ -12,7 +12,7 @@ class ClassroomsController < LoggedInController
     @classroom = Classroom.find(params[:id])
     respond_to do |format|
       format.html { render layout: true }
-      format.json { render json: @classroom.students.order(:last_name, :first_name)}
+      format.json { render json: @classroom.students.order(:last_name, :first_name) }
     end
   end
 
@@ -63,7 +63,7 @@ class ClassroomsController < LoggedInController
             flash[:notice] = "Student added to classroom."
             redirect_to classroom_path(@classroom)
           }
-          format.json { render :json => {:result => 'success', :flash => 'Student added to classroom.', :request => classroom_path(@classroom) } }
+          format.json { render :json => {:status => 200, :result => 'success', :students => @classroom.students.order(:last_name, :first_name), :flash => 'Student added to classroom.', :request => classroom_path(@classroom) } }
         end
       else
         respond_to do |format|
@@ -71,7 +71,7 @@ class ClassroomsController < LoggedInController
             flash[:error] = pscl.errors.full_messages.to_sentence
             render :show
           }
-          format.json { render :json => {:result => 'error', :flash => 'There was an error adding student to classroom.', :request => classroom_path(@classroom) } }
+          format.json { render :json => {:status => 400, :result => 'error', :flash => 'There was an error adding student to classroom.', :request => classroom_path(@classroom) } }
         end
       end
     else
