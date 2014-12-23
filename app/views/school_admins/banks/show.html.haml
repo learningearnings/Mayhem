@@ -63,7 +63,7 @@
               = label_tag 'Credits'
               = text_field_tag :points, nil, :class => "input-mini credits"
               = f.label :otu_code_category_id, "Credit Category"
-              = f.select :otu_code_category_id, options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]})
+              = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
               = f.submit 'Send These Credits', :class => 'awesome-button'
 
             %h4 Issue Electronic Credits to each student in a classroom
@@ -73,7 +73,7 @@
               = label_tag 'Credits'
               = text_field_tag :class_points, nil,:class => 'class_points input-mini credits', :onclick => 'copy_points();'
               = f.label :otu_code_category_id, "Credit Category"
-              = f.select :otu_code_category_id, options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
+              = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
               #classroom_distribution
 
           .tab-pane#transfer-credits
@@ -132,7 +132,7 @@
               <input type='text' name='credits[{{id}}]' class='classroom_student_points' />
             </td>
             <td>
-              #{select_tag 'credit_categories[{{id}}]', options_for_select(current_person.otu_code_categories.map{|x| [x.name, x.id]}), class: "classroom_student_reasons", id: "classroom_otu_code_category_{{id}}"}
+              #{select_tag 'credit_categories[{{id}}]', options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), class: "classroom_student_reasons", id: "classroom_otu_code_category_{{id}}"}
             </td>
           </tr>
         {{/students}}

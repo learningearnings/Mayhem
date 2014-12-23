@@ -26,7 +26,7 @@ class Classroom < ActiveRecord::Base
 
   # Roll our own Relationships (with ARel merge!)
   def person_school_links(status = :status_active)
-    PersonSchoolLink.joins(:person_school_classroom_links).where(person_school_classroom_links: { classroom_id: id }).send(status)
+    PersonSchoolLink.joins(:person_school_classroom_links).where(person_school_classroom_links: { classroom_id: id, status: "active" }).send(status)
   end
 
   def students(status = :status_active)
