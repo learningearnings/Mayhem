@@ -4,11 +4,11 @@
     .create-classroom
       %h3 Create a Classroom
       %hr
-      = form_for Classroom.new do |f|
+      = form_for Classroom.new, html: intro_tour(2, 'create_classroom', current_person, {}) do |f|
         = f.label :classroom_name
         = f.text_field :name, :class => 'focus-on-me'
         = f.hidden_field :school_id, :value => current_school.id
-        = f.submit 'Create', intro_tour(2,'create_classroom',current_person,{:class => "awesome-button" })
+        = f.submit 'Create', :class => "awesome-button submit"
 
 
   .secondary-content
@@ -22,8 +22,51 @@
           - else 
             %h3
               = link_to classroom.name, classroom_path(classroom)
+
+%script#classroom_list{ type: 'text/html' }
+  :plain
+    {{#classrooms}}
+      <h3 data-id={{id}}>
+        <a href="/classrooms/{{id}}">{{name}}</a>
+      </h3>
+    {{/classrooms}}
               
 :javascript
-  introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
+  $('.submit').click(function(e) {
+    e.preventDefault();
+    var $form = $('#new_classroom');
+    var values = $form.serialize();
+
+    $.ajax({
+      type: "POST",
+      url: $form.attr('action'),
+      data: values,
+      dataType: 'JSON'
+    }).success(function(response) {
+      if (response.status == "ok") {
+        var classroom = response.classroom.classroom;
+        var classrooms = $.map(response.classrooms, function(classroom) {
+          return classroom.classroom;
+        });
+        ich.grabTemplates();
+        var html = ich.classroom_list({classrooms: classrooms});
+        $('#classrooms').html(html);
+
+        // Set tour step for newly created class
+        var $el = $('[data-id='+classroom.id+'] a')
+        $el.addClass('introjs-showElement introjs-relativePosition');
+        $el.attr('data-intro', 'Here you can see your newly created classroom.');
+        $el.attr('data-step', '3');
+
+        // If Tour is running, proceed to next step
+        if (typeof classroomIntro != "undefined") {
+          classroomIntro.refresh();
+          classroomIntro.nextStep();
+        }
+      }
+    });
+  });
+
+  var classroomIntro = introJs().setOptions({'doneLabel': 'Next page'}).start().oncomplete(function() {
     window.location.href = "/store?multipage=true&tour=Y";
   });  

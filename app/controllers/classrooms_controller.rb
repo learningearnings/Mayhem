@@ -81,19 +81,30 @@ class ClassroomsController < LoggedInController
   end
 
   def create
-    @classroom = Classroom.new(params[:classroom])
-    @classroom.school_id = current_school.id
-    if @classroom.save
-      current_person<<@classroom
-      psl = PersonSchoolLink.find_by_person_id_and_school_id(current_person.id, current_school.id)
-      pscl = PersonSchoolClassroomLink.find_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
-      pscl.activate
-      pscl.update_attribute(:owner, true)
-      flash[:notice] = "Classroom Created."
-      redirect_to classrooms_path
+    classroom_creator = ClassroomCreator.new(params[:classroom][:name], current_person, current_school)
+    classroom_creator.execute!
+    if classroom_creator.success?
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "Classroom Created."
+          redirect_to classrooms_path
+        }
+        format.json {
+          render json: {
+            status: :ok,
+            classroom: classroom_creator.classroom,
+            classrooms: current_person.classrooms.order('name ASC').uniq
+          }
+        }
+      end
     else
-      flash[:error] = "Classroom not created."
-      render :index
+      respond_to do |format|
+        format.html {
+          flash[:error] = "Classroom not created."
+          render :index
+        }
+        format.json { render json: { status: :unprocessible_entity, notice: 'Classroom not created.' } }
+      end
     end
   end
 
