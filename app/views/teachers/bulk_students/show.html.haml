@@ -30,8 +30,3 @@
         = file_field_tag :file
       = submit_tag 'Import Students', class: "btn awesome-button"
 
-:javascript
-  introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-    window.location.href = "/classrooms?multipage=true&tour=Y";
-  }); 
-  

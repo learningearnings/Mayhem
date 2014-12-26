@@ -192,6 +192,7 @@
           nextStepButton = targetElm.querySelector('.introjs-nextbutton');
 
       self._onKeyDown = function(e) {
+ 
         if (e.keyCode === 27 && self._options.exitOnEsc == true) {
           //escape key pressed, exit the intro
           _exitIntro.call(self, targetElm);
@@ -341,6 +342,7 @@
    * @param {Object} targetElement
    */
   function _exitIntro(targetElement) {
+
     //remove overlay layer from the page
     var overlayLayer = targetElement.querySelector('.introjs-overlay');
 
@@ -351,6 +353,7 @@
 
     //for fade-out animation
     overlayLayer.style.opacity = 0;
+
     setTimeout(function () {
       if (overlayLayer.parentNode) {
         overlayLayer.parentNode.removeChild(overlayLayer);
@@ -1046,6 +1049,7 @@
    * @param {Object} targetElm
    */
   function _addOverlayLayer(targetElm) {
+
     var overlayLayer = document.createElement('div'),
         styleText = '',
         self = this;

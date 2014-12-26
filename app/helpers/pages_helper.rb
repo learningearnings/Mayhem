@@ -37,5 +37,5 @@ module PagesHelper
     end
     return text
   end
-  
+
 end

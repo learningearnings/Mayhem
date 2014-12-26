@@ -20,10 +20,10 @@
     %h2 School Auctions
     %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
     %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
-    
+
 - if current_person.is_a? Student
   :javascript
-    introJs().start(); 
+    introJs().start();  
     
 - if current_person.is_a? SchoolAdmin
   :javascript

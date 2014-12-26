@@ -5,8 +5,7 @@
       = render 'messages_interface'
   .secondary-content
     = render 'boxes_nav'
-
-
+    
 :javascript
   introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
     window.location.href = "/bank?multipage=true&tour=Y";

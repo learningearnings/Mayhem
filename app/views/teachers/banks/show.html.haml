@@ -12,7 +12,12 @@
           Credits Available:
         = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
         = link_to 'Edit Credit Categories', teachers_otu_code_types_path, intro_tour(2,'credit_categories',current_person,{:class => 'btn awesome-button', 'data-position' => 'right'})
+<<<<<<< HEAD
     - if current_person.try(:can_distribute_credits)
+=======
+
+    - if can?(:distribute, :credits)
+>>>>>>> feature/intro_tours_old
       .distribute-credits
         %h3 Distribute Credits
         %ul#distribute-credits{:class => "nav nav-tabs"}
@@ -152,8 +157,9 @@
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
-
+  
 :javascript
   introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-    window.location.href = "/teachers/bulk_students?multipage=true&tour=Y";
+    window.location.href = "/store?multipage=true&tour=Y";
   }); 
+
