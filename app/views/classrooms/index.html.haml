@@ -27,7 +27,7 @@
   :plain
     {{#classrooms}}
       <h3 data-id={{id}}>
-        <a href="/classrooms/{{id}}">{{name}}</a>
+        <a href="/classrooms/{{id}}?tour=Y">{{name}}</a>
       </h3>
     {{/classrooms}}
               
@@ -68,5 +68,5 @@
   });
 
   var classroomIntro = introJs().setOptions({'doneLabel': 'Next page'}).start().oncomplete(function() {
-    window.location.href = "/store?multipage=true&tour=Y";
+    //window.location.href = "/store?multipage=true&tour=Y";
   });  

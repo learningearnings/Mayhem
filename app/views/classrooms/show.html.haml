@@ -90,18 +90,83 @@
 :javascript
   $(".chzn-select").chosen();
 
-  $('.add-existing-student').click(function(e) {
+  var tour = {
+    id: 'test',
+    steps: [
+      {
+        target: document.querySelector('.resp-page-content'),
+        content: "This is where you add students to your classroom",
+        placement: "top"
+      },
+      {
+        target: document.querySelector('.btn.add-new-student'),
+        content: "Click here to add a new student",
+        placement: "left",
+        showNextButton: false
+      },
+      {
+        target: document.querySelector('#add-new-student-modal'),
+        content: "This is where you will add a new student's information. Enter your student's information and click Add",
+        placement: "left",
+        showNextButton: false,
+        onNext: function() {}
+      },
+      {
+        target: document.querySelector('#classroom-students'),
+        content: "The new user shows up in the table.",
+        placement: "top"
+      }
+    ]
+  }
+
+  hopscotch.startTour(tour);
+
+  // var intro = introJs();
+  //
+  // intro.setOptions({
+  //   exitOnOverlayClick: false,
+  //   showButtons: false,
+  //   steps: [{
+  //     element: document.querySelector('.container'),
+  //     intro: "This is where you add students to your classroom."
+  //   }, {
+  //     element: document.querySelector('.btn.add-new-student'),
+  //     intro: "Click here to add a new student."
+  //   }, {
+  //     element: document.querySelector('#add-new-student-modal'),
+  //     intro: "This is where you will add a new student's information.",
+  //     position: "left"
+  //   }, {
+  //     element: document.querySelector('#classroom-students'),
+  //     intro: "The new user shows up in the table.",
+  //     position: "bottom"
+  //   }]
+  // });
+  //
+  // intro.start();
+
+  // var intro = introJs().start().onexit(function(e) {
+  //   intro = null;
+  // });
+
+  $('.btn.add-existing-student').click(function(e) {
     e.preventDefault();
     $('#add-existing-student-modal').modal('show');
   });
 
-  $('.add-new-student').click(function(e) {
+  $('.btn.add-new-student').click(function(e) {
     e.preventDefault();
     $('#add-new-student-modal').modal('show');
+
+    hopscotch.nextStep();
   });
 
   $('.add-new-student-save').click(function(e) {
     e.preventDefault();
+
+    // Mock adding a user
+    //$('#classroom-students tbody').append('<tr><td>Bradley Price</td><td>No</td><td>bprice</td><td><a href="#">Remove</a></td></tr>')
+    //$('.modal').modal('hide');
     var form = $('form.add-new-student');
     var values = form.serialize();
     $.ajax({
@@ -110,8 +175,9 @@
       data: values,
       dataType: 'json'
     }).success(function(json) {
-      reloadTable(json);
+      //reloadTable(json);
       $('.modal').modal('hide');
+      hopscotch.nextStep();
     });
   });
 
@@ -155,22 +221,16 @@
       type: 'GET',
       dataType: "json",
       success: function(data){
-        if(data.classroom == null)
-          {
+        if(data.classroom == null) {
+          change_homeroom(student_id, classroom_id);
+        } else {
+          classroom = data.classroom.classroom
+          if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?")) {
             change_homeroom(student_id, classroom_id);
+          } else {
+            alert('No change was made.');
           }
-        else
-          {
-            classroom = data.classroom.classroom
-            if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?"))
-              {
-                change_homeroom(student_id, classroom_id);
-              }
-            else 
-              {
-                alert('No change was made.');
-              }
-          }
+        }
       }
     });
   }
