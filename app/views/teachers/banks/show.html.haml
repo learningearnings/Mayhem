@@ -11,7 +11,7 @@
         %strong
           Credits Available:
         = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, intro_tour(2,'credit_categories',current_person,{:class => 'btn awesome-button', 'data-position' => 'right'})
+        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, intro_tour(2,'credit_categories',current_person,{:class => 'btn awesome-button edit-credit-categories', 'data-position' => 'right'})
 
     - if current_person.try(:can_distribute_credits)
       .distribute-credits
@@ -148,14 +148,20 @@
         (
           copy_points()
         )
+
+= javascript_include_tag "tours/teacher/overview"
+
 :javascript
+  if (hopscotch.getState() === "teacher_overview:1") {
+    hopscotch.startTour(teacher_overview);
+  }
+
   function copy_points() {
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
-  
+
 :javascript
   introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
     window.location.href = "/teachers/bulk_students?multipage=true&tour=Y";
-  }); 
-  
+  });

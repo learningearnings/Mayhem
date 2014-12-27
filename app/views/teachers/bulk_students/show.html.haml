@@ -30,12 +30,16 @@
         = file_field_tag :file
       = submit_tag 'Import Students', class: "btn awesome-button"
 
-= javascript_include_tag "tours/school_admin/overview.js"
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
 
 :javascript
-  if (hopscotch.getState() == "school_admin_overview:3") {
+  if (hopscotch.getState() === "school_admin_overview:3") {
     hopscotch.startTour(school_admin_overview);
+  } else if (hopscotch.getState() === "teacher_overview:5") {
+    hopscotch.startTour(teacher_overview);
   }
+
   introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
     window.location.href = "/classrooms?multipage=true&tour=Y";
   });

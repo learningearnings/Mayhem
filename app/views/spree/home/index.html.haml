@@ -23,26 +23,29 @@
 
 = javascript_include_tag "tours/school_admin/overview"
 = javascript_include_tag "tours/student/overview"
+= javascript_include_tag "tours/teacher/overview"
 
 :javascript
   if (hopscotch.getState() === "school_admin_overview:8") {
     hopscotch.startTour(school_admin_overview);
   } else if (hopscotch.getState() === "student_overview:5") {
     hopscotch.startTour(student_overview);
+  } else if (hopscotch.getState() === "teacher_overview:8") {
+    hopscotch.startTour(teacher_overview);
   }
 
 - if current_person.is_a? Student
   :javascript
-    introJs().start();  
-    
+    introJs().start();
+
 - if current_person.is_a? SchoolAdmin
   :javascript
     introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
       window.location.href = "/school_admins/reports?multipage=true&tour=Y";
-    });  
+    });
 
 - if current_person.is_a? Teacher
   :javascript
     introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
       window.location.href = "/teachers/reports?multipage=true&tour=Y";
-    });      
+    });
