@@ -9,7 +9,13 @@
       %h4= link_to "Teacher Activity Report", teacher_activity_report_path
     %h4= link_to "Student Credit History Report",  student_credit_history_report_path
 
+= javascript_include_tag "tours/school_admin/overview.js"
+
 :javascript
+  if (hopscotch.getState() === "school_admin_overview:10") {
+    hopscotch.startTour(school_admin_overview);
+  }
+
   $(document).ready( function() {
     introJs().start();
-  } );  
+  } );

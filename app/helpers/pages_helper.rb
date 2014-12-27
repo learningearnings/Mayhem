@@ -6,10 +6,10 @@ module PagesHelper
       image_tag product.images.first.attachment.url(:small), options
     end
   end
-  
+
   def intro_tour(step, id, person, options)
     #only highlight menu option of current page
-    if id.start_with?('menu') 
+    if id.start_with?('menu')
       page = id.split("_")[1]
       if !request.path.include?(page)
         return options
@@ -21,7 +21,7 @@ module PagesHelper
       return options
     end
   end
-  
+
   def tour_text(id, person)
     if person.is_a?(Student)
       text = t("tour.student." + id)
@@ -37,5 +37,5 @@ module PagesHelper
     end
     return text
   end
-  
+
 end

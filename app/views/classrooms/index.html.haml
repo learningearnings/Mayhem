@@ -18,10 +18,10 @@
         - @classrooms.each_with_index do |classroom, index|
           - if (index == 0)
             %h3
-              = link_to classroom.name, classroom_path(classroom), intro_tour(3,'add_students_to_class',current_person,{:class => "" })
-          - else 
+              = link_to classroom.name, classroom_path(classroom), intro_tour(3,'add_students_to_class',current_person,{:class => "classroom" })
+          - else
             %h3
-              = link_to classroom.name, classroom_path(classroom)
+              = link_to classroom.name, classroom_path(classroom), {class: "classroom"}
 
 %script#classroom_list{ type: 'text/html' }
   :plain
@@ -30,8 +30,14 @@
         <a href="/classrooms/{{id}}?tour=Y">{{name}}</a>
       </h3>
     {{/classrooms}}
-              
+
+= javascript_include_tag "tours/school_admin/overview.js"
+
 :javascript
+  if (hopscotch.getState() === "school_admin_overview:5") {
+    hopscotch.startTour(school_admin_overview);
+  }
+
   $('.submit').click(function(e) {
     e.preventDefault();
     var $form = $('#new_classroom');
@@ -68,5 +74,5 @@
   });
 
   var classroomIntro = introJs().setOptions({'doneLabel': 'Next page'}).start().oncomplete(function() {
-    //window.location.href = "/store?multipage=true&tour=Y";
-  });  
+    window.location.href = "/store?multipage=true&tour=Y";
+  });

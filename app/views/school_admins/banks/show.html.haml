@@ -177,11 +177,17 @@
         (
           copy_points()
         )
+= javascript_include_tag "tours/school_admin/overview.js"
+
 :javascript
+  if (hopscotch.getState() === "school_admin_overview:1") {
+    hopscotch.startTour(school_admin_overview);
+  }
+
   function copy_points() {
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
   introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
     window.location.href = "/teachers/bulk_students?multipage=true&tour=Y";
-  });    
+  });
