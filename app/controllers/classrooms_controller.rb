@@ -125,13 +125,27 @@ class ClassroomsController < LoggedInController
     if psl.valid?
       pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
       pscl.activate
-      flash[:notice] = 'Student created!'
-      redirect_to classroom_path(@classroom)
+      respond_to do |format|
+        format.html {
+          flash[:notice] = 'Student created!'
+          redirect_to classroom_path(@classroom)
+        }
+        format.json {
+          render json: { status: :ok, students: @classroom.students }
+        }
+      end
     else
-      @student.user.delete
-      @student.delete
-      flash.now[:error] = 'Student not created'
-      render :show
+      respond_to do |format|
+        format.html {
+          @student.user.delete
+          @student.delete
+          flash.now[:error] = 'Student not created'
+          render :show
+        }
+        format.json {
+          render json: { status: :unprocessible_entity }
+        }
+      end
     end
   end
 

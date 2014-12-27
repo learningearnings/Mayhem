@@ -175,7 +175,7 @@
       data: values,
       dataType: 'json'
     }).success(function(json) {
-      //reloadTable(json);
+      reloadTable(json.students);
       $('.modal').modal('hide');
       hopscotch.nextStep();
     });
