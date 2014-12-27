@@ -21,11 +21,14 @@
     %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
     %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
 
-= javascript_include_tag "tours/school_admin/overview.js"
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/student/overview"
 
 :javascript
   if (hopscotch.getState() === "school_admin_overview:8") {
     hopscotch.startTour(school_admin_overview);
+  } else if (hopscotch.getState() === "student_overview:5") {
+    hopscotch.startTour(student_overview);
   }
 
 - if current_person.is_a? Student

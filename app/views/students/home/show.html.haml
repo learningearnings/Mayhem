@@ -63,8 +63,12 @@
             = "#{choice.votes.count} Votes"
           %br
           = f.submit 'Vote'
-          
+
+= javascript_include_tag "tours/student/overview.js"
+
 :javascript
+  hopscotch.startTour(student_overview);
+
   introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
     window.location.href = "/inbox/teacher_messages?multipage=true&tour=Y";
-  });      
+  });
