@@ -98,6 +98,26 @@ var school_admin_overview = {
     onShow: function() {
       $('a[href=#electronic-credits]').click();
     }
+  }, {
+    target: document.querySelector('.electronic-credits-for-classroom'),
+    content: "This is where you will issue credits on a classroom level.",
+    placement: "top"
+  }, {
+    target: document.querySelector('#classroom_id'),
+    content: "Start by selecting your newly created classroom. Once you select a classroom, all of the students in the classroom will populate below.",
+    placement: "right"
+  }, {
+    target: document.querySelector('.class_points'),
+    content: "This is where you enter points. Below, you'll notice that the number of points you enter will be populated. If you were to update the points on a single line below, it would only update the points for that specific student.",
+    placement: "right"
+  }, {
+    target: document.querySelector('#classroom_otu_code_category'),
+    content: "This is where you would select a category if you wanted to distinguish what the points were for. For now, we'll leave it blank, because we haven't setup a category.",
+    placement: "right"
+  }, {
+    target: $('.electronic-credits-for-classroom input[type=submit]'),
+    content: "Once you are finished setting up the points for the classroom, you can click this button to send those credits to the students.",
+    placement: "right"
   }]
 }
 
