@@ -1,5 +1,5 @@
 function Revealer() {
-  var OVERLAY_ZINDEX = 10;
+  var OVERLAY_ZINDEX = 1040;
   var OVERLAY_BACKGROUND = 'rgba(0,0,0,0.5)';
 
   var $overlay, $prevTarget, $currTarget;

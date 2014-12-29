@@ -32,16 +32,16 @@
 //= require revealer.js
 
 # Bind revealer to hopscotch
-revealer = new Revealer()
-hopscotch.listen "show", ->
-  revealer.reveal hopscotch.getCurrTarget()
-  return
-hopscotch.listen "close", ->
-  revealer.hide()
-  return
-hopscotch.listen "end", ->
-  revealer.hide()
-  return
+# revealer = new Revealer()
+# hopscotch.listen "show", ->
+#   revealer.reveal hopscotch.getCurrTarget()
+#   return
+# hopscotch.listen "close", ->
+#   revealer.hide()
+#   return
+# hopscotch.listen "end", ->
+#   revealer.hide()
+#   return
 
 $.webshims.debug = true;
 $.webshims.setOptions('forms', {
