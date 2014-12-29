@@ -50,13 +50,54 @@ var school_admin_overview = {
     content: "The Bank page is where you manage your LE credits. You can print credits to give to your students or send them LE credits electronically.",
     placement: "bottom"
   }, {
+  //   target: $('a[href=#auto-credits]')[0],
+  //   content: "This tab allows you to set parameters for iNow to automatically send electronic credits to your students.",
+  //   placement: "left",
+  //   onShow: function() {
+  //     $('a[href=#auto-credits]').click();
+  //   }
+  // }, {
+    target: $('a[href=#print-credits]')[0],
+    content: "The Print Credits tab allows you to print credit vouchers that can be given out to students. The students will use the generated code to redeem these credits.",
+    placement: "top",
+    onShow: function() {
+      $('a[href=#print-credits]').click();
+    }
+  }, {
+    target: $('a[href=#electronic-credits]')[0],
+    content: "The Electronic Credits tab allows you to send credits to a student, or a group of students (classroom). The student will receive a system message allowing them to redeem the credits.",
+    placement: "top",
+    onShow: function() {
+      $('a[href=#electronic-credits]').click();
+    }
+  }, {
+    target: $('a[href=#transfer-credits]')[0],
+    content: "The Transfer Credits tab allows you to transfer credits from one teacher to another.",
+    placement: "top",
+    onShow: function() {
+      $('a[href=#transfer-credits]').click();
+    }
+  }, {
+    target: $('a[href=#lookup-code]')[0],
+    content: "The Lookup A Code tab allows you to lookup a printed credit to see details about it. From here you can tell if it was redeemed, the date it was redeemed (if applicable), and the amount.",
+    placement: "top",
+    onShow: function() {
+      $('a[href=#lookup-code]').click();
+    }
+  }, {
     target: $('a[href=#auto-credits]')[0],
-    content: "This tab allows you to set parameters for iNow to automatically send electronic credits to your students.",
-    placement: "left"
-    // multipage: true,
-    // onNext: function() {
-    //   window.location = "/teachers/bulk_students"
-    // }
+    content: "The Auto-Credits tab allows you to setup automatically delivered weekly credits to reward good behavior.",
+    placement: "top",
+    onShow: function() {
+      $('a[href=#auto-credits]').click();
+    }
+  }, {
+    target: $('a[href=#electronic-credits]')[0],
+    content: "Now that you have an overviiew of what's possible, let's transfer some credits to your newly created classroom.",
+    placement: "top",
+    onShow: function() {
+      $('a[href=#electronic-credits]').click();
+    }
   }]
 }
 
