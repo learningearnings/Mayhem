@@ -32,14 +32,17 @@
     {{/classrooms}}
 
 = javascript_include_tag "tours/school_admin/overview"
+=# javascript_include_tag "tours/school_admin/add_new_classroom"
 = javascript_include_tag "tours/teacher/overview"
 
 :javascript
-  if (hopscotch.getState() === "school_admin_overview:5") {
+  if (hopscotch.getState() === "school_admin_overview:1") {
     hopscotch.startTour(school_admin_overview);
   } else if (hopscotch.getState() === "teacher_overview:6") {
     hopscotch.startTour(teacher_overview);
   }
+
+  //hopscotch.startTour(add_new_classroom_tour);
 
   $('.submit').click(function(e) {
     e.preventDefault();
@@ -61,21 +64,8 @@
         var html = ich.classroom_list({classrooms: classrooms});
         $('#classrooms').html(html);
 
-        // Set tour step for newly created class
-        var $el = $('[data-id='+classroom.id+'] a')
-        $el.addClass('introjs-showElement introjs-relativePosition');
-        $el.attr('data-intro', 'Here you can see your newly created classroom.');
-        $el.attr('data-step', '3');
-
         // If Tour is running, proceed to next step
-        if (typeof classroomIntro != "undefined") {
-          classroomIntro.refresh();
-          classroomIntro.nextStep();
-        }
+        hopscotch.nextStep();
       }
     });
-  });
-
-  var classroomIntro = introJs().setOptions({'doneLabel': 'Next page'}).start().oncomplete(function() {
-    window.location.href = "/store?multipage=true&tour=Y";
   });

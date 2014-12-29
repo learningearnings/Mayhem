@@ -26,16 +26,6 @@
 = javascript_include_tag "tours/school_admin/overview"
 = javascript_include_tag "tours/teacher/overview"
 
-
-- if current_person.is_a? SchoolAdmin
-  :javascript
-    hopscotch.startTour(school_admin_overview);
-    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-      window.location.href = "/school_admins/bank?multipage=true&tour=Y";
-    });
-- else
-  :javascript
-    hopscotch.startTour(teacher_overview);
-    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-      window.location.href = "/teachers/bank?multipage=true&tour=Y";
-    });
+:javascript
+  hopscotch.startTour(school_admin_overview);
+  // hopscotch.startTour(teacher_overview);

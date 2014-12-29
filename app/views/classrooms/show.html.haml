@@ -87,67 +87,18 @@
       </tr>
     {{/students}}
 
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/school_admin/add_new_classroom"
+= javascript_include_tag "tours/school_admin/add_new_student_to_classroom"
+
 :javascript
   $(".chzn-select").chosen();
 
-  var tour = {
-    id: 'test',
-    steps: [
-      {
-        target: document.querySelector('.resp-page-content'),
-        content: "This is where you add students to your classroom",
-        placement: "top"
-      },
-      {
-        target: document.querySelector('.btn.add-new-student'),
-        content: "Click here to add a new student",
-        placement: "left",
-        showNextButton: false
-      },
-      {
-        target: document.querySelector('#add-new-student-modal'),
-        content: "This is where you will add a new student's information. Enter your student's information and click Add",
-        placement: "left",
-        showNextButton: false,
-        onNext: function() {}
-      },
-      {
-        target: document.querySelector('#classroom-students'),
-        content: "The new user shows up in the table.",
-        placement: "top"
-      }
-    ]
+  if (hopscotch.getState() === "school_admin_overview:4") {
+    hopscotch.startTour(school_admin_overview);
   }
 
-  hopscotch.startTour(tour);
-
-  // var intro = introJs();
-  //
-  // intro.setOptions({
-  //   exitOnOverlayClick: false,
-  //   showButtons: false,
-  //   steps: [{
-  //     element: document.querySelector('.container'),
-  //     intro: "This is where you add students to your classroom."
-  //   }, {
-  //     element: document.querySelector('.btn.add-new-student'),
-  //     intro: "Click here to add a new student."
-  //   }, {
-  //     element: document.querySelector('#add-new-student-modal'),
-  //     intro: "This is where you will add a new student's information.",
-  //     position: "left"
-  //   }, {
-  //     element: document.querySelector('#classroom-students'),
-  //     intro: "The new user shows up in the table.",
-  //     position: "bottom"
-  //   }]
-  // });
-  //
-  // intro.start();
-
-  // var intro = introJs().start().onexit(function(e) {
-  //   intro = null;
-  // });
+  //hopscotch.startTour(add_classroom_tour);
 
   $('.btn.add-existing-student').click(function(e) {
     e.preventDefault();
@@ -164,9 +115,6 @@
   $('.add-new-student-save').click(function(e) {
     e.preventDefault();
 
-    // Mock adding a user
-    //$('#classroom-students tbody').append('<tr><td>Bradley Price</td><td>No</td><td>bprice</td><td><a href="#">Remove</a></td></tr>')
-    //$('.modal').modal('hide');
     var form = $('form.add-new-student');
     var values = form.serialize();
     $.ajax({
