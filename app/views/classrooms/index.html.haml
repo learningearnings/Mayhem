@@ -4,7 +4,7 @@
     .create-classroom
       %h3 Create a Classroom
       %hr
-      = form_for Classroom.new, html: intro_tour(2, 'create_classroom', current_person, {}) do |f|
+      = form_for Classroom.new do |f|
         = f.label :classroom_name
         = f.text_field :name, :class => 'focus-on-me'
         = f.hidden_field :school_id, :value => current_school.id
@@ -18,10 +18,10 @@
         - @classrooms.each_with_index do |classroom, index|
           - if (index == 0)
             %h3
-              = link_to classroom.name, classroom_path(classroom), intro_tour(3,'add_students_to_class',current_person,{:class => "classroom" })
+              = link_to classroom.name, classroom_path(classroom), { class: "classroom" }
           - else
             %h3
-              = link_to classroom.name, classroom_path(classroom), {class: "classroom"}
+              = link_to classroom.name, classroom_path(classroom), { class: "classroom" }
 
 %script#classroom_list{ type: 'text/html' }
   :plain
@@ -40,6 +40,16 @@
     hopscotch.startTour(school_admin_overview);
   } else if (hopscotch.getState() === "teacher_overview:6") {
     hopscotch.startTour(teacher_overview);
+  }
+
+  // This function has to be here to make sure we progress the tour
+  //  when the user clicks the classroom link to add students.
+  function setup_links() {
+    $('#classrooms h3 > a').click(function(e) {
+      if (hopscotch.getState() !== null) {
+        hopscotch.nextStep();
+      }
+    });
   }
 
   //hopscotch.startTour(add_new_classroom_tour);
@@ -63,6 +73,9 @@
         ich.grabTemplates();
         var html = ich.classroom_list({classrooms: classrooms});
         $('#classrooms').html(html);
+
+        // Setup links
+        setup_links();
 
         // If Tour is running, proceed to next step
         hopscotch.nextStep();

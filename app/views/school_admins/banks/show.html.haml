@@ -37,7 +37,7 @@
                 Lookup A Code
           - if current_user.person.is_a?(SchoolAdmin)
             %li
-              %a{intro_tour(2,'auto_credits',current_person, {'href' => '#auto-credits', 'data-toggle' => 'tab'} ) }
+              %a{'href' => '#auto-credits', 'data-toggle' => 'tab'}
                 %p
                   %i{:class => "icon-star"}
                   Auto-Credits
@@ -188,6 +188,3 @@
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
-  introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-    window.location.href = "/teachers/bulk_students?multipage=true&tour=Y";
-  });
