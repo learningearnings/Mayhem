@@ -87,21 +87,34 @@
       </tr>
     {{/students}}
 
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/school_admin/add_new_classroom"
+= javascript_include_tag "tours/school_admin/add_new_student_to_classroom"
+
 :javascript
   $(".chzn-select").chosen();
 
-  $('.add-existing-student').click(function(e) {
+  if (hopscotch.getState() === "school_admin_overview:4") {
+    hopscotch.startTour(school_admin_overview);
+  }
+
+  //hopscotch.startTour(add_classroom_tour);
+
+  $('.btn.add-existing-student').click(function(e) {
     e.preventDefault();
     $('#add-existing-student-modal').modal('show');
   });
 
-  $('.add-new-student').click(function(e) {
+  $('.btn.add-new-student').click(function(e) {
     e.preventDefault();
     $('#add-new-student-modal').modal('show');
+
+    hopscotch.nextStep();
   });
 
   $('.add-new-student-save').click(function(e) {
     e.preventDefault();
+
     var form = $('form.add-new-student');
     var values = form.serialize();
     $.ajax({
@@ -110,8 +123,9 @@
       data: values,
       dataType: 'json'
     }).success(function(json) {
-      reloadTable(json);
+      reloadTable(json.students);
       $('.modal').modal('hide');
+      hopscotch.nextStep();
     });
   });
 
@@ -155,22 +169,16 @@
       type: 'GET',
       dataType: "json",
       success: function(data){
-        if(data.classroom == null)
-          {
+        if(data.classroom == null) {
+          change_homeroom(student_id, classroom_id);
+        } else {
+          classroom = data.classroom.classroom
+          if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?")) {
             change_homeroom(student_id, classroom_id);
+          } else {
+            alert('No change was made.');
           }
-        else
-          {
-            classroom = data.classroom.classroom
-            if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?"))
-              {
-                change_homeroom(student_id, classroom_id);
-              }
-            else 
-              {
-                alert('No change was made.');
-              }
-          }
+        }
       }
     });
   }

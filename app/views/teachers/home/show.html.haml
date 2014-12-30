@@ -14,7 +14,7 @@
     %br/
 
     %h3 Just starting LE?
-    %p     
+    %p
       1. Create Student or Teacher Accounts
       %br/
       2. Create Classrooms (optional)
@@ -29,13 +29,8 @@
     %h3 Need help?
     = link_to 'Send Message', teachers_leadmin_message_path, :class => 'btn awesome-button'
 
-- if current_person.is_a? SchoolAdmin
-  :javascript
-    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-      window.location.href = "/school_admins/bank?multipage=true&tour=Y";
-    });  
-- else
-  :javascript
-    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-      window.location.href = "/classrooms?multipage=true&tour=Y";
-    });      
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
+
+:javascript
+  hopscotch.startTour(school_admin_overview);

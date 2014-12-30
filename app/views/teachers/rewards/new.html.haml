@@ -5,3 +5,10 @@
       = render 'form'
 
     = link_to 'Back', teachers_rewards_path
+
+= javascript_include_tag "tours/school_admin/overview"
+
+:javascript
+  if (hopscotch.getState() === "school_admin_overview:26") {
+    hopscotch.startTour(school_admin_overview);
+  }

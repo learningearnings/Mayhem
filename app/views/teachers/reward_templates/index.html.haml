@@ -12,3 +12,10 @@
 
     #reward-templates
       = render partial: "reward_templates_search_results", locals: {reward_templates: @reward_templates}
+
+= javascript_include_tag "tours/school_admin/overview"
+
+:javascript
+  if (hopscotch.getState() === "school_admin_overview:24") {
+    hopscotch.startTour(school_admin_overview);
+  }

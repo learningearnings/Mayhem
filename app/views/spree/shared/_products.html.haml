@@ -2,7 +2,7 @@
 - paginated_products ||= products
 
 - if current_person.is_a?(Teacher)
-  %h3= link_to('Suggest a Reward', main_app.leadmin_message_path(subject: "I have a reward suggestion.", refurl: current_url))
+  %h3= link_to('Suggest a Reward', main_app.leadmin_message_path(subject: "I have a reward suggestion.", refurl: current_url), class: 'suggest-reward')
 
 - if products.empty?
   = t(:no_products_found)
@@ -36,3 +36,10 @@
                   .owner{class: "label label-default"}= "Teacher: #{product.person}"
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
+
+= javascript_include_tag "tours/school_admin/overview"
+
+:javascript
+  if (hopscotch.getState() === "school_admin_overview:21") {
+    hopscotch.startTour(school_admin_overview);
+  }

@@ -1,7 +1,7 @@
 .main-content-wrapper
   .primary-content-fw
     %h2 Manage Students
-    = link_to "New Students", new_teachers_bulk_students_path, intro_tour(2,'adding_students',current_person,{class: 'btn awesome-button','data-position' => 'right'}) 
+    = link_to "New Students", new_teachers_bulk_students_path, {class: 'btn awesome-button new-students-link'}
     = link_to "Edit Students", edit_teachers_bulk_students_path, class: 'btn awesome-button'
   .primary-content-fw
     %h2 Import Students
@@ -30,3 +30,12 @@
         = file_field_tag :file
       = submit_tag 'Import Students', class: "btn awesome-button"
 
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
+
+:javascript
+  if (hopscotch.getState() === "school_admin_overview:3") {
+    hopscotch.startTour(school_admin_overview);
+  } else if (hopscotch.getState() === "teacher_overview:5") {
+    hopscotch.startTour(teacher_overview);
+  }
