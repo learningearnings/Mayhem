@@ -1,7 +1,7 @@
 .main-content-wrapper
   .primary-content-fw
     %h2 Manage Students
-    = link_to "New Students", new_teachers_bulk_students_path, intro_tour(2,'adding_students',current_person,{class: 'btn awesome-button new-students-link','data-position' => 'right'})
+    = link_to "New Students", new_teachers_bulk_students_path, {class: 'btn awesome-button new-students-link'}
     = link_to "Edit Students", edit_teachers_bulk_students_path, class: 'btn awesome-button'
   .primary-content-fw
     %h2 Import Students
@@ -39,7 +39,3 @@
   } else if (hopscotch.getState() === "teacher_overview:5") {
     hopscotch.startTour(teacher_overview);
   }
-
-  introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-    window.location.href = "/classrooms?multipage=true&tour=Y";
-  });
