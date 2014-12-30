@@ -35,10 +35,9 @@
 = javascript_include_tag "tours/teacher/overview"
 
 :javascript
-  if (hopscotch.getState() === "school_admin_overview:1") {
-    hopscotch.startTour(school_admin_overview);
-  } else if (hopscotch.getState() === "teacher_overview:6") {
-    hopscotch.startTour(teacher_overview);
+  if (hopscotch.getState() !== null) {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
   }
 
   // This function has to be here to make sure we progress the tour

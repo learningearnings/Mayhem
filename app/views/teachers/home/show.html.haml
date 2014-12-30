@@ -32,5 +32,10 @@
 = javascript_include_tag "tours/school_admin/overview"
 = javascript_include_tag "tours/teacher/overview"
 
-:javascript
-  hopscotch.startTour(school_admin_overview);
+- if current_person.is_a?(SchoolAdmin)
+  :javascript
+    hopscotch.startTour(school_admin_overview);
+ 
+- if current_person.is_a?(Teacher)
+  :javascript
+    hopscotch.startTour(teacher_overview)

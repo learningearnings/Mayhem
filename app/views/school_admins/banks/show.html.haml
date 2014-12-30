@@ -181,8 +181,9 @@
 = javascript_include_tag "tours/school_admin/overview"
 
 :javascript
-  if (hopscotch.getState() === "school_admin_overview:8" || hopscotch.getState() == "school_admin_overview:20") {
-    hopscotch.startTour(school_admin_overview);
+  if (hopscotch.getState() !== null) {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
   }
 
   function copy_points() {
