@@ -88,8 +88,6 @@
     {{/students}}
 
 = javascript_include_tag "tours/school_admin/overview"
-= javascript_include_tag "tours/school_admin/add_new_classroom"
-= javascript_include_tag "tours/school_admin/add_new_student_to_classroom"
 
 :javascript
   $(".chzn-select").chosen();
@@ -97,8 +95,6 @@
   if (hopscotch.getState() === "school_admin_overview:4") {
     hopscotch.startTour(school_admin_overview);
   }
-
-  //hopscotch.startTour(add_classroom_tour);
 
   $('.btn.add-existing-student').click(function(e) {
     e.preventDefault();
