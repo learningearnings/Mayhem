@@ -16,7 +16,7 @@
         = f.label :locker_sticker
       - if @teachers_reward.spree_product_id
         .form-inputs.controls-row.span3.clearfix
-          %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")
+          %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
     .float-right
       %h4 Reward available to:
       - if current_person.is_a?(SchoolAdmin)
