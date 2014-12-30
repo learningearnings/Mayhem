@@ -106,11 +106,71 @@ var school_admin_overview = {
   }, {
     target: document.querySelector('#classroom_otu_code_category'),
     content: "This is where you would select a category if you wanted to distinguish what the points were for. For now, we'll leave it blank, because we haven't setup a category.",
-    placement: "right"
+    placement: "right",
+
   }, {
     target: document.querySelector('.electronic-credits-for-classroom input[type=submit]'),
     content: "Once you are finished setting up the credits for the classroom, you can click this button to send those credits to the students.",
-    placement: "right"
+    placement: "right",
+    showNextButton: false,
+    multipage: true,
+    nextOnTargetClick: document.querySelector('.electronic-credits-for-classroom input[type=submit]')
+  }, {
+    target: document.querySelector('.alert'),
+    content: "As with most actions, you will be notified if the action was successful or if there were errors. Sending credits is no different, as you see here. Now that we have successfully sent credits to the students, let's create a reward so they can spend their well deserved credits.",
+    placement: "right",
+    multipage: true,
+    onNext: function() {
+      window.location = "/store"
+    }
+  }, {
+    target: document.querySelector('.shop'),
+    content: "The shop menu is where you can view and manage rewards that are available to your students.",
+    placement: "bottom"
+  }, {
+    target: document.querySelector('.manage-rewards'),
+    content: "This link will allow you to manage rewards. Click this link and lets get started creating that reward.",
+    placement: "left",
+    showNextButton: false,
+    nextOnTargetClick: document.querySelector('.manage-rewards'),
+    multipage: true
+  }, {
+    target: document.querySelector('.create-reward'),
+    content: "If you had existing rewards, they would show up below, allowing you to manage them. For now, click here to create a new reward.",
+    placement: "left",
+    multipage: true,
+    showNextButton: false,
+    nextOnTargetClick: document.querySelector('.create-reward')
+  }, {
+    target: document.querySelector('.full-content'),
+    content: "From here, we can choose to create a custom reward, or choose from a large selection of existing templates.",
+    placement: "top"
+  }, {
+    target: document.querySelector('.custom-reward-button'),
+    content: "Click here to create a custom reward for our deserving students.",
+    placement: "right",
+    multipage: true,
+    showNextButton: false,
+    nextOnTargetClick: document.querySelector('.custom-reward-button')
+  }, {
+    target: document.querySelector('.full-content'),
+    content: "Here is where you will add all of the information about your reward. Please, fill out a test reward and click the Create Reward link when finished.",
+    multipage: true,
+    placement: "top",
+    showNextButton: false,
+    nextOnTargetClick: document.querySelector('input[type=submit]')
+  }, {
+    target: document.querySelector('.resp-product-row'),
+    content: "Now that you've created the reward, it should show up in your list of rewards that you can manage. That's all there is to creating and managing rewards. Let's continue to the reports page.",
+    multipage: true,
+    placement: "top",
+    onNext: function() {
+      window.location = "/school_admins/reports"
+    }
+  }, {
+    target: document.querySelector('.reports'),
+    content: "Run a Purchase Report to see what items your students have purchased from the store. You can also check student Credit balances or see who's logging in.",
+    placement: "bottom"
   }]
 }
 

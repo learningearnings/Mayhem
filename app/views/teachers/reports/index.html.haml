@@ -13,12 +13,8 @@
 = javascript_include_tag "tours/teacher/overview"
 
 :javascript
-  if (hopscotch.getState() === "school_admin_overview:10") {
+  if (hopscotch.getState() === "school_admin_overview:28") {
     hopscotch.startTour(school_admin_overview);
   } else if (hopscotch.getState() === "teacher_overview:10") {
     hopscotch.startTour(teacher_overview);
   }
-
-  $(document).ready( function() {
-    introJs().start();
-  } );
