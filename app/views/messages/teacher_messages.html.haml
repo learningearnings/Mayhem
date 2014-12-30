@@ -12,7 +12,3 @@
   if (hopscotch.getState() === "student_overview:1") {
     hopscotch.startTour(student_overview);
   }
-
-  introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-    window.location.href = "/bank?multipage=true&tour=Y";
-  });
