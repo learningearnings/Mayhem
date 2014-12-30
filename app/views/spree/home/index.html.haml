@@ -11,7 +11,7 @@
     - if current_person.is_a?(Teacher)
       %p
         = t('.products_message', :scope => [store_type,current_person.type.downcase])
-        %a{intro_tour(2, 'add_or_manage_your_rewards', current_person, {:href => main_app.teachers_rewards_path, :class => 'btn awesome-button manage-rewards'})} Add or Manage Your Rewards
+        %a{:href => main_app.teachers_rewards_path, :class => 'btn awesome-button manage-rewards'} Add or Manage Your Rewards
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 
@@ -26,26 +26,10 @@
 = javascript_include_tag "tours/teacher/overview"
 
 :javascript
-  if (hopscotch.getState() === "school_admin_overview:8") {
+  if (hopscotch.getState() === "school_admin_overview:20") {
     hopscotch.startTour(school_admin_overview);
   } else if (hopscotch.getState() === "student_overview:5") {
     hopscotch.startTour(student_overview);
   } else if (hopscotch.getState() === "teacher_overview:8") {
     hopscotch.startTour(teacher_overview);
   }
-
-- if current_person.is_a? Student
-  :javascript
-    introJs().start();
-
-- if current_person.is_a? SchoolAdmin
-  :javascript
-    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-      window.location.href = "/school_admins/reports?multipage=true&tour=Y";
-    });
-
-- if current_person.is_a? Teacher
-  :javascript
-    introJs().setOption('doneLabel', 'Next page').start().oncomplete(function() {
-      window.location.href = "/teachers/reports?multipage=true&tour=Y";
-    });
