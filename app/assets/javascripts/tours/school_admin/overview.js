@@ -50,13 +50,6 @@ var school_admin_overview = {
     content: "The Bank page is where you manage your LE credits. You can print credits to give to your students or send them LE credits electronically.",
     placement: "bottom"
   }, {
-  //   target: $('a[href=#auto-credits]')[0],
-  //   content: "This tab allows you to set parameters for iNow to automatically send electronic credits to your students.",
-  //   placement: "left",
-  //   onShow: function() {
-  //     $('a[href=#auto-credits]').click();
-  //   }
-  // }, {
     target: $('a[href=#print-credits]')[0],
     content: "The Print Credits tab allows you to print credit vouchers that can be given out to students. The students will use the generated code to redeem these credits.",
     placement: "top",
@@ -115,8 +108,8 @@ var school_admin_overview = {
     content: "This is where you would select a category if you wanted to distinguish what the points were for. For now, we'll leave it blank, because we haven't setup a category.",
     placement: "right"
   }, {
-    target: $('.electronic-credits-for-classroom input[type=submit]'),
-    content: "Once you are finished setting up the points for the classroom, you can click this button to send those credits to the students.",
+    target: document.querySelector('.electronic-credits-for-classroom input[type=submit]'),
+    content: "Once you are finished setting up the credits for the classroom, you can click this button to send those credits to the students.",
     placement: "right"
   }]
 }
