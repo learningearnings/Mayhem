@@ -77,6 +77,7 @@
                 = f.label :otu_code_category_id, "Credit Category"
                 = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
                 #classroom_distribution
+                = f.submit 'Send These Credits', class: 'awesome-button'
 
           .tab-pane#transfer-credits
             %h4 Transfer Credits Between Teachers
@@ -87,7 +88,6 @@
               = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = label_tag :to_teacher
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
-              = f.submit 'Transfer Credits', :class => 'awesome-button'
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
 
@@ -140,7 +140,6 @@
         {{/students}}
       </tbody>
     </table>
-    <input class="awesome-button" name="commit" type="submit" value="Send These Credits">
 
 :coffeescript
   jQuery ->
