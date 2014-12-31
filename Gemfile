@@ -18,6 +18,7 @@ gem 'newrelic_rpm'
 gem 'transaction_retry'
 gem 'uuidtools'
 gem 'chronic'
+gem 'active_model_serializers', '0.8.3'
 
 # for importing
 #gem 'mysql2'
