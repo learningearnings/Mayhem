@@ -53,7 +53,8 @@
       = f.label :username
       = f.text_field :username
       = f.label :grade
-      = f.select :grade, (current_school.min_grade..current_school.max_grade)
+      =# f.select :grade, (current_school.min_grade..current_school.max_grade)
+      = f.select :grade, %w( K 1 2 3 4 5 6 7 8 9 10 11 12 )
       = f.label :password
       = f.text_field :password
     .btn.btn-success.add-new-student-save
