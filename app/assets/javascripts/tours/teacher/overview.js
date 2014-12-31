@@ -10,7 +10,7 @@ var teacher_overview = {
     }
   }, {
     target: document.querySelector('.classrooms'),
-    content: "The Classrooms allow you to create groups of students so you can quickly find them and create rewards just for them.",
+    content: "Classrooms allow you to create groups of students so you can quickly find them to give credits and create rewards just for them.",
     placement: "bottom"
   }, {
     target: document.querySelector('.new_classroom'),
@@ -19,22 +19,22 @@ var teacher_overview = {
     showNextButton: false
   }, {
     target: document.querySelector('#classrooms'),
-    content: "Now that you're Classroom has been created, let's click the Classroom name and we can add students to it.",
+    content: "Now that have you a classroom, just click its name and we can add students to it.",
     placement: "left",
     showNextButton: false,
     multipage: true
   }, {
     target: document.querySelector('.resp-page-content'),
-    content: "Here we can add new student since you don't already have one, but in the future you can also add existing students to a classroom.  Students can be many classrooms, and you can create as many classrooms as you like.",
+    content: "Here we can add new student since you don't already have one, but in the future you can also add existing students to a classroom.  Students can be in many classrooms, and you can create as many classrooms as you like.",
     placement: "top"
   }, {
     target: document.querySelector('.btn.add-new-student'),
-    content: "Let's go ahead and a new student, click here.",
+    content: "Let's go ahead and create a new student, click here.",
     placement: "top",
     showNextButton: false
   }, {
     target: document.querySelector('#add-new-student-modal'),
-    content: "This is where you will add a new student's information. If you like you can create a fictional student and delete the account later or you can add a real student.",
+    content: "This is where you will add your new student's information. If you like you can create a fictional student and delete the account later or you can add a real student.",
     placement: "left",
     showNextButton: false
   }, {
