@@ -18,11 +18,10 @@
 %table#classroom-students.table.table-bordered.table-striped.solid-background
   %thead
     %tr
-      - if @classroom.students.present?
-        %th Student Name
-        %th Homeroom?
-        %th Username
-        %th Actions
+      %th Student Name
+      %th Homeroom?
+      %th Username
+      %th Actions
   %tbody
     - @classroom.students.order("last_name, first_name").each do |student|
       %tr
@@ -81,10 +80,10 @@
   :plain
     {{#students}}
       <tr>
-        <td>{{first_name}} {{last_name}}</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{first_name}} {{last_name}}</a></td>
+        <td>{{is_homeroom}}</td>
+        <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{username}}</a></td>
+        <td><a href="/remove_classroom_student?classroom={{classroom_id}}&student={{id}}">Remove</a></td>
       </tr>
     {{/students}}
 
@@ -108,7 +107,9 @@
     e.preventDefault();
     $('#add-new-student-modal').modal('show');
 
-    hopscotch.nextStep();
+    if (hopscotch.getState() !== "undefined") {
+      hopscotch.nextStep();
+    }
   });
 
   $('.add-new-student-save').click(function(e) {
@@ -122,9 +123,12 @@
       data: values,
       dataType: 'json'
     }).success(function(json) {
-      reloadTable(json.students);
+      reloadTable(json);
       $('.modal').modal('hide');
-      hopscotch.nextStep();
+
+      if (hopscotch.getState() !== "undefined") {
+        hopscotch.nextStep();
+      }
     });
   });
 
@@ -138,17 +142,15 @@
       data: values,
       dataType: 'json'
     }).success(function(json) {
-      reloadTable(json.students);
+      console.log(json);
+      reloadTable(json);
       $('.modal').modal('hide');
     });
   });
 
   function reloadTable(students) {
     ich.grabTemplates();
-    var students_array = $.map(students, function(student_wrapper) {
-      return student_wrapper.student;
-    });
-    var html = ich.students({students: students_array});
+    var html = ich.students({students: students});
     $('#classroom-students tbody').html(html);
   }
 

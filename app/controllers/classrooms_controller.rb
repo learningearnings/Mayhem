@@ -63,7 +63,7 @@ class ClassroomsController < LoggedInController
             flash[:notice] = "Student added to classroom."
             redirect_to classroom_path(@classroom)
           }
-          format.json { render :json => {:status => 200, :result => 'success', :students => @classroom.students.order(:last_name, :first_name), :flash => 'Student added to classroom.', :request => classroom_path(@classroom) } }
+          format.json { render json: @classroom.students, each_serializer: ClassroomStudentSerializer, classroom_id: @classroom.id, school_id: @classroom.school.id, root: false }
         end
       else
         respond_to do |format|
@@ -131,7 +131,7 @@ class ClassroomsController < LoggedInController
           redirect_to classroom_path(@classroom)
         }
         format.json {
-          render json: { status: :ok, students: @classroom.students }
+          render json: @classroom.students, each_serializer: ClassroomStudentSerializer, classroom_id: @classroom.id, school_id: @classroom.school.id, root: false
         }
       end
     else
