@@ -43,7 +43,7 @@ var teacher_overview = {
     placement: "top",
     multipage: true,
     onNext: function() {
-      window.location = "/school_admins/bank"
+      window.location = "/teachers/bank"
     }
   }, {
     target: document.querySelector('.bank'),
@@ -92,8 +92,7 @@ var teacher_overview = {
   }, {
     target: document.querySelector('#classroom_otu_code_category'),
     content: "You can also create categories, or goals to use with e-Credits. This will tell the student 'why' the recieved credits from you. This is optional, so we won't set any up right now.",
-    placement: "right",
-
+    placement: "right"
   }, {
     target: document.querySelector('.electronic-credits-for-classroom input[type=submit]'),
     content: "Once you are finished setting up the credits for the classroom, you can click this button to send those credits to the students.",
@@ -151,7 +150,7 @@ var teacher_overview = {
     multipage: true,
     placement: "top",
     onNext: function() {
-      window.location = "/school_admins/reports"
+      window.location = "/teachers/reports"
     }
   }, {
     target: document.querySelector('.reports'),
