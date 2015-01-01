@@ -121,6 +121,7 @@
     }).success(function(json) {
       reloadTable(json);
       $('.modal').modal('hide');
+      form[0].reset();
 
       if (hopscotch.getState() !== "undefined") {
         hopscotch.nextStep();
@@ -140,6 +141,7 @@
     }).success(function(json) {
       reloadTable(json);
       $('.modal').modal('hide');
+      form[0].reset();
     });
   });
 
