@@ -106,10 +106,6 @@
   $('.btn.add-new-student').click(function(e) {
     e.preventDefault();
     $('#add-new-student-modal').modal('show');
-
-    if (hopscotch.getState() !== "undefined") {
-      hopscotch.nextStep();
-    }
   });
 
   $('.add-new-student-save').click(function(e) {
@@ -142,7 +138,6 @@
       data: values,
       dataType: 'json'
     }).success(function(json) {
-      console.log(json);
       reloadTable(json);
       $('.modal').modal('hide');
     });

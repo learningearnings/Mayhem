@@ -31,7 +31,8 @@ var teacher_overview = {
     target: document.querySelector('.btn.add-new-student'),
     content: "Let's go ahead and create a new student, click here.",
     placement: "top",
-    showNextButton: false
+    showNextButton: false,
+    nextOnTargetClick: true
   }, {
     target: document.querySelector('#add-new-student-modal'),
     content: "This is where you will add your new student's information. If you like you can create a fictional student and delete the account later or you can add a real student.",
@@ -99,7 +100,7 @@ var teacher_overview = {
     placement: "right",
     showNextButton: false,
     multipage: true,
-    nextOnTargetClick: document.querySelector('.electronic-credits-for-classroom input[type=submit]')
+    nextOnTargetClick: true
   }, {
     target: document.querySelector('.alert'),
     content: "Sweet! Our credits have been sent. Now let's create a reward so they'll have a reason to earn more credits from you!",
@@ -117,7 +118,7 @@ var teacher_overview = {
     content: "Click this link and lets get started creating that reward.",
     placement: "left",
     showNextButton: false,
-    nextOnTargetClick: document.querySelector('.manage-rewards'),
+    nextOnTargetClick: true
     multipage: true
   }, {
     target: document.querySelector('.create-reward'),
@@ -125,7 +126,7 @@ var teacher_overview = {
     placement: "left",
     multipage: true,
     showNextButton: false,
-    nextOnTargetClick: document.querySelector('.create-reward')
+    nextOnTargetClick: true
   }, {
     target: document.querySelector('.full-content'),
     content: "From here, we can choose to create a custom reward, or choose from a large selection of existing templates.",
@@ -136,7 +137,7 @@ var teacher_overview = {
     placement: "right",
     multipage: true,
     showNextButton: false,
-    nextOnTargetClick: document.querySelector('.custom-reward-button')
+    nextOnTargetClick: true
   }, {
     target: document.querySelector('.full-content'),
     content: "Just fill in the information about your new reward. Let's create a test reward and click the Create Reward link when finished.",
