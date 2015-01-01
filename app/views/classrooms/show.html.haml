@@ -151,6 +151,8 @@
 
   $('.cancel-modal').click(function(e) {
     e.preventDefault();
+    document.querySelector('form.add-new-student').reset();
+    document.querySelector('form.add-existing-student').reset();
     $('.modal').modal('hide');
   });
 
