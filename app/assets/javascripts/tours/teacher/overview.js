@@ -78,49 +78,58 @@ var teacher_overview = {
     placement: "top",
     onShow: function() {
       $('a[href=#print-credits]').click();
-    }
+    },
+    showPrevButton: true
   }, {
     target: $('a[href=#electronic-credits]')[0],
     content: "The Electronic Credits tab allows you to send credits to a single student, or one of your classrooms. The student will receive a system message allowing them to deposit the credits.",
     placement: "top",
     onShow: function() {
       $('a[href=#electronic-credits]').click();
-    }
+    },
+    showPrevButton: true
   }, {
     target: $('a[href=#lookup-code]')[0],
     content: "The Lookup A Code tab allows you to lookup a printed credit to see details about it. From here you can tell if it was redeemed, the date it was redeemed (if applicable), and the amount.",
     placement: "top",
     onShow: function() {
       $('a[href=#lookup-code]').click();
-    }
+    },
+    showPrevButton: true
   }, {
     target: $('a[href=#electronic-credits]')[0],
     content: "Now that you have an overviiew of what's possible, let's give some credits to your newly created classroom.",
     placement: "top",
     onShow: function() {
       $('a[href=#electronic-credits]').click();
-    }
+    },
+    showPrevButton: true
   }, {
     target: document.querySelector('.electronic-credits-for-classroom'),
     content: "This is section of the Bank is where you will issue credits on a classroom level.",
-    placement: "top"
+    placement: "top",
+    showPrevButton: true
   }, {
     target: document.querySelector('#classroom_id'),
     content: "Start by selecting the classroom we created earlier.",
-    placement: "right"
+    placement: "right",
+    showPrevButton: true
   }, {
     target: document.querySelector('.class_points'),
     content: "This is where you enter the number of LE credits. Below, you'll notice that the number of credits you enter will be populated. You'll still be able to update each student's credits individually to increase or even exclude a student from receving any.",
-    placement: "right"
+    placement: "right",
+    showPrevButton: true
   }, {
     target: document.querySelector('#classroom_otu_code_category'),
     content: "You can also create categories, or goals to use with e-Credits. This will tell the student 'why' the recieved credits from you. This is optional, so we won't set any up right now.",
-    placement: "right"
+    placement: "right",
+    showPrevButton: true
   }, {
     target: document.querySelector('.electronic-credits-for-classroom input[type=submit]'),
     content: "Once you are finished setting up the credits for the classroom, you can click this button to send those credits to the students.",
     placement: "right",
     showNextButton: false,
+    showPrevButton: true,
     multipage: true,
     nextOnTargetClick: true
   }, {
@@ -140,6 +149,7 @@ var teacher_overview = {
     content: "Click this link and lets get started creating that reward.",
     placement: "left",
     showNextButton: false,
+    showPrevButton: true,
     nextOnTargetClick: true,
     multipage: true
   }, {
@@ -148,17 +158,26 @@ var teacher_overview = {
     placement: "left",
     multipage: true,
     showNextButton: false,
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/store"
+    },
     nextOnTargetClick: true
   }, {
     target: document.querySelector('.full-content'),
     content: "From here, we can choose to create a custom reward, or choose from a large selection of existing templates.",
-    placement: "top"
+    placement: "top",
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/teachers/rewards"
+    }
   }, {
     target: document.querySelector('.custom-reward-button'),
     content: "Below we show you hundreds of rewards that have been created over the years from great teachers like you.  Feel free to use their great ideas, or create a brand new one of your own.  Click here and we'll show you how easy it is to do that.",
     placement: "right",
     multipage: true,
     showNextButton: false,
+    showPrevButton: true,
     nextOnTargetClick: true
   }, {
     target: document.querySelector('.full-content'),
@@ -166,6 +185,10 @@ var teacher_overview = {
     multipage: true,
     placement: "top",
     showNextButton: false,
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/teachers/reward_templates"
+    },
     nextOnTargetClick: document.querySelector('input[type=submit]')
   }, {
     target: document.querySelector('.resp-product-row'),
@@ -178,6 +201,10 @@ var teacher_overview = {
   }, {
     target: document.querySelector('.reports'),
     content: "The Purchase Report is how you can see what rewards your students have purchased from the store. Other reports allow you too check student balances or see who's logging in.  We hope you enjoy using LE, you can also restart this tour or find other answers using the Help page",
-    placement: "bottom"
+    placement: "bottom",
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/teachers/rewards"
+    }
   }]
 }
