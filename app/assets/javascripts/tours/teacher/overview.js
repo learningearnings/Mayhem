@@ -1,5 +1,8 @@
 var teacher_overview = {
   id: 'teacher_overview',
+  onEnd: function() {
+    localStorage.removeItem('tour:teacher:overview:classroom_id');
+  },
   steps: [{
     target: document.querySelector('.home'),
     content: "Welcome to LE! Let us give you a quick tour and get you setup so we you can start using LE.",
@@ -11,12 +14,17 @@ var teacher_overview = {
   }, {
     target: document.querySelector('.classrooms'),
     content: "Classrooms allow you to create groups of students so you can quickly find them to give credits and create rewards just for them.",
-    placement: "bottom"
+    placement: "bottom",
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/teachers/home"
+    }
   }, {
     target: document.querySelector('.new_classroom'),
     content: "To start, simply type a classroom name and click Create.  Let's go ahead and create one now, you can always delete it later if you like.",
     placement: "bottom",
-    showNextButton: false
+    showNextButton: false,
+    showPrevButton: true
   }, {
     target: document.querySelector('#classrooms'),
     content: "Now that have you a classroom, just click its name and we can add students to it.",
@@ -26,18 +34,27 @@ var teacher_overview = {
   }, {
     target: document.querySelector('.resp-page-content'),
     content: "Here we can add new student since you don't already have one, but in the future you can also add existing students to a classroom.  Students can be in many classrooms, and you can create as many classrooms as you like.",
-    placement: "top"
+    placement: "top",
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/classrooms"
+    }
   }, {
     target: document.querySelector('.btn.add-new-student'),
     content: "Let's go ahead and create a new student, click here.",
     placement: "top",
     showNextButton: false,
-    nextOnTargetClick: true
+    nextOnTargetClick: true,
+    showPrevButton: true
   }, {
     target: document.querySelector('#add-new-student-modal'),
     content: "This is where you will add your new student's information. If you like you can create a fictional student and delete the account later or you can add a real student.",
     placement: "left",
-    showNextButton: false
+    showNextButton: false,
+    showPrevButton: true,
+    onPrev: function() {
+      $('.modal').modal('hide');
+    }
   }, {
     target: document.querySelector('#classroom-students'),
     content: "The new student you created now shows up in classroom roster list.  Now, let's take a look at some of the things we can do with a classroom.",
@@ -49,7 +66,12 @@ var teacher_overview = {
   }, {
     target: document.querySelector('.bank'),
     content: "The Bank page is where you manage your LE credits. Credits are LE's points or currency.  You will give your students LE Credits for reaching goals, doing good or any other criteria you set.",
-    placement: "bottom"
+    placement: "bottom",
+    showPrevButton: true,
+    onPrev: function() {
+      var classroom_id = localStorage.getItem('tour:teacher:overview:classroom_id')
+      window.location = "/classrooms/" + classroom_id
+    }
   }, {
     target: $('a[href=#print-credits]')[0],
     content: "The Print Credits tab allows you to print LE Credits that have codes on them allowing students to deposit them into their account. Just tell LE how many of each of the denominations and a file will be created you can print.",
@@ -118,7 +140,7 @@ var teacher_overview = {
     content: "Click this link and lets get started creating that reward.",
     placement: "left",
     showNextButton: false,
-    nextOnTargetClick: true
+    nextOnTargetClick: true,
     multipage: true
   }, {
     target: document.querySelector('.create-reward'),

@@ -156,6 +156,10 @@
     document.querySelector('form.add-new-student').reset();
     document.querySelector('form.add-existing-student').reset();
     $('.modal').modal('hide');
+
+    if (hopscotch.getState() !== "undefined") {
+      hopscotch.prevStep();
+    }
   });
 
   function homeroom_check(classroom_id) {
