@@ -106,10 +106,6 @@
   $('.btn.add-new-student').click(function(e) {
     e.preventDefault();
     $('#add-new-student-modal').modal('show');
-
-    if (hopscotch.getState() !== "undefined") {
-      hopscotch.nextStep();
-    }
   });
 
   $('.add-new-student-save').click(function(e) {
@@ -125,6 +121,7 @@
     }).success(function(json) {
       reloadTable(json);
       $('.modal').modal('hide');
+      form[0].reset();
 
       if (hopscotch.getState() !== "undefined") {
         hopscotch.nextStep();
@@ -142,9 +139,9 @@
       data: values,
       dataType: 'json'
     }).success(function(json) {
-      console.log(json);
       reloadTable(json);
       $('.modal').modal('hide');
+      form[0].reset();
     });
   });
 
@@ -156,7 +153,13 @@
 
   $('.cancel-modal').click(function(e) {
     e.preventDefault();
+    document.querySelector('form.add-new-student').reset();
+    document.querySelector('form.add-existing-student').reset();
     $('.modal').modal('hide');
+
+    if (hopscotch.getState() !== "undefined") {
+      hopscotch.prevStep();
+    }
   });
 
   function homeroom_check(classroom_id) {
