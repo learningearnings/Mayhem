@@ -17,7 +17,6 @@
       - if @teachers_reward.spree_product_id
         .form-inputs.controls-row.span3.clearfix
           %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
-    .float-right
       %h4 Reward available to:
       - if current_person.is_a?(SchoolAdmin)
         %ul.reward-scope
@@ -25,10 +24,6 @@
             %label
               = radio_button_tag :reward_scope, :whole_school, @teachers_reward.whole_school?
               Whole School
-            = label_tag :min_grade
-            = select_tag(:min_grade, options_for_select(@current_school.grades, :selected => @teachers_reward.min_grade), :include_blank => @teachers_reward.min_grade.nil?)
-            = label_tag :max_grade
-            = select_tag(:max_grade, options_for_select(@current_school.grades, :selected => @teachers_reward.max_grade), :include_blank => @teachers_reward.max_grade.nil?)
           %li
             %label
               = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
