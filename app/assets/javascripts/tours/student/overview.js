@@ -2,7 +2,7 @@ var student_overview = {
   id: "student_overview",
   steps: [{
     target: document.querySelector('.home'),
-    content: "Welcome to LE! On the Home page you will find messages about new features, check out sponsors and polls you can vote on.",
+    content: "Welcome to LE! On the Home page you will find messages about new features and reward highlights.",
     placement: "bottom",
     multipage: true,
     onNext: function() {
