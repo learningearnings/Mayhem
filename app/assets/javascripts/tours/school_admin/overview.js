@@ -133,7 +133,7 @@ var school_admin_overview = {
     }
   }, {
     target: document.querySelector('.reports'),
-    content: "The Purchase Report is how you can see what rewards your students have purchased from the store. Other reports allow you too check student balances or see who's logging in.  We hope you enjoy using LE, you can also restart this tour or find other answers using the Help page.",
+    content: "The Purchase Report is how you can see what rewards your students have purchased from the store. Other reports allow you to check student balances or see who's logging in.  We hope you enjoy using LE, you can also restart this tour or find other answers using the Help page.",
     placement: "bottom"
   }]
 }
