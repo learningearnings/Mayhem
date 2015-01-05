@@ -51,7 +51,7 @@ var school_admin_overview = {
     }
   }, {
     target: $('a[href=#electronic-credits]')[0],
-    content: "The Electronic Credits tab allows you to send credits to a single student, or one of your classrooms. The student will receive a system message allowing them to deposit the credits.",
+    content: "The Electronic Credits tab allows you to send credits to a single student, or one of your classrooms. The student will receive a system message allowing them to deposit the Credits.",
     placement: "top",
     onShow: function() {
       $('a[href=#electronic-credits]').click();
