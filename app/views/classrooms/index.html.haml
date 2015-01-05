@@ -52,15 +52,18 @@
 
   $('.submit').click(function(e) {
     e.preventDefault();
+    console.log("Get Form");    
     var $form = $('#new_classroom');
+    console.log("Serialize form");    
     var values = $form.serialize();
-
+    console.log("Call AJax");
     $.ajax({
       type: "POST",
       url: $form.attr('action'),
       data: values,
       dataType: 'JSON'
     }).success(function(response) {
+      console.log("Success!");    
       if (response.status == "ok") {
         var classroom = response.classroom.classroom;
 
@@ -78,6 +81,11 @@
         // If Tour is running, proceed to next step
         hopscotch.nextStep();
       }
+    }).error(function(json) {
+      var r = jQuery.parseJSON(json.responseText);
+      console.log("Message: " + r.Message);
+      console.log("StackTrace: " + r.StackTrace);
+      console.log("ExceptionType: " + r.ExceptionType);
     });
   });
 >>>>>>> feature/intro_tours_redo
