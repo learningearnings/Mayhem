@@ -16,7 +16,10 @@ var teacher_overview = {
     content: "First, let's create a classroom. This can be a test classroom if you like, you can always delete it later.",
     placement: "bottom",
     showNextButton: false,
-    showPrevButton: true
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/teachers/home"
+    },
   }, {
     target: document.querySelector('#classrooms'),
     content: "Now that have you a classroom, click the name here and we can add students to it.",
