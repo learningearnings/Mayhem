@@ -625,8 +625,8 @@ ActiveRecord::Schema.define(:version => 20141202053859) do
     t.integer  "published_by"
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
-    t.boolean  "featured",     :default => false
     t.integer  "school_id"
+    t.boolean  "featured",     :default => false
   end
 
   create_table "reward_deliveries", :force => true do |t|
