@@ -1,5 +1,6 @@
 var teacher_overview = {
   id: 'teacher_overview',
+  skipIfNoElement: false,
   onEnd: function() {
     localStorage.removeItem('tour:teacher:overview:classroom_id');
   },
