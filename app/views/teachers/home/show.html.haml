@@ -26,10 +26,22 @@
 = javascript_include_tag "tours/school_admin/overview"
 = javascript_include_tag "tours/teacher/overview"
 
+:javascript
+  localStorage.setItem('tour:shouldStartTour','N');
+  hopscotch.endTour();
+  
+- if params[:tour] == "Y" or first_time_logged_in
+  :javascript
+    localStorage.setItem('tour:shouldStartTour','Y');
+       
 - if current_person.is_a?(SchoolAdmin)
   :javascript
-    hopscotch.startTour(school_admin_overview);
+    if (localStorage.getItem('tour:shouldStartTour') == 'Y') {
+        hopscotch.startTour(school_admin_overview);
+    }
  
 - if current_person.is_a?(Teacher)
   :javascript
-    hopscotch.startTour(teacher_overview)
+    if (localStorage.getItem('tour:shouldStartTour') == 'Y') {    
+      hopscotch.startTour(teacher_overview)
+    }
