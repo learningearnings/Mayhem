@@ -34,8 +34,7 @@
         - charity_donations = honor_roll.charity_purchases_per_person(3)
         %h4 Most Credits Donated to Charity
         %ol 
-          - charity_donations.each do 
- |person, amount|
+          - charity_donations.each do |person, amount|
             %li #{person} [#{number_to_bucks amount}]
 
 .student-logged-in-sidebar
@@ -52,8 +51,7 @@
       = @our_sponsor.body.html_safe
     .our-sponsors-callout
       .our-sponsors-callout-content
-        = @our_sponsor_callout.body.html_s
- afe
+        = @our_sponsor_callout.body.html_safe
   - if Poll.active.present?
     .poll
       %h2 Polls 
@@ -65,8 +63,7 @@
             = hidden_field_tag :poll_id, @poll.id
             = f.label choice.choice
             = f.radio_button(:poll_choice_id, choice.id)
-            = "#{choice.votes.cou
- nt} Votes"
+            = "#{choice.votes.count} Votes"
           %br
           = f.submit 'Vote'
 
