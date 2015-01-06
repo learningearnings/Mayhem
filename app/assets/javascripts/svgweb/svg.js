@@ -440,7 +440,9 @@ function xpath(doc, context, expr, namespaces) {
 
     return found;
   } else { // IE
-    doc.setProperty('SelectionLanguage', 'XPath');
+    //doc.setProperty('SelectionLanguage', 'XPath');
+    console.log("svg:xpath");
+    console.log(doc);
     
     if (namespaces) {
       var allNamespaces = '';
@@ -462,7 +464,7 @@ function xpath(doc, context, expr, namespaces) {
           foundNamespace['_' + namespaceURI] = namespaceURI;
         }
       }
-      doc.setProperty('SelectionNamespaces',  allNamespaces);
+      //doc.setProperty('SelectionNamespaces',  allNamespaces);
     }
     
     var found = context.selectNodes(expr);
