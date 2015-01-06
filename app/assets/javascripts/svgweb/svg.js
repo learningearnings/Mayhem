@@ -440,32 +440,32 @@ function xpath(doc, context, expr, namespaces) {
 
     return found;
   } else { // IE
-    //doc.setProperty('SelectionLanguage', 'XPath');
-    console.log("svg:xpath");
-    console.log(doc);
-    
-    if (namespaces) {
-      var allNamespaces = '';
-      // IE throws an error if the same namespace is present multiple times,
-      // so remove duplicates
-      var foundNamespace = {};
-      for (var i = 0; i < namespaces.length; i++) {
-        var namespaceURI = namespaces[i];
-        var prefix = namespaces['_' + namespaceURI];
-
-        // seen before?
-        if (!foundNamespace['_' + namespaceURI]) {
-          if (prefix == 'xmlns') {
-            allNamespaces += 'xmlns="' + namespaceURI + '" ';
-          } else {
-            allNamespaces += 'xmlns:' + prefix + '="' + namespaceURI + '" ';
-          }
-          
-          foundNamespace['_' + namespaceURI] = namespaceURI;
-        }
-      }
-      //doc.setProperty('SelectionNamespaces',  allNamespaces);
-    }
+  	
+  	if (doc.hasOwnProperty('setProperty')) {
+	    doc.setProperty('SelectionLanguage', 'XPath');	    
+	    if (namespaces) {
+	      var allNamespaces = '';
+	      // IE throws an error if the same namespace is present multiple times,
+	      // so remove duplicates
+	      var foundNamespace = {};
+	      for (var i = 0; i < namespaces.length; i++) {
+	        var namespaceURI = namespaces[i];
+	        var prefix = namespaces['_' + namespaceURI];
+	
+	        // seen before?
+	        if (!foundNamespace['_' + namespaceURI]) {
+	          if (prefix == 'xmlns') {
+	            allNamespaces += 'xmlns="' + namespaceURI + '" ';
+	          } else {
+	            allNamespaces += 'xmlns:' + prefix + '="' + namespaceURI + '" ';
+	          }
+	          
+	          foundNamespace['_' + namespaceURI] = namespaceURI;
+	        }
+	      }
+	      doc.setProperty('SelectionNamespaces',  allNamespaces);
+	    }
+	}
     
     var found = context.selectNodes(expr);
     if (found === null || typeof found == 'undefined') {
