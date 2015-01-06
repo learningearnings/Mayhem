@@ -27,7 +27,6 @@ class PersonSchoolLink < ActiveRecord::Base
   attr_accessible :person_id, :school_id, :status, :person, :school, :can_distribute_credits
   validates_presence_of :person_id, :school_id
   validate :validate_unique_with_status
-  #validate :email_taken?
   validate :username_taken?
 
   def link(d)
@@ -74,18 +73,6 @@ class PersonSchoolLink < ActiveRecord::Base
   end
 
   ################### Validations ########################
-  def email_taken?
-    errors.add(:status, "Person must be present") and return unless person && person.user.email.present?
-    return if status == "inactive"
-    if person.is_a?(Student)
-      return false
-    else
-      if school.teachers.with_email(person.user.email).present?
-        errors.add(:base, "Email already assigned for this school.")
-      end
-    end
-  end
-
   def username_taken?
     errors.add(:status, "Person must be present") and return unless person && person.user.username
     return if status == "inactive"
