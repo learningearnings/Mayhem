@@ -40,7 +40,7 @@ var school_admin_overview = {
     }
   }, {
     target: document.querySelector('.bank'),
-    content: "The Bank page is where you manage your LE credits. Credits are LE's currency or points.  You will give your students LE Credits for reaching goals, doing good or any other criteria you set.",
+    content: "The Bank page is where you manage your LE Credits. Credits are LE's currency or points.  You will give your students LE Credits for reaching goals, doing good or any other criteria you set.",
     placement: "bottom"
   }, {
     target: $('a[href=#print-credits]')[0],
@@ -51,7 +51,7 @@ var school_admin_overview = {
     }
   }, {
     target: $('a[href=#electronic-credits]')[0],
-    content: "The Electronic Credits tab allows you to send credits to a single student, or one of your classrooms. The student will receive a system message allowing them to deposit the credits.",
+    content: "The Electronic Credits tab allows you to send credits to a single student, or one of your classrooms. The student will receive a system message allowing them to deposit the Credits.",
     placement: "top",
     onShow: function() {
       $('a[href=#electronic-credits]').click();
@@ -69,7 +69,7 @@ var school_admin_overview = {
     placement: "right"
   }, {
     target: document.querySelector('.class_points'),
-    content: "This is where you enter the number of LE credits. Below, you'll notice that the number of credits you enter will be populated. You'll still be able to update each student's credits individually to increase or even exclude a student from receving any.",
+    content: "This is where you enter the number of LE Credits. Below, you'll notice that the number of credits you enter will be populated. You'll still be able to update each student's credits individually to increase or even exclude a student from receving any.",
     placement: "right"
   }, {
     target: document.querySelector('#classroom_otu_code_category'),

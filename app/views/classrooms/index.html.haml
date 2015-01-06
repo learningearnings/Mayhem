@@ -29,7 +29,7 @@
 = javascript_include_tag "tours/teacher/overview"
 
 :javascript
-  if (hopscotch.getState() !== null) {
+  if (hopscotch.getState() !== null && (localStorage.getItem('tour:shouldStartTour') == 'Y')) {
     var tour = window[hopscotch.getState().split(":")[0]];
     hopscotch.startTour(tour);
   }
@@ -53,8 +53,8 @@
   $('.submit').click(function(e) {
     e.preventDefault();
     var $form = $('#new_classroom');
-    var values = $form.serialize();
-
+    var csrf_token = $('meta[name=csrf-token]').attr('content');
+    var values = $form.children(0).serialize() + "&authenticity_token=" + csrf_token;
     $.ajax({
       type: "POST",
       url: $form.attr('action'),

@@ -6,7 +6,7 @@ var teacher_overview = {
   },
   steps: [{
     target: document.querySelector('.home'),
-    content: "Welcome to LE! Let us give you a quick tour and get you setup so we you can start using LE.  This tour can be restarted from the Help page if needed.",
+    content: "Welcome to LE! Let us give you a quick tour and get you setup so you can start using LE.  This tour can be restarted from the Help page if needed.",
     placement: 'bottom',
     multipage: true,
     onNext: function() {
