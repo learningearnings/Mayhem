@@ -101,7 +101,7 @@
     e.preventDefault();
 
     var form = $('form.add-new-student');
-    var values = form.serialize();
+    var values = $('form.add-new-student :input').serialize();
     $.ajax({
       type: "POST",
       url : form.attr('action'),
@@ -124,7 +124,7 @@
   $('.add-existing-student-save').click(function(e) {
     e.preventDefault();
     var form = $('form.add-existing-student');
-    var values = form.serialize();
+    var values = $('form.add-existing-student :input').serialize();
     $.ajax({
       type: "POST",
       url: form.attr('action'),

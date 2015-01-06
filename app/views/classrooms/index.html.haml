@@ -53,8 +53,7 @@
   $('.submit').click(function(e) {
     e.preventDefault();
     var $form = $('#new_classroom');
-    var csrf_token = $('meta[name=csrf-token]').attr('content');
-    var values = $form.children(0).serialize() + "&authenticity_token=" + csrf_token;
+    var values = $('#new_classroom :input').serialize() ;
     $.ajax({
       type: "POST",
       url: $form.attr('action'),

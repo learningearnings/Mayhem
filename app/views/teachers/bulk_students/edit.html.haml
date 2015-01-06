@@ -137,7 +137,7 @@
       $.ajax '/teachers/bulk_students',
         type: 'POST',
         dataType: 'json',
-        data: $('#update_students_form').serialize(), 
+        data: $('#update_students_form :input').serialize(), 
         error: (jqXHR, textStatus, errorThrown) ->
           alert('There was an error, please try again.');
         success: (data, textStatus, jqXHR) ->
