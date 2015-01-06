@@ -10,6 +10,7 @@ class ClassroomsController < LoggedInController
 
   def show
     @classroom = Classroom.find(params[:id])
+    @classroom_student_form = ClassroomStudentForm.new
     respond_to do |format|
       format.html { render layout: true }
       format.json { render json: @classroom.students.order(:last_name, :first_name) }
@@ -117,35 +118,19 @@ class ClassroomsController < LoggedInController
   end
 
   def create_student
+    @classroom_student_form = ClassroomStudentForm.new
     @classroom = Classroom.find(params[:classroom_id])
-    @student = Student.new(params[:student])
-    @student.save
-    @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
-    psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(@student.id, current_school.id)
-    if psl.valid?
-      pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
-      pscl.activate
-      respond_to do |format|
-        format.html {
-          flash[:notice] = 'Student created!'
-          redirect_to classroom_path(@classroom)
-        }
-        format.json {
-          render json: @classroom.students, each_serializer: ClassroomStudentSerializer, classroom_id: @classroom.id, school_id: @classroom.school.id, root: false
-        }
-      end
+    @classroom_student_form.set_values(params[:classroom_id], params[:user])
+    if @classroom_student_form.save
+      render json: @classroom_student_form.classroom.students,
+        each_serializer: ClassroomStudentSerializer,
+          classroom_id: @classroom_student_form.classroom.id,
+          school_id: @classroom_student_form.classroom.school.id,
+          root: "students",
+          meta: { status: :ok }
     else
-      respond_to do |format|
-        format.html {
-          @student.user.delete
-          @student.delete
-          flash.now[:error] = 'Student not created'
-          render :show
-        }
-        format.json {
-          render json: { status: :unprocessible_entity }
-        }
-      end
+      form = render_to_string partial: "add_new_student_form"
+      render json: { modal: form, status: :unprocessible_entity }
     end
   end
 

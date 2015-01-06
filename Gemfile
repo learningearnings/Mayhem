@@ -19,6 +19,7 @@ gem 'transaction_retry'
 gem 'uuidtools'
 gem 'chronic'
 gem 'active_model_serializers', '0.8.3'
+gem 'bootstrap_forms'
 
 # for importing
 #gem 'mysql2'
