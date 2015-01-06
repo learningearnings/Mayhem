@@ -60,6 +60,10 @@ var school_admin_overview = {
     target: $('a[href=#transfer-credits]')[0],
     content: "As an LE Admin, you can also tranfer credits from one teacher to another.",
     placement: "top",
+    multipage: true,
+    onNext: function() {
+      window.location = "/store";
+    },    
     onShow: function() {
       $('a[href=#transfer-credits]').click();
     }
