@@ -47,9 +47,9 @@
 #  We are currently using this to
 #  kill the tour if the user hits
 #  the back button.
-window.onpopstate = (event) ->
-  hopscotch.endTour() if hopscotch.getState() isnt "undefined"
-history.pushState({}, '');
+# window.onpopstate = (event) ->
+#   hopscotch.endTour() if hopscotch.getState() isnt "undefined"
+# history.pushState({}, '');
 
 $.webshims.debug = true;
 $.webshims.setOptions('forms', {
