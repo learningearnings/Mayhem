@@ -18,6 +18,8 @@ gem 'newrelic_rpm'
 gem 'transaction_retry'
 gem 'uuidtools'
 gem 'chronic'
+gem 'active_model_serializers', '0.8.3'
+gem 'bootstrap_forms'
 
 # for importing
 #gem 'mysql2'
@@ -46,6 +48,8 @@ gem 'responders'
 gem 'kaminari'
 
 gem 'googlecharts'
+
+gem 'bootstrap_forms'
 
 # Add native postgres data type suport to activerecord.  Rails 4
 # forward-compatible afaik, pretty sure the author's patch made it to rails 4

@@ -2,7 +2,7 @@
   .full-content
     %h2 Your Rewards
     %ul.action_buttons
-      %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "btn awesome-button"
+      %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "create-reward btn awesome-button"
     .resp-product
       = paginate @teachers_rewards, :window => 2
       .resp-product-row
@@ -16,3 +16,12 @@
             You have not created any school rewards yet. Click Create a New Reward to add your very own school rewards!
     - if @teachers_rewards.count > 3
       = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
+
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
+
+:javascript
+  if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y'))  {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }
