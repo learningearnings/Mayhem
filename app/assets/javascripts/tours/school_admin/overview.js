@@ -52,7 +52,7 @@ var school_admin_overview = {
     }
   }, {
     target: document.querySelector('#classroom-students'),
-    content: "The new student you created now shows up in classroom roster list.  Now, let's take a look at some of the things we can do with a classroom.",
+    content: "The new student you created now shows up in classroom roster list.  Now, let's take a look at how we can motivate our new student.",
     placement: "top",
     multipage: true,
     onNext: function() {
