@@ -35,9 +35,9 @@
         %p This reward will be available to every student at the school.
         %p
           Grade Range:
-          = f.select :min_grade, current_school.grades.map(&:reverse), { include_blank: true }, { class: 'input-medium' }
+          = f.select :min_grade, %w(K 1 2 3 4 5 6 7 8 9 10 11 12), { include_blank: true }, { class: 'input-medium' }
           to
-          = f.select :max_grade, current_school.grades.map(&:reverse), { include_blank: true }, { class: 'input-medium' }
+          = f.select :max_grade, %w(K 1 2 3 4 5 6 7 8 9 10 11 12), { include_blank: true }, { class: 'input-medium' }
 
   .control-row
     = f.input :spree_product_id, :as => :hidden

@@ -33,6 +33,13 @@ Leror::Application.routes.draw do
     end
   end
 
+  resources :faq_questions
+  get '/tour' => 'faq_questions#tour'
+  get '/begin_tour' => 'faq_questions#begin_tour'
+  get '/end_tour' => 'faq_questions#end_tour'    
+  match "/help" => "faq_questions#index", :as => 'help'
+  post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
+
   resources :people do
     collection do
       match "/get_avatar_results" => 'people#get_avatar_results'

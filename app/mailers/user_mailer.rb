@@ -13,6 +13,11 @@ class UserMailer < ActionMailer::Base
     end
   end
 
+  def teacher_self_signup_email(teacher)
+    @teacher = teacher
+    mail(to: @teacher.user.email, subject: 'Thank you for registering with Learning Earnings.')
+  end
+
   def teacher_request_email(teacher)
     @teacher = teacher
     @url  = "http://learningearnings.com/login"

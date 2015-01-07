@@ -1,36 +1,56 @@
 .main-content-wrapper
-  %h2 New Teacher
+  %h2 Setup Your Account
+  %p
+    To get started with LE you just need to create an account and a school for your students.
+    You will create logins for your students inside LE once you've created your account.
 
-  %p If you are a teacher and would like to sign-up for Learning Earnings, please email #{mail_to "TheTeam@LearningEarnings.com"} with your information as well as the school you teach at and we will walk you through the process.
-
--#
-  = form_for @teacher do |f|
+  = bootstrap_form_for @teacher_signup_form do |f|
     .row
-      .span3
-        = f.label :first_name
+      .span4
+        %h3 Teacher
         = f.text_field :first_name
-        = f.label :last_name
         = f.text_field :last_name
-        = f.label :email
         = f.text_field :email
-        = f.label :username
         = f.text_field :username
-        = f.label :dob
-        = f.text_field :dob, :class => 'datepicker'
-      .span3
-        = f.label :gender
-        = f.select :gender, options_for_select(['Male', 'Female'], :gender), :include_blank => true
-        = f.label :grade
-        = f.select :grade, options_for_select(['K', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'], :grade), :include_blank => true
-        = label_tag :school
-        = select_tag :school_id, options_from_collection_for_select(School.order(:name).all, :id, :to_s), :include_blank => true
-        = f.label :password
         = f.password_field :password
-        = f.label :password_confirmation
         = f.password_field :password_confirmation
+      .span4
+        %h3 School
+        = f.text_field :name
+        = f.text_field :city
+        = f.select :state_id, options_from_collection_for_select(State.all, 'id', 'abbr', selected: @teacher_signup_form.state_id), include_blank: true
     = f.submit 'Submit', class: 'btn awesome-button'
 
   :javascript
     $(function() {
       $( ".datepicker" ).datepicker();
+    });
+
+    // Tooltips
+    $('#teacher_username').tooltip({
+      'trigger': 'focus',
+      'placement': 'right',
+      'title': 'Can be anything, we copied your email in case you want to use that.'
+    });
+
+    $('#teacher_name').tooltip({
+      'trigger': 'focus',
+      'placement': 'right',
+      'title': 'Name your school anything you want, you and your students will need to select it when logging in.'
+    });
+
+    $('#teacher_city').tooltip({
+      'trigger': 'focus',
+      'placement': 'right',
+      'title': 'This is displayed when selecting your school to login so you can tell the difference between to similarly names schools. It\'s probably best to choose the actual location of your school not to confuse anyone.'
+    });
+
+    $('#teacher_state_id').tooltip({
+      'trigger': 'focus',
+      'placement': 'right',
+      'title': 'This is displayed when selecting your school to login so you can tell the difference between to similarly names schools. It\'s probably best to choose the actual location of your school not to confuse anyone.'
+    });
+    // Set username to user's email
+    $('#teacher_email').blur( function(e) {
+      $('#teacher_username').val($(e.currentTarget).val());
     });

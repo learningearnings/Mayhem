@@ -37,7 +37,7 @@
                 Lookup A Code
           - if current_user.person.is_a?(SchoolAdmin)
             %li
-              %a{:href => "#auto-credits", 'data-toggle' => 'tab'}
+              %a{'href' => '#auto-credits', 'data-toggle' => 'tab'}
                 %p
                   %i{:class => "icon-star"}
                   Auto-Credits
@@ -56,25 +56,28 @@
               = f.submit 'Print These Credits', :class => 'awesome-button'
 
           .tab-pane#electronic-credits
-            %h4 Issue Electronic Credits to a single student
-            = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
-              = label_tag 'Student'
-              = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
-              = label_tag 'Credits'
-              = text_field_tag :points, nil, :class => "input-mini credits"
-              = f.label :otu_code_category_id, "Credit Category"
-              = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
-              = f.submit 'Send These Credits', :class => 'awesome-button'
+            .electronic-credits-for-student
+              %h4 Issue Electronic Credits to a single student
+              = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
+                = label_tag 'Student'
+                = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
+                = label_tag 'Credits'
+                = text_field_tag :points, nil, :class => "input-mini credits"
+                = f.label :otu_code_category_id, "Credit Category"
+                = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
+                = f.submit 'Send These Credits', :class => 'awesome-button'
 
-            %h4 Issue Electronic Credits to each student in a classroom
-            = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
-              = label_tag 'Classroom'
-              = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
-              = label_tag 'Credits'
-              = text_field_tag :class_points, nil,:class => 'class_points input-mini credits', :onclick => 'copy_points();'
-              = f.label :otu_code_category_id, "Credit Category"
-              = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
-              #classroom_distribution
+            .electronic-credits-for-classroom
+              %h4 Issue Electronic Credits to each student in a classroom
+              = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
+                = label_tag 'Classroom'
+                = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
+                = label_tag 'Credits'
+                = text_field_tag :class_points, nil,:class => 'class_points input-mini credits', :onclick => 'copy_points();'
+                = f.label :otu_code_category_id, "Credit Category"
+                = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
+                #classroom_distribution
+                = f.submit 'Send These Credits', class: 'awesome-button'
 
           .tab-pane#transfer-credits
             %h4 Transfer Credits Between Teachers
@@ -85,7 +88,6 @@
               = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = label_tag :to_teacher
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
-              = f.submit 'Transfer Credits', :class => 'awesome-button'
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
 
@@ -138,7 +140,6 @@
         {{/students}}
       </tbody>
     </table>
-    <input class="awesome-button" name="commit" type="submit" value="Send These Credits">
 
 :coffeescript
   jQuery ->
@@ -160,10 +161,10 @@
         $.get('/classrooms/' + $('#classroom_id').val() + '.json')
           .success (students) ->
             # We have to map the rails-returned data to something more appropriate for mustache
-            mapped_students = $.map students, (student_wrapper) ->
-              student_wrapper.student
+            # mapped_students = $.map students, (student_wrapper) ->
+            #   student_wrapper.student
             ich.grabTemplates();
-            html = ich.students_table(students: mapped_students)
+            html = ich.students_table(students: students.classrooms)
             $('#classroom_distribution').html(html)
             distributeCreditsToAllStudents()
             distributeReasonToAllStudents()
@@ -177,7 +178,14 @@
         (
           copy_points()
         )
+= javascript_include_tag "tours/school_admin/overview"
+
 :javascript
+  if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y'))  {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }
+
   function copy_points() {
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);

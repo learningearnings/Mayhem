@@ -1,28 +1,21 @@
 class TeachersController < ApplicationController
+  skip_before_filter :subdomain_required
 
   def new
-    @teacher = Teacher.new
+    @teacher_signup_form = TeacherSignupForm.new
   end
 
   def create
-    @teacher = Teacher.new(params[:teacher])
-    @teacher.status = 'awaiting_approval'
-    if Spree::User.where(:email => params[:teacher][:email]).present?
-      flash[:error] = 'Email address already linked with an account.'
-      render :new
-    elsif @teacher.save
-      @teacher.user.update_attributes(:username => params[:teacher][:username], :email => params[:teacher][:email], :password => params[:teacher][:password], :password_confirmation => params[:teacher][:password_confirmation])
-      if @teacher.user.valid?
-        PersonSchoolLink.create(:school_id => params[:school_id], :person_id => @teacher.id)
-        UserMailer.teacher_request_email(@teacher).deliver
-        flash[:message] = 'You will be notified when your account is approved.'
-        redirect_to '/'
-      else
-        flash[:error] = 'There was a problem creating your account.'
-        render :new
-      end
+    setup_fake_data
+    @teacher_signup_form = TeacherSignupForm.new(params[:teacher])
+    if @teacher_signup_form.save
+      request.env["devise.skip_trackable"] = true
+      sign_in(@teacher_signup_form.person.user)
+      session[:current_school_id] = @teacher_signup_form.school.id
+      UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
+      flash[:notice] = 'Thank you for signing up!'
+      redirect_to '/'
     else
-      flash[:error] = 'There was a problem creating your account.'
       render :new
     end
   end
@@ -58,7 +51,13 @@ class TeachersController < ApplicationController
       flash[:error] = "Teacher account already active."
     end
     redirect_to '/'
-
   end
 
+  private
+
+  def setup_fake_data
+    params[:teacher][:grade] = 5
+    params[:teacher][:address1] = "Fake Address"
+    params[:teacher][:zip] = 12345
+  end
 end
