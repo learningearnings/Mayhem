@@ -6,7 +6,10 @@ var teacher_overview = {
     history.pushState({"tour": "started"}, 'tour-started')
   },
   onEnd: function() {
-    localStorage.removeItem('tour:teacher:overview:classroom_id');
+    localStorage.removeItem('tour:overview:classroom_id');
+  },
+  onClose: function() {
+    localStorage.removeItem('tour:overview:classroom_id');
   },
   steps: [{
     target: document.querySelector('.home'),
@@ -61,7 +64,7 @@ var teacher_overview = {
     placement: "bottom",
     showPrevButton: true,
     onPrev: function() {
-      var classroom_id = localStorage.getItem('tour:teacher:overview:classroom_id')
+      var classroom_id = localStorage.getItem('tour:overview:classroom_id')
       window.location = "/classrooms/" + classroom_id
     }
   }, {
@@ -93,7 +96,7 @@ var teacher_overview = {
   }, {
     target: document.querySelector('#classroom_otu_code_category'),
     content: "You can also create categories, or goals to use with e-Credits. This will tell the student 'why' they recieved credits from you. This is optional, so we won't set any up right now.",
-    placement: "right",
+    placement: "top",
     showPrevButton: true
   }, {
     target: document.querySelector('.electronic-credits-for-classroom input[type=submit]'),
