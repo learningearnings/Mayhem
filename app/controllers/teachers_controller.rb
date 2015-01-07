@@ -53,6 +53,10 @@ class TeachersController < ApplicationController
     redirect_to '/'
   end
 
+  def get_balance
+    render text: render_to_string(partial: "layouts/credit_balance")
+  end
+
   private
 
   def setup_fake_data
