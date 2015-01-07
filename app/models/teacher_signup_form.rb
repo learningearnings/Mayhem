@@ -6,10 +6,11 @@ class TeacherSignupForm
   attr_accessor :first_name, :last_name, :dob, :gender, :grade
   attr_accessor :email, :username, :password, :password_confirmation
   attr_accessor :name, :city, :state_id, :address1, :zip
+  attr_accessor :min_grade, :max_grade  
 
   validates :first_name,            presence: true
   validates :last_name,             presence: true
-  validates :email,                 presence: true
+  validates :email,                 presence: true, emai: true
   validates :grade,                 presence: true
   validates :username,              presence: true
   validates :password,              presence: true
@@ -91,7 +92,7 @@ class TeacherSignupForm
   end
 
   def school_attributes
-    { name: name, city: city, address1: address1, state_id: state_id, zip: zip }
+    { name: name, city: city, address1: address1, state_id: state_id, zip: zip, min_grade: min_grade, max_grade: max_grade }
   end
 
   def create_objects
