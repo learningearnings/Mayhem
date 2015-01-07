@@ -1,6 +1,10 @@
 var teacher_overview = {
   id: 'teacher_overview',
   skipIfNoElement: false,
+  onStart: function() {
+    history.pushState({"tour": "started"}, 'tour-started')
+    history.pushState({"tour": "started"}, 'tour-started')
+  },
   onEnd: function() {
     localStorage.removeItem('tour:teacher:overview:classroom_id');
   },
