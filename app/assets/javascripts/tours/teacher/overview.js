@@ -52,7 +52,7 @@ var teacher_overview = {
     }
   }, {
     target: document.querySelector('#classroom-students'),
-    content: "The new student you created now shows up in classroom roster list.  Now, let's take a look at some of the things we can do with a classroom.",
+    content: "The new student you created now shows up in classroom roster list.  Now, let's take a look at how we can motivate our new student.",
     placement: "top",
     multipage: true,
     onNext: function() {
@@ -60,7 +60,7 @@ var teacher_overview = {
     }
   }, {
     target: document.querySelector('.bank'),
-    content: "The Bank page is where you manage your LE credits. Credits are LE's points or currency.  You will give your students LE Credits for reaching goals, doing good or any other criteria you set.",
+    content: "The Bank page is where you manage your LE credits. Credits are LE's points or currency. You will give your students LE Credits for reaching goals, doing good or any other criteria you set. You receive 700 credits per student per month to distribute. This works out to 5 credits per 7 hour. Note, this balance is prorated in your first month based on the date you start.",
     placement: "bottom",
     showPrevButton: true,
     onPrev: function() {
