@@ -19,7 +19,7 @@
         = f.text_field :name
         = f.text_field :city
         = f.select :state_id, options_from_collection_for_select(State.all, 'id', 'abbr', selected: @teacher_signup_form.state_id), include_blank: true
-        = f.hidden_field :min_grade, :value => "K"
+        = f.hidden_field :min_grade, :value => "0"
         = f.hidden_field :max_grade, :value => "12"
     = f.submit 'Submit', class: 'btn awesome-button'
 

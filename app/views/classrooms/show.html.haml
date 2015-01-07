@@ -112,6 +112,9 @@
         reloadTable(json.students);
         $('.modal').modal('hide');
         form[0].reset();
+        setTimeout(function() {
+          updateBalance();
+        }, 1000);
         if (hopscotch.getState() !== "undefined") {
           hopscotch.nextStep();
         }

@@ -214,6 +214,7 @@ Leror::Application.routes.draw do
 
   post "/undeliver_reward" => "deliver_rewards_commands#undeliver", :as => :undeliver_reward
   namespace :teachers do
+    get "balance" => "teachers#get_balance"
     match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
