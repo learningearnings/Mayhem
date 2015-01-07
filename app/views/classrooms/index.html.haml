@@ -42,13 +42,12 @@
   //          to the correct classroom.
   function setup_links() {
     $('#classrooms h3 > a').click(function(e) {
-      localStorage.setItem('tour:teacher:overview:classroom_id', $(e.currentTarget).data('id'))
+      localStorage.setItem('tour:overview:classroom_id', $(e.currentTarget).data('id'))
       if (hopscotch.getState() !== null) {
         hopscotch.nextStep();
       }
     });
   }
-  setup_links();
 
   $('.submit').click(function(e) {
     e.preventDefault();
@@ -62,8 +61,6 @@
       dataType: 'JSON'
     }).success(function(response) {
       if (response.status == "ok") {
-        var classroom = response.classroom.classroom;
-
         var classrooms = $.map(response.classrooms, function(classroom) {
           return classroom.classroom;
         });

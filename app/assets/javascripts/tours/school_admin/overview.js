@@ -1,18 +1,33 @@
 var school_admin_overview = {
   id: 'school_admin_overview',
+  skipIfNoElement: false,
+  onStart: function() {
+    history.pushState({"tour": "started"}, "tour-started")
+    history.pushState({"tour": "started"}, "tour-started")
+  },
+  onEnd: function() {
+    localStorage.removeItem('tour:overview:classroom_id');
+  },
+  onClose: function() {
+    localStorage.removeItem('tour:overview:classroom_id');
+  },
   steps: [{
     target: document.querySelector('.home'),
     content: "Welcome to LE! Let us give you a quick tour and get you setup so you can start using LE. This tour can be restarted from the Help page if needed.",
     placement: 'bottom',
     multipage: true,
     onNext: function() {
-      window.location = "/classrooms"
+      window.location = "/classrooms?tour=Y"
     }
   }, {
     target: document.querySelector('.new_classroom'),
     content: "First, let's create a classroom. This can be a test classroom if you like, you can always delete it later.",
     placement: "bottom",
-    showNextButton: false
+    showNextButton: false,
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/teachers/home?tour=Y"
+    }
   }, {
     target: document.querySelector('#classrooms'),
     content: "Now that have you a classroom, click the name here and we can add students to it.",
@@ -24,28 +39,39 @@ var school_admin_overview = {
     content: "Let's add a new student now and they will automatically be added to your new classroom.",
     placement: "top",
     showNextButton: false,
-    nextOnTargetClick: true
+    nextOnTargetClick: true,
+    showPrevButton: true
   }, {
     target: document.querySelector('#add-new-student-modal'),
     content: "Enter your new student's information. If you like you can create a fictional student and delete the account later or you can use a real student.",
     placement: "left",
-    showNextButton: false
+    showNextButton: false,
+    showPrevButton: true,
+    onPrev: function() {
+      $('.modal').modal('hide');
+    }
   }, {
     target: document.querySelector('#classroom-students'),
     content: "The new student you created now shows up in classroom roster list.  Now, let's take a look at some of the things we can do with a classroom.",
     placement: "top",
     multipage: true,
     onNext: function() {
-      window.location = "/school_admins/bank"
+      window.location = "/school_admins/bank?tour=Y"
     }
   }, {
     target: document.querySelector('.bank'),
     content: "The Bank page is where you manage your LE Credits. Credits are LE's currency or points.  You will give your students LE Credits for reaching goals, doing good or any other criteria you set.",
-    placement: "bottom"
+    placement: "bottom",
+    showPrevButton: true,
+    onPrev: function() {
+      var classroom_id = localStorage.getItem('tour:overview:classroom_id')
+      window.location = "/classrooms/" + classroom_id
+    }
   }, {
     target: $('a[href=#print-credits]')[0],
     content: "The Print Credits tab allows you to print LE Credits that have codes on them allowing students to deposit them into their account. Just tell LE how many of each of the denominations and a file will be created you can print.",
     placement: "top",
+    showPrevButton: true,
     onShow: function() {
       $('a[href=#print-credits]').click();
     }
@@ -53,38 +79,43 @@ var school_admin_overview = {
     target: $('a[href=#electronic-credits]')[0],
     content: "The Electronic Credits tab allows you to send credits to a single student, or one of your classrooms. The student will receive a system message allowing them to deposit the Credits.",
     placement: "top",
+    showPrevButton: true,
     onShow: function() {
       $('a[href=#electronic-credits]').click();
     }
-  }, {
-    target: $('a[href=#transfer-credits]')[0],
-    content: "As an LE Admin, you can also tranfer credits from one teacher to another.",
-    placement: "top",
-    multipage: true,
-    onNext: function() {
-      window.location = "/store";
-    },    
-    onShow: function() {
-      $('a[href=#transfer-credits]').click();
-    }
+  // }, {
+  //   target: $('a[href=#transfer-credits]')[0],
+  //   content: "As an LE Admin, you can also tranfer credits from one teacher to another.",
+  //   placement: "top",
+  //   multipage: true,
+  //   showPrevButton: true,
+  //   onNext: function() {
+  //     window.location = "/store?tour=Y";
+  //   },
+  //   onShow: function() {
+  //     $('a[href=#transfer-credits]').click();
+  //   }
   }, {
     target: document.querySelector('#classroom_id'),
     content: "Start by selecting the classroom we created earlier.",
-    placement: "right"
+    placement: "right",
+    showPrevButton: true
   }, {
     target: document.querySelector('.class_points'),
     content: "This is where you enter the number of LE Credits. Below, you'll notice that the number of credits you enter will be populated. You'll still be able to update each student's credits individually to increase or even exclude a student from receving any.",
-    placement: "right"
+    placement: "right",
+    showPrevButton: true
   }, {
     target: document.querySelector('#classroom_otu_code_category'),
     content: "You can also create categories, or goals to use with e-Credits. This will tell the student 'why' they recieved credits from you. This is optional, so we won't set any up right now.",
     placement: "right",
-
+    showPrevButton: true
   }, {
     target: document.querySelector('.electronic-credits-for-classroom input[type=submit]'),
     content: "Once you are finished setting up the credits for the classroom, you can click this button to send those credits to the students.",
     placement: "right",
     showNextButton: false,
+    showPrevButton: true,
     multipage: true,
     nextOnTargetClick: true
   }, {
@@ -93,7 +124,7 @@ var school_admin_overview = {
     placement: "right",
     multipage: true,
     onNext: function() {
-      window.location = "/store"
+      window.location = "/store?tour=Y"
     }
   }, {
     target: document.querySelector('.shop'),
@@ -104,6 +135,7 @@ var school_admin_overview = {
     content: "Click this button and lets get started creating a reward.",
     placement: "left",
     showNextButton: false,
+    showPrevButton: true,
     nextOnTargetClick: true,
     multipage: true
   }, {
@@ -112,13 +144,18 @@ var school_admin_overview = {
     placement: "left",
     multipage: true,
     showNextButton: false,
-    nextOnTargetClick: true
+    nextOnTargetClick: true,
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/store?tour=Y"
+    }
   }, {
     target: document.querySelector('.custom-reward-button'),
     content: "Below we show you hundreds of rewards that have been created by great teachers like you.  Feel free to use their ideas, or create a brand new one of your own.  Click here and we'll show you how easy it is to do that.",
     placement: "right",
     multipage: true,
     showNextButton: false,
+    showPrevButton: true,
     nextOnTargetClick: true
   }, {
     target: document.querySelector('.full-content'),
@@ -126,6 +163,10 @@ var school_admin_overview = {
     multipage: true,
     placement: "top",
     showNextButton: false,
+    showPrevButton: true,
+    onPrev: function() {
+      window.location = "/teachers/reward_templates?tour=Y"
+    },
     nextOnTargetClick: document.querySelector('input[type=submit]')
   }, {
     target: document.querySelector('.resp-product-row'),
@@ -133,11 +174,12 @@ var school_admin_overview = {
     multipage: true,
     placement: "top",
     onNext: function() {
-      window.location = "/school_admins/reports"
+      window.location = "/school_admins/reports?tour=Y"
     }
   }, {
     target: document.querySelector('.reports'),
     content: "The Purchase Report is how you can see what rewards your students have purchased from the store. Other reports allow you to check student balances or see who's logging in.  We hope you enjoy using LE, you can also restart this tour or find other answers using the Help page.",
-    placement: "bottom"
+    placement: "bottom",
+    showPrevButton: true
   }]
 }

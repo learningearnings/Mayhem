@@ -6,7 +6,10 @@ var teacher_overview = {
     history.pushState({"tour": "started"}, 'tour-started')
   },
   onEnd: function() {
-    localStorage.removeItem('tour:teacher:overview:classroom_id');
+    localStorage.removeItem('tour:overview:classroom_id');
+  },
+  onClose: function() {
+    localStorage.removeItem('tour:overview:classroom_id');
   },
   steps: [{
     target: document.querySelector('.home'),
@@ -61,7 +64,7 @@ var teacher_overview = {
     placement: "bottom",
     showPrevButton: true,
     onPrev: function() {
-      var classroom_id = localStorage.getItem('tour:teacher:overview:classroom_id')
+      var classroom_id = localStorage.getItem('tour:overview:classroom_id')
       window.location = "/classrooms/" + classroom_id
     }
   }, {
