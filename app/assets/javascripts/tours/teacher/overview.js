@@ -60,7 +60,7 @@ var teacher_overview = {
     }
   }, {
     target: document.querySelector('.bank'),
-    content: "The Bank page is where you manage your LE credits. Credits are LE's points or currency. You will give your students LE Credits for reaching goals, doing good or any other criteria you set. You receive 700 credits per student per month to distribute. This works out to 5 credits per 7 hour. Note, this balance is prorated in your first month based on the date you start.",
+    content: "The Bank page is where you manage your LE credits. Credits are LE's points or currency. You will give your students LE Credits for reaching goals, doing good or any other criteria you set. You receive 700 credits per student per month to distribute. This works out to 35 credits per day. Note, this balance is prorated in your first month based on the date you start.",
     placement: "bottom",
     showPrevButton: true,
     onPrev: function() {
