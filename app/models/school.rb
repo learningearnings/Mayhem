@@ -112,13 +112,6 @@ class School < ActiveRecord::Base
   end
 
   def grade_range
-    #hack to cover us for schools that were created without default min/max grades
-    if self.min_grade == nil
-      self.min_grade = "K"
-    end
-    if self.max_grade == nil
-      self.max_grade = "12"
-    end
     self.min_grade..self.max_grade
   end
 
