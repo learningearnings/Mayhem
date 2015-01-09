@@ -16,4 +16,12 @@ class AdminMailer < ActionMailer::Base
     attachments[student_filename] = File.read("/tmp/" + student_filename)
     mail to: ["jimmy@learningearnings.com"], subject: "ALSDE Study Report", body: "ALSDE Study Report"
   end
+
+  def buck_distributor_notification
+    mail(
+      to: ["jimmy@learningearnigns.com"],
+      subject: "Buck Distributor",
+      body: "Buck Distributor has been run"
+    )
+  end
 end
