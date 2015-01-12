@@ -11,6 +11,9 @@
       = f.input :price, label: "Students' Price", :wrapper => :prepend_append do
         = f.input_field :price, class: 'input-small numeric'
         %span.add-on .00
+      - if current_person.is_a?(SchoolAdmin)
+        = f.label :locker_sticker, "Locker Sticker ", {class: "checkbox inline"}  
+        = f.check_box :locker_sticker             
       - if @teachers_reward.spree_product_id
         .form-inputs.controls-row.span3.clearfix
           %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}

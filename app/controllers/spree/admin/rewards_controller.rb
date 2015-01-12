@@ -32,7 +32,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @current_school = School.find(session[:current_school_id])
     @grades = @current_school.grades
     @classrooms = @current_school.classrooms
-    @fulfillment_types = ["Shipped for School Inventory", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill", "Auction Reward"]
+    @fulfillment_types = ["Shipped for School Inventory", "Locker Sticker", "Shipped on Demand", "Digitally Delivered Coupon", "Digitally Delivered Content", "Digitally Delivered Game", "Digitally Delivered Charity Certificate", "School To Fulfill", "Auction Reward"]
     @purchased_by = ["LE", "Sponsor", "School", "Charity"]
     @categories = Spree::Taxonomy.where(name: "Categories").first.taxons
     @grades = ["K", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -99,6 +99,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
     @product.taxons = params[:product][:taxons].map{|s| Spree::Taxon.find(s) if s.present? }.compact
     @product.states = params[:product][:states].map{|s| ::State.find(s) if s.present? }.compact
     @product.schools = params[:product][:schools].map{|s| School.find(s) if s.present? }.compact
+    @product.sticker_image = File.open(params[:product][:images][:attachment].path) if @product.fulfillment_type == "Locker Sticker"    
   end
 
   def after_save

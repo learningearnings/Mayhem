@@ -83,6 +83,10 @@ Spree::OrdersController.class_eval do
               else
                 OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
                 message = "Purchase successful!."
+                logger.debug("AKT: Purchased product with fulfillment_type = " + @order.line_items.first.product.fulfillment_type)
+                if @order.line_items.first.product.fulfillment_type == "Locker Sticker"
+                  StickerPurchase.create(sticker_id: @order.line_items.first.product.sticker_id, person_id: current_person.id, expires_at: Time.zone.now + 30.days)
+                end                
                 if params[:variants].is_a?(Hash)
                   variant_id = params[:variants].keys.first
                   product = Spree::Variant.find(variant_id)

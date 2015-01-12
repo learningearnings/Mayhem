@@ -3,7 +3,7 @@ module Teachers
     # GET /teachers/rewards
     # GET /teachers/rewards.json
     def index
-      @teachers_rewards = current_person.editable_rewards(current_school).order('name').page(params[:page]).per(9)
+      @teachers_rewards = Spree::Product.with_property_value('reward_type','local').joins(:spree_product_person_link).where(:spree_product_person_link => {:person_id => current_person.id}).order('name').page(params[:page]).per(9)
 
       respond_to do |format|
         format.html # index.html.haml
@@ -62,7 +62,8 @@ module Teachers
         @teachers_reward = Teachers::Reward.new(params[:teachers_reward])
         @teachers_reward.teacher = current_person
         @teachers_reward.school = current_school
-
+        @teachers_reward.locker_sticker = true if params[:teachers_reward][:locker_sticker]
+        
         respond_to do |format|
           if @teachers_reward.save
             format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully created." }

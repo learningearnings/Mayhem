@@ -36,6 +36,7 @@ class Person < ActiveRecord::Base
   has_many :products, :through => :spree_product_person_links
 
   validates_uniqueness_of :sti_uuid, allow_blank: true
+  has_many :sticker_purchases  
 
   has_many :foods, :through => :food_person_links
   has_many :food_person_links
