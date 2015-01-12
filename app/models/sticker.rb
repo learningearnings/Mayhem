@@ -36,5 +36,6 @@ class Sticker < ActiveRecord::Base
   def price=(value)
     product.price = value
     product.save
-  end
+
+  end  
 end

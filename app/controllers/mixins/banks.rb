@@ -108,7 +108,7 @@ module Mixins
         end
       end
 
-      if params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
+      if params[:classroom] && params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure

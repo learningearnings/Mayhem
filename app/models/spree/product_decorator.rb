@@ -1,6 +1,6 @@
 Spree::Product.class_eval do
   attr_accessible :store_ids, :fulfillment_type, :purchased_by, :min_grade, :max_grade, :visible_to_all
-  attr_accessor :sticker_image
+  attr_accessor :sticker_image 
   has_attached_file :svg
   has_many :auctions
 
@@ -59,7 +59,7 @@ Spree::Product.class_eval do
   scope :active, where(:deleted_at => nil)
 
   after_create :handle_locker_sticker_on_create
-
+  
   def self.with_filter(filters = [1])
     joins(:filter).where(Filter.quoted_table_name => {:id => filters})
   end

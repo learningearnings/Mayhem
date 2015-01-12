@@ -25,7 +25,7 @@ class LockersController < LoggedInController
   def shared
     student = Student.find(params[:id])
     locker = student.locker
-    locker.cleanup_expired_purchases!
+    locker.cleanup_expired_purchases!    
     locker_sticker_links = locker.locker_sticker_links.joins(:sticker)
     render 'shared', locals: { locker_sticker_links: locker_sticker_links, student: student }
   end
@@ -33,6 +33,6 @@ class LockersController < LoggedInController
   private
   def load_locker_sticker_links
     locker = current_person.locker
-    locker.locker_sticker_links.joins(:sticker)
+    locker.locker_sticker_links.joins(:sticker)    
   end
 end

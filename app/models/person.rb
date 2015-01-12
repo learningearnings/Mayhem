@@ -30,7 +30,7 @@ class Person < ActiveRecord::Base
   has_many :code_entry_failures
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
-  has_many :sticker_purchases
+  has_many :sticker_purchases  
   has_many :foods, :through => :food_person_links
   has_many :food_person_links
   has_many :food_fight_players
