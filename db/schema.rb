@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141202053859) do
+ActiveRecord::Schema.define(:version => 20150114170143) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -1040,6 +1040,7 @@ ActiveRecord::Schema.define(:version => 20141202053859) do
     t.integer  "min_grade"
     t.integer  "max_grade"
     t.boolean  "visible_to_all",       :default => false
+    t.integer  "sticker_id"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_products_on_available_on"
@@ -1374,10 +1375,22 @@ ActiveRecord::Schema.define(:version => 20141202053859) do
     t.string   "password"
   end
 
-  create_table "stickers", :force => true do |t|
-    t.string   "image_uid"
+  create_table "sticker_purchases", :force => true do |t|
+    t.integer  "sticker_id"
+    t.integer  "person_id"
+    t.datetime "expires_at"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "stickers", :force => true do |t|
+    t.string   "image_uid"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "purchasable", :default => false
+    t.integer  "min_grade"
+    t.integer  "max_grade"
+    t.integer  "school_id"
   end
 
   create_table "sync_attempts", :force => true do |t|
@@ -1393,6 +1406,17 @@ ActiveRecord::Schema.define(:version => 20141202053859) do
     t.text     "schools_response"
     t.text     "sections_response"
     t.text     "staff_response"
+  end
+
+  create_table "tour_events", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "page"
+    t.string   "event_name"
+    t.string   "tour_name"
+    t.integer  "tour_step"
+    t.date     "date"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "uploaded_users", :force => true do |t|
