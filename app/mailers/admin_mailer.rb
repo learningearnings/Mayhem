@@ -16,4 +16,9 @@ class AdminMailer < ActionMailer::Base
     attachments[student_filename] = File.read("/tmp/" + student_filename)
     mail to: ["jimmy@learningearnings.com"], subject: "ALSDE Study Report", body: "ALSDE Study Report"
   end
+  
+  def sign_ups_report filename
+    attachments[filename] = File.read("/tmp/" + filename)
+    mail :to => ["aktaylor@sti-k12.com"], :subject => "Sign Ups Report", :body => "Sign Ups Report"
+  end
 end
