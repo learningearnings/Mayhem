@@ -10,5 +10,6 @@
 
 :javascript
   if (hopscotch.getState() !== null && (localStorage.getItem('tour:shouldStartTour') == 'Y')) {
+    var tour = window[hopscotch.getState().split(":")[0]];  
     hopscotch.startTour(tour);
   }
