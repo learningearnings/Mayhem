@@ -1,0 +1,22 @@
+.tooltip{
+  .tooltip-arrow {
+    border-right-color: #d3d3d3;
+  }
+  .tooltip-inner {
+    background-color: #FFF;
+    color: #222;
+    border: 1px solid #d3d3d3;
+  }
+}
+
+.tooltip.in {
+  opacity: 0.9;
+  .tooltip-arrow {
+    border-right-color: #d3d3d3;
+  }
+  .tooltip-inner {
+    background-color: #FFF;
+    color: #222;
+    border: 1px solid #d3d3d3;
+  }
+}

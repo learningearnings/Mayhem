@@ -1,255 +1,150 @@
+%small-circle {
+  &.active, &:hover {
+    background-image: url(asset_path('home_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%medium-circle {
+  &.active, &:hover {
+    background-image: url(asset_path('locker_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%medium-circle2 {
+  &.active, &:hover {
+    background-image: url(asset_path('rewards_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%large-circle {
+  &.active, &:hover {
+    background-image: url(asset_path('how_it_works_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+%large-circle2 {
+  &.active, &:hover {
+    background-image: url(asset_path('classrooms_selected.png', image));
+    background-repeat: no-repeat;
+  }
+}
+
+$green: #25860b;
+$orange: #ea4e08;
+$fadedOrange: #EB731C;
+$purple: #B611B0;
+$darkBlue: #1f2870;
+$blue: #470bc1;
+$red: #ff2204;
+
+
 .primary-nav {
   li a {
-    padding: 1em .75em;
+    padding: 1em 1em 1em 1em;
     font-size: 1.6em;
   }
+
   .home {
-    color: #25860b;
-  }
-
-  .home:hover {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #25860b;
-  }
-
-  .home-selected {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #25860b;
+    color: $green;
+    @extend %small-circle;
   }
 
   .how-it-works {
-    color: #ea4e08;
-  }
-
-  .how-it-works:hover {
-    background-image: url(asset_path('how_it_works_selected.png', image));
-    background-repeat: no-repeat;
-    color: #ea4e08;
-  }
-
-  .how-it-works-selected {
-    background-image: url(asset_path('how_it_works_selected.png', image));
-    background-repeat: no-repeat;
-    color: #ea4e08;
+    color: $orange;
+    @extend %large-circle;
   }
 
   .testimonials {
-    color: #B611B0;
-  }
-
-  .testimonials:hover {
-    background-image: url(asset_path('how_it_works_selected.png', image));
-    background-repeat: no-repeat;
-    color: #B611B0;
-  }
-
-  .testimonials-selected {
-    background-image: url(asset_path('how_it_works_selected.png', image));
-    background-repeat: no-repeat;
-    color: #B611B0;
+    color: $purple;
+    @extend %large-circle;
   }
 
   .locker {
-    color: #1f2870;
-  }
-
-  .locker:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #1f2870;
-  }
-
-  .locker-selected {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #1f2870;
+    color: $darkBlue;
+    @extend %medium-circle;
   }
 
   .inbox {
-    color: #ff2204;
+    color: $purple;
+    @extend %small-circle;
   }
 
-  .inbox:hover {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #ff2204;
-  }
-
-  .inbox-selected {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #ff2204;
+  .inbox_with_count {
+    color: $purple;
+    @extend %medium-circle2;
   }
 
   .restock {
-    color: #EB731C
+    color: $fadedOrange;
+    @extend %medium-circle;
   }
 
-  .restock:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #EB731C
+  .manage_students {
+    color: $fadedOrange;
+    @extend %medium-circle;
   }
 
-  .restock-selected {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #EB731C
+  .manage_teachers {
+    color: $green;
+    @extend %medium-circle2;
   }
 
-  .manage_students-selected, .manage_students:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-  }
-
-  .manage_teachers-selected, .manage_teachers:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-  }
-
-  .settings-selected, .settings:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-  }
-
-  .help-selected, .help:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
+  .help {
+    color: $red;
+    @extend %small-circle;
   }
 
   .bank {
-    color: #470bc1;
-  }
-
-  .bank:hover {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #470bc1;
-  }
-
-  .bank-selected {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #470bc1;
+    color: $blue;
+    @extend %small-circle;
   }
 
   .play {
-    color: #eb731c;
-  }
-
-  .play:hover,
-  .play-selected {
-    background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
-    color: #eb731c;
+    color: $fadedOrange;
+    @extend %small-circle;
   }
 
   .shop {
-    color: #b611b0;
-  }
-
-  .shop:hover,
-  .shop-selected {
-    background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 5px;
-    color: #b611b0;
+    color: $purple;
+    @extend %small-circle;
   }
 
   .charities {
-    color: #470bc1;
-  }
-
-  .charities:hover {
-    background-image: url(asset_path('rewards_selected.png', image));
-    background-repeat: no-repeat;
-    color: #b611b0;
-  }
-
-  .charities-selected {
-    background-image: url(asset_path('rewards_selected.png', image));
-    background-repeat: no-repeat;
-    color: #b611b0;
+    color: $blue;
+    @extend %medium-circle2;
   }
 
   .rewards {
-    color: #b611b0;
-  }
-
-  .rewards:hover,
-  .rewards-selected {
-    background: transparent url(asset_path('how_it_works_selected.png', image)) no-repeat 0 8px;
-    @include background-size(contain);
-    color: #b611b0;
-  }
-
-  .shop.rewards:hover,
-  .shop.rewards-selected {
-    background: transparent url(asset_path('home_selected.png', image)) no-repeat 0 3px;
+    color: $purple;
+    @extend %large-circle;
   }
 
   .reports {
-    color: #470BC1;
+    color: $blue;
+    @extend %medium-circle;
   }
 
-  .reports:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #470BC1;
-  }
-
-  .reports-selected {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #470BC1;
+  .settings {
+    color: $orange;
+    @extend %medium-circle;
   }
 
   .classrooms {
-    color: #EA4E08;
+    color: $orange;
+    @extend %large-circle2;
   }
-
-  .classrooms:hover {
-    background-image: url(asset_path('classrooms_selected.png', image));
-    background-repeat: no-repeat;
-    color: #EA4E08;
-  }
-
-  .classrooms-selected {
-    background-image: url(asset_path('classrooms_selected.png', image));
-    background-repeat: no-repeat;
-    color: #EA4E08;
-  }
-
 
   .lounge {
-    color: #EB731C;
-  }
-
-  .lounge:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #EB731C;
-  }
-
-  .lounge-selected {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-    color: #EB731C;
+    color: $fadedOrange;
+    @extend %medium-circle;
   }
 
   .news {
-    color: #ff2204;
+    color: $red;
+    @extend %small-circle;
   }
-
-  .news:hover {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #ff2204;
-  }
-
-  .news-selected {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-    color: #ff2204;
-  }
-  }
-
+}

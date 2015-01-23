@@ -2,7 +2,7 @@
 
 - unless person.district_guid.present?
   = form_for [:admin, person], :url => "add_school_admin_#{person.type.underscore}".to_sym, :method => 'post' do |f|
-    = select_tag :school_id, options_for_select(School.order('schools.name asc').all.collect {|s| [s.name, s.id]}), :include_blank => true
+    = select_tag :school_id, options_for_select(School.status_active.order('schools.name asc').collect {|s| [s.name, s.id]}), :include_blank => true
     = f.submit (person.is_a?(Student) ? 'Change School' : 'Add School')
 
 - if person.district_guid.present?

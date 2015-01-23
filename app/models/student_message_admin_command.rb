@@ -2,7 +2,7 @@ require_relative 'active_model_command'
 require_relative '../validators/array_of_integers_validator'
 
 class StudentMessageAdminCommand < ActiveModelCommand
-  attr_accessor :to_id, :from_id, :body, :subject
+  attr_accessor :to_id, :from_id, :body, :subject, :alternate_email
 
   validates :from_id, numericality: true, presence: true
   validates :body, presence: true

@@ -3,7 +3,7 @@
     - if "products" == @current_controller && @taxon
       = render :partial => 'spree/shared/filters'
     - else
-      = render :partial => 'spree/shared/taxonomies'
+      -# = render :partial => 'spree/shared/taxonomies'
 
 .main-content-wrapper
   .full-content
@@ -11,12 +11,22 @@
     - if current_person.is_a?(Teacher)
       %p
         = t('.products_message', :scope => [store_type,current_person.type.downcase])
-        %a{:href => main_app.teachers_rewards_path, :class => 'btn awesome-button'} Add or Manage Your Rewards
+        %a{:href => main_app.teachers_rewards_path, :class => 'btn awesome-button manage-rewards'} Add or Manage Your Rewards
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 
 - if current_person.is_a? SchoolAdmin
   .auctions
     %h2 School Auctions
-    %h5= link_to 'New Auction', main_app.new_auction_path
-    %h5= link_to 'All Auctions', main_app.auctions_path
+    %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
+    %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
+
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/student/overview"
+= javascript_include_tag "tours/teacher/overview"
+
+:javascript
+  if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y'))  {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }

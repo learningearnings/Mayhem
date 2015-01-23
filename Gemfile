@@ -13,11 +13,13 @@ gem 'rake', '~> 10.1.0'
 gem 'rails', '3.2.13'
 gem 'pg', '0.13.2'
 gem 'pg_search'
-gem 'exceptional'
+gem 'airbrake'
 gem 'newrelic_rpm'
 gem 'transaction_retry'
 gem 'uuidtools'
 gem 'chronic'
+gem 'active_model_serializers', '0.8.3'
+gem 'bootstrap_forms'
 
 # for importing
 #gem 'mysql2'
@@ -46,6 +48,8 @@ gem 'responders'
 gem 'kaminari'
 
 gem 'googlecharts'
+
+gem 'bootstrap_forms'
 
 # Add native postgres data type suport to activerecord.  Rails 4
 # forward-compatible afaik, pretty sure the author's patch made it to rails 4
@@ -91,6 +95,8 @@ gem 'simple_form'
 gem 'country_select'
 gem "ckeditor", '3.7.3'
 
+gem 'redis-mutex'
+
 # PDFKit provides an interface to wkhtmltopdf from ruby, and a rack middleware
 gem 'pdfkit'
 
@@ -133,6 +139,8 @@ gem 'unicorn'
 # gem 'debugger'
 
 group :development do
+  gem 'slack-notify'
+  gem 'quiet_assets'
   gem 'pry', '~> 0.9.10'
   gem 'unicorn'
   gem 'thin'

@@ -34,47 +34,48 @@
                   = render 'teacher_row', grades: current_school.grades, options: teacher, errors: @batch_teacher_creator.teachers[index].errors
           = submit_tag "Add These Teachers", class: 'btn awesome-button add_teachers_button'
 
-    %script#teacher_row{type: 'text/html'}
-      = render 'teacher_row', grades: current_school.grades, options: { first_name: '{{first}}', last_name: '{{last}}', username: '{{username}}', password: '{{password}}', grade: '{{grade}}', gender: '{{gender}}'}
+%script#teacher_row{type: 'text/html'}
+  = render 'teacher_row', grades: current_school.grades, options: { first_name: '{{first}}', last_name: '{{last}}', username: '{{username}}', password: '{{password}}', grade: '{{grade}}', gender: '{{gender}}'}
 
-    :coffeescript
-      insertNewTeacherRow = (options) ->
-        row = ich['teacher_row'](options)
-        $('.grade', row).val(options.grade)
-        $('.gender', row).val(options.gender)
-        $('.grid_edit_teachers tbody').append(row)
-        show_add_teachers_button()
+:coffeescript
+  insertNewTeacherRow = (options) ->
+    ich.grabTemplates()
+    row = ich['teacher_row'](options)
+    $('.grade', row).val(options.grade)
+    $('.gender', row).val(options.gender)
+    $('.grid_edit_teachers tbody').append(row)
+    show_add_teachers_button()
 
-      $('.controls button').on 'click', () ->
-        options = getControlOptions()
-        for time in [1..options.numberOfTeachers]
-          insertNewTeacherRow(options)
+  $('.controls button').on 'click', () ->
+    options = getControlOptions()
+    for time in [1..options.numberOfTeachers]
+      insertNewTeacherRow(options)
 
-      getControlOptions = () ->
-        numberOfTeachers = $('#controls_number_of_teachers').val()
-        grade = $('#controls_grade').val()
-        gender = $('#controls_gender').val()
-        password = $('#controls_password').val()
-        { numberOfTeachers: numberOfTeachers, grade: grade, gender: gender, password: password}
+  getControlOptions = () ->
+    numberOfTeachers = $('#controls_number_of_teachers').val()
+    grade = $('#controls_grade').val()
+    gender = $('#controls_gender').val()
+    password = $('#controls_password').val()
+    { numberOfTeachers: numberOfTeachers, grade: grade, gender: gender, password: password}
 
-      perhapsDeleteRow = (evt) ->
-        if $(evt.target).hasClass('delete_row')
-          evt.preventDefault()
-          $(evt.target).closest('tr').prev('.error_row').remove()
-          $(evt.target).closest('tr').remove()
-          if $('.teachers_body').children('tr').size() == 0
-            hide_add_teachers_button()
-          return false
+  perhapsDeleteRow = (evt) ->
+    if $(evt.target).hasClass('delete_row')
+      evt.preventDefault()
+      $(evt.target).closest('tr').prev('.error_row').remove()
+      $(evt.target).closest('tr').remove()
+      if $('.teachers_body').children('tr').size() == 0
+        hide_add_teachers_button()
+      return false
 
-      $('.grid_edit_teachers').on 'click', (evt) ->
-        perhapsDeleteRow(evt)
+  $('.grid_edit_teachers').on 'click', (evt) ->
+    perhapsDeleteRow(evt)
 
-      hide_add_teachers_button = () ->
-        $('.add_teachers_button').hide()
+  hide_add_teachers_button = () ->
+    $('.add_teachers_button').hide()
 
-      show_add_teachers_button = () ->
-        $('.add_teachers_button').show()
+  show_add_teachers_button = () ->
+    $('.add_teachers_button').show()
 
-    - unless params["teachers"]
-      :coffeescript
-        $('.add_teachers_button').hide()
+- unless params["teachers"]
+  :coffeescript
+    $('.add_teachers_button').hide()

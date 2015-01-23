@@ -8,12 +8,8 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    if @client_response["StaffId"].blank? || !login_teacher
-      render partial: "teacher_not_found"
-    else
-      load_students
-      render :layout => false
-    end
+    load_students
+    render :layout => false
   end
 
   def sync
@@ -83,9 +79,23 @@ class StiController < ApplicationController
     teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
     return false if teacher.nil?
     school = teacher.schools.where(district_guid: params[:districtGUID]).first
-    session["warden.user.user.session"] = {"last_request_at" => Time.now.to_s}
-    session["warden.user.user.key"] = ["Spree::User", [teacher.user.id], nil]
-    session["current_school_id"] = school.id
+    sign_in(teacher.user)
+    #session[:current_school_id] = school.id
+    # Current workaround for loading up the correct school
+    #  This is based off of looking up the school that a
+    #  student is associated with
+    student_sti_id = params["studentIds"].split(",").first if params["studentIds"].present?
+    if student_sti_id.present?
+      student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id).first
+      # Use the latest school the student was linked with
+      #  this fixes yet another bug where a student can be
+      #  associated to multiple schools, even though they are
+      #  only suppose to be associated to 1.
+      session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
+    else
+      # This is left in, just so the iFrame doesn't break if there are no studentIds
+      session[:current_school_id] = school.id
+    end
     return true
   end
 
@@ -94,5 +104,8 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
+    if @client_response["StaffId"].blank? || !login_teacher
+      render partial: "teacher_not_found"
+    end
   end
 end

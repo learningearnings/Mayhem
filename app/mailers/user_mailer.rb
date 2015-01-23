@@ -1,11 +1,21 @@
 class UserMailer < ActionMailer::Base
   default from: "admin@learningearnings.com"
 
-  def teacher_admin_email(message, school)
+  def teacher_admin_email(message, school, alternate_email=nil)
     @message = message
     @school = school
+    @alternate_email = alternate_email
     @teacher = Person.find @message.from_id
-    mail(:to => 'theteam@learningearnings.com', :subject => "#{@message.subject}")
+    if @school.sti_id.present?
+      mail(to: 'stisupport@learningearnings.com', :subject => "#{@message.subject}")
+    else
+      mail(:to => 'theteam@learningearnings.com', :subject => "#{@message.subject}")
+    end
+  end
+
+  def teacher_self_signup_email(teacher)
+    @teacher = teacher
+    mail(to: @teacher.user.email, subject: 'Thank you for registering with Learning Earnings.')
   end
 
   def teacher_request_email(teacher)

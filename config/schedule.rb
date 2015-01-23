@@ -25,7 +25,7 @@ every :hour do
 end
 
 every :saturday do
-  runner "StudentInterestHandler.new.run"
+  runner "StudentInterestHandler.new.call"
 end
 
 every 1.day, :at => '1am' do
@@ -40,3 +40,10 @@ every '0 9 1 * *' do
   runner "BuckDistributor.new.run"
 end
 
+every :saturday do
+  rake "le:award_weekly_automatic_credits"
+end
+
+every "0 0 1 * *" do
+  rake "le:award_monthly_automatic_credits"
+end

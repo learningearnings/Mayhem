@@ -18,7 +18,7 @@ module Mixins
     def create_ebucks
       params[:points] = sanitize_points(params[:points]) if params[:points]
       if params[:points].to_i < 0
-        if current_school.can_revoke_credits
+        if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           student = Student.find(params[:student][:id])
           CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points])
           flash[:notice] = "The points have been deducted from the student account."
@@ -72,7 +72,7 @@ module Mixins
         @bank.on_success = lambda{ |x| return true }
         @bank.on_failure = lambda{ failed = true }
         OtuCode.transaction do
-          students = current_person.schools.first.students.where(:id => params[:credits].keys)
+          students = Student.includes(:person_school_links).where(id: params[:credits].keys, person_school_links: { school_id: current_person.schools.pluck(:id) })
           students.each do |student|
             student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
@@ -95,7 +95,7 @@ module Mixins
 
     def create_ebucks_for_classroom
       if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
-        if current_school.can_revoke_credits
+        if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           params[:credits].delete_if do |k, v|
             if v.to_i < 0
               student = Student.find(k)
@@ -108,7 +108,7 @@ module Mixins
         end
       end
 
-      if params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
+      if params[:classroom] && params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure

@@ -8,6 +8,10 @@ module ApplicationHelper
     end
   end
 
+  def current_otu_code_categories
+    @code_categories ||= current_person.otu_code_categories(current_school.id)
+  end
+
   def active_if(visitor_type)
     # We don't set visitor_type for students, but we want the helper to be sensible
     visitor_type = '' if visitor_type == 'student'
@@ -155,5 +159,14 @@ module ApplicationHelper
 
   def is_dragonfly_image?(source)
     source.inspect =~ /Dragonfly Attachment/ # oh god oh god
+  end
+
+  def classroom_delete_confirmation_message
+    reward_count = @classroom.classroom_product_links.count
+    if reward_count == 0
+      "Are you sure?"
+    else
+      "Are you sure? There are currently #{reward_count} reward(s) for this classroom."
+    end
   end
 end

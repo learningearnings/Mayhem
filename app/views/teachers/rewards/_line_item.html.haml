@@ -1,16 +1,20 @@
-.resp-product-tile{"data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
-  .resp-product-image
+.product-tile
+  .product-title
+    = link_to truncate("#{product.name}", :length => 50), edit_teachers_reward_path(product.id), :class => 'info', :itemprop => "name", :title => product.name
+  .product-image
+    -# = cache("#{Time.now.strftime("%Y%m%d")}image_product_id-#{product.id}") do
     - if product.images.present?
       = image_tag(product.images.first.attachment.url(:small))
-  .resp-product-details
-    = link_to(product.name ,edit_teachers_reward_path(product.id))
-    .price.selling{:itemprop => "price"}= product.price.to_s + " each"
-  .resp-product-classrooms
-    - if product.classrooms.present? && product.classrooms.count > 1
-      = "#{product.classrooms.count} Classrooms"
-    -elsif product.classrooms.present?
-      = "#{product.classrooms.count} Classroom"
+    -# = link_to small_image(product, :itemprop => "image"), edit_teachers_reward_path(product.id), :itemprop => 'url'
+  %br
+  .product-details
+    .price.selling{:itemprop => "price"}= "Price: #{number_with_precision(product.price, precision: 2, delimiter: ',')}"
+    .quantity{:itemprop => "on_hand"}= "Available: #{product.on_hand.to_s}"
+    - if product.classrooms.any?
+      .type Type: Classroom
     - else
-      Whole School
-  .resp-product-moreinfo
-    = "You have #{product.on_hand} left to sell"
+      .type Type: School
+    .owner{class: "label label-default"}= "Teacher: #{product.person}"
+  %br
+  .product-actions.pull-right
+    = button_to "Delete", teachers_reward_path(product.id), method: :delete, class: "delete", confirm: "Are you sure you want to delete this reward?"

@@ -7,9 +7,9 @@ class School < ActiveRecord::Base
   GRADES = ["K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
   GRADE_NAMES = ["Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade"]
 
+  belongs_to :state
   has_many :addresses, :as => :addressable
   has_many :classrooms
-  belongs_to :state
   has_many :foods, :through => :food_school_links
   has_many :food_school_links
   has_many :person_school_links
@@ -17,6 +17,8 @@ class School < ActiveRecord::Base
   has_many :filters, :through => :school_filter_links
   has_many :auctions, :through => :auction_school_links
   has_many :auction_school_links
+  has_many :otu_code_categories
+  has_one  :our_sponsor_post
 
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
@@ -110,6 +112,13 @@ class School < ActiveRecord::Base
   end
 
   def grade_range
+    #hack to cover us for schools that were created without default min/max grades
+    if self.min_grade == nil
+      self.min_grade = "0"
+    end
+    if self.max_grade == nil
+      self.max_grade = "12"
+    end
     self.min_grade..self.max_grade
   end
 
@@ -199,6 +208,14 @@ class School < ActiveRecord::Base
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
     @distributing_teachers = self.teachers if @distributing_teachers.blank?
     @distributing_teachers.compact
+  end
+
+  def synced?
+    district_guid.present? && sti_id.present?
+  end
+
+  def sponsor_post
+    our_sponsor_post || build_our_sponsor_post
   end
 
   private

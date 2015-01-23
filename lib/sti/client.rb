@@ -19,15 +19,18 @@ module STI
     end
 
     def perfect_attendance sti_school_id, start_date, end_date
-      attendance_request("perfectattendance", sti_school_id, start_date, end_date)
+      parameters = {startdate: start_date, enddate: end_date, ignoretardies: true}
+      attendance_request("perfectattendance", sti_school_id, parameters)
     end
 
     def no_tardies sti_school_id, start_date, end_date
-      attendance_request("notardies", sti_school_id, start_date, end_date)
+      parameters = {startdate: start_date, enddate: end_date}
+      attendance_request("notardies", sti_school_id, parameters)
     end
 
     def no_infractions sti_school_id, start_date, end_date
-      attendance_request("noinfractions", sti_school_id, start_date, end_date)
+      parameters = {startdate: start_date, enddate: end_date}
+      attendance_request("noinfractions", sti_school_id, parameters)
     end
 
     def session_information
@@ -77,8 +80,9 @@ module STI
       {:username => username, :password => password}
     end
 
-    def attendance_request method, sti_school_id, start_date, end_date
-      HTTParty.get("#{base_url}le/#{method}/#{sti_school_id}?startdate=#{start_date}&enddate=#{end_date}", :headers => authorized_headers).parsed_response
+    def attendance_request method, sti_school_id, parameters
+      options = parameters.zip.map{|option| option.join("=")}.join("&")
+      HTTParty.get("#{base_url}le/#{method}/#{sti_school_id}?#{options}", :headers => authorized_headers).parsed_response
     end
   end
 end

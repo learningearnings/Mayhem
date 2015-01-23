@@ -11,17 +11,22 @@ class OtuCode < ActiveRecord::Base
   has_many :message_code_links
   belongs_to :otu_code_category
 
+  before_validation :generate_code, on: :create
+
+  validates :code, presence: true, uniqueness: true
+
   scope :active, where("active = ?", true)
   scope :inactive, where("active = ?", false)
   scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
   scope :ebuck, where(ebuck: true)
+  scope :last_30, lambda { where(OtuCode.arel_table[:created_at].gt(Time.now - 30.days)) }
   scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
   scope :for_grade, lambda { |grade| joins(:student).where(student: {grade: grade})}
   scope :redeemed_between, lambda { |start_date, end_date|
     where(OtuCode.arel_table[:redeemed_at].gteq(start_date)).
     where(OtuCode.arel_table[:redeemed_at].lteq(end_date))
   }
-  scope :created_between, lambda { |start_date, end_date| 
+  scope :created_between, lambda { |start_date, end_date|
     where(OtuCode.arel_table[:created_at].gteq(start_date)).
     where(OtuCode.arel_table[:created_at].lteq(end_date))
   }
@@ -34,10 +39,10 @@ class OtuCode < ActiveRecord::Base
     ebuck?
   end
 
-  def generate_code(prefix)
-    _code = Code.active.where("RANDOM() < 0.01").first || Code.create
-    self.update_attribute(:code, _code.code)
-    _code.update_attributes(:active => false, :used_date => Time.now)
+  def generate_code
+    begin
+      self.code = SecureRandom.hex(4)[0..6].upcase
+    end while self.class.exists?(code: code)
   end
 
   def source_string
@@ -66,8 +71,9 @@ class OtuCode < ActiveRecord::Base
   end
 
   def mark_redeemed!
+    # Don't run validations, because legacy codes are not unique.
     self.active = false
     self.redeemed_at = Time.zone.now
-    self.save
+    self.save(validate: false)
   end
 end

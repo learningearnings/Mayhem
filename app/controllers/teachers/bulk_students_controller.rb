@@ -11,11 +11,26 @@ module Teachers
     def edit
     end
 
+    def import_students
+      begin
+        importer = StudentsImporter.new(params[:school_id], params[:file])
+        importer.call
+        flash[:notice] = 'Students have been submitted.'
+      rescue Exception => e
+        flash[:error] = "Students import failed. Error #{e.message}"
+      ensure
+        redirect_to teachers_bulk_students_path
+      end
+    end
+
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
-      StudentUpdaterWorker.perform_async(current_person.user.email, params["students"], current_person.schools.first, updater_method)
-      flash[:notice] = "Bulk process is running."
-      redirect_to action: :show
+      delayed_report = DelayedReport.create(person_id: current_person.id)
+      StudentUpdaterWorker.perform_async(params["students"], current_school.id, updater_method, delayed_report.id)
+      
+      respond_to do |format|
+        format.json { render json: { delayed_report_id: delayed_report.id } }
+      end
     end
 
     def create
@@ -36,11 +51,14 @@ module Teachers
         "Update Passwords = Usernames",
         "Update Passwords as Indicated",
         "Add to Classroom I select:",
-        "Edit Students Information",
-        "Delete these students"
+        "Edit Student Information"
       ]
 
+      # FIXME: This needs to be dealt with in a better manner
+      @actions.push("Delete these students") unless current_person.synced?
+
       @students = current_school.students.includes(:user)
+
       if params[:classroom].present?
         classroom = Classroom.find(params[:classroom])
         @students = classroom.students

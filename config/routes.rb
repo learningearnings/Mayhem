@@ -27,7 +27,18 @@ Leror::Application.routes.draw do
   match "/filter_widget" => "pages#show", :id => "filter_widget"
 
   resource :home
-  resources :delayed_reports
+  resources :delayed_reports do
+    member do
+      get :status
+    end
+  end
+
+  resources :faq_questions
+  get '/tour' => 'faq_questions#tour'
+  get '/begin_tour' => 'faq_questions#begin_tour'
+  get '/end_tour' => 'faq_questions#end_tour'    
+  match "/help" => "faq_questions#index", :as => 'help'
+  post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
 
   resources :people do
     collection do
@@ -43,17 +54,17 @@ Leror::Application.routes.draw do
 
   match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
+  match '/schools/settings/update_sponsors_text' => 'schools/settings#update_sponsors_text'
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
     resources :reward_exclusions
     #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
     post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+    post "import_teachers" => 'settings#import_teachers', :as => 'import_teachers'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
 
-  match "/cancel_auction/:id" => 'auctions#cancel_auction', :as => 'cancel_auction'
-  match "/cancel_school_auction/:id" => 'auctions#cancel_school_auction', :as => 'cancel_school_auction'
   # Administrative routes
   ActiveAdmin.routes(self)
   namespace :admin do
@@ -64,6 +75,7 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
+    get 'run_user_activity_report' => "reports#run_user_activity_report", as: :run_user_activity_report
     get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
     match "checking_history/get_history/:person_id" => 'checking_history#get_history', :as => :checking_history
@@ -71,6 +83,9 @@ Leror::Application.routes.draw do
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
   end
+  
+  # route to view sidekiq worker status
+  mount Sidekiq::Web => '/sidekiq'
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
   mount Ckeditor::Engine => '/ckeditor'
@@ -131,10 +146,13 @@ Leror::Application.routes.draw do
 
   match '/reports/refund' => 'reports/purchases#refund_purchase', as: 'refund_purchase'
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
-  match '/reports/activity' => 'reports/activity#show', as: 'activity_report'
+  match '/reports/student_activity' => 'reports/student_activity#show', as: 'student_activity_report'
+  match '/reports/teacher_activity' => 'reports/teacher_activity#show', as: 'teacher_activity_report'
 
   match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
   get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'
+  get '/reports/student_credit_history/checking_transactions/:student_id' => 'reports/student_credit_history#checking_transactions'
+  get '/reports/student_credit_history/savings_transactions/:student_id' => 'reports/student_credit_history#savings_transactions'
 
   match '/reports/purchases' => 'reports/purchases#new', as: 'purchases_report'
   get '/reports/purchases/:id' => 'reports/purchases#show', as: 'purchases_report_show'
@@ -181,7 +199,6 @@ Leror::Application.routes.draw do
   match "/teachers/deny_teacher/:id" => 'teachers#deny_teacher', as: 'deny_teacher'
   match "/teachers/silent_deny_teacher/:id" => 'teachers#silent_deny_teacher', as: 'silent_deny_teacher'
 
-
   namespace :students do
     match "home" => "home#show", as: 'home'
   end
@@ -191,13 +208,19 @@ Leror::Application.routes.draw do
 
   match "/create_classroom_student" => 'classrooms#create_student', :as => 'create_classroom_student'
   match "/teachers/get_otu_code_category" => "teachers/otu_code_categories#get_category", :as => 'get_otu_code_category'
+
+  post "/undeliver_reward" => "deliver_rewards_commands#undeliver", :as => :undeliver_reward
   namespace :teachers do
     match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
     resources :otu_code_categories
-    resource :bulk_teachers
-    resource :bulk_students
+    resource :bulk_students do
+      post "import_students" => "bulk_students#import_students", :as => :import_students
+    end
+    resource :bulk_teachers do
+      post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers
+    end
     resources :reports
     resource  :bank
     resource  :dashboard
@@ -230,6 +253,11 @@ Leror::Application.routes.draw do
 
   resources :students
   namespace :school_admins do
+    resources :auctions do
+      get "cancel_school_auction", on: :member
+      post 'create_auction_reward', on: :collection
+      get 'all', on: :collection
+    end
     resource :bank
     resource :dashboard
     resources :reports
@@ -292,4 +320,5 @@ Spree::Core::Engine.routes.prepend do
     match 'undelete_reward/:id' => 'rewards#undelete', :as => :undelete_reward
     resources :le_shipments
   end
+
 end

@@ -5,8 +5,6 @@
     .form-inputs.controls-row.span3.float-left
       = f.input :name, label: "Name", placeholder: 'Your Reward Name', input_html: {class: 'input-large focus-on-me'}
       = f.input :description, label: "Description", placeholder: 'Your Reward Description', input_html: {class: 'input-large', rows: 10}, as: :text
-      = f.input :category do
-        = f.select :category, options_from_collection_for_select(Spree::Taxon.where("parent_id IS NOT NULL"), :id, :name, @teachers_reward.category_id), :include_blank => true
     .float-right
       = f.input :image, :as => :file
       = f.input :on_hand, label: "Quantity On Hand", placeholder: 'On Hand', input_html: { :min => "0",class: 'input-small numeric'}
@@ -16,8 +14,7 @@
       - if @teachers_reward.spree_product_id
         .form-inputs.controls-row.span3.clearfix
           %img#sample-image{:src => (@teachers_reward.product.thumb || "http://placehold.it/160x120&text=Select+A+Category")}
-
-      %h4 Reward available to:
+      %h4 * Reward available to:
       - if current_person.is_a?(SchoolAdmin)
         %ul.reward-scope
           %li
@@ -30,15 +27,21 @@
               Specific Classrooms
       - else
         %input{type: "hidden", name: "reward_scope", value: "specific_classrooms"}
-      - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
-        = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + " " + b.text }
+      .classrooms-interface
+        - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
+          = b.label(:class => "inline") { b.check_box(:class => 'class-checkbox inline') + " " + b.text }
 
       .whole-school-interface
-        This reward will be available to every student at the school.
+        %p This reward will be available to every student at the school.
+        %p
+          Grade Range:
+          = f.select :min_grade, %w(K 1 2 3 4 5 6 7 8 9 10 11 12), { include_blank: true }, { class: 'input-medium' }
+          to
+          = f.select :max_grade, %w(K 1 2 3 4 5 6 7 8 9 10 11 12), { include_blank: true }, { class: 'input-medium' }
 
   .control-row
-  = f.input :spree_product_id, :as => :hidden
-  = f.submit :class => 'btn awesome-button'
+    = f.input :spree_product_id, :as => :hidden
+    = f.submit :class => 'btn awesome-button'
 
 :coffeescript
   jQuery ->
@@ -49,7 +52,7 @@
       else
         $('.classrooms-interface').show()
         $('.whole-school-interface').hide()
-      
+
     toggle_all_classrooms = (_event) ->
       if ($ _event.target).prop('checked') == true
         ($ ".class-checkbox").prop('checked',false)

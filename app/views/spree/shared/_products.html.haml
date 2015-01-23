@@ -2,7 +2,7 @@
 - paginated_products ||= products
 
 - if current_person.is_a?(Teacher)
-  %h3= link_to('Suggest a Reward', main_app.leadmin_message_path(subject: "I have a reward suggestion.", refurl: current_url))
+  %h3= link_to('Suggest a Reward', main_app.leadmin_message_path(subject: "I have a reward suggestion.", refurl: current_url), class: 'suggest-reward')
 
 - if products.empty?
   = t(:no_products_found)
@@ -13,19 +13,34 @@
     = paginate paginated_products
   - reset_cycle('default')
   - show_zero_stock_products = Spree::Config[:show_zero_stock_products]
-  - products.in_groups_of(2) do |grp|
+  - products.in_groups_of(3) do |grp|
     .row
       %ul#products.inline.product-listing{"data-hook" => ""}
         - grp.each do |product|
           - if product
             - if show_zero_stock_products || product.has_stock?
               %li{:class => "product-tile", "data-hook" => "products_list_item", :id => "product_#{product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+                .product-title
+                  = link_to truncate("#{product.name}", :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name
                 .product-image
                   = cache("#{Time.now.strftime("%Y%m%d")}image_product_id-#{product.id}") do
                     = link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url'
+                %br
                 .product-details
-                  = link_to truncate("#{product.name}", :length => 50), product, :class => 'info', :itemprop => "name", :title => product.name
-                  .price.selling{:itemprop => "price"}= number_with_precision(product.price, precision: 2, delimiter: ',')
-                  .quantity{:itemprop => "on_hand"}= product.on_hand.to_s + " available"
+                  .price.selling{:itemprop => "price"}= "Price: #{number_with_precision(product.price, precision: 2, delimiter: ',')}"
+                  .quantity{:itemprop => "on_hand"}= "Available: #{product.on_hand.to_s}"
+                  - if product.classrooms.any?
+                    .type Type: Classroom
+                  - else
+                    .type Type: School
+                  .owner{class: "label label-default"}= "Teacher: #{product.person}"
   - if paginated_products.respond_to?(:num_pages)
     = paginate paginated_products
+
+= javascript_include_tag "tours/school_admin/overview"
+
+:javascript
+  if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y'))  {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }

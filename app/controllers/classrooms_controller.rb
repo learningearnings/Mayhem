@@ -10,9 +10,10 @@ class ClassroomsController < LoggedInController
 
   def show
     @classroom = Classroom.find(params[:id])
+    @classroom_student_form = ClassroomStudentForm.new
     respond_to do |format|
       format.html { render layout: true }
-      format.json { render json: @classroom.students.order(:last_name, :first_name)}
+      format.json { render json: @classroom.students.order(:last_name, :first_name) }
     end
   end
 
@@ -59,19 +60,19 @@ class ClassroomsController < LoggedInController
       pscl = PersonSchoolClassroomLink.new(:classroom_id => @classroom.id, :person_school_link_id => psl.id, homeroom: params[:homeroom])
       if pscl.save
         respond_to do |format|
-          format.html { 
+          format.html {
             flash[:notice] = "Student added to classroom."
             redirect_to classroom_path(@classroom)
           }
-          format.json { render :json => {:result => 'success', :flash => 'Student added to classroom.', :request => classroom_path(@classroom) } }
+          format.json { render json: @classroom.students, each_serializer: ClassroomStudentSerializer, classroom_id: @classroom.id, school_id: @classroom.school.id, root: false }
         end
       else
         respond_to do |format|
-          format.html { 
+          format.html {
             flash[:error] = pscl.errors.full_messages.to_sentence
             render :show
           }
-          format.json { render :json => {:result => 'error', :flash => 'There was an error adding student to classroom.', :request => classroom_path(@classroom) } }
+          format.json { render :json => {:status => 400, :result => 'error', :flash => 'There was an error adding student to classroom.', :request => classroom_path(@classroom) } }
         end
       end
     else
@@ -81,50 +82,55 @@ class ClassroomsController < LoggedInController
   end
 
   def create
-    @classroom = Classroom.new(params[:classroom])
-    @classroom.school_id = current_school.id
-    if @classroom.save
-      current_person<<@classroom
-      psl = PersonSchoolLink.find_by_person_id_and_school_id(current_person.id, current_school.id)
-      pscl = PersonSchoolClassroomLink.find_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
-      pscl.activate
-      pscl.update_attribute(:owner, true)
-      flash[:notice] = "Classroom Created."
-      redirect_to classrooms_path
+    classroom_creator = ClassroomCreator.new(params[:classroom][:name], current_person, current_school)
+    classroom_creator.execute!
+    if classroom_creator.success?
+      respond_to do |format|
+        format.html {
+          flash[:notice] = "Classroom Created."
+          redirect_to classrooms_path
+        }
+        format.json {
+          render json: {
+            status: :ok,
+            classroom: classroom_creator.classroom,
+            classrooms: current_person.classrooms.order('name ASC').uniq
+          }
+        }
+      end
     else
-      flash[:error] = "Classroom not created."
-      render :index
+      respond_to do |format|
+        format.html {
+          flash[:error] = "Classroom not created."
+          render :index
+        }
+        format.json { render json: { status: :unprocessible_entity, notice: 'Classroom not created.' } }
+      end
     end
   end
 
   def destroy
-    @classroom = Classroom.find(params[:id])
-    if @classroom.destroy
-      pscls = PersonSchoolClassroomLink.find_all_by_classroom_id(@classroom.id)
-      if pscls.present?
-        pscls.map{|x| x.delete}
-      end
+    classroom_deactivator = ClassroomDeactivator.new(params[:id])
+    if classroom_deactivator.execute!
       flash[:notice] = 'Classroom deleted.'
       redirect_to classrooms_path
     end
   end
 
   def create_student
+    @classroom_student_form = ClassroomStudentForm.new
     @classroom = Classroom.find(params[:classroom_id])
-    @student = Student.new(params[:student])
-    @student.save
-    @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
-    psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(@student.id, current_school.id)
-    if psl.valid?
-      pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(@classroom.id, psl.id)
-      pscl.activate
-      flash[:notice] = 'Student created!'
-      redirect_to classroom_path(@classroom)
+    @classroom_student_form.set_values(params[:classroom_id], params[:user])
+    if @classroom_student_form.save
+      render json: @classroom_student_form.classroom.students,
+        each_serializer: ClassroomStudentSerializer,
+          classroom_id: @classroom_student_form.classroom.id,
+          school_id: @classroom_student_form.classroom.school.id,
+          root: "students",
+          meta: { status: :ok }
     else
-      @student.user.delete
-      @student.delete
-      flash.now[:error] = 'Student not created'
-      render :show
+      form = render_to_string partial: "add_new_student_form"
+      render json: { modal: form, status: :unprocessible_entity }
     end
   end
 

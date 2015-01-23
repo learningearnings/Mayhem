@@ -14,8 +14,7 @@ module Reports
       @parameters = Reports::Purchases::Params.new(params)
     end
 
-    def execute!
-      # get recent line items from the school
+    def execute!    
       reward_deliveries.each do |reward_delivery|
         if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
           @data << generate_row(reward_delivery)
@@ -43,7 +42,7 @@ module Reports
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter, :reward_status_filter, :teachers_filter, :sort_by]
+      [:date_filter, :reward_status_filter, :teachers_filter, :reward_creator_filter, :sort_by]
     end
 
     def reward_deliveries
@@ -91,12 +90,25 @@ module Reports
         [:scoped]
       end
     end
-
+    
+    def reward_creator_filter
+      if parameters.reward_creator_filter.blank?
+        [:scoped]
+      else
+        [:where, { from_id: parameters.reward_creator_filter }]
+      end
+    end
+    
     def teachers_filter
       if parameters.teachers_filter.blank?
         [:scoped]
       else
-        [:where, { from_id: parameters.teachers_filter }]
+        #get all students for selected teacher
+        students = []
+        Teacher.find(parameters.teachers_filter).classrooms.each do | tcr |
+          students = students.concat(  tcr.students.collect { | stu | stu.id } )
+        end
+        [:where, { to_id: students }]
       end
     end
 
@@ -112,8 +124,8 @@ module Reports
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
-        classroom: (person.classrooms.count > 0 ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : ""),
-        grade: School::GRADE_NAMES[person.grade],
+        classroom: (person.classrooms.any? ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : ""),
+        grade: School::GRADE_NAMES[person.try(:grade)],
         purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
         reward: reward_delivery.reward.product.name,
         quantity: reward_delivery.reward.quantity,
@@ -124,14 +136,14 @@ module Reports
     end
 
     def name_with_options(person, option = "Last, First")
-      name_array = [person.last_name, person.first_name]
+      name_array = [person.try(:last_name), person.try(:first_name)]
       name_array.reverse! if option == "First, Last"
       option == "Last, First" || option == "" ? name_array.join(", ") : name_array.join(" ")
     end
 
     def headers
       {
-        delivery_teacher: "Delivery Teacher",
+        delivery_teacher: "Reward Creator",
         student: "Student (username)",
         classroom: "Classroom",
         grade: "Grade",
@@ -142,13 +154,13 @@ module Reports
       }
     end
     class Params < Reports::ParamsBase
-      attr_accessor :date_filter, :reward_status_filter, :teachers_filter, :students_name_option, :teachers_name_option, :sort_by
+      attr_accessor :date_filter, :reward_status_filter, :teachers_filter, :reward_creator_filter, :students_name_option, :teachers_name_option, :sort_by
 
       def initialize options_in = {}
         super
         options_in ||= {}
         options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
-        [:date_filter, :reward_status_filter, :teachers_filter, :sort_by, :students_name_option, :teachers_name_option].each do |iv|
+        [:date_filter, :reward_status_filter, :teachers_filter, :reward_creator_filter, :sort_by, :students_name_option, :teachers_name_option].each do |iv|
           default_method = (iv.to_s + "_default").to_sym
           default_value = nil
           default_value = send(default_method) if respond_to? default_method
@@ -183,12 +195,27 @@ module Reports
           nil
         end
       end
-
+      
       def teachers_filter_options(school = nil)
-        school.teachers.order(:last_name, :first_name).collect do |t| 
-          [t.name, t.id]
+        school.teachers.order(:last_name, :first_name).collect do |t|
+          [t.name_last_first, t.id]
         end if school
       end
+
+      def reward_creator_filter_options(school = nil)
+        school.teachers.order(:last_name, :first_name).collect do |t|
+          [t.name_last_first, t.id]
+        end if school
+      end
+      
+      def reward_creator_filter_default
+        if reward_creator_filter_options
+          reward_creator_filter_options[0]
+        else
+          nil
+        end
+      end
+
 
       def sort_by_default
         sort_by_options[0]

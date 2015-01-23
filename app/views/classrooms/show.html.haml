@@ -1,78 +1,158 @@
 %h2 Classroom: #{@classroom.name}
 %ul.action_buttons
-  - if @classroom.sti_id
-    %li= link_to_function "Delete classroom", "sti_edit()", class: 'btn awesome-button'
-    %li= link_to_function "Edit classroom", "sti_edit()", class: 'btn awesome-button'
-  - else
-    %li= button_to "Delete classroom", classroom_path(@classroom), confirm: "Are you sure?", method: :delete, class: 'btn awesome-button'
+  - unless @classroom.sti_id
+    %li= button_to "Delete classroom", classroom_path(@classroom), confirm: classroom_delete_confirmation_message, method: :delete, class: 'btn awesome-button'
     %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
 
-%h3 Select Students to add to #{@classroom.name}
+- if @classroom.sti_id
+  .classrooms-alert.alert.alert-warning
+    You must log into iNow to manage this classroom.
 
-%p Please Note:
+%p
+  Please Note:
+%p
+  You can only add students from your school that have already been added to
+  Learning Earnings. If you need to add or upload students for your school visit
+  the #{link_to("Students", teachers_bulk_students_path)} page.
 
-%p You can only add students from your school.
-%p If you do not see your students, you may 
-%p click the New Student button below or email
-%p= mail_to("theteam@learningearnings.com")
-%p to request the .csv or Excel template.
-
-%table.table.table-bordered.table-striped.solid-background
+%table#classroom-students.table.table-bordered.table-striped.solid-background
   %thead
     %tr
-      - if @classroom.students.present?
-        %th Student Name
-        %th Homeroom?
-        %th Username
-        %th Remove
+      %th Student Name
+      %th Homeroom?
+      %th Username
+      %th Actions
   %tbody
     - @classroom.students.order("last_name, first_name").each do |student|
       %tr
         %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
         %td= student.homeroom == @classroom ? "Yes" : "No"
         %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        - if @classroom.sti_id
-          %td= link_to_function 'Remove', "sti_edit()"
-        - else
-          %td= link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
+        %td
+          - unless @classroom.sti_id
+            = link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
-= form_for PersonSchoolClassroomLink.new, :url => new_classroom_student_path do |f|
-  = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
-  %label.checkbox
-    = check_box_tag :homeroom
-    Homeroom
-  = hidden_field_tag :classroom_id, @classroom.id
-  - if @classroom.sti_id
-    = link_to_function 'Add Student', "sti_edit()", class: 'btn awesome-button'
-  - else
-    = link_to_function 'Add Student', "homeroom_check(#{@classroom.id})", class: 'btn awesome-button'
+- unless @classroom.sti_id
+  .btn.btn-success.add-existing-student
+    Add Existing Student
+  OR
+  .btn.btn-success.add-new-student
+    Add New Student
 
-- if @classroom.sti_id
-  = link_to_function "New Student", "sti_edit()", class: "btn awesome-button"
-- else
-  %a{"data-toggle" => "collapse", "data-parent" => "classrooms", href: "#new-student", class: 'btn awesome-button'}= "New Student"
-%div{:class => "accordion-body collapse", :id => "new-student"}
-  %h3 Create Student
-  = form_for :student, :url => '/create_classroom_student' do |f|
-    = hidden_field_tag :classroom_id, @classroom.id
-    .row
-      .span4
-        = f.label :first_name
-        = f.text_field :first_name
-        = f.label :last_name
-        = f.text_field :last_name
-        = f.label :username
-        = f.text_field :username
-      .span4
-        = f.label :grade
-        = f.select :grade, (current_school.min_grade..current_school.max_grade)
-        = f.label :password
-        = f.text_field :password
+#add-new-student-modal.modal.hide
+  .modal-header
+    %h3 Add New Student
+  .modal-body
+    .form
+      = render partial: "add_new_student_form"
+    .btn.btn-success.add-new-student-save
+      Add
+    .btn.btn-danger.cancel-modal
+      Cancel
 
-    = f.submit 'Save', class: 'btn awesome-button'
+#add-existing-student-modal.modal.hide
+  .modal-header
+    %h3 Add Existing Student
+  .modal-body
+    = form_for PersonSchoolClassroomLink.new, html: { class: 'add-existing-student' }, url: new_classroom_student_path do |f|
+      = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
+      %label.checkbox
+        = check_box_tag :homeroom
+        Set as homeroom?
+      = hidden_field_tag :classroom_id, @classroom.id
+    .btn.btn-success.add-existing-student-save
+      Add
+    .btn.btn-danger.cancel-modal
+      Cancel
+
+%script#students{ type: 'text/html' }
+  :plain
+    {{#students}}
+      <tr>
+        <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{first_name}} {{last_name}}</a></td>
+        <td>{{is_homeroom}}</td>
+        <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{username}}</a></td>
+        <td><a href="/remove_classroom_student?classroom={{classroom_id}}&student={{id}}">Remove</a></td>
+      </tr>
+    {{/students}}
+
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
 
 :javascript
   $(".chzn-select").chosen();
+
+  if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y')) {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }
+
+  $('.btn.add-existing-student').click(function(e) {
+    e.preventDefault();
+    $('#add-existing-student-modal').modal('show');
+  });
+
+  $('.btn.add-new-student').click(function(e) {
+    e.preventDefault();
+    $('#add-new-student-modal').modal('show');
+  });
+
+  $('.add-new-student-save').click(function(e) {
+    e.preventDefault();
+
+    var form = $('form.add-new-student');
+    var values = form.serialize();
+    $.ajax({
+      type: "POST",
+      url : form.attr('action'),
+      data: values,
+      dataType: 'json'
+    }).success(function(json) {
+      if (json.meta && json.meta.status == "ok") {
+        reloadTable(json.students);
+        $('.modal').modal('hide');
+        form[0].reset();
+        if (hopscotch.getState() !== "undefined") {
+          hopscotch.nextStep();
+        }
+      } else {
+        $('#add-new-student-modal .form').html(json.modal);
+      }
+    });
+  });
+
+  $('.add-existing-student-save').click(function(e) {
+    e.preventDefault();
+    var form = $('form.add-existing-student');
+    var values = form.serialize();
+    $.ajax({
+      type: "POST",
+      url: form.attr('action'),
+      data: values,
+      dataType: 'json'
+    }).success(function(json) {
+      reloadTable(json);
+      $('.modal').modal('hide');
+      form[0].reset();
+    });
+  });
+
+  function reloadTable(students) {
+    ich.grabTemplates();
+    var html = ich.students({students: students});
+    $('#classroom-students tbody').html(html);
+  }
+
+  $('.cancel-modal').click(function(e) {
+    e.preventDefault();
+    document.querySelector('form.add-new-student').reset();
+    document.querySelector('form.add-existing-student').reset();
+    $('.modal').modal('hide');
+
+    if (hopscotch.getState() !== "undefined") {
+      hopscotch.prevStep();
+    }
+  });
 
   function homeroom_check(classroom_id) {
     var student_id = $('.chzn-select').val();
@@ -85,22 +165,16 @@
       type: 'GET',
       dataType: "json",
       success: function(data){
-        if(data.classroom == null)
-          {
+        if(data.classroom == null) {
+          change_homeroom(student_id, classroom_id);
+        } else {
+          classroom = data.classroom.classroom
+          if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?")) {
             change_homeroom(student_id, classroom_id);
+          } else {
+            alert('No change was made.');
           }
-        else
-          {
-            classroom = data.classroom.classroom
-            if(confirm("Are you sure you want to change student homeroom from " + classroom.name + "?"))
-              {
-                change_homeroom(student_id, classroom_id);
-              }
-            else 
-              {
-                alert('No change was made.');
-              }
-          }
+        }
       }
     });
   }
@@ -120,8 +194,3 @@
       }
     });
   }
-
-  function sti_edit() {
-    alert("This classroom was created in iNow. You will have to edit it there") 
-  }
-

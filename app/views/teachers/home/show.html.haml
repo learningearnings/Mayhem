@@ -1,24 +1,38 @@
 .main-content-wrapper
   .primary-content
-    %h2 Welcome to the New LE!
-    %p The Team has been working hard for many months to bring you a new, improved and faster LE. We hope you like it and as always we rely on your feedback for even more improvements and features.
-    = image_tag "teacher_landing_bucks_to_credits.png"
-    %p In addition to our new spokespig, Sir Bacon Francis, PhD., “BUCKS” have now become “Credits”. We hope this will allow you to print more per page and stop confusing students that a Buck should be worth a US Dollar. Sir Bacon will still honor older printed and e-Buck codes though so don’t worry!
+    %h2 Welcome to LE!
+    %p We are excited to have you join the LE team! Go ahead and run through our guided tour to quickly get your classroom setup. If you need anything at all, please don't hesitate to let us know!
 
 
 
   .secondary-content
+    %h3 Announcements
+    %p LE launches motivational classroom tool!
     %h3 Just starting LE?
-    %p
-      1. Create Student or Teacher Accounts
-      %br/
-      2. Create Classrooms (optional)
-      %br/
-      3. Add Some Rewards
-      %br/
-      4. LE Credits Explained
-      %br/
-      5. Reports and Best Practices
+    %p Feel free to restart our guided tour by going to the Help page or check out our FAQs section. 
     %br/
     %h3 Need help?
     = link_to 'Send Message', teachers_leadmin_message_path, :class => 'btn awesome-button'
+
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
+
+:javascript
+  localStorage.setItem('tour:shouldStartTour','N');
+  hopscotch.endTour();
+  
+- if params[:tour] == "Y" or first_time_logged_in
+  :javascript
+    localStorage.setItem('tour:shouldStartTour','Y');
+       
+- if current_person.is_a?(SchoolAdmin)
+  :javascript
+    if (localStorage.getItem('tour:shouldStartTour') == 'Y') {
+        hopscotch.startTour(school_admin_overview);
+    }
+ 
+- if current_person.is_a?(Teacher)
+  :javascript
+    if (localStorage.getItem('tour:shouldStartTour') == 'Y') {    
+      hopscotch.startTour(teacher_overview)
+    }
