@@ -5,10 +5,22 @@ class StiController < ApplicationController
   http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
-  before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
+  #before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
     load_students
+    if current_school.credits_scope == "Classroom"
+      #Check for another school with the same sti_id and credits_type == "child"
+      
+      #if it does not exist, 
+        #redirect to form to allow teacher to input name
+      
+        #on save we will create school, copy over all classrooms and students associated with 
+        #teacher including logins
+        
+      #if such a school does exist
+        #sync classrooms and students and continue with give credits
+    end
     render :layout => false
   end
 
@@ -58,7 +70,8 @@ class StiController < ApplicationController
   end
 
   def load_students
-    @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    #@students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    @students = current_school.students
   end
 
   def on_success(obj = nil)
