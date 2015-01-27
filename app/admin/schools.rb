@@ -5,7 +5,9 @@ ActiveAdmin.register School do
   action_item do
     if current_page?(:action => 'show') && !school.district_guid.present?
       link_to 'Edit School', edit_admin_school_path(school)
-    end
+    elsif current_page?(:action => 'show') && school.district_guid.present?
+      link_to 'Edit Synced School', edit_admin_school_path(school)
+    end    
   end
 
   filter :name
@@ -52,7 +54,7 @@ ActiveAdmin.register School do
       links
     end
   end
-
+  
   form :partial => 'form'
 
   show do |school|
