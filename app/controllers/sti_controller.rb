@@ -2,14 +2,39 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students]
+  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
-  before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
+  #before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    load_students
+    if current_school.credits_scope == "Classroom"
+      @child = School.where(sti_id: current_school.sti_id, credits_type: "child")
+      if @child.size == 0
+        redirect_to :action => "new_school_for_credits" and return 
+      else
+        @current_school = @child[0]        
+        session[:current_school_id] = @child[0].id
+        @students = current_school.students
+      end
+    else
+      load_students  
+    end  
     render :layout => false
+  end
+  
+  def new_school_for_credits
+    @new_school_form = NewSchoolForm.new
+    render :layout => false
+  end
+  
+  def save_school_for_credits
+    @new_school_form = NewSchoolForm.new(params[:school])
+    if @new_school_form.save(current_school,current_person)
+      redirect_to :action => "give_credits"
+    else
+      render :new_school_for_credits
+    end
   end
 
   def sync
