@@ -2,26 +2,39 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students]
+  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
   #before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    load_students
     if current_school.credits_scope == "Classroom"
-      #Check for another school with the same sti_id and credits_type == "child"
-      
-      #if it does not exist, 
-        #redirect to form to allow teacher to input name
-      
-        #on save we will create school, copy over all classrooms and students associated with 
-        #teacher including logins
-        
-      #if such a school does exist
-        #sync classrooms and students and continue with give credits
-    end
+      @child = School.where(sti_id: current_school.sti_id, credits_type: "child")
+      if @child.size == 0
+        redirect_to :action => "new_school_for_credits" and return 
+      else
+        @current_school = @child[0]        
+        session[:current_school_id] = @child[0].id
+        @students = current_school.students
+      end
+    else
+      load_students  
+    end  
     render :layout => false
+  end
+  
+  def new_school_for_credits
+    @new_school_form = NewSchoolForm.new
+    render :layout => false
+  end
+  
+  def save_school_for_credits
+    @new_school_form = NewSchoolForm.new(params[:school])
+    if @new_school_form.save(current_school,current_person)
+      redirect_to :action => "give_credits"
+    else
+      render :new_school_for_credits
+    end
   end
 
   def sync
@@ -70,8 +83,7 @@ class StiController < ApplicationController
   end
 
   def load_students
-    #@students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
-    @students = current_school.students
+    @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
   end
 
   def on_success(obj = nil)

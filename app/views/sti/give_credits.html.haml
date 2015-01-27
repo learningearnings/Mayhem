@@ -41,6 +41,7 @@
                     %strong
                       Credits Available:
                     = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+                    = " for school #{current_school.name}"
                   - unless current_otu_code_categories.any?
                     %strong If you would like to use the credit categories feature, you must create categories through the main learning earnings site
                   = form_for OtuCode.new, :url => "#", :html => {:id => "global_populate"} do |f|
