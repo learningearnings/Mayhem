@@ -15,7 +15,7 @@ class StiController < ApplicationController
       else
         @current_school = @child[0]        
         session[:current_school_id] = @child[0].id
-        @students = current_school.students
+        @students = @current_school.students
       end
     else
       load_students  
@@ -125,6 +125,10 @@ class StiController < ApplicationController
   end
 
   def handle_sti_token
+    #To test without iNow
+    if current_school != nil
+      return
+    end
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID]).last
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
