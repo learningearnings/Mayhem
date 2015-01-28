@@ -88,6 +88,8 @@ module Teachers
       @on_hand = params[:on_hand] if params[:on_hand]
       @image = params[:image] if params[:image]
       @category = params[:category] if params[:category]
+      @min_grade = params[:min_grade] if params[:min_grade]
+      @max_grade = params[:max_grade] if params[:max_grade]            
       if params[:classrooms]
         @classrooms = Classroom.find(params[:classrooms]) if params[:classrooms]
       else
