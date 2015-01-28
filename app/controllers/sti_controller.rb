@@ -31,7 +31,10 @@ class StiController < ApplicationController
   def save_school_for_credits
     @new_school_form = NewSchoolForm.new(params[:school])
     if @new_school_form.save(current_school,current_person)
-      redirect_to :action => "give_credits"
+      @current_school = @new_school_form.school       
+      session[:current_school_id] = @current_school.id
+      @students = current_school.students
+      render :layout => false
     else
       render :new_school_for_credits
     end

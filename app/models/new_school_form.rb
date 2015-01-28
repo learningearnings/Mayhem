@@ -60,10 +60,11 @@ class NewSchoolForm
         pscl.activate
       end 
     end
+    @school = school
   end
 
   def school
-    @school ||= School.new
+    @school 
   end
   
   def persisted?
