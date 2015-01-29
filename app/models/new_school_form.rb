@@ -28,6 +28,7 @@ class NewSchoolForm
     school.save
     school.reload
     psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, school.id)
+
     @students = []
     teacher.classrooms.each do | cr |
       if (cr.status != "active") or (cr.students.size == 0)
@@ -60,6 +61,7 @@ class NewSchoolForm
         pscl.activate
       end 
     end
+    BuckDistributor.new([school]).run    
     @school = school
   end
 
