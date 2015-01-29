@@ -5,17 +5,17 @@ class StiController < ApplicationController
   http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
-  #before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
+  before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    if current_school.credits_scope == "Classroom"
-      @child = School.where(sti_id: current_school.sti_id, credits_type: "child")
+    if current_school.credits_scope != "School-Wide"
+      @child = School.where(sti_id: current_school.id, credits_type: "child")
       if @child.size == 0
         redirect_to :action => "new_school_for_credits" and return 
-      else
+      else       
         @current_school = @child[0]        
         session[:current_school_id] = @child[0].id
-        @students = current_school.students
+        @students = @current_school.students
       end
     else
       load_students  
