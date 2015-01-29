@@ -8,16 +8,21 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
+    logger.warn("AKT: give_credits >> current school: #{current_school.inspect}")
     if current_school.credits_scope == "Classroom"
+      logger.warn("AKT: give_credits >> Classroom credits_scope")
       @child = School.where(sti_id: current_school.sti_id, credits_type: "child")
       if @child.size == 0
+        logger.warn("AKT: give_credits >> no child school with sti_id #{current_school.sti_id}")
         redirect_to :action => "new_school_for_credits" and return 
       else
+        logger.warn("AKT: give_credits >> found child school with sti_id #{current_school.sti_id}")        
         @current_school = @child[0]        
         session[:current_school_id] = @child[0].id
         @students = @current_school.students
       end
     else
+      logger.warn("AKT: give_credits >> school is school-wide credits scope")
       load_students  
     end  
     render :layout => false
@@ -128,10 +133,6 @@ class StiController < ApplicationController
   end
 
   def handle_sti_token
-    #To test without iNow
-    if current_school != nil
-      return
-    end
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID]).last
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
