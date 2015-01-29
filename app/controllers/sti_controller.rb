@@ -9,9 +9,9 @@ class StiController < ApplicationController
 
   def give_credits
     logger.warn("AKT: give_credits >> current school: #{current_school.inspect}")
-    if current_school.credits_scope == "Classroom"
+    if current_school.credits_scope != "School-Wide"
       logger.warn("AKT: give_credits >> Classroom credits_scope")
-      @child = School.where(sti_id: current_school.sti_id, credits_type: "child")
+      @child = School.where(sti_id: current_school.id, credits_type: "child")
       if @child.size == 0
         logger.warn("AKT: give_credits >> no child school with sti_id #{current_school.sti_id}")
         redirect_to :action => "new_school_for_credits" and return 

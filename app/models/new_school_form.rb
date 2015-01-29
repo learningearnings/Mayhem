@@ -24,11 +24,17 @@ class NewSchoolForm
     return false unless valid?
 
     school.district_guid = nil
+    school.sti_id = parent_school.id
     school.credits_type = "child"
     school.save
     school.reload
+    psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, parent_school.id)
+    psl.status = "inactive"
+    psl.save(:validate => false)
     psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, school.id)
-
+    psl.status = "active"
+    psl.save(:validate => false)
+    teacher.setup_accounts(school)
     @students = []
     teacher.classrooms.each do | cr |
       if (cr.status != "active") or (cr.students.size == 0)
