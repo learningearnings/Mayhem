@@ -54,7 +54,7 @@ module SchoolAdmins
       p.description = params[:auction_reward_description]
       p.price = BigDecimal.new("500.0") # The price is set, because of price validations in Spree::Product
       if p.save
-        p.images.create(attachement: params[:auction_reward_image]) if params[:auction_reward_image].present?
+        p.images.create(attachment: params[:auction_reward_image]) if params[:auction_reward_image].present?
         p.schools << current_school
         flash[:notice] = "Auction Reward Created!"
         redirect_to new_school_admins_auction_path
