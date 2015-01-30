@@ -14,6 +14,7 @@ class TeachersController < ApplicationController
       session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
       flash[:notice] = 'Thank you for signing up!'
+      track_signup_interaction(@teacher_signup_form)
       redirect_to '/'
     else
       render :new
@@ -54,7 +55,18 @@ class TeachersController < ApplicationController
   end
 
   private
-
+  
+  def track_signup_interaction(signup_form)
+    start_time = Time.now
+    interaction = Interaction.new ip_address: request.ip
+    interaction.person = signup_form.person
+    interaction.school_id = signup_form.school.id
+    end_time = Time.now
+    interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
+    interaction.page = "teachers/signup"
+    interaction.save
+  end
+  
   def setup_fake_data
     params[:teacher][:grade] = 5
     params[:teacher][:address1] = "Fake Address"
