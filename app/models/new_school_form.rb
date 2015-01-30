@@ -36,10 +36,11 @@ class NewSchoolForm
     teacher.save
     teacher.user.person_id = teacher.id
     teacher.user.save
+    teacher.setup_accounts(school)    
     psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, school.id)
     psl.status = "active"
     psl.save(:validate => false)
-    teacher.setup_accounts(school)
+ 
     @students = []
     parent_teacher.classrooms.each do | cr |
       if (cr.status != "active") or (cr.students.size == 0)
