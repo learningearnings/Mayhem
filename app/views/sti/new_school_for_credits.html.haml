@@ -45,5 +45,14 @@
                           = f.text_field :name, label: "School or Classroom Name *"
                           = f.hidden_field :state_id, :value => current_school.state_id
                           = f.hidden_field :city, :value => current_school.city
-                      = f.submit 'Submit', class: 'btn awesome-button'
+                      = f.submit 'Submit', class: 'btn awesome-button', id: 'setup_school'
 
+#message.modal.hide
+  = image_tag "loading.gif"
+  %h3 Your school is being set up.  
+  %h3 This may take a minute... 
+  %h3 A new page will load when complete.
+  
+:coffeescript
+    $('#setup_school').on 'click', (evt) ->
+      $('#message').modal('show');
