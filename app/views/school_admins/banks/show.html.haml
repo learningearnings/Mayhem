@@ -88,6 +88,8 @@
               = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = label_tag :to_teacher
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
+              = f.submit 'Send These Credits', class: 'awesome-button'
+
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
 
