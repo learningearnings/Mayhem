@@ -3,8 +3,16 @@ module Teachers
     # GET /teachers/rewards
     # GET /teachers/rewards.json
     def index
-      @teachers_rewards = current_person.editable_rewards(current_school).order('name').page(params[:page]).per(9)
-
+      if current_person.is_a?(SchoolAdmin) and params[:all_rewards] == "Y"
+        temp_params = params
+        temp_params[:current_school] = current_school
+        temp_params[:searcher_current_person] = current_person
+        @searcher = Spree::Search::Filter.new(temp_params)
+        @products = @searcher.retrieve_products    
+        @teachers_rewards = @products.order(:name).page(params[:page]).per(9)            
+      else
+        @teachers_rewards = current_person.editable_rewards(current_school).order('name').page(params[:page]).per(9)        
+      end
       respond_to do |format|
         format.html # index.html.haml
         format.json { render json: @teachers_rewards }
@@ -86,6 +94,9 @@ module Teachers
       @teachers_reward.teacher = current_person
       @teachers_reward.school = current_school
       @teachers_reward.spree_product_id = params[:id]
+      if params[:take_ownership]
+        @teachers_reward.product.person = current_person
+      end
       respond_to do |format|
         if @teachers_reward.update_attributes(params[:teachers_reward])
           format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully updated." }
