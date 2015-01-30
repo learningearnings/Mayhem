@@ -8,21 +8,16 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    logger.warn("AKT: give_credits >> current school: #{current_school.inspect}")
     if current_school.credits_scope != "School-Wide"
-      logger.warn("AKT: give_credits >> Classroom credits_scope")
       @child = School.where(sti_id: current_school.id, credits_type: "child")
       if @child.size == 0
-        logger.warn("AKT: give_credits >> no child school with sti_id #{current_school.sti_id}")
         redirect_to :action => "new_school_for_credits" and return 
-      else
-        logger.warn("AKT: give_credits >> found child school with sti_id #{current_school.sti_id}")        
+      else       
         @current_school = @child[0]        
         session[:current_school_id] = @child[0].id
         @students = @current_school.students
       end
     else
-      logger.warn("AKT: give_credits >> school is school-wide credits scope")
       load_students  
     end  
     render :layout => false
@@ -36,9 +31,24 @@ class StiController < ApplicationController
   def save_school_for_credits
     @new_school_form = NewSchoolForm.new(params[:school])
     if @new_school_form.save(current_school,current_person)
-      @current_school = @new_school_form.school       
+      @current_school = @new_school_form.school  
+      @current_person = @new_school_form.teacher    
+      request.env["devise.skip_trackable"] = true
+      sign_in(@new_school_form.teacher.user)      
       session[:current_school_id] = @current_school.id
-      @students = current_school.students
+      @students = []
+      if params["studentIds"]
+        @students = current_school.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+      else
+        @students = current_school.students.order(:last_name, :first_name)
+      end
+      
+      @host_ar =  request.host_with_port.split(".")  
+      if @host_ar.size == 3
+        @le_link = "#{current_school.store_subdomain}.#{@host_ar[1]}.#{@host_ar[2]}/begin_tour"
+      else
+        @le_link = "#{current_school.store_subdomain}.#{@host_ar[0]}.#{@host_ar[1]}/begin_tour"        
+      end
       render :layout => false
     else
       render :new_school_for_credits
