@@ -856,6 +856,18 @@
         if (callback) {
           callback(!step.fixedElement);
         }
+        
+        // Record tour event
+   	    var tourStepNum = winHopscotch.getCurrStepNum() + 1;					                     	                
+	    $.ajax({
+	      url: "/events/log_tour_event",
+	      type: "POST",
+	      data: {
+	        tour_name: currTour.id,
+	        tour_step: tourStepNum,
+	        is_last_step: isLast
+	      }
+	    });      
 
         return this;
       },
