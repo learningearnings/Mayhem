@@ -18,28 +18,19 @@ class NewSchoolForm
   end
   
   def save(parent_school, teacher)
+    @classrooms = teacher.classrooms.where(status: "active")    
     school = parent_school.dup
     school.assign_attributes(school_attributes, as: :admin)
     return false unless valid?
-
+    
     school.store_subdomain = nil
     school.district_guid = nil
     school.sti_id = parent_school.id
     school.credits_type = "child"
     school.save
-    
-    PersonSchoolLink.where(person_id: teacher.id, status: "active").each do | psl |
-      psl.status = "inactive"
-      psl.save(:validate => false)
-    end
-    psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
-    psl.save(:validate => false)
-       
-    @students = []
-    teacher.classrooms.each do | cr |
-      if (cr.status != "active") or (cr.students.size == 0)
-        next
-      end
+        
+    @students = []     
+    @classrooms.each do | cr |
       classroom_creator = ClassroomCreator.new(cr.name, teacher, school)
       classroom_creator.execute!
       cr.students.each do | stu| 
@@ -66,7 +57,16 @@ class NewSchoolForm
         pscl.activate
       end 
     end
-    BuckDistributor.new([school]).run   
+    
+    PersonSchoolLink.where(person_id: teacher.id, status: "active").each do | psl |
+      psl.status = "inactive"
+      psl.save(:validate => false)
+    end
+    psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
+    psl.save(:validate => false) 
+          
+    BuckDistributor.new([school]).run 
+      
     @school = school
     @teacher = teacher
   end
