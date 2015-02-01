@@ -15,7 +15,14 @@ class StiController < ApplicationController
       else       
         @current_school = @child[0]        
         session[:current_school_id] = @child[0].id
-        @students = @current_school.students
+        @teacher = @current_school.teachers.first
+        @current_person = @teacher
+        sign_in(@teacher.user)
+        if params["studentIds"]
+          @students = current_school.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+        else
+          @students = current_school.students.order(:last_name, :first_name)          
+        end
       end
     else
       load_students  
@@ -145,6 +152,10 @@ class StiController < ApplicationController
   end
 
   def handle_sti_token
+    #if current_person
+    #  @teacher = current_person
+    #  return
+    #end
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID]).last
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
