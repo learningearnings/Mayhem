@@ -28,7 +28,6 @@ class NewSchoolForm
     school.sti_id = parent_school.id
     school.credits_type = "child"
     school.save
-    school.reload
     
     teacher = parent_teacher.dup
     teacher.user = Spree::User.new(:username => parent_teacher.user.username, :password => parent_teacher.recovery_password, :password_confirmation => parent_teacher.recovery_password)
@@ -71,8 +70,6 @@ class NewSchoolForm
     end
     BuckDistributor.new([school]).run   
     psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, school.id)
-    psl.status = "active"
-    psl.save(:validate => false)     
     @school = school
     @teacher = teacher
   end
