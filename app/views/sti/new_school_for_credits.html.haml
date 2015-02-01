@@ -46,6 +46,7 @@
                           = f.hidden_field :state_id, :value => @school.state_id
                           = f.hidden_field :city, :value => @school.city
                           = f.hidden_field :teacher, :value => @teacher.id
+                          = f.hidden_field :school, :value => @school.id
                       = f.submit 'Submit', class: 'btn awesome-button', id: 'setup_school'
 
 #message.modal.hide
