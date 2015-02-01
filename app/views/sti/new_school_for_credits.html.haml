@@ -1,4 +1,4 @@
-%html.resp
+@jim%html.resp
   / <![endif]
   %head
     %title Learning Earnings
@@ -36,7 +36,7 @@
                   %p.credits-available
                     %strong
                       Teacher:
-                      = current_person.name
+                      = @teacher.name
                     %br/
                     = bootstrap_form_for @new_school_form, :url => "/sti/save_school_for_credits" do |f|
                       .row
@@ -45,6 +45,7 @@
                           = f.text_field :name, label: "School or Classroom Name *"
                           = f.hidden_field :state_id, :value => current_school.state_id
                           = f.hidden_field :city, :value => current_school.city
+                          = f.hidden_field :teacher, :value => @teacher.id
                       = f.submit 'Submit', class: 'btn awesome-button', id: 'setup_school'
 
 #message.modal.hide
