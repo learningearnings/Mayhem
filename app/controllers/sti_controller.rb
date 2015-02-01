@@ -32,6 +32,7 @@ class StiController < ApplicationController
   
   def new_school_for_credits
     @teacher = Teacher.find(params[:teacher])
+    @school = current_school
     @new_school_form = NewSchoolForm.new
     render :layout => false
   end
