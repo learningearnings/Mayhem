@@ -122,7 +122,7 @@ class StiController < ApplicationController
 
   def login_teacher
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
-    return false if teacher.nil?
+    return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
