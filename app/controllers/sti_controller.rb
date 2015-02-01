@@ -53,7 +53,7 @@ class StiController < ApplicationController
       else
         @students = current_school.students.order(:last_name, :first_name)
       end
-      @le_link = "#{current_school.store_subdomain}.#{request.host_with_port}/begin_tour"
+      @le_link = "http://#{current_school.store_subdomain}.#{request.host_with_port}/begin_tour"
       render :layout => false
     else
       render :new_school_for_credits

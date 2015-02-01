@@ -28,9 +28,12 @@ class NewSchoolForm
     school.credits_type = "child"
     school.save
     
-    psl = PersonSchoolLink.where(person_id: teacher.id, status: "active").first
-    psl.update_attributes(:status => "inactive") if psl
-    PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
+    PersonSchoolLink.where(person_id: teacher.id, status: "active").each do | psl |
+      psl.status = "inactive"
+      psl.save(:validate => false)
+    end
+    psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
+    psl.sav(:validate => false)
        
     @students = []
     teacher.classrooms.each do | cr |
