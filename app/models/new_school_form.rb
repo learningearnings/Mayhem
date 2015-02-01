@@ -36,11 +36,8 @@ class NewSchoolForm
     teacher.save
     teacher.user.person_id = teacher.id
     teacher.user.save
-    teacher.setup_accounts(school)    
-    psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, school.id)
-    psl.status = "active"
-    psl.save(:validate => false)
- 
+    teacher.setup_accounts(school)  
+    teacher.save  
     @students = []
     parent_teacher.classrooms.each do | cr |
       if (cr.status != "active") or (cr.students.size == 0)
@@ -72,7 +69,10 @@ class NewSchoolForm
         pscl.activate
       end 
     end
-    BuckDistributor.new([school]).run    
+    BuckDistributor.new([school]).run   
+    psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, school.id)
+    psl.status = "active"
+    psl.save(:validate => false)     
     @school = school
     @teacher = teacher
   end
