@@ -33,7 +33,7 @@ class NewSchoolForm
       psl.save(:validate => false)
     end
     psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
-    psl.sav(:validate => false)
+    psl.save(:validate => false)
        
     @students = []
     teacher.classrooms.each do | cr |
