@@ -3,7 +3,7 @@ class NewSchoolForm
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attr_accessor :name, :state_id, :city, :teacher
+  attr_accessor :name, :state_id, :city, :teacher, :school
   validates :name,                  presence: true
   validate  :uniqueness_of_school
 

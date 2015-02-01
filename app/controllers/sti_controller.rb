@@ -11,7 +11,7 @@ class StiController < ApplicationController
     if current_school.credits_scope != "School-Wide"
       @child = School.where(sti_id: current_school.id, credits_type: "child")
       if @child.size == 0
-        redirect_to :action => "new_school_for_credits", :teacher => @teacher.id and return 
+        redirect_to :action => "new_school_for_credits", :teacher => @teacher.id, :school => current_school.id and return 
       else       
         @current_school = @child[0]        
         session[:current_school_id] = @child[0].id
@@ -32,15 +32,16 @@ class StiController < ApplicationController
   
   def new_school_for_credits
     @teacher = Teacher.find(params[:teacher])
-    @school = current_school
+    @school = School.find(params[:school])
     @new_school_form = NewSchoolForm.new
     render :layout => false
   end
   
   def save_school_for_credits
     @teacher = Teacher.find(params[:school][:teacher])
+    @school = School.find(params[:school][:school])
     @new_school_form = NewSchoolForm.new(params[:school])
-    if @new_school_form.save(current_school,@teacher)
+    if @new_school_form.save(@school,@teacher)
       @current_school = @new_school_form.school  
       @current_person = @new_school_form.teacher    
       request.env["devise.skip_trackable"] = true
@@ -52,13 +53,7 @@ class StiController < ApplicationController
       else
         @students = current_school.students.order(:last_name, :first_name)
       end
-      
-      @host_ar =  request.host_with_port.split(".")  
-      if @host_ar.size == 3
-        @le_link = "#{current_school.store_subdomain}.#{@host_ar[1]}.#{@host_ar[2]}/begin_tour"
-      else
-        @le_link = "#{current_school.store_subdomain}.#{@host_ar[0]}.#{@host_ar[1]}/begin_tour"        
-      end
+      @le_link = "#{current_school.store_subdomain}.#{request.host_with_port}/begin_tour"
       render :layout => false
     else
       render :new_school_for_credits
