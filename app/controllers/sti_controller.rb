@@ -53,7 +53,7 @@ class StiController < ApplicationController
       else
         @students = current_school.students.order(:last_name, :first_name)
       end
-      @le_link = "/sti/begin_le_tour"
+      @le_link = "/sti/begin_le_tour?sid=#{@current_school.id}"
       render :layout => false
     else
       render :new_school_for_credits
