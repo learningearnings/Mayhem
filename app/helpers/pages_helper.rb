@@ -22,6 +22,13 @@ module PagesHelper
       return options
     end
   end
+  
+  def should_start_tour
+    if params[:tour] == "Y" or first_time_logged_in or session[:tour] == "Y"
+      session[:tour] = nil
+      return true
+    end
+  end
 
   def tour_text(id, person)
     if person.is_a?(Student)

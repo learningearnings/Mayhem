@@ -25,7 +25,7 @@
   localStorage.setItem('tour:shouldStartTour','N');
   hopscotch.endTour();
   
-- if params[:tour] == "Y" or first_time_logged_in
+- if should_start_tour
   :javascript
     localStorage.setItem('tour:shouldStartTour','Y');
        

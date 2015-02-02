@@ -62,10 +62,10 @@ class StiController < ApplicationController
   
   def begin_le_tour
     @current_school = School.find(params[:sid])
-    session[:current_school_id] = @current_school.id 
-    session[:tour] = "Y"
     @current_person = @current_school.teachers.first
     sign_in(@current_person.user)    
+    session[:current_school_id] = @current_school.id 
+    session[:tour] = "Y"    
     redirect_to "/?tour=Y"  
   end 
   
