@@ -3,7 +3,7 @@ class NewSchoolForm
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attr_accessor :name, :state_id, :city
+  attr_accessor :name, :state_id, :city, :teacher, :school
   validates :name,                  presence: true
   validate  :uniqueness_of_school
 
@@ -13,39 +13,24 @@ class NewSchoolForm
     end
   end
 
-
   def self.model_name
     ActiveModel::Name.new(self, nil, "School")
   end
   
-  def save(parent_school, parent_teacher)
+  def save(parent_school, teacher)
+    @classrooms = teacher.classrooms.where(status: "active")    
     school = parent_school.dup
     school.assign_attributes(school_attributes, as: :admin)
     return false unless valid?
-
     
     school.store_subdomain = nil
     school.district_guid = nil
     school.sti_id = parent_school.id
     school.credits_type = "child"
     school.save
-    school.reload
-    
-    teacher = parent_teacher.dup
-    teacher.user = Spree::User.new(:username => parent_teacher.user.username, :password => parent_teacher.recovery_password, :password_confirmation => parent_teacher.recovery_password)
-    teacher.user.save
-    teacher.save
-    teacher.user.person_id = teacher.id
-    teacher.user.save
-    psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, school.id)
-    psl.status = "active"
-    psl.save(:validate => false)
-    teacher.setup_accounts(school)
-    @students = []
-    parent_teacher.classrooms.each do | cr |
-      if (cr.status != "active") or (cr.students.size == 0)
-        next
-      end
+        
+    @students = []     
+    @classrooms.each do | cr |
       classroom_creator = ClassroomCreator.new(cr.name, teacher, school)
       classroom_creator.execute!
       cr.students.each do | stu| 
@@ -65,17 +50,22 @@ class NewSchoolForm
           user.save
           @students << student
         end
-        Rails.logger.debug("AKT: creating person shool link for student: #{student.id}, school: #{school.id}, classroom: #{classroom_creator.classroom.id}")
         psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(student.id, school.id)
         psl.status = "active"
         psl.save(:validate => false)
         pscl = PersonSchoolClassroomLink.find_or_create_by_classroom_id_and_person_school_link_id(classroom_creator.classroom.id, psl.id)
         pscl.activate
-        Rails.logger.debug("AKT: psl: #{psl.inspect}")
-        Rails.logger.debug("AKT: pscl: #{psl.inspect}")        
       end 
     end
-    BuckDistributor.new([school]).run    
+    
+    PersonSchoolLink.where(person_id: teacher.id, status: "active").each do | psl |
+      psl.destroy
+    end
+    psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
+    psl.save(:validate => false) 
+          
+    BuckDistributor.new([school]).run 
+      
     @school = school
     @teacher = teacher
   end
