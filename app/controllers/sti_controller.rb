@@ -12,15 +12,7 @@ class StiController < ApplicationController
       @child = School.where(sti_id: current_school.id, credits_type: "child")
       if @child.size == 0
         redirect_to :action => "new_school_for_credits", :teacher => @teacher.id, :school => current_school.id and return 
-      else       
-        @current_school = @child[0]        
-        session[:current_school_id] = @child[0].id
-        @teacher = @current_school.teachers.first
-        @current_person = @teacher
-        Rails.logger.debug("AKT give_credits @current_school: #{@current_school.inspect}")        
-        Rails.logger.debug("AKT give_credits current_school before sign in: #{current_school.inspect}")
-        sign_in(@teacher.user)
-        Rails.logger.debug("AKT give_credits current_school after sign in: #{current_school.inspect}")        
+      else            
         if params["studentIds"]
           @students = @current_school.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
         else
@@ -139,6 +131,16 @@ class StiController < ApplicationController
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
+    #special handling for classroom based credits
+    if school.credits_scope != "School-Wide"
+      @child = School.where(sti_id: school.id, credits_type: "child")
+      if @child.size > 0
+        @current_school = @child[0]        
+        session[:current_school_id] = @child[0].id
+        @teacher = @current_school.teachers.first
+        @current_person = @teacher
+      end   
+    end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
