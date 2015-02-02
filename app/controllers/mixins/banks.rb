@@ -53,7 +53,7 @@ module Mixins
       #  flash[:error] = "You can not enter negative values"
       #  redirect_to :back and return
       #end
-
+      Rails.logger.debug("AKT: Create_ebucks_for_students current school: #{current_school.inspect}")
       if params[:credits] && params[:credits].values.detect {|x| x.to_s.include?(".") }
         flash[:error] = "You can only enter whole values"
         redirect_to :back and return

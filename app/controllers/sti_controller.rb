@@ -17,11 +17,14 @@ class StiController < ApplicationController
         session[:current_school_id] = @child[0].id
         @teacher = @current_school.teachers.first
         @current_person = @teacher
+        Rails.logger.debug("AKT give_credits @current_school: #{@current_school.inspect}")        
+        Rails.logger.debug("AKT give_credits current_school before sign in: #{current_school.inspect}")
         sign_in(@teacher.user)
+        Rails.logger.debug("AKT give_credits current_school after sign in: #{current_school.inspect}")        
         if params["studentIds"]
-          @students = current_school.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+          @students = @current_school.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
         else
-          @students = current_school.students.order(:last_name, :first_name)          
+          @students = @current_school.students.order(:last_name, :first_name)          
         end
       end
     else
