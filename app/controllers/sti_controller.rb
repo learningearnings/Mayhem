@@ -12,7 +12,7 @@ class StiController < ApplicationController
       @child = School.where(sti_id: current_school.id, credits_type: "child")
       if @child.size == 0
         redirect_to :action => "new_school_for_credits", :teacher => @teacher.id, :school => current_school.id and return 
-      else            
+      else       
         if params["studentIds"]
           @students = @current_school.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
         else
@@ -132,13 +132,15 @@ class StiController < ApplicationController
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
     #special handling for classroom based credits
-    if school.credits_scope != "School-Wide"
+    if school.credits_scope != "School-Wide" 
       @child = School.where(sti_id: school.id, credits_type: "child")
       if @child.size > 0
         @current_school = @child[0]        
         session[:current_school_id] = @child[0].id
         @teacher = @current_school.teachers.first
         @current_person = @teacher
+        sign_in(@teacher.user)        
+        return true
       end   
     end
     sign_in(@teacher.user)
