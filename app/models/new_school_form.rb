@@ -59,8 +59,7 @@ class NewSchoolForm
     end
     
     PersonSchoolLink.where(person_id: teacher.id, status: "active").each do | psl |
-      psl.status = "inactive"
-      psl.save(:validate => false)
+      psl.destroy
     end
     psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
     psl.save(:validate => false) 
