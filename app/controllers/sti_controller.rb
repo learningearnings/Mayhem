@@ -8,18 +8,17 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    if current_school.credits_scope != "School-Wide"
-      @child = School.where(sti_id: current_school.id, credits_type: "child")
-      if @child.size == 0
+    if current_school.credits_scope != "School-Wide" 
+      if current_school.credits_type != "child"
         redirect_to :action => "new_school_for_credits", :teacher => @teacher.id, :school => current_school.id and return 
-      else       
+      else
         if params["studentIds"]
           @students = @current_school.students.where(sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
         else
           @students = @current_school.students.order(:last_name, :first_name)          
         end
       end
-    else
+    else     
       load_students  
     end  
     render :layout => false
@@ -109,7 +108,7 @@ class StiController < ApplicationController
     link_status
   end
 
-  def load_students
+  def load_students    
     @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
   end
 
@@ -131,18 +130,7 @@ class StiController < ApplicationController
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
-    #special handling for classroom based credits
-    if school.credits_scope != "School-Wide" 
-      @child = School.where(sti_id: school.id, credits_type: "child")
-      if @child.size > 0
-        @current_school = @child[0]        
-        session[:current_school_id] = @child[0].id
-        @teacher = @current_school.teachers.first
-        @current_person = @teacher
-        sign_in(@teacher.user)        
-        return true
-      end   
-    end
+
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
@@ -160,6 +148,20 @@ class StiController < ApplicationController
       # This is left in, just so the iFrame doesn't break if there are no studentIds
       session[:current_school_id] = school.id
     end
+    #special handling for classroom based credits
+    if school == nil
+      school = School.find(session[:current_school_id])
+    end
+    if school and school.credits_scope != "School-Wide" 
+      @child = School.where(sti_id: school.id, credits_type: "child")
+      if @child.size > 0
+        @current_school = @child[0]        
+        session[:current_school_id] = @child[0].id
+        @teacher = @current_school.teachers.first
+        @current_person = @teacher
+        sign_in(@teacher.user)        
+      end   
+    end    
     return true
   end
 
