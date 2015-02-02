@@ -30,9 +30,11 @@ class Bank
   end
 
   def create_ebucks(person, school, student, prefix, points, category_id=nil)
+    Rails.logger.debug("AKT: Creating ebucks for person: #{person.inspect}, student: #{student.inspect} and school: #{school.inspect}")
     account = person.main_account(school)
+    Rails.logger.debug("AKT: Account balance is: #{account.balance}")
     return @on_failure.call unless account_has_enough_money_for(account, points)
-
+    Rails.logger.debug("AKT: Account balance is sufficient for points #{points.to_s}")
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
                    :expires_at => (Time.now + 45.days),
                    :student_id => student.id,
