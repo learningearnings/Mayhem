@@ -2,7 +2,7 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits]
+  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
@@ -53,13 +53,21 @@ class StiController < ApplicationController
       else
         @students = current_school.students.order(:last_name, :first_name)
       end
-      @le_link = "http://#{current_school.store_subdomain}.#{request.host_with_port}/begin_tour"
+      @le_link = "/sti/begin_le_tour"
       render :layout => false
     else
       render :new_school_for_credits
     end
   end
-
+  
+  def begin_le_tour
+    @current_school = School.find(params[:sid])
+    session[:current_school_id] = @current_school.id 
+    @current_person = @current_school.teachers.first
+    sign_in(@current_person.user)    
+    redirect_to "/?tour=Y"  
+  end 
+  
   def sync
     @link = StiLinkToken.where(district_guid: params[:district_guid]).first
     if @link

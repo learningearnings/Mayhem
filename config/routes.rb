@@ -4,7 +4,8 @@ Leror::Application.routes.draw do
 
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
-  post '/sti/save_school_for_credits' => "sti#save_school_for_credits"    
+  post '/sti/save_school_for_credits' => "sti#save_school_for_credits" 
+  get '/sti/begin_le_tour' => "sti#begin_le_tour"   
   post '/sti/link' => "sti#link"
   get '/sti/sync' => "sti#sync"
   post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
