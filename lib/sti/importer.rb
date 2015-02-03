@@ -18,10 +18,8 @@ module STI
         Rails.logger.warn client.schools.response
         Rails.logger.warn "*****************************************"
         raise "ERROR ON SCHOOLS -- CLIENT: #{client.inspect} -- RESPONSE: #{client.schools.response}"
-      end
-fname = "AKTDebug.log" 
-aktlog = File.open(fname,"w")     
-aktlog.puts("AKT1: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+      end   
+Rails.logger.debug("AKT1: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
       
       # Schools that are synced in our DB but are no longer listed in the api
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
@@ -36,7 +34,7 @@ aktlog.puts("AKT1: Classroom link status: #{PersonSchoolClassroomLink.where(clas
         school.activate
         @imported_schools << school
       end
-aktlog.puts("AKT2: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT2: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
 
       staff_response = client.async_staff.parsed_response
       sti_staff = staff_response["Rows"]
@@ -49,7 +47,7 @@ aktlog.puts("AKT2: Classroom link status: #{PersonSchoolClassroomLink.where(clas
           teacher.deactivate
         end
       end
-aktlog.puts("AKT3: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT3: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
       
       @api_teachers = sti_staff.each do |api_teacher|
         begin
@@ -75,7 +73,7 @@ aktlog.puts("AKT3: Classroom link status: #{PersonSchoolClassroomLink.where(clas
           Rails.logger.warn "************** Skipped #{api_teacher}"
         end
       end
-aktlog.puts("AKT4: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT4: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
 
       # Loop through classrooms and sync in much the same way as above
       classrooms_response = client.async_sections.parsed_response
@@ -86,7 +84,7 @@ aktlog.puts("AKT4: Classroom link status: #{PersonSchoolClassroomLink.where(clas
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => sti_classroom_id).first
         ClassroomDeactivator.new(classroom.id).execute!
       end
-aktlog.puts("AKT5: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT5: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
       
       @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
@@ -97,14 +95,14 @@ aktlog.puts("AKT5: Classroom link status: #{PersonSchoolClassroomLink.where(clas
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
         PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create
       end
-aktlog.puts("AKT6: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT6: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
 
       # Deactivate all students for school and just let the Sync reactivate students
       school_ids = School.where(district_guid: @district_guid).pluck(:id).uniq
       psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
       students = Student.where(id: psls.pluck(:person_id)).update_all(status: "inactive")
       psls.update_all(status: "inactive")
-aktlog.puts("AKT7: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT7: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
 
       # Activate/Create students that we pull from STI
       students_response = client.async_students.parsed_response
@@ -125,7 +123,7 @@ aktlog.puts("AKT7: Classroom link status: #{PersonSchoolClassroomLink.where(clas
           Rails.logger.warn "************** Skipped #{api_student}"
         end
       end
-aktlog.puts("AKT8: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT8: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
 
       # Rosters is list of students in classroom
       # Munge the data so that we can loop over each student and create all of
@@ -145,10 +143,10 @@ aktlog.puts("AKT8: Classroom link status: #{PersonSchoolClassroomLink.where(clas
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
         # Deactivate all existing classroom links
         PersonSchoolClassroomLink.where(id: student.person_school_classroom_links.pluck(:id)).each do |pscl|
-aktlog.puts("AKT9: classroom inactivate classroom link #{pscl.classroom_id} #{!pscl.classroom.sti_id.isnil?}")                  
+Rails.logger.debug("AKT9: classroom inactivate classroom link #{pscl.classroom_id} #{!pscl.classroom.sti_id.isnil?}")                  
           pscl.update_attribute(:status, "inactive") if !pscl.classroom.sti_id.isnil?
         end
-aktlog.puts("AKT10: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
+Rails.logger.debug("AKT10: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
         
         # Update the new classrooms for the student
         sti_classroom_ids.compact.each do |sti_classroom_id|
@@ -159,8 +157,7 @@ aktlog.puts("AKT10: Classroom link status: #{PersonSchoolClassroomLink.where(cla
           end
         end
       end
-aktlog.puts("AKT11: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
-aktlog.close
+Rails.logger.debug("AKT11: Classroom link status: #{PersonSchoolClassroomLink.where(classroom_id: 56064).collect { | cr | cr.status }.inspect} ")
       newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
       BuckDistributor.new(newly_synced_schools).run
 
