@@ -58,7 +58,7 @@ module Teachers
       # FIXME: This needs to be dealt with in a better manner
       @actions.push("Delete these students") unless current_person.synced?
 
-      @students = current_school.students.includes(:user)
+      @students = current_school.students.includes(:user).order(:last_name, :first_name)
 
       if params[:classroom].present?
         classroom = Classroom.find(params[:classroom])
