@@ -1,0 +1,9 @@
+/* tables */
+
+
+.tablesorter th {
+	height: 40px;
+	vertical-align:middle;
+	display:table-cell;
+	background-color: #eee;
+}
