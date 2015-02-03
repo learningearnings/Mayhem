@@ -28,7 +28,14 @@ class NewSchoolForm
     school.sti_id = parent_school.id
     school.credits_type = "child"
     school.save
-        
+    
+    PersonSchoolLink.where(person_id: teacher.id, status: "active").each do | psl |
+      psl.status = "inactive"
+      psl.save
+    end
+    psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
+    psl.save(:validate => false)   
+          
     @students = []     
     @classrooms.each do | cr |
       classroom_creator = ClassroomCreator.new(cr.name, teacher, school)
@@ -57,12 +64,6 @@ class NewSchoolForm
         pscl.activate
       end 
     end
-    
-    PersonSchoolLink.where(person_id: teacher.id, status: "active").each do | psl |
-      psl.destroy
-    end
-    psl = PersonSchoolLink.create(person_id: teacher.id, school_id: school.id, status: "active") 
-    psl.save(:validate => false) 
           
     BuckDistributor.new([school]).run 
       
