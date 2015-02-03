@@ -30,7 +30,7 @@
 
       = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
         = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
-        %table
+        %table#students.tablesorter
           %thead
             %tr
               %th= check_box_tag 'select_all'
@@ -50,6 +50,11 @@
   %h3 Your student account(s) are being updated, the results will be displayed when it is completed.
           
 :javascript
+  $(document).ready(function() 
+    { 
+        $("#students").tablesorter(); 
+    } 
+   );   
   function checkUpdateStatus(delayed_report_id) {
     $.get("/delayed_reports/" + delayed_report_id + "/status.json", function(delayed_report) {
       if (delayed_report.status == "complete") {
