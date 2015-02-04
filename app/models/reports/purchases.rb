@@ -118,7 +118,7 @@ module Reports
 
     def generate_row(reward_delivery)
       person = reward_delivery.to
-      deliverer = reward_delivery.reward.product.person ? reward_delivery.reward.product.person : reward_deliver.from
+      deliverer = reward_delivery.reward.product.person ? reward_delivery.reward.product.person : reward_delivery.from
       classroom = person.classrooms.first
       teacher   = classroom.try(:teachers).try(:first)
       Reports::Row[
