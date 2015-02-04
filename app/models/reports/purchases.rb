@@ -50,12 +50,12 @@ module Reports
     def reward_deliveries
       base_scope = reward_delivery_base_scope
       potential_filters.each do |filter|
-        logger.debug("AKT: add filter: #{filter.inspect}")
+        Rails.logger.debug("AKT: add filter: #{filter.inspect}")
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
       #base_scope = base_scope.page(@current_page).per(200)
-      logger.debug("AKT: base_scope: #{base_scope.inspect}")
+      Rails.logger.debug("AKT: base_scope: #{base_scope.inspect}")
       base_scope
     end
 
