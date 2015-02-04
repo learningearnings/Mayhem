@@ -16,7 +16,7 @@ module Reports
 
     def execute!    
       results = reward_deliveries
-      Rails.logger.debug("AKT: rewards_delivery results: #{results}")
+      Rails.logger.debug("AKT: rewards_delivery results: #{results.inspect}")
       results.each do |reward_delivery|
         if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
           @data << generate_row(reward_delivery)
@@ -50,10 +50,12 @@ module Reports
     def reward_deliveries
       base_scope = reward_delivery_base_scope
       potential_filters.each do |filter|
+        logger.debug("AKT: add filter: #{filter.inspect}")
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
       #base_scope = base_scope.page(@current_page).per(200)
+      logger.debug("AKT: base_scope: #{base_scope.inspect}")
       base_scope
     end
 
