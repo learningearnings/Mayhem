@@ -95,7 +95,11 @@ module Reports
       if parameters.reward_creator_filter.blank?
         [:scoped]
       else
-        [:where, { from_id: parameters.reward_creator_filter }]
+        #get all rewards created by the selected rewards creator
+        rewards = []
+        teacher = Teacher.find(parameters.teachers_filter)
+        rewards = teacher.editable_rewards(teacher.school).collect { | r| r.id }
+        [:where, { reward_id: rewards }]
       end
     end
     
