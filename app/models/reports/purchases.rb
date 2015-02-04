@@ -15,7 +15,9 @@ module Reports
     end
 
     def execute!    
-      reward_deliveries.each do |reward_delivery|
+      results = reward_deliveries
+      Rails.logger.debug("AKT: rewards_delivery results: #{results}")
+      results.each do |reward_delivery|
         if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
           @data << generate_row(reward_delivery)
         end
@@ -98,7 +100,7 @@ module Reports
         #get all rewards created by the selected rewards creator
         rewards = []
         teacher = Teacher.find(parameters.reward_creator_filter)
-        rewards = teacher.editable_rewards(teacher.school).collect { | r| r.id }
+        rewards = teacher.editable_rewards(@school).collect { | r| r.id }
         [:where, { reward_id: rewards }]
       end
     end
