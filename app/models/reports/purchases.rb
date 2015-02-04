@@ -50,12 +50,10 @@ module Reports
     def reward_deliveries
       base_scope = reward_delivery_base_scope
       potential_filters.each do |filter|
-        Rails.logger.debug("AKT: add filter: #{filter.inspect}")
         filter_option = send(filter)
         base_scope = base_scope.send(*filter_option) if filter_option
       end
       #base_scope = base_scope.page(@current_page).per(200)
-      Rails.logger.debug("AKT: base_scope: #{base_scope.inspect}")
       base_scope
     end
 
@@ -103,7 +101,7 @@ module Reports
         rewards = []
         teacher = Teacher.find(parameters.reward_creator_filter)
         rewards = teacher.editable_rewards(@school).collect { | r| r.id }
-        [:where, { reward_id: rewards }]
+        [:where, { reward: {product: { id: rewards} } }]
       end
     end
     
