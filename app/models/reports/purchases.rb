@@ -100,7 +100,7 @@ module Reports
         #get all rewards created by the selected rewards creator
         rewards = []
         teacher = Teacher.find(parameters.reward_creator_filter)
-        rewards = teacher.editable_rewards(@school).collect { | r| r.id }
+        rewards = teacher.products.collect { | r | r.id }
         [:where, { reward: {product: { id: rewards} } }]
       end
     end
