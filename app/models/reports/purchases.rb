@@ -97,7 +97,7 @@ module Reports
       else
         #get all rewards created by the selected rewards creator
         rewards = []
-        teacher = Teacher.find(parameters.teachers_filter)
+        teacher = Teacher.find(parameters.reward_creator_filter)
         rewards = teacher.editable_rewards(teacher.school).collect { | r| r.id }
         [:where, { reward_id: rewards }]
       end
