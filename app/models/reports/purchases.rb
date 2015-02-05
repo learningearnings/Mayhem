@@ -15,9 +15,7 @@ module Reports
     end
 
     def execute!    
-      results = reward_deliveries
-      Rails.logger.debug("AKT: rewards_delivery results: #{results.inspect}")
-      results.each do |reward_delivery|
+      reward_deliveries.each do |reward_delivery|
         if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
           @data << generate_row(reward_delivery)
         end
