@@ -82,8 +82,6 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active_model_serializers (0.8.3)
-      activemodel (>= 3.0)
     active_utils (2.0.1)
       activesupport (>= 2.3.11)
       i18n
@@ -589,7 +587,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers (= 0.8.3)
   activeadmin
   activeadmin-extra!
   airbrake
