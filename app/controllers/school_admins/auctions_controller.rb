@@ -1,11 +1,12 @@
 module SchoolAdmins
   class AuctionsController < SchoolAdmins::BaseController
+    
     def index
-      @auctions = Auction.active_viewable_for(current_person).order("end_date desc")
+      @auctions = Auction.active_for_school(current_person.school).order("end_date desc")
     end
     
     def all
-      @auctions = Auction.viewable_for(current_person).order("end_date desc")
+      @auctions = Auction.for_school(current_person.school).order("end_date desc")
     end
 
     def edit
