@@ -22,7 +22,9 @@ namespace :le do
 
   desc "Award weekly automatic credits"
   task :award_weekly_automatic_credits => :environment do
-    Jobs::Weekly::AwardAutomaticCredits.new.run
+    School.inow_schools.has_weekly_automatic_credit_amounts.pluck(:id).each do |school_id|
+      Jobs::Weekly::AwardAutomaticCredits.new(school_id).run
+    end
   end
 
   # Note that this runs the previous month, because it is much easier to setup a cron job to run

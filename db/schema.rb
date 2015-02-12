@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150114170143) do
+ActiveRecord::Schema.define(:version => 20150211054827) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -361,6 +361,14 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
   add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
   add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
 
+  create_table "jobs", :force => true do |t|
+    t.string   "type",       :default => "started"
+    t.string   "status"
+    t.text     "details"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
   create_table "local_reward_categories", :force => true do |t|
     t.string   "name"
     t.string   "image_uid"
@@ -380,6 +388,14 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
 
   create_table "lockers", :force => true do |t|
     t.integer  "person_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "login_events", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "school_id"
+    t.string   "user_type"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -460,6 +476,8 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
+  add_index "otu_codes", ["created_at"], :name => "index_otu_codes_on_created_at"
+  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -553,6 +571,7 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
     t.datetime "updated_at",                                :null => false
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
+    t.boolean  "can_distribute_rewards", :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
@@ -625,8 +644,8 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
     t.integer  "published_by"
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
-    t.integer  "school_id"
     t.boolean  "featured",     :default => false
+    t.integer  "school_id"
   end
 
   create_table "reward_deliveries", :force => true do |t|
@@ -1387,10 +1406,10 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
     t.string   "image_uid"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
-    t.boolean  "purchasable", :default => false
+    t.integer  "school_id"
     t.integer  "min_grade"
     t.integer  "max_grade"
-    t.integer  "school_id"
+    t.boolean  "purchasable", :default => false
   end
 
   create_table "sync_attempts", :force => true do |t|
