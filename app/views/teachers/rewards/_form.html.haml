@@ -1,5 +1,12 @@
 = simple_form_for(@teachers_reward, html: {class: 'form-horizontal'}) do |f|
   = f.error_notification
+  - if @teachers_reward.persisted? && @teachers_reward.product.person.id != current_person.id
+    %div
+      %label 
+        = "Current rewards creator is: #{@teachers_reward.product.person}" 
+      %label
+        = check_box_tag :take_ownership
+        Take ownership
   %h3 Name and Price
   .row-fluid
     .form-inputs.controls-row.span3.float-left

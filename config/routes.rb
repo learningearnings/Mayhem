@@ -1,5 +1,7 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
+
+
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
   post '/sti/save_school_for_credits' => "sti#save_school_for_credits"    
@@ -41,7 +43,7 @@ Leror::Application.routes.draw do
   get '/end_tour' => 'faq_questions#end_tour'    
   match "/help" => "faq_questions#index", :as => 'help'
   post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
-
+  post "events/log_tour_event"
   resources :people do
     collection do
       match "/get_avatar_results" => 'people#get_avatar_results'

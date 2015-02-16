@@ -1,6 +1,14 @@
 .main-content-wrapper
   .full-content
-    %h2 Your Rewards
+    - if current_user.person.is_a?(SchoolAdmin)
+      - if params[:all_rewards] == 'Y'
+        %h2 All Rewards
+        %p= link_to 'Show School Rewards', teachers_rewards_path
+      - else
+        %h2 School Rewards
+        %p= link_to 'Show All Rewards', teachers_rewards_path( :all_rewards => "Y")
+    - else
+      %h2 Your Rewards
     %ul.action_buttons
       %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "create-reward btn awesome-button"
     .resp-product
