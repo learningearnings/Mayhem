@@ -1,6 +1,9 @@
 module Reports
   class StudentRosterController < Reports::BaseController
     def show
+      if params[:classroom] and params[:classroom] != "all"
+        @classroom = Classroom.find(params[:classroom]) 
+      end      
       report = Reports::StudentRoster.new params.merge(school: current_school, person: current_person)
       students = report.execute!
       render 'show', locals: {

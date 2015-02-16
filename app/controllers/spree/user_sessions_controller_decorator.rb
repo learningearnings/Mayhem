@@ -29,7 +29,11 @@ Spree::UserSessionsController.class_eval do
   end
   private
   def set_current_school_id
-    @current_school_id = current_school.id
+    if current_school
+      @current_school_id = current_school.id
+    else
+      @current_school_id = nil
+    end
   end
 
   def set_school_id_cookie

@@ -46,7 +46,7 @@ class Person < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :email, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type, :can_distribute_credits
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :district_guid, :sti_id, :as => :admin
   validates_presence_of :first_name, :last_name
 
@@ -72,11 +72,18 @@ class Person < ActiveRecord::Base
   scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
 
   before_save :ensure_spree_user
+  before_validation :strip_whitespace
   after_destroy :delete_user
 
-  def otu_code_categories
+  def otu_code_categories(current_school_id)
     arel_table = OtuCodeCategory.arel_table
-    OtuCodeCategory.where(arel_table[:person_id].eq(id).or(arel_table[:school_id].eq(school.id)))
+    OtuCodeCategory.where(
+      arel_table[:school_id].eq(current_school_id).and(
+        arel_table[:person_id].eq(self.id).or(
+          arel_table[:person_id].eq(nil)
+        )
+      )
+    )
   end
 
   def avatar
@@ -219,5 +226,9 @@ class Person < ActiveRecord::Base
       PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl.id)
     end
   end
-
+  
+   def strip_whitespace
+    self.first_name = self.first_name.strip unless self.first_name.blank?
+    self.last_name = self.last_name.strip unless self.last_name.blank?
+   end
 end

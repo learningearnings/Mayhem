@@ -8,8 +8,8 @@ module ApplicationHelper
     end
   end
 
-  def current_person_school_link
-    current_person.person_school_links.where(school_id: current_school.id).first
+  def current_otu_code_categories
+    @code_categories ||= current_person.otu_code_categories(current_school.id)
   end
 
   def active_if(visitor_type)

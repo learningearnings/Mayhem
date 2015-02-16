@@ -5,3 +5,11 @@
       = render 'messages_interface'
   .secondary-content
     = render 'boxes_nav'
+
+= javascript_include_tag "tours/student/overview"
+
+:javascript
+  if (hopscotch.getState() !== null && (localStorage.getItem('tour:shouldStartTour') == 'Y')) {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }

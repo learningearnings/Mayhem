@@ -11,9 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141029162007) do
-ActiveRecord::Schema.define(:version => 20141112182017) do
-ActiveRecord::Schema.define(:version => 20141112210053) do
+ActiveRecord::Schema.define(:version => 20150123203633) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -194,6 +192,22 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
     t.integer  "current_staff_version",   :limit => 8
   end
 
+  create_table "faq_questions", :force => true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.string   "person_type"
+    t.integer  "place"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "features", :force => true do |t|
+    t.string   "description"
+    t.boolean  "shown"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "filters", :force => true do |t|
     t.integer  "minimum_grade"
     t.integer  "maximum_grade"
@@ -370,14 +384,6 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "login_events", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "school_id"
-    t.string   "user_type"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "message_code_links", :force => true do |t|
     t.integer  "message_id"
     t.integer  "otu_code_id"
@@ -454,8 +460,6 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
-  add_index "otu_codes", ["created_at"], :name => "index_otu_codes_on_created_at"
-  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -555,6 +559,14 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
 
+  create_table "pg_search_documents", :force => true do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
     t.string   "type"
@@ -612,8 +624,10 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
     t.integer  "person_id"
     t.integer  "filter_id"
     t.integer  "published_by"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "school_id"
+    t.boolean  "featured",     :default => false
   end
 
   create_table "reward_deliveries", :force => true do |t|
@@ -698,6 +712,8 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
     t.integer  "monthly_no_tardies_amount"
     t.integer  "weekly_no_infractions_amount"
     t.integer  "monthly_no_infractions_amount"
+    t.string   "credits_scope"
+    t.string   "credits_type"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1374,10 +1390,10 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
     t.string   "image_uid"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
-    t.integer  "school_id"
+    t.boolean  "purchasable", :default => false
     t.integer  "min_grade"
     t.integer  "max_grade"
-    t.boolean  "purchasable", :default => false
+    t.integer  "school_id"
   end
 
   create_table "sync_attempts", :force => true do |t|
@@ -1393,6 +1409,17 @@ ActiveRecord::Schema.define(:version => 20141112210053) do
     t.text     "schools_response"
     t.text     "sections_response"
     t.text     "staff_response"
+  end
+
+  create_table "tour_events", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "page"
+    t.string   "event_name"
+    t.string   "tour_name"
+    t.integer  "tour_step"
+    t.date     "date"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "uploaded_users", :force => true do |t|

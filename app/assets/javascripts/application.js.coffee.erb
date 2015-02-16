@@ -27,6 +27,29 @@
 //= require jquery_time_picker.js
 //= require modernizr-special
 //= require webshims/polyfiller
+//= require intro.js
+//= require hopscotch.js
+//= require revealer.js
+
+# Bind revealer to hopscotch
+# revealer = new Revealer()
+# hopscotch.listen "show", ->
+#   revealer.reveal hopscotch.getCurrTarget()
+#   return
+# hopscotch.listen "close", ->
+#   revealer.hide()
+#   return
+# hopscotch.listen "end", ->
+#   revealer.hide()
+#   return
+
+# Capture back/forward events
+#  We are currently using this to
+#  kill the tour if the user hits
+#  the back button.
+window.onpopstate = (event) ->
+  if event.state && event.state.tour is "started"
+    hopscotch.endTour()
 
 $.webshims.debug = true;
 $.webshims.setOptions('forms', {

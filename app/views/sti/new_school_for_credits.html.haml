@@ -1,0 +1,59 @@
+%html.resp
+  / <![endif]
+  %head
+    %title Learning Earnings
+    = csrf_meta_tags
+    %meta{:name => "viewport", :content => "width=device-width"}
+
+    = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
+    = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag    'application'
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8360883-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  %body.resp
+    .resp-page-content-container
+      .resp-head
+        .messages-container
+          = render "layouts/flashes"
+      .resp-content-container
+        .resp-side-art
+          .resp-side-art-students
+            .main-content-wrapper
+              .full-content
+                .bank_content
+
+                .distribute-credits
+                  %h4 Create Teacher School for Credits
+                  %p.credits-available
+                    %strong
+                      Teacher:
+                      = @teacher.name
+                    %br/
+                    = bootstrap_form_for @new_school_form, :url => "/sti/save_school_for_credits" do |f|
+                      .row
+                        .span4
+                          %h3 School
+                          = f.text_field :name, label: "School or Classroom Name *"
+                          = f.hidden_field :state_id, :value => @school.state_id
+                          = f.hidden_field :city, :value => @school.city
+                          = f.hidden_field :teacher, :value => @teacher.id
+                          = f.hidden_field :school, :value => @school.id
+                      = f.submit 'Submit', class: 'btn awesome-button', id: 'setup_school'
+
+#message.modal.hide
+  = image_tag "loading.gif"
+  %h3 Your school is being set up.  
+  %h3 This may take a minute... 
+  %h3 A new page will load when complete.
+  
+:coffeescript
+    $('#setup_school').on 'click', (evt) ->
+      $('#message').modal('show');

@@ -29,9 +29,19 @@ class Teacher < Person
     main_account(self.schools.first)
   end
 
+  def can_distribute_credits_for_school?(school)
+    return false unless (school && school.is_a?(School))
+    PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.can_distribute_credits
+  end
+
   def can_distribute_rewards? s
     return false unless (s && s.is_a?(School))
-    self.person_school_links.where(school_id: s.id).first.can_distribute_credits
+    PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.can_distribute_rewards
+  end
+
+  def ignored?(school)
+    return false unless (school && school.is_a?(School))
+    PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.ignore
   end
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.
