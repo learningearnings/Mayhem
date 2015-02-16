@@ -50,6 +50,7 @@ FactoryGirl.define do
     state_id {FactoryGirl.create(:state).id}
     zip { Faker::Address.zip_code }
     ad_profile 1
+
   end
 
   factory :address do
@@ -92,5 +93,8 @@ FactoryGirl.define do
     question { Faker::Lorem.word }
     min_grade 1
     max_grade 12
+  end
+
+  factory :sti_link_token do
   end
 end
