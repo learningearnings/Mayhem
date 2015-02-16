@@ -10,13 +10,14 @@ Spree::OrdersController.class_eval do
   # * Multiple products at once
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => quantity+
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
-
+  before_filter :validate_id, :only => :show
+  
+  
+  
   def insufficient_quantity?
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
     quantity = variant_options.last
-    #reload the product to refresh count_on_hand to account for another student purchasing at the same time 
-    variant.reload
     return true if quantity.to_i > variant.count_on_hand
   end
 
@@ -28,6 +29,7 @@ Spree::OrdersController.class_eval do
     variant.reload    
     return true if current_person.checking_account.balance < (variant.price * quantity.to_i)
   end
+
 
   def populate
     variant_options = params[:variants].to_a.flatten
@@ -84,9 +86,6 @@ Spree::OrdersController.class_eval do
               else
                 OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
                 message = "Purchase successful!."
-                if @order.line_items.first.product.fulfillment_type == "Locker Sticker"
-                  StickerPurchase.create(sticker_id: @order.line_items.first.product.sticker_id, person_id: current_person.id, expires_at: Time.zone.now + 30.days)
-                end                
                 if params[:variants].is_a?(Hash)
                   variant_id = params[:variants].keys.first
                   product = Spree::Variant.find(variant_id)
@@ -104,7 +103,7 @@ Spree::OrdersController.class_eval do
         end
         clear_balance_cache!
       ensure
-        mutex.unlock
+            mutex.unlock
       end
     else
       message = 'Another student is purchasing this reward. Please try again later..'
@@ -171,6 +170,13 @@ Spree::OrdersController.class_eval do
   end
 
   private
+  def validate_id
+    if params[:id].to_i == 0
+      flash[:notice] = "Page not found with id:#{params[:id]}"
+      redirect_to main_app.home_path
+    end      
+  end
+  
   def current_person
     if current_user.present?
       current_user.person
