@@ -13,7 +13,6 @@
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
       _gaq.push(['_trackPageview']);
-
       (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -41,6 +40,7 @@
                     %strong
                       Credits Available:
                     = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+                    = " for school #{current_school.name}"
                   - unless current_otu_code_categories.any?
                     %strong If you would like to use the credit categories feature, you must create categories through the main learning earnings site
                   = form_for OtuCode.new, :url => "#", :html => {:id => "global_populate"} do |f|
@@ -73,7 +73,6 @@
   jQuery ->
     ($ '#global_populate').submit (e) ->
       e.preventDefault()
-
     ($ '.class_points').keyup (e) ->
       $('.classroom_student_points').val($(this).val())
     ($ '.global_category').change (e) ->

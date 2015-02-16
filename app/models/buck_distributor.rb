@@ -55,7 +55,7 @@ class BuckDistributor
   memoize :amount_for_teacher
 
   def teachers_to_pay(school)
-    if school.district_guid
+    if school.district_guid or (school.credits_type == "child")
       school.teachers.where(can_distribute_credits: true).uniq
     else
       (school.teachers.recently_logged_in + school.teachers.recently_created).uniq
