@@ -12,7 +12,7 @@ module Reports
       bucket = @school.students
       bucket = bucket.for_grade(@grade_filter) if @grade_filter && @grade_filter != "all"
       if @classroom && @classroom != "all"
-        bucket = bucket.joins(:person_school_classroom_links).where(:person_school_classroom_links => {:classroom_id => @classroom, :status => :active})
+        bucket = bucket.joins(:person_school_classroom_links).where(:person_school_classroom_links => {:classroom_id => @classroom, :status => 'active'})
       end
       bucket
     end
