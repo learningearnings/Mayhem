@@ -24,7 +24,7 @@ class PersonSchoolLink < ActiveRecord::Base
   has_many :reward_distributors
   has_many :otu_codes
 
-  attr_accessible :person_id, :school_id, :status, :person, :school
+  attr_accessible :person_id, :school_id, :status, :person, :school, :can_distribute_credits
   validates_presence_of :person_id, :school_id
   validate :validate_unique_with_status
   validate :username_taken?

@@ -27,7 +27,7 @@ class BuckDistributor
   def amount_for_school school
     days_in_month = Time.days_in_month(Time.now.month)
     days_left_in_month = (days_in_month - Time.now.day) + 1
-    
+
     if school.district_guid
       DAILY_STUDENT_AMOUNT * days_left_in_month * school.students.count
     else
@@ -38,8 +38,10 @@ class BuckDistributor
 
   def handle_teachers
     @schools.each do |school|
-      teachers_to_pay(school).each do |teacher|
+      teachers_to_pay(school, { hide_ignored: false }).each do |teacher|
         revoke_remainder(school, teacher, teacher.main_account(school).balance)
+      end
+      teachers_to_pay(school, { hide_ignored: true }).each do |teacher|
         pay_teacher(school, teacher)
       end
     end
@@ -50,13 +52,14 @@ class BuckDistributor
   end
 
   def amount_for_teacher(school)
-    amount_for_school(school) / teachers_to_pay(school).count
+    amount_for_school(school) / teachers_to_pay(school, { hide_ignored: true }).count
   end
   memoize :amount_for_teacher
 
-  def teachers_to_pay(school)
+  def teachers_to_pay(school, options={})
     if school.district_guid or (school.credits_type == "child")
-      school.teachers.where(can_distribute_credits: true).uniq
+      teachers = school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
+      options[:hide_ignored] ? teachers.not_ignored(school.id) : teachers
     else
       (school.teachers.recently_logged_in + school.teachers.recently_created).uniq
     end

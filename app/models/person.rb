@@ -52,6 +52,8 @@ class Person < ActiveRecord::Base
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
+  scope :not_ignored, lambda { |school_id| joins(:person_school_links).where(person_school_links: { school_id: school_id, ignore: false })}
+  scope :ignored, lambda { |school_id| joins(:person_school_links).where(person_school_links: { school_id: school_id, ignore: true })}
   scope :for_schools, lambda {|schools| joins(:person_school_links).where(:person_school_links => {:school_id => schools})}
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
@@ -166,7 +168,7 @@ class Person < ActiveRecord::Base
 
   alias_method :name, :full_name
   alias_method :to_s, :full_name
-  
+
   def name_last_first
     self.last_name + ', ' + self.first_name
   end

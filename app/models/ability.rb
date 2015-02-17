@@ -8,9 +8,6 @@ class Ability
       can :destroy, :all
       can :modify, :all
       can :create, :all
-      if person.can_distribute_credits?
-        can :distribute, :credits
-      end
     elsif person.is_a?(Student)
       can :read, :all
       can :update, Person do |p|

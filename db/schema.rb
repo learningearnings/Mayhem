@@ -549,10 +549,11 @@ ActiveRecord::Schema.define(:version => 20150123203633) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
+    t.boolean  "can_distribute_rewards", :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
