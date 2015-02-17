@@ -222,15 +222,8 @@ class Person < ActiveRecord::Base
     end
   end
   
-<<<<<<< HEAD
   def strip_whitespace
     self.first_name = self.first_name.strip unless self.first_name.blank?
     self.last_name = self.last_name.strip unless self.last_name.blank?
   end
-=======
-   def strip_whitespace
-    self.first_name = self.first_name.strip unless self.first_name.blank?
-    self.last_name = self.last_name.strip unless self.last_name.blank?
-   end
->>>>>>> origin/master
 end
