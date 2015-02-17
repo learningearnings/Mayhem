@@ -69,6 +69,7 @@ Leror::Application.routes.draw do
     resources :reward_exclusions
     post "update_setting" => "settings#update_setting", :as => "update_setting"
     post "import_teachers" => 'settings#import_teachers', :as => 'import_teachers'
+    post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')

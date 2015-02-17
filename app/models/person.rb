@@ -67,7 +67,7 @@ class Person < ActiveRecord::Base
   scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
 
   before_save :ensure_spree_user
-  before_validation :strip_whitespace  
+  before_validation :strip_whitespace
   after_destroy :delete_user
 
   def otu_code_categories(current_school_id)
@@ -222,8 +222,15 @@ class Person < ActiveRecord::Base
     end
   end
   
+<<<<<<< HEAD
   def strip_whitespace
     self.first_name = self.first_name.strip unless self.first_name.blank?
     self.last_name = self.last_name.strip unless self.last_name.blank?
   end
+=======
+   def strip_whitespace
+    self.first_name = self.first_name.strip unless self.first_name.blank?
+    self.last_name = self.last_name.strip unless self.last_name.blank?
+   end
+>>>>>>> origin/master
 end

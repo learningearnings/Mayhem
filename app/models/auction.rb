@@ -59,7 +59,7 @@ class Auction < ActiveRecord::Base
              auction_zip_codes.zip_code = ?
            )", school.id, school.state.id, school.zip)    
   end
-    
+
   def self.active_viewable_for(person)
     # FIXME: Move this to arel, or possibly find a better solution for
     # how viewable auctions are handled.

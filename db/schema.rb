@@ -567,8 +567,13 @@ ActiveRecord::Schema.define(:version => 20150211054827) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
+<<<<<<< HEAD
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
+=======
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+>>>>>>> origin/master
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
     t.boolean  "can_distribute_rewards", :default => false

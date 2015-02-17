@@ -1,7 +1,6 @@
 class Schools::SettingsController < SchoolAdmins::BaseController
   def show
-    @teachers = current_school.teachers.order(:first_name, :last_name)
-    @distributing_teachers = current_school.distributing_teachers
+    @teachers = Teacher.joins(:person_school_links).where(person_school_links: { school_id: current_school.id }).order(:first_name, :last_name)
     @school = current_school
     @sponsor_post = current_school.sponsor_post
   end
@@ -41,11 +40,7 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     if params["setting"] == "can_distribute_credits"
       person_school_link.update_attribute(:can_distribute_credits, value)
     elsif params["setting"] == "can_distribute_rewards"
-      if value
-        RewardDistributor.create(person_school_link_id: person_school_link.id)
-      else
-        RewardDistributor.where(person_school_link_id: person_school_link.id).delete_all
-      end
+      person_school_link.update_attribute(:can_distribute_rewards, value)
     elsif params["setting"] == "ignore_teacher"
       if value
         PersonSchoolLinkIgnorer.new(person_school_link.id).execute!

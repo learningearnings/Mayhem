@@ -14,7 +14,7 @@
       = f.input :mascot_name
       = f.input :school_demo
       = f.input :status, :as => :select, :collection => ['new','active','inactive']
-      = f.input :timezone, :as => :time_zone 
+      = f.input :timezone, :as => :time_zone  
     = f.input :logo, :as => :file
     - if @school.logo.present?
       %li.optional.input

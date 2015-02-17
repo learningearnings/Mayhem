@@ -8,7 +8,7 @@ class AdminMailer < ActionMailer::Base
   
   def tour_access_report filename
     attachments[filename] = File.read("/tmp/" + filename)
-    mail :to => ["jimmy@learningearnings.com", "aktaylor@sti-k12.com"], :subject => "Tour Access Report", :body => "Tour Access Report"
+    mail :to => ["aktaylor@sti-k12.com", "jimmy@learningearnings.com"], :subject => "Tour Access Report", :body => "Tour Access Report"
   end
   
   def teacher_activity_report filename
@@ -24,6 +24,6 @@ class AdminMailer < ActionMailer::Base
   
   def sign_ups_report filename
     attachments[filename] = File.read("/tmp/" + filename)
-    mail :to => ["jimmy@learningearnings.com", "aktaylor@sti-k12.com"], :subject => "Sign Ups Report", :body => "Sign Ups Report"
+    mail :to => ["aktaylor@sti-k12.com","jimmy@learningearnings.com"], :subject => "Sign Ups Report", :body => "Sign Ups Report"
   end
 end

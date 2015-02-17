@@ -135,7 +135,8 @@ module STI
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
         # Deactivate all existing classroom links
         PersonSchoolClassroomLink.where(id: student.person_school_classroom_links.pluck(:id)).each do |pscl|
-          pscl.update_attribute(:status, "inactive") if !pscl.classroom.sti_id.isnil?
+          #Only deactive INOW classroom links
+          pscl.update_attribute(:status, "inactive") if !pscl.classroom.sti_id.nil?
         end
         
         # Update the new classrooms for the student
