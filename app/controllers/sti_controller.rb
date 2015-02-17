@@ -97,6 +97,16 @@ class StiController < ApplicationController
         school = School.find(ession[:current_school_id])
       end
     end
+    if school and school.credits_scope != "School-Wide" 
+      @child = School.where(sti_id: school.id, credits_type: "child")
+      if @child.size > 0
+        @current_school = @child[0]        
+        session[:current_school_id] = @child[0].id
+        @teacher = @current_school.teachers.first
+        @current_person = @teacher
+        sign_in(@teacher.user)        
+      end   
+    end        
     return true
   end
 
