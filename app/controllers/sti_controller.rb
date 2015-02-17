@@ -130,8 +130,8 @@ class StiController < ApplicationController
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
-
-    sign_in(@teacher.user)
+    session[:current_school_id] = school.id if school
+    sign_in(teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
@@ -143,14 +143,10 @@ class StiController < ApplicationController
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
       #  only suppose to be associated to 1.
-      session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
-    else
-      # This is left in, just so the iFrame doesn't break if there are no studentIds
-      session[:current_school_id] = school.id
-    end
-    #special handling for classroom based credits
-    if school == nil
-      school = School.find(session[:current_school_id])
+      if school == nil
+        session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
+        school = School.find(ession[:current_school_id])
+      end
     end
     if school and school.credits_scope != "School-Wide" 
       @child = School.where(sti_id: school.id, credits_type: "child")
