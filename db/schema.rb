@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150211054827) do
+ActiveRecord::Schema.define(:version => 20150217044823) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -567,13 +567,8 @@ ActiveRecord::Schema.define(:version => 20150211054827) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
-<<<<<<< HEAD
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-=======
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
->>>>>>> origin/master
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
     t.boolean  "can_distribute_rewards", :default => false
@@ -1423,7 +1418,7 @@ ActiveRecord::Schema.define(:version => 20150211054827) do
     t.string   "sync_type"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
-    t.string   "error"
+    t.text     "error"
     t.text     "backtrace"
     t.text     "students_response"
     t.text     "rosters_response"

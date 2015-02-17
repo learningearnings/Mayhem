@@ -28,6 +28,10 @@ every :saturday do
   runner "StudentInterestHandler.new.call"
 end
 
+every 1.day, :at => '6am' do
+  rake "update_city_state_after_sync:run"
+end
+
 every 1.day, :at => '1am' do
   rake "le:sti_nightly_import"
 end
