@@ -52,6 +52,8 @@ class Person < ActiveRecord::Base
 
   delegate :email, :email=, :username, :username=, :password=, :password, :password_confirmation=, :password_confirmation, :last_sign_in_at, :last_sign_in_at=, to: :user, allow_nil: true
 
+  scope :not_ignored, lambda { |school_id| joins(:person_school_links).where(person_school_links: { school_id: school_id, ignore: false })}
+  scope :ignored, lambda { |school_id| joins(:person_school_links).where(person_school_links: { school_id: school_id, ignore: true })}
   scope :for_schools, lambda {|schools| joins(:person_school_links).where(:person_school_links => {:school_id => schools})}
   scope :with_plutus_amounts, joins(:person_school_links => [:person_account_links => [:account => [:amounts => [:transaction]]]]).merge(PersonAccountLink.with_main_account).group(:people => :id)
   scope :with_transactions_between, lambda { |startdate,enddate|
@@ -70,6 +72,7 @@ class Person < ActiveRecord::Base
   scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
 
   before_save :ensure_spree_user
+  before_validation :strip_whitespace
   after_destroy :delete_user
 
   def otu_code_categories(current_school_id)
@@ -165,7 +168,7 @@ class Person < ActiveRecord::Base
 
   alias_method :name, :full_name
   alias_method :to_s, :full_name
-  
+
   def name_last_first
     self.last_name + ', ' + self.first_name
   end
@@ -223,5 +226,9 @@ class Person < ActiveRecord::Base
       PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl.id)
     end
   end
-
+  
+   def strip_whitespace
+    self.first_name = self.first_name.strip unless self.first_name.blank?
+    self.last_name = self.last_name.strip unless self.last_name.blank?
+   end
 end

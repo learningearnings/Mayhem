@@ -3,6 +3,8 @@ Leror::Application.routes.draw do
 
 
   get '/sti/give_credits' => "sti#give_credits"
+  get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
+  post '/sti/save_school_for_credits' => "sti#save_school_for_credits"    
   post '/sti/link' => "sti#link"
   get '/sti/sync' => "sti#sync"
   post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
@@ -60,9 +62,9 @@ Leror::Application.routes.draw do
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
     resources :reward_exclusions
-    #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
-    post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+    post "update_setting" => "settings#update_setting", :as => "update_setting"
     post "import_teachers" => 'settings#import_teachers', :as => 'import_teachers'
+    post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')

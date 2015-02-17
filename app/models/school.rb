@@ -30,10 +30,10 @@ class School < ActiveRecord::Base
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid,
                   :weekly_perfect_attendance_amount, :monthly_perfect_attendance_amount, :weekly_no_tardies_amount, :monthly_no_tardies_amount,
-                  :weekly_no_infractions_amount, :monthly_no_infractions_amount
+                  :weekly_no_infractions_amount, :monthly_no_infractions_amount, :credits_scope, :credits_type
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
-                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,
+                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,:credits_scope, :credits_type,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
   image_accessor :logo

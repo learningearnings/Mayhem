@@ -10,7 +10,10 @@ Spree::OrdersController.class_eval do
   # * Multiple products at once
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => quantity+
   # +:products => { product_id => variant_id, product_id => variant_id }, :quantity => { variant_id => quantity, variant_id => quantity }+
-
+  before_filter :validate_id, :only => :show
+  
+  
+  
   def insufficient_quantity?
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
@@ -167,6 +170,13 @@ Spree::OrdersController.class_eval do
   end
 
   private
+  def validate_id
+    if params[:id].to_i == 0
+      flash[:notice] = "Page not found with id:#{params[:id]}"
+      redirect_to main_app.home_path
+    end      
+  end
+  
   def current_person
     if current_user.present?
       current_user.person

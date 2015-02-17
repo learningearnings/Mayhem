@@ -12,6 +12,8 @@ Spree::User.class_eval do
 
   after_save :set_recovery_password
 
+  before_validation :strip_whitespace
+  
   def self.authenticate_with_school_id(username,password,school_id)
     return if username.blank? || password.blank?
     # Regular teacher or student
@@ -60,6 +62,11 @@ Spree::User.class_eval do
   end
 
  protected
+   def strip_whitespace
+    self.username = self.username.strip unless self.username.blank?
+    self.email = self.email.strip unless self.email.blank?
+   end
+   
    def set_recovery_password
      if person && password
        person.update_attribute(:recovery_password, password)

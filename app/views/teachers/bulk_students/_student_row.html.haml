@@ -3,8 +3,8 @@
     %td{colspan: 99}
       %strong= errors.full_messages.to_sentence
 %tr
-  %td.text.last= text_field_tag 'students[]last_name', options[:last_name], class: 'last'
   %td.text.first= text_field_tag 'students[]first_name', options[:first_name], class: 'first'
+  %td.text.last= text_field_tag 'students[]last_name', options[:last_name], class: 'last'  
   %td.text.username= text_field_tag 'students[]user[username]', options[:username], class: 'username'
   %td.text.password= text_field_tag 'students[]user[password]', options[:password], class: 'password'
   %td.select.grade= select_tag 'students[]grade', options_for_select(grades), class: 'grade'

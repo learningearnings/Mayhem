@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150114170143) do
+ActiveRecord::Schema.define(:version => 20150123203633) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -549,10 +549,11 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
+    t.boolean  "can_distribute_rewards", :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
@@ -711,6 +712,8 @@ ActiveRecord::Schema.define(:version => 20150114170143) do
     t.integer  "monthly_no_tardies_amount"
     t.integer  "weekly_no_infractions_amount"
     t.integer  "monthly_no_infractions_amount"
+    t.string   "credits_scope"
+    t.string   "credits_type"
   end
 
   create_table "site_settings", :force => true do |t|

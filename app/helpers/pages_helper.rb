@@ -15,13 +15,21 @@ module PagesHelper
         return options
       end
     end
-    if params[:tour] || first_time_logged_in
+    if params[:tour] || first_time_logged_in || session[:tour]
+      session[:tour] = nil
       {'data-step' => step, 'data-intro' => tour_text(id,person)}.merge!(options)
     else
       return options
     end
   end
-
+  
+  def should_start_tour
+    if params[:tour] == "Y" or first_time_logged_in or session[:tour] == "Y"
+      session[:tour] = nil
+      return true
+    end
+  end
+  
   def tour_text(id, person)
     if person.is_a?(Student)
       text = t("tour.student." + id)
