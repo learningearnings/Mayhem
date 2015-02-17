@@ -1,5 +1,5 @@
 class Teacher < Person
-  has_many :schools, :through => :person_school_links
+  has_many :schools, :through => :person_school_links, :conditions => {:person_school_links => {:status => "active"}}
   attr_accessor :username, :password, :password_confirmation, :email
   attr_accessible :gender, :email, :username, :game_challengeable
   attr_accessible :status, :game_challengeable, :as => :admin
