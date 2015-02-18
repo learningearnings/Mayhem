@@ -1,11 +1,18 @@
 .main-content-wrapper
   .full-content
-    %h2 Your Rewards
-    %p.note NOTE: To deactivate a reward, just set its quantity to 0 and it won't show up in the store.
+    - if current_user.person.is_a?(SchoolAdmin)
+      - if params[:all_rewards] == 'Y'
+        %h2 All Rewards
+        %p= link_to 'Show School Rewards', teachers_rewards_path
+      - else
+        %h2 School Rewards
+        %p= link_to 'Show All Rewards', teachers_rewards_path( :all_rewards => "Y")
+    - else
+      %h2 Your Rewards
     %ul.action_buttons
-      %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "btn awesome-button"
-    = paginate @teachers_rewards, :window => 2
+      %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "create-reward btn awesome-button"
     .resp-product
+      = paginate @teachers_rewards, :window => 2
       .resp-product-row
         - if @teachers_rewards.any?
           - @teachers_rewards.in_groups_of(2) do |grp|
@@ -17,3 +24,12 @@
             You have not created any school rewards yet. Click Create a New Reward to add your very own school rewards!
     - if @teachers_rewards.count > 3
       = link_to 'Create a New Reward', new_teachers_reward_path, :class => "btn awesome-button"
+
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
+
+:javascript
+  if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y'))  {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }

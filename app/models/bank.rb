@@ -41,9 +41,16 @@ class Bank
     buck = create_buck(prefix, points, buck_params)
     @credit_manager.purchase_ebucks(school, person, student, points, buck)
 
-    # NOTE: This message sending isn't really the bank's responsibility imo, but i'll
-    # leave it here for now - ja
-    send_message(person, student, buck)
+    # Auto deposit credits for K and 1st grade
+    # K is represented by 97,98,99
+    if [97,98,99,1].include?(student.grade)
+      claim_bucks(student, buck)
+      ActionController::Base.new.expire_fragment("#{student.id}_balances")
+    else
+      # NOTE: This message sending isn't really the bank's responsibility imo, but i'll
+      # leave it here for now - ja
+      send_message(person, student, buck)
+    end
 
     return on_success.call nil
   end
@@ -114,7 +121,6 @@ class Bank
 
   def create_buck(prefix, points, params)
     buck = buck_creator.call(params.merge(:points => BigDecimal.new(points)))
-    buck.generate_code(prefix)
     buck
   end
 

@@ -151,4 +151,8 @@ Spree::Product.class_eval do
     images_without_master_product_delegation
   end
   alias_method_chain :images, :master_product_delegation
+
+  def destroy
+    update_attribute(:deleted_at, Time.current)
+  end
 end

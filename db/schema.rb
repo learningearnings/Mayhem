@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141024145318) do
+ActiveRecord::Schema.define(:version => 20150217044823) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -170,16 +170,6 @@ ActiveRecord::Schema.define(:version => 20141024145318) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "codes", :force => true do |t|
-    t.string   "code"
-    t.boolean  "active",     :default => true
-    t.datetime "used_date"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-  end
-
-  add_index "codes", ["active"], :name => "index_codes_on_active"
-
   create_table "delayed_reports", :force => true do |t|
     t.integer  "person_id"
     t.string   "state"
@@ -200,6 +190,22 @@ ActiveRecord::Schema.define(:version => 20141024145318) do
     t.integer  "current_roster_version",  :limit => 8
     t.integer  "current_section_version", :limit => 8
     t.integer  "current_staff_version",   :limit => 8
+  end
+
+  create_table "faq_questions", :force => true do |t|
+    t.text     "question"
+    t.text     "answer"
+    t.string   "person_type"
+    t.integer  "place"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "features", :force => true do |t|
+    t.string   "description"
+    t.boolean  "shown"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "filters", :force => true do |t|
@@ -354,6 +360,14 @@ ActiveRecord::Schema.define(:version => 20141024145318) do
 
   add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
   add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
+
+  create_table "jobs", :force => true do |t|
+    t.string   "type",       :default => "started"
+    t.string   "status"
+    t.text     "details"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
 
   create_table "local_reward_categories", :force => true do |t|
     t.string   "name"
@@ -553,12 +567,23 @@ ActiveRecord::Schema.define(:version => 20141024145318) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.boolean  "ignore",                 :default => false
+    t.boolean  "can_distribute_credits", :default => true
+    t.boolean  "can_distribute_rewards", :default => false
   end
 
   add_index "person_school_links", ["person_id", "school_id"], :name => "idx_psl_person_id_school_id", :unique => true
   add_index "person_school_links", ["status", "person_id", "school_id"], :name => "psl_status_person_school"
+
+  create_table "pg_search_documents", :force => true do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "plutus_accounts", :force => true do |t|
     t.string   "name"
@@ -617,8 +642,10 @@ ActiveRecord::Schema.define(:version => 20141024145318) do
     t.integer  "person_id"
     t.integer  "filter_id"
     t.integer  "published_by"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "featured",     :default => false
+    t.integer  "school_id"
   end
 
   create_table "reward_deliveries", :force => true do |t|
@@ -703,6 +730,8 @@ ActiveRecord::Schema.define(:version => 20141024145318) do
     t.integer  "monthly_no_tardies_amount"
     t.integer  "weekly_no_infractions_amount"
     t.integer  "monthly_no_infractions_amount"
+    t.string   "credits_scope"
+    t.string   "credits_type"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1391,13 +1420,24 @@ ActiveRecord::Schema.define(:version => 20141024145318) do
     t.string   "sync_type"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
-    t.string   "error"
+    t.text     "error"
     t.text     "backtrace"
     t.text     "students_response"
     t.text     "rosters_response"
     t.text     "schools_response"
     t.text     "sections_response"
     t.text     "staff_response"
+  end
+
+  create_table "tour_events", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "page"
+    t.string   "event_name"
+    t.string   "tour_name"
+    t.integer  "tour_step"
+    t.date     "date"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "uploaded_users", :force => true do |t|

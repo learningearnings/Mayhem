@@ -1,8 +1,8 @@
 class Teacher < Person
-  has_many :schools, :through => :person_school_links
+  has_many :schools, :through => :person_school_links, :conditions => {:person_school_links => {:status => "active"}}
   attr_accessor :username, :password, :password_confirmation, :email
-  attr_accessible :gender, :email, :username, :game_challengeable, :can_distribute_credits
-  attr_accessible :status, :can_distribute_credits, :game_challengeable, :as => :admin
+  attr_accessible :gender, :email, :username, :game_challengeable
+  attr_accessible :status, :game_challengeable, :as => :admin
   validates_presence_of :grade
   after_create :create_user
 
@@ -29,9 +29,19 @@ class Teacher < Person
     main_account(self.schools.first)
   end
 
+  def can_distribute_credits_for_school?(school)
+    return false unless (school && school.is_a?(School))
+    PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.can_distribute_credits
+  end
+
   def can_distribute_rewards? s
     return false unless (s && s.is_a?(School))
-    self.person_school_links.joins(:reward_distributors).exists?(:school_id => s.id)
+    PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.can_distribute_rewards
+  end
+
+  def ignored?(school)
+    return false unless (school && school.is_a?(School))
+    PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.ignore
   end
 
   # FIXME: The account creation on various models needs to be extracted to a module.  #account_name should be all we have to define.

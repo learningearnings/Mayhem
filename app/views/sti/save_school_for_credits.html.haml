@@ -1,0 +1,40 @@
+%html.resp
+  / <![endif]
+  %head
+    %title Learning Earnings
+    = csrf_meta_tags
+    %meta{:name => "viewport", :content => "width=device-width"}
+
+    = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
+    = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag    'application'
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8360883-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  %body.resp
+    .resp-page-content-container
+      .resp-head
+        .messages-container
+          = render "layouts/flashes"
+      .resp-content-container
+        .resp-side-art
+          .resp-side-art-students
+            .main-content-wrapper
+              .full-content
+                %br
+                %br
+                %br
+                %br                
+                %h4 Congratulations!  You have successfully setup your classroom credits school.
+                %br 
+                = "Click the below link to get started with LE.  "
+                %br 
+                %h3
+                  = link_to "Learning Earnings", "#{@le_link}", :target => "_blank"

@@ -25,12 +25,11 @@ module Teachers
 
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these students" ? :delete! : :call
-      StudentUpdaterWorker.perform_async(current_person.user.email, params["students"], current_school.id, updater_method)
-      flash[:notice] = "Bulk process is running."
-      if current_school.synced?
-        redirect_to action: :edit
-      else
-        redirect_to action: :show
+      delayed_report = DelayedReport.create(person_id: current_person.id)
+      StudentUpdaterWorker.perform_async(params["students"], current_school.id, updater_method, delayed_report.id)
+      
+      respond_to do |format|
+        format.json { render json: { delayed_report_id: delayed_report.id } }
       end
     end
 
@@ -57,8 +56,11 @@ module Teachers
 
       # FIXME: This needs to be dealt with in a better manner
       @actions.push("Delete these students") unless current_person.synced?
-
-      @students = current_school.students.includes(:user)
+      if params[:sort]
+        @students = current_school.students.includes(:user).order(params[:sort])
+      else
+        @students = current_school.students.includes(:user).order(:last_name, :first_name)
+      end
 
       if params[:classroom].present?
         classroom = Classroom.find(params[:classroom])

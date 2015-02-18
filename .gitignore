@@ -15,8 +15,11 @@ config/initializers/00_env.rb
 *.swn
 *.swo
 *.sw
+*.project
+config/initializers/session_store.rb
 config/database.yml
 config/sunspot.yml
+config/environments/00_env.rb
 public/uploads/**/*
 
 # Ignore solr stuff

@@ -9,7 +9,6 @@ class GameCredit
       @otu_code.ebuck = true
       @otu_code.student_id = student_id
       @otu_code.points = BigDecimal('0')
-      @otu_code.generate_code(prefix.upcase)
     end
 =end
   end

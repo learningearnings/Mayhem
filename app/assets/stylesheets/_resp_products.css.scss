@@ -1,13 +1,11 @@
 .resp-product {
     .resp-product-row {
         display: inline-block;
-        text-align: center;
         width: 100%;
         margin: 0px auto;
         .pagination {
             float: left;
         }
-
     }
     .resp-product-tile {
         @include ctb-fluid-span(4);

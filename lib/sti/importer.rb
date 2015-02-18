@@ -47,9 +47,10 @@ module STI
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
+          is_new_teacher = teacher.new_record?
           teacher.type ||= "Teacher"
           teacher.status = "active"
-          teacher.update_attributes(api_teacher_mapping(api_teacher, teacher.new_record?))
+          teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
 
@@ -57,6 +58,9 @@ module STI
           school_ids.each do |school_id|
             person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school_id).first_or_initialize
             person_school_link.status = "active"
+            if is_new_teacher
+              person_school_link.can_distribute_credits = api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"]
+            end
             person_school_link.save(:validate => false)
           end
         rescue => e
@@ -128,7 +132,8 @@ module STI
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
         # Deactivate all existing classroom links
         PersonSchoolClassroomLink.where(id: student.person_school_classroom_links.pluck(:id)).each do |pscl|
-          pscl.update_attribute(:status, "inactive")
+          #Only deactive INOW classroom links
+          pscl.update_attribute(:status, "inactive") if !pscl.classroom.sti_id.nil?
         end
         # Update the new classrooms for the student
         sti_classroom_ids.compact.each do |sti_classroom_id|
@@ -170,27 +175,15 @@ module STI
       }
     end
 
-    def api_teacher_mapping api_teacher, should_include_can_distribute_credits
-      if should_include_can_distribute_credits
-        {
-          dob: api_teacher["DateOfBirth"],
-          can_distribute_credits: api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"],
-          first_name: api_teacher["FirstName"],
-          last_name: api_teacher["LastName"],
-          grade: 5,
-          sti_id: api_teacher["Id"],
-          district_guid: @district_guid
-        }
-      else
-        {
-          dob: api_teacher["DateOfBirth"],
-          first_name: api_teacher["FirstName"],
-          last_name: api_teacher["LastName"],
-          grade: 5,
-          sti_id: api_teacher["Id"],
-          district_guid: @district_guid
-        }
-      end
+    def api_teacher_mapping api_teacher
+      {
+        dob: api_teacher["DateOfBirth"],
+        first_name: api_teacher["FirstName"],
+        last_name: api_teacher["LastName"],
+        grade: 5,
+        sti_id: api_teacher["Id"],
+        district_guid: @district_guid
+      }
     end
 
     def api_student_mapping api_student
