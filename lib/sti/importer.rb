@@ -154,7 +154,7 @@ module STI
       end
 
       ##### Set current versions #####
-      district = District.where(guid: @district_guid).first
+      district = District.where(guid: @district_guid).first_or_create
       district.update_attributes({
         current_staff_version:   staff_response["CurrentVersion"],
         current_student_version: students_response["CurrentVersion"],
