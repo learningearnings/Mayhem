@@ -12,7 +12,7 @@ module STI
 
         @data["Schools"].each do |sti_school_id|
           school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-          person_school_link = PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initialize
+          person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
           person_school_link.skip_onboard_credits = true
           person_school_link.status = "active"
           person_school_link.save(:validate => false)
