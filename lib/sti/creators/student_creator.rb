@@ -42,6 +42,17 @@ module STI
           password_confirmation: password
         }
       end
+
+      def generate_username_for_district(district_guid, first_name, last_name, iteration = 0)
+        username = first_name.downcase[0] + last_name.downcase[0..4]
+        username += iteration.to_s if iteration > 0
+        return username if username_unique_for_district?(district_guid, username)
+        return generate_username_for_district(district_guid, first_name, last_name, iteration + 1)
+      end
+
+      def username_unique_for_district?(district_guid, username)
+        !Student.joins(:user).where(:district_guid => district_guid, :user => {:username => username}).any?
+      end
     end
   end
 end
