@@ -19,7 +19,7 @@ module Reports
             csv << [
               staff_member.district_guid,
               # TODO: This might be incorrect if a staff_member belongs to multiple schools
-              staff_member.school.sti_id,
+              staff_member.school.try(:sti_id),
               staff_member.sti_id,
               staff_member.id,
               staff_member.status,

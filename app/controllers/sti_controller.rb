@@ -145,7 +145,7 @@ class StiController < ApplicationController
       #  only suppose to be associated to 1.
       if school == nil
         session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
-        school = School.find(ession[:current_school_id])
+        school = School.find(session[:current_school_id])
       end
     end
     if school and school.credits_scope != "School-Wide" 
@@ -157,7 +157,7 @@ class StiController < ApplicationController
         @current_person = @teacher
         sign_in(@teacher.user)        
       end   
-    end    
+    end        
     return true
   end
 
