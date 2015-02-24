@@ -55,12 +55,12 @@ set :repository,      "git@github.com:learningearnings/Mayhem.git"
 set :branch,          "develop"
 
 # Slack config
-set :slack_token, "62kjrF5RV1MdkQHy7HhZxHE9"
-set :slack_subdomain, "isotope11"
-set :slack_channel, '#learningearnings'
-set :slack_application, 'Mayhem'
-set :slack_emoji, ":james:"
-set :slack_username, "jamesbot"
+set :slack_token, "LQS1Y3049h0I56StyZ1LKNHS"
+set :slack_subdomain, "learn"
+set :slack_channel, "#general"
+set :slack_application, "Mayhem"
+set :slack_emoji, ":bradleybot:"
+set :slack_username, "bradleybot"
 set :slack_local_user, `git config user.name`.chomp
 
 # tasks
