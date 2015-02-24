@@ -12,7 +12,7 @@ module STI
         #   2. Set person's school links to inactive
         person = Person.where(district_guid: @district_guid, sti_id: @data["Id"]).first
         person.update_attribute(:status, "inactive")
-        PersonSchoolLink.joins(:person).where(id: psls.pluck(:person_id)).update_all(status: "inactive")
+        PersonSchoolLink.joins(:person).where(id: person.id).update_all(status: "inactive")
       end
     end
   end
