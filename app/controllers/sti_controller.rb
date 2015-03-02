@@ -24,6 +24,36 @@ class StiController < ApplicationController
     render :layout => false
   end
   
+  def auth
+    if params["sti_session_variable"]
+      #integrated
+      if handle_sti_token
+        redirect_to "/" and return
+      else
+        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
+      end
+    else 
+      school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
+      if !school
+        flash[:error] = "Non integrated sign in failed -- School not found"
+      elsif params[:userid]
+        teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
+        if teacher
+          session[:current_school_id] = school.id 
+          sign_in(teacher.user)
+          redirect_to "/" and return
+        else
+          flash[:error] = "Non integrated sign in failed -- Teacher not found"
+        end
+      elsif params[:firstname] and params[:lastname]
+        # Redirect to sign up page?
+        flash[:error] = "Non integrated sign in failed -- Teacher not found"
+      else
+        flash[:error] = "Non integrated sign in failed -- Missing required parameters"
+      end
+    end
+  end
+  
   def new_school_for_credits
     @teacher = Teacher.find(params[:teacher])
     @school = School.find(params[:school])
@@ -172,6 +202,8 @@ class StiController < ApplicationController
     @client_response = sti_client.session_information.parsed_response
     if @client_response["StaffId"].blank? || !login_teacher
       render partial: "teacher_not_found"
+      return false
     end
+    return true
   end
 end
