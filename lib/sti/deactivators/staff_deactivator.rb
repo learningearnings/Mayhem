@@ -4,9 +4,9 @@
 module STI
   module Deactivators
     class StaffDeactivator
-      def initialize(staff_sti_id, district_guid)
-        raise ArgumentError, 'STI staff id and district_guid must be given.' unless staff_sti_id.present && district_guid.present?
-        @staff_sti_id = staff_sti_id
+      def initialize(data, district_guid)
+        raise ArgumentError, 'STI staff id and district_guid must be given.' unless data.present? && district_guid.present?
+        @staff_sti_id = data["Id"]
         @district_guid = district_guid
       end
 
