@@ -14,7 +14,7 @@ module STI
         # To deactivate a person, two things must happen:
         #   1. Set person's status to inactive
         #   2. Set person's school links to inactive
-        staff = Person.find(sti_id: staff_sti_id, district_guid: @district_guid)
+        staff = Person.find(sti_id: @staff_sti_id, district_guid: @district_guid)
         staff.deactivate
         staff.person_school_links.map(&:deactivate)
       end
