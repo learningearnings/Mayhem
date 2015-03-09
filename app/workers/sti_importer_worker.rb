@@ -9,8 +9,8 @@ class StiImporterWorker
     sync_attempt = SyncAttempt.create(:district_guid => district_guid, :status => "Running")
     begin
       sti_client = STI::Client.new(base_url: url, username: username, password: password)
-      district = District.where(guid: district_guid).first_or_create
-      if district.has_current_versions?
+      district = District.where(guid: district_guid).first
+      if district && district.has_current_versions?
         sti_importer = STI::AsyncImporter.new(client: sti_client, district_guid: district_guid)
         sync_attempt.students_response = sti_client.async_students(district.current_student_version).response.inspect
         sync_attempt.staff_response    = sti_client.async_staff(district.current_staff_version).response.inspect
