@@ -8,6 +8,7 @@ module STI
         deleted.each { |classroom| STI::Deactivators::ClassroomDeactivator.new(classroom, @district_guid).execute! }
         inserted.each{ |classroom| STI::Creators::ClassroomCreator.new(classroom, @district_guid).execute! }
         updated.each { |classroom| STI::Updaters::ClassroomUpdater.new(classroom, @district_guid).execute! }
+        update_current_version(:current_section_version)
       end
     end
   end
