@@ -315,6 +315,7 @@ GEM
       builder
       minitest (>= 2.0, < 4.0)
       ruby-progressbar
+    mixpanel-ruby (1.7.0)
     mocha (0.14.0)
       metaclass (~> 0.0.1)
     modernizr-rails (2.6.2.3)
@@ -635,6 +636,7 @@ DEPENDENCIES
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters
+  mixpanel-ruby
   mocha (~> 0.14.0)
   modernizr-rails (~> 2.6.2.3)
   nested_form!
