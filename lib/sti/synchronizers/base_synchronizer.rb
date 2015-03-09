@@ -19,6 +19,15 @@ module STI
       def updated
         @data["Updated"]
       end
+
+      def current_version
+        @data["CurrentVersion"]
+      end
+
+      def update_current_version(field)
+        district = District.where(guid: @district_guid).first
+        district.update_attribute(field, current_version)
+      end
     end
   end
 end
