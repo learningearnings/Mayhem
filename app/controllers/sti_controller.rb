@@ -64,7 +64,7 @@ class StiController < ApplicationController
   end 
   
   def sync
-    @link = StiLinkToken.where(district_guid: params[:district_guid]).first
+    @link = StiLinkToken.where(district_guid: params[:district_guid], status: 'active').first
     if @link
       if StiImporterWorker.setup_sync(@link.api_url, @link.username, @link.password, @link.district_guid)
         render :json => {:status => :success}
@@ -80,7 +80,7 @@ class StiController < ApplicationController
     if params[:district_guid].blank? || params[:api_url].blank? || params[:link_key].blank? || params[:inow_username].blank?
       render :status => 400, :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, and link_key"} and return
     end
-    @link = StiLinkToken.where(district_guid: params[:district_guid]).first
+    @link = StiLinkToken.where(district_guid: params[:district_guid], status: 'active').first
     password = params[:inow_password].blank? ? @link.try(:password) : params[:inow_password]
     if @link && @link.api_url != params[:api_url]
       render :status => 400, :json => {:status => :failure, :message => "The api url doesn't match that district_guid record"} and return
@@ -91,7 +91,7 @@ class StiController < ApplicationController
       @link.update_attribute(:password, params[:inow_password]) unless params[:inow_password].blank?
       render :json => {:status => :success, :message => "Your information matched our records and the link was active"} and return
     else
-      @link = StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password])
+      @link = StiLinkToken.create(district_guid: params[:district_guid], api_url: params[:api_url], link_key: params[:link_key], username: params[:inow_username], password: params[:inow_password], status: 'active')
       StiImporterWorker.setup_sync(@link.api_url, @link.username, @link.password, @link.district_guid)
       render :json => {:status => :success, :message => "The Sync record was created"} and return
     end
@@ -162,7 +162,7 @@ class StiController < ApplicationController
   end
 
   def handle_sti_token
-    sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID]).last
+    sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response

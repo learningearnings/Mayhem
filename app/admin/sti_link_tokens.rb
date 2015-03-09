@@ -7,5 +7,6 @@ ActiveAdmin.register StiLinkToken do
     column :api_url
     column :link_key
     column :username
+    column :status
   end
 end
