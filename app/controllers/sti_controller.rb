@@ -192,15 +192,11 @@ class StiController < ApplicationController
   end
 
   def handle_sti_token
-<<<<<<< HEAD
     if current_person
       @teacher = current_person
       return
     end
-    sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID]).last
-=======
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
->>>>>>> feature/add_status_to_link_token
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
