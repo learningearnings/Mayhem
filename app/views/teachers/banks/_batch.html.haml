@@ -34,7 +34,7 @@
       .logo
         max-width: 150px
         position: absolute
-        bottom: 10px
+        bottom: 24px
         left: 10%
         right: 90%
       .background-image
@@ -68,6 +68,15 @@
         font-size: 2.1em
         font-family: Arial
         color: #C04814
+      .school
+        width: 60%
+        font-size: 1.6em
+        font-family: Arial
+        color: #000000
+        position: absolute
+        bottom: 4px
+        left: 4px
+
 
 .container
   .bucks
@@ -80,3 +89,4 @@
             .code= otu_code.code
             .amount{class: otu_code.points > 1 ? "double_digit_amount" : "single_digit_amount" }= otu_code.points.to_i
             .expires= otu_code.expires_at.to_date.strftime("%m-%d-%Y")
+            .school= school.name.truncate(16, omission: '') if school
