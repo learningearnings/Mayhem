@@ -25,7 +25,7 @@ module STI
       end
 
       def update_current_version(field)
-        district = District.where(guid: @district_guid)
+        district = District.where(guid: @district_guid).first
         district.update_attribute(field, current_version)
       end
     end
