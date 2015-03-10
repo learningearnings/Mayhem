@@ -161,7 +161,7 @@ class StiController < ApplicationController
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
     session[:current_school_id] = school.id if school
-    sign_in(teacher.user)
+    sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
