@@ -15,7 +15,7 @@ namespace :le do
 
   desc "STI Nightly Import"
   task :sti_nightly_import => :environment do
-    StiLinkToken.all.where(status: 'active').each do |link_token|
+    StiLinkToken.where(status: 'active').each do |link_token|
       StiImporterWorker.setup_sync(link_token.api_url, link_token.username, link_token.password, link_token.district_guid)
     end
   end
