@@ -15,7 +15,14 @@ module Games
     def play
       match_setup unless @match
       # FIXME: Make this...better
-      question = Games::Question.for_grade(current_person.grade).random
+      # If the current_person doesn't have a grade (teacher)
+      #  we'll use the opponents grade
+      if current_person.grade == 0
+        grade = (@match.players.map(&:person) - [current_person]).first.try(:grade)
+      else
+        grade = current_person.grade
+      end
+      question = Games::Question.for_grade(grade).random
       food_fight_play_command = FoodFightPlayCommand.new(question_id: question.id, :match_id => @match.id)
       question_statistics = Games::QuestionStatisticsPresenter.new(question)
       render 'play', locals: { food_fight_play_command: food_fight_play_command, question_statistics: question_statistics }
