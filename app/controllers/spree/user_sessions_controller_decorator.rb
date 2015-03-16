@@ -10,6 +10,8 @@ Spree::UserSessionsController.class_eval do
     if user_signed_in?
       
       tracker = Mixpanel::Tracker.new("6980dec826990c22d5bbef3a690bd599")
+      tracker.identify(current_user.id)
+      tracker.people.set(current_user.id, {'email' => current_user.email, 'username' => current_user.username, 'first_name' => current_user.person.first_name, 'last_name' => current_user.person.last_name, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
       tracker.track(current_user.id, 'User Login', {'email' => current_user.email, 'username' => current_user.username, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
       respond_to do |format|
         format.html {
@@ -40,8 +42,6 @@ Spree::UserSessionsController.class_eval do
   end
 
   def set_school_id_cookie
-    if @current_school_id
-      cookies[:last_logged_in_school_id] = { :value => @current_school_id, :expires => 1.year.from_now, :domain => ".learningearnings.com"}
-    end
+    cookies[:last_logged_in_school_id] = { :value => @current_school_id, :expires => 1.year.from_now, :domain => ".learningearnings.com"}
   end
 end
