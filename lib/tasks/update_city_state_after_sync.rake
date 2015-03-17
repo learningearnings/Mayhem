@@ -22,5 +22,50 @@ namespace :update_city_state_after_sync do
     s.state_id = 31
     s.zip = 74884
     s.save
+    s = School.find(1804)
+    s.city = "Columbus"
+    s.state_id = 37
+    s.zip = 39702
+    s.save
+    s = School.find(1805)
+    s.city = "Columbus"
+    s.state_id = 37
+    s.zip = 39705
+    s.save
+    s = School.find(1806)
+    s.city = "Columbus"
+    s.state_id = 37
+    s.zip = 39705
+    s.save
+    s = School.find(1807)
+    s.city = "Columbus"
+    s.state_id = 37
+    s.zip = 39702
+    s.save
+    s = School.find(1808)
+    s.city = "Columbus"
+    s.state_id = 37
+    s.zip = 39701
+    s.save
+    s = School.find(1809)
+    s.city = "Columbus"
+    s.state_id = 37
+    s.zip = 39701
+    s.save
+    s = School.find(1810)
+    s.city = "Columbus"
+    s.state_id = 37
+    s.zip = 39701
+    s.save
+    s = School.find(1812)
+    s.city = "Salem"
+    s.state_id = 37
+    s.zip = 62881
+    s.save
+    s = School.find(1813)
+    s.city = "Salem"
+    s.state_id = 37
+    s.zip = 62881
+    s.save
   end
 end
