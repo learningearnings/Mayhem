@@ -59,12 +59,12 @@ namespace :update_city_state_after_sync do
     s.save
     s = School.find(1812)
     s.city = "Salem"
-    s.state_id = 37
+    s.state_id = 14
     s.zip = 62881
     s.save
     s = School.find(1813)
     s.city = "Salem"
-    s.state_id = 37
+    s.state_id = 14
     s.zip = 62881
     s.save
   end
