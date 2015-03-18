@@ -17,5 +17,9 @@ Spree::ProductsController.class_eval do
     @products = @products.page(params[:page]).per(9)
     respond_with(@products)
   end
+  
+  def show
+    @tracker.track(current_user.id, 'View Reward Item')
+  end
 end
 

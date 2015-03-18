@@ -29,8 +29,7 @@ module Teachers
       end
       clear_balance_cache!
       
-      tracker = Mixpanel::Tracker.new("6980dec826990c22d5bbef3a690bd599")
-      tracker.track(current_user.id, 'Print Credits')
+      @tracker.track(current_user.id, 'Print Credits')
 
     end
 

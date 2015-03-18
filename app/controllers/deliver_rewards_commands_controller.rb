@@ -10,6 +10,7 @@ class DeliverRewardsCommandsController < LoggedInController
     command = DeliverRewardsCommand.new reward_deliveries: reward_deliveries
     #command.on_success = method(:on_success)
     command.execute!
+    @tracker.track(current_user.id, 'Mark Item as Delivered')
     redirect_to purchases_report_path(params)
   end
 
