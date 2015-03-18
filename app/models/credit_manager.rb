@@ -157,7 +157,7 @@ class CreditManager
   end
 
   def transfer_credits_from_savings_to_checking student, amount
-    return false if student.savings_balance < amount 
+    return false if student.savings_balance < amount
     transfer_credits "Transfer from Savings to Checking", student.savings_account, student.checking_account, amount
   end
 
