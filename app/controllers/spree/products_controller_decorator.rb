@@ -19,7 +19,7 @@ Spree::ProductsController.class_eval do
   end
   
   def show
-    MixPanelWorker.new.track(current_user.id, 'View Reward Item')
+    MixPanelTrackerWorker.perform_async(current_user.id, 'View Reward Item')
   end
 end
 

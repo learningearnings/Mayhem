@@ -29,7 +29,7 @@ module Teachers
       end
       clear_balance_cache!
       
-      MixPanelWorker.new.track(current_user.id, 'Print Credits')
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Print Credits')
 
     end
 
