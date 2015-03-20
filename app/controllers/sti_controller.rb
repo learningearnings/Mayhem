@@ -47,7 +47,7 @@ class StiController < ApplicationController
         end
       elsif params[:firstname] and params[:lastname]
         # Redirect to sign up page?
-        flash[:error] = "Non integrated sign in failed -- Teacher not found"
+        redirect_to "/teachers/new/?sid=#{school.id}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
       else
         flash[:error] = "Non integrated sign in failed -- Missing required parameters"
       end
