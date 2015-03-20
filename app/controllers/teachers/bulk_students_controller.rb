@@ -37,7 +37,7 @@ module Teachers
       @batch_student_creator = BatchStudentCreator.new(params["students"], current_school)
       if @batch_student_creator.call
         flash[:notice] = "Students Created!"
-        @tracker.track(current_user.id, 'Add Students')
+        MixPanelWorker.new.track(current_user.id, 'Add Students')
         redirect_to action: :show
       else
         flash[:error] = "Error creating students"

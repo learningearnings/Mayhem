@@ -6,9 +6,9 @@ class StudentTransferCommandsController < LoggedInController
     transfer.on_failure = method(:on_failure)
     transfer.execute!
     if params[:student_transfer_command][:direction] == "checking_to_savings"
-      @tracker.track(current_user.id, 'Transfer Credits to Savings')   
+      MixPanelWorker.new.track(current_user.id, 'Transfer Credits to Savings')   
     else
-      @tracker.track(current_user.id, 'Transfer Credits to Checking')
+      MixPanelWorker.new.track(current_user.id, 'Transfer Credits to Checking')
     end  
     clear_balance_cache!
   end

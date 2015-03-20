@@ -10,7 +10,7 @@ module Reports
 
     def show
       delayed_report = current_person.delayed_reports.find(params[:id])
-      @tracker.track(current_user.id, 'Run Purchase Report')
+      MixPanelWorker.new.track(current_user.id, 'Run Purchase Report')
       respond_to do |format|
         format.html { render 'show', locals: { report: delayed_report } }
         format.json { render :json => delayed_report }

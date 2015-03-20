@@ -19,7 +19,7 @@ Spree::ProductsController.class_eval do
   end
   
   def show
-    @tracker.track(current_user.id, 'View Reward Item')
+    MixPanelWorker.new.track(current_user.id, 'View Reward Item')
   end
 end
 

@@ -29,7 +29,7 @@ module Teachers
       end
       clear_balance_cache!
       
-      @tracker.track(current_user.id, 'Print Credits')
+      MixPanelWorker.new.track(current_user.id, 'Print Credits')
 
     end
 

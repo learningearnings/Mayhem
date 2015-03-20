@@ -12,16 +12,11 @@ class ApplicationController < ActionController::Base
 
   before_filter :subdomain_required
   before_filter :set_last_school_cookie
-  before_filter :initialize_mixpanel
   around_filter :set_time_zone
   around_filter :track_interaction
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
-  end
-  
-  def initialize_mixpanel
-    @tracker = Mixpanel::Tracker.new("6980dec826990c22d5bbef3a690bd599")
   end
 
   def clear_balance_cache!
