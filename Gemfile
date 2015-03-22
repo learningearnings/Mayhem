@@ -48,6 +48,7 @@ gem 'responders'
 gem 'kaminari'
 
 gem 'googlecharts'
+gem 'mixpanel-ruby'
 
 gem 'bootstrap_forms'
 

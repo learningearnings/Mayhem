@@ -2,6 +2,7 @@ class AuctionsController < LoggedInController
 
   def index
     @auctions = available_auctions
+    MixPanelTrackerWorker.perform_async(current_user.id, 'View Auctions')
   end
 
   def show
