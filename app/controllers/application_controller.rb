@@ -1,5 +1,6 @@
 require "application_responder"
 require 'socket'
+require 'mixpanel-ruby'
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder

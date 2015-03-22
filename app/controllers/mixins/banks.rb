@@ -145,6 +145,7 @@ module Mixins
         @to_teacher   = Person.find(params[:to_teacher_id])
         get_bank
         @bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:transfer_points])
+        MixPanelTrackerWorker.perform_async(current_user.id, 'Transfer Credits')
         clear_balance_cache!
       else
         flash[:error] = "Please choose a teacher for buck transfer.  Also ensure amount is a positive number."
@@ -170,6 +171,7 @@ module Mixins
     def issue_ebucks_to_student(student, point_value=params[:points], category_id=nil)
       point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
       @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value, category_id)
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Send e-Credits')
     end
 
     def sanitize_points(_points)
