@@ -4,14 +4,13 @@ Spree::UserSessionsController.class_eval do
 
   def create
     authenticate_user!
-    session[:last_school_id] = params[:user]["school_id"]
-    session[:current_school_id] = params[:user]["school_id"]
+    session[:last_school_id] = params[:user]["school_id"] if params[:user]
+    session[:current_school_id] = params[:user]["school_id"] if params[:user]
 
     if user_signed_in?
       
-      tracker = Mixpanel::Tracker.new("6980dec826990c22d5bbef3a690bd599")
-      tracker.people.set(current_user.id, {'email' => current_user.email, 'username' => current_user.username, 'first_name' => current_user.person.first_name, 'last_name' => current_user.person.last_name, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
-      tracker.track(current_user.id, 'User Login', {'email' => current_user.email, 'username' => current_user.username, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
+      MixPanelIdentifierWorker.perform_async(current_user.id, {'email' => current_user.email, 'username' => current_user.username, 'first_name' => current_user.person.first_name, 'last_name' => current_user.person.last_name, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
+      MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', {'email' => current_user.email, 'username' => current_user.username, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
       respond_to do |format|
         format.html {
           flash.notice = t(:logged_in_succesfully)
