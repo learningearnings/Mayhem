@@ -2,6 +2,9 @@ class TeachersController < ApplicationController
   skip_before_filter :subdomain_required
 
   def new
+    if params[:sid]
+      @school = School.find(params[:sid])
+    end    
     @teacher_signup_form = TeacherSignupForm.new
   end
 
