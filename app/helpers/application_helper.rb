@@ -7,7 +7,17 @@ module ApplicationHelper
       PersonDecorator.decorate(current_user.person)
     end
   end
-
+  
+  def logged_in_user_email
+    if current_person
+      current_person.user.email
+    elsif current_user
+      current_user.email
+    else
+      nil
+    end
+  end
+  
   def current_otu_code_categories
     @code_categories ||= current_person.otu_code_categories(current_school.id)
   end

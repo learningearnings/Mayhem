@@ -16,7 +16,7 @@ ActiveAdmin.register_page "ALSDE Report" do
         end_date = Time.strptime(params[:end_date], "%m/%d/%Y")
         options.merge!(end_date: end_date)
       end
-      ALSDEStudyReportWorker.perform_async(options)
+      ALSDEStudyReportWorker.perform_async(options, current_user)
       render json: { :status => 200, :notice => 'ALSDE study report has been started.' }
     rescue Exception => e
       render json: { :status => 422, :notice => 'ALSDE study report failed to start.' }

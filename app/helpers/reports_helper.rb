@@ -11,4 +11,6 @@ module ReportsHelper
       ['Last 7 Days', "last_7_days"]
     ]
   end
+  
+
 end
