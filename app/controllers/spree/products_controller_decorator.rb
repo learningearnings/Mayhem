@@ -17,5 +17,9 @@ Spree::ProductsController.class_eval do
     @products = @products.page(params[:page]).per(9)
     respond_with(@products)
   end
+  
+  def show
+    MixPanelTrackerWorker.perform_async(current_user.id, 'View Reward Item')
+  end
 end
 

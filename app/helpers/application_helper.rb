@@ -7,7 +7,7 @@ module ApplicationHelper
       PersonDecorator.decorate(current_user.person)
     end
   end
-
+  
   def current_otu_code_categories
     @code_categories ||= current_person.otu_code_categories(current_school.id)
   end

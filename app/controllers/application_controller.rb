@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :subdomain_required
   before_filter :set_last_school_cookie
+  before_filter :check_mixpanel
   around_filter :set_time_zone
   around_filter :track_interaction
 
@@ -21,6 +22,18 @@ class ApplicationController < ActionController::Base
 
   def clear_balance_cache!
     expire_fragment "#{current_person.id}_balances"
+  end
+  
+  def check_mixpanel
+    if !session[:mixpanelinit] and current_user
+      @options = {:env => Rails.env, :email => current_user.email, :username => current_user.username, 
+                  :first_name => current_user.person.first_name, :last_name => current_user.person.last_name,
+                  :type => current_user.person.type, :school => current_user.person.school.try(:name)}
+      MixPanelIdentifierWorker.perform_async(current_user.id, @options)
+      MixPanelTrackerWorker.perform_async(current_user.id, 'User Login')
+      session[:mixpanelinit] = true
+
+    end
   end
 
   # Users are required to access the application

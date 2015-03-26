@@ -16,6 +16,7 @@ ActiveAdmin.register_page "Sign Ups  Report" do
         end_date = Time.strptime(params[:end_date], "%m/%d/%Y")
         options.merge!(end_date: end_date)
       end
+      options.merge!(to_email: current_user.email)
       SignUpsReportWorker.perform_async(options)
       render json: { :status => 200, :notice => 'Sign ups report has been started.' }
     rescue Exception => e

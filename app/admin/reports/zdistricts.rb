@@ -26,6 +26,7 @@ ActiveAdmin.register_page "District Reports" do
         school_ids = School.where(district_guid: params[:id]).pluck(:id)
         options.merge!(school_ids: school_ids)
       end
+      options.merge!(to_email: current_user.email)
       UserActivityReportWorker.perform_async(options)
       render json: { :status => 200, :notice => 'User activity report has been started.' }
     rescue Exception => e
