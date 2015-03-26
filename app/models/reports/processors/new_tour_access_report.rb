@@ -5,7 +5,7 @@ module Reports
 
       def initialize(options={})
         @options = options
-        @email = options[:to_email]        
+        @email = options["to_email"]       
         @filename = "tour_access_report_#{Time.zone.now.strftime("%m_%d_%H_%M_%S")}.csv"
       end
 

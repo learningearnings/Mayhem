@@ -5,7 +5,7 @@ module Reports
 
       def initialize(options={})
         @options = options
-        @email = options[:to_email]        
+        @email = options["to_email"]     
         @filename = "user_activity_report_#{Time.zone.now.strftime("%m_%d")}.csv"
       end
 
