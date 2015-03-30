@@ -1,7 +1,7 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
 
-
+  get '/homes/schools_for_username' => "homes#schools_for_username"
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
   post '/sti/save_school_for_credits' => "sti#save_school_for_credits"    
