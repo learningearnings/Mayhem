@@ -17,4 +17,10 @@ class HomesController < ApplicationController
       redirect_to  "/admin/le_admin_dashboard"
     end
   end
+  
+  def schools_for_username
+    @username = params[:username]
+    @schools = School.where(id: PersonSchoolLink.where(person_id: Person.with_username(@username).pluck(:id)).pluck(:school_id) )
+    render :partial => 'pages/school_select'
+  end
 end
