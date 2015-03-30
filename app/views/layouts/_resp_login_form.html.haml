@@ -13,12 +13,26 @@
       = password_field_tag 'user[password]', nil, :placeholder => 'Password', :class => 'input-medium'
       .resp-forgot-password
         = link_to "Forgot your password?", spree.new_user_password_path('user'), tabindex: "-1"
-    .school-select
-      %label.log-in.select
-        SCHOOL
-      = select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "Select...."
+      %div#schools_div
+        .school-select
+          %label.log-in.select
+            SCHOOL
+          = select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "Select...."
       %button.btn.login-button
-  
+  :javascript
+    var school_list = $("#_user_school_id");
+    $("#user_username").change(function() { 
+        console.log('Username: ' + this.value);
+        $.ajax({
+          url: "/homes/schools_for_username",
+          data: 'username=' + this.value,
+          success: function(result) {
+            $("#schools_div").html(result);
+          },
+          error: function() { alert('An error occured filtering schools list');}
+        });
+     })
+    
   :coffeescript
     ($ "document").ready ->
       $(".chzn-select").chosen({width: "300px"});

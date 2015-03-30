@@ -1,0 +1,7 @@
+- if @schools and @schools.size > 0
+  .school-select
+    %label.log-in.select
+      SCHOOL
+    = select_tag 'user[school_id]',options_from_collection_for_select(@schools, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "Select...."
+- else
+  = "No schools for username #{@username}"
