@@ -20,7 +20,7 @@ class HomesController < ApplicationController
   
   def schools_for_username
     @username = params[:username]
-    @schools = School.where(id: PersonSchoolLink.where(person_id: Person.with_username(@username).pluck(:id)).pluck(:school_id) )
+    @schools = School.where(id: PersonSchoolLink.where(person_id: Person.with_username(@username).pluck(:id)).pluck(:school_id)).order(:name)
     render :partial => 'pages/school_select'
   end
 end
