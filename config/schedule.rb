@@ -29,21 +29,33 @@ every :saturday do
 end
 
 every 1.day, :at => '6am' do
-  rake "update_city_state_after_sync:run"
+  rake "update_city_state_after_sync:run", :output => "/home/deployer/logs/update_city_state_after_sync_run.log"
 end
 
 every 1.day, :at => '1am' do
-  rake "le:sti_nightly_import"
+  rake "le:sti_nightly_import", :output => "/home/deployer/logs/sti_nightly_import.log"
 end
 
 every '0 9 1 * *' do
-  runner "BuckDistributor.new.run"
+  runner "BuckDistributor.new.run", :output => "/home/deployer/logs/buck_distributer.log"
 end
 
 every :saturday do
-  rake "le:award_weekly_automatic_credits"
+  rake "le:award_weekly_automatic_credits", :output => "/home/deployer/logs/award_weekly_automatic_credits.log"
 end
 
 every "0 0 1 * *" do
-  rake "le:award_monthly_automatic_credits"
+  rake "le:award_monthly_automatic_credits", :output => "/home/deployer/logs/award_monthly_automatic_credits.log"
+end
+
+every "0 6 * * 0" do
+  rake "le:sti_nightly_import", :output => "/home/deployer/logs/sti_nightly_import.log"
+end
+
+every "0 7 * * 0" do
+  rake "le:user_activity_report", :output => "/home/deployer/logs/ser_activity_report.log"
+end
+
+every "0 7 * * 0" do
+  rake "le:teacher_activity_report", :output => "/home/deployer/logs/teacher_activity_report.log"
 end
