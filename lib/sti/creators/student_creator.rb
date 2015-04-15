@@ -28,6 +28,7 @@ module STI
           district_guid: @district_guid,
           first_name: @data["FirstName"],
           last_name: @data["LastName"],
+          type: 'Student',
           grade: @data["GradeLevel"],
           status: "active"
         }
