@@ -48,10 +48,6 @@ every "0 0 1 * *" do
   rake "le:award_monthly_automatic_credits", :output => "/home/deployer/logs/award_monthly_automatic_credits.log"
 end
 
-every "0 6 * * 0" do
-  rake "le:sti_nightly_import", :output => "/home/deployer/logs/sti_nightly_import.log"
-end
-
 every "0 7 * * 0" do
   rake "le:user_activity_report", :output => "/home/deployer/logs/ser_activity_report.log"
 end
