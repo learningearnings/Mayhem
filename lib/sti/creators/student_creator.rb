@@ -7,7 +7,7 @@ module STI
       end
 
       def execute!
-        person = Person.create(person_mapping, as: :admin)
+        person = Student.create(person_mapping, as: :admin)
         person.user.update_attributes(user_mapping) if person.recovery_password.nil?
 
         @data["Schools"].each do |sti_school_id|
@@ -28,7 +28,6 @@ module STI
           district_guid: @district_guid,
           first_name: @data["FirstName"],
           last_name: @data["LastName"],
-          type: 'Student',
           grade: @data["GradeLevel"],
           status: "active"
         }
