@@ -1,0 +1,18 @@
+class Mobile::V1::Students::BaseController < Mobile::V1::BaseController
+  def authenticate
+    user = Spree::User.joins(:person).where('people.type = ?', 'Student').authenticate_with_school_id(params[:username], params[:password], params[:school_id])
+    if user
+      render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
+    else
+      render json: { error: 'Invalid username or password' }, status: :unauthorized
+    end
+  end
+
+  def current_person
+    Student.find(278239)
+  end
+
+  def current_school
+    School.find(1627)
+  end
+end

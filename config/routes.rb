@@ -7,6 +7,37 @@ Leror::Application.routes.draw do
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
   post '/sti/save_school_for_credits' => "sti#save_school_for_credits" 
   get '/sti/begin_le_tour' => "sti#begin_le_tour"   
+
+  # Mobile App API's
+  namespace :mobile, defaults: { format: :json } do
+    namespace :v1 do
+      get  'schools' => 'base#schools'
+      namespace :teachers do
+        post 'auth'             => 'base#authenticate'
+        get  'classrooms'       => 'classrooms#index'
+        get  'classrooms/:id'   => 'classrooms#show'
+        post 'classrooms'       => 'classrooms#create'
+        get  'students'         => 'students#index'
+        get  'students/:id'     => 'students#show'
+        get  'rewards'          => 'rewards#index'
+        get  'rewards/:id'      => 'rewards#show'
+        post 'rewards'          => 'rewards#create'
+        get  'reward_templates' => 'reward_templates#index'
+        get  'awards'           => 'awards#index'
+        get  'goals'            => 'goals#index'
+      end
+      namespace :students do
+        post 'auth'             => 'base#authenticate'
+        get  'classrooms'       => 'classrooms#index'
+        get  'classrooms/:id'   => 'classrooms#show'
+      end
+    end
+  end
+
+  get '/sti/give_credits' => "sti#give_credits"
+  get '/sti/new_school_for_credits' => "sti#new_school_for_credits"
+  post '/sti/save_school_for_credits' => "sti#save_school_for_credits"
+>>>>>>> feature/mobile_backend
   post '/sti/link' => "sti#link"
   get '/sti/sync' => "sti#sync"
   post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
@@ -46,7 +77,7 @@ Leror::Application.routes.draw do
   post '/help' => 'faq_questions#search'
   get '/tour' => 'faq_questions#tour'
   get '/begin_tour' => 'faq_questions#begin_tour'
-  get '/end_tour' => 'faq_questions#end_tour'    
+  get '/end_tour' => 'faq_questions#end_tour'
   match "/help" => "faq_questions#index", :as => 'help'
   post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
   post "events/log_tour_event"
@@ -93,7 +124,7 @@ Leror::Application.routes.draw do
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
   end
-  
+
   # route to view sidekiq worker status
   mount Sidekiq::Web => '/sidekiq'
 

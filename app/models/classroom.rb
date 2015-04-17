@@ -14,6 +14,8 @@ class Classroom < ActiveRecord::Base
   has_many :classroom_product_links
   has_many :products, :through => :classroom_product_links, :class_name => "Spree::Product", :source => :spree_product
 
+  has_many :classroom_otu_code_categories
+  has_many :otu_code_categories, through: :classroom_otu_code_categories
 
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :sti_id, :district_guid
   attr_accessible :name, :status, :school_id, :legacy_classroom_id, :created_at, :as => :admin
