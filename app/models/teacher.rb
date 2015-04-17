@@ -34,8 +34,8 @@ class Teacher < Person
     PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.can_distribute_credits
   end
 
-  def can_distribute_rewards? s
-    return false unless (s && s.is_a?(School))
+  def can_distribute_rewards?(school)
+    return false unless (school && school.is_a?(School))
     PersonSchoolLink.where(person_id: self.id, school_id: school.id).first.can_distribute_rewards
   end
 

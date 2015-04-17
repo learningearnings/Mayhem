@@ -33,7 +33,7 @@ Spree::User.class_eval do
     # If there is no user found from the traditional methods lets check the sti
     # api
     if user.nil? && school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
-      link_token = StiLinkToken.where(:district_guid => school.district_guid).first
+      link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
       return unless link_token
       client = STI::Client.new(:base_url => link_token.api_url, :username => username, :password => password)
       session_information = client.session_information
