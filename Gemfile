@@ -22,6 +22,7 @@ gem 'active_model_serializers', '0.8.3'
 gem 'bootstrap_forms'
 gem 'jwt'
 gem 'rack-cors'
+gem 'jbuilder'
 
 # for importing
 #gem 'mysql2'

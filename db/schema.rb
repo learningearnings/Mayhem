@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150217044823) do
+ActiveRecord::Schema.define(:version => 20150415114518) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -141,6 +141,14 @@ ActiveRecord::Schema.define(:version => 20150217044823) do
   end
 
   add_index "classroom_filter_links", ["filter_id", "classroom_id"], :name => "index_classroom_filter_links_on_filter_id_and_classroom_id", :unique => true
+
+  create_table "classroom_otu_code_categories", :force => true do |t|
+    t.integer  "classroom_id"
+    t.integer  "otu_code_category_id"
+    t.integer  "value"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
 
   create_table "classroom_product_links", :force => true do |t|
     t.integer  "classroom_id"

@@ -2,12 +2,30 @@ require 'sidekiq/web'
 Leror::Application.routes.draw do
 
   # Mobile App API's
-  post '/mobile/v1/auth' => 'mobile/v1/base#authenticate'
-  get  '/mobile/v1/teachers/classrooms'     => 'mobile/v1/teachers/classrooms#index'
-  get  '/mobile/v1/teachers/classrooms/:id' => 'mobile/v1/teachers/classrooms#show'
-  post '/mobile/v1/teachers/classrooms'     => 'mobile/v1/teachers/classrooms#create'
-  get  '/mobile/v1/teachers/students/:id'   => 'mobile/v1/teachers/students#show'
-  get  '/mobile/v1/schools' => 'mobile/v1/base#schools'
+  namespace :mobile, defaults: { format: :json } do
+    namespace :v1 do
+      get  'schools' => 'base#schools'
+      namespace :teachers do
+        post 'auth'             => 'base#authenticate'
+        get  'classrooms'       => 'classrooms#index'
+        get  'classrooms/:id'   => 'classrooms#show'
+        post 'classrooms'       => 'classrooms#create'
+        get  'students'         => 'students#index'
+        get  'students/:id'     => 'students#show'
+        get  'rewards'          => 'rewards#index'
+        get  'rewards/:id'      => 'rewards#show'
+        post 'rewards'          => 'rewards#create'
+        get  'reward_templates' => 'reward_templates#index'
+        get  'awards'           => 'awards#index'
+        get  'goals'            => 'goals#index'
+      end
+      namespace :students do
+        post 'auth'             => 'base#authenticate'
+        get  'classrooms'       => 'classrooms#index'
+        get  'classrooms/:id'   => 'classrooms#show'
+      end
+    end
+  end
 
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"
