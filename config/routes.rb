@@ -74,15 +74,10 @@ Leror::Application.routes.draw do
     end
   end
 
-<<<<<<< Updated upstream
-  resources :faq_questions
-=======
-
   # FaqQuestions
   resources :faq_questions
   get '/help' => "faq_questions#index", as: :help
   post '/help' => 'faq_questions#search'
->>>>>>> Stashed changes
   get '/tour' => 'faq_questions#tour'
   get '/begin_tour' => 'faq_questions#begin_tour'
   get '/end_tour' => 'faq_questions#end_tour'
