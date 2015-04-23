@@ -12,7 +12,17 @@ class Mobile::V1::Teachers::RewardsController < Mobile::V1::Teachers::BaseContro
     @reward.teacher = current_person
     @reward.school = current_school
     if @reward.save
-      puts @reward.inspect
+      render json: { status: :ok }
+    else
+      render json: { status: :unprocessible_entity }
+    end
+  end
+
+  def update
+    @reward = Spree::Product.find(params[:id])
+    @reward.name = params[:reward][:name]
+    @reward.description = params[:reward][:description]
+    if @reward.save
       render json: { status: :ok }
     else
       render json: { status: :unprocessible_entity }

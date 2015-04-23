@@ -16,12 +16,20 @@ Leror::Application.routes.draw do
         post 'auth'             => 'base#authenticate'
         get  'classrooms'       => 'classrooms#index'
         get  'classrooms/:id'   => 'classrooms#show'
+        put  'classrooms/:id'   => 'classrooms#update'
         post 'classrooms'       => 'classrooms#create'
+        post 'classrooms/:id/remove_student' => 'classrooms#remove_student'
+        post 'classrooms/:id/add_students' => 'classrooms#add_students'
+        post 'classrooms/:id/remove_goal' => 'classrooms#remove_goal'
+        post 'classrooms/:id/add_goals' => 'classrooms#add_goals'
         get  'students'         => 'students#index'
         get  'students/:id'     => 'students#show'
+        post 'students/:id'     => 'students#update'
+        post 'students/:id/add_classrooms' => 'students#add_classrooms'
         get  'rewards'          => 'rewards#index'
         get  'rewards/:id'      => 'rewards#show'
         post 'rewards'          => 'rewards#create'
+        post 'rewards/:id'      => 'rewards#update'
         get  'reward_templates' => 'reward_templates#index'
         get  'awards'           => 'awards#index'
         get  'goals'            => 'goals#index'
@@ -66,11 +74,23 @@ Leror::Application.routes.draw do
     end
   end
 
+<<<<<<< HEAD
 
   # FaqQuestions
   resources :faq_questions  
   get '/help' => "faq_questions#index", as: :help
   post '/help' => 'faq_questions#search'
+=======
+<<<<<<< Updated upstream
+  resources :faq_questions
+=======
+
+  # FaqQuestions
+  resources :faq_questions
+  get '/help' => "faq_questions#index", as: :help
+  post '/help' => 'faq_questions#search'
+>>>>>>> Stashed changes
+>>>>>>> feature/mobile_backend
   get '/tour' => 'faq_questions#tour'
   get '/begin_tour' => 'faq_questions#begin_tour'
   get '/end_tour' => 'faq_questions#end_tour'
