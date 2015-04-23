@@ -22,7 +22,7 @@ module Mobile
       end
 
       def schools
-        render json: School.order(:name).status_active, each_serializer: SchoolSerializer , root: false
+        render json: School.order(:name.status_active.map{|x| { id: x.id, name: x.name }}, root: false
       end
 
       def authenticate_request
