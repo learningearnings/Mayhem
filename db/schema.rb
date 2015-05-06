@@ -400,14 +400,6 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "login_events", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "school_id"
-    t.string   "user_type"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "message_code_links", :force => true do |t|
     t.integer  "message_id"
     t.integer  "otu_code_id"
@@ -484,8 +476,6 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
   end
 
   add_index "otu_codes", ["code"], :name => "index_otu_codes_on_code"
-  add_index "otu_codes", ["created_at"], :name => "index_otu_codes_on_created_at"
-  add_index "otu_codes", ["person_school_link_id"], :name => "index_otu_codes_on_person_school_link_id"
   add_index "otu_codes", ["student_id", "active"], :name => "index_otu_codes_on_student_id_and_active"
 
   create_table "otu_transaction_links", :force => true do |t|
@@ -575,8 +565,8 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.integer  "person_id"
     t.integer  "school_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.boolean  "ignore",                 :default => false
     t.boolean  "can_distribute_credits", :default => true
     t.boolean  "can_distribute_rewards", :default => false
@@ -652,8 +642,8 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.integer  "published_by"
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
-    t.boolean  "featured",     :default => false
     t.integer  "school_id"
+    t.boolean  "featured",     :default => false
   end
 
   create_table "reward_deliveries", :force => true do |t|
@@ -738,6 +728,8 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.integer  "monthly_no_tardies_amount"
     t.integer  "weekly_no_infractions_amount"
     t.integer  "monthly_no_infractions_amount"
+    t.string   "credits_scope"
+    t.string   "credits_type"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1396,10 +1388,11 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.string   "district_guid"
     t.string   "api_url"
     t.string   "link_key"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.string   "username"
     t.string   "password"
+    t.string   "status",        :default => "active"
   end
 
   create_table "sticker_purchases", :force => true do |t|
@@ -1414,10 +1407,10 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.string   "image_uid"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
-    t.integer  "school_id"
+    t.boolean  "purchasable", :default => false
     t.integer  "min_grade"
     t.integer  "max_grade"
-    t.boolean  "purchasable", :default => false
+    t.integer  "school_id"
   end
 
   create_table "sync_attempts", :force => true do |t|
@@ -1433,6 +1426,17 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.text     "schools_response"
     t.text     "sections_response"
     t.text     "staff_response"
+  end
+
+  create_table "tour_events", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "page"
+    t.string   "event_name"
+    t.string   "tour_name"
+    t.integer  "tour_step"
+    t.date     "date"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "uploaded_users", :force => true do |t|

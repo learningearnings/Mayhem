@@ -152,7 +152,7 @@ group :development do
   gem 'letter_opener'
   # Deploy with Capistrano
   gem 'capistrano', '~> 2.15.5'
-  gem 'rvm-capistrano'
+  gem 'rvm-capistrano', require: false
   gem 'capistrano-unicorn', require: false
   # Generate ERD diagrams from your models
   gem 'rails-erd'
