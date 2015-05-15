@@ -20,7 +20,7 @@ module PeopleHelper
     @cv = CampaignView.where(person_id: current_person.id, campaign_id: @campaign.id).first
     if @cv == nil
       #Do this so the splash is only shown once
-      #CampaignView.create(person_id: current_person.id, campaign_id: @campaign.id)
+      CampaignView.create(person_id: current_person.id, campaign_id: @campaign.id)
     end
     return @cv != nil
   end
