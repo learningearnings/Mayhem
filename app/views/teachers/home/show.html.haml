@@ -37,6 +37,9 @@
               = f.text_field :email, :label => "Email Address:"
               = f.hidden_field :person_id, value: current_person.id
               = f.submit 'Submit', class: 'btn awesome-button'
+    %div{ :style => "width:100%;text-align:right;float:right;"}
+      <a href="#" class="fb-link" style="color:#0088cc">Not now</a>
+       
   :javascript
     $("#request_email").dialog({
       dialogClass: 'no_title',
@@ -44,6 +47,9 @@
       modal: true,
       width: 640
     });  
+    $(".fb-link").click(function() {
+        $("#request_email").dialog("close");
+    });     
     
 -if !needs_email? and !has_seen_campaign?    
   %div#campaign{ :style => "margin-left:25px;margin-right:25px" }
