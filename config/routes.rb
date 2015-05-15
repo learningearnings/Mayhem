@@ -1,7 +1,8 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
 
-
+  post '/sti/save_teacher' => "sti#save_teacher"
+  post '/teachers/home/save' => "home#save"
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
   post '/sti/save_school_for_credits' => "sti#save_school_for_credits"    
@@ -232,6 +233,7 @@ Leror::Application.routes.draw do
     resources :rewards
     resources :reward_templates
     match "home" => "home#show", as: 'home'
+    match "save" => "home#save", as: 'save'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch', defaults: { :format => 'html' }
     match "/create_print_bucks" => 'banks#create_print_bucks'
