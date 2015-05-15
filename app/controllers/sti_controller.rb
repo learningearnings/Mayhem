@@ -2,7 +2,7 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:auth, :link, :give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
+  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:auth, :save_teacher, :link, :give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
   skip_before_filter :verify_authenticity_token
@@ -22,6 +22,7 @@ class StiController < ApplicationController
     else     
       load_students  
     end  
+    @teacher_email_form = TeacherEmailForm.new(:person_id => current_person.id)
     render :layout => false
   end
   
@@ -55,6 +56,12 @@ class StiController < ApplicationController
     end
   end
   
+  def save_teacher
+    @teacher_email_form = TeacherEmailForm.new(params[:teacher])
+    @teacher_email_form.save
+    redirect_to :action => :give_credits
+  end 
+    
   def new_school_for_credits
     @teacher = Teacher.find(params[:teacher])
     @school = School.find(params[:school])

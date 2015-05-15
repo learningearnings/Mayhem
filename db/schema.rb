@@ -117,6 +117,22 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.boolean  "processed"
   end
 
+  create_table "campaign_views", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "campaign_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "campaigns", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.date     "eff_date"
+    t.date     "exp_date"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "ckeditor_assets", :force => true do |t|
     t.string   "data_file_name",                  :null => false
     t.string   "data_content_type"
