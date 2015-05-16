@@ -6,7 +6,15 @@ module Teachers
     
     def save
       @teacher_email_form = TeacherEmailForm.new(params[:teacher])
-      @teacher_email_form.save
+      if @teacher_email_form.save
+        redirect_to :action => :show
+      else
+        render :show
+      end
+    end
+    
+    def defer_email
+      session[:defer_email] = true
       redirect_to :action => :show
     end
   end
