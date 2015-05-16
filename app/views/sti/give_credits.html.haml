@@ -132,6 +132,13 @@
     
     $(".fb-link").click(function() {
         $("#campaign").dialog("close");
+        $.ajax({
+            url: "/teachers/log_event",
+            type: "POST",
+            data: {
+              event: "Summer 2015 FB Campaign Link Clicked"
+            }
+         });        
     }); 
    
 
