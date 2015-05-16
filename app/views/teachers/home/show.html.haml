@@ -36,7 +36,7 @@
               = f.hidden_field :person_id, value: current_person.id
               = f.submit 'Submit', class: 'btn awesome-button'
     %div{ :style => "width:100%;text-align:right;float:right;"}
-      <a href="#" class="fb-link" style="color:#0088cc">Not now</a>
+      <a href="/teachers/home/defer_email" class="fb-link" style="color:#0088cc">Not now</a>
        
   :javascript
     $("#request_email").dialog({
@@ -78,6 +78,13 @@
     
     $(".fb-link").click(function() {
         $("#campaign").dialog("close");
+        $.ajax({
+            url: "/teachers/log_event",
+            type: "POST",
+            data: {
+              event: "Summer 2015 FB Campaign Link Clicked"
+            }
+         });        
     }); 
    
 
