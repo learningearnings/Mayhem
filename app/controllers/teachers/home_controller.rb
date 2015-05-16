@@ -7,8 +7,11 @@ module Teachers
     
     def save
       @teacher_email_form = TeacherEmailForm.new(params[:teacher])
-      @teacher_email_form.save
-      redirect_to :action => :show
-    end
+      if @teacher_email_form.save
+        redirect_to :action => :show
+      else
+        render :show
+      end    
+    end  
   end
 end
