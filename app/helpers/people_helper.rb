@@ -8,6 +8,9 @@ module PeopleHelper
   end
   
   def needs_email?
+    if session[:defer_email]
+      return false
+    end
     if current_user
       return current_user.email == nil
     else
@@ -21,6 +24,7 @@ module PeopleHelper
     if @cv == nil
       #Do this so the splash is only shown once
       CampaignView.create(person_id: current_person.id, campaign_id: @campaign.id)
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Summer 2015 FB Campaign Viewed')
     end
     return @cv != nil
   end

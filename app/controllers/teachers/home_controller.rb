@@ -11,7 +11,13 @@ module Teachers
         redirect_to :action => :show
       else
         render :show
-      end    
-    end  
+      end
+    end
+    
+    def defer_email
+      session[:defer_email] = true
+      redirect_to :action => :show
+    end
+
   end
 end

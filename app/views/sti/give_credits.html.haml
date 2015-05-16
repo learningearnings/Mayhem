@@ -114,7 +114,7 @@
     
     %br
     %br
-    To enter LIKE <a class="fb-link" href="http://facebook.com/LearningEarnings" target="_blank" style="color:#0088cc">our post</a> or even better leave us a comment and 
+    To enter LIKE <a class="fb-link" href="https://www.facebook.com/LearningEarnings/photos/a.346216682066076.77579.164958183525261/943513582336380/?type=1&theater" target="_blank" style="color:#0088cc">our post</a> or even better leave us a comment and 
     tell us what you're doing with your time off this vacation.
     %br
     %div{ :style => "width:100%;text-align:center;" }
@@ -132,6 +132,13 @@
     
     $(".fb-link").click(function() {
         $("#campaign").dialog("close");
+        $.ajax({
+            url: "/teachers/log_event",
+            type: "POST",
+            data: {
+              event: "Summer 2015 FB Campaign Link Clicked"
+            }
+         });        
     }); 
    
 

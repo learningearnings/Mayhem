@@ -1,8 +1,9 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
-
   get '/sti/auth' => "sti#auth" unless Rails.env.production?
   get '/homes/schools_for_username' => "homes#schools_for_username"
+  get  '/teachers/home/defer_email' => "teachers/home#defer_email"
+  post '/teachers/log_event' => "teachers#log_event"
   post '/sti/save_teacher' => "sti#save_teacher"
   post '/teachers/home/save' => "home#save"
   get '/sti/give_credits' => "sti#give_credits"
