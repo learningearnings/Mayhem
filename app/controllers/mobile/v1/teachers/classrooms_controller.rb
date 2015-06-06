@@ -66,7 +66,7 @@ class Mobile::V1::Teachers::ClassroomsController < Mobile::V1::Teachers::BaseCon
   def remove_goal
     # TODO: Set status, don't delete (possibly)
     @classroom_otu_code_category = ClassroomOtuCodeCategory.where(classroom_id: params[:id], otu_code_category_id: params[:goalId]).first
-    if @classroom_otu_code_category.destroy
+    if @classroom_otu_code_category and @classroom_otu_code_category.destroy
       render json: { status: :ok }
     else
       render json: { status: :unprocessible_entity }

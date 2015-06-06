@@ -16,6 +16,7 @@ Leror::Application.routes.draw do
     namespace :v1 do
       get  'schools' => 'base#schools'
       namespace :teachers do
+
         post 'auth'             => 'base#authenticate'
         post 'bank/award_credits' => 'bank#award_credits'
         get  'classrooms'       => 'classrooms#index'
@@ -28,6 +29,7 @@ Leror::Application.routes.draw do
         post 'classrooms/:id/add_goals' => 'classrooms#add_goals'
         get  'students'         => 'students#index'
         get  'students/:id'     => 'students#show'
+        post 'students'     => 'students#create' 
         post 'students/:id'     => 'students#update'        
         get  'teacher/:id'     => 'profile#show'
         post 'teacher/:id'     => 'profile#update'
@@ -36,9 +38,13 @@ Leror::Application.routes.draw do
         get  'rewards/:id'      => 'rewards#show'
         post 'rewards'          => 'rewards#create'
         post 'rewards/:id'      => 'rewards#update'
+        delete "rewards/:id" => "rewards#destroy"
         get  'reward_templates' => 'reward_templates#index'
         get  'awards'           => 'awards#index'
         get  'goals'            => 'goals#index'
+        post 'goals/:id'        => 'goals#update'
+        post 'goals'            => 'goals#create' 
+        delete 'goals/:id'      => 'goals#destroy' 
       end
       namespace :students do
         post 'auth'             => 'base#authenticate'
