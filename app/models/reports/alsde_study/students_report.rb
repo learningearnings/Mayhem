@@ -33,7 +33,6 @@ module Reports
               puts "Processing student #{index} of #{students.size}"              
             end
           end         
-          File.open("/tmp/" + @student_filename, "w") {|f| f.write csv }          
         end
       end
 
