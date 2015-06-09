@@ -14,7 +14,7 @@ module Reports
         @begin_time = Time.now
 
         school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
-        staff = Teacher.includes(:user).joins(:allperson_school_links).where(status: 'active', allperson_school_links: { school_id: school_ids })
+        staff = Teacher.includes(:user, :school).joins(:allperson_school_links).where(status: 'active', allperson_school_links: { school_id: school_ids })
         puts "Looping through #{staff.size} teachers..."
         CSV.generate do |csv|
           csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "status", "first_login_date", "login_count", "sum_credits_awarded", "has_a_classroom?", "grade"]
