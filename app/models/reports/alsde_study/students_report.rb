@@ -12,10 +12,10 @@ module Reports
 
       def run
         school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
-        students = Student.includes(:user,:school).joins(:allperson_school_links).where(allperson_school_links: { school_id: school_ids })
+        students = Student.includes(:user).joins(:allperson_school_links,:spree_user).where(status: "active", allperson_school_links: { school_id: school_ids, status: "active" })
         CSV.generate do |csv|
           csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "grade", "status", "first_login_date", "login_count", "sum_credits_deposited", "sum_credits_spent_on_purchases"]
-          students.each do |student|
+          students.each_with_index do |student, index |
             if student.user
               csv << [
                 student.district_guid,
@@ -30,8 +30,10 @@ module Reports
                 student.otu_codes.redeemed_between(@start_date, @end_date).sum(:points).to_s,
                 sum_credits_spent_on_purchases_for(student)
               ]
+              puts "Processing student #{index} of #{students.size}"              
             end
-          end
+          end         
+          File.open("/tmp/" + @student_filename, "w") {|f| f.write csv }          
         end
       end
 
