@@ -13,7 +13,7 @@ module Reports
       def run
         @begin_time = Time.now
 
-        school_ids =  School.where(" credits_scope = 'School-Wide' or credits_scope is null  and district_guid is not null and district_guid not in (select district_guid from districts where alsde_study = 't' )").pluck(:id)
+        school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
         staff = Teacher.includes(:user).joins(:allperson_school_links,:spree_user).where(status: 'active', allperson_school_links: { status: "active", school_id: school_ids })
         CSV.generate do |csv|
           csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "status", "first_login_date", "login_count", "sum_credits_awarded", "has_a_classroom?", "grade"]
@@ -42,7 +42,7 @@ module Reports
       def run_non_alsde
         @begin_time = Time.now
 
-        school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
+        school_ids =  School.where(" credits_scope = 'School-Wide' or credits_scope is null  and district_guid is not null and district_guid not in (select district_guid from districts where alsde_study = 't' )").pluck(:id)
         staff = Teacher.includes(:user).joins(:allperson_school_links,:spree_user).where(status: 'active', allperson_school_links: { status: "active", school_id: school_ids })
         CSV.generate do |csv|
           csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "status", "first_login_date", "login_count", "sum_credits_awarded", "has_a_classroom?", "grade"]
