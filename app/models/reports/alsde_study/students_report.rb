@@ -12,26 +12,56 @@ module Reports
 
       def run
         school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
-        students = Student.joins(:allperson_school_links).where(allperson_school_links: { school_id: school_ids })
+        students = Student.includes(:user).joins(:allperson_school_links,:spree_user).where(status: "active", allperson_school_links: { school_id: school_ids, status: "active" })
         CSV.generate do |csv|
           csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "grade", "status", "first_login_date", "login_count", "sum_credits_deposited", "sum_credits_spent_on_purchases"]
-          students.each do |student|
-            csv << [
-              student.district_guid,
-              student.school.try(:sti_id),
-              student.sti_id,
-              student.id,
-              student.grade,
-              student.status,
-              student.interactions.first.try(:created_at).try(:strftime, "%m/%d/%Y"),
-              student.user.sign_in_count,
-              # TODO: Make sure this is right
-              student.otu_codes.redeemed_between(@start_date, @end_date).sum(:points).to_s,
-              sum_credits_spent_on_purchases_for(student)
-            ]
-          end
+          students.each_with_index do |student, index |
+            if student.user
+              csv << [
+                student.district_guid,
+                student.school.try(:sti_id),
+                student.sti_id,
+                student.id,
+                student.grade,
+                student.status,
+                student.interactions.first.try(:created_at).try(:strftime, "%m/%d/%Y"),
+                student.user.sign_in_count,
+                # TODO: Make sure this is right
+                student.otu_codes.redeemed_between(@start_date, @end_date).sum(:points).to_s,
+                sum_credits_spent_on_purchases_for(student)
+              ]
+              puts "Processing student #{index} of #{students.size}"              
+            end
+          end         
         end
       end
+      
+      def run_non_alsde
+        school_ids =  School.where(" credits_scope = 'School-Wide' or credits_scope is null  and district_guid is not null and district_guid not in (select district_guid from districts where alsde_study = 't' )").pluck(:id)
+        students = Student.includes(:user).joins(:allperson_school_links,:spree_user).where(status: "active", allperson_school_links: { school_id: school_ids, status: "active" })
+        CSV.generate do |csv|
+          csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "grade", "status", "first_login_date", "login_count", "sum_credits_deposited", "sum_credits_spent_on_purchases"]
+          students.each_with_index do |student, index |
+            if student.user
+              csv << [
+                student.district_guid,
+                student.school.try(:sti_id),
+                student.sti_id,
+                student.id,
+                student.grade,
+                student.status,
+                student.interactions.first.try(:created_at).try(:strftime, "%m/%d/%Y"),
+                student.user.sign_in_count,
+                # TODO: Make sure this is right
+                student.otu_codes.redeemed_between(@start_date, @end_date).sum(:points).to_s,
+                sum_credits_spent_on_purchases_for(student)
+              ]
+              puts "Processing student #{index} of #{students.size}"              
+            end
+          end         
+        end
+      end
+
 
       private
 
