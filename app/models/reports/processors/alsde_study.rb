@@ -10,11 +10,9 @@ module Reports
       end
 
       def run
-        if !File.exist?("/tmp/" + @staff_filename)
-          File.open("/tmp/" + @staff_filename, "w") {|f| f.write Reports::ALSDEStudy::StaffReport.new(options).run }
-          File.open("/tmp/" + @student_filename, "w") {|f| f.write Reports::ALSDEStudy::StudentsReport.new(options).run }
-          AdminMailer.alsde_study_report(@staff_filename, @student_filename).deliver
-        end
+        File.open("/tmp/" + @staff_filename, "w") {|f| f.write Reports::ALSDEStudy::StaffReport.new(options).run }
+        File.open("/tmp/" + @student_filename, "w") {|f| f.write Reports::ALSDEStudy::StudentsReport.new(options).run }
+        AdminMailer.alsde_study_report(@staff_filename, @student_filename).deliver
       end
     end
   end
