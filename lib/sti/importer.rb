@@ -35,6 +35,7 @@ module STI
       end
 
       staff_response = client.async_staff.parsed_response
+      
       sti_staff = staff_response["Rows"]
       current_staff_for_district = Person.where(:district_guid => @district_guid).pluck(:sti_id)
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
@@ -56,8 +57,18 @@ module STI
           teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
-
-          school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+          if api_teacher["Schools"]
+            school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+          elsif api_teacher["SchoolsXml"]
+            xmldata = Hash.from_xml api_teacher["SchoolsXml"]
+            if xmldata["root"]["row"].kind_of?(Array)
+              school_ids = xmldata["root"]["row"].collect { | school | school["id"] }
+            else
+              school_ids = [ xmldata["root"]["row"]["id"] ]
+            end
+          else
+            school_ids = []
+          end
           school_ids.each do |school_id|
             person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school_id).first_or_initialize
             person_school_link.status = "active"
@@ -67,8 +78,8 @@ module STI
             person_school_link.save(:validate => false)
           end
         rescue => e
-          puts "************** Teacher Skipped #{api_teacher} #{e.inspect}"
-          Rails.logger.warn "************** Teacher Skipped #{api_teacher} #{e.inspect}"
+          puts "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
+          Rails.logger.warn "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
         end
       end
 
@@ -116,7 +127,21 @@ module STI
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
           student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
-          api_student["Schools"].each do |sti_school_id|
+          if api_student["Schools"]
+            school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+          elsif api_student["SchoolsXml"]
+            xmldata = Hash.from_xml api_student["SchoolsXml"]
+            if xmldata["root"]["row"].kind_of?(Array)
+              school_ids = xmldata["root"]["row"].collect { | school | school["id"] }
+            else
+              school_ids = [ xmldata["root"]["row"]["id"] ]
+            end
+          else
+            school_ids = []
+          end
+          
+          
+          school_ids.each do |sti_school_id|
             school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
             person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initialize
             person_school_link.skip_onboard_credits = true
@@ -124,8 +149,8 @@ module STI
             person_school_link.save(:validate => false)
           end
         rescue => e
-          puts "************** Student Skipped #{api_student} #{e.inspect}"
-          Rails.logger.warn "************** Student Skipped #{api_student} #{e.inspect}"
+          puts "************** Student Skipped #{api_student.inspect} #{e.inspect}"
+          Rails.logger.warn "************** Student Skipped #{api_student.inspect} #{e.inspect}"
         end
       end
 
