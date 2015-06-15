@@ -91,11 +91,12 @@ module STI
         if person_school_link and classroom
           PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
         else
-          logger.error("AKT:  Can't create classroom link for teacher")      
-          logger.error(" Classroom: #{api_classroom.inspect}")
-          logger.error(" Teacher: #{teacher.inspect} ")
-          logger.error(" classroom: #{classroom.inspect} ")
-          logger.error(" person_school_link: #{person_school_link.inspect} ")
+          Rails.logger.error("AKT:  Can't create classroom link for teacher")  
+          Rails.logger.error(" District GUID: #{@district_guid}")    
+          Rails.logger.error(" Classroom: #{api_classroom.inspect}")
+          Rails.logger.error(" Teacher: #{teacher.inspect} ")
+          Rails.logger.error(" classroom: #{classroom.inspect} ")
+          Rails.logger.error(" person_school_link: #{person_school_link.inspect} ")
         end
 
       end
