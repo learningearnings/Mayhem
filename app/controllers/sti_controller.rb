@@ -30,6 +30,7 @@ class StiController < ApplicationController
     if params["sti_session_variable"]
       #integrated
       if handle_sti_token
+        logger.debug("AKT: current_school: #{current_school}")
         logger.debug("AKT: store subdomain: #{current_school.store_subdomain}")
         logger.debug("AKT: actual subdomain: #{ actual_subdomain }")
         redirect_to "#{request.protocol}#{current_school.store_subdomain}.#{request.env["HTTP_HOST"]}" and return
@@ -170,7 +171,13 @@ class StiController < ApplicationController
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
-    session[:current_school_id] = school.id if school
+    if school
+      session[:current_school_id] = school.id 
+      @current_school = school
+      logger.debug("Login Teacher: current_school: #{school.inspect}")
+    else
+      logger.debug("No school for teacher: #{@teacher.inspect}")
+    end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
