@@ -46,6 +46,7 @@ module STI
         end
       end
       
+      Rails.logger.debug("API Teachers: #{sti_staff.inspect}")
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
@@ -109,6 +110,7 @@ module STI
 
       # Activate/Create students that we pull from STI
       students_response = client.async_students.parsed_response
+      Rails.logger.debug("API Students: #{students_response["Rows"].inspect}")
       students_response["Rows"].each do |api_student|
         begin
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
