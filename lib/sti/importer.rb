@@ -153,8 +153,15 @@ module STI
         sti_classroom_ids.compact.each do |sti_classroom_id|
           if classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
             psl = student.person_school_links.where(school_id: student.school.id).first
-            pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_create
-            pscl.activate
+            if psl and classroom
+              pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_create
+              pscl.activate
+            else
+              Rails.logger.error("AKT:  Can't create classroom link for student")  
+              Rails.logger.error(" Classroom: #{classroom.inspect}")
+              Rails.logger.error(" Student: #{student.inspect} ")
+              Rails.logger.error(" person_school_link: #{psl.inspect} ")           
+            end
           end
         end
       end
