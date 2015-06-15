@@ -88,7 +88,16 @@ module STI
         ClassroomActivator.new(classroom.id).execute!
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
-        PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create
+        if person_school_link and classroom
+          PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
+        else
+          logger.error("AKT:  Can't create classroom link for teacher")      
+          logger.error(" Classroom: #{api_classroom.inspect}")
+          logger.error(" Teacher: #{teacher.inspect} ")
+          logger.error(" classroom: #{classroom.inspect} ")
+          logger.error(" person_school_link: #{person_school_link.inspect} ")
+        end
+
       end
 
       # Deactivate all students for school and just let the Sync reactivate students
