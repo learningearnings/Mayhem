@@ -66,8 +66,8 @@ module STI
             person_school_link.save(:validate => false)
           end
         rescue => e
-          puts "************** Skipped #{api_teacher} #{e.inspect}"
-          Rails.logger.warn "************** Skipped #{api_teacher}"
+          puts "************** Teacher Skipped #{api_teacher} #{e.inspect}"
+          Rails.logger.warn "************** Teacher Skipped #{api_teacher} #{e.inspect}"
         end
       end
 
@@ -122,8 +122,8 @@ module STI
             person_school_link.save(:validate => false)
           end
         rescue => e
-          puts "************** Skipped #{api_student} #{e.inspect}"
-          Rails.logger.warn "************** Skipped #{api_student}"
+          puts "************** Student Skipped #{api_student} #{e.inspect}"
+          Rails.logger.warn "************** Student Skipped #{api_student} #{e.inspect}"
         end
       end
 
