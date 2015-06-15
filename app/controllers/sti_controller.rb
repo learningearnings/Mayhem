@@ -30,7 +30,9 @@ class StiController < ApplicationController
     if params["sti_session_variable"]
       #integrated
       if handle_sti_token
-        redirect_to "/" and return
+        logger.debug("AKT: store subdomain: #{current_school.store_subdomain}")
+        logger.debug("AKT: actual subdomain: #{ actual_subdomain }")
+        redirect_to "#{request.protocol}#{current_school.store_subdomain}.#{request.env["HTTP_HOST"]}" and return
       else
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
       end
