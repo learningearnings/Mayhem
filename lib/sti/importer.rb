@@ -47,7 +47,6 @@ module STI
         end
       end
       
-      Rails.logger.debug("API Teachers: #{sti_staff.inspect}")
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
@@ -57,38 +56,27 @@ module STI
           teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
-          Rails.logger.debug("Teacher: #{teacher.inspect}")
           if api_teacher["Schools"]
-            Rails.logger.debug("Found element Schools")
             school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
           elsif api_teacher["SchoolsXml"]
-            Rails.logger.debug("Found element SchoolsXml")
             xmldata = Hash.from_xml api_teacher["SchoolsXml"]
             if xmldata["root"]["row"].kind_of?(Array)
-              Rails.logger.debug("Found element SchoolsXml, array")
               school_ids = xmldata["root"]["row"].collect { | school | school["id"] }
-            else
-              Rails.logger.debug("Found element SchoolsXml, single item")              
+            else        
               school_ids = [ xmldata["root"]["row"]["id"] ]
             end
           else
-            Rails.logger.debug("No school element found")
             school_ids = []
           end
-          Rails.logger.debug("Teacher school ids: #{school_ids}")
           school_ids.each do |school_id|
-            Rails.logger.debug("Processing schoool with id: #{school_id}")
             school = School.where(district_guid: @district_guid, sti_id: school_id).first
-            Rails.logger.debug("Found school: #{school.inspect}")
             person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school.id).first_or_initialize
-            Rails.logger.debug("Created person school link: #{person_school_link.inspect}")
             person_school_link.status = "active"
             if is_new_teacher
               person_school_link.can_distribute_credits = api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"]
             end
             person_school_link.save(:validate => false)
           end
-          Rails.logger.debug("Successfully processed teacher")
         rescue => e
           puts "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
           Rails.logger.warn "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
@@ -114,15 +102,7 @@ module STI
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
         if person_school_link and classroom
           PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
-        else
-          Rails.logger.error("AKT:  Can't create classroom link for teacher")  
-          Rails.logger.error(" District GUID: #{@district_guid}")    
-          Rails.logger.error(" Classroom: #{api_classroom.inspect}")
-          Rails.logger.error(" Teacher: #{teacher.inspect} ")
-          Rails.logger.error(" classroom: #{classroom.inspect} ")
-          Rails.logger.error(" person_school_link: #{person_school_link.inspect} ")
         end
-
       end
 
       # Deactivate all students for school and just let the Sync reactivate students
@@ -133,7 +113,6 @@ module STI
 
       # Activate/Create students that we pull from STI
       students_response = client.async_students.parsed_response
-      Rails.logger.debug("API Students: #{students_response["Rows"].inspect}")
       students_response["Rows"].each do |api_student|
         begin
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
@@ -194,12 +173,7 @@ module STI
             psl = student.person_school_links.where(school_id: student.school.id).first
             if psl and classroom
               pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_create
-              pscl.activate
-            else
-              Rails.logger.error("AKT:  Can't create classroom link for student")  
-              Rails.logger.error(" Classroom: #{classroom.inspect}")
-              Rails.logger.error(" Student: #{student.inspect} ")
-              Rails.logger.error(" person_school_link: #{psl.inspect} ")           
+              pscl.activate      
             end
           end
         end

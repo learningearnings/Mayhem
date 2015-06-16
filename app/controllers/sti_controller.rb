@@ -31,12 +31,9 @@ class StiController < ApplicationController
       #integrated
       if handle_sti_token
         if current_school
-          logger.debug("AKT: current_school: #{current_school}")
-          logger.debug("AKT: store subdomain: #{current_school.store_subdomain}")
-          logger.debug("AKT: actual subdomain: #{ actual_subdomain }")
           redirect_to "/" and return
         else
-          logger.debug("No school for logged in teacher")
+          logger.error("No school for logged in teacher")
           redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
         end
       else
@@ -179,9 +176,8 @@ class StiController < ApplicationController
     if school
       session[:current_school_id] = school.id 
       @current_school = school
-      logger.debug("Login Teacher: current_school: #{school.inspect}")
     else
-      logger.debug("No school for teacher: #{@teacher.inspect}")
+      logger.error("No school for teacher: #{@teacher.inspect}")
     end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
