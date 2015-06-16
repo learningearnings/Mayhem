@@ -57,25 +57,25 @@ module STI
           teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
-          logger.debug("Teacher: #{teacher.inspect}")
+          Rails.logger.debug("Teacher: #{teacher.inspect}")
           if api_teacher["Schools"]
-            logger.debug("Found element Schools")
+            Rails.logger.debug("Found element Schools")
             school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
           elsif api_teacher["SchoolsXml"]
-            logger.debug("Found element SchoolsXml")
+            Rails.logger.debug("Found element SchoolsXml")
             xmldata = Hash.from_xml api_teacher["SchoolsXml"]
             if xmldata["root"]["row"].kind_of?(Array)
-              logger.debug("Found element SchoolsXml, array")
+              Rails.logger.debug("Found element SchoolsXml, array")
               school_ids = xmldata["root"]["row"].collect { | school | school["id"] }
             else
-              logger.debug("Found element SchoolsXml, single item")              
+              Rails.logger.debug("Found element SchoolsXml, single item")              
               school_ids = [ xmldata["root"]["row"]["id"] ]
             end
           else
-            logger.debug("No school element found")
+            Rails.logger.debug("No school element found")
             school_ids = []
           end
-          logger.debug("Teacher school ids: #{school_ids}")
+          Rails.logger.debug("Teacher school ids: #{school_ids}")
           school_ids.each do |school_id|
             person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school_id).first_or_initialize
             person_school_link.status = "active"
@@ -84,7 +84,7 @@ module STI
             end
             person_school_link.save(:validate => false)
           end
-          logger.debug("Successfully processed teacher")
+          Rails.logger.debug("Successfully processed teacher")
         rescue => e
           puts "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
           Rails.logger.warn "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
