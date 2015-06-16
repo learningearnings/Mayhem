@@ -2,7 +2,7 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:save_teacher, :link, :give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
+  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:auth, :save_teacher, :link, :give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
   skip_before_filter :verify_authenticity_token
@@ -24,6 +24,41 @@ class StiController < ApplicationController
     end  
     @teacher_email_form = TeacherEmailForm.new(:person_id => current_person.id)
     render :layout => false
+  end
+  
+  def auth
+    if params["sti_session_variable"]
+      #integrated
+      if handle_sti_token
+        if current_school
+          redirect_to "/" and return
+        else
+          logger.error("No school for logged in teacher")
+          redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
+        end
+      else
+        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
+      end
+    else 
+      school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
+      if !school
+        flash[:error] = "Non integrated sign in failed -- School not found"
+      elsif params[:userid]
+        teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
+        if teacher
+          session[:current_school_id] = school.id 
+          sign_in(teacher.user)
+          redirect_to "/" and return
+        else
+          flash[:error] = "Non integrated sign in failed -- Teacher not found"
+        end
+      elsif params[:firstname] and params[:lastname]
+        # Redirect to sign up page?
+        redirect_to "/teachers/new/?sid=#{school.id}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
+      else
+        flash[:error] = "Non integrated sign in failed -- Missing required parameters"
+      end
+    end
   end
   
   def save_teacher
@@ -135,11 +170,16 @@ class StiController < ApplicationController
   end
 
   def login_teacher
-    teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
-    return false if teacher.nil?
-    school = teacher.schools.where(district_guid: params[:districtGUID]).first
-    session[:current_school_id] = school.id if school
-    sign_in(teacher.user)
+    @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
+    return false if @teacher.nil?
+    school = @teacher.schools.where(district_guid: params[:districtGUID]).first
+    if school
+      session[:current_school_id] = school.id 
+      @current_school = school
+    else
+      logger.error("No school for teacher: #{@teacher.inspect}")
+    end
+    sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
@@ -176,6 +216,8 @@ class StiController < ApplicationController
     @client_response = sti_client.session_information.parsed_response
     if @client_response["StaffId"].blank? || !login_teacher
       render partial: "teacher_not_found"
+      return false
     end
+    return true
   end
 end

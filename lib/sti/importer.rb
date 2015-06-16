@@ -18,7 +18,8 @@ module STI
         Rails.logger.warn client.schools.response
         Rails.logger.warn "*****************************************"
         raise "ERROR ON SCHOOLS -- CLIENT: #{client.inspect} -- RESPONSE: #{client.schools.response}"
-      end
+      end   
+      
       # Schools that are synced in our DB but are no longer listed in the api
       (current_schools_for_district - sti_school_ids).each do |school_sti_id|
         school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
@@ -34,6 +35,7 @@ module STI
       end
 
       staff_response = client.async_staff.parsed_response
+      
       sti_staff = staff_response["Rows"]
       current_staff_for_district = Person.where(:district_guid => @district_guid).pluck(:sti_id)
       sti_staff_ids = sti_staff.map {|staff| staff["Id"]}
@@ -44,6 +46,7 @@ module STI
           teacher.deactivate
         end
       end
+      
       @api_teachers = sti_staff.each do |api_teacher|
         begin
           teacher = Person.where(district_guid: @district_guid, sti_id: api_teacher["Id"]).first_or_initialize
@@ -53,10 +56,21 @@ module STI
           teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
           teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
-
-          school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+          if api_teacher["Schools"]
+            school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+          elsif api_teacher["SchoolsXml"]
+            xmldata = Hash.from_xml api_teacher["SchoolsXml"]
+            if xmldata["root"]["row"].kind_of?(Array)
+              school_ids = xmldata["root"]["row"].collect { | school | school["id"] }
+            else        
+              school_ids = [ xmldata["root"]["row"]["id"] ]
+            end
+          else
+            school_ids = []
+          end
           school_ids.each do |school_id|
-            person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school_id).first_or_initialize
+            school = School.where(district_guid: @district_guid, sti_id: school_id).first
+            person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school.id).first_or_initialize
             person_school_link.status = "active"
             if is_new_teacher
               person_school_link.can_distribute_credits = api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"]
@@ -64,8 +78,8 @@ module STI
             person_school_link.save(:validate => false)
           end
         rescue => e
-          puts "************** Skipped #{api_teacher} #{e.inspect}"
-          Rails.logger.warn "************** Skipped #{api_teacher}"
+          puts "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
+          Rails.logger.warn "************** Teacher Skipped #{api_teacher.inspect} #{e.inspect}"
         end
       end
 
@@ -78,6 +92,7 @@ module STI
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => sti_classroom_id).first
         ClassroomDeactivator.new(classroom.id).execute!
       end
+      
       @api_classrooms = sti_classrooms.each do |api_classroom|
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
         classroom.update_attributes(api_classroom_mapping(api_classroom))
@@ -85,7 +100,9 @@ module STI
         ClassroomActivator.new(classroom.id).execute!
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
-        PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create
+        if person_school_link and classroom
+          PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
+        end
       end
 
       # Deactivate all students for school and just let the Sync reactivate students
@@ -101,7 +118,21 @@ module STI
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
           student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
-          api_student["Schools"].each do |sti_school_id|
+          if api_student["Schools"]
+            school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+          elsif api_student["SchoolsXml"]
+            xmldata = Hash.from_xml api_student["SchoolsXml"]
+            if xmldata["root"]["row"].kind_of?(Array)
+              school_ids = xmldata["root"]["row"].collect { | school | school["id"] }
+            else
+              school_ids = [ xmldata["root"]["row"]["id"] ]
+            end
+          else
+            school_ids = []
+          end
+          
+          
+          school_ids.each do |sti_school_id|
             school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
             person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initialize
             person_school_link.skip_onboard_credits = true
@@ -109,8 +140,8 @@ module STI
             person_school_link.save(:validate => false)
           end
         rescue => e
-          puts "************** Skipped #{api_student} #{e.inspect}"
-          Rails.logger.warn "************** Skipped #{api_student}"
+          puts "************** Student Skipped #{api_student.inspect} #{e.inspect}"
+          Rails.logger.warn "************** Student Skipped #{api_student.inspect} #{e.inspect}"
         end
       end
 
@@ -135,16 +166,18 @@ module STI
           #Only deactive INOW classroom links
           pscl.update_attribute(:status, "inactive") if !pscl.classroom.sti_id.nil?
         end
+        
         # Update the new classrooms for the student
         sti_classroom_ids.compact.each do |sti_classroom_id|
           if classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
             psl = student.person_school_links.where(school_id: student.school.id).first
-            pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_create
-            pscl.activate
+            if psl and classroom
+              pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_create
+              pscl.activate      
+            end
           end
         end
       end
-
       newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
       BuckDistributor.new(newly_synced_schools).run
 
