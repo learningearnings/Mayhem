@@ -77,7 +77,11 @@ module STI
           end
           Rails.logger.debug("Teacher school ids: #{school_ids}")
           school_ids.each do |school_id|
-            person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school_id).first_or_initialize
+            Rails.logger.debug("Processing schoool with id: #{school_id}")
+            school = School.where(district_guid: @district_guid, sti_id: school_id)
+            Rails.logger.debug("Found school: #{school.inspect}")
+            person_school_link = ::PersonSchoolLink.where(:person_id => teacher.id, :school_id => school.id).first_or_initialize
+            Rails.logger.debug("Created person school link: #{person_school_link.inspect}")
             person_school_link.status = "active"
             if is_new_teacher
               person_school_link.can_distribute_credits = api_teacher["CanAwardCredits"] || api_teacher["CanAwardCreditsClassroom"]
