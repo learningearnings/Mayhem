@@ -26,25 +26,25 @@ module Mobile
       end
 
       def authenticate_request
-        Rails.logger.warn("AKT: Authenticate Request")
+        #Rails.logger.warn("AKT: Authenticate Request")
         if auth_token_expired?
-          Rails.logger.warn("AKT: auth_token_expired")
+          #Rails.logger.warn("AKT: auth_token_expired")
           fail AuthenticationTimeoutError
         elsif !current_user
-          Rails.logger.warn("AKT: !current_user")
+          #Rails.logger.warn("AKT: !current_user")
           fail NotAuthenticatedError
         end
       end
 
       def authenticate
-        Rails.logger.warn("AKT Mobile authenticate")
+        #Rails.logger.warn("AKT Mobile authenticate")
         user = Spree::User.authenticate_with_school_id(params[:username], params[:password], params[:school_id])
 
         if user
-          Rails.logger.warn("Mobile authenticate success, user: #{user.inspect}")
+          #Rails.logger.warn("Mobile authenticate success, user: #{user.inspect}")
           render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
         else
-          Rails.logger.warn("Mobile authenticate failure, user: #{params.inspect}")
+          #Rails.logger.warn("Mobile authenticate failure, user: #{params.inspect}")
           render json: { error: 'Invalid username or password' }, status: :unauthorized
         end
       end
