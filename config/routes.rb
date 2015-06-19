@@ -11,6 +11,7 @@ Leror::Application.routes.draw do
   post '/sti/save_school_for_credits' => "sti#save_school_for_credits" 
   get '/sti/begin_le_tour' => "sti#begin_le_tour"   
 
+
   # Mobile App API's
   namespace :mobile, defaults: { format: :json } do
     namespace :v1 do
