@@ -35,9 +35,12 @@ module Mobile
 
       def authenticate
         user = Spree::User.authenticate_with_school_id(params[:username], params[:password], params[:school_id])
+        Rails.logger.debug("Mobile authenticate")
         if user
+          Rails.logger.debug("Mobile authenticate success, user: #{user.inspect}")
           render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
         else
+          Rails.logger.debug("Mobile authenticate failure, user: #{params.inspect}")
           render json: { error: 'Invalid username or password' }, status: :unauthorized
         end
       end
