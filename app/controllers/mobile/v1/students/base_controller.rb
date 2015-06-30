@@ -7,12 +7,4 @@ class Mobile::V1::Students::BaseController < Mobile::V1::BaseController
       render json: { error: 'Invalid username or password' }, status: :unauthorized
     end
   end
-
-  def current_person
-    Student.find(278239)
-  end
-
-  def current_school
-    School.find(1627)
-  end
 end

@@ -34,7 +34,6 @@ Spree::OrdersController.class_eval do
   def populate
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
-
     #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up    
     mutex = RedisMutex.new("orders-blocking-#{variant.product_id}", block: 10)
 

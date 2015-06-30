@@ -47,9 +47,13 @@ Leror::Application.routes.draw do
         delete 'goals/:id'      => 'goals#destroy' 
       end
       namespace :students do
+        post "rewards/purchase" => 'rewards#purchase'
+        post "/bank/redeem_bucks" => 'bank#redeem_bucks'        
         post 'auth'             => 'base#authenticate'
         get  'classrooms'       => 'classrooms#index'
         get  'classrooms/:id'   => 'classrooms#show'
+        get  'student/:id'     => 'profile#show'
+        post 'student/:id'     => 'profile#update'        
       end
     end
   end
