@@ -22,7 +22,12 @@ module Mobile
       end
 
       def schools
-        render json: School.order(:name).status_active.map{|x| { id: x.id, name: x.name }}, root: false
+        if params[:username] and params[:username].size > 2
+          @schools = School.where(id: PersonSchoolLink.where(person_id: Person.with_username(params[:username]).pluck(:id)).pluck(:school_id) ).order(:name)
+        else
+          @schools = School.order(:name).status_active
+        end
+        render json: @schools.map{|x| { id: x.id, name: x.name }}, root: false
       end
 
       def authenticate_request
