@@ -24,6 +24,9 @@ module Mobile
       def schools
         if params[:username] and params[:username].size > 2
           @schools = School.where(id: PersonSchoolLink.where(person_id: Person.with_username(params[:username]).pluck(:id)).pluck(:school_id) ).order(:name)
+          if @schools.size == 0
+            @schools = School.where(" district_guid is not null and status = 'active' ").order(:name)
+          end
         else
           @schools = School.order(:name).status_active
         end
