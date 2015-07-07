@@ -10,7 +10,7 @@ json.array! @classrooms do |classroom|
     json.classrooms student.classrooms do |classroom|
       json.id classroom.id
       json.name classroom.name
-    end
+    end     
   end
 
   json.goals classroom.classroom_otu_code_categories do |otu_code_category_link|
@@ -28,6 +28,7 @@ json.array! @classrooms do |classroom|
     json.description product.description
     json.on_hand product.on_hand
     json.price product.price
+    json.image_url (product.images.first.try(:attachment).try(:url) ? product.images.first.try(:attachment).try(:url) : "https://learningearnings.com/assets/noimage/small.png")
   end
 
   json.rewards_count classroom.products.count

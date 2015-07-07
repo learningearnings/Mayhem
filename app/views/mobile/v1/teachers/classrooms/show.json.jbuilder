@@ -2,6 +2,7 @@ json.(@classroom, :id, :name)
 
 json.rewards @classroom.products do |product|
   json.(product, :id, :name, :description, :on_hand, :price) unless product.deleted?
+  json.image_url (product.images.first.try(:attachment).try(:url) ? product.images.first.try(:attachment).try(:url) : "https://learningearnings.com/assets/noimage/small.png") unless product.deleted?
 end
 
 json.goals @classroom.classroom_otu_code_categories do |otu_code_category_link|

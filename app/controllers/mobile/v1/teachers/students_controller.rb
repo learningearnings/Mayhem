@@ -1,12 +1,16 @@
 class Mobile::V1::Teachers::StudentsController < Mobile::V1::Teachers::BaseController
   def index
     @students = current_school.students.order(:first_name, :last_name)
+    @students.each do | student |
+      student.checking_history = Plutus::Amount.where(account_id: student.checking_account).order(" id desc ")
+    end
   end
 
   def show
     # TODO: Fix slowness
     #@student = current_school.students.find(params[:id])
     @student = Student.find(params[:id])
+    @checking_history = Plutus::Amount.where(account_id: @student.checking_account).order(" id desc ")
   end
 
   def create
