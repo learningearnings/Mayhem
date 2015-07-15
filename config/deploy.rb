@@ -55,12 +55,12 @@ set :repository,      "git@github.com:learningearnings/Mayhem.git"
 set :branch,          "develop"
 
 # Slack config
-set :slack_token, "62kjrF5RV1MdkQHy7HhZxHE9"
-set :slack_subdomain, "isotope11"
-set :slack_channel, '#learningearnings'
-set :slack_application, 'Mayhem'
-set :slack_emoji, ":james:"
-set :slack_username, "jamesbot"
+set :slack_token, "LQS1Y3049h0I56StyZ1LKNHS"
+set :slack_subdomain, "learn"
+set :slack_channel, "#general"
+set :slack_application, "Mayhem"
+set :slack_emoji, ":bradleybot:"
+set :slack_username, "bradleybot"
 set :slack_local_user, `git config user.name`.chomp
 
 # tasks
@@ -98,7 +98,7 @@ namespace :deploy do
   task :restart, :roles => :app do
     unicorn.restart
   end
-  
+
   desc "Sends deployment notification to Slack."
   task :end_notify_slack, :roles => :app do
     ::SlackNotify::Client.new(slack_subdomain, slack_token, {
@@ -107,10 +107,16 @@ namespace :deploy do
       icon_emoji: slack_emoji
     }).notify("#{slack_local_user} has finished deploying #{slack_application}'s #{branch} to #{fetch(:stage, 'production')}")
   end
+
+  desc "Automatically trust .rvmrc after deploy"
+  task :trust_rvmrc do
+    run "rvm rvmrc trust #{release_path}"
+  end
 end
 
 before 'deploy:precompile_assets', 'deploy:symlink_shared'
 before 'deploy:finalize_update',   'deploy:precompile_assets'
 before 'deploy:update_code',       'deploy:start_notify_slack'
+after  'deploy',                   'deploy:trust_rvmrc'
 after  'deploy:restart',           'deploy:end_notify_slack'
 after  'deploy:restart',           'deploy:cleanup'

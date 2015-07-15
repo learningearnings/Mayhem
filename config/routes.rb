@@ -1,6 +1,13 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
+  get '/sti/auth' => "sti#auth" 
+  get  '/teachers/home/defer_email' => "teachers/home#defer_email"
+  post '/teachers/log_event' => "teachers#log_event"
+  post '/sti/save_teacher' => "sti#save_teacher"
+  post '/teachers/home/save' => "home#save"
   get '/sti/give_credits' => "sti#give_credits"
+  get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
+  post '/sti/save_school_for_credits' => "sti#save_school_for_credits"    
   post '/sti/link' => "sti#link"
   get '/sti/sync' => "sti#sync"
   post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
@@ -33,6 +40,13 @@ Leror::Application.routes.draw do
     end
   end
 
+  resources :faq_questions
+  get '/tour' => 'faq_questions#tour'
+  get '/begin_tour' => 'faq_questions#begin_tour'
+  get '/end_tour' => 'faq_questions#end_tour'    
+  match "/help" => "faq_questions#index", :as => 'help'
+  post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
+  post "events/log_tour_event"
   resources :people do
     collection do
       match "/get_avatar_results" => 'people#get_avatar_results'
@@ -51,9 +65,9 @@ Leror::Application.routes.draw do
   namespace :schools do
     resource :settings, controller: "settings", only: [:show]
     resources :reward_exclusions
-    #post "toggle_distributor/:teacher_id(.:format)" => 'settings#toggle_distributor', :as => 'toggle_distributor'
-    post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
+    post "update_setting" => "settings#update_setting", :as => "update_setting"
     post "import_teachers" => 'settings#import_teachers', :as => 'import_teachers'
+    post "toggle_distributor" => 'settings#toggle_distributor', :as => 'toggle_distributor'
   end
 
   match '/admin' => redirect('/admin/le_admin_dashboard')
@@ -76,6 +90,9 @@ Leror::Application.routes.draw do
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
   end
+  
+  # route to view sidekiq worker status
+  mount Sidekiq::Web => '/sidekiq'
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
   mount Ckeditor::Engine => '/ckeditor'
@@ -218,6 +235,7 @@ Leror::Application.routes.draw do
     resources :rewards
     resources :reward_templates
     match "home" => "home#show", as: 'home'
+    match "save" => "home#save", as: 'save'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch', defaults: { :format => 'html' }
     match "/create_print_bucks" => 'banks#create_print_bucks'

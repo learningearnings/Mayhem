@@ -82,6 +82,8 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
+    active_model_serializers (0.8.3)
+      activemodel (>= 3.0)
     active_utils (2.0.1)
       activesupport (>= 2.3.11)
       i18n
@@ -136,6 +138,7 @@ GEM
       nokogiri (>= 1.4.4)
       uuidtools (~> 2.1)
     bcrypt-ruby (3.1.2)
+    bootstrap_forms (4.0.1)
     bourbon (3.1.8)
       sass (>= 3.2.0)
       thor
@@ -312,6 +315,7 @@ GEM
       builder
       minitest (>= 2.0, < 4.0)
       ruby-progressbar
+    mixpanel-ruby (1.7.0)
     mocha (0.14.0)
       metaclass (~> 0.0.1)
     modernizr-rails (2.6.2.3)
@@ -586,10 +590,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers (= 0.8.3)
   activeadmin
   activeadmin-extra!
   airbrake
   animation
+  bootstrap_forms
   cancan
   capistrano (~> 2.15.5)
   capistrano-unicorn
@@ -630,6 +636,7 @@ DEPENDENCIES
   minitest (~> 3.2.0)
   minitest-matchers (~> 1.2.0)
   minitest-reporters
+  mixpanel-ruby
   mocha (~> 0.14.0)
   modernizr-rails (~> 2.6.2.3)
   nested_form!

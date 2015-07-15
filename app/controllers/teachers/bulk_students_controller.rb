@@ -37,6 +37,7 @@ module Teachers
       @batch_student_creator = BatchStudentCreator.new(params["students"], current_school)
       if @batch_student_creator.call
         flash[:notice] = "Students Created!"
+        MixPanelTrackerWorker.perform_async(current_user.id, 'Add Students')
         redirect_to action: :show
       else
         flash[:error] = "Error creating students"
@@ -56,8 +57,11 @@ module Teachers
 
       # FIXME: This needs to be dealt with in a better manner
       @actions.push("Delete these students") unless current_person.synced?
-
-      @students = current_school.students.includes(:user)
+      if params[:sort]
+        @students = current_school.students.includes(:user).order(params[:sort])
+      else
+        @students = current_school.students.includes(:user).order(:last_name, :first_name)
+      end
 
       if params[:classroom].present?
         classroom = Classroom.find(params[:classroom])

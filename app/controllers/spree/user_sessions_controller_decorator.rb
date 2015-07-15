@@ -4,8 +4,8 @@ Spree::UserSessionsController.class_eval do
 
   def create
     authenticate_user!
-    session[:last_school_id] = params[:user]["school_id"]
-    session[:current_school_id] = params[:user]["school_id"]
+    session[:last_school_id] = params[:user]["school_id"] if params[:user]
+    session[:current_school_id] = params[:user]["school_id"] if params[:user]
 
     if user_signed_in?
       respond_to do |format|
@@ -29,7 +29,11 @@ Spree::UserSessionsController.class_eval do
   end
   private
   def set_current_school_id
-    @current_school_id = current_school.id
+    if current_school
+      @current_school_id = current_school.id
+    else
+      @current_school_id = nil
+    end
   end
 
   def set_school_id_cookie

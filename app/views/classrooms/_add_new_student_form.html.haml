@@ -1,0 +1,7 @@
+= bootstrap_form_for @classroom_student_form, summary_errors: false, html: { class: 'add-new-student' }, url: '/create_classroom_student' do |f|
+  = hidden_field_tag :classroom_id, @classroom.id
+  = f.text_field :first_name
+  = f.text_field :last_name
+  = f.text_field :username
+  = f.select :grade, %w( K 1 2 3 4 5 6 7 8 9 10 11 12 )
+  = f.text_field :password

@@ -440,6 +440,11 @@ function xpath(doc, context, expr, namespaces) {
 
     return found;
   } else { // IE
+  	
+  	if (!doc.hasOwnProperty('setProperty')) {
+  		return createNodeList();
+ 	}
+ 	
     doc.setProperty('SelectionLanguage', 'XPath');
     
     if (namespaces) {

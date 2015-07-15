@@ -28,6 +28,9 @@ module Teachers
         format.json { render json: {id: batch.id, processed: batch.processed?} }
       end
       clear_balance_cache!
+      
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Print Credits')
+
     end
 
     protected

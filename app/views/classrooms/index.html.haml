@@ -8,12 +8,72 @@
         = f.label :classroom_name
         = f.text_field :name, :class => 'focus-on-me'
         = f.hidden_field :school_id, :value => current_school.id
-        = f.submit 'Create', :class => "awesome-button"
+        = f.submit 'Create', :class => "awesome-button submit"
 
 
   .secondary-content
     %h2 Classrooms
     #classrooms
-      - if @classrooms.present?
-        - @classrooms.each do |classroom|
-          %h3= link_to classroom.name, classroom_path(classroom)
+      - @classrooms.each do |classroom|
+        %h3= link_to classroom.name, classroom_path(classroom), { class: "classroom", "data-id" => classroom.id }
+
+%script#classroom_list{ type: 'text/html' }
+  :plain
+    {{#classrooms}}
+      <h3>
+        <a data-id={{id}} href="/classrooms/{{id}}">{{name}}</a>
+      </h3>
+    {{/classrooms}}
+
+= javascript_include_tag "tours/school_admin/overview"
+= javascript_include_tag "tours/teacher/overview"
+
+:javascript
+  if (hopscotch.getState() !== null && (localStorage.getItem('tour:shouldStartTour') == 'Y')) {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }
+
+  // This function has to be here to make sure we progress the tour
+  //  when the user clicks the classroom link to add students.
+  //
+  //  * Note: The localStorage is used to keep up with the classroom_id
+  //          for using the Previous button during the tour, to get back
+  //          to the correct classroom.
+  function setup_links() {
+    $('#classrooms h3 > a').click(function(e) {
+      localStorage.setItem('tour:overview:classroom_id', $(e.currentTarget).data('id'))
+      if (hopscotch.getState() !== null) {
+        hopscotch.nextStep();
+      }
+    });
+  }
+
+  $('.submit').click(function(e) {
+    e.preventDefault();
+    var $form = $('#new_classroom');
+    var csrf_token = $('meta[name=csrf-token]').attr('content');
+    var values = $form.children(0).serialize() + "&authenticity_token=" + csrf_token;
+    $.ajax({
+      type: "POST",
+      url: $form.attr('action'),
+      data: values,
+      dataType: 'JSON'
+    }).success(function(response) {
+      if (response.status == "ok") {
+        var classrooms = $.map(response.classrooms, function(classroom) {
+          return classroom.classroom;
+        });
+
+        ich.grabTemplates();
+        var html = ich.classroom_list({classrooms: classrooms});
+        $('#classrooms').html(html);
+
+        // Setup links
+        setup_links();
+
+        // If Tour is running, proceed to next step
+        hopscotch.nextStep();
+      }
+    });
+  });

@@ -95,7 +95,10 @@ module Reports
       if parameters.reward_creator_filter.blank?
         [:scoped]
       else
-        [:where, { from_id: parameters.reward_creator_filter }]
+        #get all rewards created by the selected rewards creator
+        teacher = Teacher.find(parameters.reward_creator_filter)
+        rewards = teacher.products.collect { | r | r.id }
+        [:where, { reward: {product: { id: rewards} } }]
       end
     end
     
@@ -113,12 +116,12 @@ module Reports
     end
 
     def reward_delivery_base_scope
-      RewardDelivery.includes(to: [ :person_school_links ], reward: [:product]).where(to: { person_school_links: { school_id: @school.id } })
+      RewardDelivery.includes(to: [ :person_school_links ], reward: [:product]).where(to: { person_school_links: { school_id: @school.id, status: 'active' } })
     end
 
     def generate_row(reward_delivery)
       person = reward_delivery.to
-      deliverer = reward_delivery.from
+      deliverer = reward_delivery.reward.product.person ? reward_delivery.reward.product.person : reward_delivery.from
       classroom = person.classrooms.first
       teacher   = classroom.try(:teachers).try(:first)
       Reports::Row[
