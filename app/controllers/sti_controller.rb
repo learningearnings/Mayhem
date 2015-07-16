@@ -42,15 +42,26 @@ class StiController < ApplicationController
     else 
       school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
       if !school
-        flash[:error] = "Non integrated sign in failed -- School not found"
-      elsif params[:userid]
+        school = School.new
+        school.district_guid = params[:districtGUID]
+        school.name = params[:districtGUID] + ":" + params[:schoolid]
+        school.sti_id = params[:schoolid]
+        school.state_id = 1
+        school.city = "Test City"
+        school.address1 = "Fake address"
+        school.zip = 12345
+        school.min_grade = 0
+        school.max_grade = 12
+        school.save
+      end  
+      if params[:userid]
         teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
         if teacher
           session[:current_school_id] = school.id 
           sign_in(teacher.user)
           redirect_to "/" and return
         else
-          flash[:error] = "Non integrated sign in failed -- Teacher not found"
+          redirect_to "/teachers/new/?sid=#{school.id}&username=#{params[:userid]}" and return
         end
       elsif params[:firstname] and params[:lastname]
         # Redirect to sign up page?
