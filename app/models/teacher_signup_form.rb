@@ -62,6 +62,7 @@ class TeacherSignupForm
   def school
     @school ||= School.new unless school_id
     @school = School.find(school_id) if school_id
+    @school
   end
 
   def uniqueness_of_email
