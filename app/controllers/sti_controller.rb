@@ -61,7 +61,7 @@ class StiController < ApplicationController
           sign_in(teacher.user)
           redirect_to "/" and return
         else
-          redirect_to "/teachers/new/?sid=#{school.id}&username=#{params[:userid]}" and return
+          redirect_to "/teachers/new/?sid=#{school.id}&userid=#{params[:userid]}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
         end
       elsif params[:firstname] and params[:lastname]
         # Redirect to sign up page?

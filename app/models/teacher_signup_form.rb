@@ -6,7 +6,7 @@ class TeacherSignupForm
   attr_accessor :first_name, :last_name, :dob, :gender, :grade
   attr_accessor :email, :username, :password, :password_confirmation
   attr_accessor :name, :city, :state_id, :address1, :zip
-  attr_accessor :min_grade, :max_grade, :school_id  
+  attr_accessor :min_grade, :max_grade, :school_id, :sti_id  
 
   validates :first_name,            presence: true
   validates :last_name,             presence: true
@@ -88,7 +88,7 @@ class TeacherSignupForm
   private
 
   def person_attributes
-    { first_name: first_name, last_name: last_name, email: email, username: username, dob: dob, gender: gender, grade: grade }
+    { first_name: first_name, last_name: last_name, email: email, username: username, dob: dob, gender: gender, grade: grade, sti_id: sti_id}
   end
 
   def user_attributes

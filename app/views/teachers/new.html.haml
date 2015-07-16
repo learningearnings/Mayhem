@@ -14,10 +14,12 @@
         = f.text_field :username, label: "Username *"
         = f.password_field :password, label: "Password *"
         = f.password_field :password_confirmation, label: "Password Confirmation *"
+        = f.hidden_field :sti_id, :value => params[:userid]
       .span4
         %h3 School        
         - if @school
           %h4= @school.name  
+          = f.hidden_field :school_id, :value => @school.id          
           = f.hidden_field :name, :value => @school.name
           = f.hidden_field :city, :value => @school.city
           = f.hidden_field :state_id, :value => @school.state_id
