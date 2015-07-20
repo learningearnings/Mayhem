@@ -24,17 +24,6 @@ class Mobile::V1::Teachers::ClassroomsController < Mobile::V1::Teachers::BaseCon
     classroom_creator.execute!
     classroom = classroom_creator.classroom
 
-    # Add Students to Classroom
-    params[:classroom][:students].each do |student|
-      psl = PersonSchoolLink.where(person_id: student["id"], school_id: current_school.id).first
-      pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_initialize
-      pscl.status = "active"
-      pscl.save
-    end
-
-    # Add Goals to Classroom
-    classroom.otu_code_category_ids = params[:classroom][:goals].map{|x| x[:id]}
-
     classroom.save
 
     render json: { status: :ok }
