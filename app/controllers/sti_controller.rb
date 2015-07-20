@@ -191,10 +191,11 @@ class StiController < ApplicationController
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
       #  only suppose to be associated to 1.
-      if school == nil
+      #if school == nil
         session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
         school = School.find(session[:current_school_id])
-      end
+        @current_school = school
+      #end
     end
     if school and school.credits_scope != "School-Wide" 
       @child = School.where(sti_id: school.id, credits_type: "child")
