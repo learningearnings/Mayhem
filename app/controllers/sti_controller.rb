@@ -186,7 +186,7 @@ class StiController < ApplicationController
     #  student is associated with
     student_sti_id = params["studentIds"].split(",").first if params["studentIds"].present?
     if student_sti_id.present?
-      student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id).first
+      student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id, status: 'active').first
       # Use the latest school the student was linked with
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
