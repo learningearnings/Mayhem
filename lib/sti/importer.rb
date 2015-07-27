@@ -104,7 +104,7 @@ module STI
           PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
         end
       end
-
+      
       # Deactivate all students for school and just let the Sync reactivate students
       school_ids = School.where(district_guid: @district_guid).pluck(:id).uniq
       psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
