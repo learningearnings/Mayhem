@@ -1,13 +1,63 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
   get '/sti/auth' => "sti#auth" 
+  get '/homes/schools_for_username' => "homes#schools_for_username"
   get  '/teachers/home/defer_email' => "teachers/home#defer_email"
   post '/teachers/log_event' => "teachers#log_event"
   post '/sti/save_teacher' => "sti#save_teacher"
   post '/teachers/home/save' => "home#save"
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
-  post '/sti/save_school_for_credits' => "sti#save_school_for_credits"    
+  post '/sti/save_school_for_credits' => "sti#save_school_for_credits" 
+  get '/sti/begin_le_tour' => "sti#begin_le_tour"   
+
+  # Mobile App API's
+  namespace :mobile, defaults: { format: :json } do
+    namespace :v1 do
+      get  'schools' => 'base#schools'
+      namespace :teachers do
+        post 'auth'             => 'base#authenticate'
+        post 'register'             => 'base#register'        
+        post 'bank/award_credits' => 'bank#award_credits'
+        get  'classrooms'       => 'classrooms#index'
+        get  'classrooms/:id'   => 'classrooms#show'
+        put  'classrooms/:id'   => 'classrooms#update'
+        post 'classrooms'       => 'classrooms#create'
+        post 'classrooms/:id/remove_student' => 'classrooms#remove_student'
+        post 'classrooms/:id/add_students' => 'classrooms#add_students'
+        post 'classrooms/:id/remove_goal' => 'classrooms#remove_goal'
+        post 'classrooms/:id/add_goals' => 'classrooms#add_goals'
+        get  'students'         => 'students#index'
+        get  'students/:id'     => 'students#show'
+        post 'students'     => 'students#create' 
+        post 'students/:id'     => 'students#update'        
+        get  'teacher/:id'     => 'profile#show'
+        post 'teacher/:id'     => 'profile#update'
+        post 'students/:id/add_classrooms' => 'students#add_classrooms'
+        get  'rewards'          => 'rewards#index'
+        get  'rewards/:id'      => 'rewards#show'
+        post 'rewards'          => 'rewards#create'
+        post 'rewards/:id'      => 'rewards#update'
+        delete "rewards/:id" => "rewards#destroy"
+        get  'reward_templates' => 'reward_templates#index'
+        get  'awards'           => 'awards#index'
+        get  'goals'            => 'goals#index'
+        post 'goals/:id'        => 'goals#update'
+        post 'goals'            => 'goals#create' 
+        delete 'goals/:id'      => 'goals#destroy' 
+      end
+      namespace :students do
+        post "rewards/purchase" => 'rewards#purchase'
+        post "/bank/redeem_bucks" => 'bank#redeem_bucks'        
+        post 'auth'             => 'base#authenticate'
+        get  'classrooms'       => 'classrooms#index'
+        get  'classrooms/:id'   => 'classrooms#show'
+        get  'student/:id'     => 'profile#show'
+        post 'student/:id'     => 'profile#update'        
+      end
+    end
+  end
+
   post '/sti/link' => "sti#link"
   get '/sti/sync' => "sti#sync"
   post "/sti/create_ebucks_for_students" => 'sti#create_ebucks_for_students'
@@ -90,7 +140,7 @@ Leror::Application.routes.draw do
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
   end
-  
+
   # route to view sidekiq worker status
   mount Sidekiq::Web => '/sidekiq'
 
@@ -218,6 +268,7 @@ Leror::Application.routes.draw do
 
   post "/undeliver_reward" => "deliver_rewards_commands#undeliver", :as => :undeliver_reward
   namespace :teachers do
+    get "balance" => "teachers#get_balance"
     match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
