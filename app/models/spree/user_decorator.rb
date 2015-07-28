@@ -13,7 +13,7 @@ Spree::User.class_eval do
   after_save :set_recovery_password
 
   before_validation :strip_whitespace
-  
+
   def self.authenticate_with_school_id(username,password,school_id)
     return if username.blank? || password.blank?
     # Regular teacher or student
@@ -61,23 +61,31 @@ Spree::User.class_eval do
     self.save
   end
 
- protected
-   def strip_whitespace
+  def generate_auth_token_with_school_id(school_id)
+    payload = {
+      user_id: self.id,
+      school_id: school_id
+    }
+    AuthToken.encode(payload)
+  end
+
+  protected
+  def strip_whitespace
     self.username = self.username.strip unless self.username.blank?
     self.email = self.email.strip unless self.email.blank?
-   end
-   
-   def set_recovery_password
-     if person && password
-       person.update_attribute(:recovery_password, password)
-     end
-   end
+  end
 
-   def email_required?
-     false
-   end
+  def set_recovery_password
+    if person && password
+      person.update_attribute(:recovery_password, password)
+    end
+  end
 
-   def password_required?
-     api_user? ? false : super
-   end
+  def email_required?
+    false
+  end
+
+  def password_required?
+    api_user? ? false : super
+  end
 end
