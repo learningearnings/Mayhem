@@ -42,15 +42,26 @@ class StiController < ApplicationController
     else 
       school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
       if !school
-        flash[:error] = "Non integrated sign in failed -- School not found"
-      elsif params[:userid]
+        school = School.new
+        school.district_guid = params[:districtGUID]
+        school.name = params[:districtGUID] + ":" + params[:schoolid]
+        school.sti_id = params[:schoolid]
+        school.state_id = 1
+        school.city = "Test City"
+        school.address1 = "Fake address"
+        school.zip = 12345
+        school.min_grade = 0
+        school.max_grade = 12
+        school.save
+      end  
+      if params[:userid]
         teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
         if teacher
           session[:current_school_id] = school.id 
           sign_in(teacher.user)
           redirect_to "/" and return
         else
-          flash[:error] = "Non integrated sign in failed -- Teacher not found"
+          redirect_to "/teachers/new/?sid=#{school.id}&userid=#{params[:userid]}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
         end
       elsif params[:firstname] and params[:lastname]
         # Redirect to sign up page?
@@ -170,7 +181,7 @@ class StiController < ApplicationController
   end
 
   def login_teacher
-    @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
+    @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
     if school
@@ -191,9 +202,12 @@ class StiController < ApplicationController
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
       #  only suppose to be associated to 1.
-      if school == nil
-        session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
-        school = School.find(session[:current_school_id])
+      sid = student.person_school_links.order('created_at desc').first.try(:school_id)
+      student_school = School.where(id: sid).first if sid
+      if student_school
+        session[:current_school_id] = sid
+        school = student_school
+        @current_school = school     
       end
     end
     if school and school.credits_scope != "School-Wide" 
@@ -205,7 +219,10 @@ class StiController < ApplicationController
         @current_person = @teacher
         sign_in(@teacher.user)        
       end   
-    end        
+    end    
+    if !school
+      return false
+    end    
     return true
   end
 
