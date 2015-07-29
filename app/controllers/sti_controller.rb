@@ -181,7 +181,7 @@ class StiController < ApplicationController
   end
 
   def login_teacher
-    @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"]).first
+    @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     return false if @teacher.nil?
     school = @teacher.schools.where(district_guid: params[:districtGUID]).first
     if school
@@ -202,9 +202,12 @@ class StiController < ApplicationController
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
       #  only suppose to be associated to 1.
-      if school == nil
-        session[:current_school_id] = student.person_school_links.order('created_at desc').first.school_id
-        school = School.find(session[:current_school_id])
+      sid = student.person_school_links.order('created_at desc').first.try(:school_id)
+      student_school = School.where(id: sid).first if sid
+      if student_school
+        session[:current_school_id] = sid
+        school = student_school
+        @current_school = school     
       end
     end
     if school and school.credits_scope != "School-Wide" 
@@ -216,7 +219,10 @@ class StiController < ApplicationController
         @current_person = @teacher
         sign_in(@teacher.user)        
       end   
-    end        
+    end    
+    if !school
+      return false
+    end    
     return true
   end
 
