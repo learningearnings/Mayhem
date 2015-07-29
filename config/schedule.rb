@@ -49,7 +49,7 @@ every "0 0 1 * *" do
 end
 
 every "0 7 * * 0" do
-  rake "le:user_activity_report", :output => "/home/deployer/logs/ser_activity_report.log"
+  rake "le:user_activity_report", :output => "/home/deployer/logs/user_activity_report.log"
 end
 
 every "0 7 * * 0" do

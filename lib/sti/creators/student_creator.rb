@@ -8,14 +8,23 @@ module STI
 
       def execute!
         person = Student.create(person_mapping, as: :admin)
-        person.user.update_attributes(user_mapping) if person.recovery_password.nil?
-
-        @data["Schools"].each do |sti_school_id|
-          school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-          person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
-          person_school_link.skip_onboard_credits = true
-          person_school_link.status = "active"
-          person_school_link.save(:validate => false)
+        if person and person.user 
+          person.user.update_attributes(user_mapping) if person.recovery_password.nil?
+          if @data["Schools"]
+            @data["Schools"].each do |sti_school_id|
+              school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
+              person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
+              person_school_link.skip_onboard_credits = true
+              person_school_link.status = "active"
+              person_school_link.save(:validate => false)
+            end
+          else
+            Rails.logger.error("StudentCreator: No schools returned in API #{@data.inspect}, Person Mapping: #{person_mapping.inspect}")
+            puts "StudentCreator: No schools returned in API #{@data.inspect}, Person Mapping: #{person_mapping.inspect}" 
+          end
+        else
+          Rails.logger.error("StudentCreator: Could not create student: Person Mapping: #{person_mapping.inspect}, User Mapping: #{user_mapping.inspect}")
+          puts "StudentCreator: Could not create student: Person Mapping: #{person_mapping.inspect}, User Mapping: #{user_mapping.inspect}" 
         end
       end
 

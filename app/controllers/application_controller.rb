@@ -37,11 +37,14 @@ class ApplicationController < ActionController::Base
   end
   
   def log_event
-     MixPanelTrackerWorker.perform_async(current_user.id, params[:event])
-     render :text => "Logged event #{params[:event]}"
+    if current_user
+      MixPanelTrackerWorker.perform_async(current_user.id, params[:event]) 
+      render :text => "Logged event #{params[:event]}"
+    else
+      render :text => "Could not log event, no user"
+    end
   end
  
-
   # Users are required to access the application
   # using a subdomain
   def subdomain_required
