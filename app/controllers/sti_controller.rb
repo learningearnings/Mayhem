@@ -182,14 +182,17 @@ class StiController < ApplicationController
   end
 
   def login_teacher
+    Rails.logger.debug("AKT Login Teacher...")
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
+    Rails.logger.debug("AKT Found Teacher...#{@teacher.inspect}")
     return false if @teacher.nil?
-    school = @teacher.schools.where(district_guid: params[:districtGUID]).first
+    school = @teacher.schools.where(district_guid: params[:districtGUID]).first 
     if school
+      Rails.logger.debug("AKT Found Teacher School...#{school.inspect}")
       session[:current_school_id] = school.id 
       @current_school = school
     else
-      logger.error("No school for teacher: #{@teacher.inspect}")
+      Rails.logger.error("No school for teacher: #{@teacher.inspect}")
     end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
@@ -220,10 +223,8 @@ class StiController < ApplicationController
         @current_person = @teacher
         sign_in(@teacher.user)        
       end   
-    end    
-    if !school
-      return false
-    end    
+    end   
+    Rails.logger.debug("AKT Teacher succesfully logged in.  Current school is: #{@current_school}") 
     return true
   end
 
@@ -241,7 +242,7 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     Rails.logger.warn "***************************************************"
-    Rails.logger.warn sti_client.session_information.parsed_response
+    Rails.logger.warn "AKT Client Response: #{sti_client.session_information.parsed_response.inspect}"
     Rails.logger.warn "***************************************************"
     Rails.logger.warn "***************************************************"
     Rails.logger.warn "***************************************************"
@@ -249,6 +250,7 @@ class StiController < ApplicationController
     Rails.logger.warn "***************************************************"
     Rails.logger.warn "***************************************************"
     @client_response = sti_client.session_information.parsed_response
+    
     if @client_response["StaffId"].blank? || !login_teacher
       render partial: "teacher_not_found"
       return false
