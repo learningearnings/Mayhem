@@ -19,6 +19,13 @@ ul.student-listing {
   @include clearfix;
 }
 
+#add-new-student-modal {
+  max-height: 100%;
+  .control-group {
+    margin-bottom: 0px;
+  }
+}
+
 .student-tile {
   font-size: 1.2em;
   float: left;
@@ -44,3 +51,15 @@ ul.student-listing {
   }
 }
 
+.classrooms-alert {
+  font-size: 1.5em;
+}
+
+#add-new-student-modal, #add-existing-student-modal .modal-body {
+  form {
+    margin: 0;
+  }
+  .chosen-container {
+    width: auto !important;
+  }
+}

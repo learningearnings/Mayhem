@@ -8,17 +8,20 @@
     = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
     = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'
     = javascript_include_tag 'application'
+    = javascript_include_tag "https:////code.jquery.com/jquery-1.10.2.js"
+    = javascript_include_tag "https://code.jquery.com/ui/1.11.4/jquery-ui.js"
+    = stylesheet_link_tag "https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"          
     = stylesheet_link_tag    'application'
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
       _gaq.push(['_trackPageview']);
-
       (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
+  
   %body.resp
     .resp-page-content-container
       .resp-head
@@ -41,6 +44,7 @@
                     %strong
                       Credits Available:
                     = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+                    = " for school #{current_school.name}"
                   - unless current_otu_code_categories.any?
                     %strong If you would like to use the credit categories feature, you must create categories through the main learning earnings site
                   = form_for OtuCode.new, :url => "#", :html => {:id => "global_populate"} do |f|
@@ -69,11 +73,85 @@
                               - if current_otu_code_categories.any?
                                 %td= select_tag "credit_categories[#{student.id}]", options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), prompt: "Select Category", class: "student_category"
                       %input.awesome-button{type: "submit", name: "commit", value: "Send These Credits"}
+
+- if needs_email?
+  %div#request_email
+    %h3  First a little housekeeping...
+    We haven't asked you for your email address yet.  Please enter it below and then verify it by clicking on the link we email you.
+    This helps us identify who's really a teacher and anyone impresonnating a teacher and trying to register for an account!
+    %div
+      %div.campaign_left{style: "width:220px;text-align:right;margin-right:10px;"}
+        %img#pig_arm_out{:src => "/assets/campaign/email_pig_arm_out.png", :style => "float:right;"}
+      %div.campaign_right{style: "width:360px"}
+        = bootstrap_form_for @teacher_email_form, :url => "/sti/save_teacher" do |f|
+          .row
+            .span4
+              = f.text_field :email, :label => "Email Address:"
+              = f.hidden_field :person_id, value: current_person.id
+              = f.submit 'Submit', class: 'btn awesome-button'
+    %div{ :style => "width:100%;text-align:right;float:right;"}
+      <a href="#" class="fb-link" style="color:#0088cc">Not now</a>
+              
+  :javascript
+    $("#request_email").dialog({
+      dialogClass: 'no_title',
+      autoOpen: true,
+      modal: true,
+      width: 640
+    });  
+    $(".fb-link").click(function() {
+        $("#request_email").dialog("close");
+    });  
+        
+-if !needs_email? and !has_seen_campaign?    
+  %div#campaign{ :style => "margin-left:25px;margin-right:25px" }
+    %img#pig_arm_full_of_rewards{:src => "/assets/campaign/giveaway_pig_armful_rewards.png", :style => "float:right;width: 125px;margin-left:20px;"}
+    %h3  We're having a contest!
+    
+    WE have recognized the error of our anti-social ways.  Get your summer started right by 
+    helping us revive our long neglected accounts and you'll get a chance at winning 1 of 2 <span class="green-money">$100</span> 
+    gift cards!
+    
+    %br
+    %br
+    To enter LIKE <a class="fb-link" href="https://www.facebook.com/LearningEarnings/photos/a.346216682066076.77579.164958183525261/943513582336380/?type=1&theater" target="_blank" style="color:#0088cc">our post</a> or even better leave us a comment and 
+    tell us what you're doing with your time off this vacation.
+    %br
+    %div{ :style => "width:100%;text-align:center;" }
+      %img#giveaway_plus_equals{:src => "/assets/campaign/giveaway_plus_equals.png", :style => "width:480px;margin-top: 10px;"}    
+    %br
+    <a href="#" class="fb-link" style="color:#0088cc">No thanks, I'm not feeling very social either</a>
+    
+  :javascript
+    $("#campaign").dialog({
+      dialogClass: 'no_title',
+      autoOpen: true,
+      modal: true,
+      width: 640
+    }); 
+    
+    $(".fb-link").click(function() {
+        $("#campaign").dialog("close");
+        $.ajax({
+            url: "/teachers/log_event",
+            type: "POST",
+            data: {
+              event: "Summer 2015 FB Campaign Link Clicked"
+            }
+         });        
+    }); 
+   
+
+
+
+
+
+
+
 :coffeescript
   jQuery ->
     ($ '#global_populate').submit (e) ->
       e.preventDefault()
-
     ($ '.class_points').keyup (e) ->
       $('.classroom_student_points').val($(this).val())
     ($ '.global_category').change (e) ->

@@ -10,13 +10,13 @@
       %dl.balance
         %dt Savings Balance
         %dd= number_with_precision(current_person.savings_balance, precision: 2, delimiter: ',')
-      = link_to "Deposit Printed Codes", "#enter-codes-modal", class: 'modal-button btn awesome-button', 'data-toggle' => 'modal'
+      = link_to "Deposit Printed Codes", "#enter-codes-modal", {:class => 'modal-button btn awesome-button', 'data-toggle' => 'modal'}
       .actions
         = link_to "Transfer Credits", "#transfer-credits-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Checking History", "#checking-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
         = link_to "View Savings History", "#savings-history-modal", class: 'btn awesome-button', 'data-toggle' => 'modal'
 
-    .pending-credits
+    .pending-credits.1
       %h4 e-Credits to Deposit
       %table.table.table-bordered.solid-background
         %thead
@@ -65,12 +65,20 @@
       %dl.balance
         %dt Checking Balance
         %dd= number_with_precision(current_person.checking_balance, :precision => 2)
-      %dl.balance
+      %dl.balance    
+ 
         %dt Savings Balance
         %dd= number_with_precision(current_person.savings_balance, :precision => 2)
 
 = javascript_include_tag 'transaction_pager'
+= javascript_include_tag "tours/student/overview"
+
 :javascript
+  if (hopscotch.getState() !== null &&  (localStorage.getItem('tour:shouldStartTour') == 'Y' )) {
+    var tour = window[hopscotch.getState().split(":")[0]];
+    hopscotch.startTour(tour);
+  }
+
   $('#enter-codes-modal').on('shown.bs.modal', function() {
     $('#code').focus();
   });

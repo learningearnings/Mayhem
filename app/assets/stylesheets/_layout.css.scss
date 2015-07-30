@@ -42,6 +42,17 @@ $how-to-active-color: #f05c1a;
   font-size: 14px;
 }
 
+.login-div {
+  float: right;
+  width: 630px;
+  margin-right: 10px;
+}
+
+.join-div {
+  float: left;
+  margin-right: 5px;
+}
+
 .custom-reward-button {
   margin-top: 10px !important;
   margin-left: 40px !important;
@@ -755,13 +766,16 @@ html.resp, body.resp {
 }
 
 .product-image-bursts {
-  background-image: url(asset_path('product_image_with_pins_credits_bursts.png', image));
+  background-image: url(asset_path('product_image_with_pins_bursts_call_to_action.png', image));
   height: 293px;
   width: 290px;
   position: absolute;
   top: 60px;
   left: 265px;
   z-index: 0;
+  &:hover {
+    -webkit-filter: saturate(500%);
+  }
 }
 
 .kids-credits-cta {

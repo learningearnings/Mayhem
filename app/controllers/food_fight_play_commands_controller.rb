@@ -13,7 +13,7 @@ class FoodFightPlayCommandsController < LoggedInController
 
   def on_success(command, match, player)
     handle_turn
-    redirect_to round_end_games_food_fight_path(:match => match, :player => player), flash: { success: "Answered successfully." }
+    redirect_to round_end_games_food_fight_path(:match => match, :player => player), flash: { success: "Answered correctly." }
   end
 
   def on_failure(command, match, player)
@@ -22,7 +22,7 @@ class FoodFightPlayCommandsController < LoggedInController
     question_statistics = Games::QuestionStatisticsPresenter.new(command.question)
     @player = player
     @match = match
-    redirect_to round_end_games_food_fight_path(:match => match, :player => player), flash: { success: "Answered successfully." }
+    redirect_to round_end_games_food_fight_path(:match => match, :player => player), flash: { success: "Answered incorrectly." }
   end
 
   def match_setup

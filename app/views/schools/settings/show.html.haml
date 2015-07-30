@@ -3,6 +3,8 @@
 %h2 Your School's LE Settings
 %hr
 
+-#           %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.person_school_links.where(school_id: current_school.id).first.ignore ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
+
 %div{role: "tabpanel"}
   %ul.nav.nav-tabs{role: "tablist"}
     %li.active{role: "presentation"}
@@ -18,7 +20,7 @@
       %a{"href" => "#manage-negative-credits", "aria-controls" => "manage-negative-credits", "role" => "tab", "data-toggle" => "tab"}
         <strong>Manage Negative Credits</strong>
 
-  %div.tab-content    
+  %div.tab-content
     #edit-sponsors-text.tab-pane{role: "tabpanel"}
       .school-settings
         %h3 Manage Sponsors Text
@@ -39,20 +41,17 @@
             %thead
               %tr
                 %td Teacher Name
-                %td Reward Distributor
-                %td Credit Distributor
                 %td Can Deliver Rewards?
                 %td Can Distribute Credits?
+                %td Ignored?
             %body
               - @teachers.each do |teacher|
                 %tr
                   %td= teacher.name
-                  %td= teacher.can_distribute_rewards?(current_school) ? 'YES' : 'NO'
-                  %td= teacher.can_distribute_credits ? 'YES' : 'NO'
-                  %td= check_box_tag "reward_teachers[]", teacher.id, false
-                  %td= check_box_tag "credit_teachers[]", teacher.id, false
-          = f.submit 'Update Teachers'
-            
+                  %td= select_tag "[teachers][#{teacher.id}][reward_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_rewards?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_rewards" }
+                  %td= select_tag "[teachers][#{teacher.id}][credit_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits_for_school?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
+                  %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.ignored?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
+
     #import-teachers.tab-pane.active{role: "tabpanel"}
       .school-settings
         %h3 Import Teachers
@@ -77,7 +76,7 @@
             %td password
             %td n
         = link_to "Click here to download an example spreadsheet.", "/teacher_sample_template.xls"
-    
+
         = form_tag schools_import_teachers_path, :multipart => true, :method => :post do
           = hidden_field_tag :school_id, current_school.id
           .field
@@ -97,7 +96,7 @@
             Note:
             %ul
               %li
-                You can use this setting to allow or disallow LE School Admins (NOT Teachers) to enter negative credit amounts. 
+                You can use this setting to allow or disallow LE School Admins (NOT Teachers) to enter negative credit amounts.
               %li
                 If you DON'T ALLOW NEGATIVE credits, then LE School Admins will only be allowed to enter positive number values when issuing e-Credits and therefore can only add credits to a students account.
               %li
@@ -109,8 +108,8 @@
   var prefix = "tab_";
   if (hash) {
       $('.nav-tabs a[href='+hash.replace(prefix,"")+']').tab('show');
-  } 
-  
+  }
+
   // Change hash for page-reload
   $('.nav-tabs a').on('shown', function (e) {
       window.location.hash = e.target.hash.replace("#", "#" + prefix);
@@ -121,4 +120,21 @@
     $('.our-sponsors').html(
       $('#our_sponsor_post_body').val()
     );
+  });
+
+  $('.auto-update').change( function(e) {
+    var element = $(e.currentTarget);
+    $.ajax({
+      type: "POST",
+      url: element.data("url"),
+      data: {
+        "setting": element.data("setting"),
+        "person-id": element.data("person-id"),
+        "value": element.val()
+      }
+    }).done( function(data, textStatus, jqXHR) {
+      element.closest('td').animateHighlight("#FFFF9C", 250);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      console.log(jqXHR);
+    });
   });

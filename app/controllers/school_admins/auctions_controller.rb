@@ -1,11 +1,11 @@
 module SchoolAdmins
   class AuctionsController < SchoolAdmins::BaseController
     def index
-      @auctions = Auction.active_viewable_for(current_person).order("end_date desc")
+      @auctions = Auction.active_for_school(current_person.school).order("end_date desc")
     end
     
     def all
-      @auctions = Auction.viewable_for(current_person).order("end_date desc")
+      @auctions = Auction.for_school(current_person.school).order("end_date desc")
     end
 
     def edit
@@ -54,7 +54,7 @@ module SchoolAdmins
       p.description = params[:auction_reward_description]
       p.price = BigDecimal.new("500.0") # The price is set, because of price validations in Spree::Product
       if p.save
-        p.images.create(attachement: params[:auction_reward_image]) if params[:auction_reward_image].present?
+        p.images.create(attachment: params[:auction_reward_image]) if params[:auction_reward_image].present?
         p.schools << current_school
         flash[:notice] = "Auction Reward Created!"
         redirect_to new_school_admins_auction_path

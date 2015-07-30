@@ -12,6 +12,8 @@ Spree::User.class_eval do
 
   after_save :set_recovery_password
 
+  before_validation :strip_whitespace
+
   def self.authenticate_with_school_id(username,password,school_id)
     return if username.blank? || password.blank?
     # Regular teacher or student
@@ -31,7 +33,7 @@ Spree::User.class_eval do
     # If there is no user found from the traditional methods lets check the sti
     # api
     if user.nil? && school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
-      link_token = StiLinkToken.where(:district_guid => school.district_guid).first
+      link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
       return unless link_token
       client = STI::Client.new(:base_url => link_token.api_url, :username => username, :password => password)
       session_information = client.session_information
@@ -59,18 +61,31 @@ Spree::User.class_eval do
     self.save
   end
 
- protected
-   def set_recovery_password
-     if person && password
-       person.update_attribute(:recovery_password, password)
-     end
-   end
+  def generate_auth_token_with_school_id(school_id)
+    payload = {
+      user_id: self.id,
+      school_id: school_id
+    }
+    AuthToken.encode(payload)
+  end
 
-   def email_required?
-     false
-   end
+  protected
+  def strip_whitespace
+    self.username = self.username.strip unless self.username.blank?
+    self.email = self.email.strip unless self.email.blank?
+  end
 
-   def password_required?
-     api_user? ? false : super
-   end
+  def set_recovery_password
+    if person && password
+      person.update_attribute(:recovery_password, password)
+    end
+  end
+
+  def email_required?
+    false
+  end
+
+  def password_required?
+    api_user? ? false : super
+  end
 end
