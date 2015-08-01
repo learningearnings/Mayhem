@@ -210,12 +210,16 @@ class StiController < ApplicationController
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
       #  only suppose to be associated to 1.
-      sid = student.person_school_links.order('created_at desc').first.try(:school_id)
-      student_school = School.where(id: sid).first if sid
-      if student_school
-        session[:current_school_id] = sid
-        school = student_school
-        @current_school = school     
+      if student
+        sid = student.person_school_links.order('created_at desc').first.try(:school_id)
+        student_school = School.where(id: sid).first if sid
+        if student_school
+          session[:current_school_id] = sid
+          school = student_school
+          @current_school = school     
+        end
+      else
+        Rails.logger.error("Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
       end
     end
     if school and school.credits_scope != "School-Wide" 
