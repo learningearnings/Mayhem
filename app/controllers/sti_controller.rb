@@ -40,6 +40,14 @@ class StiController < ApplicationController
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
       end
     else 
+      if params[:schoolId].blank?
+        flash[:error] = "Non integrated sign in failed -- Missing required parameter schoolId"
+        return
+      end
+      if params[:districtGUID].blank?
+        flash[:error] = "Non integrated sign in failed -- Missing required parameter districtGUID"
+        return
+      end      
       school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
       if !school
         school = School.new
@@ -231,7 +239,7 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
-    if @client_response["StaffId"].blank? || !login_teacher
+    if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
       render partial: "teacher_not_found"
       return false
     end
