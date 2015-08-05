@@ -56,7 +56,7 @@ class ClassroomsController < LoggedInController
     if params[:student_id].present?
       @student = Student.find(params[:student_id])
       @classroom = Classroom.find(params[:classroom_id])
-      psl = @student.person_school_links.where(school_id: @classroom.school.id).first
+      psl = @student.person_school_links.where(school_id: @classroom.school.id).first_or_initialize
       PersonSchoolClassroomLink.where(:person_school_link_id => psl.id, homeroom: true).delete_all if params[:homeroom] == "true"
       pscl = PersonSchoolClassroomLink.new(:classroom_id => @classroom.id, :person_school_link_id => psl.id, homeroom: params[:homeroom])
       if pscl.save
