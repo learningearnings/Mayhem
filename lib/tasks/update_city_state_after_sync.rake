@@ -34,7 +34,7 @@ namespace :update_city_state_after_sync do
     update_state(2533, 2535, 31, 74997)
     # Rose, OK
     update_state(2628, 2628, 31, 74364)
-    # Lumberton, OK
+    # Lumberton, MS
     update_state(1605, 1605, 37, 39455)
     # Sumter, TN
     update_state(2337, 2383, 43, 37075)
@@ -42,6 +42,8 @@ namespace :update_city_state_after_sync do
     update_state(1843, 1845, 31, 73104)
     # Chalkable TN Demo Schools
     update_state(2701, 2706, 43, 37201)
+    # Newton, MS
+    update_state(3050, 3052, 37, 39345)
   end
   
   def update_state(first_id, last_id, state_id, zip)
