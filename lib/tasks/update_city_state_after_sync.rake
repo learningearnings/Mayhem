@@ -2,6 +2,9 @@
 namespace :update_city_state_after_sync do
   desc 'Update the City, ST of a few synced schools outside of AL since these fields are not coming over in the sync'
   task :run => :environment do
+    Rails.logger.warn "**!@{$%^&*()}************************************"
+    Rails.logger.warn "BEGINNING Update the City, ST of a few synced schools outside of AL"
+    Rails.logger.warn "**!@{$%^&*()}************************************"
     # Kings, Il
     update_state(1712, 1714, 14, 61068)
     # Wewoka, OK
@@ -44,6 +47,10 @@ namespace :update_city_state_after_sync do
     update_state(2701, 2706, 43, 37201)
     # Newton, MS
     update_state(3050, 3052, 37, 39345)
+    
+    Rails.logger.warn "**!@{$%^&*()}************************************"
+    Rails.logger.warn "ENDING Update the City, ST of a few synced schools outside of AL"
+    Rails.logger.warn "**!@{$%^&*()}************************************"
   end
   
   def update_state(first_id, last_id, state_id, zip)
