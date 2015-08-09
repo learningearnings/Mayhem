@@ -28,7 +28,7 @@ every :saturday do
   runner "StudentInterestHandler.new.call"
 end
 
-every 1.day, :at => '6am' do
+every 1.day, :at => '7am' do
   rake "update_city_state_after_sync:run", :output => "/home/deployer/logs/update_city_state_after_sync_run.log"
 end
 
