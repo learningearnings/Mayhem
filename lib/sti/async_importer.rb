@@ -52,12 +52,14 @@ module STI
       roster_synchronizer.execute!
 
       ##### Update API #####
-      newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
-      BuckDistributor.new(newly_synced_schools).run
-
-      newly_synced_schools.each do |school|
-        request = client.set_school_synced(school.sti_id)
-        raise "Couldn't set school synced got: #{request.response.inspect}" if request.response.code != "204"
+      if sti_schools
+        newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
+        BuckDistributor.new(newly_synced_schools).run
+  
+        newly_synced_schools.each do |school|
+          request = client.set_school_synced(school.sti_id)
+          raise "Couldn't set school synced got: #{request.response.inspect}" if request.response.code != "204"
+        end
       end
     end
 
