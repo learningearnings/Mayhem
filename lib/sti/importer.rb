@@ -99,6 +99,7 @@ module STI
         classroom.reload
         ClassroomActivator.new(classroom.id).execute!
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
+        next if teacher.nil?
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
         if person_school_link and classroom
           PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
@@ -171,6 +172,8 @@ module STI
         
         # Update the new classrooms for the student
         sti_classroom_ids.compact.each do |sti_classroom_id|
+          next if student.nil?
+          next if student.school.nil?
           if classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
             psl = student.person_school_links.where(school_id: student.school.id).first
             if psl and classroom
