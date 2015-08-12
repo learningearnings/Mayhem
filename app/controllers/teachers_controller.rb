@@ -14,6 +14,7 @@ class TeachersController < ApplicationController
       session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
       flash[:notice] = 'Thank you for signing up!'
+      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up')
       track_signup_interaction(@teacher_signup_form)
       redirect_to '/'
     else
