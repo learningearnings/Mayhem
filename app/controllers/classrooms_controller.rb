@@ -138,7 +138,7 @@ class ClassroomsController < LoggedInController
   end
 
   def load_classrooms
-    @classrooms = current_person.classrooms_for_school(current_school).order("name ASC").uniq
+    @classrooms = current_person.classrooms_for_school(current_school)
   end
 
   def homeroom_check
