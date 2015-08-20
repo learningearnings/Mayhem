@@ -40,7 +40,7 @@ class ClassroomsController < LoggedInController
       link = PersonSchoolClassroomLink.find_by_person_school_link_id_and_classroom_id(psl.id, @classroom.id)
       if link.delete
         flash[:notice] = "Student removed from classroom."
-        MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom')
+        MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom', mixpanel_options)
         redirect_to classroom_path(@classroom)
       else
         flash[:error] = "Student not removed from classroom."
@@ -63,7 +63,7 @@ class ClassroomsController < LoggedInController
         respond_to do |format|
           format.html {
             flash[:notice] = "Student added to classroom."
-            MixPanelTrackerWorker.perform_async(current_user.id, 'Add Student to Classroom')
+            MixPanelTrackerWorker.perform_async(current_user.id, 'Add Student to Classroom', mixpanel_options)
             redirect_to classroom_path(@classroom)
           }
           format.json { render json: @classroom.students, each_serializer: ClassroomStudentSerializer, classroom_id: @classroom.id, school_id: @classroom.school.id, root: false }
@@ -87,7 +87,7 @@ class ClassroomsController < LoggedInController
     classroom_creator = ClassroomCreator.new(params[:classroom][:name], current_person, current_school)
     classroom_creator.execute!
     if classroom_creator.success?
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Add Classroom')
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Add Classroom', mixpanel_options)
       respond_to do |format|
         format.html {
           flash[:notice] = "Classroom Created."

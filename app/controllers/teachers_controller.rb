@@ -14,11 +14,8 @@ class TeachersController < ApplicationController
       session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
       flash[:notice] = 'Thank you for signing up!'
-      @options = {:env => Rails.env, :email => @teacher_signup_form.person.user.email, :username => @teacher_signup_form.person.user.username, 
-                  :first_name => @teacher_signup_form.person.user.person.first_name, :last_name => @teacher_signup_form.person.user.person.last_name,
-                  :type => @teacher_signup_form.person.user.person.type, :school => @teacher_signup_form.person.user.person.school.try(:name)}
-      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, @options)              
-      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up')
+      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, mixpanel_options)              
+      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up', mixpanel_options)
       track_signup_interaction(@teacher_signup_form)
       redirect_to '/'
     else

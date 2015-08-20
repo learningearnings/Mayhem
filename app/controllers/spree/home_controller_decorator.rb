@@ -15,7 +15,7 @@ Spree::HomeController.class_eval do
     end
 
     @products = @products.order(:name).page(params[:page]).per(9)
-    MixPanelTrackerWorker.perform_async(current_user.id, 'View School Store')
+    MixPanelTrackerWorker.perform_async(current_user.id, 'View School Store', mixpanel_options)
     respond_with(@products)
   end
 end

@@ -51,11 +51,8 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
       sign_in(@teacher_signup_form.person.user)
       session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person) 
-      @options = {:env => Rails.env, :email => @teacher_signup_form.person.user.email, :username => @teacher_signup_form.person.user.username, 
-                  :first_name => @teacher_signup_form.person.user.person.first_name, :last_name => @teacher_signup_form.person.user.person.last_name,
-                  :type => @teacher_signup_form.person.user.person.type, :school => @teacher_signup_form.person.user.person.school.try(:name)}
-      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, @options)        
-      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Mobile Teacher Sign Up')         
+      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, , mixpanel_options)        
+      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Mobile Teacher Sign Up', mixpanel_options)         
       render json: { auth_token: @teacher_signup_form.person.user.generate_auth_token_with_school_id(@teacher_signup_form.school.id), user: @teacher_signup_form.person.user }
     else         
       render json: { error: @teacher_signup_form.errors.first }, status: :unauthorized
