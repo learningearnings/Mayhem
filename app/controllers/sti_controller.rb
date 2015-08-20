@@ -194,9 +194,12 @@ class StiController < ApplicationController
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     Rails.logger.debug("AKT Found Teacher...#{@teacher.inspect}")
     return false if @teacher.nil?
-    school = @teacher.schools.where(district_guid: params[:districtGUID]).first 
+    if params[:sti_school_id]
+      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
+    else
+      school = @teacher.schools.where(district_guid: params[:districtGUID]).first      
+    end
     if school
-      Rails.logger.debug("AKT Found Teacher School...#{school.inspect}")
       session[:current_school_id] = school.id 
       @current_school = school
     else
