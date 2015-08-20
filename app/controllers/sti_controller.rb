@@ -41,6 +41,14 @@ class StiController < ApplicationController
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
       end
     else 
+      if params[:schoolId].blank?
+        flash[:error] = "Non integrated sign in failed -- Missing required parameter schoolId"
+        return
+      end
+      if params[:districtGUID].blank?
+        flash[:error] = "Non integrated sign in failed -- Missing required parameter districtGUID"
+        return
+      end      
       school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
       if !school
         school = School.new
@@ -217,7 +225,7 @@ class StiController < ApplicationController
           @current_school = school     
         end
       else
-        Rails.logger.error("Student not found: sti_id #{student_sti_id}")
+        Rails.logger.error("Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
       end
     end
     if school and school.credits_scope != "School-Wide" 
@@ -256,8 +264,12 @@ class StiController < ApplicationController
     Rails.logger.warn "***************************************************"
     Rails.logger.warn "***************************************************"
     @client_response = sti_client.session_information.parsed_response
+<<<<<<< HEAD
     
     if @client_response["StaffId"].blank? || !login_teacher
+=======
+    if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
+>>>>>>> origin/master
       render partial: "teacher_not_found"
       return false
     end

@@ -103,44 +103,7 @@
         $("#request_email").dialog("close");
     });  
         
--if !needs_email? and !has_seen_campaign?    
-  %div#campaign{ :style => "margin-left:25px;margin-right:25px" }
-    %img#pig_arm_full_of_rewards{:src => "/assets/campaign/giveaway_pig_armful_rewards.png", :style => "float:right;width: 125px;margin-left:20px;"}
-    %h3  We're having a contest!
-    
-    WE have recognized the error of our anti-social ways.  Get your summer started right by 
-    helping us revive our long neglected accounts and you'll get a chance at winning 1 of 2 <span class="green-money">$100</span> 
-    gift cards!
-    
-    %br
-    %br
-    To enter LIKE <a class="fb-link" href="https://www.facebook.com/LearningEarnings/photos/a.346216682066076.77579.164958183525261/943513582336380/?type=1&theater" target="_blank" style="color:#0088cc">our post</a> or even better leave us a comment and 
-    tell us what you're doing with your time off this vacation.
-    %br
-    %div{ :style => "width:100%;text-align:center;" }
-      %img#giveaway_plus_equals{:src => "/assets/campaign/giveaway_plus_equals.png", :style => "width:480px;margin-top: 10px;"}    
-    %br
-    <a href="#" class="fb-link" style="color:#0088cc">No thanks, I'm not feeling very social either</a>
-    
-  :javascript
-    $("#campaign").dialog({
-      dialogClass: 'no_title',
-      autoOpen: true,
-      modal: true,
-      width: 640
-    }); 
-    
-    $(".fb-link").click(function() {
-        $("#campaign").dialog("close");
-        $.ajax({
-            url: "/teachers/log_event",
-            type: "POST",
-            data: {
-              event: "Summer 2015 FB Campaign Link Clicked"
-            }
-         });        
-    }); 
-   
+
 
 
 

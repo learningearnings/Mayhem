@@ -9,19 +9,35 @@ module STI
       private
 
       def inserted
-        @data["Inserted"]
+        begin
+          return @data["Inserted"]
+        rescue
+          return nil
+        end
       end
 
       def deleted
-        @data["Deleted"]
+        begin
+          return @data["Deleted"]
+        rescue
+          return nil
+        end  
       end
 
       def updated
-        @data["Updated"]
+        begin
+          return @data["Updated"]
+        rescue
+          return nil
+        end  
       end
 
       def current_version
-        @data["CurrentVersion"]
+        begin
+          return @data["CurrentVersion"]
+        rescue
+          return nil
+        end
       end
 
       def update_current_version(field)
