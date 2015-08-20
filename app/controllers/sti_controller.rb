@@ -191,12 +191,14 @@ class StiController < ApplicationController
   def login_teacher
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     return false if @teacher.nil?
-    school = @teacher.schools.where(district_guid: params[:districtGUID]).first
+    if params[:sti_school_id]
+      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
+    else
+      school = @teacher.schools.where(district_guid: params[:districtGUID]).first      
+    end
     if school
       session[:current_school_id] = school.id 
       @current_school = school
-    else
-      logger.error("No school for teacher: #{@teacher.inspect}")
     end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
