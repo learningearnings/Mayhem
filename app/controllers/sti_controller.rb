@@ -267,12 +267,7 @@ class StiController < ApplicationController
     Rails.logger.warn "***************************************************"
     Rails.logger.warn "***************************************************"
     @client_response = sti_client.session_information.parsed_response
-<<<<<<< HEAD
-    
-    if @client_response["StaffId"].blank? || !login_teacher
-=======
     if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
->>>>>>> origin/master
       render partial: "teacher_not_found"
       return false
     end
