@@ -46,8 +46,8 @@
               %tr
                 %td= link_to(row["student"], "#history-modal", class: 'history-action', 'data-id' => row["id"], 'data-name' => row["student"], 'data-toggle' => 'modal')
                 %td= row["username"]
-                %td= row["checking_balance"]
-                %td= row["savings_balance"]
+                %td{:style => "text-align:right"}= ("%0.2f" % row["checking_balance"])
+                %td{:style => "text-align:right"}= ("%0.2f" % row["savings_balance"])
     - else
       .message.center-content
         = image_tag "loading.gif"
