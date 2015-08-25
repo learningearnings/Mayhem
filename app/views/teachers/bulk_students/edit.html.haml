@@ -7,7 +7,7 @@
           %h5 Optionally Filter List of Students:
           .control
             %label Classroom:
-            = select_tag 'classroom', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms.uniq.to_a, "id", "name", :selected => params[:classroom]), id: 'controls_classroom'
+            = select_tag 'classroom', options_from_collection_for_select([OpenStruct.new(id: nil, name: nil)] | current_person.classrooms_for_school(current_school), "id", "name", :selected => params[:classroom]), id: 'controls_classroom'
             %label Grade:
             = select_tag 'grade', options_for_select([nil] | current_school.grades.map(&:reverse), :selected => params[:grade]), id: 'controls_grade'
             %label Gender:

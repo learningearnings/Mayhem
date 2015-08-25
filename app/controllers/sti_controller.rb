@@ -40,6 +40,14 @@ class StiController < ApplicationController
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
       end
     else 
+      if params[:schoolId].blank?
+        flash[:error] = "Non integrated sign in failed -- Missing required parameter schoolId"
+        return
+      end
+      if params[:districtGUID].blank?
+        flash[:error] = "Non integrated sign in failed -- Missing required parameter districtGUID"
+        return
+      end      
       school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
       if !school
         school = School.new
@@ -183,12 +191,14 @@ class StiController < ApplicationController
   def login_teacher
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     return false if @teacher.nil?
-    school = @teacher.schools.where(district_guid: params[:districtGUID]).first
+    if params[:sti_school_id]
+      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
+    else
+      school = @teacher.schools.where(district_guid: params[:districtGUID]).first      
+    end
     if school
       session[:current_school_id] = school.id 
       @current_school = school
-    else
-      logger.error("No school for teacher: #{@teacher.inspect}")
     end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
@@ -202,12 +212,16 @@ class StiController < ApplicationController
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
       #  only suppose to be associated to 1.
-      sid = student.person_school_links.order('created_at desc').first.try(:school_id)
-      student_school = School.where(id: sid).first if sid
-      if student_school
-        session[:current_school_id] = sid
-        school = student_school
-        @current_school = school     
+      if student
+        sid = student.person_school_links.order('created_at desc').first.try(:school_id)
+        student_school = School.where(id: sid).first if sid
+        if student_school
+          session[:current_school_id] = sid
+          school = student_school
+          @current_school = school     
+        end
+      else
+        Rails.logger.error("Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
       end
     end
     if school and school.credits_scope != "School-Wide" 
@@ -231,7 +245,7 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
-    if @client_response["StaffId"].blank? || !login_teacher
+    if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
       render partial: "teacher_not_found"
       return false
     end
