@@ -33,7 +33,10 @@
             - unless @product.reward_type == 'charity'
               .deliverer
                 Delivered By
-                = select_tag :deliverer_id, options_from_collection_for_select(current_school.distributing_teachers, :id, :to_s)
+                - if @product.person and current_school and current_school.distribution_model == 'Centralized'
+                  = select_tag :deliverer_id, options_from_collection_for_select([@product.person], :id, :to_s)
+                - else
+                  = select_tag :deliverer_id, options_from_collection_for_select(current_school.distributing_teachers, :id, :to_s)
           .actions
             = button_tag :class => 'large primary awesome-button', :id => 'add-to-cart-button', :type => :submit do
               = t(:add_to_cart)
