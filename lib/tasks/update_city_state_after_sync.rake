@@ -49,6 +49,8 @@ namespace :update_city_state_after_sync do
     update_state(3050, 3052, 37, 39345)
     # LaFayette Municipal
     update_state(3190, 3193, 37, 38655)
+    # Spokane Middle School, MO
+    update_state(3251, 3251, 38, 65754)
     
     Rails.logger.warn "**!@{$%^&*()}************************************"
     Rails.logger.warn "ENDING Update the City, ST of a few synced schools outside of AL"
