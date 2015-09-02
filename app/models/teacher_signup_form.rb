@@ -44,7 +44,6 @@ class TeacherSignupForm
     school.assign_attributes(school_attributes, as: :admin)
     return false unless valid?
     if create_objects
-      PersonSchoolLink.create(person_id: person.id, school_id: school.id, status: "active")
       true
     else
       false
@@ -101,6 +100,7 @@ class TeacherSignupForm
     ActiveRecord::Base.transaction do
       person.save!
       school.save!
+      PersonSchoolLink.create(person_id: person.id, school_id: school.id, status: "active")      
       person.user.save!
     end
   end

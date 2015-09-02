@@ -1,11 +1,12 @@
 load 'lib/sti/client.rb'
 Spree::User.class_eval do
   devise :database_authenticatable, :token_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable, :timeoutable
+         :recoverable, :rememberable, :trackable, :validatable, :timeoutable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :api_user
+  attr_accessible :confirmed_at, :confirmation_code, :confirmation_sent_at, :email, :password, :password_confirmation, :remember_me, :username, :api_user
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :as => :admin
+  
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
