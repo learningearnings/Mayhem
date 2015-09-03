@@ -44,6 +44,10 @@ class TeacherSignupForm
     school.assign_attributes(school_attributes, as: :admin) unless school_id
     return false unless valid?
     if create_objects
+      user.person.status = "new"
+      user.person.save
+      school.status = "new"
+      school.save
       true
     else
       false

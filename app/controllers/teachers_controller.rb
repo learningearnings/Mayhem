@@ -16,6 +16,13 @@ class TeachersController < ApplicationController
       else
         @user.confirmed_at = Time.now
         @user.save
+        school = @user.person.school
+        person = @user.person
+        person.status = "active"
+        person.save!
+        school.status = "active"
+        school.save!
+        
         flash[:notice] = 'Your account has been activated.  You many now log in to Learning Earnings!'            
       end
     else
