@@ -1,6 +1,6 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
-  get '/confirm' => "teachers#confirm"
+  get '/confirm/:id' => "teachers#confirm"
   post '/sti/auth' => "sti#auth"   
   get '/sti/auth' => "sti#auth" 
   get '/homes/schools_for_username' => "homes#schools_for_username"

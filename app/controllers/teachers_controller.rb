@@ -2,17 +2,27 @@ class TeachersController < ApplicationController
   skip_before_filter :subdomain_required
 
   def new
+    if params[:sid]
+      @school = School.find(params[:sid])
+    end    
     @teacher_signup_form = TeacherSignupForm.new
   end
   
   def confirm
-    @user = Spree::User.where(confirmation_token: params[:token]).first
+    @user = Spree::User.where(confirmation_token: params[:id]).first
     if @user
       if @user.confirmed_at
         flash[:error] = 'Your account has already been activated.  '
       else
         @user.confirmed_at = Time.now
         @user.save
+        school = @user.person.school
+        person = @user.person
+        person.status = "active"
+        person.save!
+        school.status = "active"
+        school.save!
+        
         flash[:notice] = 'Your account has been activated.  You many now log in to Learning Earnings!'            
       end
     else

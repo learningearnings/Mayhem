@@ -9,13 +9,13 @@ class Spree::UserMailer < Devise::Mailer
   
   def confirmation_instructions(user)
     if Rails.env == "production"
-      @confirmation_url = "https://learningearnings.com/confirm/?token=#{user.confirmation_token}"
+      @confirmation_url = "https://learningearnings.com/confirm/#{user.confirmation_token}"
     elsif Rails.env == "staging"
-      @confirmation_url = "https://staging.learningearnings.com/?token=#{user.confirmation_token}"
+      @confirmation_url = "http://staging.learningearnings.com/confirm/#{user.confirmation_token}"
     else
-      @confirmation_url = "http://lvh.me:3000/confirm/?token=#{user.confirmation_token}"      
+      @confirmation_url = "http://lvh.me:3000/confirm/#{user.confirmation_token}"      
     end
-      
+    headers['X-MC-Track'] = "False, False"      
 
     mail(:to => user.email, :from => "noreply@learningearnings.com",
          :subject => 'Learning Earnings user account activation required')
