@@ -50,17 +50,8 @@ class StiController < ApplicationController
       end      
       school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
       if !school
-        school = School.new
-        school.district_guid = params[:districtGUID]
-        school.name = params[:districtGUID] + ":" + params[:schoolid]
-        school.sti_id = params[:schoolid]
-        school.state_id = 1
-        school.city = "Test City"
-        school.address1 = "Fake address"
-        school.zip = 12345
-        school.min_grade = 0
-        school.max_grade = 12
-        school.save
+        flash[:error] = "School not found"
+        redirect_to main_app.page_path('home') and return        
       end  
       if params[:userid]
         teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
@@ -68,12 +59,15 @@ class StiController < ApplicationController
           session[:current_school_id] = school.id 
           sign_in(teacher.user)
           redirect_to "/" and return
-        else
-          redirect_to "/teachers/new/?sid=#{school.id}&userid=#{params[:userid]}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
         end
-      elsif params[:firstname] and params[:lastname]
-        # Redirect to sign up page?
-        redirect_to "/teachers/new/?sid=#{school.id}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
+        student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
+        if teacher
+          session[:current_school_id] = school.id 
+          sign_in(student.user)
+          redirect_to "/" and return
+        end    
+        flash[:error] = "User not found"    
+        redirect_to main_app.page_path('home') and return   
       else
         flash[:error] = "Non integrated sign in failed -- Missing required parameters"
       end
