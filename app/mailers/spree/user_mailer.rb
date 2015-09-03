@@ -11,7 +11,7 @@ class Spree::UserMailer < Devise::Mailer
     if Rails.env == "production"
       @confirmation_url = "https://learningearnings.com/confirm/?token=#{user.confirmation_token}"
     elsif Rails.env == "staging"
-      @confirmation_url = "https://staging.learningearnings.com/?token=#{user.confirmation_token}"
+      @confirmation_url = "http://staging.learningearnings.com/?token=#{user.confirmation_token}"
     else
       @confirmation_url = "http://lvh.me:3000/confirm/?token=#{user.confirmation_token}"      
     end
