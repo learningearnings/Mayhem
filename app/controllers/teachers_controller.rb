@@ -9,7 +9,7 @@ class TeachersController < ApplicationController
   end
   
   def confirm
-    @user = Spree::User.where(confirmation_token: params[:token]).first
+    @user = Spree::User.where(confirmation_token: params[:id]).first
     if @user
       if @user.confirmed_at
         flash[:error] = 'Your account has already been activated.  '
