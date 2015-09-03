@@ -20,7 +20,7 @@ class HomesController < ApplicationController
   
   def schools_for_username
     @username = params[:username]
-    @schools = School.where(id: PersonSchoolLink.where(person_id: Person.with_username(@username).pluck(:id)).pluck(:school_id) ).order(:name)
+    @schools = School.where(id: PersonSchoolLink.where(person_id: Person.with_username(@username).pluck(:id)).pluck(:school_id), status: "active" ).order(:name)
     if @schools.size == 0
       @schools = School.where(" district_guid is not null and status = 'active' ").order(:name)
     end    
