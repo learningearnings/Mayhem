@@ -7,6 +7,7 @@ module STI
       end
 
       def execute!
+        logger.debug "AKT: RosterCreator #{@data.inspect}"        
         student = Student.where(district_guid: @district_guid, sti_id: @data["StudentId"]).first
         classroom = Classroom.where(district_guid: @district_guid, sti_id: @data["SectionId"]).first
         if student && student.school && classroom

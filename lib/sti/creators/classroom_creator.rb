@@ -7,6 +7,8 @@ module STI
       end
 
       def execute!
+        
+        logger.debug "AKT: #{@data.inspect}"
         classroom = Classroom.create(mapping)
 
         classroom.reload
@@ -14,7 +16,7 @@ module STI
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => @data["TeacherId"]).first
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => @data["SchoolId"]).first
         PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create
-      end
+    end
 
       private
 

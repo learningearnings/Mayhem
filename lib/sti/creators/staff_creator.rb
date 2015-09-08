@@ -7,6 +7,7 @@ module STI
       end
 
       def execute!
+        logger.debug "AKT: StaffCreator #{@data.inspect}"
         person = Person.new(mapping)
         person.type = "Teacher"
         person.status = "active"

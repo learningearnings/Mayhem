@@ -7,6 +7,7 @@ module STI
       end
 
       def execute!
+        logger.debug "AKT: StudentCreator #{@data.inspect}"
         person = Student.create(person_mapping, as: :admin)
         person.user.update_attributes(user_mapping) if person.recovery_password.nil?
 
