@@ -48,8 +48,8 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
     setup_fake_data
     @teacher_signup_form = TeacherSignupForm.new(params[:user])
     if @teacher_signup_form.save
-      sign_in(@teacher_signup_form.person.user)
-      session[:current_school_id] = @teacher_signup_form.school.id
+      #sign_in(@teacher_signup_form.person.user)
+      #session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)      
       render json: { auth_token: @teacher_signup_form.person.user.generate_auth_token_with_school_id(@teacher_signup_form.school.id), user: @teacher_signup_form.person.user }
     else         
