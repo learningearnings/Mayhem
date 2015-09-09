@@ -42,7 +42,7 @@ class Bank
 
     # Auto deposit credits for K and 1st grade
     # K is represented by 97,98,99
-    if [97,98,99,1].include?(student.grade)
+    if [97,98,99,1,0].include?(student.grade)
       claim_bucks(student, buck)
       ActionController::Base.new.expire_fragment("#{student.id}_balances")
     else
