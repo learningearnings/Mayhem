@@ -11,7 +11,7 @@ Spree::User.class_eval do
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
 
-  after_save :set_recovery_password
+  after_save :set_recovery_password, :set_student_confirmed_at
 
   before_validation :strip_whitespace
 
@@ -79,6 +79,13 @@ Spree::User.class_eval do
   def set_recovery_password
     if person && password
       person.update_attribute(:recovery_password, password)
+    end
+  end
+  
+  def set_student_confirmed_at
+    if person and person.type == "Student" and self.confirmed_at.nil?
+      self.confirmed_at = Time.now
+      self.save
     end
   end
 
