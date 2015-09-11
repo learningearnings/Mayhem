@@ -21,7 +21,13 @@ Spree::UserSessionsController.class_eval do
         }
       end
     else
-      flash[:error] = "Wrong Username, Password and School combination.  Please make sure you have all 3 credentials correct and try again."
+      #Check for accounts that are not activated
+      tuser = Spree::User.where(username: params[:user]["username"]).first if params[:user]
+      if tuser and tuser.confirmed_at == nil
+         flash[:error] = "You must activate your account before logging in.  Please check your email for activation instructions..."
+      else
+         flash[:error] = "Wrong Username, Password and School combination.  Please make sure you have all 3 credentials correct and try again."
+      end
       redirect_to main_app.page_path('home')
     end
   end
