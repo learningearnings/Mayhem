@@ -39,11 +39,13 @@ class Mobile::V1::Teachers::StudentsController < Mobile::V1::Teachers::BaseContr
     @student.grade = params[:student][:grade]
     @student.gender = params[:student][:gender] 
     
+    
     if @student.save
       @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
       @student.user.email = params[:student][:email]
       @student.school = current_school
       @student.save
+      @student.user.confirmed_at = Time.now
       @student.user.save
       
       #Add classroom
