@@ -44,6 +44,7 @@ class Mobile::V1::Teachers::StudentsController < Mobile::V1::Teachers::BaseContr
       @student.user.email = params[:student][:email]
       @student.school = current_school
       @student.save
+      @student.user.confirmed_at = Time.now
       @student.user.save
       
       #Add classroom
