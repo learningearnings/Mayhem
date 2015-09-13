@@ -2,7 +2,33 @@ class TeachersController < ApplicationController
   skip_before_filter :subdomain_required
 
   def new
+    if params[:sid]
+      @school = School.find(params[:sid])
+    end    
     @teacher_signup_form = TeacherSignupForm.new
+  end
+  
+  def confirm
+    @user = Spree::User.where(confirmation_token: params[:id]).first
+    if @user
+      if @user.confirmed_at
+        flash[:error] = 'Your account has already been activated.  '
+      else
+        @user.confirmed_at = Time.now
+        @user.save
+        school = @user.person.school
+        person = @user.person
+        person.status = "active"
+        person.save!
+        school.status = "active"
+        school.save!
+        
+        flash[:notice] = 'Your account has been activated.  You many now log in to Learning Earnings!'            
+      end
+    else
+      flash[:error] = 'Activation Failed -- Invalid or expired token!'        
+    end
+    redirect_to main_app.page_path('home')
   end
 
   def create
@@ -10,14 +36,14 @@ class TeachersController < ApplicationController
     @teacher_signup_form = TeacherSignupForm.new(params[:teacher])
     if @teacher_signup_form.save
       request.env["devise.skip_trackable"] = true
-      sign_in(@teacher_signup_form.person.user)
-      session[:current_school_id] = @teacher_signup_form.school.id
+      #sign_in(@teacher_signup_form.person.user)
+      #session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
-      flash[:notice] = 'Thank you for signing up!'
+      flash[:notice] = 'Thank you for signing up!  An activation email has been sent to the address you provided.'
       MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, mixpanel_options)              
       MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up', mixpanel_options)
       track_signup_interaction(@teacher_signup_form)
-      redirect_to '/'
+      redirect_to main_app.page_path('home')
     else
       render :new
     end
