@@ -81,6 +81,13 @@ Spree::User.class_eval do
       person.update_attribute(:recovery_password, password)
     end
   end
+  
+  def set_student_confirmed_at
+    if person and person.type == "Student" and self.confirmed_at.nil?
+      self.confirmed_at = Time.now
+      self.save
+    end
+  end
 
   def email_required?
     false
