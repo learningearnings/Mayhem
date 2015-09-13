@@ -45,6 +45,7 @@ class ApplicationController < ActionController::Base
     end
     return @options
   end
+  
   def log_event
     if current_user
       MixPanelTrackerWorker.perform_async(current_user.id, params[:event], mixpanel_options) 
@@ -85,7 +86,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school
-    @current_school ||= School.find(session[:current_school_id]) if session[:current_school_id]
+    begin
+      @current_school ||= School.find(session[:current_school_id]) if session[:current_school_id]
+    rescue
+      @current_school = nil
+      session[:current_school_id] = nil
+    end
   end
 
   def after_sign_out_path_for(resource_or_scope)

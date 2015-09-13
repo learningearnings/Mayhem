@@ -10,6 +10,8 @@ module STI
         person = Student.create(person_mapping, as: :admin)
         if person and person.user 
           person.user.update_attributes(user_mapping) if person.recovery_password.nil?
+          person.user.confirmed_at = Time.now
+          person.user.save
           if @data["Schools"]
             @data["Schools"].each do |sti_school_id|
               school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first

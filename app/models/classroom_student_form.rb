@@ -34,6 +34,8 @@ class ClassroomStudentForm
   def save
     if valid?
       student.save
+      student.user.confirmed_at = Time.now
+      student.save
       student << @classroom
       true
     else
