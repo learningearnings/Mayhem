@@ -12,11 +12,11 @@ class StiImporterWorker
       district = District.where(guid: district_guid).first
       if district && district.has_current_versions?
         sti_importer = STI::AsyncImporter.new(client: sti_client, district_guid: district_guid)
-        sync_attempt.students_response = sti_client.async_students(district.current_student_version).parsed_response
-        sync_attempt.staff_response    = sti_client.async_staff(district.current_staff_version).parsed_response
-        sync_attempt.sections_response = sti_client.async_sections(district.current_section_version).parsed_response
-        sync_attempt.rosters_response  = sti_client.async_rosters(district.current_roster_version).parsed_response
-        sync_attempt.schools_response  = sti_client.schools.parsed_response
+        sync_attempt.students_response = Mysql.escape_string(sti_client.async_students(district.current_student_version).parsed_response)
+        sync_attempt.staff_response    = Mysql.escape_string(sti_client.async_staff(district.current_staff_version).parsed_response)
+        sync_attempt.sections_response = Mysql.escape_string(sti_client.async_sections(district.current_section_version).parsed_response)
+        sync_attempt.rosters_response  = Mysql.escape_string(sti_client.async_rosters(district.current_roster_version).parsed_response)
+        sync_attempt.schools_response  = Mysql.escape_string(sti_client.schools.parsed_response)
       else
         sti_importer = STI::Importer.new(client: sti_client, district_guid: district_guid)
         sync_attempt.students_response = sti_client.students.response.inspect
