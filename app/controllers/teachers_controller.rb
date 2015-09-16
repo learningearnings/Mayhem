@@ -14,16 +14,19 @@ class TeachersController < ApplicationController
       if @user.confirmed_at
         flash[:error] = 'Your account has already been activated.  '
       else
-        @user.confirmed_at = Time.now
-        @user.save
         school = @user.person.school
-        person = @user.person
-        person.status = "active"
-        person.save!
-        school.status = "active"
-        school.save!
-        
-        flash[:notice] = 'Your account has been activated.  You many now log in to Learning Earnings!'            
+        if school
+          @user.confirmed_at = Time.now
+          @user.save       
+          person = @user.person
+          person.status = "active"
+          person.save!
+          school.status = "active"
+          school.save!
+          flash[:notice] = 'Your account has been activated.  You many now log in to Learning Earnings!'   
+        else
+          flash[:error] = 'Activation Failed -- No school for user, please re-register!'  
+        end         
       end
     else
       flash[:error] = 'Activation Failed -- Invalid or expired token!'        
