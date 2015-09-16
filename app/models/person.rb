@@ -77,13 +77,14 @@ class Person < ActiveRecord::Base
 
   def otu_code_categories(current_school_id)
     arel_table = OtuCodeCategory.arel_table
-    OtuCodeCategory.where(
+    occ = OtuCodeCategory.where(
       arel_table[:school_id].eq(current_school_id).and(
         arel_table[:person_id].eq(self.id).or(
           arel_table[:person_id].eq(nil)
         )
       )
     )
+    occ.sort { | x, y | x.name.downcase <=> y.name.downcase } if occ
   end
 
   def avatar

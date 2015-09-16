@@ -238,7 +238,7 @@ class StiController < ApplicationController
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
     if (sti_link_token == nil)
       return false
-    end
+    end    
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response

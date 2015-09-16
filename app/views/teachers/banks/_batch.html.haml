@@ -47,7 +47,7 @@
         left: 55%
         font-size: 2em
         font-family: Arial
-        color: #C04814
+        color: #000000
       .amount
         width: 5%
         text-align: center
@@ -67,7 +67,7 @@
         left: 58%
         font-size: 2.1em
         font-family: Arial
-        color: #C04814
+        color: #000000
       .school
         width: 60%
         font-size: 1.6em
@@ -76,12 +76,9 @@
         position: absolute
         bottom: 4px
         left: 4px
-
-
 .container
   .bucks
     - batch.otu_codes.in_groups_of(18,false) do |code_group|
-      .break
       - code_group.each do |otu_code|
         .buck
           %img.background-image{ src: otu_code.points > 1 ? plural_buck_image : single_buck_image }
@@ -90,3 +87,4 @@
             .amount{class: otu_code.points > 1 ? "double_digit_amount" : "single_digit_amount" }= otu_code.points.to_i
             .expires= otu_code.expires_at.to_date.strftime("%m-%d-%Y")
             .school= school.name.truncate(16, omission: '') if school
+      .break
