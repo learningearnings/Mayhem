@@ -165,7 +165,11 @@ class StiController < ApplicationController
   end
 
   def load_students    
-    @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    if params["studentIds"]
+      @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    else
+      @students = current_school.students.where(district_guid: params[:districtGUID]).order(:last_name, :first_name)      
+    end
   end
 
   def on_success(obj = nil)
