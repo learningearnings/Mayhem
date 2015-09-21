@@ -229,10 +229,14 @@ class StiController < ApplicationController
       @child = School.where(sti_id: school.id, credits_type: "child")
       if @child.size > 0
         @current_school = @child[0]        
-        session[:current_school_id] = @child[0].id
         @teacher = @current_school.teachers.first
-        @current_person = @teacher
-        sign_in(@teacher.user)        
+        if @teacher
+          session[:current_school_id] = @child[0].id          
+          @current_person = @teacher
+          sign_in(@teacher.user)  
+        else
+          return false
+        end      
       end   
     end    
     if !school
