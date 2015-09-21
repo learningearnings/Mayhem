@@ -16,7 +16,7 @@
         - @teachers.each do |teacher|
           %tr
             %td= teacher.name
-            %td= teacher.user if teacher.user
+            %td= teacher.user.email if teacher.user
             %td= teacher.user.username if teacher.user
             %td= teacher.dob
             %td= teacher.gender
