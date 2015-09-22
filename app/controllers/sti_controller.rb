@@ -9,7 +9,7 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
-    if current_school == nil or current_person == nil
+    if current_school == nil or current_person == nil or current_person.main_account(current_school) == nil
       redirect_to main_app.page_path('home') and return
     end
     if current_school.credits_scope != "School-Wide" 

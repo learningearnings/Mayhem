@@ -120,7 +120,7 @@ class Teacher < Person
 
   # Don't love that bizlogic is right here, but hey...
   def students_ive_given_ebucks_to
-    Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL").where(otu_codes: { teacher: { id: id } })
+    Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL and people.status = 'active' ").where(otu_codes: { teacher: { id: id } })
   end
 
   def setup_accounts(school)
