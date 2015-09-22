@@ -78,9 +78,9 @@ module Reports
         grade:     student.grade,
         student:   student.name,
         username:  student.user.username,
-        checking_balance: student.checking_balance,
-        savings_balance: student.savings_balance
-      }
+        checking_balance: (number_with_precision(student.checking_balance, precision: 2, delimiter: ',') || 0),
+        savings_balance: (number_with_precision(student.savings_balance, precision: 2, delimiter: ',') || 0)
+       }
     end
 
     def headers
