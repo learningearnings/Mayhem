@@ -8,7 +8,7 @@ module STI
 
       def execute!
         
-        logger.debug "AKT: #{@data.inspect}"
+        Rails.logger.debug "AKT: #{@data.inspect}"
         classroom = Classroom.create(mapping)
 
         classroom.reload
