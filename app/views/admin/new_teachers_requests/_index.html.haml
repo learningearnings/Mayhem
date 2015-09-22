@@ -13,15 +13,15 @@
           %th Approve
           %th Delete
       %tbody
-        %tr
-          - @teachers.each do |teacher|
+        - @teachers.each do |teacher|
+          %tr
             %td= teacher.name
-            %td= teacher.email
-            %td= teacher.username
+            %td= teacher.user.email if teacher.user
+            %td= teacher.user.username if teacher.user
             %td= teacher.dob
             %td= teacher.gender
             %td= teacher.grade
-            %td= teacher.schools.first.name
+            %td= teacher.schools.first.name if teacher.schools.first
             %td= link_to "Approve", admin_approve_teacher_path(teacher)
             %td= link_to "Delete", admin_deny_teacher_path(teacher), :confirm => true
 
