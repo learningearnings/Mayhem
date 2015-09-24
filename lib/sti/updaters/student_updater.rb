@@ -13,9 +13,9 @@ module STI
         schools = Hash.from_xml(@data["SchoolsXml"])
         schools = schools["root"]
         if schools["row"] 
-          school_ids = [schools["row"]["id"]]
+          schools_ids = [schools["row"]["id"]]
         else
-          school_ids = schools["rows"].collect { | x | x["id"] }
+          schools_ids = schools["rows"].collect { | x | x["id"] }
         end
         schools_ids.each do |sti_school_id|          
           school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first

@@ -19,11 +19,11 @@ module STI
         schools = Hash.from_xml(@data["SchoolsXml"])
         schools = schools["root"]
         if schools["row"] 
-          school_ids = [schools["row"]["id"]]
+          schools_ids = [schools["row"]["id"]]
         else
-          school_ids = schools["rows"].collect { | x | x["id"] }
+          schools_ids = schools["rows"].collect { | x | x["id"] }
         end        
-        school_ids.each do |school_id|
+        schools_ids.each do |school_id|
           person_school_link = PersonSchoolLink.where(person_id: person.id, school_id: school_id).first_or_initialize
           person_school_link.status = "active"
           person_school_link.save(validate: false)
