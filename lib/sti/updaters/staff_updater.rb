@@ -14,8 +14,14 @@ module STI
         person.user.update_attributes({email: @data["EmailAddress"]})
 
         # Update their school links, start by disabling all, and only activating the ones being passed to us
-        school_ids = School.where(district_guid: @district_guid, sti_id: @data["Schools"]).pluck(:id)
-        PersonSchoolLink.where(person_id: person.id, school_id: school_ids).map(&:deactivate)
+        schools = Hash.from_xml(@data["SchoolsXml"])
+        schools = schools["root"]
+        if schools["row"] 
+          school_ids = [schools["row"]["id"]]
+        else
+          school_ids = schools["rows"].collect { | x | x["id"] }
+        end        
+        PersonSchoolLink.where(person_id: person.id).map(&:deactivate)
         school_ids.each do |school_id|
           person_school_link = PersonSchoolLink.where(person_id: person.id, school_id: school_id).first_or_initialize
           person_school_link.status = "active"

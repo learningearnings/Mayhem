@@ -10,8 +10,14 @@ module STI
         person = Student.where(district_guid: @district_guid, sti_id: @data["Id"]).first
         person.update_attributes(person_mapping, as: :admin)
         person.user.update_attributes(user_mapping) if person.recovery_password.nil?
-
-        @data["Schools"].each do |sti_school_id|
+        schools = Hash.from_xml(@data["SchoolsXml"])
+        schools = schools["root"]
+        if schools["row"] 
+          school_ids = [schools["row"]["id"]]
+        else
+          school_ids = schools["rows"].collect { | x | x["id"] }
+        end
+        schools_ids.each do |sti_school_id|          
           school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
           person_school_link = ::PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
           person_school_link.skip_onboard_credits = true
