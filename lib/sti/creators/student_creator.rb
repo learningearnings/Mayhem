@@ -7,26 +7,25 @@ module STI
       end
 
       def execute!
+        #Rails.logger.debug "AKT: StudentCreator #{@data.inspect}"
         person = Student.create(person_mapping, as: :admin)
-        if person and person.user 
-          person.user.update_attributes(user_mapping) if person.recovery_password.nil?
-          person.user.confirmed_at = Time.now
-          person.user.save
-          if @data["Schools"]
-            @data["Schools"].each do |sti_school_id|
-              school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-              person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
-              person_school_link.skip_onboard_credits = true
-              person_school_link.status = "active"
-              person_school_link.save(:validate => false)
-            end
-          else
-            Rails.logger.error("StudentCreator: No schools returned in API #{@data.inspect}, Person Mapping: #{person_mapping.inspect}")
-            puts "StudentCreator: No schools returned in API #{@data.inspect}, Person Mapping: #{person_mapping.inspect}" 
-          end
+        person.user.update_attributes(user_mapping) if person.recovery_password.nil?
+        person.user.confirmed_at = Time.now
+        person.user.save
+
+        schools = Hash.from_xml(@data["SchoolsXml"])
+        schools = schools["root"]
+        if schools["row"].kind_of?(Array) 
+          schools_ids = schools["row"].collect { | x | x["id"] }          
         else
-          Rails.logger.error("StudentCreator: Could not create student: Person Mapping: #{person_mapping.inspect}, User Mapping: #{user_mapping.inspect}")
-          puts "StudentCreator: Could not create student: Person Mapping: #{person_mapping.inspect}, User Mapping: #{user_mapping.inspect}" 
+          schools_ids = [schools["row"]["id"]]
+        end
+        schools_ids.each do |sti_school_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
+          person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
+          person_school_link.skip_onboard_credits = true
+          person_school_link.status = "active"
+          person_school_link.save(:validate => false)
         end
       end
 
@@ -50,7 +49,8 @@ module STI
         {
           username: username,
           password: password,
-          password_confirmation: password
+          password_confirmation: password,
+          confirmed_at: Time.now
         }
       end
 
