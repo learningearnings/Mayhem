@@ -18,10 +18,10 @@ module STI
 
         schools = Hash.from_xml(@data["SchoolsXml"])
         schools = schools["root"]
-        if schools["row"] 
-          schools_ids = [schools["row"]["id"]]
+        if schools["row"].kind_of?(Array) 
+          schools_ids = schools["row"].collect { | x | x["id"] }          
         else
-          schools_ids = schools["rows"].collect { | x | x["id"] }
+          schools_ids = [schools["row"]["id"]]
         end        
         schools_ids.each do |school_id|
           person_school_link = PersonSchoolLink.where(person_id: person.id, school_id: school_id).first_or_initialize
