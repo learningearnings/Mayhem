@@ -11,7 +11,7 @@ module STI
         person = Person.where(district_guid: @district_guid, sti_id: @data["Id"]).first
         person.status = "active"
         person.update_attributes(mapping)
-        person.user.update_attributes({email: @data["EmailAddress"]})
+        person.user.update_attributes({email: @data["EmailAddress"], confirmed_at: Time.now})
 
         # Update their school links, start by disabling all, and only activating the ones being passed to us
         schools = Hash.from_xml(@data["SchoolsXml"])

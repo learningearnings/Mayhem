@@ -35,7 +35,7 @@ module STI
           district_guid: @district_guid,
           first_name: @data["FirstName"],
           last_name: @data["LastName"],
-          grade: @data["GradeLevel"],
+          grade: @data["GradeLevel"]
           status: "active"
         }
       end
@@ -46,7 +46,8 @@ module STI
         {
           username: username,
           password: password,
-          password_confirmation: password
+          password_confirmation: password,
+          confirmed_at: Time.now
         }
       end
     end
