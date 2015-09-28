@@ -16,7 +16,7 @@ module STI
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => @data["TeacherId"]).first
         if teacher
           Rails.logger.debug "AKT: Fetch PersonSchoolLink for district_guid #{@district_guid} and school sti_id #{@data["SchoolId"]}"
-          school = School.where(district_guid: @district_guid, sti_id: @data["SchoolId"], status: "active")
+          school = School.where(district_guid: @district_guid, sti_id: @data["SchoolId"], status: "active").last
           Rails.logger.debug "AKT: School: #{school}"
           person_school_link = PersonSchoolLink.where(person_id: teacher.id, school_id: school.id, status: "active").first_or_create
           Rails.logger.debug "AKT: PSL #{person_school_link.inspect}"
