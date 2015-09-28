@@ -23,7 +23,8 @@ module STI
         end       
         PersonSchoolLink.where(person_id: person.id).map(&:deactivate)
         schools_ids.each do |school_id|
-          person_school_link = PersonSchoolLink.where(person_id: person.id, school_id: school_id).first_or_initialize
+          school = School.where(:district_guid => @district_guid, :sti_id => school_id).first
+          person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
           person_school_link.status = "active"
           person_school_link.save(validate: false)
         end
