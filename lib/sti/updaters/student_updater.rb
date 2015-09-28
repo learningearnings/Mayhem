@@ -35,7 +35,7 @@ module STI
           district_guid: @district_guid,
           first_name: @data["FirstName"],
           last_name: @data["LastName"],
-          grade: @data["GradeLevel"]
+          grade: @data["GradeLevel"],
           status: "active"
         }
       end
