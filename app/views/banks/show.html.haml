@@ -82,3 +82,23 @@
   $('#enter-codes-modal').on('shown.bs.modal', function() {
     $('#code').focus();
   });
+  
+  $('a:contains("Deposit e-Credit")').click( function(event) {
+    if (this.clicked) {
+      return false;
+    }
+    else {
+      this.clicked = true
+    }
+    return true;
+  });
+  
+  $(':submit').click( function(event) {
+    if (this.clicked) {
+      return false;
+    }
+    else {
+      this.clicked = true
+    }
+    return true;
+  });
