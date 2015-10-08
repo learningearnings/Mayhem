@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150901170713) do
+ActiveRecord::Schema.define(:version => 20151006144614) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20150901170713) do
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
     t.integer  "person_id"
+    t.boolean  "canceled"
   end
 
   create_table "avatars", :force => true do |t|
