@@ -1,17 +1,17 @@
 module SchoolAdmins
   class AuctionsController < SchoolAdmins::BaseController
-    
     def index
       @auctions = Auction.active_for_school(current_person.school).order("end_date desc")
     end
     
     def all
-      @auctions = Auction.for_school(current_person.school).order("end_date desc")
+      @auctions = Auction.for_school(current_person.school).where(" end_date < Now() ").order("end_date desc")
     end
 
     def edit
       begin
         @auction = Auction.find(params[:id])
+        @products = current_school.products.for_auctions        
       rescue
         flash[:error] = "This auction has already ended."
         redirect_to school_admins_auctions_path and return
@@ -40,8 +40,9 @@ module SchoolAdmins
     def update
       @auction = Auction.find(params[:id])
       if @auction.update_attributes(params[:auction])
+        @auction.update_attribute(:canceled, false)
         flash[:notice] = 'The auction has been updated.'
-        redirect_to @auction
+        redirect_to school_admins_auctions_path
       else
         flash[:error] = 'There was a problem updating the auction.'
         render :edit
@@ -69,6 +70,7 @@ module SchoolAdmins
       @auction = Auction.find params[:id]
       @auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
       @auction.update_attribute(:end_date, Time.now)
+      @auction.update_attribute(:canceled, true)
       flash[:notice] = "Auction cancelled."
       redirect_to school_admins_auctions_path
     end
