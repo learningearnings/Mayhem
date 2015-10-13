@@ -51,7 +51,7 @@ class AuctionHandler
       to_id: auction.current_leader.id,
       subject: "You've won an auction",
       body: body,
-      category: 'games'
+      category: 'auctions'
     )
     puts m.errors.full_messages
   end
@@ -63,7 +63,7 @@ class AuctionHandler
       to_id: auction.creator.id,
       subject: "An auction has ended.",
       body: body,
-      category: 'games'
+      category: 'auctions'
     )
     puts m.errors.full_messages
   end

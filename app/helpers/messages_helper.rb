@@ -1,7 +1,7 @@
 module MessagesHelper
   def inbox_label_with_message_count string, messages
     output = string
-    count = messages.from_games.unread.count + messages.from_teacher.unread.count
+    count = messages.from_games.unread.count + messages.from_teacher.unread.count + messages.from_auctions.unread.count
     if count > 0
       output += " [#{count}]"
     end
