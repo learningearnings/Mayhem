@@ -28,9 +28,15 @@ class AuctionCreator
   def create_school_links
     school_ids = @params[:school_ids]
     Rails.logger.debug("AKT: Create School Links: #{school_ids.inspect}")
-    school_ids.each do | school_id |
-      school = School.where(id: school_id).first
-      AuctionSchoolLink.create(:school_id => school.id, :auction_id => auction.id) if school
+    if school_ids
+      school_ids.each do | school_id |
+        school = School.where(id: school_id).first
+        AuctionSchoolLink.create(:school_id => school.id, :auction_id => auction.id) if school
+      end
+    else
+      if @current_person and @current_person.school
+        AuctionSchoolLink.create(:school_id => @current_person.school.id, :auction_id => auction.id) if school        
+      end
     end
   end
   def create_auction_zip_codes
