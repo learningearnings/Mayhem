@@ -18,7 +18,7 @@
     %tr
       %td= auction.id
       %td= auction.start_date
-      %td= auction.start_date
+      %td= auction.end_date
       %td= auction.starting_bid
       %td= auction.current_bid
       %td= auction.product.name
@@ -32,7 +32,7 @@
     %tr
       %th States
   %tbody
-    - auction.states.each do |state|
+    - auction.states.uniq.each do |state|
       %tr
         %td= state.name
 
@@ -41,7 +41,7 @@
     %tr
       %th Schools
   %tbody
-    - auction.schools.each do |school|
+    - auction.schools.uniq.each do |school|
       %tr
         %td= school.name
 
