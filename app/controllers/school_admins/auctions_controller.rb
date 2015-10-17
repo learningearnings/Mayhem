@@ -11,7 +11,7 @@ module SchoolAdmins
     def edit
       begin
         @auction = Auction.find(params[:id])
-        @products = current_school.products.for_auctions        
+        @products = current_school.products.for_auctions  
       rescue
         flash[:error] = "This auction has already ended."
         redirect_to school_admins_auctions_path and return
@@ -44,6 +44,7 @@ module SchoolAdmins
         flash[:notice] = 'The auction has been updated.'
         redirect_to school_admins_auctions_path
       else
+        @products = current_school.products.for_auctions 
         flash[:error] = 'There was a problem updating the auction.'
         render :edit
       end

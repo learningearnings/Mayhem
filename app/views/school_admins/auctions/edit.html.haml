@@ -8,9 +8,9 @@
           = f.label :product
           = f.select :product_id, @products.map{|p| [p.name, p.id] }
           = f.label :start_date
-          = f.text_field :start_date, :id => 'datepicker'
+          = f.text_field :start_date, :id => 'datepicker', :value => @auction.start_date.strftime("%d-%m-%Y %I:%M %P" )
           = f.label :end_date
-          = f.text_field :end_date, :id => 'datepicker2'
+          = f.text_field :end_date, :id => 'datepicker2',:value => @auction.end_date.strftime("%d-%m-%Y %I:%M %P" )
           = f.label :min_grade
           = f.select :min_grade, School::GRADES
           = f.label :max_grade
