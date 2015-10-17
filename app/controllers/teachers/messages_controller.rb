@@ -6,9 +6,19 @@ module Teachers
     def index
       redirect_to teachers_peer_messages_path
     end
+    
+    def admin_messages
+      @messages = @received_messages.for_admin.page params[:page]
+      @messages.map{|x| x.read!}      
+    end
 
     def peer_messages
       @messages = @received_messages.from_teacher.page params[:page]
+      @messages.map{|x| x.read!}
+    end
+
+    def auctions_messages
+      @messages = @received_messages.from_auctions.page params[:page]
       @messages.map{|x| x.read!}
     end
 

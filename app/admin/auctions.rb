@@ -13,8 +13,7 @@ ActiveAdmin.register Auction do
       auction_creator = AuctionCreator.new(params[:auction].except(:auction_zip_code_ids), current_person)
       auction_creator.execute!
       if auction_creator.created?
-        create_auction_zip_codes
-        flash[:notice] = 'Auction updated.'
+        flash[:notice] = 'Auction created.'
         redirect_to admin_auction_path(auction_creator.auction)
       else
         flash[:error] = 'There was a problem updating the auction.'
@@ -24,10 +23,13 @@ ActiveAdmin.register Auction do
 
     def update
       @auction = Auction.find(params[:id])
-      create_auction_zip_codes
+      @auction.auction_zip_codes.delete_all
       @auction.auction_state_links.delete_all
       @auction.auction_school_links.delete_all
       if @auction.update_attributes(params[:auction].except(:auction_zip_code_ids))
+        create_school_links
+        create_auction_zip_codes
+        create_state_links
         flash[:notice] = 'Auction updated'
         redirect_to admin_auction_path(@auction)
       else
@@ -35,7 +37,34 @@ ActiveAdmin.register Auction do
         render :edit
       end
     end
-
+    
+    def create_school_links
+      school_ids = params[:auction][:school_ids]
+      Rails.logger.debug("AKT: Create School Links: #{school_ids.inspect}")
+      school_ids.each do | school_id |
+        school = School.where(id: school_id).first
+        AuctionSchoolLink.create(:school_id => school.id, :auction_id => @auction.id) if school
+      end
+    end
+    
+    def create_auction_zip_codes
+      if params[:auction][:auction_zip_code_ids]
+        params[:auction][:auction_zip_code_ids].each do |zip|
+          zip = zip.strip
+          AuctionZipCode.create(:zip_code => zip, :auction_id => @auction.id) if zip.present?
+        end
+      end
+    end  
+    
+    def create_state_links
+      if params[:auction][:state_ids]
+        params[:auction][:state_ids].each do |state|
+          state = state.strip
+          AuctionStateLink.create(:state_id => state, :auction_id => @auction.id) if state.present?
+        end    
+      end
+    end
+  
     def fulfill_auction
       auction = Auction.find(params[:auction_id])
       auction.fulfill!
@@ -117,7 +146,7 @@ ActiveAdmin.register Auction do
       f.input :max_grade, :as => :select, :collection => School::GRADES
       f.input :schools, :as => :chosen
       f.input :states, :as => :chosen
-      f.input :auction_zip_codes, :as => :chosen, :collection => Address.pluck(:zip)
+      f.input :auction_zip_codes, :as => :chosen, :collection => School.all.collect { | school | school.zip }.uniq
     end
     f.buttons
   end
