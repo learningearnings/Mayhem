@@ -119,7 +119,7 @@ module STI
           student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
           if api_student["Schools"]
-            school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+            school_ids = School.where(district_guid: @district_guid, sti_id: api_student["Schools"]).pluck(:id)
           elsif api_student["SchoolsXml"]
             xmldata = Hash.from_xml api_student["SchoolsXml"]
             if xmldata["root"]["row"].kind_of?(Array)
