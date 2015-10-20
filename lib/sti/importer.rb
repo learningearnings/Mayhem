@@ -55,7 +55,7 @@ module STI
           teacher.status = "active"
           teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
-          teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
+          teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"], confirmed_at: Time.now})
           if api_teacher["Schools"]
             school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
           elsif api_teacher["SchoolsXml"]
@@ -118,6 +118,8 @@ module STI
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
           student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
+          student.user.confirmed_at = Time.now
+          student.user.save
           if api_student["Schools"]
             school_ids = School.where(district_guid: @district_guid, sti_id: api_student["Schools"]).pluck(:id)
           elsif api_student["SchoolsXml"]
