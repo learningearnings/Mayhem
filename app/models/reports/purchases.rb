@@ -122,12 +122,17 @@ module Reports
     def generate_row(reward_delivery)
       person = reward_delivery.to
       deliverer = reward_delivery.reward.product.person ? reward_delivery.reward.product.person : reward_delivery.from
-      classroom = person.classrooms.first
-      teacher   = classroom.try(:teachers).try(:first)
+      if @school.id == 1573
+        cr_name = ""
+      else
+        classroom = person.classrooms.first
+        teacher   = classroom.try(:teachers).try(:first)
+        cr_name = (person.classrooms.any? ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : "")
+      end      
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
-        classroom: (person.classrooms.any? ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : ""),
+        classroom: cr_name,
         grade: School::GRADE_NAMES[person.try(:grade)],
         purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
         reward: reward_delivery.reward.product.name,

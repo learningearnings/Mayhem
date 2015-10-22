@@ -35,7 +35,7 @@ class AuctionCreator
       end
     else
       if @current_person and @current_person.school
-        AuctionSchoolLink.create(:school_id => @current_person.school.id, :auction_id => auction.id) if school        
+        AuctionSchoolLink.create(:school_id => @current_person.school.id, :auction_id => auction.id)         
       end
     end
   end

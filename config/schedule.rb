@@ -32,6 +32,10 @@ every 1.day, :at => '7am' do
   rake "update_city_state_after_sync:run", :output => "/home/deployer/logs/update_city_state_after_sync_run.log"
 end
 
+every 1.day, :at => '9am' do
+  rake "update_city_state_after_sync:run", :output => "/home/deployer/logs/update_city_state_after_sync_run.log"
+end
+
 every 1.day, :at => '1am' do
   rake "le:sti_nightly_import", :output => "/home/deployer/logs/sti_nightly_import.log"
 end

@@ -3,6 +3,9 @@
 # sufficiently fast to not matter afaik.  Metrics will tell. -ja
 module Reports
   class StudentCreditHistory < Reports::Base
+    
+    include ActionView::Helpers::NumberHelper
+    
     def initialize params
       super
       @person         = params[:person]
