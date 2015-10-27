@@ -7,9 +7,11 @@ class StiController < ApplicationController
   skip_before_filter :subdomain_required
   skip_before_filter :verify_authenticity_token
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
-  before_filter :debug
 
   def give_credits
+    if current_school == nil or current_person == nil or current_person.main_account(current_school) == nil
+      redirect_to main_app.page_path('home') and return
+    end
     if current_school.credits_scope != "School-Wide" 
       if current_school.credits_type != "child"
         redirect_to :action => "new_school_for_credits", :teacher => @teacher.id, :school => current_school.id and return 
@@ -51,17 +53,8 @@ class StiController < ApplicationController
       end      
       school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
       if !school
-        school = School.new
-        school.district_guid = params[:districtGUID]
-        school.name = params[:districtGUID] + ":" + params[:schoolid]
-        school.sti_id = params[:schoolid]
-        school.state_id = 1
-        school.city = "Test City"
-        school.address1 = "Fake address"
-        school.zip = 12345
-        school.min_grade = 0
-        school.max_grade = 12
-        school.save
+        flash[:error] = "School not found"
+        redirect_to main_app.page_path('home') and return        
       end  
       if params[:userid]
         teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
@@ -69,12 +62,15 @@ class StiController < ApplicationController
           session[:current_school_id] = school.id 
           sign_in(teacher.user)
           redirect_to "/" and return
-        else
-          redirect_to "/teachers/new/?sid=#{school.id}&userid=#{params[:userid]}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
         end
-      elsif params[:firstname] and params[:lastname]
-        # Redirect to sign up page?
-        redirect_to "/teachers/new/?sid=#{school.id}&first_name=#{params[:firstname]}&last_name=#{params[:lastname]}" and return
+        student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
+        if student
+          session[:current_school_id] = school.id 
+          sign_in(student.user)
+          redirect_to "/" and return
+        end    
+        flash[:error] = "User not found"    
+        redirect_to main_app.page_path('home') and return   
       else
         flash[:error] = "Non integrated sign in failed -- Missing required parameters"
       end
@@ -172,7 +168,11 @@ class StiController < ApplicationController
   end
 
   def load_students    
-    @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    if params["studentIds"]
+      @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    else
+      @students = current_school.students.where(district_guid: params[:districtGUID]).order(:last_name, :first_name)      
+    end
   end
 
   def on_success(obj = nil)
@@ -190,9 +190,7 @@ class StiController < ApplicationController
   end
 
   def login_teacher
-    Rails.logger.debug("AKT Login Teacher...")
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
-    Rails.logger.debug("AKT Found Teacher...#{@teacher.inspect}")
     return false if @teacher.nil?
     if params[:sti_school_id]
       school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
@@ -202,19 +200,15 @@ class StiController < ApplicationController
     if school
       session[:current_school_id] = school.id 
       @current_school = school
-    else
-      Rails.logger.error("No school for teacher: #{@teacher.inspect}")
     end
-    Rails.logger.debug("AKT Signing in with user: #{@teacher.user}")
     sign_in(@teacher.user)
-    Rails.logger.debug("AKT Teacher signed in")
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
     #  student is associated with
     student_sti_id = params["studentIds"].split(",").first if params["studentIds"].present?
     if student_sti_id.present?
-      student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id, status: 'active').first
+      student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id).first
       # Use the latest school the student was linked with
       #  this fixes yet another bug where a student can be
       #  associated to multiple schools, even though they are
@@ -235,37 +229,29 @@ class StiController < ApplicationController
       @child = School.where(sti_id: school.id, credits_type: "child")
       if @child.size > 0
         @current_school = @child[0]        
-        session[:current_school_id] = @child[0].id
         @teacher = @current_school.teachers.first
-        @current_person = @teacher
-        sign_in(@teacher.user)        
+        if @teacher
+          session[:current_school_id] = @child[0].id          
+          @current_person = @teacher
+          sign_in(@teacher.user)  
+        else
+          return false
+        end      
       end   
-    end   
-    Rails.logger.debug("AKT Teacher succesfully logged in.  Current school is: #{@current_school}") 
+    end    
+    if !school
+      return false
+    end    
     return true
-  end
-
-  def debug
-    Rails.logger.warn "*****************************************************"
-    Rails.logger.warn "*****************************************************"
-    Rails.logger.warn @client_response
-    Rails.logger.warn session.inspect
-    Rails.logger.warn "*****************************************************"
-    Rails.logger.warn "*****************************************************"
   end
 
   def handle_sti_token
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
+    if (sti_link_token == nil)
+      return false
+    end    
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
-    Rails.logger.warn "***************************************************"
-    Rails.logger.warn "AKT Client Response: #{sti_client.session_information.parsed_response.inspect}"
-    Rails.logger.warn "***************************************************"
-    Rails.logger.warn "***************************************************"
-    Rails.logger.warn "***************************************************"
-    Rails.logger.warn "***************************************************"
-    Rails.logger.warn "***************************************************"
-    Rails.logger.warn "***************************************************"
     @client_response = sti_client.session_information.parsed_response
     if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
       render partial: "teacher_not_found"
