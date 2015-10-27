@@ -10,6 +10,7 @@ module Reports
     def initialize params
       super
       @school = params[:school]
+      @teacher = params[:teacher]
       @current_page = params[:page]    
       @parameters = Reports::Purchases::Params.new(params)
     end

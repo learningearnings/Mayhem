@@ -64,7 +64,7 @@ class StiController < ApplicationController
           redirect_to "/" and return
         end
         student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
-        if teacher
+        if student
           session[:current_school_id] = school.id 
           sign_in(student.user)
           redirect_to "/" and return
