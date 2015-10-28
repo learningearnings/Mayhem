@@ -63,7 +63,7 @@ class StiController < ApplicationController
           sign_in(teacher.user)
           redirect_to "/" and return
         end
-        student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
+        student = school.students.detect { | stu | stu.sti_id == params[:userid].to_i }
         if student
           session[:current_school_id] = school.id 
           sign_in(student.user)
@@ -188,6 +188,16 @@ class StiController < ApplicationController
   def person
     current_person
   end
+  
+  def login_student
+    @student = Student.where(district_guid: params[:districtGUID], sti_id: @client_response["StudentId"], status: "active").first
+    return false if @student.nil?
+    school = @student.school 
+    session[:current_school_id] = school.id   
+    @current_school = school 
+    sign_in(@student.user)     
+    return true   
+  end
 
   def login_teacher
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
@@ -253,10 +263,13 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
-    if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
-      render partial: "teacher_not_found"
-      return false
+    if @client_response and !@client_response["StudentId"].blank? and login_student
+      return true
     end
-    return true
+    if @client_response and !@client_response["StaffId"].blank? and login_teacher
+      return true
+    end
+    render partial: "teacher_not_found"
+    return false
   end
 end
