@@ -15,9 +15,8 @@
             .filter-rewards
               = f.input :reward_status_filter,:label => "Show Rewards", :collection => report_params.reward_status_filter_options
             .filter-teachers
-              = report_params.inspect
-              - if false
-                = f.input :teachers_filter, :label => "Show Teacher", :collection => report_params.teachers_filter_options(current_school), :selected => report_params.teacher.id, :include_blank => true                              
+              - if report_params.page.blank?
+                = f.input :teachers_filter, :label => "Show Teacher", :collection => report_params.teachers_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
               - else
                 = f.input :teachers_filter, :label => "Show Teacher", :collection => report_params.teachers_filter_options(current_school)              
             .filter-teachers

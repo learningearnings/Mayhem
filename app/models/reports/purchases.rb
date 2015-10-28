@@ -175,8 +175,8 @@ module Reports
       def initialize options_in = {}
         super
         @teacher = options_in[:teacher] if options_in[:teacher]
-        Rails.logger.debug("AKT Params initialize options_in: options_in: #{options_in.inspect}") if options_in        
-        Rails.logger.debug("AKT Params initialize options_in: Teacher: #{teacher.inspect}") if teacher
+        #Rails.logger.debug("AKT Params initialize options_in: options_in: #{options_in.inspect}") if options_in        
+        #Rails.logger.debug("AKT Params initialize options_in: Teacher: #{@teacher.inspect}") if @teacher
         options_in ||= {}
         options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
         
@@ -186,10 +186,6 @@ module Reports
           default_value = send(default_method) if respond_to? default_method
           instance_variable_set(('@' + iv.to_s).to_sym,options[iv] || default_value || "")
         end
-      end
-      
-      def teacher
-        return @teacher
       end
 
       def student_name_options
