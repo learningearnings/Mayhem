@@ -9,6 +9,9 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
 
   def give_credits
+    if current_school == nil or current_person == nil or current_person.main_account(current_school) == nil
+      redirect_to main_app.page_path('home') and return
+    end
     if current_school.credits_scope != "School-Wide" 
       if current_school.credits_type != "child"
         redirect_to :action => "new_school_for_credits", :teacher => @teacher.id, :school => current_school.id and return 
@@ -61,7 +64,7 @@ class StiController < ApplicationController
           redirect_to "/" and return
         end
         student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
-        if teacher
+        if student
           session[:current_school_id] = school.id 
           sign_in(student.user)
           redirect_to "/" and return
@@ -165,7 +168,11 @@ class StiController < ApplicationController
   end
 
   def load_students    
-    @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    if params["studentIds"]
+      @students = current_school.students.where(district_guid: params[:districtGUID], sti_id: params["studentIds"].split(",")).order(:last_name, :first_name)
+    else
+      @students = current_school.students.where(district_guid: params[:districtGUID]).order(:last_name, :first_name)      
+    end
   end
 
   def on_success(obj = nil)
@@ -222,10 +229,14 @@ class StiController < ApplicationController
       @child = School.where(sti_id: school.id, credits_type: "child")
       if @child.size > 0
         @current_school = @child[0]        
-        session[:current_school_id] = @child[0].id
         @teacher = @current_school.teachers.first
-        @current_person = @teacher
-        sign_in(@teacher.user)        
+        if @teacher
+          session[:current_school_id] = @child[0].id          
+          @current_person = @teacher
+          sign_in(@teacher.user)  
+        else
+          return false
+        end      
       end   
     end    
     if !school
@@ -236,6 +247,9 @@ class StiController < ApplicationController
 
   def handle_sti_token
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
+    if (sti_link_token == nil)
+      return false
+    end    
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
