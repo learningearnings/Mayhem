@@ -105,7 +105,15 @@ module Reports
     
     def teachers_filter
       if parameters.teachers_filter.blank?
-        [:scoped]
+        if @teacher
+          students = []
+          @teacher.classrooms.each do | tcr |
+            students = students.concat(  tcr.students.collect { | stu | stu.id } )
+          end
+          [:where, { to_id: students }]
+        else
+          [:scoped]
+        end
       else
         #get all students for selected teacher
         students = []
@@ -166,14 +174,22 @@ module Reports
 
       def initialize options_in = {}
         super
+        @teacher = options_in[:teacher] if options_in[:teacher]
+        Rails.logger.debug("AKT Params initialize options_in: options_in: #{options_in.inspect}") if options_in        
+        Rails.logger.debug("AKT Params initialize options_in: Teacher: #{teacher.inspect}") if teacher
         options_in ||= {}
         options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
+        
         [:date_filter, :reward_status_filter, :teachers_filter, :reward_creator_filter, :sort_by, :students_name_option, :teachers_name_option].each do |iv|
           default_method = (iv.to_s + "_default").to_sym
           default_value = nil
           default_value = send(default_method) if respond_to? default_method
           instance_variable_set(('@' + iv.to_s).to_sym,options[iv] || default_value || "")
         end
+      end
+      
+      def teacher
+        return @teacher
       end
 
       def student_name_options
