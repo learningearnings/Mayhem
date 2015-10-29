@@ -2,7 +2,12 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def new
-      report = Reports::Purchases.new params.merge(school: current_school, status: "pending")
+      Rails.logger.debug("AKT: Reports controller: #{params.inspect}")
+      if params[:reports_purchases_params].blank?
+        report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)
+      else
+        report = Reports::Purchases.new params.merge(school: current_school, status: "pending")        
+      end
       delayed_report = DelayedReport.create(person_id: current_person.id)
       DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
       redirect_to purchases_report_show_path(delayed_report.id, params)
