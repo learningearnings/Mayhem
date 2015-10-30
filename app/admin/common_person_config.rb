@@ -59,6 +59,10 @@ module CommonPersonConfig
 
       show do
         @person = Person.find(params[:id])
+        if @person.user.confirmed_at == nil
+          @person.user.confirmed_at = Time.now
+          @person.user.save
+        end
         render :partial => 'admin/common/school_list', :locals => { :person => @person }
       end
 
