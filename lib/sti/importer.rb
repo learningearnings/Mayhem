@@ -248,7 +248,7 @@ module STI
         name: api_school["Name"],
         address1: api_school["Address"] || "Blank",
         city: api_school["City"] || "Blank",
-        state_id: api_school["State"],
+        state_id: api_school["State"] || "AL",
         zip: api_school["PostalCode"],
         sti_id: api_school["Id"],
         min_grade: 1,
