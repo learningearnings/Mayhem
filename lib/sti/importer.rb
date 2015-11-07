@@ -30,7 +30,48 @@ module STI
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
         school.update_attributes(api_school_mapping(api_school))
         school.reload
-        school.activate
+        school.activatemodule STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
         @imported_schools << school
       end
 
@@ -93,7 +134,48 @@ module STI
         ClassroomDeactivator.new(classroom.id).execute!
       end
       
-      @api_classrooms = sti_classrooms.each do |api_classroom|
+      @api_classrooms = sti_classrooms.each do |api_classroom|module STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
         classroom = Classroom.where(district_guid: @district_guid, sti_id: api_classroom["Id"]).first_or_initialize
         classroom.update_attributes(api_classroom_mapping(api_classroom))
         classroom.reload
@@ -115,7 +197,48 @@ module STI
       students_response = client.async_students.parsed_response
       students_response["Rows"].each do |api_student|
         begin
-          student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
+          student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initializemodule STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
           student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
           student.user.confirmed_at = Time.now
@@ -136,7 +259,48 @@ module STI
           
           school_ids.each do |sti_school_id|
             school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-            person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initialize
+            person_school_link = ::PersonSchoolLink.where(:person_id => student.id, :school_id => school.id).first_or_initializemodule STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
             person_school_link.skip_onboard_credits = true
             person_school_link.status = "active"
             person_school_link.save(:validate => false)
@@ -181,7 +345,48 @@ module STI
         end
       end
       newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
-      BuckDistributor.new(newly_synced_schools).run
+      BuckDistributor.new(newly_synced_schools).runmodule STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
 
       newly_synced_schools.each do |school|
         request = client.set_school_synced(school.sti_id)
@@ -193,7 +398,48 @@ module STI
       district.update_attributes({
         current_staff_version:   staff_response["CurrentVersion"],
         current_student_version: students_response["CurrentVersion"],
-        current_section_version: classrooms_response["CurrentVersion"],
+        current_section_version: classrooms_response["CurrentVersion"],module STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
         current_roster_version:  rosters_response["CurrentVersion"]
       })
     end
@@ -208,7 +454,48 @@ module STI
         sti_id: api_classroom["Id"],
         district_guid: @district_guid
       }
+    endmodule STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
     end
+  end
+end
+
 
     def api_teacher_mapping api_teacher
       {
@@ -248,9 +535,50 @@ module STI
         name: api_school["Name"],
         address1: api_school["Address"] || "Blank",
         city: api_school["City"] || "Blank",
-        state_id: State.first.id,
-        zip: "35071",
-        sti_id: api_school["Id"],
+        state_id: api_school["State"] || "AL",
+        zip: api_school["PostalCode"],
+        sti_id: api_school["Id"],module STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
         min_grade: 1,
         max_grade: 12,
         district_guid: @district_guid
@@ -270,7 +598,48 @@ module STI
     end
 
     def username_unique_for_district?(district_guid, username)
-      !Student.joins(:user).where(:district_guid => district_guid, :user => {:username => username}).any?
+      !Student.joins(:user).where(:district_guid => district_guid, :user => {:username => username}).any?module STI
+  module Synchronizers
+    class SchoolSynchronizer < BaseSynchronizer
+      def execute!
+        current_schools_for_district = School.where(district_guid: @district_guid).pluck(:sti_id)
+        sti_school_ids = @data.map {|school| school["Id"]}
+        # Schools that are synced in our DB but are no longer listed in the api
+        (current_schools_for_district - sti_school_ids).each do |school_sti_id|
+          school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
+          school.deactivate
+
+          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+          client.set_school_synced(school.sti_id, false)
+        end
+        @data.each do |api_school|
+          school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+          school.update_attributes(mapping(api_school))
+          school.reload
+          school.activate
+        end
+      end
+
+      private
+
+      def mapping(api_school)
+        {
+          name: api_school["Name"],
+          address1: api_school["Address"] || "Blank",
+          city: api_school["City"] || "Blank",
+          state_id: api_school["State"] || "AL",
+          zip: api_school["PostalCode"],
+          sti_id: api_school["Id"],
+          min_grade: 1,
+          max_grade: 12,
+          district_guid: @district_guid
+        }
+      end
+    end
+  end
+end
+
     end
   end
 end

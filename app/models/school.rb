@@ -196,6 +196,7 @@ class School < ActiveRecord::Base
   end
 
   def name_and_location
+    return "" if state == nil
     [name, city, state.name].join(", ")
   end
 
