@@ -14,18 +14,19 @@ module Reports
         school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
         staff = Teacher.includes(:user).joins(:allperson_school_links,:spree_user).where(status: 'active', allperson_school_links: { status: "active", school_id: school_ids })
         CSV.generate do |csv|
-          csv << ["sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "status", "first_login_date", "login_count", "sum_credits_awarded", "has_a_classroom?", "grade"]
+          csv << ["district_name","sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "status", "first_login_date", "login_count", "sum_credits_awarded", "has_a_classroom?", "grade"]
           staff.each_with_index do |staff_member, index|
             if staff_member.user            
               csv << [
+                  District.where(guid: staff_member.district_guid).pluck(:name),
                   staff_member.district_guid,
                   # TODO: This might be incorrect if a staff_member belongs to multiple schools
                   staff_member.school.try(:sti_id),
                   staff_member.sti_id,
                   staff_member.id,
                   staff_member.status,
-                  staff_member.interactions.first.try(:created_at).try(:strftime, "%m/%d/%Y"),
-                  staff_member.user.sign_in_count,
+                  staff_member.interactions.between(@start_date, @end_date).first.try(:created_at).try(:strftime, "%m/%d/%Y"),
+                  staff_member.interactions.staff_login_between(@start_date, @end_date).count,
                   # TODO: Make sure this is right
                   staff_member.otu_codes.created_between(@start_date, @end_date).sum(:points).to_s,
                   staff_member.person_school_classroom_links.where(status: "active").size > 0,
@@ -51,8 +52,8 @@ module Reports
                   staff_member.sti_id,
                   staff_member.id,
                   staff_member.status,
-                  staff_member.interactions.first.try(:created_at).try(:strftime, "%m/%d/%Y"),
-                  staff_member.user.sign_in_count,
+                  staff_member.interactions.between(@start_date, @end_date).first.try(:created_at).try(:strftime, "%m/%d/%Y"),
+                  staff_member.interactions.staff_login_between(@start_date, @end_date).count,
                   # TODO: Make sure this is right
                   staff_member.otu_codes.created_between(@start_date, @end_date).sum(:points).to_s,
                   staff_member.person_school_classroom_links.where(status: "active").size > 0,
