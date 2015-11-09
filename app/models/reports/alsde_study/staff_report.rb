@@ -18,7 +18,7 @@ module Reports
           staff.each_with_index do |staff_member, index|
             if staff_member.user            
               csv << [
-                  District.where(guid: staff_member.district_guid).pluck(:name),
+                  District.where(guid: staff_member.district_guid).pluck(:name).first,
                   staff_member.district_guid,
                   # TODO: This might be incorrect if a staff_member belongs to multiple schools
                   staff_member.school.try(:sti_id),

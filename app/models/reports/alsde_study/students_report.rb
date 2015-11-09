@@ -18,7 +18,7 @@ module Reports
           students.each_with_index do |student, index |
             if student.user
               csv << [
-                District.where(guid: student.district_guid).pluck(:name),
+                District.where(guid: student.district_guid).pluck(:name).first,
                 student.district_guid,
                 student.school.try(:sti_id),
                 student.sti_id,
