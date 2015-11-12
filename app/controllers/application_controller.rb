@@ -41,13 +41,17 @@ class ApplicationController < ActionController::Base
       else
         district_name = "None"
       end
-      @options = {:env => Rails.env, :email => current_user.email, :username => current_user.username, 
-                  :first_name => current_user.person.first_name, :last_name => current_user.person.last_name,
+      @options = {:env => Rails.env, 
+                  '$email' => current_user.email, 
+                  '$username' => current_user.username, 
+                  '$first_name' => current_user.person.first_name, 
+                  '$last_name' => current_user.person.last_name,
                   :grade => current_user.person.try(:grade),
                   :type => current_user.person.type, :school => current_user.person.school.try(:name),
                   :district_guid => (current_school.district_guid.blank? ? "None" : current_school.district_guid ),
                   :district => district_name,                
-                  :credits_scope => current_school.credits_scope, :school_synced => current_school.synced? }
+                  :credits_scope => current_school.credits_scope, 
+                  :school_synced => current_school.synced? }
     else
       @options = {}
     end
