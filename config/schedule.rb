@@ -21,7 +21,7 @@
 set :job_template, "export PATH=$PATH:/usr/local/bin/;bash -l -c ':job'"
 
 every :hour do
-  runner "AuctionHandler.new.run!"
+  runner "AuctionHandler.new.run!", :output => "/home/deployer/logs/auction_handler.log"
 end
 
 every :saturday do

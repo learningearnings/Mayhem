@@ -249,7 +249,7 @@ module STI
         address1: api_school["Address"] || "Blank",
         city: api_school["City"] || "Blank",
         state_id: (api_school["State"] ? (State.where(abbr: api_school["State"]).first.id) : (State.first.id)),
-        zip: api_school["PostalCode"],
+        zip: (api_school["PostalCode"] == nil or api_school["PostalCode"].strip.blank?) ? "35071" : (api_school["PostalCode"].strip),
         sti_id: api_school["Id"],
         min_grade: 1,
         max_grade: 12,
