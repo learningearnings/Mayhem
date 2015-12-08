@@ -28,6 +28,7 @@ module STI
       end
       @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+        school.credits_scope = "School-Wide" unless school.credits_scope        
         school.update_attributes(api_school_mapping(api_school))
         school.reload
         school.activate
@@ -55,7 +56,7 @@ module STI
           teacher.status = "active"
           teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
-          teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
+          teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"], confirmed_at: Time.now})
           if api_teacher["Schools"]
             school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
           elsif api_teacher["SchoolsXml"]
@@ -118,8 +119,10 @@ module STI
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
           student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
+          student.user.confirmed_at = Time.now
+          student.user.save
           if api_student["Schools"]
-            school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+            school_ids = School.where(district_guid: @district_guid, sti_id: api_student["Schools"]).pluck(:id)
           elsif api_student["SchoolsXml"]
             xmldata = Hash.from_xml api_student["SchoolsXml"]
             if xmldata["root"]["row"].kind_of?(Array)
@@ -246,8 +249,8 @@ module STI
         name: api_school["Name"],
         address1: api_school["Address"] || "Blank",
         city: api_school["City"] || "Blank",
-        state_id: State.first.id,
-        zip: "35071",
+        state_id: (api_school["State"] ? (State.where(abbr: api_school["State"]).first.id) : (State.first.id)),
+        zip: (api_school["PostalCode"] == nil or api_school["PostalCode"].strip.blank?) ? "35071" : (api_school["PostalCode"].strip),
         sti_id: api_school["Id"],
         min_grade: 1,
         max_grade: 12,

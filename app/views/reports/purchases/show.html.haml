@@ -15,9 +15,14 @@
             .filter-rewards
               = f.input :reward_status_filter,:label => "Show Rewards", :collection => report_params.reward_status_filter_options
             .filter-teachers
-              = f.input :teachers_filter, :label => "Show Teacher", :collection => report_params.teachers_filter_options(current_school)
+              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)              
             .filter-teachers
-              = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
+              - if report_params.page.blank?
+                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
+              - else
+                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
+              
+            
           .sorting2
             %h4 Options
             .filter-dates
@@ -37,7 +42,7 @@
                 - enable_mark_button = false
                 %th Reward Creator
                 %th Student (username)
-                %th Classroom
+                %th Homeroom
                 %th Grade
                 %th Purchased
                 %th Reward
@@ -52,7 +57,7 @@
                 %tr
                   %td= row["delivery_teacher"]
                   %td= row["student"]
-                  %td= row["classroom"]
+                  %td= row["classroom"]                  
                   %td= row["grade"]
                   %td= row["purchased"]
                   %td= row["reward"]
@@ -111,7 +116,7 @@
     sort = sort ? sort : [[0,"desc",0], [1, "desc", 0]]
     $('#report_table').dataTable( {
       "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 8, 9, 10 ] }
+        { 'bSortable': false, 'aTargets': [ 7, 8, 9 ] }
        ],
       "bPaginate": false,
       "bInfo": false,
@@ -136,6 +141,17 @@
     $('#report_table').on('sort.DT', function(e,d) {
       $.cookie('purchases_report_order', JSON.stringify(d.aaSorting));
     });
+    
+    $('#reports_purchases_params_reward_creator_filter').change(function() {
+      console.log("Reward Creator changed...");
+      $('#reports_purchases_params_teachers_filter').prop('selectedIndex', 0); 
+    });
+      
+    $('#reports_purchases_params_teachers_filter').change(function() {  
+      console.log("Homeroom changed...");  
+      $('#reports_purchases_params_reward_creator_filter').prop('selectedIndex', 0); 
+    });     
+      
   } );
 
 :plain
@@ -158,6 +174,7 @@
         });
       }
     }
+    
 
     function undeliverReward(element, reward_delivery_id) {
       $.ajax({

@@ -92,18 +92,10 @@ Leror::Application.routes.draw do
     end
   end
 
-  # FaqQuestions
-  resources :faq_questions  
-  get '/help' => "faq_questions#index", as: :help
-  post '/help' => 'faq_questions#search'
-
-  # FaqQuestions
   resources :faq_questions
-  get '/help' => "faq_questions#index", as: :help
-  post '/help' => 'faq_questions#search'
   get '/tour' => 'faq_questions#tour'
   get '/begin_tour' => 'faq_questions#begin_tour'
-  get '/end_tour' => 'faq_questions#end_tour'
+  get '/end_tour' => 'faq_questions#end_tour'    
   match "/help" => "faq_questions#index", :as => 'help'
   post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
   post "events/log_tour_event"
@@ -155,6 +147,7 @@ Leror::Application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
+  get '/classrooms/set_homeroom/:id' => 'classrooms#set_homeroom'
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.

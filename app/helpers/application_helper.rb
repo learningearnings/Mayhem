@@ -169,4 +169,16 @@ module ApplicationHelper
       "Are you sure? There are currently #{reward_count} reward(s) for this classroom."
     end
   end
+  
+  def classroom_set_homeroom_confirmation_message
+    #Get count of students who have a different homeroom setting
+    @student_ids = @classroom.students.pluck(:id)
+    psl_ids = PersonSchoolLink.where(person_id: @student_ids, status: 'active').pluck(:id)
+    student_count = PersonSchoolClassroomLink.where(homeroom: true, person_school_link_id: psl_ids).reject{ | pscl | pscl.classroom_id == @classroom.id }.count
+    if student_count == 0
+      "Are you sure?"
+    else
+      "Are you sure? There are currently #{student_count} student(s) with a different homeroom assignment."
+    end
+  end
 end
