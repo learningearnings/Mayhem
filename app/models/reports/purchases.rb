@@ -16,8 +16,11 @@ module Reports
     end
 
     def execute!    
+      Rails.logger.debug("AKT: execute!")
       reward_deliveries.each do |reward_delivery|
+        Rails.logger.debug("AKT: looping")
         if reward_delivery.reward && reward_delivery.reward.product # Guard against deleted rewards
+          Rails.logger.debug("AKT: call generate row")
           @data << generate_row(reward_delivery)
         end
       end
@@ -94,7 +97,12 @@ module Reports
     
     def reward_creator_filter
       if parameters.reward_creator_filter.blank?
-        [:scoped]
+        if @teacher
+          rewards = @teacher.products.collect { | r | r.id }
+          [:where, { reward: {product: { id: rewards} } }]
+        else
+          [:scoped]
+        end        
       else
         #get all rewards created by the selected rewards creator
         teacher = Teacher.find(parameters.reward_creator_filter)
@@ -105,22 +113,17 @@ module Reports
     
     def teachers_filter
       if parameters.teachers_filter.blank?
-        if @teacher
-          students = []
-          @teacher.classrooms.each do | tcr |
-            students = students.concat(  tcr.students.collect { | stu | stu.id } )
-          end
-          [:where, { to_id: students }]
-        else
-          [:scoped]
-        end
+        [:scoped]
       else
         #get all students for selected teacher
         students = []
-        Teacher.find(parameters.teachers_filter).classrooms.each do | tcr |
-          students = students.concat(  tcr.students.collect { | stu | stu.id } )
+        homeroom = Teacher.find(parameters.teachers_filter).homeroom     
+        if homeroom
+          students = homeroom.students.collect { | stu | stu.id }
+          [:where, { to_id: students }]
+        else
+          [:where, { to_id: [] }]
         end
-        [:where, { to_id: students }]
       end
     end
 
@@ -129,15 +132,21 @@ module Reports
     end
 
     def generate_row(reward_delivery)
+      Rails.logger.debug("AKT: generate row")
       person = reward_delivery.to
       deliverer = reward_delivery.reward.product.person ? reward_delivery.reward.product.person : reward_delivery.from
-      #if @school.id == 1573
-        cr_name = ""
-      #else
-      #  classroom = person.classrooms.first
-      #  teacher   = classroom.try(:teachers).try(:first)
-      #  cr_name = (person.classrooms.any? ? "#{teacher.try(:last_name)}: #{person.classrooms.first.name}" : "")
-      #end      
+      homeroom = person.homeroom
+      if homeroom
+        teacher = homeroom.teachers.first
+        if teacher
+          cr_name = "#{teacher.try(:last_name)}: #{homeroom.name}"
+        else
+          cr_name = homeroom.name
+        end
+      else
+        cr_name = "None"  
+      end   
+      Rails.logger.debug("AKT: homeroom #{cr_name}")
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),

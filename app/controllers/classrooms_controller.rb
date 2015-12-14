@@ -119,6 +119,21 @@ class ClassroomsController < LoggedInController
       redirect_to classrooms_path
     end
   end
+  
+  def set_homeroom
+      @classroom = Classroom.find(params[:id])
+      @student_ids = @classroom.students.pluck(:id)
+      psl_ids = PersonSchoolLink.where(person_id: @student_ids, status: 'active').pluck(:id)
+      PersonSchoolClassroomLink.update_all(" homeroom = false ", {person_school_link_id: psl_ids})
+      PersonSchoolClassroomLink.update_all(" homeroom = true ", {person_school_link_id: psl_ids, classroom_id: @classroom.id})   
+      
+      psl_ids = PersonSchoolLink.where(person_id: current_person.id, status: 'active').pluck(:id)
+      PersonSchoolClassroomLink.update_all(" homeroom = false ", {person_school_link_id: psl_ids})
+      PersonSchoolClassroomLink.update_all(" homeroom = true ", {person_school_link_id: psl_ids, classroom_id: @classroom.id})   
+        
+      flash[:notice] = 'Homeroom updated.'
+      redirect_to @classroom
+  end  
 
   def create_student
     @classroom_student_form = ClassroomStudentForm.new

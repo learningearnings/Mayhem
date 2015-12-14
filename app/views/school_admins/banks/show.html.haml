@@ -192,3 +192,18 @@
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
+  
+  $("#school_weekly_perfect_attendance_amount").on("change", function() {
+        var val = Math.abs(parseInt(this.value, 10) || 1);
+        this.value = val > 100 ? 100 : val;
+  });
+  
+  $("#school_weekly_no_tardies_amount").on("change", function() {
+        var val = Math.abs(parseInt(this.value, 10) || 1);
+        this.value = val > 100 ? 100 : val;
+  });
+  
+  $("#school_weekly_no_infractions_amount").on("change", function() {
+        var val = Math.abs(parseInt(this.value, 10) || 1);
+        this.value = val > 100 ? 100 : val;
+  });    

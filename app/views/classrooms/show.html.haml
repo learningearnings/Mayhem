@@ -1,9 +1,10 @@
-%h2 Classroom: #{@classroom.name}
+%h2 Classroom: 
 %ul.action_buttons
-  - unless @classroom.sti_id
+  %li= link_to "Set Homeroom", "/classrooms/set_homeroom/#{@classroom.id}", confirm: classroom_set_homeroom_confirmation_message, class: 'btn awesome-button'
+  - unless @classroom.sti_id  
     %li= button_to "Delete classroom", classroom_path(@classroom), confirm: classroom_delete_confirmation_message, method: :delete, class: 'btn awesome-button'
     %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
-
+%h2 #{@classroom.name}
 - if @classroom.sti_id
   .classrooms-alert.alert.alert-warning
     You must log into iNow to manage this classroom.
@@ -56,9 +57,6 @@
   .modal-body
     = form_for PersonSchoolClassroomLink.new, html: { class: 'add-existing-student' }, url: new_classroom_student_path do |f|
       = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
-      %label.checkbox
-        = check_box_tag :homeroom
-        Set as homeroom?
       = hidden_field_tag :classroom_id, @classroom.id
     .btn.btn-success.add-existing-student-save
       Add

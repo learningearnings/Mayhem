@@ -2,7 +2,6 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def new
-      Rails.logger.debug("AKT: Reports controller: #{params.inspect}")
       if params[:reports_purchases_params].blank?
         report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)
       else
