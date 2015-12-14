@@ -28,6 +28,7 @@ module STI
       end
       @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+        school.credits_scope = "School-Wide" unless school.credits_scope        
         school.update_attributes(api_school_mapping(api_school))
         school.reload
         school.activate

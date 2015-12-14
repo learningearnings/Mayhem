@@ -147,6 +147,7 @@ Leror::Application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
+  get '/classrooms/set_homeroom/:id' => 'classrooms#set_homeroom'
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.
