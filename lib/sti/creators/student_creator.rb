@@ -9,6 +9,7 @@ module STI
       def execute!
         #Rails.logger.debug "AKT: StudentCreator #{@data.inspect}"
         person = Student.create(person_mapping, as: :admin)
+        person.user = Spree::User.new  if person.user.nil?
         person.user.update_attributes(user_mapping) if person.recovery_password.nil?
         person.user.confirmed_at = Time.now
         person.user.save
