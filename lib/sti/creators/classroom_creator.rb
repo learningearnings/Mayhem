@@ -17,7 +17,11 @@ module STI
           #Rails.logger.debug "AKT: Fetch PersonSchoolLink for district_guid #{@district_guid} and school sti_id #{@data["SchoolId"]}"
           school = School.where(district_guid: @district_guid, sti_id: @data["SchoolId"], status: "active").last
           #Rails.logger.debug "AKT: School: #{school}"
-          person_school_link = PersonSchoolLink.where(person_id: teacher.id, school_id: school.id, status: "active").first_or_create
+          person_school_link = PersonSchoolLink.where(person_id: teacher.id, school_id: school.id).first_or_create
+          if !person_school_link.status_active
+            person_school_link.status = "active"
+            person_school_link.save
+          end
           #Rails.logger.debug "AKT: PSL #{person_school_link.inspect}"
           PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create
         end
