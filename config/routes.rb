@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
   get '/sti/auth' => "sti#auth" 
+  post '/sti/auth' => "sti#auth"
   get '/homes/schools_for_username' => "homes#schools_for_username"
   get  '/teachers/home/defer_email' => "teachers/home#defer_email"
   post '/teachers/log_event' => "teachers#log_event"
