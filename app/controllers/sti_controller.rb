@@ -30,10 +30,13 @@ class StiController < ApplicationController
   end
   
   def auth
+    Rails.logger.info("auth")
     if params["sti_session_variable"]
       #integrated
+      Rails.logger.info("handle sti token")
       if handle_sti_token
         if current_school
+          Rails.logger.info("redirect to root")
           redirect_to "/" and return
         else
           logger.error("No school for logged in teacher")
@@ -205,7 +208,8 @@ class StiController < ApplicationController
       @current_school = school
     end
     Rails.logger.info("School: #{school.inspect}")
-    sign_in(@teacher.user)
+    Rails.logger(sign_in(@teacher.user).inspect)
+    Rails.logger.info("Teacher signed in")    
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
@@ -229,6 +233,7 @@ class StiController < ApplicationController
         Rails.logger.error("Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
       end
     end
+       Rails.logger.info("Checking credits scope")
     if school and school.credits_scope != "School-Wide" 
       @child = School.where(sti_id: school.id, credits_type: "child")
       if @child.size > 0
@@ -243,9 +248,12 @@ class StiController < ApplicationController
         end      
       end   
     end    
+           
     if !school
+      Rails.logger.info("Return false")
       return false
-    end    
+    end  
+    Rails.logger.info("Return true")  
     return true
   end
 
