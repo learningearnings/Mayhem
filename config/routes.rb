@@ -47,6 +47,8 @@ Leror::Application.routes.draw do
         post 'goals/:id'        => 'goals#update'
         post 'goals'            => 'goals#create' 
         delete 'goals/:id'      => 'goals#destroy' 
+        get  'purchases'        => 'purchases#index'
+        post 'purchases/:id/deliver' => 'purchases#deliver'
       end
       namespace :students do
         post "rewards/purchase" => 'rewards#purchase'
