@@ -190,6 +190,7 @@ class StiController < ApplicationController
   end
 
   def login_teacher
+        Rails.logger.info("Login Teacher")
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     return false if @teacher.nil?
     if params[:sti_school_id]
@@ -201,6 +202,7 @@ class StiController < ApplicationController
       session[:current_school_id] = school.id 
       @current_school = school
     end
+    Rails.logger.info("School: #{school.inspect}")
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
@@ -253,7 +255,9 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
+    Rails.logger.info(@client_response.inspect)
     if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
+      Rails.logger.error("Handle STI Token failed")
       render partial: "teacher_not_found"
       return false
     end
