@@ -208,7 +208,12 @@ class StiController < ApplicationController
       @current_school = school
     end
     Rails.logger.info("School: #{school.inspect}")
-    Rails.logger(sign_in(@teacher.user).inspect)
+    begin
+      sign_in(@teacher.user)
+    rescue Exception => e
+      Rails.logger.error("Teacher login failed #{e.inspect}")
+      return false
+    end
     Rails.logger.info("Teacher signed in")    
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
