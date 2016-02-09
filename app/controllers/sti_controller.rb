@@ -40,7 +40,9 @@ class StiController < ApplicationController
           redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
         end
       else
+        logger.error("handle_link_token_failed")
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
+        redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return
       end
     else 
       if params[:schoolId].blank?
@@ -261,6 +263,7 @@ class StiController < ApplicationController
       render partial: "teacher_not_found"
       return false
     end
+    Rails.logger.info("Teacher signed in...")
     return true
   end
 end
