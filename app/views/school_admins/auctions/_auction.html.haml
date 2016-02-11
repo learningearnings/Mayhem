@@ -1,5 +1,6 @@
 - if auction.product
   %h4.auction_product= link_to auction.product.name, edit_school_admins_auction_path(auction)
+  %p=auction.product.description
   = link_to small_image_pages(auction.product, :itemprop => "image"), edit_school_admins_auction_path(auction)
 
   .header-info
@@ -22,3 +23,4 @@
 
   - if auction.active?
     = link_to 'Cancel Auction', cancel_school_auction_school_admins_auction_path(auction), { class: 'btn awesome-button' }
+  = link_to 'Delete Auction', delete_school_auction_school_admins_auction_path(auction), { confirm: auction_delete_confirmation_message, class: 'btn awesome-button' }    

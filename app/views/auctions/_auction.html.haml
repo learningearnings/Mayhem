@@ -1,5 +1,6 @@
 - if auction.product
   %h4.auction_product= link_to auction.product.name, auction_path(auction)
+  %p=auction.product.description
   = link_to small_image_pages(auction.product, :itemprop => "image"), auction_path(auction)
 
   .header-info
