@@ -75,5 +75,15 @@ module SchoolAdmins
       flash[:notice] = "Auction cancelled."
       redirect_to school_admins_auctions_path
     end
+    
+    def delete_school_auction
+      auction = Auction.find(params[:id])
+      auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
+      auction.destroy
+      flash[:notice] = "Auction permanently deleted."
+      redirect_to school_admins_auctions_path
+    end    
+    
+    
   end
 end
