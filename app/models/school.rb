@@ -44,6 +44,7 @@ class School < ActiveRecord::Base
   after_save :create_spree_store
   after_create :ensure_accounts
   after_create :set_default_subdomain
+  after_create :set_default_distribution_model
 
   before_create :set_status_to_active
 
@@ -196,6 +197,7 @@ class School < ActiveRecord::Base
   end
 
   def name_and_location
+    return "" if state == nil
     [name, city, state.name].join(", ")
   end
 
@@ -232,6 +234,12 @@ class School < ActiveRecord::Base
     if store_subdomain.nil?
       address_state_abbr = state.abbr.to_s.downcase
       update_attribute(:store_subdomain, "#{address_state_abbr}#{self.id.to_s}")
+    end
+  end
+  
+  def set_default_distribution_model
+    if distribution_model.nil?
+      update_attribute(:distribution_model,'Centralized')
     end
   end
 end
