@@ -161,6 +161,10 @@ module ApplicationHelper
     source.inspect =~ /Dragonfly Attachment/ # oh god oh god
   end
 
+  def auction_delete_confirmation_message
+      "Are you sure? This will permanently delete the auction from the system."
+  end
+  
   def classroom_delete_confirmation_message
     reward_count = @classroom.classroom_product_links.count
     if reward_count == 0
