@@ -319,6 +319,7 @@ Leror::Application.routes.draw do
   resources :students
   namespace :school_admins do
     resources :auctions do
+      get "delete_school_auction", on: :member      
       get "cancel_school_auction", on: :member
       post 'create_auction_reward', on: :collection
       get 'all', on: :collection
