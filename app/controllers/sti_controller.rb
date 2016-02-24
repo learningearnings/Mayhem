@@ -50,7 +50,7 @@ class StiController < ApplicationController
         return
       end   
       @schools = @teacher.schools.where(district_guid: params[:districtGUID], status: "active")
-      if @schools and @schools.size > 1
+      if @schools and @schools.size > 1 and params[:sti_school_id].blank?
         render partial: "teacher_choose_school", :locals => {:schools => @schools}        
         return         
       end    
