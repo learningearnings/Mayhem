@@ -19,6 +19,7 @@ module STI
         schools = Hash.from_xml(@data["SchoolsXml"])
         if schools == nil
           Rails.logger.error("Bad XML response for guid: #{@district_guid} schools: #{@data.inspect}")
+          return
         end
         schools = schools["root"]
         if schools["row"].kind_of?(Array) 
