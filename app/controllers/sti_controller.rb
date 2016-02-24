@@ -191,11 +191,18 @@ class StiController < ApplicationController
 
   def login_teacher
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
+    @schools = nil
     return false if @teacher.nil?
     if params[:sti_school_id]
       school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
     else
-      school = @teacher.schools.where(district_guid: params[:districtGUID]).first      
+      @schools = @teacher.schools.where(district_guid: params[:districtGUID])    
+      if @schools.size == 1
+        school = @schools.first
+        @schools = nil
+      else
+        return false
+      end
     end
     if school
       session[:current_school_id] = school.id 
@@ -254,7 +261,11 @@ class StiController < ApplicationController
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
     if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
-      render partial: "teacher_not_found"
+      if @schools and @schools.size > 1
+        render partial: "teacher_not_found"
+      else
+        render partial: "teacher_choose_school"        
+      end
       return false
     end
     return true
