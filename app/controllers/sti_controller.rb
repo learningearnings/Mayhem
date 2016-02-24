@@ -251,6 +251,10 @@ class StiController < ApplicationController
     end    
     return true
   end
+  
+  def schools
+    return @schools
+  end
 
   def handle_sti_token
     sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
