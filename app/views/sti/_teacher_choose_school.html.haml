@@ -40,7 +40,7 @@
 
                 .distribute-credits
                   %h4 We found multiple schools associated with your account.  Please select your desired school.
-                  = form_tag "sti/auth", :class => 'form-inline resp-login-form-fields', autocomplete: 'off' do
+                  = form_tag "/sti/auth", :class => 'form-inline resp-login-form-fields', autocomplete: 'off' do
                     = hidden_field_tag :sti_session_variable, params[:sti_session_variable]
                     = hidden_field_tag :districtGUID, params[:districtGUID]                    
                     .school-select
