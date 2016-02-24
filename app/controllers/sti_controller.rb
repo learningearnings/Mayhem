@@ -215,7 +215,9 @@ class StiController < ApplicationController
   end
 
   def login_teacher
+    Rails.logger.info("AKT Login teacher: #{@client_response["StaffId"]}, district_guid: #{params[:districtGUID]}, sti_school_id: #{params[:sti_school_id]}")
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
+    Rails.logger.info("AKT Login teacher: #{@teacher.inspect}")
     return false if @teacher.nil?
     if params[:sti_school_id]
       school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id], status: "active").first
@@ -231,6 +233,7 @@ class StiController < ApplicationController
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
     #  student is associated with
+    Rails.logger.info("AKT: Teacher signed in..")
     student_sti_id = params["studentIds"].split(",").first if params["studentIds"].present?
     if student_sti_id.present?
       student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id).first
@@ -247,7 +250,7 @@ class StiController < ApplicationController
           @current_school = school     
         end
       else
-        Rails.logger.error("Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
+        Rails.logger.error("AKT Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
       end
     end
     if school and school.credits_scope != "School-Wide" 
@@ -267,6 +270,7 @@ class StiController < ApplicationController
       end   
     end    
     if !school
+      Rails.logger.error("AKT Login Teacher, no school found")
       return false
     end    
     return true
