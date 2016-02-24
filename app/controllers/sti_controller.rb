@@ -268,7 +268,7 @@ class StiController < ApplicationController
       if @schools and @schools.size > 1
         render partial: "teacher_not_found"
       else
-        render partial: "teacher_choose_school, :locals => { :schools => @schools }"        
+        render partial: "teacher_choose_school", :locals => { :schools => @schools }       
       end
       return false
     end
