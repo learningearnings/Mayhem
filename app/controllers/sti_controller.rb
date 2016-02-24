@@ -260,6 +260,8 @@ class StiController < ApplicationController
           @current_person = @teacher
           sign_in(@teacher.user)  
         else
+          Rails.logger.error("AKT: School #{school.id} with credits scope: #{school.credits_scope} has no child, district_guid:  #{params[:districtGUID]}")
+          flash[:error] = "School #{school.id} with credits scope: #{school.credits_scope} has no child, district_guid: #{params[:districtGUID]}"         
           return false
         end      
       end   
