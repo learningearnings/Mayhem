@@ -17,6 +17,9 @@ module STI
         person.user.update_attributes({api_user: true, email: @data["EmailAddress"], confirmed_at: Time.now})
 
         schools = Hash.from_xml(@data["SchoolsXml"])
+        if schools == nil
+          Rails.logger.error("Bad XML response for guid: #{@district_guid} schools: #{@data.inspect}")
+        end
         schools = schools["root"]
         if schools["row"].kind_of?(Array) 
           schools_ids = schools["row"].collect { | x | x["id"] }          
