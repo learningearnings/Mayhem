@@ -30,22 +30,17 @@ class StiController < ApplicationController
   end
   
   def auth
-    Rails.logger.info("auth")
     if params["sti_session_variable"]
       #integrated
-      Rails.logger.info("handle sti token")
       if handle_sti_token
         if current_school
-          Rails.logger.info("redirect to root")
           redirect_to "/" and return
         else
           logger.error("No school for logged in teacher")
           redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
         end
       else
-        logger.error("handle_link_token_failed")
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
-        redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return
       end
     else 
       if params[:schoolId].blank?
@@ -195,26 +190,25 @@ class StiController < ApplicationController
   end
 
   def login_teacher
-        Rails.logger.info("Login Teacher")
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
+    @schools = nil
     return false if @teacher.nil?
     if params[:sti_school_id]
       school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
     else
-      school = @teacher.schools.where(district_guid: params[:districtGUID]).first      
+      @schools = @teacher.schools.where(district_guid: params[:districtGUID])    
+      if @schools.size == 1
+        school = @schools.first
+        @schools = nil
+      else
+        return false
+      end
     end
     if school
       session[:current_school_id] = school.id 
       @current_school = school
     end
-    Rails.logger.info("School: #{school.inspect}")
-    begin
-      sign_in(@teacher.user)
-    rescue Exception => e
-      Rails.logger.error("Teacher login failed #{e.inspect}")
-      return false
-    end
-    Rails.logger.info("Teacher signed in")    
+    sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
@@ -238,7 +232,6 @@ class StiController < ApplicationController
         Rails.logger.error("Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
       end
     end
-       Rails.logger.info("Checking credits scope")
     if school and school.credits_scope != "School-Wide" 
       @child = School.where(sti_id: school.id, credits_type: "child")
       if @child.size > 0
@@ -253,12 +246,9 @@ class StiController < ApplicationController
         end      
       end   
     end    
-           
     if !school
-      Rails.logger.info("Return false")
       return false
-    end  
-    Rails.logger.info("Return true")  
+    end    
     return true
   end
 
@@ -270,13 +260,14 @@ class StiController < ApplicationController
     sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
-    Rails.logger.info(@client_response.inspect)
     if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
-      Rails.logger.error("Handle STI Token failed")
-      render partial: "teacher_not_found"
+      if @schools and @schools.size > 1
+        render partial: "teacher_not_found"
+      else
+        render partial: "teacher_choose_school"        
+      end
       return false
     end
-    Rails.logger.info("Teacher signed in...")
     return true
   end
 end
