@@ -46,5 +46,5 @@
                     .school-select
                       %label.log-in.select
                         SCHOOL
-                      = select_tag 'sti_school_id',options_from_collection_for_select(@schools, :id, :name_and_location), :class => 'chzn-select', prompt: "Select...."
+                      = select_tag 'sti_school_id',options_from_collection_for_select(schools, :id, :name_and_location), :class => 'chzn-select', prompt: "Select...."
                       %button.btn.login-button
