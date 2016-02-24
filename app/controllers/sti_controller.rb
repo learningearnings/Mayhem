@@ -215,9 +215,9 @@ class StiController < ApplicationController
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     return false if @teacher.nil?
     if params[:sti_school_id]
-      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
+      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id], status: "active").first
     else
-      school = @teacher.schools.where(district_guid: params[:districtGUID]).first    
+      school = @teacher.schools.where(district_guid: params[:districtGUID], status: "active").first    
     end
     if school
       session[:current_school_id] = school.id 
@@ -241,7 +241,6 @@ class StiController < ApplicationController
         if student_school
           session[:current_school_id] = sid
           school = student_school
-          @schools = nil
           @current_school = school     
         end
       else
@@ -266,10 +265,6 @@ class StiController < ApplicationController
       return false
     end    
     return true
-  end
-  
-  def schools
-    return @schools
   end
 
   def handle_sti_token
