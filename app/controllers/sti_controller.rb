@@ -229,6 +229,7 @@ class StiController < ApplicationController
       session[:current_school_id] = school.id 
       @current_school = school
     end
+    Rails.logger.info("AKT Login school: #{school.inspect}")
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
