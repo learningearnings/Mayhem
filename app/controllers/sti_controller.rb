@@ -30,6 +30,7 @@ class StiController < ApplicationController
   end
   
   def auth
+    Rails.logger.info("AKT: Enter auth with params: #{params.inspect}")
     if params["sti_session_variable"]
       #integrated
       sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
