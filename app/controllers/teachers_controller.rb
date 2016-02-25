@@ -2,7 +2,36 @@ class TeachersController < ApplicationController
   skip_before_filter :subdomain_required
 
   def new
+    if params[:sid]
+      @school = School.find(params[:sid])
+    end    
     @teacher_signup_form = TeacherSignupForm.new
+  end
+  
+  def confirm
+    @user = Spree::User.where(confirmation_token: params[:id]).first
+    if @user
+      if @user.confirmed_at
+        flash[:error] = 'Your account has already been activated.  '
+      else
+        school = @user.person.school
+        if school
+          @user.confirmed_at = Time.now
+          @user.save       
+          person = @user.person
+          person.status = "active"
+          person.save!
+          school.status = "active"
+          school.save!
+          flash[:notice] = 'Your account has been activated.  You many now log in to Learning Earnings!'   
+        else
+          flash[:error] = 'Activation Failed -- No school for user, please re-register!'  
+        end         
+      end
+    else
+      flash[:error] = 'Activation Failed -- Invalid or expired token!'        
+    end
+    redirect_to main_app.page_path('home')
   end
 
   def create
@@ -10,17 +39,14 @@ class TeachersController < ApplicationController
     @teacher_signup_form = TeacherSignupForm.new(params[:teacher])
     if @teacher_signup_form.save
       request.env["devise.skip_trackable"] = true
-      sign_in(@teacher_signup_form.person.user)
-      session[:current_school_id] = @teacher_signup_form.school.id
+      #sign_in(@teacher_signup_form.person.user)
+      #session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
-      flash[:notice] = 'Thank you for signing up!'
-      @options = {:env => Rails.env, :email => @teacher_signup_form.person.user.email, :username => @teacher_signup_form.person.user.username, 
-                  :first_name => @teacher_signup_form.person.user.person.first_name, :last_name => @teacher_signup_form.person.user.person.last_name,
-                  :type => @teacher_signup_form.person.user.person.type, :school => @teacher_signup_form.person.user.person.school.try(:name)}
-      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, @options)              
-      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up')
+      flash[:notice] = 'Thank you for signing up!  An activation email has been sent to the address you provided.'
+      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, mixpanel_options)              
+      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up', mixpanel_options)
       track_signup_interaction(@teacher_signup_form)
-      redirect_to '/'
+      redirect_to main_app.page_path('home')
     else
       render :new
     end

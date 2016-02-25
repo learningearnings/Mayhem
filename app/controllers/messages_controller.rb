@@ -30,7 +30,12 @@ class MessagesController < LoggedInController
     @messages = @received_messages.from_games.page params[:page]
     @messages.map{|x| x.read!}
   end
-
+  
+  def auctions_messages
+    @messages = @received_messages.from_auctions.page params[:page]
+    @messages.map{|x| x.read!}
+  end
+  
   def reply
     @old_message = Message.find(params[:message_id])
     @message = StudentMessageStudentCommand.new

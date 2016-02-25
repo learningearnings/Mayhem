@@ -2,11 +2,10 @@
   %h3 Messages:
   %hr
   %ul.nav-group
-    /%li= inbox_link_for("Peer Messages",   @received_messages.from_teacher, teachers_peer_messages_path,   'peer-message')
-    /%li= inbox_link_for("System Messages", @received_messages.from_system,  teachers_system_messages_path, 'system-message')
+    %li= inbox_link_for("Peer Messages",  @received_messages.from_teacher, teachers_peer_messages_path,   'peer-message')
+    /%li= inbox_link_for("Admin Messages", @received_messages.for_admin,  'admin_messages', 'leadmin_message')
     /%li= link_to 'Send Peer a Message', teachers_peer_message_path, :class => 'peer-message'
-    /%li= link_to 'Send Classroom a Message', teachers_classroom_message_path, :class => 'classroom-message'
-    - if current_person.game_challengeable
-      %li= inbox_link_for("Games Messages", @received_messages.from_games, games_messages_path, 'games-message')
+    %li= inbox_link_for("Auctions Messages", @received_messages.from_auctions, 'auctions_messages', 'auctions-message')
+    /%li= inbox_link_for("Games Messages", @received_messages.from_games, 'games_messages', 'games-message')    
     %li= link_to 'Send LE a Message', teachers_leadmin_message_path, :class => 'admin-message'
     /%br

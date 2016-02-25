@@ -74,43 +74,6 @@
                                 %td= select_tag "credit_categories[#{student.id}]", options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), prompt: "Select Category", class: "student_category"
                       %input.awesome-button{type: "submit", name: "commit", value: "Send These Credits"}
 
-- if needs_email?
-  %div#request_email
-    %h3  First a little housekeeping...
-    We haven't asked you for your email address yet.  Please enter it below and then verify it by clicking on the link we email you.
-    This helps us identify who's really a teacher and anyone impresonnating a teacher and trying to register for an account!
-    %div
-      %div.campaign_left{style: "width:220px;text-align:right;margin-right:10px;"}
-        %img#pig_arm_out{:src => "/assets/campaign/email_pig_arm_out.png", :style => "float:right;"}
-      %div.campaign_right{style: "width:360px"}
-        = bootstrap_form_for @teacher_email_form, :url => "/sti/save_teacher" do |f|
-          .row
-            .span4
-              = f.text_field :email, :label => "Email Address:"
-              = f.hidden_field :person_id, value: current_person.id
-              = f.submit 'Submit', class: 'btn awesome-button'
-    %div{ :style => "width:100%;text-align:right;float:right;"}
-      <a href="#" class="fb-link" style="color:#0088cc">Not now</a>
-              
-  :javascript
-    $("#request_email").dialog({
-      dialogClass: 'no_title',
-      autoOpen: true,
-      modal: true,
-      width: 640
-    });  
-    $(".fb-link").click(function() {
-        $("#request_email").dialog("close");
-    });  
-        
-
-
-
-
-
-
-
-
 :coffeescript
   jQuery ->
     ($ '#global_populate').submit (e) ->

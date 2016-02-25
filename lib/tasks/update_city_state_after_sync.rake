@@ -5,8 +5,6 @@ namespace :update_city_state_after_sync do
     Rails.logger.warn "**!@{$%^&*()}************************************"
     Rails.logger.warn "BEGINNING Update the City, ST of a few synced schools outside of AL"
     Rails.logger.warn "**!@{$%^&*()}************************************"
-    # Kings, Il
-    update_state(1712, 1714, 14, 61068)
     # Wewoka, OK
     update_state(1670, 1670, 31, 74884)
     # Columbus, MS
@@ -48,14 +46,16 @@ namespace :update_city_state_after_sync do
     # Newton, MS
     update_state(3050, 3052, 37, 39345)
     # LaFayette Municipal
-    update_state(3190, 3193, 37, 38655)
+    update_state(3190, 3193, 37, 38655, "Oxford")
+    # Spokane Middle School, MO
+    update_state(3251, 3251, 38, 65754)
     
     Rails.logger.warn "**!@{$%^&*()}************************************"
     Rails.logger.warn "ENDING Update the City, ST of a few synced schools outside of AL"
     Rails.logger.warn "**!@{$%^&*()}************************************"
   end
   
-  def update_state(first_id, last_id, state_id, zip)
+  def update_state(first_id, last_id, state_id, zip, city=nil)
     $i = first_id
     $num = last_id
 
@@ -63,6 +63,9 @@ namespace :update_city_state_after_sync do
       s = School.find($i)
       s.state_id = state_id
       s.zip = zip
+      if city
+        s.city = city
+      end
       s.save
       $i +=1;
     end

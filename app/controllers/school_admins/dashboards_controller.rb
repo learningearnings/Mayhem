@@ -9,6 +9,8 @@ module SchoolAdmins
       @student = Student.new(params[:student])
       if @student.save
         @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])
+        @student.user.confirmed_at = Time.now
+        @student.user.save
         @student.school = current_school
         flash[:notice] = 'Person created!'
         redirect_to school_admins_dashboard_path

@@ -51,6 +51,7 @@ class NewSchoolForm
           student.grade = stu.grade
           student.sti_id = stu.sti_id
           student.user = user
+          user.confirmed_at = Time.now
           user.save  
           student.save
           user.person_id = student.id

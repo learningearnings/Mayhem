@@ -21,15 +21,11 @@
 set :job_template, "export PATH=$PATH:/usr/local/bin/;bash -l -c ':job'"
 
 every :hour do
-  runner "AuctionHandler.new.run!"
+  runner "AuctionHandler.new.run!", :output => "/home/deployer/logs/auction_handler.log"
 end
 
 every :saturday do
   runner "StudentInterestHandler.new.call"
-end
-
-every 1.day, :at => '7am' do
-  rake "update_city_state_after_sync:run", :output => "/home/deployer/logs/update_city_state_after_sync_run.log"
 end
 
 every 1.day, :at => '1am' do

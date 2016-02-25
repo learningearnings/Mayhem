@@ -6,7 +6,7 @@ class TeacherSignupForm
   attr_accessor :first_name, :last_name, :dob, :gender, :grade
   attr_accessor :email, :username, :password, :password_confirmation
   attr_accessor :name, :city, :state_id, :address1, :zip
-  attr_accessor :min_grade, :max_grade  
+  attr_accessor :min_grade, :max_grade, :school_id, :sti_id  
 
   validates :first_name,            presence: true
   validates :last_name,             presence: true
@@ -41,10 +41,13 @@ class TeacherSignupForm
   def save
     person.assign_attributes(person_attributes, as: :admin)
     user.assign_attributes(user_attributes, as: :admin)
-    school.assign_attributes(school_attributes, as: :admin)
+    school.assign_attributes(school_attributes, as: :admin) unless school_id
     return false unless valid?
     if create_objects
-      PersonSchoolLink.create(person_id: person.id, school_id: school.id, status: "active")
+      user.person.status = "new"
+      user.person.save
+      school.status = "new"
+      school.save
       true
     else
       false
@@ -60,7 +63,9 @@ class TeacherSignupForm
   end
 
   def school
-    @school ||= School.new
+    @school ||= School.new unless school_id
+    @school = School.find(school_id) if school_id
+    @school
   end
 
   def uniqueness_of_email
@@ -70,7 +75,7 @@ class TeacherSignupForm
   end
 
   def uniqueness_of_school
-    if state_id != ''
+    if state_id != '' and !school_id
       if School.exists?(['LOWER(name) = LOWER(?) AND LOWER(city) = LOWER(?) AND state_id = ?', name, city, state_id])
         errors.add(:school, "is already registered")
       end
@@ -101,6 +106,7 @@ class TeacherSignupForm
     ActiveRecord::Base.transaction do
       person.save!
       school.save!
+      PersonSchoolLink.create(person_id: person.id, school_id: school.id, status: "active")      
       person.user.save!
     end
   end

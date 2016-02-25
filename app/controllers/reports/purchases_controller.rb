@@ -2,7 +2,11 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def new
-      report = Reports::Purchases.new params.merge(school: current_school)
+      if params[:reports_purchases_params].blank?
+        report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)
+      else
+        report = Reports::Purchases.new params.merge(school: current_school, status: "pending")        
+      end
       delayed_report = DelayedReport.create(person_id: current_person.id)
       DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
       redirect_to purchases_report_show_path(delayed_report.id, params)
@@ -10,7 +14,7 @@ module Reports
 
     def show
       delayed_report = current_person.delayed_reports.find(params[:id])
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Run Purchase Report')
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Run Purchase Report', mixpanel_options)
       respond_to do |format|
         format.html { render 'show', locals: { report: delayed_report } }
         format.json { render :json => delayed_report }

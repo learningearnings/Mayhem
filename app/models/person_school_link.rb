@@ -61,6 +61,8 @@ class PersonSchoolLink < ActiveRecord::Base
   # Loop through all the schools, find the accounts and hook them up to the Student/Teacher/SchoolAdmin
   # Not valid for LE Admins
   def connect_plutus_accounts
+    return if self.person == nil
+    return if school == nil
     return if self.person.class == Person
     main_account_id = self.person.main_account(school).id
     accounts = self.person.accounts(school).collect {|a| a.id}

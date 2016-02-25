@@ -28,6 +28,7 @@ module STI
       end
       @api_schools = sti_schools.each do |api_school|
         school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
+        school.credits_scope = "School-Wide" unless school.credits_scope        
         school.update_attributes(api_school_mapping(api_school))
         school.reload
         school.activate
@@ -55,7 +56,7 @@ module STI
           teacher.status = "active"
           teacher.update_attributes(api_teacher_mapping(api_teacher))
           teacher.reload
-          teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"]})
+          teacher.user.update_attributes({:api_user => true, :email => api_teacher["EmailAddress"], confirmed_at: Time.now})
           if api_teacher["Schools"]
             school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
           elsif api_teacher["SchoolsXml"]
@@ -99,13 +100,12 @@ module STI
         classroom.reload
         ClassroomActivator.new(classroom.id).execute!
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
-        next if teacher.nil?
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
         if person_school_link and classroom
           PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
         end
       end
-      
+
       # Deactivate all students for school and just let the Sync reactivate students
       school_ids = School.where(district_guid: @district_guid).pluck(:id).uniq
       psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
@@ -119,8 +119,10 @@ module STI
           student = Student.where(district_guid: @district_guid, sti_id: api_student["Id"]).first_or_initialize
           student.update_attributes(api_student_mapping(api_student), as: :admin)
           student.user.update_attributes(api_student_user_mapping(api_student)) if student.recovery_password.nil?
+          student.user.confirmed_at = Time.now
+          student.user.save
           if api_student["Schools"]
-            school_ids = School.where(district_guid: @district_guid, sti_id: api_teacher["Schools"]).pluck(:id)
+            school_ids = School.where(district_guid: @district_guid, sti_id: api_student["Schools"]).pluck(:id)
           elsif api_student["SchoolsXml"]
             xmldata = Hash.from_xml api_student["SchoolsXml"]
             if xmldata["root"]["row"].kind_of?(Array)
@@ -162,18 +164,17 @@ module STI
       students_hash.each_pair do |sti_student_id, sti_classroom_ids|
         next if sti_student_id.nil?
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
-        # Deactivate all existing classroom links
-        next if student.nil?
         
+        # Deactivate all existing classroom links
         PersonSchoolClassroomLink.where(id: student.person_school_classroom_links.pluck(:id)).each do |pscl|
           #Only deactive INOW classroom links
           pscl.update_attribute(:status, "inactive") if !pscl.classroom.sti_id.nil?
         end
         
+        next if student.school.nil?   
+             
         # Update the new classrooms for the student
         sti_classroom_ids.compact.each do |sti_classroom_id|
-          next if student.nil?
-          next if student.school.nil?
           if classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
             psl = student.person_school_links.where(school_id: student.school.id).first
             if psl and classroom
@@ -251,8 +252,8 @@ module STI
         name: api_school["Name"],
         address1: api_school["Address"] || "Blank",
         city: api_school["City"] || "Blank",
-        state_id: State.first.id,
-        zip: "35071",
+        state_id: (api_school["State"] ? (State.where(abbr: api_school["State"]).first.id) : (State.first.id)),
+        zip: (api_school["PostalCode"] == nil or api_school["PostalCode"].strip.blank?) ? "35071" : (api_school["PostalCode"].strip),
         sti_id: api_school["Id"],
         min_grade: 1,
         max_grade: 12,

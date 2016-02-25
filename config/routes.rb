@@ -1,5 +1,7 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
+  get '/confirm/:id' => "teachers#confirm"
+  post '/sti/auth' => "sti#auth"   
   get '/sti/auth' => "sti#auth" 
   post '/sti/auth' => "sti#auth"
   get '/homes/schools_for_username' => "homes#schools_for_username"
@@ -146,6 +148,7 @@ Leror::Application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
+  get '/classrooms/set_homeroom/:id' => 'classrooms#set_homeroom'
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.
@@ -218,8 +221,9 @@ Leror::Application.routes.draw do
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
   match "inbox/school_messages" => 'messages#school_messages', :as => 'school_messages'
-  match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
+  match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'  
   match "inbox/games_messages" => 'messages#games_messages', :as => 'games_messages'
+  match "inbox/auctions_messages" => 'messages#auctions_messages', :as => 'auctions_messages'  
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
@@ -304,6 +308,8 @@ Leror::Application.routes.draw do
     match "inbox/peer_messages" => 'messages#peer_messages', :as => 'peer_messages'
     match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
     match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
+    match "inbox/auctions_messages" => 'messages#auctions_messages', :as => 'auctions_messages' 
+    match "inbox/games_messages" => 'messages#games_messages', :as => 'games_messages' 
     match "inbox/classroom_message" => 'messages#classroom_message', :as => 'classroom_message'
     match "inbox/peer_message" => 'messages#peer_message', :as => 'peer_message'
     match "/inbox" => 'messages#index'
@@ -314,6 +320,7 @@ Leror::Application.routes.draw do
   resources :students
   namespace :school_admins do
     resources :auctions do
+      get "delete_school_auction", on: :member      
       get "cancel_school_auction", on: :member
       post 'create_auction_reward', on: :collection
       get 'all', on: :collection

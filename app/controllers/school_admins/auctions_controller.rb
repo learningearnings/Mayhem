@@ -1,16 +1,17 @@
 module SchoolAdmins
   class AuctionsController < SchoolAdmins::BaseController
     def index
-      @auctions = Auction.active_for_school(current_person.school).order("end_date desc")
+      @auctions = Auction.active_for_school(current_school).order("end_date desc")
     end
     
     def all
-      @auctions = Auction.for_school(current_person.school).order("end_date desc")
+      @auctions = Auction.for_school(current_school).where(" end_date < Now() ").order("end_date desc")
     end
 
     def edit
       begin
         @auction = Auction.find(params[:id])
+        @products = current_school.products.for_auctions  
       rescue
         flash[:error] = "This auction has already ended."
         redirect_to school_admins_auctions_path and return
@@ -23,7 +24,7 @@ module SchoolAdmins
     end
 
     def create
-      auction_creator = AuctionCreator.new(params[:auction], current_person)
+      auction_creator = AuctionCreator.new(params[:auction].merge(school_ids: [current_school.id]), current_person)
       auction_creator.execute!
       if auction_creator.created?
         flash[:notice] = 'Auction created'
@@ -39,9 +40,11 @@ module SchoolAdmins
     def update
       @auction = Auction.find(params[:id])
       if @auction.update_attributes(params[:auction])
+        @auction.update_attribute(:canceled, false)
         flash[:notice] = 'The auction has been updated.'
-        redirect_to @auction
+        redirect_to school_admins_auctions_path
       else
+        @products = current_school.products.for_auctions 
         flash[:error] = 'There was a problem updating the auction.'
         render :edit
       end
@@ -68,8 +71,19 @@ module SchoolAdmins
       @auction = Auction.find params[:id]
       @auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
       @auction.update_attribute(:end_date, Time.now)
+      @auction.update_attribute(:canceled, true)
       flash[:notice] = "Auction cancelled."
       redirect_to school_admins_auctions_path
     end
+    
+    def delete_school_auction
+      auction = Auction.find(params[:id])
+      auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
+      auction.destroy
+      flash[:notice] = "Auction permanently deleted."
+      redirect_to school_admins_auctions_path
+    end    
+    
+    
   end
 end

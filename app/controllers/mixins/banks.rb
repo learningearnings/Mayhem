@@ -138,6 +138,27 @@ module Mixins
         redirect_to main_app.teachers_bank_path
       end
     end
+    
+    def mixpanel_options
+      if current_user and current_school
+        district = District.where(guid: current_school.district_guid).last if current_school.district_guid
+        if district
+          district_name = (district.name.blank? ? "None" : district.name ) 
+        else
+          district_name = "None"
+        end
+        @options = {:env => Rails.env, :email => current_user.email, :username => current_user.username, 
+                    :first_name => current_user.person.first_name, :last_name => current_user.person.last_name,
+                    :grade => current_user.person.try(:grade),
+                    :type => current_user.person.type, :school => current_user.person.school.try(:name),
+                    :district_guid => (current_school.district_guid.blank? ? "None" : current_school.district_guid ),
+                    :district => district_name,                
+                    :credits_scope => current_school.credits_scope, :school_synced => current_school.synced? }
+      else
+        @options = {}
+      end
+      return @options
+    end
 
     def transfer_bucks
       if params[:from_teacher_id].present? && params[:to_teacher_id].present? && (params[:transfer_points].to_i > 0)
@@ -145,7 +166,7 @@ module Mixins
         @to_teacher   = Person.find(params[:to_teacher_id])
         get_bank
         @bank.transfer_teacher_bucks(current_school, @from_teacher, @to_teacher, params[:transfer_points])
-        MixPanelTrackerWorker.perform_async(current_user.id, 'Transfer Credits')
+        MixPanelTrackerWorker.perform_async(current_user.id, 'Transfer Credits', mixpanel_options)
         clear_balance_cache!
       else
         flash[:error] = "Please choose a teacher for buck transfer.  Also ensure amount is a positive number."
@@ -171,7 +192,7 @@ module Mixins
     def issue_ebucks_to_student(student, point_value=params[:points], category_id=nil)
       point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
       @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value, category_id)
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Send e-Credits')
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Send e-Credits', mixpanel_options)
     end
 
     def sanitize_points(_points)

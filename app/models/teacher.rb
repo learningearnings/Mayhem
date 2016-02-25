@@ -7,8 +7,8 @@ class Teacher < Person
   after_create :create_user
 
   scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
-  scope :awaiting_approval, lambda{ where('status = ?', 'awaiting_approval')}
-  scope :not_awaiting_approval, lambda{ where('status != ?', 'awaiting_approval')}
+  scope :awaiting_approval, lambda{ where(" status in ('awaiting_approval','new') ") }
+  scope :not_awaiting_approval, lambda{ where(" status not in ('awaiting_approval','new')")}
 
   has_many :reward_distributors, :through => :person_school_links
   has_many :otu_codes, through: :person_school_links
@@ -19,6 +19,19 @@ class Teacher < Person
     @teacher_main_account = []
     @teacher_undredeemed_account = []
     @teacher_undeposited_account = []
+  end
+  
+  def activate
+    self.status = "active"
+    self.save
+    self.user.confirmed_at = Time.now
+    self.user.save
+    psl = PersonSchoolLink.where(person_id: self.id).last
+    psl.status = "active"
+    psl.save
+    school = School.find(psl.school_id)
+    school.status = "active"
+    school.save
   end
 
   def set_status_to_active
@@ -107,7 +120,7 @@ class Teacher < Person
 
   # Don't love that bizlogic is right here, but hey...
   def students_ive_given_ebucks_to
-    Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL").where(otu_codes: { teacher: { id: id } })
+    Student.includes(otu_codes: [ :teacher ]).where("otu_codes.id IS NOT NULL and people.status = 'active' ").where(otu_codes: { teacher: { id: id } })
   end
 
   def setup_accounts(school)

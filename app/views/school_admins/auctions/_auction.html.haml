@@ -1,6 +1,7 @@
 - if auction.product
   %h4.auction_product= link_to auction.product.name, edit_school_admins_auction_path(auction)
-  = link_to small_image_pages(auction.product, :itemprop => "image"), school_admins_auction_path(auction)
+  %p=auction.product.description
+  = link_to small_image_pages(auction.product, :itemprop => "image"), edit_school_admins_auction_path(auction)
 
   .header-info
     - if auction.current_bid
@@ -13,9 +14,13 @@
         %span.current_bid= auction.current_leader.name
         - if auction.current_leader.avatar.present?
           = image_tag auction.current_leader.avatar.image.url
+          
 
     %p
       Ends On:
-      %span.end_date= l(auction.end_date)
+      %span.end_date= l(auction.end_date) 
+      %span.status= " ( #{( auction.canceled ? 'canceled' : auction.status) } ) "
 
-  = link_to 'Cancel Auction', cancel_school_auction_school_admins_auction_path(auction), { class: 'btn awesome-button' }
+  - if auction.active?
+    = link_to 'Cancel Auction', cancel_school_auction_school_admins_auction_path(auction), { class: 'btn awesome-button' }
+  = link_to 'Delete Auction', delete_school_auction_school_admins_auction_path(auction), { confirm: auction_delete_confirmation_message, class: 'btn awesome-button' }    

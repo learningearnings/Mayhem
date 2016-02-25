@@ -21,6 +21,7 @@ module Teachers
       respond_to do |format|
         format.pdf {
           html = render_to_string(layout: false , action: "_batch.html.haml", locals: { batch: batch })
+          Rails.logger.debug(html.inspect)
           kit = PDFKit.new(html)
           send_data(kit.to_pdf, :filename => "LE_Credits_#{batch.id}.pdf", :type => 'application/pdf') and return
         }
@@ -29,7 +30,7 @@ module Teachers
       end
       clear_balance_cache!
       
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Print Credits')
+      MixPanelTrackerWorker.perform_async(current_user.id, 'Print Credits', mixpanel_options)
 
     end
 
