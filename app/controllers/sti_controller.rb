@@ -57,8 +57,11 @@ class StiController < ApplicationController
       end    
       if login_teacher
         if current_school
-          Rails.logger.info("AKT SSO Signin success: Teacher: #{@teacher.inspect}, Current Person: #{current_person.inspect}, School: #{current_school.inspect}")
-          redirect_to "/" and return
+          Rails.logger.info("AKT SSO Signin success: Teacher: #{@teacher.inspect}")
+          Rails.logger.info("AKT SSO Signin success: Current Person: #{current_person.inspect}")
+          Rails.logger.info("AKT SSO Signin success: School: #{current_school.inspect}")
+
+          redirect_to main_app.teachers_home_path and return
         else
           Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in teacher")
           flash[:error] = "Integrated sign in failed for district GUID, No school for logged in teacher"        
