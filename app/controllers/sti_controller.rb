@@ -57,6 +57,10 @@ class StiController < ApplicationController
       end    
       if login_teacher
         if current_school
+          request.env["devise.skip_trackable"] = true
+          sign_in(@teacher.user)      
+          session[:current_school_id] = current_school.id
+          
           Rails.logger.info("AKT SSO Signin success: Teacher: #{@teacher.inspect}")
           Rails.logger.info("AKT SSO Signin success: Current Person: #{current_person.inspect}")
           Rails.logger.info("AKT SSO Signin success: School: #{current_school.inspect}")
