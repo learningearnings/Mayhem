@@ -51,14 +51,21 @@ class StiController < ApplicationController
         return
       end   
       @schools = @teacher.schools.where(district_guid: params[:districtGUID], status: "active")
-      if @schools and @schools.size > 1 and params[:sti_school_id].blank?
+      if @schools and @schools.size > 1 and params[:sti_school_id].blank? and params[:schoolId].blank?
         render partial: "teacher_choose_school", :locals => {:schools => @schools}        
         return         
       end    
       if login_teacher
         if current_school
-          Rails.logger.info("AKT SSO Signin success: Teacher: #{@teacher.inspect}, Current Person: #{current_person.inspect}, School: #{current_school.inspect}")
-          redirect_to "/" and return
+          request.env["devise.skip_trackable"] = true
+          sign_in(@teacher.user)      
+          session[:current_school_id] = current_school.id
+          
+          Rails.logger.info("AKT SSO Signin success: Teacher: #{@teacher.inspect}")
+          Rails.logger.info("AKT SSO Signin success: Current Person: #{current_person.inspect}")
+          Rails.logger.info("AKT SSO Signin success: School: #{current_school.inspect}")
+
+          redirect_to main_app.teachers_home_path and return
         else
           Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in teacher")
           flash[:error] = "Integrated sign in failed for district GUID, No school for logged in teacher"        
@@ -69,15 +76,19 @@ class StiController < ApplicationController
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}, "
       end
     else 
-      if params[:schoolId].blank?
+      if params[:schoolId].blank? and params[:sti_school_id].blank?
         flash[:error] = "Non integrated sign in failed -- Missing required parameter schoolId"
         return
       end
       if params[:districtGUID].blank?
         flash[:error] = "Non integrated sign in failed -- Missing required parameter districtGUID"
         return
-      end      
-      school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
+      end
+      if params[:schoolId].blank?      
+        school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:sti_school_id]).first 
+      else
+        school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first        
+      end
       if !school
         flash[:error] = "School not found"
         redirect_to main_app.page_path('home') and return        
@@ -216,12 +227,14 @@ class StiController < ApplicationController
   end
 
   def login_teacher
-    Rails.logger.info("AKT Login teacher: #{@client_response["StaffId"]}, district_guid: #{params[:districtGUID]}, sti_school_id: #{params[:sti_school_id]}")
+    Rails.logger.info("AKT Login teacher: #{@client_response["StaffId"]}, district_guid: #{params[:districtGUID]}, sti_school_id: #{params[:sti_school_id]}, schoolId: #{params[:schoolId]}")
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
     Rails.logger.info("AKT Login teacher: #{@teacher.inspect}")
     return false if @teacher.nil?
     if params[:sti_school_id]
       school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id], status: "active").first
+    elsif params[:schoolId]
+      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:schoolId], status: "active").first
     else
       school = @teacher.schools.where(district_guid: params[:districtGUID], status: "active").first    
     end
