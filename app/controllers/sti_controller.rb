@@ -30,42 +30,78 @@ class StiController < ApplicationController
   end
   
   def auth
+    Rails.logger.info("AKT: Enter auth with params: #{params.inspect}")
     if params["sti_session_variable"]
       #integrated
-      if handle_sti_token
+      sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
+      if (sti_link_token == nil)
+        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; sti link token not found"
+        return
+      end    
+      sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
+      sti_client.session_token = params["sti_session_variable"]
+      @client_response = sti_client.session_information.parsed_response
+      if @client_response == nil || @client_response["StaffId"].blank? 
+        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; sti link client bad response"
+        return
+      end  
+      @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
+      if @client_response == nil || @client_response["StaffId"].blank? 
+        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; teacher not found"
+        return
+      end   
+      @schools = @teacher.schools.where(district_guid: params[:districtGUID], status: "active")
+      if @schools and @schools.size > 1 and params[:sti_school_id].blank? and params[:schoolId].blank?
+        render partial: "teacher_choose_school", :locals => {:schools => @schools}        
+        return         
+      end    
+      if login_teacher
         if current_school
-          redirect_to "/" and return
+          redirect_to main_app.teachers_home_path and return
         else
-          logger.error("No school for logged in teacher")
+          Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in teacher")
+          flash[:error] = "Integrated sign in failed for district GUID, No school for logged in teacher"        
           redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
         end
       else
-        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}"
+        Rails.logger.error("AKT Integrated sign in failed for district GUID, Teacher login failed")        
+        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}, "
       end
     else 
-      if params[:schoolId].blank?
+      if params[:schoolId].blank? and params[:sti_school_id].blank?
         flash[:error] = "Non integrated sign in failed -- Missing required parameter schoolId"
         return
       end
       if params[:districtGUID].blank?
         flash[:error] = "Non integrated sign in failed -- Missing required parameter districtGUID"
         return
-      end      
-      school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first 
+      end
+      if params[:schoolId].blank?      
+        school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:sti_school_id]).first 
+      else
+        school = School.where(:district_guid => params[:districtGUID], :sti_id => params[:schoolid]).first        
+      end
       if !school
         flash[:error] = "School not found"
         redirect_to main_app.page_path('home') and return        
-      end  
+      end 
+      session[:current_school_id] = school.id      
       if params[:userid]
         teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
         if teacher
-          session[:current_school_id] = school.id 
+          if teacher.user.confirmed_at.nil?
+            teacher.user.confirmed_at = Time.now
+            teacher.user.save
+          end          
           sign_in(teacher.user)
           redirect_to "/" and return
         end
         student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
         if student
-          session[:current_school_id] = school.id 
+          if student.user.confirmed_at.nil?
+            teacher.user.confirmed_at = Time.now
+            teacher.user.save
+          end          
           sign_in(student.user)
           redirect_to "/" and return
         end    
@@ -190,29 +226,32 @@ class StiController < ApplicationController
   end
 
   def login_teacher
+    Rails.logger.info("AKT Login teacher: #{@client_response["StaffId"]}, district_guid: #{params[:districtGUID]}, sti_school_id: #{params[:sti_school_id]}, schoolId: #{params[:schoolId]}")
     @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
-    @schools = nil
+    Rails.logger.info("AKT Login teacher: #{@teacher.inspect}")
     return false if @teacher.nil?
     if params[:sti_school_id]
-      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id]).first
+      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id], status: "active").first
+    elsif params[:schoolId]
+      school = @teacher.schools.where(district_guid: params[:districtGUID], sti_id: params[:schoolId], status: "active").first
     else
-      @schools = @teacher.schools.where(district_guid: params[:districtGUID])    
-      if @schools.size == 1
-        school = @schools.first
-        @schools = nil
-      else
-        return false
-      end
+      school = @teacher.schools.where(district_guid: params[:districtGUID], status: "active").first    
     end
     if school
       session[:current_school_id] = school.id 
       @current_school = school
+    end
+    Rails.logger.info("AKT Login school: #{school.inspect}")
+    if @teacher.user.confirmed_at.nil?
+      @teacher.user.confirmed_at = Time.now
+      @teacher.user.save
     end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
     #  This is based off of looking up the school that a
     #  student is associated with
+    Rails.logger.info("AKT: Teacher signed in..")
     student_sti_id = params["studentIds"].split(",").first if params["studentIds"].present?
     if student_sti_id.present?
       student = Student.where(district_guid: params[:districtGUID], sti_id: student_sti_id).first
@@ -229,7 +268,7 @@ class StiController < ApplicationController
           @current_school = school     
         end
       else
-        Rails.logger.error("Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
+        Rails.logger.error("AKT Student not found with sti_id #{student_sti_id} for district #{params[:districtGUID]}")
       end
     end
     if school and school.credits_scope != "School-Wide" 
@@ -242,11 +281,14 @@ class StiController < ApplicationController
           @current_person = @teacher
           sign_in(@teacher.user)  
         else
+          Rails.logger.error("AKT: School #{school.id} with credits scope: #{school.credits_scope} has no child, district_guid:  #{params[:districtGUID]}")
+          flash[:error] = "School #{school.id} with credits scope: #{school.credits_scope} has no child, district_guid: #{params[:districtGUID]}"         
           return false
         end      
       end   
     end    
     if !school
+      Rails.logger.error("AKT Login Teacher, no school found")
       return false
     end    
     return true
@@ -261,11 +303,7 @@ class StiController < ApplicationController
     sti_client.session_token = params["sti_session_variable"]
     @client_response = sti_client.session_information.parsed_response
     if @client_response == nil || @client_response["StaffId"].blank? || !login_teacher
-      if @schools and @schools.size > 1
-        render partial: "teacher_not_found"
-      else
-        render partial: "teacher_choose_school"        
-      end
+      render partial: "teacher_not_found"        
       return false
     end
     return true
