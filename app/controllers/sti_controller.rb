@@ -242,9 +242,9 @@ class StiController < ApplicationController
       @current_school = school
     end
     Rails.logger.info("AKT Login school: #{school.inspect}")
-    if teacher.user.confirmed_at.nil?
-      teacher.user.confirmed_at = Time.now
-      teacher.user.save
+    if @teacher.user.confirmed_at.nil?
+      @teacher.user.confirmed_at = Time.now
+      @teacher.user.save
     end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
