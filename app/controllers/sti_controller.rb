@@ -57,14 +57,6 @@ class StiController < ApplicationController
       end    
       if login_teacher
         if current_school
-          request.env["devise.skip_trackable"] = true
-          sign_in(@teacher.user)      
-          session[:current_school_id] = current_school.id
-          
-          Rails.logger.info("AKT SSO Signin success: Teacher: #{@teacher.inspect}")
-          Rails.logger.info("AKT SSO Signin success: Current Person: #{current_person.inspect}")
-          Rails.logger.info("AKT SSO Signin success: School: #{current_school.inspect}")
-
           redirect_to main_app.teachers_home_path and return
         else
           Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in teacher")
@@ -92,17 +84,24 @@ class StiController < ApplicationController
       if !school
         flash[:error] = "School not found"
         redirect_to main_app.page_path('home') and return        
-      end  
+      end 
+      session[:current_school_id] = school.id      
       if params[:userid]
         teacher = school.teachers.detect { | teach | teach.sti_id == params[:userid].to_i }
         if teacher
-          session[:current_school_id] = school.id 
+          if teacher.user.confirmed_at.nil?
+            teacher.user.confirmed_at = Time.now
+            teacher.user.save
+          end          
           sign_in(teacher.user)
           redirect_to "/" and return
         end
         student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
         if student
-          session[:current_school_id] = school.id 
+          if student.user.confirmed_at.nil?
+            teacher.user.confirmed_at = Time.now
+            teacher.user.save
+          end          
           sign_in(student.user)
           redirect_to "/" and return
         end    
@@ -243,6 +242,10 @@ class StiController < ApplicationController
       @current_school = school
     end
     Rails.logger.info("AKT Login school: #{school.inspect}")
+    if teacher.user.confirmed_at.nil?
+      teacher.user.confirmed_at = Time.now
+      teacher.user.save
+    end
     sign_in(@teacher.user)
     #session[:current_school_id] = school.id
     # Current workaround for loading up the correct school
