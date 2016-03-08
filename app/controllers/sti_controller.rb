@@ -42,15 +42,27 @@ class StiController < ApplicationController
       sti_client.session_token = params["sti_session_variable"]
       @client_response = sti_client.session_information.parsed_response
       Rails.logger.info("AKT Client response: #{@client_response.inspect}")
-      if @client_response == nil || @client_response["StaffId"].blank? 
+      if @client_response == nil or  ( @client_response["StaffId"].blank? and @client_response["StudentId"].blank? )
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; sti link client bad response"
         return
       end  
-      @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first
-      if @client_response == nil || @client_response["StaffId"].blank? 
-        flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; teacher not found"
-        return
-      end   
+      if @client_response["StaffId"].blank?
+        @student = Student.where(district_guid: params[:districtGUID], sti_id: @client_response["StudentId"], status: "active").first
+        if login_student
+          if current_school
+            redirect_to main_app.student_home_path and return
+          else
+            Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in student")
+            flash[:error] = "Integrated sign in failed for district GUID, No school for logged in student"        
+            redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
+          end   
+        else
+          Rails.logger.error("AKT Integrated sign in failed for district GUID, Student login failed")        
+          flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}, "  
+          return               
+        end
+      end
+      @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first   
       @schools = @teacher.schools.where(district_guid: params[:districtGUID], status: "active")
       if @schools and @schools.size > 1 and params[:sti_school_id].blank? and params[:schoolId].blank?
         render partial: "teacher_choose_school", :locals => {:schools => @schools}        
@@ -97,7 +109,7 @@ class StiController < ApplicationController
           sign_in(teacher.user)
           redirect_to "/" and return
         end
-        student = school.students.detect { | student | student.sti_id == params[:userid].to_i }
+        student = school.students.detect { | stu | stu.sti_id == params[:userid].to_i }
         if student
           if student.user.confirmed_at.nil?
             teacher.user.confirmed_at = Time.now
@@ -224,6 +236,37 @@ class StiController < ApplicationController
 
   def person
     current_person
+  end
+  
+  def login_student
+    Rails.logger.info("AKT Login student: #{@client_response["StudentId"]}, district_guid: #{params[:districtGUID]}, sti_school_id: #{params[:sti_school_id]}, schoolId: #{params[:schoolId]}")
+    @student = Student.where(district_guid: params[:districtGUID], sti_id: @client_response["StudentId"], status: "active").first
+    Rails.logger.info("AKT Login student: #{@student.inspect}")
+    return false if @student.nil?   
+    if params[:sti_school_id]
+      school = School.where(district_guid: params[:districtGUID], sti_id: params[:sti_school_id], status: "active").first
+    elsif params[:schoolId]
+      school = School.where(district_guid: params[:districtGUID], sti_id: params[:schoolId], status: "active").first
+    else
+      sid = @student.person_school_links.order('created_at desc').first.try(:school_id)
+      school = School.where(id: sid).first if sid  
+    end  
+    if school
+      session[:current_school_id] = school.id
+      school = school
+      @current_school = school 
+    else
+      Rails.logger.error("AKT Login student, no school found")
+      return false    
+    end   
+    Rails.logger.info("AKT Login school: #{school.inspect}")
+    if @student.user.confirmed_at.nil?
+      @student.user.confirmed_at = Time.now
+      @student.user.save
+    end
+    sign_in(@student.user)  
+    Rails.logger.info("AKT: Student signed in..")
+    return true  
   end
 
   def login_teacher
