@@ -41,6 +41,7 @@ class StiController < ApplicationController
       sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
       sti_client.session_token = params["sti_session_variable"]
       @client_response = sti_client.session_information.parsed_response
+      Rails.logger.info("AKT Client response: #{@client_response.inspect}")
       if @client_response == nil || @client_response["StaffId"].blank? 
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; sti link client bad response"
         return
