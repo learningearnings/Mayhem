@@ -50,7 +50,7 @@ class StiController < ApplicationController
         @student = Student.where(district_guid: params[:districtGUID], sti_id: @client_response["StudentId"], status: "active").first
         if login_student
           if current_school
-            redirect_to main_app.student_home_path and return
+            redirect_to "/" and return
           else
             Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in student")
             flash[:error] = "Integrated sign in failed for district GUID, No school for logged in student"        
