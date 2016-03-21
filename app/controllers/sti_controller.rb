@@ -52,8 +52,8 @@ class StiController < ApplicationController
           if current_school
             redirect_to "/" and return
           else
-            Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in student")
-            flash[:error] = "Integrated sign in failed for district GUID, No school for logged in student"        
+            Rails.logger.error("AKT Integrated sign in failed for district GUID #{params[:districtGUID]}, No school for logged in student")
+            flash[:error] = "Integrated sign in failed for district GUID  #{params[:districtGUID]}, No school for logged in student"        
             redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
           end   
         else
@@ -63,6 +63,11 @@ class StiController < ApplicationController
         end
       end
       @teacher = Teacher.where(district_guid: params[:districtGUID], sti_id: @client_response["StaffId"], status: "active").first   
+      if @teacher == nil
+          Rails.logger.error("AKT Integrated sign in failed for district GUID #{params[:districtGUID]}, Teacher with id #{@client_response["StaffId"]} not found, client response: #{@client_response.inspect}")
+          flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}, Teacher with id #{@client_response["StaffId"]} not found"        
+          return                  
+      end
       @schools = @teacher.schools.where(district_guid: params[:districtGUID], status: "active")
       if @schools and @schools.size > 1 and params[:sti_school_id].blank? and params[:schoolId].blank?
         render partial: "teacher_choose_school", :locals => {:schools => @schools}        
@@ -72,12 +77,12 @@ class StiController < ApplicationController
         if current_school
           redirect_to main_app.teachers_home_path and return
         else
-          Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in teacher")
-          flash[:error] = "Integrated sign in failed for district GUID, No school for logged in teacher"        
+          Rails.logger.error("AKT Integrated sign in failed for district GUID #{params[:districtGUID]}, No school for logged in teacher")
+          flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}, No school for logged in teacher"        
           redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
         end
       else
-        Rails.logger.error("AKT Integrated sign in failed for district GUID, Teacher login failed")        
+        Rails.logger.error("AKT Integrated sign in failed for district GUID #{params[:districtGUID]}, Teacher login failed")        
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}, "
       end
     else 
