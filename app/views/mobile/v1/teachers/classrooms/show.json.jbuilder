@@ -15,4 +15,5 @@ json.students @classroom.students do |student|
   json.username student.user.username
   json.password student.user.password  
   json.email student.user.email
+  json.avatar_url student.avatar.try(:image).try(:url)
 end
