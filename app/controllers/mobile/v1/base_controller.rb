@@ -8,16 +8,16 @@ module Mobile
       def current_user
         if decoded_auth_token
           @current_user ||= Spree::User.find(decoded_auth_token[:user_id])
-        else
-          @current_user = Person.find(178).user
+        #else
+        #  @current_user = Person.find(178).user
         end
       end
 
       def current_school
         if decoded_auth_token
           @current_school ||= School.find(decoded_auth_token[:school_id])
-        else
-          @current_school ||= School.find(session[:current_school_id]) if session[:current_school_id]
+        #else
+        #  @current_school ||= School.find(session[:current_school_id]) if session[:current_school_id]
         end
       end
 
