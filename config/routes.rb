@@ -36,7 +36,10 @@ Leror::Application.routes.draw do
         get  'teacher/:id'     => 'profile#show'
         post 'teacher/:id'     => 'profile#update'
         post 'students/:id/add_classrooms' => 'students#add_classrooms'
-        get  'purchases'          => 'purchases#index'        
+        get  'purchases'          => 'purchases#index' 
+        get  'purchases/reward_creator_options'          => 'purchases#reward_creator_options'
+        get  'purchases/student_options'          => 'purchases#student_options'
+        
         get  'rewards'          => 'rewards#index'
         get  'rewards/:id'      => 'rewards#show'
         post 'rewards'          => 'rewards#create'

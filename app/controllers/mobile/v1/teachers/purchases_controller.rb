@@ -14,6 +14,14 @@ class Mobile::V1::Teachers::PurchasesController < Mobile::V1::Teachers::BaseCont
     @purchases = reward_deliveries
   end
   
+  def reward_creator_options
+    @people = current_school.teachers
+  end
+  
+  def student_options
+    @people = current_school.students
+  end
+  
   def reward_deliveries
       base_scope = reward_delivery_base_scope
       potential_filters.each do |filter|
