@@ -27,8 +27,6 @@ Leror::Application.routes.draw do
         post 'classrooms'       => 'classrooms#create'
         post 'classrooms/:id/remove_student' => 'classrooms#remove_student'
         post 'classrooms/:id/add_students' => 'classrooms#add_students'
-        post 'classrooms/:id/remove_goal' => 'classrooms#remove_goal'
-        post 'classrooms/:id/add_goals' => 'classrooms#add_goals'
         get  'students'         => 'students#index'
         get  'students/:id'     => 'students#show'
         post 'students'     => 'students#create' 
@@ -49,8 +47,11 @@ Leror::Application.routes.draw do
         get  'awards'           => 'awards#index'
         get  'goals'            => 'goals#index'
         post 'goals/:id'        => 'goals#update'
+        get 'goals/:id/update'        => 'goals#update'        
         post 'goals'            => 'goals#create' 
+        get 'goals/create'            => 'goals#create'         
         delete 'goals/:id'      => 'goals#destroy' 
+        get  'goals/:id/destroy'      => 'goals#destroy' 
       end
       namespace :students do
         post "rewards/purchase" => 'rewards#purchase'
