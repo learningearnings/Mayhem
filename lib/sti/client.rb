@@ -14,6 +14,7 @@ module STI
     end
 
     def get_session_token
+      Rails.logger.info(" AKT token_url: #{base_url}token, authentication_hash: #{authentication_hash.inspect}")
       response = self.class.get("#{base_url}token", :basic_auth => authentication_hash)
       @session_token = response["access_token"]
     end

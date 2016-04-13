@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150415114518) do
+ActiveRecord::Schema.define(:version => 20160413104727) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.boolean  "notified",                                       :default => false
     t.boolean  "fulfilled",                                      :default => false
     t.integer  "person_id"
+    t.boolean  "canceled"
   end
 
   create_table "avatars", :force => true do |t|
@@ -468,6 +469,7 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "school_id"
+    t.integer  "value"
   end
 
   create_table "otu_code_types", :force => true do |t|
@@ -1337,8 +1339,13 @@ ActiveRecord::Schema.define(:version => 20150415114518) do
     t.integer  "person_id"
     t.string   "username"
     t.boolean  "api_user"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
   end
 
+  add_index "spree_users", ["confirmation_token"], :name => "index_spree_users_on_confirmation_token", :unique => true
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
   add_index "spree_users", ["person_id"], :name => "su_person_id", :unique => true
   add_index "spree_users", ["username"], :name => "su_username"

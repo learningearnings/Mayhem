@@ -9,8 +9,10 @@ class Mobile::V1::Teachers::GoalsController < Mobile::V1::Teachers::BaseControll
     @occ = OtuCodeCategory.find(params[:id])
     if params[:goal].blank?
       @occ.name = params[:name]
+      @occ.value = params[:value]
     else
       @occ.name = params[:goal][:name]
+      @occ.value = params[:goal][:value]
     end
     @occ.save
     
@@ -27,8 +29,10 @@ class Mobile::V1::Teachers::GoalsController < Mobile::V1::Teachers::BaseControll
     @occ = OtuCodeCategory.new
     if params[:goal].blank?
       @occ.name = params[:name]
+      @occ.value = params[:value]
     else
       @occ.name = params[:goal][:name]
+      @occ.value = params[:goal][:value]
     end
     @occ.otu_code_type_id = 4  
     @occ.school = current_school
