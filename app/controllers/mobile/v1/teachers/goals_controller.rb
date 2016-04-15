@@ -14,6 +14,7 @@ class Mobile::V1::Teachers::GoalsController < Mobile::V1::Teachers::BaseControll
       @occ.name = params[:goal][:name]
       @occ.value = params[:goal][:value]
     end
+    @occ.name = "" if @occ.name.blank?
     @occ.save
     
     if params[:goal] and params[:goal][:classroom_id]
@@ -34,6 +35,7 @@ class Mobile::V1::Teachers::GoalsController < Mobile::V1::Teachers::BaseControll
       @occ.name = params[:goal][:name]
       @occ.value = params[:goal][:value]
     end
+    @occ.name = "" if @occ.name.blank?
     @occ.otu_code_type_id = 4  
     @occ.school = current_school
     @occ.person = current_person 
