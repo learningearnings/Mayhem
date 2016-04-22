@@ -23,7 +23,6 @@ class School < ActiveRecord::Base
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
 
-  has_many :reward_distributors, :through => :person_school_links, :include => :teacher
   has_many :reward_exclusions
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
@@ -206,7 +205,7 @@ class School < ActiveRecord::Base
   end
 
   def distributing_teachers
-    @distributing_teachers = self.reward_distributors.includes(:teacher).collect {|rd| rd.teacher }
+    @distributing_teachers = self.teachers.includes(:person_school_links).where(" person_school_links.can_distribute_rewards = 't' ")
     @distributing_teachers = self.school_admins if @distributing_teachers.blank?
     @distributing_teachers = self.teachers if @distributing_teachers.blank?
     @distributing_teachers.compact
