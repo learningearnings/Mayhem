@@ -3,11 +3,22 @@ Spree::UserSessionsController.class_eval do
   after_filter :set_school_id_cookie, only: [:destroy]
 
   def create
+    
+    #Check for accounts that are not activated
+    tuser = Spree::User.where(username: params[:user]["username"]).first if params[:user]
+    if tuser and tuser.confirmed_at == nil
+         flash[:error] = "You must activate your account before logging in.  Please check your email for activation instructions..."
+         redirect_to main_app.page_path('home')
+         return
+    end
+
     authenticate_user!
     session[:last_school_id] = params[:user]["school_id"] if params[:user]
     session[:current_school_id] = params[:user]["school_id"] if params[:user]
 
     if user_signed_in?
+      MixPanelIdentifierWorker.perform_async(current_user.id, {'email' => current_user.email, 'username' => current_user.username, 'first_name' => current_user.person.first_name, 'last_name' => current_user.person.last_name, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
+      MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', {'email' => current_user.email, 'username' => current_user.username, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
       respond_to do |format|
         format.html {
           flash.notice = t(:logged_in_succesfully)
@@ -19,13 +30,7 @@ Spree::UserSessionsController.class_eval do
         }
       end
     else
-      #Check for accounts that are not activated
-      tuser = Spree::User.where(username: params[:user]["username"]).first if params[:user]
-      if tuser and tuser.confirmed_at == nil
-         flash[:error] = "You must activate your account before logging in.  Please check your email for activation instructions..."
-      else
-         flash[:error] = "Wrong Username, Password and School combination.  Please make sure you have all 3 credentials correct and try again."
-      end
+      flash[:error] = "Wrong Username, Password and School combination.  Please make sure you have all 3 credentials correct and try again."
       redirect_to main_app.page_path('home')
     end
   end
