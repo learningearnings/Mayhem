@@ -3,12 +3,6 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
     if params[:username].blank?
       render json: { error: 'Please enter a username' }, status: :unauthorized and return
     end
-    if params[:password].blank?
-      render json: { error: 'Please enter a password' }, status: :unauthorized and return
-    end   
-    if params[:school_id].blank?
-      render json: { error: 'Please select your school' }, status: :unauthorized and return
-    end    
     
     #Check for accounts that are not activated
     tuser = Spree::User.where(username: params[:username]).first if params[:username]
@@ -17,6 +11,15 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
          redirect_to main_app.page_path('home')
          return
     end    
+    
+    if params[:password].blank?
+      render json: { error: 'Please enter a password' }, status: :unauthorized and return
+    end   
+    if params[:school_id].blank?
+      render json: { error: 'Please select your school' }, status: :unauthorized and return
+    end    
+    
+
     
     user = Spree::User.joins(:person).where('people.type IN (?)', ['Teacher', 'SchoolAdmin']).authenticate_with_school_id(params[:username], params[:password], params[:school_id])
     if user
