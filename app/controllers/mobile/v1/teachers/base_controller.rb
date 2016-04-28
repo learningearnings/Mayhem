@@ -9,6 +9,15 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
     if params[:school_id].blank?
       render json: { error: 'Please select your school' }, status: :unauthorized and return
     end    
+    
+    #Check for accounts that are not activated
+    tuser = Spree::User.where(username: params[:username]).first if params[:username]
+    if tuser and tuser.confirmed_at == nil
+         flash[:error] = "You must activate your account before logging in.  Please check your email for activation instructions..."
+         redirect_to main_app.page_path('home')
+         return
+    end    
+    
     user = Spree::User.joins(:person).where('people.type IN (?)', ['Teacher', 'SchoolAdmin']).authenticate_with_school_id(params[:username], params[:password], params[:school_id])
     if user
       render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
