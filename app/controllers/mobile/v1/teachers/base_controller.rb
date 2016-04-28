@@ -7,9 +7,7 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
     #Check for accounts that are not activated
     tuser = Spree::User.where(username: params[:username]).first if params[:username]
     if tuser and tuser.confirmed_at == nil
-         flash[:error] = "You must activate your account before logging in.  Please check your email for activation instructions..."
-         redirect_to main_app.page_path('home')
-         return
+         render json: { error: 'You must activate your account before logging in.  Please check your email for activation instructions...' }, status: :unauthorized and return
     end    
     
     if params[:password].blank?
