@@ -86,7 +86,7 @@ module Reports
         person: person.name,
         username: person.person_username,
         #classroom: person.classrooms_for_school(@school).map(&:name).join(","),
-        classroom: person.homeroom,
+        homeroom: person.homeroom,
         account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
         type: person.type,
         last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
@@ -97,7 +97,7 @@ module Reports
       {
         person: "Person",
         username: "Username",
-        classroom: "Classroom",
+        homeroom: "Homeroom",
         type: "Type",
         last_sign_in_at: "Last Sign In",
         account_activity: "Account Balance"
@@ -107,7 +107,7 @@ module Reports
       {
         person: "",
         username: "",
-        classroom: "",
+        homeroom: "",
         type: "",
         last_sign_in_at: "",
         account_activity: "currency"
