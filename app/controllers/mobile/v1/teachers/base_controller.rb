@@ -70,10 +70,10 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
   end
   
   def setup_fake_data
-    params[:user][:city] = "Fake City"
-    params[:user][:state_id] = 1
+    params[:user][:city] = "Fake City" if params[:user][:city].blank?
+    params[:user][:state_id] = 1 if params[:user][:state_id].blank?
     params[:user][:password_confirmation] = params[:user][:password]
-    params[:user][:grade] = 5
+    params[:user][:grade] = 5 
     params[:user][:address1] = "Fake Address"
     params[:user][:zip] = 12345
   end
