@@ -78,8 +78,8 @@ class BuckDistributor
 
   def handle_teachers
     log_txn "BuckDistributor --  handle teachers start at #{Time.now} "
-    @schools.each do |school|
-      log_txn "  Pay teachers at #{school.name} #{school.id} "
+    @schools.each_with_index do |school, idx |
+      log_txn "  Pay teachers at #{school.name} #{school.id} -- school #{idx} of #{@schools.size} "
       teachers_to_pay(school, { hide_ignored: false }).each do |teacher|
         log_txn "    Pay teacher revoke remainder #{teacher.first_name} #{teacher.last_name} #{ teacher.id} $#{ teacher.main_account(school).balance.to_s }"
         revoke_remainder(school, teacher, teacher.main_account(school).balance)
