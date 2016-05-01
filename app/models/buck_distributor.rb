@@ -47,7 +47,7 @@ class BuckDistributor
     @txnlog.close
     @schools.each do |school|
       @txnlog = File.open(@logfile,"a")
-      @txnlog.puts "BuckDistributor --  revoke credits for school #{school.name} #{school.id}  #{school.balance.to_s} "
+      @txnlog.puts "BuckDistributor --  revoke credits for school #{school.name} #{school.id}  $#{school.balance.to_s} "
       @txnlog.close
       @credit_manager.revoke_credits_for_school(school, school.balance)
       pay_school(school)
@@ -59,7 +59,7 @@ class BuckDistributor
 
   def pay_school(school)
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "BuckDistributor --  pay school #{school.name} #{school.id}  #{amount_for_school(school)} "
+    @txnlog.puts "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_for_school(school).to_s} "
     @txnlog.close
     @credit_manager.issue_credits_to_school school, amount_for_school(school)
   end
@@ -88,7 +88,7 @@ class BuckDistributor
       @txnlog.close
       teachers_to_pay(school, { hide_ignored: false }).each do |teacher|
         @txnlog = File.open(@logfile,"a")
-        @txnlog.puts "    Pay teacher revoke remainder #{teacher.first_name} #{teacher.last_name} #{ teacher.id} #{ teacher.main_account(school).balance.to_s }"
+        @txnlog.puts "    Pay teacher revoke remainder #{teacher.first_name} #{teacher.last_name} #{ teacher.id} $#{ teacher.main_account(school).balance.to_s }"
         @txnlog.close
         revoke_remainder(school, teacher, teacher.main_account(school).balance)
       end
@@ -128,7 +128,7 @@ class BuckDistributor
 
   def pay_teacher(school, teacher)
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "    Pay teacher #{teacher.first_name} #{teacher.last_name} #{ teacher.id} #{ amount_for_teacher(school).to_s }"
+    @txnlog.puts "    Pay teacher #{teacher.first_name} #{teacher.last_name} #{ teacher.id} $#{ amount_for_teacher(school).to_s }"
     @txnlog.close
     @credit_manager.monthly_credits_to_teacher school, teacher, amount_for_teacher(school)
   end
