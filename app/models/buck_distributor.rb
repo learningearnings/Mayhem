@@ -6,9 +6,9 @@ class BuckDistributor
     @schools = schools if schools
     @schools = get_schools unless schools
     @credit_manager = credit_manager
-    @logfile = "/home/deployer/logs/buck_distributor_txns.log"
+    @logfile = "/home/deployer/logs/buck_distributor_txns_#{Date.today.to_s}.log"
     @txnlog = File.open(@logfile,"w")
-    @txnlog.puts "BuckDistribor started on #{Time.now}"
+    @txnlog.puts "BuckDistributor --  started on #{Time.now}"
     @txnlog.close
   end
   
@@ -37,29 +37,29 @@ class BuckDistributor
     handle_schools
     handle_teachers
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "BuckDistribor ended on #{Time.now}"
+    @txnlog.puts "BuckDistributor --  ended on #{Time.now}"
     @txnlog.close    
   end
 
   def handle_schools
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "BuckDistribor processing  #{@schools.size} schools at #{Time.now}"
+    @txnlog.puts "BuckDistributor --  processing  #{@schools.size} schools at #{Time.now}"
     @txnlog.close
     @schools.each do |school|
       @txnlog = File.open(@logfile,"a")
-      @txnlog.puts "BuckDistribor revoke credits for school #{school.name} #{school.id}  #{school.balance.to_s} "
+      @txnlog.puts "BuckDistributor --  revoke credits for school #{school.name} #{school.id}  #{school.balance.to_s} "
       @txnlog.close
       @credit_manager.revoke_credits_for_school(school, school.balance)
       pay_school(school)
     end
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "BuckDistribor end schools processing  at #{Time.now}"
+    @txnlog.puts "BuckDistributor --  end schools processing  at #{Time.now}"
     @txnlog.close
   end
 
   def pay_school(school)
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "BuckDistribor pay school #{school.name} #{school.id}  #{amount_for_school(school)} "
+    @txnlog.puts "BuckDistributor --  pay school #{school.name} #{school.id}  #{amount_for_school(school)} "
     @txnlog.close
     @credit_manager.issue_credits_to_school school, amount_for_school(school)
   end
@@ -79,7 +79,7 @@ class BuckDistributor
 
   def handle_teachers
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "BuckDistribor handle teachers start at #{Time.now} "
+    @txnlog.puts "BuckDistributor --  handle teachers start at #{Time.now} "
     @txnlog.close
     
     @schools.each do |school|
@@ -98,7 +98,7 @@ class BuckDistributor
     end
     
     @txnlog = File.open(@logfile,"a")
-    @txnlog.puts "BuckDistribor handle teachers end at #{Time.now} "
+    @txnlog.puts "BuckDistributor --  handle teachers end at #{Time.now} "
     @txnlog.close
   end
 
