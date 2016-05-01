@@ -5,7 +5,7 @@ class BuckDistributor
   def initialize(schools, credit_manager=CreditManager.new, last_school_processed)
     @schools = schools if schools
     @schools = get_schools unless schools
-    @last_school_processed = last_school_processed || 0
+    @last_school_processed = last_school_processed
     @credit_manager = credit_manager
     @logfile = "/home/deployer/logs/buck_distributor_txns_#{Date.today.to_s}.log"
     @txnlog = File.open(@logfile,"w")
@@ -14,6 +14,11 @@ class BuckDistributor
   end
   
   def get_schools
+    if @last_school_processed
+      whereStr = " WHERE schools.id >= #{@last_school_processed} "
+    else
+      whereStr = " "
+    end
     sql = %Q(
       SELECT * from (
         SELECT DISTINCT schools.*
@@ -30,8 +35,9 @@ class BuckDistributor
           AND person_school_links.status = 'active'
           AND (spree_users.last_sign_in_at >= (now() - '1 month'::interval) OR people.created_at > (now() - '1 month'::interval))
           AND people.type IN ('Teacher', 'SchoolAdmin') 
-     ) AS SCHOOLS WHERE schools.id >= #{@last_school_processed} ORDER BY schools.id
+     ) AS SCHOOLS 
     )
+    sql = sql + whereStr + " ORDER BY schools.id "
     schools = School.find_by_sql(sql)
     return schools
   end
