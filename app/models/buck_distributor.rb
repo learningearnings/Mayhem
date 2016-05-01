@@ -2,9 +2,10 @@ class BuckDistributor
   extend ActiveSupport::Memoizable
   DAILY_STUDENT_AMOUNT = 25
 
-  def initialize(schools, credit_manager=CreditManager.new)
+  def initialize(schools, credit_manager=CreditManager.new, last_school_processed)
     @schools = schools if schools
     @schools = get_schools unless schools
+    @last_school_processed = last_school_processed
     @credit_manager = credit_manager
     @logfile = "/home/deployer/logs/buck_distributor_txns_#{Date.today.to_s}.log"
     @txnlog = File.open(@logfile,"w")
@@ -14,20 +15,22 @@ class BuckDistributor
   
   def get_schools
     sql = %Q(
-      SELECT DISTINCT schools.*
-      FROM schools, person_school_links, people 
-      WHERE schools.id = person_school_links.school_id AND people.id = person_school_links.person_id  
-        AND schools.status = 'active' AND schools.district_guid is not null
-        AND person_school_links.status = 'active'
-        AND people.type IN ('Teacher', 'SchoolAdmin') 
-      UNION
-      SELECT DISTINCT schools.*
-      FROM schools, person_school_links, people, spree_users 
-      WHERE schools.id = person_school_links.school_id AND people.id = person_school_links.person_id AND spree_users.person_id = people.id 
-        AND schools.status = 'active' AND schools.district_guid is null
-        AND person_school_links.status = 'active'
-        AND (spree_users.last_sign_in_at >= (now() - '1 month'::interval) OR people.created_at > (now() - '1 month'::interval))
-        AND people.type IN ('Teacher', 'SchoolAdmin') 
+      SELECT * from (
+        SELECT DISTINCT schools.*
+        FROM schools, person_school_links, people 
+        WHERE schools.id = person_school_links.school_id AND people.id = person_school_links.person_id  
+          AND schools.status = 'active' AND schools.district_guid is not null
+          AND person_school_links.status = 'active'
+          AND people.type IN ('Teacher', 'SchoolAdmin') 
+        UNION
+        SELECT DISTINCT schools.*
+        FROM schools, person_school_links, people, spree_users 
+        WHERE schools.id = person_school_links.school_id AND people.id = person_school_links.person_id AND spree_users.person_id = people.id 
+          AND schools.status = 'active' AND schools.district_guid is null
+          AND person_school_links.status = 'active'
+          AND (spree_users.last_sign_in_at >= (now() - '1 month'::interval) OR people.created_at > (now() - '1 month'::interval))
+          AND people.type IN ('Teacher', 'SchoolAdmin') 
+     ) AS SCHOOLS WHERE schools.id >= #{@last_school_id} ORDER BY schools.id
     )
     schools = School.find_by_sql(sql)
     return schools
