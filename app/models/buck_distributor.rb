@@ -5,7 +5,7 @@ class BuckDistributor
   def initialize(schools, credit_manager=CreditManager.new, last_school_processed)
     @schools = schools if schools
     @schools = get_schools unless schools
-    @last_school_processed = last_school_processed
+    @last_school_processed = last_school_processed || 0
     @credit_manager = credit_manager
     @logfile = "/home/deployer/logs/buck_distributor_txns_#{Date.today.to_s}.log"
     @txnlog = File.open(@logfile,"w")
