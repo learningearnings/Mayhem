@@ -30,7 +30,7 @@ class BuckDistributor
           AND person_school_links.status = 'active'
           AND (spree_users.last_sign_in_at >= (now() - '1 month'::interval) OR people.created_at > (now() - '1 month'::interval))
           AND people.type IN ('Teacher', 'SchoolAdmin') 
-     ) AS SCHOOLS WHERE schools.id >= #{@last_school_id} ORDER BY schools.id
+     ) AS SCHOOLS WHERE schools.id >= #{@last_school_processed} ORDER BY schools.id
     )
     schools = School.find_by_sql(sql)
     return schools
