@@ -43,7 +43,7 @@
   %tbody
     - auction.schools.uniq.each do |school|
       %tr
-        %td= school.name
+        %td= "[#{school.id}] #{school.name}"
 
 %table
   %thead
