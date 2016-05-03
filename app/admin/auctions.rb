@@ -148,7 +148,7 @@ ActiveAdmin.register Auction do
       f.input :end_date, :as => :just_datetime_picker
       f.input :min_grade, :as => :select, :collection => School::GRADES
       f.input :max_grade, :as => :select, :collection => School::GRADES
-      f.input :schools, :as => :chosen, :collection => School.all.map{|school| ["[#{school.id}]  #{school.name}", school.id]}
+      f.input :schools, :as => :chosen, :collection => School.order('name ASC').map{|school| ["[#{school.id}]  #{school.name}", school.id]}
       f.input :states, :as => :chosen
       f.input :auction_zip_codes, :as => :chosen, :collection => School.all.collect { | school | school.zip }.uniq
     end
