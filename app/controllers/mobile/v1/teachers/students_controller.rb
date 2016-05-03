@@ -1,6 +1,7 @@
 class Mobile::V1::Teachers::StudentsController < Mobile::V1::Teachers::BaseController
   def index
-    @students = current_school.students.order(:first_name, :last_name)
+    @students = current_school.students.includes(:avatars).where(status: "active").order(:first_name, :last_name)
+    #@students = Student.joins(:person_school_links).includes(:avatars).merge(person_school_links(:status_active)).send(:status_active)
     #@students.each do | student |
     #  student.checking_history = Plutus::Amount.where(account_id: student.checking_account).order(" id desc ")
     #end
