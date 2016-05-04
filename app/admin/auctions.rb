@@ -4,7 +4,6 @@ ActiveAdmin.register Auction do
   scope :upcoming
   scope :unfulfilled
   config.filters = false
-
   controller do
     skip_before_filter :add_current_store_id_to_params
     with_role :le_admin
@@ -20,7 +19,12 @@ ActiveAdmin.register Auction do
         render :edit
       end
     end
-
+    
+    def new
+      @auction = Auction.new
+      @auction.schools = []
+    end
+    
     def update
       @auction = Auction.find(params[:id])
       @auction.auction_zip_codes.delete_all
@@ -144,7 +148,7 @@ ActiveAdmin.register Auction do
       f.input :end_date, :as => :just_datetime_picker
       f.input :min_grade, :as => :select, :collection => School::GRADES
       f.input :max_grade, :as => :select, :collection => School::GRADES
-      f.input :schools, :as => :chosen
+      f.input :schools, :as => :chosen, :collection => School.order('name ASC').map{|school| ["[#{school.id}]  #{school.name}", school.id]}
       f.input :states, :as => :chosen
       f.input :auction_zip_codes, :as => :chosen, :collection => School.all.collect { | school | school.zip }.uniq
     end
