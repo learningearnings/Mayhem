@@ -227,7 +227,7 @@ class ApplicationController < ActionController::Base
   end
 
   def filter_rewards_by_classroom(products)
-    RewardsFilter.ruby_by_classroom(current_person, products)
+    RewardsFilter.by_classroom(current_person, products)
   end
   
   def filter_by_rewards_for_teacher(products,teacher,reward_type)

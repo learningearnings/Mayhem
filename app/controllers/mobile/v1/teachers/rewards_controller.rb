@@ -8,14 +8,11 @@ class Mobile::V1::Teachers::RewardsController < Mobile::V1::Teachers::BaseContro
   end
 
   def create
-    logger.debug(params[:reward])
     @reward = Teachers::Reward.new(params[:reward])
     @reward.teacher = current_person
     @reward.school = current_school
     @reward.classrooms = Classroom.where(id: params[:reward][:classroom_id]) if params[:reward][:classroom_id]
     if @reward.save
-      logger.debug(@reward.inspect)
-      logger.debug("New reward id is: #{@reward.product.id}")
       filter_factory = FilterFactory.new
       filter_condition = FilterConditions.new classrooms: @reward.classrooms, minimum_grade: "0", maximum_grade: "12"
       filter = filter_factory.find_or_create_filter(filter_condition)

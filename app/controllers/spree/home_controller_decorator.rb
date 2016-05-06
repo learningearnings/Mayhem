@@ -7,14 +7,10 @@ Spree::HomeController.class_eval do
     temp_params[:current_school] = current_school
     temp_params[:searcher_current_person] = current_person
     @searcher = Spree::Search::Filter.new(temp_params)
-    Rails.logger.debug("AKT Searcher: #{ @searcher.inspect }")    
     @products = @searcher.retrieve_products
-    Rails.logger.debug("AKT My Product: #{@products.select{ | prod | prod.id == 18916}}")
     # If they are a student we need all global products + products that are in their classroom
-    Rails.logger.debug("AKT2 Spree Home Controller: #{@searcher.inspect}")
     if current_person.is_a?(Student)
-      Rails.logger.debug("AKT2 filter_rewards_by_classroom")
-      #@products = filter_rewards_by_classroom(@products)
+      @products = filter_rewards_by_classroom(@products)
     end
     
     @teachers = @products.includes(:person).map(&:person).compact.uniq
