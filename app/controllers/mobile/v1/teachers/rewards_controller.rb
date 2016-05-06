@@ -13,13 +13,6 @@ class Mobile::V1::Teachers::RewardsController < Mobile::V1::Teachers::BaseContro
     @reward.school = current_school
     @reward.classrooms = Classroom.where(id: params[:reward][:classroom_id]) if params[:reward][:classroom_id]
     if @reward.save
-      filter_factory = FilterFactory.new
-      filter_condition = FilterConditions.new classrooms: @reward.classrooms, minimum_grade: "0", maximum_grade: "12"
-      filter = filter_factory.find_or_create_filter(filter_condition)
-      link = @reward.spree_product_filter_link || SpreeProductFilterLink.new(:product_id => @reward.id, :filter_id => filter.id)
-      link.filter_id = filter.id
-      @reward.spree_product_filter_link = link
-      session[:filters] = filter_factory.find_filter_membership(current_user.person)      
       render json: { status: :ok, reward: @reward.product.id }
     else
       render json: { status: :unprocessible_entity }
@@ -33,13 +26,6 @@ class Mobile::V1::Teachers::RewardsController < Mobile::V1::Teachers::BaseContro
     @reward.on_hand = params[:reward][:on_hand]
     @reward.price = params[:reward][:price]    
     if @reward.save
-      filter_factory = FilterFactory.new
-      filter_condition = FilterConditions.new classrooms: [@reward.classrooms], minimum_grade: "0", maximum_grade: "12"
-      filter = filter_factory.find_or_create_filter(filter_condition)
-      link = @reward.spree_product_filter_link || SpreeProductFilterLink.new(:product_id => @reward.id, :filter_id => filter.id)
-      link.filter_id = filter.id
-      @reward.spree_product_filter_link = link
-      session[:filters] = filter_factory.find_filter_membership(current_user.person)
       render json: { status: :ok }
     else
       render json: { status: :unprocessible_entity }
