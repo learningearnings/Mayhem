@@ -156,6 +156,12 @@ class Person < ActiveRecord::Base
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
+  
+  def person_classroom
+  	#Person.joins("INNER JOIN person_school_links ON person_school_links.person_id = people.id  INNER JOIN person_school_classroom_links  ON  person_school_classroom_links.person_school_link_id = person_school_links.id  INNER JOIN classrooms ON classrooms.id = person_school_classroom_links.classroom_id")
+    #.select("classrooms.name as class_name").where("people.id = ?", self.id).first
+    Person.joins(person_school_links: [{ person_school_classroom_links: :classroom }]).select("classrooms.name as class_name").where("people.id = ?", self.id).first
+  end
 
   # End Relationships
 

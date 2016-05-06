@@ -45,7 +45,7 @@ module Reports
 
     def classroom_filter
       if @classroom.present?
-        [:person_with_classroom, @classroom]
+        [:person_with_classroom,  @classroom]
       end
     end
 
@@ -90,10 +90,12 @@ module Reports
 
     def generate_row(person)
       Reports::Row[
+        id: person.id,
         person: person.name,
         username: person.person_username,
         #classroom: person.classrooms_for_school(@school).map(&:name).join(","),
-        classroom: person.classrooms.first ? person.classrooms.first : "No Classroom",
+        classroom: person.person_classroom.present? ? person.person_classroom.class_name : "No Classroom",
+        #classroom: "No Classroom",
         account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
         type: person.type,
         last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
@@ -102,6 +104,7 @@ module Reports
 
     def headers
       {
+        id: "id",
         person: "Person",
         username: "Username",
         classroom: "Classroom",
@@ -112,6 +115,7 @@ module Reports
     end
     def data_classes
       {
+        id: "",
         person: "",
         username: "",
         classroom: "",
