@@ -8,13 +8,13 @@ Spree::ProductsController.class_eval do
     #if current_person.is_a?(Student) && current_person.classrooms.present?
     #  temp_params[:classrooms] = current_person.classrooms.map(&:id)
     #end
-    logger.debug("AKT Classrooms filter: #{current_person.classrooms.map(&:id).inspect}")
+    Rails.logger.debug("AKT1 Classrooms filter: #{current_person.classrooms.map(&:id).inspect}")
     @searcher = Spree::Search::Filter.new(temp_params)
-    logger.debug("AKT show filters")
-    logger.debug(@searcher.inspect)
+    Rails.logger.debug("AKT1 show filters")
+    Rails.logger.debug(@searcher.inspect)
     @products = @searcher.retrieve_products
-    logger.debug(@products.inspect)
-    logger.debug("AKT END fetch products")
+    Rails.logger.debug(@products.inspect)
+    Rails.logger.debug("AKT1 END fetch products")
     if current_user.person.is_a?(SchoolAdmin) && params[:current_store_id]
       le_store = Spree::Store.find_by_code('le')
       @products = @products.with_property_value('reward_type','wholesale') if params[:current_store_id] == le_store.id
