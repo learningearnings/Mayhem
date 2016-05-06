@@ -90,7 +90,6 @@ module Reports
 
     def generate_row(person)
       Reports::Row[
-        id: person.id,
         person: person.name,
         username: person.person_username,
         #classroom: person.classrooms_for_school(@school).map(&:name).join(","),
@@ -104,7 +103,6 @@ module Reports
 
     def headers
       {
-        id: "id",
         person: "Person",
         username: "Username",
         classroom: "Classroom",
@@ -115,7 +113,6 @@ module Reports
     end
     def data_classes
       {
-        id: "",
         person: "",
         username: "",
         classroom: "",
