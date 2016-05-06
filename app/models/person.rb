@@ -70,7 +70,7 @@ class Person < ActiveRecord::Base
   scope :recently_created, lambda { where(self.arel_table[:created_at].gt Time.now - 1.month) }
   scope :created_between, lambda { |start_date, end_date| where(self.arel_table[:created_at].gteq(start_date)).where(self.arel_table[:created_at].lteq(end_date))}
   scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
-
+  scope :person_with_classroom, lambda {|classroom| joins(:person_school_classroom_links).where("person_school_classroom_links.classroom_id = ?", classroom)}
   before_save :ensure_spree_user
   before_validation :strip_whitespace
   after_destroy :delete_user
@@ -156,6 +156,7 @@ class Person < ActiveRecord::Base
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
+
   # End Relationships
 
   # Only return the classrooms for the given school
