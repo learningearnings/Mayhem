@@ -234,11 +234,14 @@ class ApplicationController < ActionController::Base
     if teacher.present?
       products = products.joins(:person).where(person:{id: params[:teacher]})
     end  
-    if reward_type == "Classroom"
-      products = products.includes(:classrooms).where("classrooms.id IS NOT NULL")
-    else
-      products = products.includes(:classrooms).where("classrooms.id IS NULL")
-    end      
+    if reward_type.present?
+      if reward_type == "Classroom"
+        products = products.includes(:classrooms).where("classrooms.id IS NOT NULL")
+      else
+        products = products.includes(:classrooms).where("classrooms.id IS NULL")
+      end      
+    end
+    products
   end
     
   def site_setting
