@@ -8,6 +8,7 @@ module Spree::Search
 
     def retrieve_products
       @products_scope = get_base_scope
+      Rails.logger.debug("AKT Search Filter search scope: #{@products_scope.inspect}")
       @products_scope.includes([:master])
     end
 
