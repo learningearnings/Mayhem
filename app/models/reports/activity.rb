@@ -17,7 +17,7 @@ module Reports
     def execute!
       begin
         people.each do |person|
-          data << generate_row(person)
+          data << generate_row(person) if person.person_classroom.present? && person.person_classroom.classroom_id == @classroom
         end
       rescue StandardError => e
         Rails.logger.fatal("Something went bad wrong")
@@ -89,16 +89,18 @@ module Reports
     end
 
     def generate_row(person)
-      Reports::Row[
-        person: person.name,
-        username: person.person_username,
-        #classroom: person.classrooms_for_school(@school).map(&:name).join(","),
-        classroom: person.person_classroom.present? ? person.person_classroom.class_name : "No Classroom",
-        #classroom: "No Classroom",
-        account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
-        type: person.type,
-        last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
-      ]
+      #if person.person_classroom.present? && person.person_classroom.classroom_id == @classroom
+        Reports::Row[
+          person: person.name,
+          username: person.person_username,
+          #classroom: person.classrooms_for_school(@school).map(&:name).join(","),
+          classroom: person.person_classroom.present? ? person.person_classroom.class_name : "No Classroom",
+          #classroom: "No Classroom",
+          account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
+          type: person.type,
+          last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
+        ]
+      #end  
     end
 
     def headers
