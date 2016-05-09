@@ -7,11 +7,12 @@
           .filter-teachers
             = label_tag "Teacher"
             = select_tag :teacher, options_from_collection_for_select(@teachers, :id, :full_name, params[:teacher]), :prompt => "All"
-        .filter-rewards
-          = label_tag "Type"
-          = select_tag :reward_type, options_for_select(["Classroom", "School"], params[:reward_type]), :prompt => "All"         
+        - if (current_user.person.is_a?(SchoolAdmin) && params[:all_rewards] == 'Y') || (current_user.person.is_a?(Teacher) && !current_user.person.is_a?(SchoolAdmin))
+          .filter-rewards
+            = label_tag "Type"
+            = select_tag :reward_type, options_for_select(["Classroom", "School"], params[:reward_type]), :prompt => "All"
+            = hidden_field_tag :all_rewards, "Y"   
         .grade
-          = hidden_field_tag :all_rewards, "Y"  if params[:all_rewards] == 'Y'
           = submit_tag 'Go!', :class => "go-button-filter"
     %div       
       - if current_user.person.is_a?(SchoolAdmin)
