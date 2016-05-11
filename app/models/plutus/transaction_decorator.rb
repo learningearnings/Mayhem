@@ -1,6 +1,9 @@
 Plutus::Transaction.class_eval do
   belongs_to :spree_product,:foreign_key => :commercial_document_id,  :foreign_type => :commercial_document_type, :class_name => 'Spree::Product'
 #  has_many :amounts, :class_name => "Plutus::Amount", :inverse_of => :transaction
+  has_one  :transaction_order
+  has_one  :order, through: :transaction_order
+
   has_many :person_account_links, :class_name => 'PersonAccountLink', :through => :amounts, :inverse_of => :amounts, :source => :person_account_link
   has_many :person_school_links, :class_name => 'PersonSchoolLink' ,:through => :person_account_links
   has_many :people, :through => :person_school_links, :class_name => 'Person'
@@ -29,5 +32,8 @@ Plutus::Transaction.class_eval do
       transaction.credit_amounts << Plutus::CreditAmount.new(:account => a, :amount => credit[:amount], :transaction => transaction)
     end
     transaction
+  end
+  def reward_deliverer
+    RewardDelivery.joins(reward:[{order: :transaction}]).where("plutus_transactions.id= ?", id).first.try(:from).try(:full_name)
   end
 end

@@ -2,7 +2,8 @@ Spree::Order.class_eval do
   before_create :set_dummy_email # We don't want to send emails, so just changing this to a dummy email all the time
 
   attr_accessible :school_id
-
+  has_one  :transaction_order
+  has_one  :transaction, through: :transaction_order
   def school
     ::School.find(school_id)
   rescue
