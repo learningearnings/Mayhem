@@ -5,7 +5,11 @@ module PeopleHelper
   
   def source_from_transaction(amount)
     transaction = amount.transaction
-    transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || amount.try(:account).try(:person_account_link).try(:person).try(:full_name) || "none"
+    if transaction.spree_product || transaction.otu_code
+      transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
+    else
+      amount.try(:account).try(:person_account_link).try(:person).try(:full_name)
+    end  
   end
   
   def needs_email?
