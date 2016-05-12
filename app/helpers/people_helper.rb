@@ -5,10 +5,10 @@ module PeopleHelper
   
   def source_from_transaction(amount)
     transaction = amount.transaction
-    if transaction.spree_product || transaction.otu_code
-      transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
+    if transaction.transaction_description
+      amount.try(:account).try(:person_account_link).try(:person).try(:full_name) || "none"
     else
-      amount.try(:account).try(:person_account_link).try(:person).try(:full_name)
+      transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
     end  
   end
   

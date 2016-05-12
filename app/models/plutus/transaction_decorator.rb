@@ -40,4 +40,7 @@ Plutus::Transaction.class_eval do
   def credit_source
     self.try(:otu_code).try(:teacher).try(:full_name)
   end
+  def transaction_description
+    ["Transfer from Checking to Savings", "Transfer from Savings to Checking","Transfer from Checking to Hold","Transfer from Hold to Checking"].include? self.description
+  end
 end
