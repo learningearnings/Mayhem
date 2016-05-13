@@ -32,6 +32,12 @@ Spree::OrdersController.class_eval do
 
 
   def populate
+    
+    if current_person.nil? or current_school.nil?
+       message = 'There was an issue placing your order.'
+       redirect_to root_path, notice: message
+       return
+    end
     variant_options = params[:variants].to_a.flatten
     variant  = Spree::Variant.find variant_options.first
 

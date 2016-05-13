@@ -1,17 +1,35 @@
 .main-content-wrapper
   .full-content
-    - if current_user.person.is_a?(SchoolAdmin)
-      - if params[:all_rewards] == 'Y'
-        %h2 All Rewards
-        %p= link_to 'Show School Rewards', teachers_rewards_path
+    = form_tag(teachers_rewards_path, method: :get, class: "noprint" )do
+      .filter
+        %h4 Filter By
+        -if current_user.person.is_a?(SchoolAdmin)
+          .filter-teachers
+            = label_tag "Teacher"
+            = select_tag :teacher, options_from_collection_for_select(@teachers, :id, :full_name, params[:teacher]), :prompt => "All"
+        - if (current_user.person.is_a?(SchoolAdmin) && params[:all_rewards] == 'Y') || (current_user.person.is_a?(Teacher) && !current_user.person.is_a?(SchoolAdmin))
+          .filter-rewards
+            = label_tag "Type"
+            = select_tag :reward_type, options_for_select(["Classroom", "School"], params[:reward_type]), :prompt => "All"
+            = hidden_field_tag :all_rewards, "Y"   
+        .grade
+          = submit_tag 'Go!', :class => "go-button-filter"
+    %div       
+      - if current_user.person.is_a?(SchoolAdmin)
+        - if params[:all_rewards] == 'Y'
+          %div.left 
+            %h2 All Rewards
+            %p= link_to 'Show School Rewards', teachers_rewards_path
+        - else
+          %div.left
+            %h2 School Rewards
+            %p= link_to 'Show All Rewards', teachers_rewards_path( :all_rewards => "Y")
       - else
-        %h2 School Rewards
-        %p= link_to 'Show All Rewards', teachers_rewards_path( :all_rewards => "Y")
-    - else
-      %h2 Your Rewards
-    %ul.action_buttons
-      %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "create-reward btn awesome-button"
-    .resp-product
+        %h2 Your Rewards
+      
+      %div.right
+        = link_to 'Create a New Reward', teachers_reward_templates_path, :class => "create-reward btn awesome-button"
+    .resp-product.clear
       = paginate @teachers_rewards, :window => 2
       .resp-product-row
         - if @teachers_rewards.any?
