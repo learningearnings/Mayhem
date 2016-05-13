@@ -45,10 +45,14 @@ class Mobile::V1::Teachers::PurchasesController < Mobile::V1::Teachers::BaseCont
         [:scoped]
       end        
     else
-      #get all rewards created by the selected rewards creator
-      teacher = Teacher.find(params[:reward_creator_filter])
-      rewards = teacher.products.collect { | r | r.id }
-      [:where, { reward: {product: { id: rewards} } }]
+      if params[:reward_creator_filter] == "ALL"
+        [:scoped]
+      else
+        #get all rewards created by the selected rewards creator
+        teacher = Teacher.find(params[:reward_creator_filter])
+        rewards = teacher.products.collect { | r | r.id }
+        [:where, { reward: {product: { id: rewards} } }]
+      end
     end
   end
   
@@ -66,7 +70,7 @@ class Mobile::V1::Teachers::PurchasesController < Mobile::V1::Teachers::BaseCont
     if params[:date_to_filter].blank?
       [:scoped]      
     else
-      date_to_str = " reward_deliveries.created_at <= '#{params[:date_to_filter]}' " 
+      date_to_str = " reward_deliveries.created_at < ('#{params[:date_to_filter]}'::date + '1 day'::interval) " 
       [:where, date_to_str ]      
     end    
   end

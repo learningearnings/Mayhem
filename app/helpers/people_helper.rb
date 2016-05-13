@@ -3,8 +3,13 @@ module PeopleHelper
     current_person.try(:user).try(:sign_in_count) && current_person.try(:user).try(:sign_in_count) <= 1
   end
   
-  def source_from_transaction(transaction)
-    transaction.spree_product.try(:person).try(:full_name) || transaction.people.first.try(:full_name) || "none"
+  def source_from_transaction(amount)
+    transaction = amount.transaction
+    if transaction.transaction_description
+      amount.try(:account).try(:person_account_link).try(:person).try(:full_name) || "none"
+    else
+      transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
+    end  
   end
   
   def needs_email?
