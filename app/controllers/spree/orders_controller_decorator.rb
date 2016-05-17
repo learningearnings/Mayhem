@@ -90,7 +90,15 @@ Spree::OrdersController.class_eval do
                 @order.empty!
                 redirect_to product and return
               else
-                OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
+                if params[:deliverer_id].present?
+                  deliverer_id = params[:deliverer_id]
+                elsif params[:reward_creator_id].present?
+                  deliverer_id = params[:reward_creator_id]
+                else
+                  flash[:error] = 'You did not select a deliverer for reward.'
+                  redirect_to :back and return
+                end  
+                OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, deliverer_id).execute!
                 message = "Purchase successful!."
                 if params[:variants].is_a?(Hash)
                   variant_id = params[:variants].keys.first
