@@ -5,16 +5,16 @@ namespace :reward_delivery do
     reward_deliveries = []
     i = 0
     ## Assign School here
-    school_name = "Ztest School"
+    school_name = ""
     ## Assign from Order created date 
-    from_date = "2016-05-17 00:00:00.000000"
+    from_date = "2016-05-13 00:00:00.000000"
     ## Assign to order created date
-    to_date = "2016-05-18 00:00:00.000000"
+    to_date = "2016-05-17 00:00:00.000000"
     puts "School name ===> #{school_name}"
     puts "From date   ===> #{from_date}"
     puts "To date     ===> #{to_date}"
     ## Fetch only those orders which have associated transaction_order entries for specified school and date range.
-    transaction_orders = TransactionOrder.joins(order: [user: [person: [person_school_links: :school]]]).where("schools.name = '#{school_name}' and spree_orders.created_at >= '#{from_date}' and spree_orders.created_at < '#{to_date}'")
+    transaction_orders = TransactionOrder.joins(order: [user: [person: [person_school_links: :school]]]).where("spree_orders.created_at >= '#{from_date}' and spree_orders.created_at < '#{to_date}'")
     transaction_orders.each do |transaction_order|
       ## Get order line items
       line_items = transaction_order.order.line_items
@@ -51,8 +51,12 @@ namespace :reward_delivery do
 
   ##Save newly created reward delivery ids to csv file into the public folder.
   def export_to_csv(reward_deliveries,school_name)
+    if !school_name.present?
+      school_name = "For all Schools till date"
+    end  
     file_name = "#{school_name.parameterize.underscore}_reward_delivery_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
     CSV.open("/home/deployer/reward_deliveries_csv/#{file_name}", "wb") do |csv|
+    #CSV.open("public/#{file_name}", "wb") do |csv|
       csv << ["id"]
      	reward_deliveries.each do |r|
      		csv << [r]
