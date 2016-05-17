@@ -95,7 +95,7 @@ Spree::OrdersController.class_eval do
                 elsif params[:reward_creator_id].present?
                   deliverer_id = params[:reward_creator_id]
                 else
-                  flash[:error] = 'You did not select a deliverer for reward.'
+                  flash[:error] = 'Please select a teacher to deliver this reward.'
                   redirect_to :back and return
                 end  
                 OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, deliverer_id).execute!
