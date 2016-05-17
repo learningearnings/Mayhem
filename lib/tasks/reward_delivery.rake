@@ -51,8 +51,8 @@ namespace :reward_delivery do
 
   ##Save newly created reward delivery ids to csv file into the public folder.
   def export_to_csv(reward_deliveries,school_name)
-    file_name = "#{school_name}_reward_delivery_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
-    CSV.open("public/#{file_name}", "wb") do |csv|
+    file_name = "#{school_name.parameterize.underscore}_reward_delivery_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+    CSV.open("/home/deployer/reward_deliveries_csv/#{file_name}", "wb") do |csv|
       csv << ["id"]
      	reward_deliveries.each do |r|
      		csv << [r]
