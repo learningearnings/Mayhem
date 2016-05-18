@@ -152,7 +152,7 @@ module Reports
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
         classroom: cr_name,
         grade: School::GRADE_NAMES[person.try(:grade)],
-        purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
+        purchased: reward_delivery.created_at,
         reward: reward_delivery.reward.product.name,
         quantity: reward_delivery.reward.quantity,
         status: reward_delivery.status.humanize,
