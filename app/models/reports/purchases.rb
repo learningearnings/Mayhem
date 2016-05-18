@@ -147,6 +147,7 @@ module Reports
         cr_name = "None"  
       end   
       Rails.logger.debug("AKT: homeroom #{cr_name}")
+      abort "here"
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
