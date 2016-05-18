@@ -2,7 +2,7 @@ class BuckDistributor
   extend ActiveSupport::Memoizable
   DAILY_STUDENT_AMOUNT = 25
 
-  def initialize(schools, credit_manager=CreditManager.new, last_school_processed)
+  def initialize(schools, credit_manager=CreditManager.new, last_school_processed=1)
     @schools = schools if schools
     @schools = get_schools unless schools
     @last_school_processed = last_school_processed
