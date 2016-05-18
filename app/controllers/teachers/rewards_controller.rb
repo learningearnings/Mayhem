@@ -13,7 +13,7 @@ module Teachers
         @products = filter_by_rewards_for_teacher(@products, params[:teacher], params[:reward_type])      
         @teachers_rewards = @products.order("spree_products.name").page(params[:page]).per(9)
       else
-        @rewards = current_person.editable_rewards(current_school)
+        @rewards = current_person.is_a?(SchoolAdmin) ? current_person.my_editable_rewards(current_school) : current_person.editable_rewards(current_school) 
         @teachers = @rewards.includes(:person).map(&:person).compact.uniq
         @rewards = filter_by_rewards_for_teacher(@rewards, params[:teacher] , params[:reward_type])  
         @teachers_rewards = @rewards.order("spree_products.name").page(params[:page]).per(9)        
