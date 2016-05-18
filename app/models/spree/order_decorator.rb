@@ -9,6 +9,15 @@ Spree::Order.class_eval do
   rescue
     nil
   end
+  
+  def deliver_order_confirmation_email
+    #Rails.logger.debug("AKT: Override order confirmation email")
+  end
+  
+  def send_cancel_email
+    #Rails.logger.debug("AKT: Override order confirmation email")
+    #update_column(:confirmation_delivered, true)
+  end  
 
   def restock_items!
     line_items.each do |line_item|
