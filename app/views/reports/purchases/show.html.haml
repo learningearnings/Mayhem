@@ -60,8 +60,12 @@
                   %td= row["student"]
                   %td= row["classroom"]                  
                   %td= row["grade"]
+                  %td
+                    -if row["purchased"].present?
+                      = time_ago_in_words(row["purchased"]) + " ago"
+                    -else
+                      = "None"  
                   %td= row["purchased"]
-                  %td= row["purchased_date"]
                   %td= row["reward"]
                   %td= row["quantity"]
                   %td
