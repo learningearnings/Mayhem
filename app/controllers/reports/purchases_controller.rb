@@ -18,7 +18,9 @@ module Reports
 
     def show
       delayed_report = current_person.delayed_reports.find(params[:id])
+      #abort delayed_report.inspect
       MixPanelTrackerWorker.perform_async(current_user.id, 'Run Purchase Report', mixpanel_options)
+      #abort delayed_report.inspect
       respond_to do |format|
         format.html { render 'show', locals: { report: delayed_report } }
         format.json { render :json => delayed_report }

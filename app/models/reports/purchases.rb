@@ -7,12 +7,16 @@ module Reports
     delegate :total_pages, :limit_value, :current_page, :to => :reward_deliveries
 
     attr_accessor :parameters
+    attr_reader :data
+
     def initialize params
       super
       @school = params[:school]
       @teacher = params[:teacher]
       @current_page = params[:page]    
       @parameters = Reports::Purchases::Params.new(params)
+      @endpoints = date_endpoints(@parameters);
+      @data = []
     end
 
     def execute!    
@@ -41,6 +45,15 @@ module Reports
         text << " from #{date_endpoints[0].to_date.to_s(:db)} to #{date_endpoints[1].to_date.to_s(:db)}"
       end
       text
+    end
+
+    def date_filter
+      case @endpoints
+      when nil
+        [:rewards_between, 10.years.ago,1.second.from_now]
+      else
+        [:rewards_between, @endpoints[0],@endpoints[1]]
+      end
     end
 
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
