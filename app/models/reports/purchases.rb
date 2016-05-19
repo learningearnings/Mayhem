@@ -7,7 +7,6 @@ module Reports
     delegate :total_pages, :limit_value, :current_page, :to => :reward_deliveries
 
     attr_accessor :parameters
-    attr_reader :data
 
     def initialize params
       super
@@ -15,8 +14,6 @@ module Reports
       @teacher = params[:teacher]
       @current_page = params[:page]    
       @parameters = Reports::Purchases::Params.new(params)
-      @endpoints = date_endpoints(@parameters);
-      @data = []
     end
 
     def execute!    
@@ -47,12 +44,30 @@ module Reports
       text
     end
 
+
     def date_filter
-      case @endpoints
-      when nil
-        [:rewards_between, 10.years.ago,1.second.from_now]
+      local_date_filter = parameters.date_filter if parameters && parameters.date_filter
+      case local_date_filter
+      when 'last_90_days'
+        [:rewards_between, 90.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_60_days'
+        [:rewards_between, 60.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_7_days'
+        [:rewards_between, 7.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_month'
+        d_begin = Time.now.beginning_of_month - 1.month
+        d_end = d_begin.end_of_month
+        [:rewards_between, d_begin, d_end]
+      when 'this_month'
+        [:rewards_between, Time.now.beginning_of_month, Time.now]
+      when 'this_week'
+        [:rewards_between, Time.now.beginning_of_week, Time.now]
+      when 'last_week'
+        d_begin = Time.now.beginning_of_week - 1.week
+        d_end = d_begin.end_of_week
+        [:rewards_between, d_begin, d_end]
       else
-        [:rewards_between, @endpoints[0],@endpoints[1]]
+        [:rewards_between, 10.years.ago,1.second.from_now]
       end
     end
 
