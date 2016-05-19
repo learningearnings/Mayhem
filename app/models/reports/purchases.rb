@@ -7,6 +7,7 @@ module Reports
     delegate :total_pages, :limit_value, :current_page, :to => :reward_deliveries
 
     attr_accessor :parameters
+
     def initialize params
       super
       @school = params[:school]
@@ -41,6 +42,33 @@ module Reports
         text << " from #{date_endpoints[0].to_date.to_s(:db)} to #{date_endpoints[1].to_date.to_s(:db)}"
       end
       text
+    end
+
+
+    def date_filter
+      local_date_filter = parameters.date_filter if parameters && parameters.date_filter
+      case local_date_filter
+      when 'last_90_days'
+        [:rewards_between, 90.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_60_days'
+        [:rewards_between, 60.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_7_days'
+        [:rewards_between, 7.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_month'
+        d_begin = Time.now.beginning_of_month - 1.month
+        d_end = d_begin.end_of_month
+        [:rewards_between, d_begin, d_end]
+      when 'this_month'
+        [:rewards_between, Time.now.beginning_of_month, Time.now]
+      when 'this_week'
+        [:rewards_between, Time.now.beginning_of_week, Time.now]
+      when 'last_week'
+        d_begin = Time.now.beginning_of_week - 1.week
+        d_end = d_begin.end_of_week
+        [:rewards_between, d_begin, d_end]
+      else
+        [:rewards_between, 10.years.ago,1.second.from_now]
+      end
     end
 
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
