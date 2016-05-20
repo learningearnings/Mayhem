@@ -90,7 +90,7 @@ module Reports
     def sort_by
       case parameters.sort_by
       when "Default"
-        [:scoped]
+        [:newest_orders]
       when "Teacher"
         [:order, "from_id"]
       when "Grade"
