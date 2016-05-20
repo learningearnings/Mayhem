@@ -19,6 +19,7 @@ Leror::Application.routes.draw do
       get  'schools' => 'base#schools'
       namespace :teachers do
         post 'auth'             => 'base#authenticate'
+        get 'auth'             => 'base#authenticate'        
         post 'register'             => 'base#register'        
         post 'bank/award_credits' => 'bank#award_credits'
         get  'classrooms'       => 'classrooms#index'

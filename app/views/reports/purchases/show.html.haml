@@ -1,5 +1,5 @@
-= javascript_include_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
-= stylesheet_link_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
+= javascript_include_tag "https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
+= stylesheet_link_tag "https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
 .main-content-wrapper
   .primary-content-fw
 
@@ -15,12 +15,15 @@
             .filter-rewards
               = f.input :reward_status_filter,:label => "Show Rewards", :collection => report_params.reward_status_filter_options
             .filter-teachers
-              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)              
-            .filter-teachers
-              - if report_params.page.blank?
-                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
-              - else
-                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
+              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)
+            - if current_person.is_a?(SchoolAdmin)              
+              .filter-teachers
+                - if report_params.page.blank?
+                  = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
+                - else
+                  = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
+            -else
+              = hidden_field_tag  'reward_creator_filter', current_person.id
               
             
           .sorting2
@@ -45,6 +48,7 @@
                 %th Homeroom
                 %th Grade
                 %th Purchased
+                %th PurchasedDate
                 %th Reward
                 %th Quantity
                 %th Status
@@ -59,6 +63,11 @@
                   %td= row["student"]
                   %td= row["classroom"]                  
                   %td= row["grade"]
+                  %td
+                    -if row["purchased"].present?
+                      = time_ago_in_words(row["purchased"]) + " ago"
+                    -else
+                      = "None"  
                   %td= row["purchased"]
                   %td= row["reward"]
                   %td= row["quantity"]
@@ -113,15 +122,19 @@
 :javascript
   $(document).ready( function () {
     var sort = eval($.cookie('purchases_report_order'));
-    sort = sort ? sort : [[0,"desc",0], [1, "desc", 0]]
+    //sort = sort ? sort : [[0,"desc",0], [1, "desc", 0]]
     $('#report_table').dataTable( {
       "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 7, 8, 9 ] }
+        { 'bSortable': false, 'aTargets': [ 7, 8, 9 ] },
+        { 'orderData':[5], 'targets': [4] },
+        { 'targets': [5],'visible': false,'searchable': false},
+        { "asSorting": [ "asc"], "aTargets": [ 5 ] }
        ],
       "bPaginate": false,
       "bInfo": false,
       "bSort": true,
-      "aaSorting": sort
+      "order": [[ 4, "desc" ]]
+      //"aaSorting": {}
     } );
 
     $('.refund').click(function(e) {
