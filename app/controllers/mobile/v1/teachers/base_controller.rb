@@ -3,12 +3,22 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
     if params[:username].blank?
       render json: { error: 'Please enter a username' }, status: :unauthorized and return
     end
+    
+    #Check for accounts that are not activated
+    tuser = Spree::User.where(username: params[:username]).first if params[:username]
+    if tuser and tuser.confirmed_at == nil
+         render json: { error: 'You must activate your account before logging in.  Please check your email for activation instructions...' }, status: :unauthorized and return
+    end    
+    
     if params[:password].blank?
       render json: { error: 'Please enter a password' }, status: :unauthorized and return
     end   
     if params[:school_id].blank?
       render json: { error: 'Please select your school' }, status: :unauthorized and return
     end    
+    
+
+    
     user = Spree::User.joins(:person).where('people.type IN (?)', ['Teacher', 'SchoolAdmin']).authenticate_with_school_id(params[:username], params[:password], params[:school_id])
     if user
       render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
@@ -60,10 +70,10 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
   end
   
   def setup_fake_data
-    params[:user][:city] = "Fake City"
-    params[:user][:state_id] = 1
+    params[:user][:city] = "Fake City" if params[:user][:city].blank?
+    params[:user][:state_id] = 1 if params[:user][:state_id].blank?
     params[:user][:password_confirmation] = params[:user][:password]
-    params[:user][:grade] = 5
+    params[:user][:grade] = 5 
     params[:user][:address1] = "Fake Address"
     params[:user][:zip] = 12345
   end

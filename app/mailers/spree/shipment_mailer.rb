@@ -9,6 +9,6 @@ class Spree::ShipmentMailer < ActionMailer::Base
     if shipment.order.store
       mail_params[:from] = shipment.order.store.email if shipment.order.store.email.present?
     end
-    mail(mail_params)
+    #mail(mail_params)
   end
 end

@@ -11,6 +11,8 @@ class RewardDelivery < ActiveRecord::Base
   scope :oldest_orders, lambda { order("reward_deliveries.created_at ASC") }
   scope :between, lambda { |start_date, end_date| where(arel_table[:created_at].gteq(start_date)).where(arel_table[:created_at].lteq(end_date)) }
   scope :in_last_7_days, lambda { between(7.days.ago, Time.zone.now) }
+  scope :rewards_between, lambda { |start_date, end_date| where('reward_deliveries.created_at >= ? AND reward_deliveries.created_at <= ?',start_date, end_date) }
+
 
   validates :from_id,   presence: true
   validates :to_id,     presence: true

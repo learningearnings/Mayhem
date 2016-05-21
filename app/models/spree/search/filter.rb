@@ -19,6 +19,7 @@ module Spree::Search
     def get_base_scope
       # Copied from spree-multi-domain/lib/spree/search/multi_domain.rb
       base_scope = @cached_product_group ? @cached_product_group.products.active : Spree::Product.active
+
       # Leadmins get to see out of stock products
       # don't use filters with LeAdmins
 

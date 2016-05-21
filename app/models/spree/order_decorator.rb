@@ -2,12 +2,22 @@ Spree::Order.class_eval do
   before_create :set_dummy_email # We don't want to send emails, so just changing this to a dummy email all the time
 
   attr_accessible :school_id
-
+  has_one  :transaction_order
+  has_one  :transaction, through: :transaction_order
   def school
     ::School.find(school_id)
   rescue
     nil
   end
+  
+  def deliver_order_confirmation_email
+    #Rails.logger.debug("AKT: Override order confirmation email")
+  end
+  
+  def send_cancel_email
+    #Rails.logger.debug("AKT: Override order confirmation email")
+    #update_column(:confirmation_delivered, true)
+  end  
 
   def restock_items!
     line_items.each do |line_item|
