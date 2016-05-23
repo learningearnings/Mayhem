@@ -215,6 +215,7 @@ Leror::Application.routes.draw do
   match '/reports/student_activity' => 'reports/student_activity#show', as: 'student_activity_report'
   match '/reports/teacher_activity' => 'reports/teacher_activity#show', as: 'teacher_activity_report'
   match '/reports/student_earning' => 'reports/student_earning#show', as: 'student_earning_report'
+  post '/reports/student_earning_transactions' => 'reports/student_earning#credit_transactions'
 
   match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
   get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'

@@ -71,6 +71,8 @@ class Person < ActiveRecord::Base
   scope :created_between, lambda { |start_date, end_date| where(self.arel_table[:created_at].gteq(start_date)).where(self.arel_table[:created_at].lteq(end_date))}
   scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
   scope :person_with_classroom, lambda {|classroom| joins(:person_school_classroom_links).where("person_school_classroom_links.classroom_id = ?", classroom)}
+  scope :with_credits_between, lambda {|start_date, end_date| where("otu_codes.created_at >= ? AND otu_codes.created_at <= ?", start_date, end_date) }
+
   before_save :ensure_spree_user
   before_validation :strip_whitespace
   after_destroy :delete_user

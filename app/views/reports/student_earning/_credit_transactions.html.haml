@@ -1,0 +1,10 @@
+= paginate amounts, :window => 2, :remote => true
+%table.table.table-bordered
+  %thead
+    %tr
+      %th.date Date
+      %th.amount Amount
+  - amounts.each do |amount|
+    %tr
+      %td.date= l(amount.created_at)
+      %td.amount.currency= number_with_precision(amount.points, :precision => 2)

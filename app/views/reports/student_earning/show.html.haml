@@ -1,3 +1,6 @@
+= javascript_include_tag "https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
+= stylesheet_link_tag "https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
+
 .main-content-wrapper
   .primary-content-fw
     %h2 Student Earning Report
@@ -9,7 +12,8 @@
         = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       = f.submit 'Go!', class: "awesome-button"
       = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
-
+      %span#start_date{:style => 'display:none'}= report.endpoints[0]
+      %span#end_date{:style => 'display:none'}= report.endpoints[1]
     .report
       %br.onlyprint/
       %table#report_table.table.table-bordered.table-striped.solid-background
@@ -18,22 +22,52 @@
             %th Student
             %th Username
             %th Total Credits
+            %th Total Deposited
+            %th Total Undeposited
           %tbody
-          - if report.data.count > 0
             - report.data.each do |row|
               %tr
-                %td= row[:student_name]
+                %td= link_to(row[:student_name], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal')
                 %td= row[:username]
                 %td= row[:total_credits]
-          - else
-            %tr
-              %td{:colspan => report.header_keys.count} No Activity meets your date criteria above.
-              
+                %td= row[:total_deposited]
+                %td= row[:total_undeposited]
+
+#history-modal.modal.hide
+  .modal-header
+    %h3.title
+    #credit-history
+             
 :javascript
   $(document).ready( function () {
-    $('#report_table').dataTable( {
-      "bPaginate": false,
-      "bInfo": false,
-      "aaSorting": [[2, "asc"]] 
-    } );
-  } );
+    $('#report_table').DataTable();
+
+    $('.history-action').click(function(e) {
+      var el = $(e.currentTarget);
+      // Set title for modal
+      $('#history-modal .title').html("Student: " + el.data("name"));
+
+      $.ajax({
+        url:'/reports/student_earning_transactions',
+        type: 'POST',
+        data: { student_id: el.data("id"),
+                start_date: $('#start_date').text(),
+                end_date: $('#end_date').text()       } ,
+        success:function(data) {
+          $("#credit-history").html(data);
+        }
+      });
+    });
+
+    // On hide of modal, we need to clear out the student's data
+    $('#history-modal').on('hidden', function() {
+      $('#checking-history').html("Loading Checking History...");
+      $('#savings-history').html("Loading Savings History...");
+    });
+    // On click of student name, we will setup spinners
+    //  and load checkings/savings data to return to the
+    //  modal.
+
+  });
+
+
