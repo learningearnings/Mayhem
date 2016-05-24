@@ -13,7 +13,7 @@ module Reports
       start_date = DateTime.parse(params[:start_date])
       end_date = DateTime.parse(params[:end_date])
       @credit_type = params[:credit_type] 
-      @otu_codes = OtuCode.total_credited(student.id, start_date, end_date).reverse_order.page(params[:page]).per(5)
+      @otu_codes = OtuCode.total_credited(@student.id, start_date, end_date).reverse_order.page(params[:page]).per(5)
       if @credit_type == "deposited"
         @otu_codes = @otu_codes.inactive
       elsif @credit_type == "undeposited"
