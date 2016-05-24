@@ -124,7 +124,7 @@ module Reports
     end
     
     def reward_creator_filter
-      if report_params.page.blank?
+      if parameters.page.blank?
         if @teacher
           rewards = @teacher.products.collect { | r | r.id }
           [:where, { reward: {product: { id: rewards} } }]
