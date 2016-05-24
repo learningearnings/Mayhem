@@ -40,7 +40,9 @@
              
 :javascript
   $(document).ready( function () {
-    $('#report_table').DataTable();
+    $('#report_table').DataTable({
+     "bPaginate": false
+     });
 
     $('.history-action').click(function(e) {
       var el = $(e.currentTarget);
