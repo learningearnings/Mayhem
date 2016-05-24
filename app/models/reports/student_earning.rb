@@ -30,7 +30,7 @@ module Reports
     def date_filter
       case @endpoints
       when nil
-        [:with_credits_between, 30.days.ago,1.second.from_now]
+        [:with_credits_between, 10.years.ago,1.second.from_now]
       else
         [:with_credits_between, @endpoints[0],@endpoints[1]]
       end
@@ -86,6 +86,33 @@ module Reports
         total_undeposited: "Total Undeposited"
       }
     end
+    def date_endpoints parameters = nil
+      local_date_filter = parameters.date_filter if parameters && parameters.date_filter
+      local_date_filter = @date_filter if !@date_filter.nil?
+      case local_date_filter
+      when 'last_90_days'
+        [90.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_60_days'
+        [60.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_7_days'
+        [7.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_month'
+        d_begin = Time.now.beginning_of_month - 1.month
+        d_end = d_begin.end_of_month
+        [d_begin, d_end]
+      when 'this_month'
+        [Time.now.beginning_of_month, Time.now]
+      when 'this_week'
+        [Time.now.beginning_of_week, Time.now]
+      when 'last_week'
+        d_begin = Time.now.beginning_of_week - 1.week
+        d_end = d_begin.end_of_week
+        [d_begin, d_end]
+      else
+        [10.years.ago,1.second.from_now]
+      end
+    end
+      
     class Params < Reports::ParamsBase
       attr_accessor :date_filter,:sort_by
       def initialize options_in = {}

@@ -14,11 +14,15 @@ module PeopleHelper
 
   def source_from_otu_code(otu_code)
     transaction = otu_code.transactions.last
-    if transaction.transaction_description
-      otu_code.student.try(:full_name) || "none"
-    else
-      transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
-    end  
+    if transaction
+      if transaction.transaction_description
+        otu_code.student.try(:full_name) || "none"
+      else
+        transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
+      end
+     else
+      "none"
+     end 
   end  
   def credit_transactions_title(credit_type)
     case credit_type

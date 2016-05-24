@@ -12,8 +12,9 @@
         = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       = f.submit 'Go!', class: "awesome-button"
       = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
-      %span#start_date{:style => 'display:none'}= report.endpoints[0]
-      %span#end_date{:style => 'display:none'}= report.endpoints[1]
+      -if report.endpoints
+        %span#start_date{:style => 'display:none'}= report.endpoints[0]
+        %span#end_date{:style => 'display:none'}= report.endpoints[1]
     .report
       %br.onlyprint/
       %table#report_table.table.table-bordered.table-striped.solid-background
