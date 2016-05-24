@@ -1,0 +1,77 @@
+= javascript_include_tag "https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
+= stylesheet_link_tag "https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
+
+.main-content-wrapper
+  .primary-content-fw
+    %h2 Student Earning Report
+    //%h3= report.range if report.range
+    = simple_form_for report.parameters,  :url => student_earning_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+      .filter
+        = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
+      .sorting
+        = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
+      = f.submit 'Go!', class: "awesome-button"
+      = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+      -if report.endpoints
+        %span#start_date{:style => 'display:none'}= report.endpoints[0]
+        %span#end_date{:style => 'display:none'}= report.endpoints[1]
+    .report
+      %br.onlyprint/
+      %table#report_table.table.table-bordered.table-striped.solid-background
+        %thead
+          %tr
+            %th Student
+            %th Username
+            %th Total Credits
+            %th Total Deposited
+            %th Total Undeposited
+          %tbody
+            - report.data.each do |row|
+              %tr
+                %td= row[:student_name]
+                %td= row[:username]
+                %td= link_to(row[:total_credits], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "total_credit")
+                %td= link_to(row[:total_deposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "deposited")
+                %td= link_to(row[:total_undeposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "undeposited")
+
+#history-modal.modal.hide
+  .modal-header
+    #credit-history
+             
+:javascript
+  $(document).ready( function () {
+    $('#report_table').DataTable({
+     "bPaginate": false
+     });
+
+    $('.history-action').click(function(e) {
+      var el = $(e.currentTarget);
+      // Set title for modal
+      $('#history-modal .title').html("Student: " + el.data("name"));
+
+      $.ajax({
+        url:'/reports/student_earning_transactions',
+        type: 'POST',
+        data: { student_id: el.data("id"),
+                start_date: $('#start_date').text(),
+                end_date: $('#end_date').text(),
+                credit_type: el.data("credit-type"),
+                      } ,
+        success:function(data) {
+          $("#credit-history").html(data);
+        }
+      });
+    });
+
+    // On hide of modal, we need to clear out the student's data
+    $('#history-modal').on('hidden', function() {
+      $('#checking-history').html("Loading Checking History...");
+      $('#savings-history').html("Loading Savings History...");
+    });
+    // On click of student name, we will setup spinners
+    //  and load checkings/savings data to return to the
+    //  modal.
+
+  });
+
+

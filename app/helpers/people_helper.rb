@@ -11,7 +11,31 @@ module PeopleHelper
       transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
     end  
   end
+
+  def source_from_otu_code(otu_code)
+    transaction = otu_code.transactions.last
+    if transaction.present?
+      if transaction.transaction_description
+        otu_code.student.try(:full_name) || "none"
+      else
+        transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
+      end
+     else
+      "none"
+     end 
+  end  
+  def credit_transactions_title(credit_type)
+    case credit_type
+    when "total_credit"
+      "Total Credits"
+    when "deposited"
+      "Total Credits Deposited"
+    else "undeposited"
+      "Total Credits Undeposited"
+    end  
+  end
   
+
   def needs_email?
     if session[:defer_email]
       return false
