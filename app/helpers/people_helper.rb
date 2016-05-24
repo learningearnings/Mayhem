@@ -14,7 +14,7 @@ module PeopleHelper
 
   def source_from_otu_code(otu_code)
     transaction = otu_code.transactions.last
-    if transaction
+    if transaction.present?
       if transaction.transaction_description
         otu_code.student.try(:full_name) || "none"
       else
