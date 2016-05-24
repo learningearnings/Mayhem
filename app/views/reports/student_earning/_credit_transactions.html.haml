@@ -6,14 +6,12 @@
     %tr
       %th.amount Type
       %th.amount Amount
-      %th.teacher Source
       %th.date Date
 
   - otu_codes.each do |otu_code|
     %tr
       %td.amount.currency= otu_code.ebuck ? "e-credit" : "none"
       %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
-      %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
       %td.date= credit_type == "total_credit" ? l(otu_code.created_at) : l(otu_code.updated_at)
 
 
