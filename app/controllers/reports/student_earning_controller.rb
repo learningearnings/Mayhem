@@ -20,7 +20,7 @@ module Reports
         @otu_codes = @otu_codes.active
       end 
       respond_to do |format|
-        format.html { render partial: 'credit_transactions', layout: false,  locals: { otu_codes: @otu_codes, credit_type: @credit_type } }
+        format.html { render partial: 'credit_transactions', layout: false,  locals: { otu_codes: @otu_codes, credit_type: @credit_type, student_name: student.name } }
         format.js 
       end
     end
