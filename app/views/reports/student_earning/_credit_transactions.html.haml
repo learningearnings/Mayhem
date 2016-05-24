@@ -1,10 +1,18 @@
-= paginate amounts, :window => 2, :remote => true
+= paginate otu_codes, :window => 2, :remote => true
+%h4= credit_transactions_title(credit_type) 
 %table.table.table-bordered
   %thead
     %tr
-      %th.date Date
+      %th.amount Type
       %th.amount Amount
-  - amounts.each do |amount|
+      %th.teacher Source
+      %th.date Date
+
+  - otu_codes.each do |otu_code|
     %tr
-      %td.date= l(amount.created_at)
-      %td.amount.currency= number_with_precision(amount.points, :precision => 2)
+      %td.amount.currency= otu_code.ebuck ? "e-credit" : "none"
+      %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
+      %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
+      %td.date= credit_type == "total_credit" ? l(otu_code.created_at) : l(otu_code.updated_at)
+
+
