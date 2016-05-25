@@ -1,19 +1,57 @@
-%h3= student_name
-= paginate otu_codes, :window => 2, :remote => true
-%h4= credit_transactions_title(credit_type) 
-%table.table.table-bordered
-  %thead
-    %tr
-      %th.amount Type
-      %th.amount Amount
-      %th.teacher Source
-      %th.date Date
+.credit-transaction-header
+  .credit-student-title
+    %h3= student_name
+  .credit-print-button
+    = button_tag "Print Report", class: "noprint awesome-button", id: "print-credit"
+    //= button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+%div.clear
+  = paginate otu_codes,:window => 2, :remote => true
+%div
+  %h4= credit_transactions_title(credit_type) 
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th.teacher Type
+        %th.amount Amount
+        %th.teacher Source
+        %th.date Date
 
-  - otu_codes.each do |otu_code|
-    %tr
-      %td.amount.currency= otu_code.ebuck ? "e-credit" : "none"
-      %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
-      %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
-      %td.date= credit_type == "total_credit" ? l(otu_code.created_at) : l(otu_code.updated_at)
+    - otu_codes.each do |otu_code|
+      %tr
+        %td{:nowrap => "nowrap"}= otu_code.otu_code_category.present? ?  otu_code.otu_code_category.name : "none"
+        %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
+        %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
+        %td.date= credit_type == "total_credit" ? l(otu_code.created_at) : l(otu_code.updated_at)
+
+#printable-section.hide
+  %h3= student_name
+
+  %h4= credit_transactions_title(credit_type) 
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th.teacher Type
+        %th.amount Amount
+        %th.teacher Source
+        %th.date Date
+
+    - otu_codes.each do |otu_code|
+      %tr
+        %td{:nowrap => "nowrap"}= otu_code.otu_code_category.present? ?  otu_code.otu_code_category.name : "none"
+        %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
+        %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
+        %td.date= credit_type == "total_credit" ? l(otu_code.created_at) : l(otu_code.updated_at)
+
+:javascript
+  $('#print-credit').on('click', function() {
+     var printContents = document.getElementById('printable-section').innerHTML;
+     var originalContents = document.body.innerHTML;
+     document.body.innerHTML = printContents;
+     window.print();
+     document.body.innerHTML = originalContents;
+     $('.modal,.modal-backdrop').hide();
+     window.location.reload();
+  });
+
 
 

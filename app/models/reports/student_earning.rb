@@ -7,7 +7,7 @@ module Reports
     attr_reader :school, :data, :endpoints
 
     def initialize params
-      @parameters = Reports::Activity::Params.new(params)
+      @parameters = Reports::StudentEarning::Params.new(params)
       @school = params[:school]
       @data   = []
       @endpoints = date_endpoints(@parameters)
@@ -135,7 +135,7 @@ module Reports
       end
 
       def date_filter_default
-        date_filter_options[7][1]
+        date_filter_options[4][1]
       end
 
     end
