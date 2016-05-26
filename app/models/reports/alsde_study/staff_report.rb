@@ -8,10 +8,15 @@ module Reports
         @end_date   = options.fetch("end_date"  , Time.zone.now)
         @end_date   = Time.zone.parse(@end_date).end_of_day if @end_date.is_a?(String)
         @end_date   = @end_date.end_of_day
+        @districts = options[:districts]
       end
 
       def run
-        school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
+        if @districts
+          school_ids =  School.where(district_guid: @districts).pluck(:id)
+        else
+          school_ids =  School.where(district_guid: District.where(alsde_study: true).pluck(:guid)).pluck(:id)
+        end
         staff = Teacher.includes(:user).joins(:allperson_school_links,:spree_user).where(status: 'active', allperson_school_links: { status: "active", school_id: school_ids })
         CSV.generate do |csv|
           csv << ["district_name","sti_district_guid", "sti_school_id", "sti_user_id", "le_person_id", "status", "first_login_date", "login_count", "sum_credits_awarded", "has_a_classroom?", "grade"]
