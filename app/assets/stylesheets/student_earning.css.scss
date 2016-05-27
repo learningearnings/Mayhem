@@ -4,6 +4,26 @@
 .credit-print-button{
 	float:right;
 }
+.credit-type{
+	clear:both;
+}
 .clear{
 	clear:both;
+}
+.print-title{
+	display: none;
+}
+.btn-print-report{
+	float: right;
+}
+.btn-print-selected{
+	float:right;
+}
+@media print {
+	.student-info{
+	  page-break-after: always;
+	 }
+	.print-title{
+    display: block;
+	}
 }

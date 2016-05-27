@@ -57,5 +57,14 @@ module PeopleHelper
     end
     return @cv != nil
   end
-  
+
+  def otu_codes_credits(student,credit_type,start_date, end_date)
+    otu_codes = OtuCode.total_credited(student, start_date, end_date).reverse_order
+    if credit_type == "deposited"
+      otu_codes = otu_codes.inactive
+    elsif @credit_type == "undeposited"
+      otu_codes = otu_codes.active
+    end
+    return otu_codes
+  end
 end
