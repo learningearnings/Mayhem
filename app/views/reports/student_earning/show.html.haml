@@ -16,7 +16,8 @@
       -if report.endpoints
         %span#start_date{:style => 'display:none'}= report.endpoints[0]
         %span#end_date{:style => 'display:none'}= report.endpoints[1]
-
+    .btn-print-selected
+      = button_to "Print Selected Students", print_student_earning_report_path, class: 'noprint awesome-button print-selected', id: "print-report"
     .report
       %br.onlyprint/
       %table#credit_report_table.table.table-bordered.table-striped.solid-background
@@ -31,14 +32,13 @@
           %tbody
             - report.data.each do |row|
               %tr
-                %td= check_box_tag 'student_id[]', row[:id]
+                %td= check_box_tag 'student_id[]', row[:id], false, class: "student-select"
                 %td= row[:student_name]
                 %td= row[:username]
                 %td= link_to(row[:total_credits], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "total_credit")
                 %td= link_to(row[:total_deposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "deposited")
                 %td= link_to(row[:total_undeposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "undeposited")
-    .btn-print-selected
-      = button_to "Print Selected Students", print_student_earning_report_path, class: 'noprint awesome-button print-selected', id: "print-report"
+
 
 #history-modal.modal.hide
   .modal-header
