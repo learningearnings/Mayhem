@@ -5,7 +5,7 @@
 
     = form_tag(print_student_earning_report_path, method: :post, class: 'form-horizontal noprint print-form') do
       = button_to "Show All", print_student_earning_report_path, class: 'noprint awesome-button print-submit'
-      = hidden_field_tag  'student_id[]', student.id
+      = hidden_field_tag  'student_id', student.id
       = hidden_field_tag 'credit_type', credit_type
       = hidden_field_tag 'start_date', start_date
       = hidden_field_tag 'end_date', end_date
@@ -37,8 +37,8 @@
   });
   $(".print-form").submit( function(eventObj) {
       $('<input />').attr('type', 'hidden')
-          .attr('name', 'student_id[]')
-          .attr('value', $('#student_id_').val())
+          .attr('name', 'student_id')
+          .attr('value', $('#student_id').val())
           .appendTo('.print-form');
       $('<input />').attr('type', 'hidden')
           .attr('name', 'credit_type')

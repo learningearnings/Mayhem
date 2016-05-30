@@ -25,12 +25,14 @@ module Reports
 			end
 		end
 		def print_credit_transactions
-       if params[:student_id].present?
-			    student_ids = params[:student_id].map { |i| i.to_i }
-       else
-      		flash[:error] = "Please select students from the list."
-          redirect_to :back and return
-       end	
+			if params[:student_id].present? && params[:student_id].kind_of?(Array)
+			  student_ids = params[:student_id].map { |i| i.to_i }
+			elsif params[:student_id].kind_of?(String)
+				student_ids = params[:student_id].split(",").map { |i| i.to_i }
+      else
+        flash[:error] = "Please select students from the list."
+        redirect_to :back and return
+      end	
 			@students = Student.selected_students(student_ids)
 			@start_date = DateTime.parse(params[:start_date])
 			@end_date = DateTime.parse(params[:end_date])
