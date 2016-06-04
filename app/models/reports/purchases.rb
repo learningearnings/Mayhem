@@ -124,13 +124,15 @@ module Reports
     end
     
     def reward_creator_filter
-      if parameters.reward_creator_filter.blank?
+      if parameters.page.blank?
         if @teacher
           rewards = @teacher.products.collect { | r | r.id }
           [:where, { reward: {product: { id: rewards} } }]
         else
           [:scoped]
-        end        
+        end 
+      elsif parameters.reward_creator_filter.blank?
+          [:scoped]      
       else
         #get all rewards created by the selected rewards creator
         teacher = Teacher.find(parameters.reward_creator_filter)

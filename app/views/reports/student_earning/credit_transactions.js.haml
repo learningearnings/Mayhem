@@ -1,0 +1,1 @@
+$('#credit-history').html('#{escape_javascript render(partial: 'credit_transactions',  locals: { otu_codes: @otu_codes, credit_type: @credit_type, student: @student, start_date: @start_date, end_date: @end_date  })}');
