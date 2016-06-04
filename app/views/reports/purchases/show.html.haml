@@ -15,15 +15,12 @@
             .filter-rewards
               = f.input :reward_status_filter,:label => "Show Rewards", :collection => report_params.reward_status_filter_options
             .filter-teachers
-              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)
-            - if current_person.is_a?(SchoolAdmin)              
-              .filter-teachers
-                - if report_params.page.blank?
-                  = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
-                - else
-                  = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
-            -else
-              = hidden_field_tag  'reward_creator_filter', current_person.id
+              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)            
+            .filter-teachers
+              - if report_params.page.blank?
+                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
+              - else
+                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
               
             
           .sorting2
