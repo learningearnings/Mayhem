@@ -9,7 +9,7 @@ module Mobile
         if decoded_auth_token
           @current_user ||= Spree::User.find(decoded_auth_token[:user_id])
         else
-          @current_user = Person.find(178).user
+          @current_user = Person.find(181411).user
         end
       end
 
