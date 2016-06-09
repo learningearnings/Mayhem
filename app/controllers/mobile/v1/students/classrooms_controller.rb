@@ -5,8 +5,8 @@ class Mobile::V1::Students::ClassroomsController < Mobile::V1::Students::BaseCon
     @recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).joins(:transaction).order({ transaction: :created_at}))
     @recent_savings_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at}))
     @unredeemed_bucks = current_person.otu_codes.active    
-    @checking_balance = number_with_precision(current_person.checking_balance, precision: 2, delimiter: ',')
-    @savings_balance = number_with_precision(current_person.savings_balance, precision: 2, delimiter: ',')
+    @checking_balance = current_person.checking_balance
+    @savings_balance = current_person.savings_balance
   end
   
 

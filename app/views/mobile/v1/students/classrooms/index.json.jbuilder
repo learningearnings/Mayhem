@@ -39,8 +39,8 @@ json.array! @classrooms do |classroom|
         json.amount number_with_precision(buck.points, precision: 2, delimiter: ',')
 	end
 	
-	json.checking_balance @checking_balance
-	json.savings_balance @savings_balance
+	json.checking_balance number_with_precision(@checking_balance, precision: 2, delimiter: ',')
+	json.savings_balance number_with_precision(@savings_balance, precision: 2, delimiter: ',')
 
     json.rewards_count classroom.products.count
 end  
