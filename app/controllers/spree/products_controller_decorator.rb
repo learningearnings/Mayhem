@@ -2,6 +2,13 @@ Spree::ProductsController.class_eval do
   before_filter :authenticate_user!
 
   def index
+    if params[:search]
+      [:ascend_by_master_price].each do |field|
+        if params[:search][field] && params[:search][field] == ''
+          params[:search][field] = nil
+        end
+      end
+    end
     temp_params = params
     temp_params[:filters] = session[:filters]
     temp_params[:current_school] = current_school
