@@ -101,7 +101,7 @@ module STI
 
     private
     def authorized_headers
-      {"Authorization" => "Session #{session_token}", "ApplicationKey" => "learningearnings WzvBW2c2suJex6V+Z22NpHZK7+mqCrUpvtw67lE7Js/8fo8E0QYngnQXBwjbs0yTkJ8hnATM/3LOKgZwB4cLsVccfXFOoTgImovQ/S9CP2s+V+AI/zmds3CZF9GD5+y6saxEKjduN/L+YYcKIYIs1UtQZfm/6lcFXPc1etZKGMk="}
+      {"Authorization" => "Session #{session_token}", "ApplicationKey" => "learningearnings WzvBW2c2suJex6V+Z22NpHZK7+mqCrUpvtw67lE7Js/8fo8E0QYngnQXBwjbs0yTkJ8hnATM/3LOKgZwB4cLsVccfXFOoTgImovQ/S9CP2s+V+AI/zmds3CZF9GD5+y6saxEKjduN/L+YYcKIYIs1UtQZfm/6lcFXPc1etZKGMk=","Content-Type" => "application/json", "charset" => "utf-8"}
     end
 
     def authentication_hash
