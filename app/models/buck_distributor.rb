@@ -121,7 +121,7 @@ class BuckDistributor
   end
   
   def log_txn(msg)
-    @txnlog = File.open(@logfile,"w")
+    @txnlog = File.new(@logfile,"w+")
     @txnlog.puts " #{Time.now.to_s}: #{msg} "
     @txnlog.close
   end
