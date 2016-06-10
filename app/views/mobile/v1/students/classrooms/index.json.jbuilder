@@ -1,6 +1,35 @@
+json.checking_history @recent_checking_amounts.each do |amount|
+    json.id amount.transaction_id
+    json.name = commercial_document_link(amount.transaction)
+    json.date = l(amount.transaction.created_at)
+    json.description amount.transaction.description
+    json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
+    json.amount number_with_precision(amount.amount, :precision => 2)
+    json.source = source_from_transaction(amount)
+end	
+
+json.savings_history @recent_savings_amounts.each do |amount|
+    json.id amount.transaction_id
+    json.name = commercial_document_link(amount.transaction)
+    json.date = l(amount.transaction.created_at)
+    json.description amount.transaction.description
+    json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
+    json.amount number_with_precision(amount.amount, :precision => 2)
+    json.source = source_from_transaction(amount)
+end		
+
+json.ecredits_to_deposit @unredeemed_bucks.each do | buck |
+	json.source = buck.source_string
+    json.date buck.created_at.strftime("%m-%d-%Y %I:%M %P")
+    json.reason buck.otu_code_category ? buck.otu_code_category.name : "N/A"
+    json.amount number_with_precision(buck.points, precision: 2, delimiter: ',')
+end
+
+json.checking_balance number_with_precision(@checking_balance, precision: 2, delimiter: ',')
+json.savings_balance number_with_precision(@savings_balance, precision: 2, delimiter: ',')
+
 json.array! @classrooms do |classroom|
   	json.(classroom, :id, :name)
-
 	json.rewards classroom.products do |product|
 	  	if product.deleted?
 	  		next
@@ -11,36 +40,5 @@ json.array! @classrooms do |classroom|
 	    json.on_hand product.on_hand
 	    json.price product.price
 	end
-
-	json.checking_history @recent_checking_amounts.each do |amount|
-	    json.id amount.transaction_id
-	    json.name = commercial_document_link(amount.transaction)
-	    json.date = l(amount.transaction.created_at)
-	    json.description amount.transaction.description
-	    json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
-	    json.amount number_with_precision(amount.amount, :precision => 2)
-	    json.source = source_from_transaction(amount)
-	end	
-	
-	json.savings_history @recent_savings_amounts.each do |amount|
-	    json.id amount.transaction_id
-	    json.name = commercial_document_link(amount.transaction)
-	    json.date = l(amount.transaction.created_at)
-	    json.description amount.transaction.description
-	    json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
-	    json.amount number_with_precision(amount.amount, :precision => 2)
-	    json.source = source_from_transaction(amount)
-	end		
-	
-	json.ecredits_to_deposit @unredeemed_bucks.each do | buck |
-		json.source = buck.source_string
-        json.date buck.created_at.strftime("%m-%d-%Y %I:%M %P")
-        json.reason buck.otu_code_category ? buck.otu_code_category.name : "N/A"
-        json.amount number_with_precision(buck.points, precision: 2, delimiter: ',')
-	end
-	
-	json.checking_balance number_with_precision(@checking_balance, precision: 2, delimiter: ',')
-	json.savings_balance number_with_precision(@savings_balance, precision: 2, delimiter: ',')
-
     json.rewards_count classroom.products.count
 end  
