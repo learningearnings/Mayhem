@@ -127,6 +127,5 @@ class BuckDistributor
       f.puts "#{Time.now.to_s}: #{msg}"
     }
     #@txnlog.write "#{Time.now.to_s}: #{msg}"
-    @txnlog.close
   end
 end
