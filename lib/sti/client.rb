@@ -14,7 +14,7 @@ module STI
     end
 
     def get_session_token
-      response = self.class.get("#{base_url}token", :basic_auth => authentication_hash)
+      response = self.class.get("#{base_url}token", :basic_auth => authentication_hash).parsed_response
       @session_token = response["access_token"]
     end
 
