@@ -121,11 +121,11 @@ class BuckDistributor
   end
   
   def log_txn(msg)
-    #@txnlog = File.open(@logfile,"w+")
-    #@txnlog.puts " #{Time.now.to_s}: #{msg} "
-    @txnlog = File.open(@logfile, 'a'){ |f|
-      f.puts "#{Time.now.to_s}: #{msg}"
-    }
+    @txnlog = File.open(@logfile,"w+")
+    @txnlog.puts " #{Time.now.to_s}: #{msg} "
+    #@txnlog = File.open(@logfile, 'a'){ |f|
+    #  f.puts "#{Time.now.to_s}: #{msg}"
+    #}
     #@txnlog.write "#{Time.now.to_s}: #{msg}"
   end
 end
