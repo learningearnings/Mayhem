@@ -11,7 +11,7 @@ module STI
         person = Person.new(mapping)
         person.type = "Teacher"
         person.status = "active"
-        person.save
+        person.save!
 
         person.reload
         person.user.update_attributes({api_user: true, email: @data["EmailAddress"], confirmed_at: Time.now})
