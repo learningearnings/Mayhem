@@ -8,7 +8,9 @@ module STI
 
       def execute!
         classroom = Classroom.where(:district_guid => @district_guid, :sti_id => @data["Id"]).first
-        ::ClassroomDeactivator.new(classroom.id).execute!
+        if classroom
+          ::ClassroomDeactivator.new(classroom.id).execute!
+        end  
       end
     end
   end
