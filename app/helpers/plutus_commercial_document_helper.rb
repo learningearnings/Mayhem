@@ -1,6 +1,6 @@
 module PlutusCommercialDocumentHelper
   def commercial_document_name transaction
-    return unless transaction && transaction.commercial_document
+    return "" unless transaction && transaction.commercial_document
     case transaction.commercial_document_type
       when 'Spree::Product'
       prod = transaction.spree_product
@@ -10,10 +10,12 @@ module PlutusCommercialDocumentHelper
         ""
       end
       when "OtuCode"
-        transaction.commercial_document.otu_code_category.name rescue nil
+        transaction.commercial_document.otu_code_category.name rescue ""
     else
       if transaction.commercial_document.respond_to?(name)
         transaction.commercial_document.name
+      else
+        ""
       end
     end    
   end
