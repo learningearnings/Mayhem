@@ -1,25 +1,25 @@
 json.checking_history @recent_checking_amounts do |amount|
     json.id amount.transaction_id
-    json.name = commercial_document_link(amount.transaction)
-    json.date = l(amount.transaction.created_at)
+    json.name commercial_document_link(amount.transaction)
+    json.date l(amount.transaction.created_at)
     json.description amount.transaction.description
     json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
     json.amount number_with_precision(amount.amount, :precision => 2)
-    json.source = source_from_transaction(amount)
+    json.source source_from_transaction(amount)
 end	
 
 json.savings_history @recent_savings_amounts do |amount|
     json.id amount.transaction_id
-    json.name = commercial_document_link(amount.transaction)
-    json.date = l(amount.transaction.created_at)
+    json.name commercial_document_link(amount.transaction)
+    json.date l(amount.transaction.created_at)
     json.description amount.transaction.description
     json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
     json.amount number_with_precision(amount.amount, :precision => 2)
-    json.source = source_from_transaction(amount)
+    json.source source_from_transaction(amount)
 end		
 
 json.ecredits_to_deposit @unredeemed_bucks do | buck |
-	json.source = buck.source_string
+	json.source buck.source_string
     json.date buck.created_at.strftime("%m-%d-%Y %I:%M %P")
     json.reason buck.otu_code_category ? buck.otu_code_category.name : "N/A"
     json.amount number_with_precision(buck.points, precision: 2, delimiter: ',')
