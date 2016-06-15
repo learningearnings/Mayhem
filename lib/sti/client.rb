@@ -15,11 +15,7 @@ module STI
 
     def get_session_token
       response = self.class.get("#{base_url}token", :basic_auth => authentication_hash)
-      if response.code == 500
-        raise "Response format is not proper."
-      else
-        @session_token = response["access_token"]
-      end  
+      @session_token = response["access_token"]
     end
 
     def session_token
