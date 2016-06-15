@@ -1,6 +1,6 @@
 json.checking_history @recent_checking_amounts do |amount|
     json.id amount.transaction_id
-    json.name commercial_document_link(amount.transaction)
+    json.name commercial_document_name(amount.transaction)
     json.date l(amount.transaction.created_at)
     json.description amount.transaction.description
     json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
@@ -8,9 +8,9 @@ json.checking_history @recent_checking_amounts do |amount|
     json.source source_from_transaction(amount)
 end	
 
-json.savings_history @recent_savings_amounts do |amount|
+json.savings_history @recent_savings_amounts do |amount|  end
     json.id amount.transaction_id
-    json.name commercial_document_link(amount.transaction)
+    json.name commercial_document_name(amount.transaction)
     json.date l(amount.transaction.created_at)
     json.description amount.transaction.description
     json.type (amount.type.to_s == "Plutus::DebitAmount")?"Debit":"Credit"
