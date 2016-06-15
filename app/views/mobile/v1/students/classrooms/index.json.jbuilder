@@ -23,7 +23,7 @@ json.ecredits_to_deposit @unredeemed_bucks do | buck |
     json.date buck.created_at.strftime("%m-%d-%Y %I:%M %P")
     json.reason buck.otu_code_category ? buck.otu_code_category.name : "N/A"
     json.amount number_with_precision(buck.points, precision: 2, delimiter: ',')
-end
+end 
 
 json.checking_balance number_with_precision(@checking_balance, precision: 2, delimiter: ',')
 json.savings_balance number_with_precision(@savings_balance, precision: 2, delimiter: ',')
