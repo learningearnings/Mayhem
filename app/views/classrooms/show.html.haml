@@ -84,7 +84,10 @@
 :javascript
   $(document).ready( function () {
     $('#classroom-students').DataTable({
-      "aaSorting": [[0, "asc"]] 
+      "aaSorting": [[0, "asc"]],
+       "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ -1 ] }
+       ]
     });
   }); 
 
