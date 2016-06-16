@@ -1,6 +1,3 @@
-= javascript_include_tag "https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
-= stylesheet_link_tag "https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
-
 %h2 Classroom: 
 %ul.action_buttons
   %li= link_to "Set Homeroom", "/classrooms/set_homeroom/#{@classroom.id}", confirm: classroom_set_homeroom_confirmation_message, class: 'btn awesome-button'
@@ -18,24 +15,22 @@
   You can only add students from your school that have already been added to
   Learning Earnings. If you need to add or upload students for your school visit
   the #{link_to("Students", teachers_bulk_students_path)} page.
-%br  
-.classroom-student-table
-  %table#classroom-students.table.table-bordered.table-striped.solid-background
-    %thead
+%table#classroom-students.table.table-bordered.table-striped.solid-background
+  %thead
+    %tr
+      %th Student Name
+      %th Homeroom?
+      %th Username
+      %th Actions
+  %tbody
+    - @classroom.students.order("last_name, first_name").each do |student|
       %tr
-        %th Student Name
-        %th Homeroom?
-        %th Username
-        %th Actions
-    %tbody
-      - @classroom.students.order("last_name, first_name").each do |student|
-        %tr
-          %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
-          %td= student.homeroom == @classroom ? "Yes" : "No"
-          %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
-          %td
-            - unless @classroom.sti_id
-              = link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
+        %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
+        %td= student.homeroom == @classroom ? "Yes" : "No"
+        %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
+        %td
+          - unless @classroom.sti_id
+            = link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
 - unless @classroom.sti_id
   .btn.btn-success.add-existing-student
@@ -82,14 +77,6 @@
 = javascript_include_tag "tours/teacher/overview"
 
 :javascript
-  $(document).ready( function () {
-    $('#classroom-students').DataTable({
-      "aaSorting": [[0, "asc"]],
-       "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [ -1 ] }
-       ]
-    });
-  }); 
 
   $(".chzn-select").chosen();
 
