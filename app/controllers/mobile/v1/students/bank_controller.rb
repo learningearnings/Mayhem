@@ -25,4 +25,42 @@ class Mobile::V1::Students::BankController < Mobile::V1::Students::BaseControlle
 
   end
   
+  def transfer_credits
+    if params[:amount].blank? or params[:direction].blank? or params[:student_id].blank?
+      @msg = "Missing required parameters ( amount, direction, student_id)"
+      render json: { status: :unprocessible_entity, msg: @msg} and return
+    end
+    @amount = get_decimal(params[:amount])
+    if @amount <= 0
+      @msg = "Amount must be >= 0"
+      render json: { status: :unprocessible_entity, msg: @msg} and return      
+    end
+    @direction = params[:direction]
+    @student_id = params[:student_id]   
+    @student = Student.find(@student_id)
+    if !@student
+      @msg = "Student not found"
+      render json: { status: :unprocessible_entity, msg: @msg } and return      
+    end
+     
+    cm = CreditManager.new
+    if @direction == "savings_to_checking"
+      if cm.transfer_credits_from_savings_to_checking(@student, @amount)
+        @msg = "Succesfully transfered credits from savings to checking"
+        render json: { status: :ok, msg: @msg }
+      else
+        @msg = "Insufficient funds"
+        render json: { status: :unprocessible_entity, msg: @msg }
+      end
+    else
+      if cm.transfer_credits_from_checking_to_savings(@student, @amount)
+        @msg = "Succesfully transfered credits from checking to savings"
+        render json: { status: :ok, msg: @msg }
+      else
+        @msg = "Insufficient funds"
+        render json: { status: :unprocessible_entity, msg: @msg }
+      end      
+    end
+  end
+  
 end

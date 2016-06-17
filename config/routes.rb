@@ -56,6 +56,7 @@ Leror::Application.routes.draw do
       end
       namespace :students do
         post "rewards/purchase" => 'rewards#purchase'
+        post "/bank/transfer_credits" => 'bank#transfer_credits'
         post "/bank/redeem_bucks" => 'bank#redeem_bucks'        
         post 'auth'             => 'base#authenticate'
         get  'classrooms'       => 'classrooms#index'
