@@ -1,7 +1,7 @@
 class District < ActiveRecord::Base
   attr_accessible :guid, :name, :alsde_study
   validates_presence_of :guid
-
+  has_many :school_credits
   attr_accessible :current_staff_version, :current_section_version, :current_roster_version, :current_student_version
 
   def has_current_versions?

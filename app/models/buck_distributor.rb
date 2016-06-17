@@ -4,11 +4,11 @@ class BuckDistributor
 
   def initialize(schools, credit_manager=CreditManager.new, last_school_processed=1)
     @schools = schools if schools
-    @schools = get_schools unless schools
     @last_school_processed = last_school_processed
     @credit_manager = credit_manager
     @logfile = "/home/deployer/logs/buck_distributor_txns_#{Date.today.to_s}.log"
     log_txn "BuckDistributor --  started on #{Time.now}"
+    @schools = get_schools unless schools
   end
  
   
@@ -60,7 +60,11 @@ class BuckDistributor
 
   def pay_school(school)
     log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_for_school(school).to_s} "
-    @credit_manager.issue_credits_to_school school, amount_for_school(school)
+    amount_for_school = amount_for_school(school)
+    @credit_manager.issue_credits_to_school school, amount_for_school
+    teachers = school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
+    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers.count, amount: amount_for_school)
+    school_credit.save!
   end
 
   # 25 dollars per student per day
@@ -121,8 +125,11 @@ class BuckDistributor
   end
   
   def log_txn(msg)
-    @txnlog = File.open(@logfile,"w")
-    @txnlog.puts " #{Time.now.to_s}: #{msg} "
-    @txnlog.close
+    begin
+      @txnlog = File.open(@logfile, 'a'){ |f|
+        f.write "#{Time.now.to_s}: #{msg}"
+      }
+    rescue
+    end  
   end
 end
