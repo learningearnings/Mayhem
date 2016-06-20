@@ -18,6 +18,34 @@ ActiveAdmin.register TeacherCredit do
     column "Awarded Amount", :amount
     column "Credit Source", :credit_source
     column "Date", :created_at
+    column "" do |resource|
+      links = ''.html_safe
+      links += link_to "View", resource_path(resource), :class => "member_link edit_link"
+      links
+    end
   end
-
+  show do
+    attributes_table do
+      row :id
+      row "School Id" do
+        teacher_credit.school_id
+      end  
+      row "Teacher Id" do
+        teacher_credit.teacher_id
+      end  
+      row "Teacher Name" do
+        teacher_credit.teacher_name
+      end  
+      row :district_guid  
+      row :awarded_amount do
+        teacher_credit.amount
+      end
+      row :credit_source do
+        teacher_credit.credit_source
+      end
+      row :date do
+        teacher_credit.created_at
+      end  
+    end
+  end
 end
