@@ -5,7 +5,6 @@ ActiveAdmin.register SchoolCredit do
   filter :total_schools
   filter :amount
   filter :created_at
-
   menu :parent => "Bucks Distributed", :label => "School Credits"
   index do
     column :id
