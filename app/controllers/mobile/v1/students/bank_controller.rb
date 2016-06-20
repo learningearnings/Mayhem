@@ -65,7 +65,7 @@ class Mobile::V1::Students::BankController < Mobile::V1::Students::BaseControlle
   
   def get_decimal(amount_string)
     #coerced_amount = amount_string.gsub('$', '').gsub(',', '')
-    BigDecimal(coerced_amount)
+    BigDecimal(amount_string)
   end
   
 end
