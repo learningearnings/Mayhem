@@ -91,7 +91,7 @@ class BuckDistributor
       teachers_to_pay(school, { hide_ignored: false }).each do |teacher|
         log_txn "    Pay teacher revoke remainder #{teacher.first_name} #{teacher.last_name} #{ teacher.id} $#{ teacher.main_account(school).balance.to_s }"
         if revoke_remainder(school, teacher, teacher.main_account(school).balance)
-          teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: school.id, teacher_name: teacher.name, district_guid: school.district_guid, amount: teacher.main_account(school).balance, credit_source: "SYSTEM")
+          teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: school.id, teacher_name: teacher.name, district_guid: school.district_guid, amount: teacher.main_account(school).balance, credit_source: "SYSTEM", reason: "Reset monthly balance")
           if teacher_credit.save
             log_txn "    Saving Teacher credit for #{teacher.first_name} #{teacher.last_name} #{ teacher.id} teacher credit id #{teacher_credit.id}"
           else
@@ -103,7 +103,7 @@ class BuckDistributor
       teachers_to_pay(school, { hide_ignored: true }).each do |teacher|
         amount_for_teacher = amount_for_teacher(school)
         if pay_teacher(school, teacher,amount_for_teacher)
-          teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: school.id, teacher_name: teacher.name, district_guid: school.district_guid, amount: amount_for_teacher, credit_source: "SYSTEM")
+          teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: school.id, teacher_name: teacher.name, district_guid: school.district_guid, amount: amount_for_teacher, credit_source: "SYSTEM", reason: "Issue Monthly Credits")
           if teacher_credit.save
             log_txn "    Saving Teacher credit for #{teacher.first_name} #{teacher.last_name} #{ teacher.id} teacher credit id #{teacher_credit.id}"
           else

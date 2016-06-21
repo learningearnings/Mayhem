@@ -5,6 +5,7 @@ ActiveAdmin.register TeacherCredit do
   filter :district_guid
   filter :amount
   filter :credit_source
+  filter :reason
   filter :created_at
 
   menu :parent => "Bucks Distributed", :label => "Teacher Credits"
@@ -17,6 +18,7 @@ ActiveAdmin.register TeacherCredit do
     column :district_guid
     column "Awarded Amount", :amount
     column "Credit Source", :credit_source
+    column "Reason", :reason
     column "Date", :created_at
     column "" do |resource|
       links = ''.html_safe
@@ -42,6 +44,9 @@ ActiveAdmin.register TeacherCredit do
       end
       row :credit_source do
         teacher_credit.credit_source
+      end  
+      row :reason do
+        teacher_credit.reason
       end
       row :date do
         teacher_credit.created_at
