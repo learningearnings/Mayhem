@@ -1,10 +1,11 @@
 ActiveAdmin.register SchoolCredit do
-  filter :school_id  
+  filter :school_id, label: "School Id"
   filter :school_name
   filter :district_guid
   filter :total_schools
   filter :amount
   filter :created_at
+  actions :all, :except => [:destroy, :edit, :new]
   menu :parent => "Bucks Distributed", :label => "School Credits"
   index do
     column :id
@@ -20,6 +21,7 @@ ActiveAdmin.register SchoolCredit do
       links
     end
   end
+
   show do
     attributes_table do
       row :id

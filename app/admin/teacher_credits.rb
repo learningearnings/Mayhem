@@ -1,13 +1,13 @@
 ActiveAdmin.register TeacherCredit do
-  filter :school_id  
-  filter :teacher_id  
+  filter :school_id, label: "School Id"
+  filter :teacher_id, label: "Teacher Id"
   filter :teacher_name
   filter :district_guid
   filter :amount
   filter :credit_source
   filter :reason
   filter :created_at
-
+  actions :all, :except => [:destroy, :edit, :new]
   menu :parent => "Bucks Distributed", :label => "Teacher Credits"
 
   index do
