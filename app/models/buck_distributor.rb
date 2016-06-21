@@ -6,7 +6,7 @@ class BuckDistributor
     @schools = schools if schools
     @last_school_processed = last_school_processed
     @credit_manager = credit_manager
-    @logfile = "/srv/Mayhem/logs/buck_distributor_txns_#{Date.today.to_s}.log"
+    @logfile = "/home/deployer/logs/buck_distributor_txns_#{Date.today.to_s}.log"
     log_txn "BuckDistributor --  started on #{Time.now}"
     @schools = get_schools unless schools
   end
