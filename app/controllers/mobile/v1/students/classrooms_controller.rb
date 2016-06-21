@@ -8,7 +8,7 @@ class Mobile::V1::Students::ClassroomsController < Mobile::V1::Students::BaseCon
     @checking_balance = current_person.checking_balance
     @savings_balance = current_person.savings_balance
     temp_params = {}
-    #temp_params[:filters] = session[:filters]
+    temp_params[:filters] = session[:filters]
     temp_params[:current_school] = current_school
     temp_params[:classrooms] = current_person.classrooms.map(&:id)
     @searcher = Spree::Search::Filter.new(temp_params)
