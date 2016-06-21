@@ -27,6 +27,19 @@ end
 
 json.checking_balance number_with_precision(@checking_balance, precision: 2, delimiter: ',')
 json.savings_balance number_with_precision(@savings_balance, precision: 2, delimiter: ',')
+json.products @products do | product |
+	if product.deleted?
+  		next
+    end
+    json.id product.id
+    json.name product.name
+    json.description product.description
+    json.on_hand product.on_hand
+    json.price product.price
+    json.thumb product.thumb
+    json.reward_type ( product.classrooms.any? ? "Classroom" : "School" )
+    json.teacher ( product.person ? product.person.id : "" )
+end
 
 json.classrooms @classrooms do |classroom|
   	json.(classroom, :id, :name)
