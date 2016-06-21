@@ -11,6 +11,7 @@ class Teacher < Person
   scope :not_awaiting_approval, lambda{ where(" status not in ('awaiting_approval','new')")}
 
   has_many :otu_codes, through: :person_school_links
+  has_many :teacher_credits
 
   before_create :set_status_to_active
 
