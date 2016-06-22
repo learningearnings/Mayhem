@@ -35,8 +35,11 @@ class School < ActiveRecord::Base
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,:credits_scope, :credits_type,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
 
-  image_accessor :logo
-
+  image_accessor :logo do
+    copy_to(:thumb_image){|a| a.thumb('200x200#') }
+  end
+  image_accessor :thumb_image
+  
   validates_presence_of :name, :city, :state_id, :zip, :address1
   validates_uniqueness_of :sti_uuid, allow_blank: true
 
