@@ -11,9 +11,9 @@
 
 - school = batch.otu_codes.first.school
 - default_credit_logo = Rails.root.join('app', 'assets', 'images', 'default_credit_logo.png')
--# logo_image_pdf = school.logo.present? ? school.logo.thumb('100x100').path : default_credit_logo
+- logo_image_pdf = school.logo.present? ? image_path(school.logo.thumb('100x100').url) : default_credit_logo
 - logo_image_html = school.logo.present? ? image_path(school.logo.thumb('100x100').url) : image_path('default_credit_logo.png')
--# logo_image = params[:format] == 'pdf' ? logo_image_pdf : logo_image_html
+- logo_image = params[:format] == 'pdf' ? logo_image_pdf : logo_image_html
 
 %meta{'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"}
 %style{type: 'text/css'}
