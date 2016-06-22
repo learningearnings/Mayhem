@@ -10,8 +10,8 @@
 - plural_buck_image = params[:format] == 'pdf' ? plural_buck_image_pdf : plural_buck_image_html
 
 - school = batch.otu_codes.first.school
-- default_credit_logo_base = "default_credit_logo.png"
-- logo_image_pdf = Rails.root.join('app', 'assets', 'images', default_credit_logo_base)
+- default_credit_logo_base = Rails.root.join('app', 'assets', 'images', "default_credit_logo")
+- logo_image_pdf = school.logo.present? ? school.logo.remote_url : default_credit_logo
 - logo_image_html = school.logo.present? ? image_path(school.logo.thumb('100x100').url) : image_path('default_credit_logo.png')
 - logo_image = params[:format] == 'pdf' ? logo_image_pdf : logo_image_html
 
