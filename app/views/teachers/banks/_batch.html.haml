@@ -82,7 +82,7 @@
       - code_group.each do |otu_code|
         .buck
           %img.background-image{ src: otu_code.points > 1 ? plural_buck_image : single_buck_image }
-            %img.logo{src: logo_image }
+            //%img.logo{src: logo_image }
             .code= otu_code.code
             .amount{class: otu_code.points > 1 ? "double_digit_amount" : "single_digit_amount" }= otu_code.points.to_i
             .expires= otu_code.expires_at.to_date.strftime("%m-%d-%Y")
