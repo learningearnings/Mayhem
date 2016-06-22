@@ -96,7 +96,7 @@ class School < ActiveRecord::Base
 
   def download_s3_logo
     file = open(self.logo.remote_url)
-    file.path
+    file.path if file
   end
 
   def create_spree_store
