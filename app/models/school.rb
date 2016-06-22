@@ -94,7 +94,7 @@ class School < ActiveRecord::Base
     addr.html_safe
   end
 
-  def logo_image
+  def download_s3_logo
     file = open(self.logo.remote_url)
     file.path
   end
