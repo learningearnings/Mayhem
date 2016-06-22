@@ -94,6 +94,11 @@ class School < ActiveRecord::Base
     addr.html_safe
   end
 
+  def logo_image
+    file = open(self.logo.remote_url)
+    file.path
+  end
+
   def create_spree_store
     if Rails.env.development?
       port = ':3000'
