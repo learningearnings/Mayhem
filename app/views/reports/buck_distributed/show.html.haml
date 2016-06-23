@@ -1,0 +1,60 @@
+= javascript_include_tag "https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
+= stylesheet_link_tag "https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
+
+.main-content-wrapper
+  .primary-content-fw
+    %h2 Buck Distributed Report
+    //%h3= report.range if report.range
+    = simple_form_for report.parameters,  :url => buck_distributed_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+      .filter
+        = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
+      //.sorting
+      -# f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
+      %br
+      = f.submit 'Go!', class: "awesome-button"
+      = button_tag "Print Report", class: "noprint awesome-button",type: 'button', onclick: "window.print();"
+    %p.credits-available
+      %strong
+        School Current Credit Balance:
+      = number_with_precision(current_school.main_account.balance, precision: 2, delimiter: ',') || 0
+      %br
+      %strong
+        = "School Monthly Credits Awarded on #{report.endpoints[0].to_s(:date_in_month)}:"
+      = number_with_precision(report.school_monthly_credits[0].amount, precision: 2, delimiter: ',') || 0
+    .report
+      %br.onlyprint/
+      %table#credit_report_table.table.table-bordered.table-striped.solid-background
+        %thead
+          %tr
+            %th School Id
+            %th Teacher Id
+            %th Teacher Name
+            %th District Guid
+            %th Amount
+            %th Credit Source
+            %th Reason
+            %th Date
+          %tbody
+            - report.data.each do |row|
+              %tr
+                %td= row[:school_id]
+                %td= row[:teacher_id]
+                %td= row[:teacher_name]
+                %td= row[:district_guid]
+                %td= row[:amount]
+                %td= row[:credit_source]
+                %td= row[:reason]
+                %td= l(row[:created_date].to_date)
+:javascript
+  $(document).ready(function () {
+    $('#credit_report_table').DataTable({
+     "bPaginate": false,
+      'columnDefs': [{
+        'targets': 0,
+         'searchable': false,
+         'orderable': false
+        }],
+       'order': [[1, 'asc']]
+     }); 
+
+    });

@@ -218,6 +218,7 @@ Leror::Application.routes.draw do
   match '/reports/student_earning' => 'reports/student_earning#show', as: 'student_earning_report'
   match '/reports/student_earning_transactions' => 'reports/student_earning#credit_transactions'
   match '/reports/print_student_earning_transactions' => 'reports/student_earning#print_credit_transactions', as: 'print_student_earning_report'
+  match '/reports/buck_distributed' => 'reports/buck_distributed#show', as: 'buck_distributed_report'
 
   match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
   get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'

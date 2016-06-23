@@ -20,6 +20,7 @@ class School < ActiveRecord::Base
   has_many :otu_code_categories
   has_one  :our_sponsor_post
   has_many :school_credits
+  has_many :teacher_credits
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
 
