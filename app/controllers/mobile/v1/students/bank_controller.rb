@@ -13,12 +13,16 @@ class Mobile::V1::Students::BankController < Mobile::V1::Students::BaseControlle
         current_person.code_entry_failures.destroy_all
         render json: { status: :ok, msg: @msg } 
       else
-        @msg = 'You already deposited this credit into your account.'
+        if !otu_cod.active?
+          @msg = 'Your code has already been deposited'
+        else
+          @msg = 'Your code is expired'
+        end
         current_person.code_entry_failures.create
         render json: { status: :unprocessible_entity, msg: @msg }         
       end
     else
-      @msg = 'This credit is not valid. Please verify you entered it correctly.'
+      @msg = 'Your code is not valid, please try again'
       current_person.code_entry_failures.create
       render json: { status: :unprocessible_entity, msg: @msg }       
     end
