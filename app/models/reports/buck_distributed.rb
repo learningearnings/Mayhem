@@ -27,8 +27,17 @@ module Reports
       [:date_filter, :sort_by]
     end
 
+    def school_potential_filters
+      [:date_filter]
+    end
+
     def school_monthly_credits
-      @school_monthly_credits = @school.school_credits.select("amount").where("created_at >= ? AND created_at <= ?", @endpoints[0], @endpoints[1])
+      school_monthly_credits = @school.school_credits.select("SUM(amount) AS total_credit_amount")
+      school_potential_filters.each do |filter|
+        filter_option = send(filter)
+        school_monthly_credits = school_monthly_credits.send(*filter_option) if filter_option        
+      end
+      school_monthly_credits
     end
 
     # Override what the date filter filters on
@@ -40,7 +49,7 @@ module Reports
         [:credits_created_at, @endpoints[0],@endpoints[1]]
       end
     end
-
+    
     def teacher_credits
       base_scope = buck_distributor_base
       potential_filters.each do |filter|

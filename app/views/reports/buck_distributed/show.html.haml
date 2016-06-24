@@ -20,7 +20,7 @@
       %br
       %strong
         = "School Monthly Credits Awarded on #{report.endpoints[0].to_s(:date_in_month)}:"
-      = number_with_precision(report.school_monthly_credits[0].amount, precision: 2, delimiter: ',') || 0
+      = number_with_precision(report.school_monthly_credits[0].total_credit_amount, precision: 2, delimiter: ',') || 0
     .report
       %br.onlyprint/
       %table#credit_report_table.table.table-bordered.table-striped.solid-background
