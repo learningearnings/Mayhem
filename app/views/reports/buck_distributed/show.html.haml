@@ -3,7 +3,7 @@
 
 .main-content-wrapper
   .primary-content-fw
-    %h2 Buck Distributed Report
+    %h2 Bucks Distributed Report
     //%h3= report.range if report.range
     = simple_form_for report.parameters,  :url => buck_distributed_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
@@ -19,10 +19,7 @@
       = number_with_precision(current_school.main_account.balance, precision: 2, delimiter: ',') || 0
       %br
       %strong
-        - if report.parameters.date_filter == "all"
-          = "School Monthly Credits Awarded Till Date By Buck Distributor:"
-        - else
-          = "School Monthly Credits Awarded In #{report.parameters.date_filter.titleize}:"
+        = "School Monthly Credits Awarded In #{report.parameters.date_filter.to_date.strftime("%B %Y")}:"
           
       = number_with_precision(report.school_monthly_credits[0].total_credit_amount, precision: 2, delimiter: ',') || 0
     .report

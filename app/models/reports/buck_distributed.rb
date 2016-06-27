@@ -1,7 +1,7 @@
 module Reports
   class BuckDistributed < Reports::Base
     include ActionView::Helpers::NumberHelper
-    include DateFilterable
+    #include DateFilterable
 
     attr_accessor :parameters
     attr_reader :school, :data, :endpoints
@@ -76,7 +76,6 @@ module Reports
       teacher_credits =  @school.teacher_credits
     end
 
-
     def generate_row(teacher_credit)
       {
         id: teacher_credit.id,
@@ -104,33 +103,13 @@ module Reports
         created_date: "Date"
       }
     end
+    
     def date_endpoints parameters = nil
       local_date_filter = parameters.date_filter if parameters && parameters.date_filter
       local_date_filter = @date_filter if !@date_filter.nil?
-      case local_date_filter
-      when 'last_90_days'
-        [90.days.ago.beginning_of_day, 1.second.from_now]
-      when 'last_60_days'
-        [60.days.ago.beginning_of_day, 1.second.from_now]
-      when 'last_7_days'
-        [7.days.ago.beginning_of_day, 1.second.from_now]
-      when 'last_month'
-        d_begin = Time.now.beginning_of_month - 1.month
-        d_end = d_begin.end_of_month
-        [d_begin, d_end]
-      when 'this_month'
-        [Time.now.beginning_of_month, Time.now]
-      when 'this_week'
-        [Time.now.beginning_of_week, Time.now]
-      when 'last_week'
-        d_begin = Time.now.beginning_of_week - 1.week
-        d_end = d_begin.end_of_week
-        [d_begin, d_end]
-      else
-        [10.years.ago,1.second.from_now]
-      end
+      [local_date_filter.to_date.beginning_of_month, local_date_filter.to_date.end_of_month]
     end
-      
+     
     class Params < Reports::ParamsBase
       attr_accessor :date_filter,:sort_by
       def initialize options_in = {}
@@ -152,8 +131,17 @@ module Reports
         ["Default", "First, Last", "Last, First", "Username"]
       end
 
+      def date_filter_options
+        months = []
+        months << [Date.today.strftime("%B %Y"), Date.today.beginning_of_month]
+        (1..11).map do |m|
+          months << [m.months.ago.strftime("%B %Y"), m.months.ago.beginning_of_month.to_date]
+        end     
+        months
+      end
+
       def date_filter_default
-        date_filter_options[4][1]
+        date_filter_options[0][1]
       end
 
     end
