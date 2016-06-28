@@ -836,8 +836,9 @@ html.resp, body.resp {
 
 .sir-francis-bacon {
   background-image: url(asset_path('sir_bacon_francis_arrow_copy.png', image));
+  background-repeat: no-repeat;
   height: 120px;
-  width: 276px;
+  width: 300px;
   position: absolute;
   top: 420px;
 }
