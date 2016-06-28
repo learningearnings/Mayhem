@@ -70,7 +70,7 @@ $red: #ff2204;
 
   .inbox {
     color: $purple;
-    @extend %medium-circle;
+    @extend %small-circle;
   }
 
   .inbox_with_count {
