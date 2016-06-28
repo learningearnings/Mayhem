@@ -11,6 +11,7 @@ module Reports
       @school = params[:school]
       @data   = []
       @endpoints = date_endpoints(@parameters)
+      @classroom = params[:classroom_filter]
     end
 
     def execute!
@@ -23,7 +24,7 @@ module Reports
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter, :sort_by]
+      [:date_filter,:classroom_filter, :sort_by]
     end
 
     # Override what the date filter filters on
@@ -33,6 +34,12 @@ module Reports
         [:with_credits_between, 10.years.ago,1.second.from_now]
       else
         [:with_credits_between, @endpoints[0],@endpoints[1]]
+      end
+    end
+
+    def classroom_filter
+      if @classroom.present?
+        [:person_with_classroom,  @classroom]
       end
     end
 
@@ -60,8 +67,7 @@ module Reports
 
     def students_earning_base
         # First, get teacher's classrooms for this school
-      student_earning =  @school.students.joins(:spree_user).joins(:person_school_links).joins(:otu_codes).
-      select("people.id,people.first_name,people.last_name,spree_users.username AS user_name, SUM(otu_codes.points) AS total_credits, SUM(case when otu_codes.active = false then otu_codes.points else null end) AS total_deposited, SUM(case when otu_codes.active = true then otu_codes.points else null end) AS total_undeposited").group("people.id,people.first_name, people.last_name, user_name")
+      student_earning =  @school.students.joins(:spree_user).joins(:person_school_links).joins(:otu_codes).select("people.id,people.first_name,people.last_name,spree_users.username AS user_name, SUM(otu_codes.points) AS total_credits, SUM(case when otu_codes.active = false then otu_codes.points else null end) AS total_deposited, SUM(case when otu_codes.active = true then otu_codes.points else null end) AS total_undeposited").group("people.id,people.first_name, people.last_name, user_name")
     end
 
 

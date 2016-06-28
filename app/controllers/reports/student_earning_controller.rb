@@ -1,11 +1,15 @@
 module Reports
 	class StudentEarningController < Reports::BaseController
 		def show
+			if params[:classroom_filter].present?
+        @classroom_filter = Classroom.find(params[:classroom_filter]) 
+      end
 			report = Reports::StudentEarning.new params.merge(school: current_school)
 			report.execute!
 			MixPanelTrackerWorker.perform_async(current_user.id, 'View Student Earning', mixpanel_options)
 			render 'show', locals: {
-				report: report
+				report: report,
+        classrooms: current_person.classrooms_for_school(current_school)
 			}
 		end
 		def credit_transactions
