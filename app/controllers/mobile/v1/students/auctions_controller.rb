@@ -1,11 +1,11 @@
 class Mobile::V1::Students::AuctionsController < Mobile::V1::Students::BaseController
   def index
-    current_person = Student.find(181357)
+    #current_person = Student.find(181357)
     @auctions = Auction.viewable_for(current_person)
   end
 
   def bid
-    current_person = Student.find(181357)    
+    #current_person = Student.find(181357)    
     if params[:id].blank? or params[:amount].blank?
       @msg = " You must supply an id and amount to bid on an auction"
       render json: { status:  :unprocessible_entity, msg: @msg} and return
