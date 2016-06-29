@@ -4,7 +4,7 @@ module Reports
 			if params[:classroom_filter].present?
         @classroom_filter = Classroom.find(params[:classroom_filter]) 
       end
-			report = Reports::StudentEarning.new params.merge(school: current_school)
+			report = Reports::StudentEarning.new params.merge(school: current_school, logged_in_person: current_person)
 			report.execute!
 			MixPanelTrackerWorker.perform_async(current_user.id, 'View Student Earning', mixpanel_options)
 			render 'show', locals: {
