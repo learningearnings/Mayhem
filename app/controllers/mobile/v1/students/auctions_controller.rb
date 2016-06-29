@@ -1,8 +1,8 @@
 class Mobile::V1::Students::AuctionsController < Mobile::V1::Students::BaseController
   def index
     current_person = Student.find(181357)
-    @auctions = available_auctions
-    MixPanelTrackerWorker.perform_async(current_user.id, 'View Auctions', mixpanel_options)
+    @auctions = Auction.viewable_for(current_person)
+    MixPanelTrackerWorker.perform_async(current_person.user.id, 'View Auctions', mixpanel_options)
   end
 
   def bid
@@ -30,7 +30,4 @@ class Mobile::V1::Students::AuctionsController < Mobile::V1::Students::BaseContr
     render json: { status:  :unprocessible_entity, msg: @msg} 
   end  
   
-  def available_auctions
-    Auction.viewable_for(current_person)
-  end 
 end
