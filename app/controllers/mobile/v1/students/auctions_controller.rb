@@ -2,7 +2,6 @@ class Mobile::V1::Students::AuctionsController < Mobile::V1::Students::BaseContr
   def index
     current_person = Student.find(181357)
     @auctions = Auction.viewable_for(current_person)
-    MixPanelTrackerWorker.perform_async(current_person.user.id, 'View Auctions', mixpanel_options)
   end
 
   def bid
