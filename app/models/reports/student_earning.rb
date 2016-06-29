@@ -77,7 +77,7 @@ module Reports
         id: student.id,
         student_name:   student.name,
         username:  student.user_name,
-        classroom: student.person_classroom(@school).present? ? get_student_classroom(student) : "No Classroom",
+        classroom: student.person_classroom.present? ? get_student_classroom(student) : "No Classroom",
         total_credits: (number_with_precision(student.total_credits, precision: 2, delimiter: ',') || 0),
         total_deposited: (number_with_precision(student.total_deposited, precision: 2, delimiter: ',') || 0),
         total_undeposited: (number_with_precision(student.total_undeposited, precision: 2, delimiter: ',') || 0)
@@ -85,7 +85,7 @@ module Reports
     end
 
     def get_student_classroom(student)
-      student_classrooms_array = student.person_classroom(@school).map{|c| c.class_name}
+      student_classrooms_array = student.person_classroom.map{|c| c.class_name}
       logged_in_user_classroom_array = @logged_in_person.classrooms_for_school(@school).map{|c| c.name}
       match_classroom = student_classrooms_array & logged_in_user_classroom_array
       if match_classroom.present?
