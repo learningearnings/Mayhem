@@ -62,7 +62,10 @@ Leror::Application.routes.draw do
         get  'classrooms'       => 'classrooms#index'
         get  'classrooms/:id'   => 'classrooms#show'
         get  'student/:id'     => 'profile#show'
-        post 'student/:id'     => 'profile#update'        
+        post 'student/:id'     => 'profile#update' 
+        get  'auctions' => 'auctions#index'
+        get 'auctions/:id/bid'       => 'auctions#bid'
+        post 'auctions/:id/bid'       => 'auctions#bid'
       end
     end
   end
