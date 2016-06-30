@@ -160,7 +160,7 @@ class Person < ActiveRecord::Base
   end
   
   def person_classroom
-    Person.joins(person_school_links: [{ person_school_classroom_links: :classroom }]).select("classrooms.id as classroom_id, classrooms.name as class_name").where("people.id = ?", self.id).first
+    Person.joins(person_school_links: [{ person_school_classroom_links: :classroom }]).select("classrooms.id as classroom_id, classrooms.name as class_name").where("people.id = ?", self.id)
   end
 
   # End Relationships
