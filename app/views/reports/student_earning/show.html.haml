@@ -31,7 +31,8 @@
             %th= check_box_tag 'select_all', "1", false, id: "example-select-all"
             %th Student
             %th Username
-            %th Classroom
+            - if report.classroom.blank?
+              %th Classroom
             %th Total Credits
             %th Total Deposited
             %th Total Undeposited
@@ -41,7 +42,8 @@
                 %td= check_box_tag 'student_id[]', row[:id], false, class: "student-select"
                 %td= row[:student_name]
                 %td= row[:username]
-                %td= row[:classroom]
+                - if report.classroom.blank?
+                  %td= row[:classroom]
                 %td= link_to(row[:total_credits], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "total_credit")
                 %td= link_to(row[:total_deposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "deposited")
                 %td= link_to(row[:total_undeposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "undeposited")

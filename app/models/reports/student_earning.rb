@@ -4,7 +4,7 @@ module Reports
     include DateFilterable
 
     attr_accessor :parameters
-    attr_reader :school, :data, :endpoints
+    attr_reader :school, :data, :endpoints, :classroom
 
     def initialize params
       @parameters = Reports::StudentEarning::Params.new(params)
