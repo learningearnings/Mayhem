@@ -77,7 +77,7 @@ module Reports
         id: student.id,
         student_name:   student.name,
         username:  student.user_name,
-        classroom: student.person_classroom.present? ? get_student_classroom(student) : "No Classroom",
+        classroom: student.person_classroom.present? ? student.person_classroom.class_name : "No Classroom",
         total_credits: (number_with_precision(student.total_credits, precision: 2, delimiter: ',') || 0),
         total_deposited: (number_with_precision(student.total_deposited, precision: 2, delimiter: ',') || 0),
         total_undeposited: (number_with_precision(student.total_undeposited, precision: 2, delimiter: ',') || 0)
