@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160621061414) do
+ActiveRecord::Schema.define(:version => 20160630094007) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -669,8 +669,9 @@ ActiveRecord::Schema.define(:version => 20160621061414) do
     t.integer  "to_id"
     t.integer  "reward_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "delivered_by_id"
   end
 
   create_table "reward_distributors", :force => true do |t|

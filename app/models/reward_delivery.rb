@@ -4,6 +4,7 @@ class RewardDelivery < ActiveRecord::Base
   belongs_to :from, class_name: "Person", foreign_key: :from_id
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
   belongs_to :reward, class_name: "Spree::LineItem", foreign_key: :reward_id
+  belongs_to :delivered_by, class_name: "Person", foreign_key: :delivered_by_id
 
   scope :order_by_student_last_name, lambda { order("people.last_name,reward_deliveries.created_at DESC") }
   scope :order_by_student_grade, lambda { order(:to => :grade) }
