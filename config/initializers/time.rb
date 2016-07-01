@@ -1,1 +1,1 @@
-Time::DATE_FORMATS[:date_in_month] = "%B"
+Time::DATE_FORMATS[:date_in_month] = "%B %Y"

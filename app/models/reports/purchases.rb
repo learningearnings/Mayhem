@@ -127,7 +127,8 @@ module Reports
       if parameters.page.blank?
         if @teacher
           rewards = @teacher.products.collect { | r | r.id }
-          [:where, { reward: {product: { id: rewards} } }]
+          #[:where, { reward: {product: { id: rewards} } }]
+          [:where, "spree_products.id IN (?) OR (reward_deliveries.delivered_by_id = ? OR (reward_deliveries.from_id =? AND reward_deliveries.delivered_by_id IS NULL)) ", rewards, @teacher.id, @teacher.id ]         
         else
           [:scoped]
         end 
@@ -137,7 +138,8 @@ module Reports
         #get all rewards created by the selected rewards creator
         teacher = Teacher.find(parameters.reward_creator_filter)
         rewards = teacher.products.collect { | r | r.id }
-        [:where, { reward: {product: { id: rewards} } }]
+        #[:where, { reward: {product: { id: rewards} } }]
+        [:where, "spree_products.id IN (?) OR (reward_deliveries.delivered_by_id = ? OR (reward_deliveries.from_id =? AND reward_deliveries.delivered_by_id IS NULL)) ", rewards, teacher.id, teacher.id ]         
       end
     end
     
