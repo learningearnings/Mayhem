@@ -122,18 +122,19 @@
 :javascript
   $(document).ready( function () {
     var sort = eval($.cookie('purchases_report_order'));
-    sort = sort ? sort : [[0,"desc",0], [1, "desc", 0]]
+    //sort = sort ? sort : [[0,"desc",0], [1, "desc", 0]]
     $('#report_table').dataTable( {
       "aoColumnDefs": [
         { 'bSortable': false, 'aTargets': [ 7, 8, 9 ] },
-        { 'orderData':[5], 'targets': [4, 'desc'] },
-        { "orderSequence": [ "desc" ], "targets": [5] },
+        { 'orderData':[5], 'targets': [4] },
         { 'targets': [5],'visible': false,'searchable': false},
+        { "asSorting": [ "asc"], "aTargets": [ 5 ] }
        ],
       "bPaginate": false,
       "bInfo": false,
       "bSort": true,
-      "aaSorting": sort
+      "order": [[ 4, "desc" ]]
+      //"aaSorting": {}
     } );
 
     $('.refund').click(function(e) {
