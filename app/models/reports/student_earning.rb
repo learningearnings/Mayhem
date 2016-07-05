@@ -18,9 +18,25 @@ module Reports
     def execute!
       # get recent line items from the school
       students.each do |student|
-        @data << generate_row(student)
+        @data << generate_row(student) if student_with_classroom_filter(student)
       end
     end
+
+    def student_with_classroom_filter(student)
+      student_classrooms_array = student.person_classroom_name
+      logged_in_user_classroom_array = @logged_in_person.classrooms_for_school(@school).map{|c| c.name}
+      intersection_array = student_classrooms_array & logged_in_user_classroom_array
+      if @classroom.present?
+        if intersection_array.size > 1 && @logged_in_person.classrooms_for_school(@school).map{|c| c.name if c.id == @classroom.to_i}.include?(student_classrooms_array.first)
+          return true
+        elsif intersection_array.size <= 1 && intersection_array.first == student_classrooms_array.first
+          return true
+        end
+      else
+        return true
+      end  
+    end
+  
 
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
@@ -77,22 +93,11 @@ module Reports
         id: student.id,
         student_name:   student.name,
         username:  student.user_name,
-        classroom: student.person_classroom.present? ? get_student_classroom(student) : "No Classroom",
+        classroom: student.person_classroom.present? ? student.person_classroom.first.class_name : "No Classroom",
         total_credits: (number_with_precision(student.total_credits, precision: 2, delimiter: ',') || 0),
         total_deposited: (number_with_precision(student.total_deposited, precision: 2, delimiter: ',') || 0),
         total_undeposited: (number_with_precision(student.total_undeposited, precision: 2, delimiter: ',') || 0)
        }
-    end
-
-    def get_student_classroom(student)
-      student_classrooms_array = student.person_classroom.map{|c| c.class_name}
-      logged_in_user_classroom_array = @logged_in_person.classrooms_for_school(@school).map{|c| c.name}
-      match_classroom = student_classrooms_array & logged_in_user_classroom_array
-      if match_classroom.present?
-        match_classroom.first
-      else
-        student_classrooms_array.first
-      end  
     end
 
     def headers

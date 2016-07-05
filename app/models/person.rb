@@ -160,9 +160,12 @@ class Person < ActiveRecord::Base
   end
   
   def person_classroom
-    Person.joins(person_school_links: [{ person_school_classroom_links: :classroom }]).select("classrooms.id as classroom_id, classrooms.name as class_name").where("people.id = ?", self.id)
+    Person.joins(person_school_links: [{ person_school_classroom_links: :classroom }]).select("classrooms.id as classroom_id, classrooms.name as class_name").where("people.id = ?", self.id).order("classrooms.name ASC")
   end
 
+  def person_classroom_name
+    person_classroom.map{|c| c.class_name}
+  end
   # End Relationships
 
   # Only return the classrooms for the given school
