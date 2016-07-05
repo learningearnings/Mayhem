@@ -1,6 +1,6 @@
 class Mobile::V1::Students::ProfileController < Mobile::V1::Students::BaseController
   def show
-    current_person = Student.find(181357)
+    #current_person = Student.find(181357)
     @student = Student.find(params[:id])
     @avatars = Avatar.all
   end
