@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160630094007) do
+ActiveRecord::Schema.define(:version => 20160706075452) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -700,10 +700,10 @@ ActiveRecord::Schema.define(:version => 20160630094007) do
     t.integer  "school_id"
     t.string   "school_name"
     t.string   "district_guid"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
     t.integer  "total_teachers"
-    t.decimal  "amount",         :precision => 8, :scale => 2
+    t.decimal  "amount",         :precision => 10, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "school_filter_links", :force => true do |t|
@@ -759,6 +759,7 @@ ActiveRecord::Schema.define(:version => 20160630094007) do
     t.integer  "monthly_no_infractions_amount"
     t.string   "credits_scope"
     t.string   "credits_type"
+    t.integer  "admin_credit_percent",              :default => 5
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1467,10 +1468,10 @@ ActiveRecord::Schema.define(:version => 20160630094007) do
     t.integer  "teacher_id"
     t.string   "teacher_name"
     t.string   "district_guid"
-    t.decimal  "amount",        :precision => 8, :scale => 2
+    t.decimal  "amount",        :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.string   "credit_source"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
     t.text     "reason"
   end
 
