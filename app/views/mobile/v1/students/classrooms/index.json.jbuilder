@@ -19,6 +19,7 @@ json.savings_history @recent_savings_amounts do |amount|
 end		
 
 json.ecredits_to_deposit @unredeemed_bucks do | buck |
+    json.code buck.code
 	json.source buck.source_string
     json.date buck.created_at.strftime("%m-%d-%Y %I:%M %P")
     json.reason buck.otu_code_category ? buck.otu_code_category.name : "N/A"
