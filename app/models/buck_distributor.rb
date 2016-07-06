@@ -59,11 +59,11 @@ class BuckDistributor
   end
 
   def pay_school(school)
-    log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_for_school(school).to_s} "
-    amount_for_school = amount_for_school(school)
-    @credit_manager.issue_credits_to_school school, amount_for_school
+    amount_school = amount_for_school(school) * ((school.admin_credit_percent.to_f/100)+1)
+    log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_school.to_s} "
+    @credit_manager.issue_credits_to_school school, amount_school
     teachers = school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
-    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers.count, amount: amount_for_school)
+    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers.count, amount: amount_school)
     if school_credit.save
       log_txn "BuckDistributor -- saving school credits for #{school.name} #{school.id} school credit id #{school_credit.id}"
     else

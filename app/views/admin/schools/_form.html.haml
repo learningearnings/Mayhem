@@ -12,6 +12,7 @@
       = f.input :zip
       = f.input :store_subdomain, :input_html => {:disabled => true}
       = f.input :mascot_name
+      = f.input :admin_credit_percent, :min => 5, :max => 100
       = f.input :school_demo
       = f.input :status, :as => :select, :collection => ['new','active','inactive']
       = f.input :timezone, :as => :time_zone  
