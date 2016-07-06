@@ -12,7 +12,6 @@
       = f.input :zip
       = f.input :store_subdomain, :input_html => {:disabled => true}
       = f.input :mascot_name
-      = f.input :admin_credit_percent, :min => 5, :max => 100
       = f.input :school_demo
       = f.input :status, :as => :select, :collection => ['new','active','inactive']
       = f.input :timezone, :as => :time_zone  
@@ -26,6 +25,8 @@
         - batch = OpenStruct.new(otu_codes: [OpenStruct.new(code: "Test", points: 10, expires_at: Time.current, school: @school)])
         = render partial: "teachers/banks/batch", locals: { batch: batch }          
     = f.input :credits_scope, :as => :select, :collection => ['School-Wide','Classroom']    
+    = f.input :admin_credit_percent, :min => 5, :max => 100
+
 
     = f.actions
 
