@@ -170,4 +170,12 @@ class CreditManager
     return false if student.hold_balance < amount
     transfer_credits "Transfer from Hold to Checking", student.hold_account, student.checking_account, amount
   end
+
+  def add_credit_to_teacher school, teacher, amount
+    transfer_credits "Add credits to teacher", school.main_account, teacher.main_account(school), amount
+  end
+
+  def remove_credit_from_teacher school, teacher, amount
+    transfer_credits "Remove credits from teacher", teacher.main_account(school), school.main_account, amount
+  end
 end

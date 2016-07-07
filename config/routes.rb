@@ -296,6 +296,8 @@ Leror::Application.routes.draw do
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers
+      match  "manage_credits" => "bulk_teachers#manage_credits", :as => :manage_credits
+      post  "update_teacher_credits" => "bulk_teachers#update_teacher_credits", :as => :update_teacher_credits
     end
     resources :reports
     resource  :bank

@@ -2,6 +2,8 @@ module Teachers
   class BulkTeachersController < Teachers::BaseController
     before_filter :redirect_for_synced_schools
     before_filter :load_edit, only: [:edit, :update]
+    before_filter :load_manage_credit, only: [:manage_credits]
+    before_filter :load_teachers, only: [:edit, :update, :manage_credits]
 
     def show
     end
@@ -23,6 +25,42 @@ module Teachers
         redirect_to teachers_bulk_teachers_path
       end
     end
+
+    def manage_credits
+      respond_to do |format|
+        format.html
+        format.json
+      end
+    end
+
+    def update_teacher_credits
+      if params[:teachers] && params[:credit_qty]
+        update_action = params[:form_action_hidden_tag]
+        pay_teachers(params[:teachers], params[:credit_qty], update_action)
+        flash[:notice] = "Credits Added to the Selected Teachers!"
+      else    
+        flash[:error] = "Select teachers from the list" if params[:teachers]
+        flash[:error] = "Add Credit Quantity" if params[:credit_qty]
+      end
+      redirect_to manage_credits_teachers_bulk_teachers_path
+    end
+
+    def pay_teachers(teachers,amount_for_teacher, update_action)      
+      @teacher_params = teachers.dup
+      if update_action == "Add Credits"
+        @teacher_params.each do |id|
+          next unless id.present?
+          teacher = Teacher.find(id)
+          CreditManager.new.add_credit_to_teacher current_school, teacher, amount_for_teacher
+        end
+      elsif update_action == "Remove Credits"
+        @teacher_params.each do |id|
+          next unless id.present?
+          teacher = Teacher.find(id)
+          CreditManager.new.remove_credit_from_teacher current_school, teacher, amount_for_teacher
+        end
+      end  
+    end  
 
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these teachers" ? :delete! : :call
@@ -51,12 +89,20 @@ module Teachers
         "Edit Teachers Information",
         "Delete these teachers"
       ]
+    end
 
+    def load_manage_credit
+      @actions = [
+        "Add Credits",
+        "Remove Credits"
+      ]
+    end
+
+    def load_teachers
       @teachers = current_school.teachers
       if params[:gender].present?
         @teachers = @teachers.for_gender(params[:gender])
       end
-
       @teachers = @teachers.for_grade(params[:grade]) if params[:grade].present?
     end
 

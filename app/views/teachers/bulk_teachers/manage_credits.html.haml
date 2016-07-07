@@ -1,0 +1,134 @@
+.main-content-wrapper
+  .primary-content-fw
+    %h2 Manage Credits
+    .grid_edit_students
+      %p.credits-available
+        %strong
+          School Current Credit Balance:
+        = number_with_precision(current_school.main_account.balance, precision: 2, delimiter: ',') || 0
+
+      .controls
+        = form_tag '/teachers/bulk_teachers/manage_credits', method: :post do
+          %h5 Optionally Filter List of Teachers:
+          .control
+            %label Grade:
+            = select_tag 'grade', options_for_select([nil] | current_school.grades.map(&:reverse), :selected => params[:grade]), id: 'controls_grade'
+            %label Gender:
+            = select_tag 'gender', options_for_select([nil, 'Male', 'Female'], :selected => params[:gender]), id: 'controls_gender'
+            = button_tag 'Filter List', class: 'btn awesome-button'
+      .controls
+        %h5 
+          Action for
+          %span#number_of_teachers
+          Selected Teachers:
+        .control
+          = select_tag 'controls_action', options_for_select(@actions)
+          %span.password_field.secondary
+            %label Credit Quantity:
+            = text_field_tag 'credit_quantity'
+          = button_tag 'UPDATE These Teachers', class: 'btn awesome-button', id: 'update_these_teachers'
+      .bulk_form
+        = form_tag '/teachers/bulk_teachers/update_teacher_credits', method: :post, id: 'update_teachers_form' do
+          = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
+          = hidden_field_tag "credit_qty", nil, id: "credit_qty"
+          %table
+            %thead
+              %tr
+                %th= check_box_tag 'select_all'
+                %th.text.first First
+                %th.text.last Last
+                %th.text.email Email
+                %th.text.username Username
+                %th
+            %tbody.teachers_body
+              - @teachers.each do |teacher|
+                = render 'manage_credits_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, grade: teacher.grade, gender: teacher.gender, id: teacher.id }
+
+:coffeescript
+  $('#select_all').on 'click', ->
+    if $('#select_all').attr('checked')
+      $('.edit_control').removeAttr('disabled')
+      $('input.selected').attr('checked', true)
+    else
+      $('input.selected').removeAttr('checked')
+      $('.edit_control').attr('disabled', 'disabled')
+    updateNumberOfTeachers()
+
+  $('.teachers_body').on 'click', (evt) ->
+    if $(evt.target).hasClass('row_checkbox')
+      children = $(evt.target).closest('tr').find('.edit_control')
+      if $(evt.target).attr('checked') == "checked"
+        children.removeAttr('disabled')
+      else
+        $('#select_all').removeAttr('checked')
+        children.attr('disabled', 'disabled')
+      updateNumberOfTeachers()
+
+  updateNumberOfTeachers = ->
+    $('#number_of_teachers').html(numberOfTeachers())
+
+  numberOfTeachers = ->
+    $('.row_checkbox:checked').size()
+
+  chosenAction = ->
+    $('#controls_action').val()
+  whichSecondaryActionElementToShow = () ->
+    switch chosenAction()
+      when "Add Credits" then $('.control span.secondary.password_field')
+      when "Remove Credits" then $('.control span.secondary.password_field')
+      else $([])
+
+  showAppropriateSecondaryAction = () ->
+    $('.control span.secondary').hide()
+    whichSecondaryActionElementToShow().show()
+
+  shouldShowEdit = ->
+    switch chosenAction()
+      when "Add Credits" then false
+      when "Remove Credits" then false
+      else false
+
+  conditionallyShowEditFields = () ->
+    if shouldShowEdit()
+      $('tbody .edit').show()
+      $('tbody .display').hide()
+    else
+      $('tbody .edit').hide()
+      $('tbody .display').show()
+
+    # We also potentially show only the password field, if "as indicated" is chosen
+    if chosenAction() == 'Update Passwords as Indicated'
+      $('tbody td.password .edit').show()
+
+  handleInterfaceState = ->
+    showAppropriateSecondaryAction()
+    conditionallyShowEditFields()
+
+  $('#controls_action').on 'change', handleInterfaceState
+
+  $('#update_these_teachers').on 'click', (evt) ->
+    evt.preventDefault()
+    if numberOfTeachers() > 0
+      performSelectedTeacherAction()
+      setFormActionHiddenTag()
+      $('#update_teachers_form').submit()
+    else
+      alert("You must select at least one teacher to modify.")
+
+  setFormActionHiddenTag = () ->
+    action = $('#controls_action').val()  
+    $('#form_action_hidden_tag').val(action)
+
+  performSelectedTeacherAction = () ->
+    action = $('#credit_quantity').val()  
+    $('#credit_qty').val(action)
+
+  updatePasswordsToUsername = () ->
+    $('input.password').each (elm) ->
+      username = $(this).closest("tr").find("input.username").val()
+      $(this).val(username)
+
+  handleInterfaceState()
+
+  $('.edit_control').attr('disabled', 'disabled')
+  updateNumberOfTeachers()

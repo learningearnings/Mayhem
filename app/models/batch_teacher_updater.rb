@@ -46,4 +46,12 @@ class BatchTeacherUpdater
     end
     true
   end
+
+  def add_credit
+    
+  end
+
+  def remove_credit
+    
+  end
 end
