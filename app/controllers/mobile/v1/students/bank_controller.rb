@@ -22,7 +22,7 @@ class Mobile::V1::Students::BankController < Mobile::V1::Students::BaseControlle
         render json: { status: :unprocessible_entity, msg: @msg }         
       end
     else
-      @msg = 'Your code is not valid, please try again'
+      @msg = 'Your code is not valid. Please try again.'
       current_person.code_entry_failures.create
       render json: { status: :unprocessible_entity, msg: @msg }       
     end
