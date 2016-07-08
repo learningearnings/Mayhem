@@ -5,7 +5,8 @@
       %p.credits-available
         %strong
           School Current Credit Balance:
-        = number_with_precision(current_school.main_account.balance, precision: 2, delimiter: ',') || 0
+        %span#current-credit-bal  
+          = number_with_precision(current_school.main_account.balance, precision: 2, delimiter: ',') || 0
 
       .controls
         = form_tag '/teachers/bulk_teachers/manage_credits', method: :post do
@@ -31,6 +32,7 @@
         = form_tag '/teachers/bulk_teachers/update_teacher_credits', method: :post, id: 'update_teachers_form' do
           = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
           = hidden_field_tag "credit_qty", nil, id: "credit_qty"
+          = hidden_field_tag "current_school_bal", current_school.main_account.balance()
           %table
             %thead
               %tr
@@ -39,10 +41,11 @@
                 %th.text.last Last
                 %th.text.email Email
                 %th.text.username Username
+                %th.text.credit Credit Balance
                 %th
             %tbody.teachers_body
               - @teachers.each do |teacher|
-                = render 'manage_credits_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, grade: teacher.grade, gender: teacher.gender, id: teacher.id }
+                = render 'manage_credits_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, grade: teacher.grade, gender: teacher.gender, id: teacher.id, credit_balance: teacher.main_account(current_school).balance }
 
 :coffeescript
   $('#select_all').on 'click', ->
@@ -108,16 +111,34 @@
 
   $('#update_these_teachers').on 'click', (evt) ->
     evt.preventDefault()
-    if numberOfTeachers() > 0
+    current_school_bal = parseFloat($('#current_school_bal').val())
+    credit_quantity = parseFloat($('#credit_quantity').val())
+    result = parseFloat(numberOfTeachers() * credit_quantity)
+    if numberOfTeachers() <= 0
+      alert 'You must select at least one teacher to modify.'
+    else if !$('#credit_quantity').val() or !$.isNumeric($('#credit_quantity').val())
+      alert 'You must enter valid credit quantity.'
+    else if ($('#controls_action').val() == 'Add Credits' and (result > current_school_bal or credit_quantity > current_school_bal))
+      alert 'Credit Quantity must be less than school current credit balance.'
+    else if $('#controls_action').val() == 'Remove Credits' and checkSelectedTeachersCredit() == true
+      alert 'Selected teacher has less credit balance to remove.'
+    else
       performSelectedTeacherAction()
       setFormActionHiddenTag()
       $('#update_teachers_form').submit()
-    else
-      alert("You must select at least one teacher to modify.")
-
   setFormActionHiddenTag = () ->
     action = $('#controls_action').val()  
     $('#form_action_hidden_tag').val(action)
+
+  checkSelectedTeachersCredit = () ->
+    $('.row_checkbox:checked').each ->
+      teacher_credit_bal = parseFloat($(this).closest('tr').find('td.credit_balance').text())
+      credit_qty = parseFloat($('#credit_quantity').val())
+      teacher_name = $(this).closest('tr').find('td.first').text()
+      if teacher_credit_bal < credit_qty
+        return true
+      else
+        return false  
 
   performSelectedTeacherAction = () ->
     action = $('#credit_quantity').val()  
