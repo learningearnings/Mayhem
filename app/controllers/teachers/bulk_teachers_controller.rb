@@ -37,14 +37,11 @@ module Teachers
       update_action = params[:form_action_hidden_tag]
       begin
         #pay_teachers(params[:teachers], params[:credit_qty], update_action)
-        teacher_credit_updater = TeacherCreditUpdater.new(current_school,params[:teachers], params[:credit_qty])
-        if update_action = "Add Credits"
-          teacher_credit_updater.add_credits!
-          flash[:notice] = "Added Teachers Credits Successfully."
-        else
-          teacher_credit_updater.remove_credits!
-          flash[:notice] = "Removed Teachers Credits Successfully."
-        end 
+        teacher_credit_updater = TeacherCreditUpdater.new(current_school, params[:teachers],params[:credit_qty], update_action)
+        teacher_credit_updater.handle_credits_to_teacher()
+        flash[:notice] = "Added Teachers Credits Successfully." if update_action == "Add Credits"
+        flash[:notice] = "Removed Teachers Credits Successfully." if update_action == "Remove Credits"
+
       rescue Exception => e
         flash[:error] = "Add/Remove Teachers Credits failed. Error #{e.message}"
       ensure 
@@ -61,6 +58,7 @@ module Teachers
     #       CreditManager.new.monthly_credits_to_teacher current_school, teacher, amount_for_teacher
     #       teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: current_school.id, teacher_name: teacher.name, district_guid: current_school.district_guid, amount: amount_for_teacher, credit_source: "ADMIN", reason: "Issue Monthly Credits")
     #       teacher_credit.save
+    #       flash[:notice] = "Added Teachers Credits Successfully."
     #     end
     #   elsif update_action == "Remove Credits"
     #     @teacher_params.each do |id|
@@ -69,9 +67,11 @@ module Teachers
     #       CreditManager.new.remove_credit_from_teacher current_school, teacher, amount_for_teacher
     #       teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: current_school.id, teacher_name: teacher.name, district_guid: current_school.district_guid, amount: amount_for_teacher, credit_source: "ADMIN", reason: "Remove Credits")
     #       teacher_credit.save
+    #       flash[:notice] = "Removed Teachers Credits Successfully."
     #     end
     #   end  
     # end  
+
 
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these teachers" ? :delete! : :call

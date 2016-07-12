@@ -114,6 +114,7 @@
     current_school_bal = parseFloat($('#current_school_bal').val())
     credit_quantity = parseFloat($('#credit_quantity').val())
     result = parseFloat(numberOfTeachers() * credit_quantity)
+    test = checkSelectedTeachersCredit()
     if numberOfTeachers() <= 0
       alert 'You must select at least one teacher to modify.'
     else if !$('#credit_quantity').val() or !$.isNumeric($('#credit_quantity').val())
@@ -126,19 +127,19 @@
       performSelectedTeacherAction()
       setFormActionHiddenTag()
       $('#update_teachers_form').submit()
+      
   setFormActionHiddenTag = () ->
     action = $('#controls_action').val()  
     $('#form_action_hidden_tag').val(action)
 
   checkSelectedTeachersCredit = () ->
-    $('.row_checkbox:checked').each ->
-      teacher_credit_bal = parseFloat($(this).closest('tr').find('td.credit_balance').text())
-      credit_qty = parseFloat($('#credit_quantity').val())
-      teacher_name = $(this).closest('tr').find('td.first').text()
-      if teacher_credit_bal < credit_qty
+    if $('#controls_action').val() == 'Remove Credits' 
+      i = 0
+      $('.row_checkbox:checked').each ->
+        if parseFloat($(this).closest('tr').find('td.credit_balance').text()) < parseFloat($('#credit_quantity').val())
+          i = i + 1
+      if i > 0
         return true
-      else
-        return false  
 
   performSelectedTeacherAction = () ->
     action = $('#credit_quantity').val()  
