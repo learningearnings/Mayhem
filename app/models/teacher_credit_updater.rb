@@ -35,5 +35,8 @@ class TeacherCreditUpdater
     @credit_manager.remove_credit_from_teacher @school, teacher, @credit_amount
     teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: @school.id, teacher_name: teacher.name, district_guid: @school.district_guid, amount: @credit_amount, credit_source: "ADMIN", reason: "Remove Credits")
     teacher_credit.save
+    teachers = @school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
+    school_credit = SchoolCredit.new(school_id: @school.id, school_name: @school.name, district_guid: @school.district_guid, total_teachers: teachers.count, amount: @credit_amount)
+    school_credit.save
   end  
 end

@@ -36,7 +36,6 @@ module Teachers
     def update_teacher_credits
       update_action = params[:form_action_hidden_tag]
       begin
-        #pay_teachers(params[:teachers], params[:credit_qty], update_action)
         teacher_credit_updater = TeacherCreditUpdater.new(current_school, params[:teachers],params[:credit_qty], update_action)
         teacher_credit_updater.handle_credits_to_teacher()
         flash[:notice] = "Added Teachers Credits Successfully." if update_action == "Add Credits"
@@ -48,30 +47,6 @@ module Teachers
         redirect_to manage_credits_teachers_bulk_teachers_path
       end  
     end
-
-    # def pay_teachers(teachers,amount_for_teacher, update_action)
-    #   @teacher_params = teachers.dup
-    #   if update_action == "Add Credits"
-    #     @teacher_params.each do |id|
-    #       next unless id.present?
-    #       teacher = Teacher.find(id)
-    #       CreditManager.new.monthly_credits_to_teacher current_school, teacher, amount_for_teacher
-    #       teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: current_school.id, teacher_name: teacher.name, district_guid: current_school.district_guid, amount: amount_for_teacher, credit_source: "ADMIN", reason: "Issue Monthly Credits")
-    #       teacher_credit.save
-    #       flash[:notice] = "Added Teachers Credits Successfully."
-    #     end
-    #   elsif update_action == "Remove Credits"
-    #     @teacher_params.each do |id|
-    #       next unless id.present?
-    #       teacher = Teacher.find(id)
-    #       CreditManager.new.remove_credit_from_teacher current_school, teacher, amount_for_teacher
-    #       teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: current_school.id, teacher_name: teacher.name, district_guid: current_school.district_guid, amount: amount_for_teacher, credit_source: "ADMIN", reason: "Remove Credits")
-    #       teacher_credit.save
-    #       flash[:notice] = "Removed Teachers Credits Successfully."
-    #     end
-    #   end  
-    # end  
-
 
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these teachers" ? :delete! : :call
