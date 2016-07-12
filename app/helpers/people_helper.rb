@@ -7,7 +7,7 @@ module PeopleHelper
     transaction = amount.transaction
     if transaction.transaction_description
       amount.try(:account).try(:person_account_link).try(:person).try(:full_name) || "none"
-    elsif transaction.otu_code.present? && transaction.otu_code.code.present? && transaction.description == "Redeemed Code"
+    elsif transaction.otu_code.present? && transaction.otu_code.code.present? && transaction.description == "Issue Printed Credits to Student"
       transaction.otu_code.code
     else
       transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
