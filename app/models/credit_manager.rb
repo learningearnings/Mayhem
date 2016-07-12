@@ -115,8 +115,8 @@ class CreditManager
     transfer_credits "Issue Credits to Student", teacher.unredeemed_account(school), student.checking_account, amount
   end
 
-  def issue_print_credits_to_student school, teacher, student, amount
-    transfer_credits "Issue Credits to Student", teacher.unredeemed_account(school), student.checking_account, amount
+  def issue_print_credits_to_student school, teacher, student, amount, otu_code=nil
+    transfer_credits "Redeemed Code", teacher.unredeemed_account(school), student.checking_account, amount, otu_code
   end
 
   def issue_ecredits_to_student school, teacher, student, amount, otu_code=nil

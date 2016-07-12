@@ -10,7 +10,7 @@
   - amounts.each do |amount|
     %tr
       %td.source= amount.transaction.description
-      %td.name= commercial_document_link(amount.transaction)
+      %td.name= amount.transaction.description == "Redeemed Code" ? "Printed Credit" :commercial_document_link(amount.transaction)
       %td.date= l(amount.transaction.created_at)
       %td.amount.currency= number_with_precision(amount.amount, :precision => 2)
       %td{:nowrap => "nowrap"}= source_from_transaction(amount)
