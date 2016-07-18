@@ -19,7 +19,7 @@
           %span#number_of_students
           Selected Students:
         .control
-          = select_tag 'controls_action', options_for_select(@actions)
+          = select_tag 'controls_action', options_for_select(@actions.collect.with_index.to_a)
           %span.password_field.secondary
             %label Password:
             = text_field_tag 'controls_password'
@@ -43,11 +43,13 @@
               %th
           %tbody.students_body
             - @students.each do |student|
-              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id }
+              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id, name: student.name }
+          %div.clear
+            = paginate @students, :params => { :action => '' }
 
-#message.modal.hide
-  = image_tag "loading.gif"
-  %h3 Your student account(s) are being updated, the results will be displayed when it is completed.
+#parent-modal.modal.hide
+  .modal-header
+    #parent-information  
          
 :javascript
   $(document).ready(function() 
@@ -68,6 +70,21 @@
   function loadResults() {
     location.reload();
   }
+
+  $('.information-action').click(function(e) {
+  var el = $(e.currentTarget);
+  // Set title for modal
+  $('#parent-modal .title').html("Student: " + el.data("name"));
+  $.ajax({
+    url:'/teachers/bulk_students/manage_parents',
+    type: 'POST',
+    data: { student_id: el.data("id")} ,
+    success:function(data) {
+      $("#parent-information").html(data);
+    }
+  });
+  });
+
 
 :coffeescript
   $('#select_all').on 'click', ->
@@ -100,8 +117,9 @@
 
   whichSecondaryActionElementToShow = () ->
     switch chosenAction()
-      when "Update Passwords to this Password" then $('.control span.secondary.password_field')
-      when "Add to Classroom I select:" then $('.control span.secondary.classroom_field')
+      when "0" then $('.control span.secondary.password_field')
+      when "3" then $('.control span.secondary.classroom_field')
+      when "4" then $('.parent').show()
       else $([])
 
   showAppropriateSecondaryAction = () ->
@@ -110,8 +128,8 @@
 
   shouldShowEdit = ->
     switch chosenAction()
-      when "Update Passwords to this Password" then false
-      when "Edit Student Information" then true
+      when "0" then false
+      when "4" then true
       else false
 
   conditionallyShowEditFields = () ->
@@ -123,7 +141,7 @@
       $('tbody .display').show()
 
     # We also potentially show only the password field, if "as indicated" is chosen
-    if chosenAction() == 'Update Passwords as Indicated'
+    if chosenAction() == "2"
       $('tbody td.password .edit').show()
       $('tbody td.password .display').hide()
 
@@ -156,11 +174,11 @@
 
   performSelectedStudentAction = () ->
     switch chosenAction()
-      when "Update Passwords to this Password"
+      when "0"
         updatePasswordsToPassword($('#controls_password').val())
-      when "Update Passwords = Usernames"
+      when "1"
         updatePasswordsToUsername()
-      when "Add to Classroom I select:"
+      when "3"
         updateClassroomsToClassroom($('#controls_classroom_selection').val())
 
   updateClassroomsToClassroom = (classroom_id) ->

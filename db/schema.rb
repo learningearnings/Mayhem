@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160706075452) do
+ActiveRecord::Schema.define(:version => 20160718062411) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -524,6 +524,7 @@ ActiveRecord::Schema.define(:version => 20160706075452) do
     t.string   "district_guid"
     t.integer  "checking_account_id"
     t.integer  "savings_account_id"
+    t.integer  "student_id"
   end
 
   add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"

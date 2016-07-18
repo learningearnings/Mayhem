@@ -45,6 +45,15 @@ module Teachers
       end
     end
 
+    def manage_parents
+      @student = Student.find(params[:student_id])
+      2.times { @student.parents.build }
+      respond_to do |format|
+        format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student}}
+        format.js 
+      end
+    end
+
     protected
     def load_edit
       @actions = [
@@ -73,6 +82,7 @@ module Teachers
       end
 
       @students = @students.for_grade(params[:grade]) if params[:grade].present?
+      @students = @students.page(params[:page]).per(20)
     end
   end
 end

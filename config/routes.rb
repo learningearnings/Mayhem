@@ -294,6 +294,7 @@ Leror::Application.routes.draw do
     resources :otu_code_categories
     resource :bulk_students do
       post "import_students" => "bulk_students#import_students", :as => :import_students
+      post "manage_parents" => "bulk_students#manage_parents", :as => :manage_parents
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers

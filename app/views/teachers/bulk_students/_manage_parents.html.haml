@@ -1,0 +1,18 @@
+.credit-transaction-header
+  .credit-student-title
+    %h3= student.name
+  .credit-print-button
+%div.clear
+  = form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents') do |f|
+    %table
+      %thead
+        %tr
+          %th.text.first First
+          %th.text.last Last
+          %th.text.username Email
+          %th
+      %tbody
+        = f.fields_for :parents do |parent_form|
+          = parent_form.label :first_name
+          = parent_form.text_field :first_name
+    = submit_tag "Add These Students", class: 'btn awesome-button add_students_button'

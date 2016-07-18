@@ -32,3 +32,6 @@
   %td.text.password
     .edit= text_field_tag 'students[]user[password]', options[:password], class: 'password edit_control'
     .display= options[:password]
+  %td.parent.hide
+    = link_to "Manage Parent Information", "#parent-modal", class: 'information-action','data-toggle' => 'modal', 'data-id' => options[:id], 'data-name' => options[:name]
+
