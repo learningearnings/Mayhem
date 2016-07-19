@@ -1,18 +1,20 @@
 .credit-transaction-header
   .credit-student-title
     %h3= student.name
-  .credit-print-button
-%div.clear
-  = form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents') do |f|
-    %table
-      %thead
-        %tr
-          %th.text.first First
-          %th.text.last Last
-          %th.text.username Email
-          %th
-      %tbody
-        = f.fields_for :parents do |parent_form|
-          = parent_form.label :first_name
-          = parent_form.text_field :first_name
-    = submit_tag "Add These Students", class: 'btn awesome-button add_students_button'
+%br
+.parent-fields-section
+  = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents') do |f|
+    = hidden_field_tag :student_id, student.id
+    .parent-list.clear
+      .parent-header
+        First Name
+      .parent-header
+        Last Name
+      .parent-header
+        Email
+    = f.simple_fields_for :parents do |parent_form|
+      = render 'parent_fields', f: parent_form  
+    .links.clear
+      = link_to_add_association 'Add Parent', f, :parents, {}, :partial => 'parent_fields', render_options: { wrapper: 'inline' }     
+    = f.submit "Save", class: 'btn awesome-button add_students_button'
+

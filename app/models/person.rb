@@ -46,7 +46,7 @@ class Person < ActiveRecord::Base
 
   accepts_nested_attributes_for :user
 
-  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :email, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type, :can_distribute_credits, :student_id
+  attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :email, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type, :can_distribute_credits, :student_id, :parents_attributes
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :status,:username,:email, :password,  :password_confirmation, :type,:created_at,:user_attributes, :recovery_password,:person_school_links, :district_guid, :sti_id, :as => :admin
   validates_presence_of :first_name, :last_name
 

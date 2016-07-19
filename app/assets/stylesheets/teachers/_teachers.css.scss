@@ -42,3 +42,27 @@
     width: 60px;
   }
 }
+#parents-table td input {
+  width: 130px;
+}
+#parent-modal{
+  overflow-y: auto;
+}
+.parent-header
+{
+  float: left;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+  width: 120px;
+}
+.parent-field{
+  float: left;
+  margin-left: 10px;
+  input {
+   width: 120px;  
+  }
+}
+.parent-fields-section{
+  margin-top: 10px;
+}

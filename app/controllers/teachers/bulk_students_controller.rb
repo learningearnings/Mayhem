@@ -47,7 +47,11 @@ module Teachers
 
     def manage_parents
       @student = Student.find(params[:student_id])
-      2.times { @student.parents.build }
+      if params[:student].present?
+        @student = @student.update_attributes(params[:student])
+      else
+        2.times { @student.parents.build }
+      end  
       respond_to do |format|
         format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student}}
         format.js 
