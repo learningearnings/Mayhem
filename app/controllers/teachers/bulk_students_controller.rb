@@ -49,6 +49,14 @@ module Teachers
       @student = Student.find(params[:student_id])
       if params[:student].present?
         @student = @student.update_attributes(params[:student])
+        parent_attributes = params[:student][:parents_attributes].to_hash
+        parent_attributes.each do |parent_attribute|
+          debugger
+          user_params = {"username" => parent_attribute[1]["username"], "password_confirmation" => parent_attribute[1]["password"]}
+          parent = @student.parents.assign_attributes(parent_attribute[1])
+          parent.user = user_params
+          parent.save
+        end  
       else
         2.times { @student.parents.build }
       end  

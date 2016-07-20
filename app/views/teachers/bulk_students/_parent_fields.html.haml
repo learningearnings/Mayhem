@@ -4,6 +4,8 @@
   .field.parent-field
     = f.text_field :last_name
   .field.parent-field
-    = f.text_field :email
+    = f.text_field :username
+  .field.parent-field
+    = f.text_field :password
   .parent-field  
     = link_to_remove_association "Remove", f
