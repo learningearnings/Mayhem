@@ -48,21 +48,15 @@ module Teachers
     def manage_parents
       @student = Student.find(params[:student_id])
       if params[:student].present?
-        @student = @student.update_attributes(params[:student])
-        parent_attributes = params[:student][:parents_attributes].to_hash
-        parent_attributes.each do |parent_attribute|
-          debugger
-          user_params = {"username" => parent_attribute[1]["username"], "password_confirmation" => parent_attribute[1]["password"]}
-          parent = @student.parents.assign_attributes(parent_attribute[1])
-          parent.user = user_params
-          parent.save
-        end  
+        @student.update_attributes(params[:student])
+        #@student = params[:student]
+        #@student.save
       else
-        2.times { @student.parents.build }
+        @parents = @student.parents.build
+        @user = @parents.build_user
       end  
       respond_to do |format|
         format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student}}
-        format.js 
       end
     end
 

@@ -3,7 +3,7 @@
     %h3= student.name
 %br
 .parent-fields-section
-  = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents') do |f|
+  = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents'), html: {:multipart => true} do |f|
     = hidden_field_tag :student_id, student.id
     .parent-list.clear
       .parent-header
@@ -14,9 +14,9 @@
         Username
       .parent-header
         Password
-    = f.simple_fields_for :parents do |parent_form|
-      = render 'parent_fields', f: parent_form  
+    = f.simple_fields_for :parents do |parent|
+      = render 'parent_fields', f: parent  
     .links.clear
-      = link_to_add_association 'Add Parent', f, :parents, {}, :partial => 'parent_fields', render_options: { wrapper: 'inline' }     
+      = link_to_add_association 'Add Parent', f, :parents, :wrap_object => Proc.new {|parent| parent.build_user; parent }
+     
     = f.submit "Save", class: 'btn awesome-button add_students_button'
-

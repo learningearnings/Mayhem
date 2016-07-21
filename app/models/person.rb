@@ -11,7 +11,7 @@ class Person < ActiveRecord::Base
   ## Don't use for anything else
   ## Need to get rid of spree_users anyway...
   ##
-  has_one  :spree_user, :class_name => 'Spree::User'
+  #has_one  :spree_user, :class_name => 'Spree::User'
 
   has_many :auctions
   has_many :posts

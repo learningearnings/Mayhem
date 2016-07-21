@@ -3,9 +3,11 @@
     = f.text_field :first_name
   .field.parent-field
     = f.text_field :last_name
-  .field.parent-field
-    = f.text_field :username
-  .field.parent-field
-    = f.text_field :password
+  = f.simple_fields_for :user do |user_form|  
+    .field.parent-field
+      = user_form.text_field :username
+    .field.parent-field
+      = user_form.text_field :password
   .parent-field  
     = link_to_remove_association "Remove", f
+
