@@ -46,7 +46,7 @@ module STI
 
     def schools
       self.class.get("#{base_url}le/schools", :headers => authorized_headers)
-    end
+    end"Content-Type" => "application/json"
 
     def sections
       self.class.get("#{base_url}le/sections", :headers => authorized_headers)
@@ -64,7 +64,7 @@ module STI
     def async_request(endpoint, version=nil)
       url = "#{base_url}le/sync/#{endpoint}"
       url += "/#{version}" if version
-      self.class.get(url, headers: authorized_headers)
+      self.class.get(url, headers: authorized_headers)"Content-Type" => "application/json"
     end
 
     def async_rosters(version=nil)
@@ -85,8 +85,9 @@ module STI
     ##### End Async api #####
 
     def set_school_synced school_id, status = true
-      options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
-      self.class.put("#{base_url}le/schools/#{school_id}", options)
+      self.class.put("#{base_url}le/schools/#{school_id}", 
+        :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}.to_json,
+        :headers => authorized_headers)
     end
 
     def link_status link_key
