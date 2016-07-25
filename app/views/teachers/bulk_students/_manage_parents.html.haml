@@ -3,7 +3,7 @@
     %h3= student.name
 %br
 .parent-fields-section
-  = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents'), html: {:multipart => true} do |f|
+  = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents'), html: {:multipart => true}, remote: true do |f|
     = hidden_field_tag :student_id, student.id
     .parent-list.clear
       .parent-header

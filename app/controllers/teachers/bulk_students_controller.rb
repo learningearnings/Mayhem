@@ -47,18 +47,20 @@ module Teachers
 
     def manage_parents
       @student = Student.find(params[:student_id])
-      if params[:student].present?
-        @student.update_attributes(params[:student])
-        #@student = params[:student]
-        #@student.save
+      if @student.parents.present?
+        if params[:student]
+          @student.update_attributes(params[:student])
+        end  
       else
         @parents = @student.parents.build
         @user = @parents.build_user
-      end  
+      end    
       respond_to do |format|
         format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student}}
+        format.js 
       end
     end
+
 
     protected
     def load_edit

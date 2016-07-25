@@ -1,6 +1,6 @@
 class Parent < Person
 	belongs_to :student
-	accepts_nested_attributes_for :user, reject_if: :all_blank, allow_destroy: true
+	accepts_nested_attributes_for :user
   attr_accessible :user_attributes
   
   def school

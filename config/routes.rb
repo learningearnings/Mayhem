@@ -295,6 +295,7 @@ Leror::Application.routes.draw do
     resource :bulk_students do
       post "import_students" => "bulk_students#import_students", :as => :import_students
       match "manage_parents" => "bulk_students#manage_parents", :as => :manage_parents
+      match "edit_parents" => "bulk_students#edit_parents", :as => :edit_parents
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers

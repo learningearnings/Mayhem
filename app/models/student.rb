@@ -5,8 +5,8 @@ class Student < Person
 
   has_many :otu_codes
   has_many :parents
-  accepts_nested_attributes_for :parents, reject_if: :all_blank, allow_destroy: true
-
+  accepts_nested_attributes_for :parents
+  attr_accessible :parents_attributes
   has_one :locker, foreign_key: :person_id
 
   attr_accessor :username, :password, :password_confirmation
