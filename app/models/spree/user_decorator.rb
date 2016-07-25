@@ -12,6 +12,7 @@ Spree::User.class_eval do
   has_many :schools, :through => :person_school_links
 
   after_save :set_recovery_password, :set_student_confirmed_at
+  #after_create :set_parent_code, :set_parent_code , unless: Proc.new { self.person.type == "Parent" }
 
   before_validation :strip_whitespace
 
@@ -81,6 +82,13 @@ Spree::User.class_eval do
   def set_recovery_password
     if person && password
       person.update_attribute(:recovery_password, password)
+    end
+  end
+
+  def set_parent_code
+    SecureRandom.hex(16).tap do |random_token|
+      update_attributes parent_token: random_token
+      Rails.logger.info("Set new token for parent #{ id }")
     end
   end
   

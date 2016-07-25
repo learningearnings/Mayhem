@@ -5,9 +5,10 @@
     = f.text_field :last_name
   = f.simple_fields_for :user do |user_form|  
     .field.parent-field
-      = user_form.text_field :username
-    .field.parent-field
-      = user_form.text_field :password
+      = user_form.text_field :email
+    / .field.parent-field
+    /   - password = user_form.object.person.present? ? user_form.object.person.recovery_password : nil
+    /   = user_form.text_field :password, :value => password
   .parent-field  
     = link_to_remove_association "Remove", f
 

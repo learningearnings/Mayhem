@@ -62,7 +62,7 @@ class PersonSchoolLink < ActiveRecord::Base
   def connect_plutus_accounts
     return if self.person == nil
     return if school == nil
-    return if self.person.class == Person
+    return if self.person.class == Person || Parent
     main_account_id = self.person.main_account(school).id
     accounts = self.person.accounts(school).collect {|a| a.id}
     PersonAccountLink.where(:plutus_account_id => accounts).each do |pal|

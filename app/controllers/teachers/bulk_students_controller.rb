@@ -47,10 +47,9 @@ module Teachers
 
     def manage_parents
       @student = Student.find(params[:student_id])
-      if @student.parents.present?
-        if params[:student]
-          @student.update_attributes(params[:student])
-        end  
+      if params[:student]
+        @student.update_attributes(params[:student])
+        debugger
       else
         @parents = @student.parents.build
         @user = @parents.build_user
@@ -91,6 +90,13 @@ module Teachers
 
       @students = @students.for_grade(params[:grade]) if params[:grade].present?
       @students = @students.page(params[:page]).per(20)
+    end
+    def parent_school(student)
+      student.parents.each do |parent|
+        if !parent.school.present?
+          psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(parent.id, student.school.id)
+        end  
+      end
     end
   end
 end
