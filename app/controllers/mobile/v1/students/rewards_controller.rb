@@ -44,7 +44,7 @@ class Mobile::V1::Students::RewardsController < Mobile::V1::Students::BaseContro
           @order.empty!
           render json: { status: :unprocessible_entity, msg: message }        
         else
-          OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:teacher]).execute!
+          OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:reward][:teacher]).execute!
           message = "Purchase successful!"
           render json: { status: :ok, msg: message } and return
         end
