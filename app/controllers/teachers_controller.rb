@@ -14,7 +14,6 @@ class TeachersController < ApplicationController
       if @user.confirmed_at
         flash[:error] = 'Your account has already been activated.  '
       else
-        abort "incactivew"
         school = @user.person.school
         if school
           @user.confirmed_at = Time.now

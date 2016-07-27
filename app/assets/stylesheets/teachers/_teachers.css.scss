@@ -51,18 +51,32 @@
 .parent-header
 {
   float: left;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   margin-left: 10px;
-  width: 90px;
+  width: 70px;
 }
 .parent-field{
   float: left;
-  margin-left: 10px;
+  margin-left: 5px;
   input {
-   width: 90px;  
+   width: 70px;  
   }
 }
 .parent-fields-section{
   margin-top: 10px;
+}
+.parent-code{
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+.image-parent-code{
+  margin:13px;
+}
+.generated-code{
+  font-family: "sketch_rockwellregular";
+  font-size:13px;
+  margin: 13px;
+  font-weight:bold;
 }

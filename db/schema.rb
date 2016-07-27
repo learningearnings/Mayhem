@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160725125912) do
+ActiveRecord::Schema.define(:version => 20160727073042) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -525,6 +525,7 @@ ActiveRecord::Schema.define(:version => 20160725125912) do
     t.integer  "checking_account_id"
     t.integer  "savings_account_id"
     t.integer  "student_id"
+    t.string   "parent_token"
   end
 
   add_index "people", ["district_guid", "sti_id"], :name => "index_people_on_district_guid_and_sti_id"
@@ -1356,7 +1357,6 @@ ActiveRecord::Schema.define(:version => 20160725125912) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.string   "parent_token",           :limit => 40
   end
 
   add_index "spree_users", ["confirmation_token"], :name => "index_spree_users_on_confirmation_token", :unique => true

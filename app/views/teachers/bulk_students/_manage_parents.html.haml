@@ -1,6 +1,17 @@
 .credit-transaction-header
   .credit-student-title
     %h3= student.name
+  .clear  
+  .parent-code-section.right
+    .parent-code-text.left
+      .code-label.left
+        %h4= "Parent Code:"
+      .generated-code.right
+        = "#{student.parent_token}"
+    .image-parent-code.left
+      =# button_tag "Generate Parent Code", class: "noprint awesome-button", id: "parent-code-btn"
+      = link_to image_tag('refresh-16.png', :border => 0, :alt => '', :title => ''),"javascript:void(0);", id: "parent-code-btn"
+
 %br
 .parent-fields-section
   = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents'), html: {:multipart => true}, remote: true do |f|
@@ -12,9 +23,25 @@
         Last Name
       .parent-header
         Email
+      .parent-header
+        Username
+      .parent-header
+        Password
     = f.simple_fields_for :parents do |parent|
       = render 'parent_fields', f: parent  
     .links.clear
       = link_to_add_association 'Add Parent', f, :parents, :wrap_object => Proc.new {|parent| parent.build_user; parent }
      
     = f.submit "Save", class: 'btn awesome-button add_students_button'
+
+
+:coffeescript
+  $('#parent-code-btn').on 'click', (evt) ->
+    evt.preventDefault()
+    $.ajax '/teachers/bulk_students/manage_parents',
+      type: 'POST',
+      dataType: 'script',
+      data: 
+        student_id: $("#student_id").val()
+        action_type: "generate_code" 
+    return  

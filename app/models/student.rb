@@ -134,6 +134,10 @@ class Student < Person
     school.students.where(grade: self.grade) - [self]
   end
 
+  def set_parent_code
+    self.parent_token = generate_token
+  end
+
   private
   def ensure_accounts
     checking_account || Plutus::Asset.create(name: checking_account_name)
@@ -184,4 +188,10 @@ class Student < Person
   def set_status_to_active
     self.status = 'active' # Students should default to active
   end
+
+
+  def generate_token
+    token = SecureRandom.hex(3)      
+  end
+
 end
