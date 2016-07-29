@@ -32,11 +32,15 @@ json.products @products do | product |
 	if product.deleted?
   		next
     end
+    if product.classrooms.any? and (@classrooms & product.classrooms).empty?
+	    next
+    end
+    next unless product.person
     json.id product.id
     json.name product.name
     json.description product.description
     json.on_hand product.on_hand
-    json.price product.price
+    json.price ('%.2f' % product.price)
     json.thumb product.thumb
     json.reward_type ( product.classrooms.any? ? "Classroom" : "School" )
     json.teacher ( product.person ? product.person.id : "" )
