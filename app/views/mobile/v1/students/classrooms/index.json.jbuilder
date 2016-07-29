@@ -35,6 +35,7 @@ json.products @products do | product |
     if product.classrooms.any? and (@classrooms & product.classrooms).empty?
 	    next
     end
+    next unless product.person
     json.id product.id
     json.name product.name
     json.description product.description
