@@ -4,11 +4,11 @@ class BuckDistributor
 
   def initialize(schools, credit_manager=CreditManager.new, last_school_processed=1)
     @schools = schools if schools
-    @schools = get_schools unless schools
     @last_school_processed = last_school_processed
     @credit_manager = credit_manager
     @logfile = "/home/deployer/logs/buck_distributor_txns_#{Date.today.to_s}.log"
     log_txn "BuckDistributor --  started on #{Time.now}"
+    @schools = get_schools unless schools
   end
  
   
@@ -59,8 +59,16 @@ class BuckDistributor
   end
 
   def pay_school(school)
-    log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_for_school(school).to_s} "
-    @credit_manager.issue_credits_to_school school, amount_for_school(school)
+    amount_school = amount_for_school(school) * ((school.admin_credit_percent.to_f/100)+1)
+    log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_school.to_s} "
+    @credit_manager.issue_credits_to_school school, amount_school
+    teachers = school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
+    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers.count, amount: amount_school)
+    if school_credit.save
+      log_txn "BuckDistributor -- saving school credits for #{school.name} #{school.id} school credit id #{school_credit.id}"
+    else
+      log_txn "BuckDistributor -- unable to save school credits for #{school.name} #{school.id}"
+    end  
   end
 
   # 25 dollars per student per day
@@ -82,10 +90,26 @@ class BuckDistributor
       log_txn "  Pay teachers at #{school.name} #{school.id} -- school #{idx} of #{@schools.size} "
       teachers_to_pay(school, { hide_ignored: false }).each do |teacher|
         log_txn "    Pay teacher revoke remainder #{teacher.first_name} #{teacher.last_name} #{ teacher.id} $#{ teacher.main_account(school).balance.to_s }"
-        revoke_remainder(school, teacher, teacher.main_account(school).balance)
+        if revoke_remainder(school, teacher, teacher.main_account(school).balance)
+          teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: school.id, teacher_name: teacher.name, district_guid: school.district_guid, amount: teacher.main_account(school).balance, credit_source: "SYSTEM", reason: "Reset monthly balance")
+          if teacher_credit.save
+            log_txn "    Saving Teacher credit for #{teacher.first_name} #{teacher.last_name} #{ teacher.id} teacher credit id #{teacher_credit.id}"
+          else
+            log_txn "    Unable to save teacher credit for #{teacher.first_name} #{teacher.last_name} #{ teacher.id}"
+          end  
+        end  
+
       end
       teachers_to_pay(school, { hide_ignored: true }).each do |teacher|
-        pay_teacher(school, teacher)
+        amount_for_teacher = amount_for_teacher(school)
+        if pay_teacher(school, teacher,amount_for_teacher)
+          teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: school.id, teacher_name: teacher.name, district_guid: school.district_guid, amount: amount_for_teacher, credit_source: "SYSTEM", reason: "Issue Monthly Credits")
+          if teacher_credit.save
+            log_txn "    Saving Teacher credit for #{teacher.first_name} #{teacher.last_name} #{ teacher.id} teacher credit id #{teacher_credit.id}"
+          else
+            log_txn "    Unable to save teacher credit for #{teacher.first_name} #{teacher.last_name} #{ teacher.id}"
+          end  
+        end
       end
     end
     log_txn "BuckDistributor --  handle teachers end at #{Time.now} "
@@ -115,9 +139,9 @@ class BuckDistributor
   end
   memoize :active_students
 
-  def pay_teacher(school, teacher)
-    log_txn "    Pay teacher #{teacher.first_name} #{teacher.last_name} #{ teacher.id} $#{ amount_for_teacher(school).to_s }"
-    @credit_manager.monthly_credits_to_teacher school, teacher, amount_for_teacher(school)
+  def pay_teacher(school, teacher, amount_for_teacher)
+    log_txn "    Pay teacher #{teacher.first_name} #{teacher.last_name} #{ teacher.id} $#{ amount_for_teacher.to_s }"
+    @credit_manager.monthly_credits_to_teacher school, teacher, amount_for_teacher
   end
   
   def log_txn(msg)
@@ -127,6 +151,5 @@ class BuckDistributor
       }
     rescue
     end  
-    #@txnlog.write "#{Time.now.to_s}: #{msg}"
   end
 end

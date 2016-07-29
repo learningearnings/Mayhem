@@ -4,26 +4,44 @@ module Reports
     include DateFilterable
 
     attr_accessor :parameters
-    attr_reader :school, :data, :endpoints
+    attr_reader :school, :data, :endpoints, :classroom
 
     def initialize params
       @parameters = Reports::StudentEarning::Params.new(params)
       @school = params[:school]
       @data   = []
       @endpoints = date_endpoints(@parameters)
+      @classroom = params[:classroom_filter]
+      @logged_in_person = params[:logged_in_person]
     end
 
     def execute!
       # get recent line items from the school
       students.each do |student|
-        @data << generate_row(student)
+        @data << generate_row(student) if student_with_classroom_filter(student)
       end
     end
+
+    def student_with_classroom_filter(student)
+      student_classrooms_array = student.person_classroom_name
+      logged_in_user_classroom_array = @logged_in_person.classrooms_for_school(@school).map{|c| c.name}
+      intersection_array = student_classrooms_array & logged_in_user_classroom_array
+      if @classroom.present?
+        if intersection_array.size > 1 && @logged_in_person.classrooms_for_school(@school).map{|c| c.name if c.id == @classroom.to_i}.include?(student_classrooms_array.first)
+          return true
+        elsif intersection_array.size <= 1 && intersection_array.first == student_classrooms_array.first
+          return true
+        end
+      else
+        return true
+      end  
+    end
+  
 
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter, :sort_by]
+      [:date_filter,:classroom_filter, :sort_by]
     end
 
     # Override what the date filter filters on
@@ -33,6 +51,12 @@ module Reports
         [:with_credits_between, 10.years.ago,1.second.from_now]
       else
         [:with_credits_between, @endpoints[0],@endpoints[1]]
+      end
+    end
+
+    def classroom_filter
+      if @classroom.present?
+        [:person_with_classroom,  @classroom]
       end
     end
 
@@ -60,8 +84,7 @@ module Reports
 
     def students_earning_base
         # First, get teacher's classrooms for this school
-      student_earning =  @school.students.joins(:spree_user).joins(:person_school_links).joins(:otu_codes).
-      select("people.id,people.first_name,people.last_name,spree_users.username AS user_name, SUM(otu_codes.points) AS total_credits, SUM(case when otu_codes.active = false then otu_codes.points else null end) AS total_deposited, SUM(case when otu_codes.active = true then otu_codes.points else null end) AS total_undeposited").group("people.id,people.first_name, people.last_name, user_name")
+      student_earning =  @school.students.joins(:spree_user).joins(:person_school_links).joins(:otu_codes).select("people.id,people.first_name,people.last_name,spree_users.username AS user_name, SUM(otu_codes.points) AS total_credits, SUM(case when otu_codes.active = false then otu_codes.points else null end) AS total_deposited, SUM(case when otu_codes.active = true then otu_codes.points else null end) AS total_undeposited").group("people.id,people.first_name, people.last_name, user_name")
     end
 
 
@@ -70,6 +93,7 @@ module Reports
         id: student.id,
         student_name:   student.name,
         username:  student.user_name,
+        classroom: student.person_classroom.present? ? student.person_classroom.first.class_name : "No Classroom",
         total_credits: (number_with_precision(student.total_credits, precision: 2, delimiter: ',') || 0),
         total_deposited: (number_with_precision(student.total_deposited, precision: 2, delimiter: ',') || 0),
         total_undeposited: (number_with_precision(student.total_undeposited, precision: 2, delimiter: ',') || 0)
@@ -81,6 +105,7 @@ module Reports
         id: "Id",
         student_name:   "Student",
         username:  "Username",
+        classroom:  "Classroom",
         total_credits: "Total Credits",
         total_deposited: "Total Deposited",
         total_undeposited: "Total Undeposited"

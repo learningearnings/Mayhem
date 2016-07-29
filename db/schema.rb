@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160510122921) do
+ActiveRecord::Schema.define(:version => 20160706075452) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -383,6 +383,9 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.integer  "school_id"
   end
 
+  add_index "interactions", ["created_at"], :name => "index_interactions_on_created_at"
+  add_index "interactions", ["person_id"], :name => "index_interactions_on_person_id"
+
   create_table "jobs", :force => true do |t|
     t.string   "type",       :default => "started"
     t.string   "status"
@@ -573,6 +576,7 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.boolean  "homeroom"
   end
 
+  add_index "person_school_classroom_links", ["person_school_link_id", "classroom_id"], :name => "pscl_pscli_ci"
   add_index "person_school_classroom_links", ["status", "person_school_link_id", "classroom_id"], :name => "index_pscl_status_psl_classroomid"
 
   create_table "person_school_links", :force => true do |t|
@@ -615,6 +619,10 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.decimal "amount",         :precision => 20, :scale => 10
   end
 
+  add_index "plutus_amounts", ["account_id", "transaction_id"], :name => "index_plutus_amounts_on_account_id_and_transaction_id"
+  add_index "plutus_amounts", ["transaction_id", "account_id"], :name => "index_plutus_amounts_on_transaction_id_and_account_id"
+  add_index "plutus_amounts", ["type"], :name => "index_plutus_amounts_on_type"
+
   create_table "plutus_transactions", :force => true do |t|
     t.string   "description"
     t.integer  "commercial_document_id"
@@ -622,6 +630,8 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
   end
+
+  add_index "plutus_transactions", ["commercial_document_id", "commercial_document_type"], :name => "index_transactions_on_commercial_doc"
 
   create_table "poll_choices", :force => true do |t|
     t.string   "choice"
@@ -659,8 +669,9 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.integer  "to_id"
     t.integer  "reward_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "delivered_by_id"
   end
 
   create_table "reward_distributors", :force => true do |t|
@@ -683,6 +694,16 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.integer  "min_grade"
     t.integer  "max_grade"
     t.string   "image_uid"
+  end
+
+  create_table "school_credits", :force => true do |t|
+    t.integer  "school_id"
+    t.string   "school_name"
+    t.string   "district_guid"
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
+    t.integer  "total_teachers"
+    t.decimal  "amount",         :precision => 10, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "school_filter_links", :force => true do |t|
@@ -738,6 +759,7 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.integer  "monthly_no_infractions_amount"
     t.string   "credits_scope"
     t.string   "credits_type"
+    t.integer  "admin_credit_percent",              :default => 5
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1338,6 +1360,7 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
   add_index "spree_users", ["confirmation_token"], :name => "index_spree_users_on_confirmation_token", :unique => true
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
   add_index "spree_users", ["person_id"], :name => "su_person_id", :unique => true
+  add_index "spree_users", ["username"], :name => "su_username"
 
   create_table "spree_variants", :force => true do |t|
     t.string   "sku",                                         :default => "",    :null => false
@@ -1438,6 +1461,18 @@ ActiveRecord::Schema.define(:version => 20160510122921) do
     t.text     "schools_response"
     t.text     "sections_response"
     t.text     "staff_response"
+  end
+
+  create_table "teacher_credits", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "teacher_id"
+    t.string   "teacher_name"
+    t.string   "district_guid"
+    t.decimal  "amount",        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "credit_source"
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
+    t.text     "reason"
   end
 
   create_table "tour_events", :force => true do |t|

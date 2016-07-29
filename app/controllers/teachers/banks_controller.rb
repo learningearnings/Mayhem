@@ -20,7 +20,7 @@ module Teachers
       batch = BuckBatch.find(params[:id])
       respond_to do |format|
         format.pdf {
-          html = render_to_string(layout: false , action: "_batch.html.haml", locals: { batch: batch })
+          html = render_to_string("_batch",:formats => [:html], layout: false , locals: { batch: batch })
           Rails.logger.debug(html.inspect)
           kit = PDFKit.new(html)
           send_data(kit.to_pdf, :filename => "LE_Credits_#{batch.id}.pdf", :type => 'application/pdf') and return

@@ -8,7 +8,12 @@
     //%h3= report.range if report.range
     = simple_form_for report.parameters,  :url => student_earning_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
-        = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
+        .student-activity-date-filter
+          = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
+        .classroom-filter
+          = label_tag :classroom
+          = select_tag :classroom_filter, options_from_collection_for_select(classrooms, :id, :name, params[:classroom_filter]), :prompt => "All"
+
       .sorting
         = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       = f.submit 'Go!', class: "awesome-button"
@@ -26,6 +31,8 @@
             %th= check_box_tag 'select_all', "1", false, id: "example-select-all"
             %th Student
             %th Username
+            - if report.classroom.blank?
+              %th Classroom
             %th Total Credits
             %th Total Deposited
             %th Total Undeposited
@@ -35,6 +42,8 @@
                 %td= check_box_tag 'student_id[]', row[:id], false, class: "student-select"
                 %td= row[:student_name]
                 %td= row[:username]
+                - if report.classroom.blank?
+                  %td= row[:classroom]
                 %td= link_to(row[:total_credits], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "total_credit")
                 %td= link_to(row[:total_deposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "deposited")
                 %td= link_to(row[:total_undeposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "undeposited")

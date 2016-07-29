@@ -1,0 +1,15 @@
+- if defined? errors
+  %tr.error_row
+    %td{colspan: 99}
+      %strong= errors.full_messages.to_sentence
+%tr
+  %td.checkbox.selected= check_box_tag 'teachers[]', options[:id], options[:selected], class: 'selected row_checkbox'
+  %td.text.first= options[:first_name]
+  %td.text.last= options[:last_name]
+  %td.text.email= options[:email]
+  %td.text.username= options[:username]
+  %td.text.credit_balance= options[:credit_balance]
+  %td.text.grade= options[:grade]
+  %td.text.gender= options[:gender]
+
+

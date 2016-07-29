@@ -11,17 +11,14 @@ module Reports
       @school = params[:school]
       @endpoints = date_endpoints(@parameters);
       @classroom = params[:classroom_filter]
+      @logged_in_person = params[:logged_in_person]
       @data = []
     end
 
     def execute!
       begin
         people.each do |person|
-          if @classroom.present?
-            data << generate_row(person) if person.person_classroom.classroom_id == @classroom
-          else
-            data << generate_row(person)
-          end  
+          @data << generate_row(person) if person_with_classroom_filter(person)
         end
       rescue StandardError => e
         Rails.logger.fatal("Something went bad wrong")
@@ -36,6 +33,20 @@ module Reports
       @endpoints ? "From #{l @endpoints[0]} to #{l @endpoints[1]}" : nil
     end
 
+    def person_with_classroom_filter(person)
+      student_classrooms_array = person.person_classroom_name
+      logged_in_user_classroom_array = @logged_in_person.classrooms_for_school(@school).map{|c| c.name}
+      intersection_array = student_classrooms_array & logged_in_user_classroom_array
+      if @classroom.present?
+        if intersection_array.size > 1 && @logged_in_person.classrooms_for_school(@school).map{|c| c.name if c.id == @classroom.to_i}.include?(student_classrooms_array.first)
+          return true
+        elsif intersection_array.size <= 1 && intersection_array.first == student_classrooms_array.first
+          return true
+        end
+      else
+        return true
+      end  
+    end
 
     # Override what the date filter filters on
     def date_filter
@@ -96,7 +107,7 @@ module Reports
         Reports::Row[
           person: person.name,
           username: person.person_username,
-          classroom: person.person_classroom.present? ? person.person_classroom.class_name : "No Classroom",
+          classroom: person.person_classroom.present? ? person.person_classroom.first.class_name : "No Classroom",
           #classroom: "No Classroom",
           account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
