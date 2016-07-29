@@ -2,6 +2,8 @@ module Teachers
   class BulkTeachersController < Teachers::BaseController
     before_filter :redirect_for_synced_schools
     before_filter :load_edit, only: [:edit, :update]
+    before_filter :load_manage_credit, only: [:manage_credits]
+    before_filter :load_teachers, only: [:edit, :update, :manage_credits]
 
     def show
     end
@@ -22,6 +24,28 @@ module Teachers
       ensure
         redirect_to teachers_bulk_teachers_path
       end
+    end
+
+    def manage_credits
+      respond_to do |format|
+        format.html
+        format.json
+      end
+    end
+
+    def update_teacher_credits
+      update_action = params[:form_action_hidden_tag]
+      begin
+        teacher_credit_updater = TeacherCreditUpdater.new(current_school, params[:teachers],params[:credit_qty], update_action)
+        teacher_credit_updater.handle_credits_to_teacher()
+        flash[:notice] = "Added Teachers Credits Successfully." if update_action == "Add Credits"
+        flash[:notice] = "Removed Teachers Credits Successfully." if update_action == "Remove Credits"
+
+      rescue Exception => e
+        flash[:error] = "Add/Remove Teachers Credits failed. Error #{e.message}"
+      ensure 
+        redirect_to manage_credits_teachers_bulk_teachers_path
+      end  
     end
 
     def update
@@ -51,12 +75,20 @@ module Teachers
         "Edit Teachers Information",
         "Delete these teachers"
       ]
+    end
 
+    def load_manage_credit
+      @actions = [
+        "Add Credits",
+        "Remove Credits"
+      ]
+    end
+
+    def load_teachers
       @teachers = current_school.teachers
       if params[:gender].present?
         @teachers = @teachers.for_gender(params[:gender])
       end
-
       @teachers = @teachers.for_grade(params[:grade]) if params[:grade].present?
     end
 

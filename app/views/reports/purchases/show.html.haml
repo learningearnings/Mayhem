@@ -15,15 +15,12 @@
             .filter-rewards
               = f.input :reward_status_filter,:label => "Show Rewards", :collection => report_params.reward_status_filter_options
             .filter-teachers
-              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)
-            - if current_person.is_a?(SchoolAdmin)              
-              .filter-teachers
-                - if report_params.page.blank?
-                  = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
-                - else
-                  = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
-            -else
-              = hidden_field_tag  'reward_creator_filter', current_person.id
+              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)            
+            .filter-teachers
+              - if report_params.page.blank?
+                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
+              - else
+                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
               
             
           .sorting2
@@ -44,6 +41,7 @@
               %tr
                 - enable_mark_button = false
                 %th Reward Creator
+                %th Delivered By
                 %th Student (username)
                 %th Homeroom
                 %th Grade
@@ -60,6 +58,7 @@
               - report_data.each do |row|
                 %tr
                   %td= row["delivery_teacher"]
+                  %td= row["delivered_by"]
                   %td= row["student"]
                   %td= row["classroom"]                  
                   %td= row["grade"]
@@ -88,7 +87,7 @@
                       - enable_mark_button = true
                       = check_box_tag "reward_deliveries[]", row["reward_delivery_id"]
                   %td
-
+          = hidden_field_tag 'user', current_person.id
           = simple_fields_for report_params do |p|
             = p.input :date_filter, :as => :hidden
             = p.input :reward_status_filter, :as => :hidden
@@ -125,15 +124,15 @@
     //sort = sort ? sort : [[0,"desc",0], [1, "desc", 0]]
     $('#report_table').dataTable( {
       "aoColumnDefs": [
-        { 'bSortable': false, 'aTargets': [ 7, 8, 9 ] },
-        { 'orderData':[5], 'targets': [4] },
-        { 'targets': [5],'visible': false,'searchable': false},
-        { "asSorting": [ "asc"], "aTargets": [ 5 ] }
+        { 'bSortable': false, 'aTargets': [ 8, 9, 10 ] },
+        { 'orderData':[6], 'targets': [5] },
+        { 'targets': [6],'visible': false,'searchable': false},
+        { "asSorting": [ "asc"], "aTargets": [ 6 ] }
        ],
       "bPaginate": false,
       "bInfo": false,
       "bSort": true,
-      "order": [[ 4, "desc" ]]
+      "order": [[ 5, "desc" ]]
       //"aaSorting": {}
     } );
 

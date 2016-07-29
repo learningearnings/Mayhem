@@ -66,7 +66,7 @@ class Bank
         @credit_manager.issue_game_credits_to_student(otu_code.source_string, student, otu_code.points, otu_code)
       end
     else
-      @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+      @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points, otu_code)
     end
     if otu_code.messages.present?
       otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.')

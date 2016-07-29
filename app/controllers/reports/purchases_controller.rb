@@ -2,15 +2,7 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def new
-      if params[:reports_purchases_params].blank?
-        report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)
-      else
-        if current_person.is_a?(SchoolAdmin)
-          report = Reports::Purchases.new params.merge(school: current_school, status: "pending")
-        else
-          report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)
-        end         
-      end
+      report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)        
       delayed_report = DelayedReport.create(person_id: current_person.id)
       DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
       redirect_to purchases_report_show_path(delayed_report.id, params)

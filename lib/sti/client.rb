@@ -19,8 +19,7 @@ module STI
     end
 
     def session_token
-      @session_token ||= get_session_token
-    end
+      @session_token ||= get_session_token    end
 
     def perfect_attendance sti_school_id, start_date, end_date
       parameters = {startdate: start_date, enddate: end_date, ignoretardies: true}
@@ -86,8 +85,8 @@ module STI
     ##### End Async api #####
 
     def set_school_synced school_id, status = true
-      options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
-      self.class.put("#{base_url}le/schools/#{school_id}", options)
+      data = {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}
+      self.class.put("#{base_url}le/schools/#{school_id}", :body => data.to_json, :headers => authorized_headers )
     end
 
     def link_status link_key
@@ -101,7 +100,7 @@ module STI
 
     private
     def authorized_headers
-      {"Authorization" => "Session #{session_token}", "ApplicationKey" => "learningearnings WzvBW2c2suJex6V+Z22NpHZK7+mqCrUpvtw67lE7Js/8fo8E0QYngnQXBwjbs0yTkJ8hnATM/3LOKgZwB4cLsVccfXFOoTgImovQ/S9CP2s+V+AI/zmds3CZF9GD5+y6saxEKjduN/L+YYcKIYIs1UtQZfm/6lcFXPc1etZKGMk="}
+      {"Authorization" => "Session #{session_token}", "ApplicationKey" => "learningearnings WzvBW2c2suJex6V+Z22NpHZK7+mqCrUpvtw67lE7Js/8fo8E0QYngnQXBwjbs0yTkJ8hnATM/3LOKgZwB4cLsVccfXFOoTgImovQ/S9CP2s+V+AI/zmds3CZF9GD5+y6saxEKjduN/L+YYcKIYIs1UtQZfm/6lcFXPc1etZKGMk=","Content-Type" => "application/json", "charset" => "utf-8"}
     end
 
     def authentication_hash

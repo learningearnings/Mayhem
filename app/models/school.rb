@@ -19,7 +19,8 @@ class School < ActiveRecord::Base
   has_many :auction_school_links
   has_many :otu_code_categories
   has_one  :our_sponsor_post
-
+  has_many :school_credits
+  has_many :teacher_credits
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
 
@@ -29,17 +30,17 @@ class School < ActiveRecord::Base
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid,
                   :weekly_perfect_attendance_amount, :monthly_perfect_attendance_amount, :weekly_no_tardies_amount, :monthly_no_tardies_amount,
-                  :weekly_no_infractions_amount, :monthly_no_infractions_amount, :credits_scope, :credits_type
+                  :weekly_no_infractions_amount, :monthly_no_infractions_amount, :credits_scope, :credits_type, :admin_credit_percent
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
                   :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,:credits_scope, :credits_type,
-                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :as => :admin
+                  :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :admin_credit_percent, :as => :admin
 
   image_accessor :logo
 
   validates_presence_of :name, :city, :state_id, :zip, :address1
   validates_uniqueness_of :sti_uuid, allow_blank: true
-
+  validates_inclusion_of :admin_credit_percent, :in => 5..100, :message => " should be between 5 to 100"
   after_save :create_spree_store
   after_create :ensure_accounts
   after_create :set_default_subdomain
@@ -92,6 +93,11 @@ class School < ActiveRecord::Base
     addr << state.name
     addr << " #{zip}"
     addr.html_safe
+  end
+
+  def download_s3_logo
+    file = open(self.logo.remote_url)
+    file.path if file
   end
 
   def create_spree_store

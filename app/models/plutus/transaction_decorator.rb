@@ -1,7 +1,7 @@
 Plutus::Transaction.class_eval do
   belongs_to :spree_product,:foreign_key => :commercial_document_id,  :foreign_type => :commercial_document_type, :class_name => 'Spree::Product'
   belongs_to :otu_code,:foreign_key => :commercial_document_id,  :foreign_type => :commercial_document_type, :class_name => 'OtuCode'
-#  has_many :amounts, :class_name => "Plutus::Amount", :inverse_of => :transaction
+  #  has_many :amounts, :class_name => "Plutus::Amount", :inverse_of => :transaction
   has_one  :transaction_order
   has_one  :order, through: :transaction_order
 

@@ -78,7 +78,7 @@ module Leror
     config.assets.version = '1.0'
 
     # For generating pdfs from routes in the site
-    config.middleware.use PDFKit::Middleware, {}, :only => %r[^/pages/pdf]
+    config.middleware.use PDFKit::Middleware, {}, :only => %r[^/pages/pdf], :print_media_type => true
 
     config.after_initialize do
       Spree::Config.searcher_class = Spree::Search::Filter

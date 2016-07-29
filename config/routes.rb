@@ -56,12 +56,17 @@ Leror::Application.routes.draw do
       end
       namespace :students do
         post "rewards/purchase" => 'rewards#purchase'
+        post "/bank/transfer_credits" => 'bank#transfer_credits'
         post "/bank/redeem_bucks" => 'bank#redeem_bucks'        
         post 'auth'             => 'base#authenticate'
         get  'classrooms'       => 'classrooms#index'
         get  'classrooms/:id'   => 'classrooms#show'
         get  'student/:id'     => 'profile#show'
-        post 'student/:id'     => 'profile#update'        
+        post 'student/:id'     => 'profile#update' 
+        get  'profile/:id/update' => 'profile#update'
+        get  'auctions' => 'auctions#index'
+        get 'auctions/:id/bid'       => 'auctions#bid'
+        post 'auctions/:id/bid'       => 'auctions#bid'
       end
     end
   end
@@ -214,6 +219,10 @@ Leror::Application.routes.draw do
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
   match '/reports/student_activity' => 'reports/student_activity#show', as: 'student_activity_report'
   match '/reports/teacher_activity' => 'reports/teacher_activity#show', as: 'teacher_activity_report'
+  match '/reports/student_earning' => 'reports/student_earning#show', as: 'student_earning_report'
+  match '/reports/student_earning_transactions' => 'reports/student_earning#credit_transactions'
+  match '/reports/print_student_earning_transactions' => 'reports/student_earning#print_credit_transactions', as: 'print_student_earning_report'
+  match '/reports/bucks_distributed' => 'reports/buck_distributed#show', as: 'buck_distributed_report'
 
   match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
   get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'
@@ -288,6 +297,8 @@ Leror::Application.routes.draw do
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers
+      match  "manage_credits" => "bulk_teachers#manage_credits", :as => :manage_credits
+      post  "update_teacher_credits" => "bulk_teachers#update_teacher_credits", :as => :update_teacher_credits
     end
     resources :reports
     resource  :bank

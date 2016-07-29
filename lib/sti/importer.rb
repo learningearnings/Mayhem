@@ -164,7 +164,7 @@ module STI
       students_hash.each_pair do |sti_student_id, sti_classroom_ids|
         next if sti_student_id.nil?
         student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
-        
+        next if student.nil?
         # Deactivate all existing classroom links
         PersonSchoolClassroomLink.where(id: student.person_school_classroom_links.pluck(:id)).each do |pscl|
           #Only deactive INOW classroom links

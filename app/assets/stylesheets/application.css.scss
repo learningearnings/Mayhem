@@ -3,6 +3,7 @@
 /*= require jquery-ui-1.8.23.custom */
 /*= require jquery.tablesorter */
 
+
 @import 'variables';
 @import 'compass';
 @import 'compass_twitter_bootstrap_awesome';
@@ -36,6 +37,7 @@
 @import 'hopscotch';
 @import 'tooltips';
 @import 'campaigns.css.scss';
+@import 'student_earning.css.scss';
 
 @media screen {
   .onlyprint {
