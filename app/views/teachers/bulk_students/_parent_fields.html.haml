@@ -11,6 +11,6 @@
     .field.parent-field
       - password = user_form.object.person.present? ? user_form.object.person.recovery_password : nil
       = user_form.text_field :password, :value => password
-  .parent-field  
-    = link_to_remove_association "Remove", f
+    .field.parent-field  
+      = link_to_remove_association "Remove", f
 

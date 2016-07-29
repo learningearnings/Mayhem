@@ -1,38 +1,41 @@
-.credit-transaction-header
-  .credit-student-title
-    %h3= student.name
-  .clear  
-  .parent-code-section.right
-    .parent-code-text.left
-      .code-label.left
-        %h4= "Parent Code:"
-      .generated-code.right
-        = "#{student.parent_token}"
-    .image-parent-code.left
-      =# button_tag "Generate Parent Code", class: "noprint awesome-button", id: "parent-code-btn"
-      = link_to image_tag('refresh-16.png', :border => 0, :alt => '', :title => ''),"javascript:void(0);", id: "parent-code-btn"
+%h3= student.name
+#tabs
+  %ul
+    %li
+      %a{"href" => "#tab-1"} Parent Details
+    %li
+      %a{"href" => "#tab-2"} Parent Code
 
-%br
-.parent-fields-section
-  = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents'), html: {:multipart => true}, remote: true do |f|
-    = hidden_field_tag :student_id, student.id
-    .parent-list.clear
-      .parent-header
-        First Name
-      .parent-header
-        Last Name
-      .parent-header
-        Email
-      .parent-header
-        Username
-      .parent-header
-        Password
-    = f.simple_fields_for :parents do |parent|
-      = render 'parent_fields', f: parent  
-    .links.clear
-      = link_to_add_association 'Add Parent', f, :parents, :wrap_object => Proc.new {|parent| parent.build_user; parent }
-     
-    = f.submit "Save", class: 'btn awesome-button add_students_button'
+  #tab-1
+    .parent-fields-section
+      = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents'), html: {:multipart => true}, remote: true do |f|
+        = hidden_field_tag :student_id, student.id
+        = hidden_field_tag :active_tab, tab_active(active_tab)
+        .parent-list.clear
+          .parent-header
+            First Name
+          .parent-header
+            Last Name
+          .parent-header
+            Email
+          .parent-header
+            Username
+          .parent-header
+            Password
+        = f.simple_fields_for :parents do |parent|
+          = render 'parent_fields', f: parent  
+        .clear  
+          = link_to_add_association 'Add Parent', f, :parents, :wrap_object => Proc.new {|parent| parent.build_user; parent }
+         
+        = f.submit "Save", class: 'btn awesome-button add_students_button'
+
+  #tab-2
+    .parent-code-section
+      .generated-code
+        = "#{student.parent_token}"
+      .image-parent-code
+        = button_tag "Generate Parent Code", class: "noprint awesome-button", id: "parent-code-btn"
+        = link_to "Print", print_parent_code_teachers_bulk_students_path(student_id:student.id, :format => :pdf),  class: "noprint awesome-button print-pdf"
 
 
 :coffeescript
@@ -44,4 +47,10 @@
       data: 
         student_id: $("#student_id").val()
         action_type: "generate_code" 
-    return  
+    return
+
+:javascript
+  $(document).ready( function () {
+    $("#tabs").tabs({selected: $("#active_tab").val()});
+  });
+

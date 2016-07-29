@@ -1,1 +1,1 @@
-$('#parent-information').html('#{escape_javascript render(partial: 'manage_parents',  locals: { student: @student})}');
+$('#parent-information').html('#{escape_javascript render(partial: 'manage_parents',  locals: { student: @student, active_tab: @active_tab})}');

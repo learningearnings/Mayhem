@@ -46,11 +46,9 @@
             - @students.each do |student|
               = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id, name: student.name }
           %div.clear
-            = paginate @students, :params => { :action => '' }
 
 #parent-modal.modal.hide
-  .modal-header
-    #parent-information  
+  #parent-information  
          
 :javascript
   $(document).ready(function() 
@@ -76,6 +74,7 @@
   var el = $(e.currentTarget);
   // Set title for modal
   $('#parent-modal .title').html("Student: " + el.data("name"));
+
   $.ajax({
     url:'/teachers/bulk_students/manage_parents',
     type: 'POST',

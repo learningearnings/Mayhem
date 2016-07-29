@@ -47,6 +47,7 @@ module Teachers
 
     def manage_parents
       @student = Student.find(params[:student_id])
+      @active_tab = params[:action_type] == "generate_code" ? "tab-2" : "tab-1"
       if params[:student]
         @student.update_attributes(params[:student])
       elsif !@student.parents
@@ -56,11 +57,23 @@ module Teachers
       if params[:action_type]
         @student.set_parent_code
         @student.save
-      end  
+      end 
       respond_to do |format|
-        format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student}}
+        format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student, active_tab: @active_type }}
         format.js 
       end
+    end
+
+    def print_parent_code
+      student = Student.find(params[:student_id])
+      respond_to do |format|
+        format.pdf {
+          html = render_to_string("_print_parent_code",:formats => [:html], layout: false , locals: { student: student })
+          Rails.logger.debug(html.inspect)
+          kit = PDFKit.new(html)
+          send_data(kit.to_pdf, :filename => "LE_parent_code_#{student.id}.pdf", :type => 'application/pdf', :disposition => 'attachment')
+        }
+      end     
     end
 
     protected
