@@ -85,8 +85,8 @@ module STI
     ##### End Async api #####
 
     def set_school_synced school_id, status = true
-      data = {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}
-      self.class.put("#{base_url}le/schools/#{school_id}", :body => data.to_json, :headers => authorized_headers )
+      options = { :body => {"Address" => "null", "City" => "null", "Id" => school_id, "IsEnabled" => true, "IsSyncComplete" => status, "Name" => "null", "PostalCode" => "null", "State" => "null"}, :headers => authorized_headers }
+      self.class.put("#{base_url}le/schools/#{school_id}", options)
     end
 
     def link_status link_key
