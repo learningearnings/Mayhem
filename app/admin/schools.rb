@@ -39,6 +39,7 @@ ActiveAdmin.register School do
     end
     column :school_phone
     column :mascot_name
+    column :admin_credit_percent
     column :status
     column :timezone
     column "Distribution",:distribution_model

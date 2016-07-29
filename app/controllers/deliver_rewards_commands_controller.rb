@@ -7,8 +7,7 @@ class DeliverRewardsCommandsController < LoggedInController
       flash[:notice] = "Nothing marked for delivery"
       on_success and return
     end
-    command = DeliverRewardsCommand.new reward_deliveries: reward_deliveries
-    #command.on_success = method(:on_success)
+    command = DeliverRewardsCommand.new reward_deliveries: reward_deliveries, current_person_id: current_person.id
     command.execute!
     MixPanelTrackerWorker.perform_async(current_user.id, 'Mark Item as Delivered', mixpanel_options)
     redirect_to purchases_report_path(params)
@@ -20,6 +19,8 @@ class DeliverRewardsCommandsController < LoggedInController
 
   def undeliver
     reward_delivery = RewardDelivery.find(params[:reward_delivery_id])
+    reward_delivery.delivered_by = nil
+    reward_delivery.save
     render :json => {success: reward_delivery.undeliver}
   end
 end

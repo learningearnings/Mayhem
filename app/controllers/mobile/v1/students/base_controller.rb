@@ -16,4 +16,5 @@ class Mobile::V1::Students::BaseController < Mobile::V1::BaseController
       render json: { error: 'Invalid username, password or school selection' }, status: :unauthorized
     end
   end
+  
 end

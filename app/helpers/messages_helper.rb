@@ -12,4 +12,12 @@ module MessagesHelper
     klass += ' active' if current_page?(path)
     link_to inbox_label_with_message_count(string, messages), path, :class => klass
   end
+
+  def inbox_count(count)
+    if count > 0
+      "inbox_with_count"
+    else
+      "inbox"
+    end    
+  end
 end

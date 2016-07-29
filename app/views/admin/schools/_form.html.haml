@@ -25,6 +25,8 @@
         - batch = OpenStruct.new(otu_codes: [OpenStruct.new(code: "Test", points: 10, expires_at: Time.current, school: @school)])
         = render partial: "teachers/banks/batch", locals: { batch: batch }          
     = f.input :credits_scope, :as => :select, :collection => ['School-Wide','Classroom']    
+    = f.input :admin_credit_percent, :min => 5, :max => 100
+
 
     = f.actions
 

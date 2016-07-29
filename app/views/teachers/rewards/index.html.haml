@@ -12,8 +12,24 @@
           .filter-rewards
             = label_tag "Type"
             = select_tag :reward_type, options_for_select(["Classroom", "School"], params[:reward_type]), :prompt => "All"
+          .filter-search
+            = label_tag "Search"  
+            = search_field_tag :keywords, params[:keywords], :placeholder => "Name, Description"
+            - if params[:search] && params[:search][:ascend_by_master_price]
+              = hidden_field_tag "search[ascend_by_master_price]",params[:search][:ascend_by_master_price], id: 'sort_by_field'            
           .grade
             = submit_tag 'Go!', :class => "go-button-filter"
+      - else
+        .filter
+          %h4 Filter By      
+          .filter-search
+            = label_tag "Search"  
+            = search_field_tag :keywords, params[:keywords], :placeholder => "Name, Description"
+            - if params[:search] && params[:search][:ascend_by_master_price]
+              = hidden_field_tag "search[ascend_by_master_price]",params[:search][:ascend_by_master_price], id: 'sort_by_field'            
+          .grade
+            = submit_tag 'Go!', :class => "go-button-filter"
+
     %div       
       - if current_user.person.is_a?(SchoolAdmin)
         - if params[:all_rewards] == 'Y'
