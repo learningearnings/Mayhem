@@ -48,9 +48,7 @@
         student_id: $("#student_id").val()
         action_type: "generate_code" 
     return
-
-:javascript
-  $(document).ready( function () {
-    $("#tabs").tabs({selected: $("#active_tab").val()});
-  });
+  $(document).ready ->
+    $('#tabs').tabs selected: $('#active_tab').val()
+    return
 
