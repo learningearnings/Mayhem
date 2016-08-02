@@ -50,7 +50,7 @@ module Teachers
       @active_tab = params[:action_type] == "generate_code" ? "tab-2" : "tab-1"
       if params[:student]
         @student.update_attributes(params[:student])
-      elsif @student.parents.empty?
+      elsif @student.parents.empty? && params[:student].nil?
         @parents = @student.parents.build
         @user = @parents.build_user
       end 
