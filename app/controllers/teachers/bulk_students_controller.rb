@@ -104,8 +104,8 @@ module Teachers
       end
 
       @students = @students.for_grade(params[:grade]) if params[:grade].present?
-      @students = @students.page(params[:page]).per(20)
     end
+    
     def parent_school(student)
       student.parents.each do |parent|
         if !parent.school.present?
