@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160727073042) do
+ActiveRecord::Schema.define(:version => 20160803133247) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -503,6 +503,11 @@ ActiveRecord::Schema.define(:version => 20160727073042) do
     t.datetime "updated_at",     :null => false
   end
 
+  create_table "parents_students", :force => true do |t|
+    t.integer "parent_id"
+    t.integer "student_id"
+  end
+
   create_table "people", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -524,7 +529,6 @@ ActiveRecord::Schema.define(:version => 20160727073042) do
     t.string   "district_guid"
     t.integer  "checking_account_id"
     t.integer  "savings_account_id"
-    t.integer  "student_id"
     t.string   "parent_token"
   end
 

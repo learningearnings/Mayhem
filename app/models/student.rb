@@ -4,7 +4,7 @@ class Student < Person
   validates_presence_of :grade
 
   has_many :otu_codes
-  has_many :parents
+  has_and_belongs_to_many :parents
   accepts_nested_attributes_for :parents, :allow_destroy => true
   attr_accessible :parents_attributes
   has_one :locker, foreign_key: :person_id

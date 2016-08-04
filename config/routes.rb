@@ -68,6 +68,11 @@ Leror::Application.routes.draw do
         get 'auctions/:id/bid'       => 'auctions#bid'
         post 'auctions/:id/bid'       => 'auctions#bid'
       end
+      namespace :parents do
+        post 'auth'             => 'base#authenticate'
+        get 'auth'             => 'base#authenticate'        
+        post 'register'             => 'base#register'        
+      end
     end
   end
 

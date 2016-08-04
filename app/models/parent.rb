@@ -1,5 +1,5 @@
 class Parent < Person
-	belongs_to :student
+	has_and_belongs_to_many :student
   #after_create :ensure_accounts
 	accepts_nested_attributes_for :user, :allow_destroy => true
   attr_accessible :user_attributes

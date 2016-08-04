@@ -53,6 +53,25 @@ Spree::User.class_eval do
     end
     user
   end
+ 
+  def self.authenticate_parent(username,password,parent_code)
+    return if username.blank? || password.blank? || parent_code.blank?
+    # Regular teacher or student
+    # The select here is to fix a read only record issue.
+    # http://stackoverflow.com/questions/639171/what-is-causing-this-activerecordreadonlyrecord-error
+    user = Spree::User.find_by_username(username)
+    if user && user.valid_password?(password)
+      student = Student.find_by_parent_token(parent_code)
+      if student
+        unless user.parent.student_id == student.id
+          user.person.student_id = student.id
+        end 
+      else
+        return false
+      end  
+    end
+    user
+  end
 
   def self.admin_created?
     true
@@ -69,6 +88,13 @@ Spree::User.class_eval do
     payload = {
       user_id: self.id,
       school_id: school_id
+    }
+    AuthToken.encode(payload)
+  end
+
+  def generate_parent_auth_token
+    payload = {
+      user_id: self.id
     }
     AuthToken.encode(payload)
   end
