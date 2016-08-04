@@ -302,6 +302,7 @@ Leror::Application.routes.draw do
       match "manage_parents" => "bulk_students#manage_parents", :as => :manage_parents
       match "print_parent_code" => "bulk_students#print_parent_code", :as => :print_parent_code
       match "edit_parents" => "bulk_students#edit_parents", :as => :edit_parents
+      match "generate_code" => "bulk_students#generate_code", :as => :generate_code
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers

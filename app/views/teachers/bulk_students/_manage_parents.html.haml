@@ -3,8 +3,6 @@
   %ul
     %li
       %a{"href" => "#tab-1"} Parent Details
-    %li
-      %a{"href" => "#tab-2"} Parent Code
 
   #tab-1
     .parent-fields-section
@@ -17,11 +15,16 @@
           .parent-header
             Last Name
           .parent-header
+            Relationship
+          .parent-header
+            Phone
+          .parent-header
             Email
           .parent-header
             Username
           .parent-header
             Password
+
         = f.simple_fields_for :parents do |parent|
           = render 'parent_fields', f: parent  
         .clear  
@@ -29,25 +32,9 @@
          
         = f.submit "Save", class: 'btn awesome-button add_students_button'
 
-  #tab-2
-    .parent-code-section
-      .generated-code
-        = "#{student.parent_token}"
-      .image-parent-code
-        = button_tag "Generate Parent Code", class: "noprint awesome-button", id: "parent-code-btn"
-        = link_to "Print", print_parent_code_teachers_bulk_students_path(student_id:student.id, :format => :pdf),  class: "noprint awesome-button print-pdf"
 
 
 :coffeescript
-  $('#parent-code-btn').on 'click', (evt) ->
-    evt.preventDefault()
-    $.ajax '/teachers/bulk_students/manage_parents',
-      type: 'POST',
-      dataType: 'script',
-      data: 
-        student_id: $("#student_id").val()
-        action_type: "generate_code" 
-    return
   $(document).ready ->
     $('#tabs').tabs selected: $('#active_tab').val()
     return

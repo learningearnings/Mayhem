@@ -3,6 +3,10 @@
     = f.text_field :first_name
   .field.parent-field
     = f.text_field :last_name
+  .field.parent-field
+    = f.text_field :relationship
+  .field.parent-field
+    = f.text_field :phone
   = f.simple_fields_for :user do |user_form|  
     .field.parent-field
       = user_form.text_field :email

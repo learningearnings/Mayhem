@@ -47,13 +47,14 @@
 }
 #parent-modal{
   overflow-y: auto;
+  width: 700px;
 }
 .parent-header
 {
   float: left;
   font-size: 12px;
   font-weight: bold;
-  margin-left: 10px;
+  margin-left: 5px;
   width: 70px;
 }
 .parent-field{
@@ -118,4 +119,17 @@ ui-state-default ui-corner-top ui-tabs-selected ui-state-active {
   font-size: 1.3em !important;
   color: #fff !important;
   padding: 0.7em !important;
+}
+.parent-count-link a{
+  font-weight: bold;
+}
+.parent-count-link a:hover, a:focus {
+  border: none;
+  outline: none;
+}
+.student-name{
+  float:left;
+}
+.parent-icon{
+  float: right;
 }

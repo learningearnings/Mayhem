@@ -64,6 +64,16 @@ module Teachers
       end
     end
 
+    def generate_code
+      @student = Student.find(params[:student_id])
+      @student.set_parent_code
+      @student.save
+      respond_to do |format|
+        format.html { render partial: 'generate_code', layout: false,  locals: { student: @student }}
+        format.js 
+      end
+    end
+
     def print_parent_code
       student = Student.find(params[:student_id])
       respond_to do |format|

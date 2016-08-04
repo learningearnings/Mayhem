@@ -138,3 +138,12 @@ $('.edit_control').attr('disabled', 'disabled')
 updateNumberOfStudents()
 
 
+$('.student-parent-code').on 'click', (e) ->
+  el = $(e.currentTarget)
+  $.ajax '/teachers/bulk_students/generate_code',
+    type: 'POST',
+    dataType: 'script',
+    data: 
+      student_id: el.data('id')
+      action_type: "generate_code" 
+  return
