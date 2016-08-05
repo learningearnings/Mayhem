@@ -3,7 +3,7 @@ class ParentSignupForm
   include ActiveModel::Conversion
   include ActiveModel::Validations
 
-  attr_accessor :first_name, :last_name, :dob, :gender
+  attr_accessor :first_name, :last_name, :dob, :gender, :relationship, :phone
   attr_accessor :email, :username, :password, :password_confirmation
   attr_accessor :name, :city, :state_id, :address1, :zip
   attr_accessor :sti_id  
@@ -14,6 +14,8 @@ class ParentSignupForm
   validates :username,              presence: true
   validates :password,              presence: true
   validates :password_confirmation, presence: true
+  validates :relationship,          presence: true
+  validates :phone,                 presence: true
   #validates :city,                  presence: true
   #validates :state_id,              presence: true
   #validates :address1,              presence: true
@@ -88,7 +90,7 @@ class ParentSignupForm
   private
 
   def person_attributes
-    { first_name: first_name, last_name: last_name, email: email, username: username, dob: dob, gender: gender}
+    { first_name: first_name, last_name: last_name, email: email, username: username, dob: dob, gender: gender, relationship: relationship, phone: phone}
   end
 
   def user_attributes

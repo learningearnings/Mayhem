@@ -17,11 +17,11 @@ class Mobile::V1::Parents::BaseController < Mobile::V1::BaseController
     #   render json: { error: 'Please select your school' }, status: :unauthorized and return
     # end    
       
-    user = Spree::User.joins(:person).where('people.type IN (?)', ['Parent']).authenticate_parent(params[:username], params[:password], params[:parent_code])
+    user = Spree::User.joins(:person).where('people.type IN (?)', ['Parent']).authenticate_parent(params[:username], params[:password])
     if user
-      render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
+      render json: { auth_token: user.generate_parent_auth_token, user: user }
     else     
-      render json: { error: 'Invalid username, password or Student Code' }, status: :unauthorized
+      render json: { error: 'Invalid username or password ' }, status: :unauthorized
     end
   end
   
@@ -40,6 +40,12 @@ class Mobile::V1::Parents::BaseController < Mobile::V1::BaseController
     end   
     if params[:user][:email].blank?
       render json: { error: 'Please enter an email address' }, status: :unauthorized and return
+    end 
+    if params[:user][:relationship].blank?
+      render json: { error: 'Please enter a relationship' }, status: :unauthorized and return
+    end 
+    if params[:user][:phone].blank?
+      render json: { error: 'Please enter a Phone Number' }, status: :unauthorized and return
     end 
         
     # See if username is unique

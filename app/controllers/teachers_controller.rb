@@ -13,6 +13,10 @@ class TeachersController < ApplicationController
     if @user
       if @user.confirmed_at
         flash[:error] = 'Your account has already been activated.  '
+      elsif @user.person.type == "Parent"  
+        @user.confirmed_at = Time.now
+        @user.save
+        flash[:notice] = 'Your account has been activated.  You many now log in to Learning Earnings!'   
       else
         school = @user.person.school
         if school

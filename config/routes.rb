@@ -72,6 +72,8 @@ Leror::Application.routes.draw do
         post 'auth'             => 'base#authenticate'
         get 'auth'             => 'base#authenticate'        
         post 'register'             => 'base#register'        
+        post '/student_codes/add'             => 'student_codes#create'        
+        put 'profile/:id/update'             => 'profile#update'        
       end
     end
   end
