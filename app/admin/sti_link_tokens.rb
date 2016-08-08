@@ -1,6 +1,6 @@
-ActiveAdmin.register StiLinkToken do
-  menu :parent => "STI", :priority => 1
-  index do
+ActiveAdmin.register StiLinkToken, as: "Chalkable Link Token" do
+  menu :parent => "Chalkable", :priority => 1
+  index :title => 'Chalkable Link Tokens' do
     column :created_at
     column :updated_at
     column :district_guid
@@ -8,5 +8,5 @@ ActiveAdmin.register StiLinkToken do
     column :link_key
     column :username
     column :status
-  end
+  end  
 end
