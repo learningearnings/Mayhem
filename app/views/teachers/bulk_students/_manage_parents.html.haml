@@ -10,7 +10,7 @@
     .parent-fields-section
       = simple_form_for @student, url: url_for(:controller => 'teachers/bulk_students', :action => 'manage_parents'), html: {:multipart => true}, remote: true do |f|
         = hidden_field_tag :student_id, student.id
-        = hidden_field_tag :active_tab, tab_active(active_tab)
+        =# hidden_field_tag :active_tab, tab_active(active_tab)
         .parent-list.clear
           .parent-header
             First Name
@@ -20,21 +20,27 @@
             Relationship
           .parent-header
             Phone
-          .parent-header
+          .parent-email-header
             Email
           .parent-header
             Username
-          .parent-header
-            Password
 
-        = f.simple_fields_for :parents do |parent|
-          = render 'parent_fields', f: parent  
-        .clear  
-          = link_to_add_association 'Add Parent', f, :parents, :wrap_object => Proc.new {|parent| parent.build_user; parent }
-         
-        = f.submit "Save", class: 'btn awesome-button add_students_button'
-
-
+        - @student.parents.each do |parent|
+          .nested-fields.clear
+            .field.parent-field
+              = parent.first_name
+            .field.parent-field
+              = parent.last_name
+            .field.parent-field
+              = parent.relationship
+            .field.parent-field
+              = parent.phone
+            .field.parent-email-field
+              = parent.user.email
+            .field.parent-field
+              = parent.user.username
+            .field.parent-field
+              = link_to "Remove", delete_student_parent_teachers_bulk_students_path(student_id: @student.id, parent_id: parent.id) , :remote => true, :method => :delete,  data: { confirm: 'Are you sure?' }
 
 :coffeescript
   $(document).ready ->

@@ -1,4 +1,8 @@
-class Mobile::V1::Parents::BaseController < Mobile::V1::BaseController
+require 'auth_token.rb'
+
+class Mobile::V1::Parents::BaseController < ActionController::Base
+  before_filter :authenticate_request,  :except => [:authenticate, :register] 
+
   def authenticate
     if params[:username].blank?
       render json: { error: 'Please enter a username' }, status: :unauthorized and return
@@ -69,7 +73,48 @@ class Mobile::V1::Parents::BaseController < Mobile::V1::BaseController
     
     
   end
-  
+
+  def current_user
+    if decoded_auth_token
+      @current_user ||= Spree::User.find(decoded_auth_token[:user_id])
+    end
+  end
+
+  def current_person
+    @current_person ||= current_user.person
+  end
+
+  def authenticate_request
+    #Rails.logger.warn("AKT: Authenticate Request")
+    if auth_token_expired?
+      render json: { error: "Authentication Time Out Error" }
+      #Rails.logger.warn("AKT: auth_token_expired")
+      #fail AuthenticationTimeoutError
+    elsif !current_user
+      #Rails.logger.warn("AKT: !current_user")
+      render json: { error: "Not authenticated" }
+    end
+  end
+
+  def decoded_auth_token
+    @decoded_auth_token ||= AuthToken.decode(http_auth_header_content)
+  end
+
+  def auth_token_expired?
+    decoded_auth_token && decoded_auth_token.expired?
+  end
+
+  def http_auth_header_content
+    return @http_auth_header_content if defined? @http_auth_header_content
+    @http_auth_header_content = begin
+      if request.headers['Authorization'].present?
+        request.headers['Authorization'].split(' ').last
+      else
+        nil
+      end
+    end
+  end
+
   def setup_fake_data
     params[:user][:city] = "Fake City" if params[:user][:city].blank?
     params[:user][:state_id] = 1 if params[:user][:state_id].blank?
@@ -78,4 +123,10 @@ class Mobile::V1::Parents::BaseController < Mobile::V1::BaseController
     params[:user][:address1] = "Fake Address"
     params[:user][:zip] = 12345
   end
+end
+
+class NotAuthenticatedError < StandardError
+end
+
+class AuthenticationTimeoutError < StandardError
 end

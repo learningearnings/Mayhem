@@ -73,7 +73,8 @@ Leror::Application.routes.draw do
         get 'auth'             => 'base#authenticate'        
         post 'register'             => 'base#register'        
         post '/student_codes/add'             => 'student_codes#create'        
-        put 'profile/:id/update'             => 'profile#update'        
+        get  'parent/:id'     => 'profile#show'
+        post 'parent/:id'     => 'profile#update' 
       end
     end
   end
@@ -305,6 +306,7 @@ Leror::Application.routes.draw do
       match "print_parent_code" => "bulk_students#print_parent_code", :as => :print_parent_code
       match "edit_parents" => "bulk_students#edit_parents", :as => :edit_parents
       match "generate_code" => "bulk_students#generate_code", :as => :generate_code
+      delete "delete_student_parent" => "bulk_students#delete_student_parent", :as => :delete_student_parent
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers

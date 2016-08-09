@@ -1,0 +1,17 @@
+- student_parents.each do |parent|
+  .nested-fields.clear
+    .field.parent-field
+      = parent.first_name
+    .field.parent-field
+      = parent.last_name
+    .field.parent-field
+      = parent.relationship
+    .field.parent-field
+      = parent.phone
+    .field.parent-field
+      = parent.user.email
+    .field.parent-field
+      = parent.user.username
+    .field.parent-field
+      = parent.user.password
+

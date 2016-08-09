@@ -47,7 +47,7 @@
 }
 #parent-modal{
   overflow-y: auto;
-  width: 700px;
+  width: 750px;
   left: 40%
 }
 .parent-header
@@ -56,15 +56,28 @@
   font-size: 12px;
   font-weight: bold;
   margin-left: 5px;
-  width: 70px;
+  width: 75px !important;
+}
+.parent-email-header{
+  float: left;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 5px;
+  width: 125px;
 }
 .parent-field{
   float: left;
   margin-left: 5px;
-  input {
-   width: 70px;  
-  }
+  width: 75px;
+  text-align: left;
 }
+.parent-email-field{
+  float: left;
+  margin-left: 5px;
+  width: 130px;
+  text-align: left;
+}
+
 .parent-fields-section{
   margin-top: 10px;
 }

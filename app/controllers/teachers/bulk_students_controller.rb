@@ -47,7 +47,7 @@ module Teachers
 
     def manage_parents
       @student = Student.find(params[:student_id])
-      @active_tab = params[:action_type] == "generate_code" ? "tab-2" : "tab-1"
+      #@active_tab = params[:action_type] == "generate_code" ? "tab-2" : "tab-1"
       if params[:student]
         @student.update_attributes(params[:student])
       elsif @student.parents.empty? && params[:student].nil?
@@ -59,7 +59,7 @@ module Teachers
         @student.save
       end 
       respond_to do |format|
-        format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student, active_tab: @active_type }}
+        format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student }}
         format.js 
       end
     end
@@ -84,6 +84,15 @@ module Teachers
           send_data(kit.to_pdf, :filename => "LE_parent_code_#{student.id}.pdf", :type => 'application/pdf', :disposition => 'attachment')
         }
       end     
+    end
+
+    def delete_student_parent
+      @student = Student.find(params[:student_id])
+      parent = Parent.find(params[:parent_id])
+      @student.parents.delete(parent)
+      respond_to do |format|
+        format.js 
+      end
     end
 
     protected
