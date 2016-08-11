@@ -3,6 +3,7 @@ class Parent < Person
   #after_create :ensure_accounts
 	accepts_nested_attributes_for :user, :allow_destroy => true
   attr_accessible :user_attributes, :relationship, :phone
+  attr_accessible :user_attributes, :relationship, :phone, :as => :admin
   before_create :set_status_to_active
 
   def school
