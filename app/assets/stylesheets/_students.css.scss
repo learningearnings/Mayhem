@@ -20,11 +20,13 @@
   td.text, th.text, td.text input {
     width: 100px;
     &.student-code {
-      width: 110px;
+      width: 120px;
     } 
     &.student-contact{
-      width: 110px;
-    }
+      width: 95px;
+    }  
+
+
 
   }
   td.select, th.select, td.select select {
