@@ -42,7 +42,6 @@
               %th.text.password Password
               %th.text.student-code Code
               %th.text.student-contact Contacts
-              %th
           %tbody.students_body
             - @students.each do |student|
               = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id, name: student.name, code: student.parent_token, parents_count: student.parents.count }

@@ -32,12 +32,13 @@
   %td.text.password
     .edit= text_field_tag 'students[]user[password]', options[:password], class: 'password edit_control'
     .display= options[:password]
-  %td.text.code
-    %div{:id =>"regenerated-code-#{options[:id]}",:style=>"float:left; width:40px;"}
+  %td.text.student-code
+    %div{:id =>"regenerated-code-#{options[:id]}",:style=>"float:left; width:62px;"}
       = options[:code]
     %div.left
-    = link_to image_tag("regenerated_code.jpg", :border => 0, :title => 'Reset Student Access Code'), "#regenerated-code", class: 'student-parent-code','data-toggle' => 'modal', 'data-id' => options[:id], 'data-name' => options[:name]
-  %td.parent-count-link
+      = link_to image_tag("regenerated_code.png", :width => 12, :height => 12, :border => 0, :title => 'Reset Student Access Code'), "#regenerated-code", class: 'student-parent-code','data-toggle' => 'modal', 'data-id' => options[:id], 'data-name' => options[:name]
+  %td.parent-count-link.student-contact
     = link_to options[:parents_count], "#parent-modal", class: 'information-action','data-toggle' => 'modal', 'data-id' => options[:id], 'data-name' => options[:name]
 
+ 
 

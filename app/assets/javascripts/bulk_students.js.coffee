@@ -1,3 +1,7 @@
+$(document).ready ->
+  $('#students').tablesorter({ headers:{0: { sorter: false} }})
+  return
+
 checkUpdateStatus = (delayed_report_id) ->
   $.get '/delayed_reports/' + delayed_report_id + '/status.json', (delayed_report) ->
     if delayed_report.status == 'complete'
@@ -11,9 +15,8 @@ loadResults = ->
   location.reload()
   return
 
-$(document).ready ->
-  $('#students').tablesorter()
-  return
+
+
 $('.information-action').click (e) ->
   el = $(e.currentTarget)
   # Set title for modal
@@ -27,7 +30,7 @@ $('.information-action').click (e) ->
       return
   return
 
-$('#select_all').on 'click', ->
+$('#select_all').change ->
   if $('#select_all').attr('checked')
     $('.edit_control').removeAttr('disabled')
     $('input.selected').attr('checked', true)
