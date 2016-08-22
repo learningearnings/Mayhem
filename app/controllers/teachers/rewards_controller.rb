@@ -79,7 +79,7 @@ module Teachers
 
     # POST /teachers/rewards
     # POST /teachers/rewards.json
-    def create
+    def create  
       unless params[:reward_scope] == 'specific_classrooms' && !params[:teachers_reward][:classrooms].present?
         @teachers_reward = Teachers::Reward.new(params[:teachers_reward])
         @teachers_reward.teacher = current_person
@@ -97,29 +97,35 @@ module Teachers
       else
         @teachers_reward = Teachers::Reward.new
         flash[:error] = 'You did not select a classroom for the reward. Hit the back button and try again.'
-        render :new
+        redirect_to :back
       end
     end
 
     # PUT /teachers/rewards/1
     # PUT /teachers/rewards/1.json
     def update
-      @teachers_reward = Teachers::Reward.new
-      @teachers_reward.teacher = current_person
-      @teachers_reward.school = current_school
-      @teachers_reward.spree_product_id = params[:id]
-      if params[:take_ownership]
-        @teachers_reward.product.person = current_person
-      end
-      respond_to do |format|
-        if @teachers_reward.update_attributes(params[:teachers_reward])
-          format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully updated." }
-          format.json { head :no_content }
-        else
-          format.html { render action: "edit" }
-          format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
+      unless params[:reward_scope] == 'specific_classrooms' && !params[:teachers_reward][:classrooms].present?
+        @teachers_reward = Teachers::Reward.new
+        @teachers_reward.teacher = current_person
+        @teachers_reward.school = current_school
+        @teachers_reward.spree_product_id = params[:id]
+        if params[:take_ownership]
+          @teachers_reward.product.person = current_person
         end
-      end
+        respond_to do |format|
+          if @teachers_reward.update_attributes(params[:teachers_reward])
+            format.html { redirect_to teachers_rewards_path, notice: "Your Reward \"#{@teachers_reward.name}\"was successfully updated." }
+            format.json { head :no_content }
+          else
+            format.html { render action: "edit" }
+            format.json { render json: @teachers_reward.errors, status: :unprocessable_entity }
+          end
+        end
+      else
+        @teachers_reward = Teachers::Reward.new
+        flash[:error] = 'You did not select a classroom for the reward. Hit the back button and try again.'
+        redirect_to :back
+      end  
     end
 
     # DELETE /teachers/rewards/1
