@@ -34,7 +34,7 @@ class OtuCode < ActiveRecord::Base
     where("student_id = ? AND updated_at >= ? AND updated_at <= ?",student_id, start_date, end_date)
   }
   def expired?
-    self.expires_at < Time.now
+    self.expires_at <= Time.now
   end
 
   def is_ebuck?
