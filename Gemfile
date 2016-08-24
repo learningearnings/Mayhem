@@ -54,7 +54,6 @@ gem 'googlecharts'
 gem 'mixpanel-ruby'
 
 gem 'bootstrap_forms'
-gem "cocoon"
 
 # Add native postgres data type suport to activerecord.  Rails 4
 # forward-compatible afaik, pretty sure the author's patch made it to rails 4

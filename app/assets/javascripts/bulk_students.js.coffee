@@ -1,5 +1,5 @@
 $(document).ready ->
-  $('#students').tablesorter({ headers:{0: { sorter: false} }})
+  $('#students_header_sort').tablesorter({ headers:{0: { sorter: false} }})
   return
 
 checkUpdateStatus = (delayed_report_id) ->
@@ -13,21 +13,6 @@ checkUpdateStatus = (delayed_report_id) ->
 
 loadResults = ->
   location.reload()
-  return
-
-
-
-$('.information-action').click (e) ->
-  el = $(e.currentTarget)
-  # Set title for modal
-  $('#parent-modal .title').html 'Student: ' + el.data('name')
-  $.ajax
-    url: '/teachers/bulk_students/manage_parents'
-    type: 'POST'
-    data: student_id: el.data('id')
-    success: (data) ->
-      $('#parent-information').html data
-      return
   return
 
 $('#select_all').change ->
@@ -139,14 +124,3 @@ handleInterfaceState()
 
 $('.edit_control').attr('disabled', 'disabled')
 updateNumberOfStudents()
-
-
-$('.student-parent-code').on 'click', (e) ->
-  el = $(e.currentTarget)
-  $.ajax '/teachers/bulk_students/generate_code',
-    type: 'POST',
-    dataType: 'script',
-    data: 
-      student_id: el.data('id')
-      action_type: "generate_code" 
-  return

@@ -54,16 +54,6 @@ Spree::User.class_eval do
     user
   end
  
-  def self.authenticate_parent(username,password)
-    return if username.blank? || password.blank?
-    user = Spree::User.find_by_username(username)
-    if user && user.valid_password?(password)
-      user
-    else
-      return false
-    end  
-  end
-
   def self.admin_created?
     true
   end
@@ -101,14 +91,7 @@ Spree::User.class_eval do
       person.update_attribute(:recovery_password, password)
     end
   end
-
-  def set_parent_code
-    SecureRandom.hex(16).tap do |random_token|
-      update_attributes parent_token: random_token
-      Rails.logger.info("Set new token for parent #{ id }")
-    end
-  end
-  
+ 
   def set_student_confirmed_at
     if person and person.type == "Student" and self.confirmed_at.nil?
       self.confirmed_at = Time.now

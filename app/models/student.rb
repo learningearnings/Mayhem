@@ -4,9 +4,6 @@ class Student < Person
   validates_presence_of :grade
 
   has_many :otu_codes
-  has_and_belongs_to_many :parents
-  accepts_nested_attributes_for :parents, :allow_destroy => true
-  attr_accessible :parents_attributes
   has_one :locker, foreign_key: :person_id
 
   attr_accessor :username, :password, :password_confirmation
@@ -132,10 +129,6 @@ class Student < Person
 
   def grademates
     school.students.where(grade: self.grade) - [self]
-  end
-
-  def set_parent_code
-    self.parent_token = generate_token
   end
 
   private

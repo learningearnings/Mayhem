@@ -30,7 +30,7 @@
 
       = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
         = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
-        %table#students.tablesorter
+        %table#students_header_sort.tablesorter
           %thead
             %tr
               %th= check_box_tag 'select_all'
@@ -40,14 +40,9 @@
               %th.select.grade Grade
               %th.select.gender Gender
               %th.text.password Password
-              %th.text.student-code Code
-              %th.text.student-contact Contacts
           %tbody.students_body
             - @students.each do |student|
-              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id, name: student.name, code: student.parent_token, parents_count: student.parents.count }
+              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id, name: student.name}
           %div.clear
-
-#parent-modal.modal.hide
-  #parent-information 
-         
+        
 = javascript_include_tag "bulk_students"

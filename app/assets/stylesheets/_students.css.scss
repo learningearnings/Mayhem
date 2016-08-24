@@ -17,20 +17,14 @@
   th {
     text-align: left;
   }
-  td.text, th.text, td.text input {
-    width: 100px;
-    &.student-code {
-      width: 120px;
-    } 
-    &.student-contact{
-      width: 95px;
-    }  
-
-
-
+  td.text, th.text{
+    width: 160px;
+  }
+  td.text input {
+    width: 140px;
   }
   td.select, th.select, td.select select {
-    width: 110px;
+    width: 90px;
     &.grade {
       width: 115px;
     }
@@ -44,7 +38,7 @@
       width: 90px;
     }
     .classroom, &.classroom select {
-      width: 200px;
+      width: 100px;
     }
   }
   .controls {

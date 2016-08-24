@@ -45,56 +45,6 @@ module Teachers
       end
     end
 
-    def manage_parents
-      @student = Student.find(params[:student_id])
-      #@active_tab = params[:action_type] == "generate_code" ? "tab-2" : "tab-1"
-      if params[:student]
-        @student.update_attributes(params[:student])
-      elsif @student.parents.empty? && params[:student].nil?
-        @parents = @student.parents.build
-        @user = @parents.build_user
-      end 
-      if params[:action_type]
-        @student.set_parent_code
-        @student.save
-      end 
-      respond_to do |format|
-        format.html { render partial: 'manage_parents', layout: false,  locals: { student: @student }}
-        format.js 
-      end
-    end
-
-    def generate_code
-      @student = Student.find(params[:student_id])
-      @student.set_parent_code
-      @student.save
-      respond_to do |format|
-        format.html { render partial: 'generate_code', layout: false,  locals: { student: @student }}
-        format.js 
-      end
-    end
-
-    def print_parent_code
-      student = Student.find(params[:student_id])
-      respond_to do |format|
-        format.pdf {
-          html = render_to_string("_print_parent_code",:formats => [:html], layout: false , locals: { student: student })
-          Rails.logger.debug(html.inspect)
-          kit = PDFKit.new(html)
-          send_data(kit.to_pdf, :filename => "LE_parent_code_#{student.id}.pdf", :type => 'application/pdf', :disposition => 'attachment')
-        }
-      end     
-    end
-
-    def delete_student_parent
-      @student = Student.find(params[:student_id])
-      parent = Parent.find(params[:parent_id])
-      @student.parents.delete(parent)
-      respond_to do |format|
-        format.js 
-      end
-    end
-
     protected
     def load_edit
       @actions = [
@@ -123,14 +73,6 @@ module Teachers
       end
 
       @students = @students.for_grade(params[:grade]) if params[:grade].present?
-    end
-    
-    def parent_school(student)
-      student.parents.each do |parent|
-        if !parent.school.present?
-          psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(parent.id, student.school.id)
-        end  
-      end
-    end
+    end    
   end
 end

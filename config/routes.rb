@@ -68,14 +68,6 @@ Leror::Application.routes.draw do
         get 'auctions/:id/bid'       => 'auctions#bid'
         post 'auctions/:id/bid'       => 'auctions#bid'
       end
-      namespace :parents do
-        post 'auth'             => 'base#authenticate'
-        get 'auth'             => 'base#authenticate'        
-        post 'register'             => 'base#register'        
-        post '/student_codes/add'             => 'student_codes#create'        
-        get  'parent/:id'     => 'profile#show'
-        post 'parent/:id'     => 'profile#update' 
-      end
     end
   end
 
@@ -302,11 +294,6 @@ Leror::Application.routes.draw do
     resources :otu_code_categories
     resource :bulk_students do
       post "import_students" => "bulk_students#import_students", :as => :import_students
-      match "manage_parents" => "bulk_students#manage_parents", :as => :manage_parents
-      match "print_parent_code" => "bulk_students#print_parent_code", :as => :print_parent_code
-      match "edit_parents" => "bulk_students#edit_parents", :as => :edit_parents
-      match "generate_code" => "bulk_students#generate_code", :as => :generate_code
-      delete "delete_student_parent" => "bulk_students#delete_student_parent", :as => :delete_student_parent
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers

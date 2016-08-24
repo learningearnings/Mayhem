@@ -3,10 +3,10 @@
     text-align: left;
   }
   td.text, th.text, td.text input {
-    width: 100px;
+    width: 50px;
   }
   td.select, th.select, td.select select {
-    width: 110px;
+    width: 50px;
     &.grade, &.grade select {
       width: 60px;
     }
@@ -41,109 +41,4 @@
     margin-left: 0; // Overriding something too generic elsewhere
     width: 60px;
   }
-}
-#parents-table td input {
-  width: 130px;
-}
-#parent-modal{
-  overflow-y: auto;
-  width: 750px;
-  left: 40%
-}
-.parent-header
-{
-  float: left;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 5px;
-  width: 75px !important;
-}
-.parent-email-header{
-  float: left;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 5px;
-  width: 125px;
-}
-.parent-field{
-  float: left;
-  margin-left: 5px;
-  width: 75px;
-  text-align: left;
-}
-.parent-email-field{
-  float: left;
-  margin-left: 5px;
-  width: 130px;
-  text-align: left;
-}
-
-.parent-fields-section{
-  margin-top: 10px;
-}
-.parent-code{
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 5px;
-}
-.image-parent-code{
-  margin:13px;
-  display:inline;
-}
-.generated-code{
-  font-family: "sketch_rockwellregular";
-  font-size:20px;
-  margin: 13px;
-  font-weight:bold;
-  min-width: 50px;
-  display:inline;
-}
-.ui-widget-header{
-  background: none !important;
-  border: none !important;
-}
-.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited, .ui-state-active a:hover {
-  color: #1c94c4 !important;
-  background: #fff !important;
-}
-.ui-state-default a{
- color: #999999 !important; 
-}
-.ui-widget-content{
-  background: none !important;
-  border: none !important;  
-}
-.ui-tabs .ui-tabs-panel{
-  background: #eee !important;
-  border: 1px solid #dddddd !important;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl{
-  border-top-left-radius: none !important;
-}
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
-  background: #ffffff url("/assets/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% !important;
-  border: 1px solid #dddddd !important;
-}
-ui-state-default ui-corner-top ui-tabs-selected ui-state-active {
-  border: 1px solid #dddddd !important;
-}
-.print-pdf{
-  font-family: SketchRockwell !important;
-  text-decoration: none !important;
-  font-size: 1.3em !important;
-  color: #fff !important;
-  padding: 0.7em !important;
-}
-.parent-count-link a{
-  font-weight: bold;
-}
-.parent-count-link a:hover, a:focus {
-  border: none;
-  outline: none;
-}
-.student-name{
-  float:left;
-}
-.parent-icon{
-  float: right;
 }
