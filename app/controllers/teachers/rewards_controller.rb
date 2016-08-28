@@ -21,7 +21,7 @@ module Teachers
         @teachers_rewards = @products.order("spree_products.name").page(params[:page]).per(9)
       else
         @rewards = @searcher.retrieve_products.active.with_property_value('reward_type', 'local')
-        @rewards = @rewards.joins(:spree_product_person_link).where("spree_product_person_links.person_id =?", current_person.id)  if current_person.is_a?(SchoolAdmin)
+        @rewards = @rewards.joins(:spree_product_person_link).where("spree_product_person_links.person_id =?", current_person.id)
         #@rewards = current_person.is_a?(SchoolAdmin) ? current_person.my_editable_rewards(current_school) : current_person.editable_rewards(current_school) 
         @teachers = @rewards.includes(:person).map(&:person).compact.uniq
         @rewards = filter_by_rewards_for_teacher(@rewards, params[:teacher] , params[:reward_type])  

@@ -1,5 +1,5 @@
 ActiveAdmin.register SyncAttempt do
-  menu :parent => "STI", :priority => 2
+  menu :parent => "Chalkable", :priority => 2
   config.clear_action_items!
   index do
     column :created_at

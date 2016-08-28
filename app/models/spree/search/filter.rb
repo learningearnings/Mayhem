@@ -30,7 +30,7 @@ module Spree::Search
         base_scope = get_products_conditions_for(base_scope, keywords) unless keywords.blank?
         base_scope = base_scope.on_hand unless Spree::Config[:show_zero_stock_products]
         base_scope = base_scope.not_shipped_for_school_inventory
-        base_scope = base_scope.above_min_grade(@current_person.grade).below_max_grade(@current_person.grade) if @current_person
+        base_scope = base_scope.above_min_grade(@current_person.grade).below_max_grade(@current_person.grade) if @current_person && @current_person.is_a?(Student)
         if current_school.name == 'STI'
           base_scope = base_scope.not_charity
         end
