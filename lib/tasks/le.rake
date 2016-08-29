@@ -22,46 +22,56 @@ namespace :le do
 
   desc "Award weekly automatic credits"
   task :award_weekly_automatic_credits => :environment do
-    School.inow_schools.has_weekly_automatic_credit_amounts.each do |school|
+    #School.findinow_schools.has_weekly_automatic_credit_amounts.each do |school|
+    school = School.find(26)
       begin
         start_date = Time.zone.now.beginning_of_week.strftime("%Y-%m-%d")
         end_date = Time.zone.now.end_of_week.strftime("%Y-%m-%d")
         credit_manager = CreditManager.new
-        sti_link_token = StiLinkToken.where(district_guid: school.district_guid, status: 'active').first
-        next unless sti_link_token
-        sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
+        #sti_link_token = StiLinkToken.where(district_guid: school.district_guid, status: 'active').first
+        #next unless sti_link_token
+        #sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
+        school.weekly_perfect_attendance_amount = 4
         if school.weekly_perfect_attendance_amount.present?
-          sti_ids = sti_client.perfect_attendance(school.sti_id, start_date, end_date)
-          students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
+          #sti_ids = sti_client.perfect_attendance(school.sti_id, start_date, end_date)
+          #students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
+          students = school.students
           students.each do |student|
             ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for Perfect Attendance", school, student, school.weekly_perfect_attendance_amount)
+            otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+                   :student_id => student.id,
+                   :ebuck => true,
+                   :points => BigDecimal.new(school.weekly_perfect_attendance_amount))
+            otu_code.mark_redeemed!
+            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for Perfect Attendance", school, student, school.weekly_perfect_attendance_amount, otu_code)
           end
         end
 
-        if school.weekly_no_tardies_amount.present?
-          sti_ids = sti_client.no_tardies(school.sti_id, start_date, end_date)
-          students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
-          students.each do |student|
-            ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Tardies", school, student, school.weekly_no_tardies_amount)
-          end
-        end
+        # school.weekly_no_tardies_amount = 4
+        # if school.weekly_no_tardies_amount.present?
+        #   #sti_ids = sti_client.no_tardies(school.sti_id, start_date, end_date)
+        #   #students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
+        #   students = school.students
+        #   students.each do |student|
+        #     ActionController::Base.new.expire_fragment "#{student.id}_balances"
+        #     credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Tardies", school, student, school.weekly_no_tardies_amount)
+        #   end
+        # end
 
-        if school.weekly_no_infractions_amount.present?
-          sti_ids = sti_client.no_infractions(school.sti_id, start_date, end_date)
-          students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
-          students.each do |student|
-            ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Infractions", school, student, school.weekly_no_infractions_amount)
-          end
-        end
+        # if school.weekly_no_infractions_amount.present?
+        #   sti_ids = sti_client.no_infractions(school.sti_id, start_date, end_date)
+        #   students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
+        #   students.each do |student|
+        #     ActionController::Base.new.expire_fragment "#{student.id}_balances"
+        #     credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Infractions", school, student, school.weekly_no_infractions_amount)
+        #   end
+        # end
       rescue => e
         puts "Issue with weekly credits for school: #{school.id}"
         puts "Here's the error: #{e}"
         next
       end
-    end
+    #end
   end
 
   # Note that this runs the previous month, because it is much easier to setup a cron job to run
