@@ -107,8 +107,8 @@ class CreditManager
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
 
-  def issue_interest_to_student student, amount
-    transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount
+  def issue_interest_to_student student, amount, otu_code=nil
+    transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount, otu_code
   end
 
   def issue_credits_to_student school, teacher, student, amount

@@ -7,9 +7,9 @@ namespace :reward_delivery do
     ## Assign School here
     school_name = ""
     ## Assign from Order created date 
-    from_date = "2016-05-17 00:00:00.000000"
+    from_date = "2016-01-01 00:00:00.000000"
     ## Assign to order created date
-    to_date = "2016-05-20 00:00:00.000000"
+    to_date = "2016-08-29 00:00:00.000000"
     puts "School name ===> #{school_name}"
     puts "From date   ===> #{from_date}"
     puts "To date     ===> #{to_date}"
