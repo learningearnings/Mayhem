@@ -21,7 +21,7 @@
         <strong>Manage Negative Credits</strong>
 
   %div.tab-content
-    #edit-sponsors-text.tab-pane{role: "tabpanel"}
+    #edit-sponsors-text.tab-pane.active{role: "tabpanel"}
       .school-settings
         %h3 Manage Sponsors Text
         %p This is displayed on all student's home pages.  Any updates here will be seen by all students and potentially their parents.
@@ -52,7 +52,7 @@
                   %td= select_tag "[teachers][#{teacher.id}][credit_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits_for_school?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
                   %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.ignored?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
 
-    #import-teachers.tab-pane.active{role: "tabpanel"}
+    #import-teachers.tab-pane{role: "tabpanel"}
       .school-settings
         %h3 Import Teachers
         %h4 Required Format Example:
