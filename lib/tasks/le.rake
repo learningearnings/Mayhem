@@ -35,7 +35,12 @@ namespace :le do
           students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
           students.each do |student|
             ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for Perfect Attendance", school, student, school.weekly_perfect_attendance_amount)
+            otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+              :student_id => student.id,
+              :ebuck => true,
+              :points => BigDecimal.new(school.weekly_perfect_attendance_amount))
+            otu_code.mark_redeemed!
+            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for Perfect Attendance", school, student, school.weekly_perfect_attendance_amount, otu_code)
           end
         end
 
@@ -44,7 +49,12 @@ namespace :le do
           students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
           students.each do |student|
             ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Tardies", school, student, school.weekly_no_tardies_amount)
+            otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+                   :student_id => student.id,
+                   :ebuck => true,
+                   :points => BigDecimal.new(school.weekly_no_tardies_amount))
+            otu_code.mark_redeemed!
+            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Tardies", school, student, school.weekly_no_tardies_amount, otu_code)
           end
         end
 
@@ -53,7 +63,12 @@ namespace :le do
           students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
           students.each do |student|
             ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Infractions", school, student, school.weekly_no_infractions_amount)
+            otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+                   :student_id => student.id,
+                   :ebuck => true,
+                   :points => BigDecimal.new(school.weekly_no_infractions_amount))
+            otu_code.mark_redeemed!            
+            credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for No Infractions", school, student, school.weekly_no_infractions_amount, otu_code)
           end
         end
       rescue => e
@@ -81,7 +96,12 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for Perfect Attendance", school, student, school.monthly_perfect_attendance_amount)
+          otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+                 :student_id => student.id,
+                 :ebuck => true,
+                 :points => BigDecimal.new(school.monthly_perfect_attendance_amount))
+          otu_code.mark_redeemed! 
+          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for Perfect Attendance", school, student, school.monthly_perfect_attendance_amount,otu_code)
         end
       end
 
@@ -90,7 +110,12 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Tardies", school, student, school.monthly_no_tardies_amount)
+          otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+                 :student_id => student.id,
+                 :ebuck => true,
+                 :points => BigDecimal.new(school.monthly_no_tardies_amount))
+          otu_code.mark_redeemed!          
+          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Tardies", school, student, school.monthly_no_tardies_amount, otu_code)
         end
       end
 
@@ -99,7 +124,12 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Infractions", school, student, school.monthly_no_infractions_amount)
+          otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+                 :student_id => student.id,
+                 :ebuck => true,
+                 :points => BigDecimal.new(school.monthly_no_infractions_amount))
+          otu_code.mark_redeemed!  
+          credit_manager.issue_monthly_automatic_credits_to_student("Monthly Credits for No Infractions", school, student, school.monthly_no_infractions_amount, otu_code)
         end
       end
     end

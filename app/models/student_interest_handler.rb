@@ -35,7 +35,12 @@ class StudentInterestHandler
   def calculate_and_pay(student)
     if student.savings_account.balance > 0.00
       amount = student.savings_account.balance * @rate
-      @credit_manager.issue_interest_to_student student, amount
+      otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+        :student_id => student.id,
+        :ebuck => true,
+        :points => BigDecimal.new(amount))
+      otu_code.mark_redeemed!
+      @credit_manager.issue_interest_to_student student, amount, otu_code
     end
   end
 

@@ -46,12 +46,12 @@ class CreditManager
     transaction
   end
 
-  def issue_weekly_automatic_credits_to_student message, school, student, amount
-    transfer_credits message, school.main_account, student.checking_account, amount
+  def issue_weekly_automatic_credits_to_student message, school, student, amount, otu_code=nil
+    transfer_credits message, school.main_account, student.checking_account, amount, otu_code
   end
 
-  def issue_monthly_automatic_credits_to_student message, school, student, amount
-    transfer_credits message, school.main_account, student.checking_account, amount
+  def issue_monthly_automatic_credits_to_student message, school, student, amount, otu_code=nil
+    transfer_credits message, school.main_account, student.checking_account, amount, otu_code
   end
 
   def issue_credits_to_school school, amount
@@ -107,8 +107,8 @@ class CreditManager
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
 
-  def issue_interest_to_student student, amount
-    transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount
+  def issue_interest_to_student student, amount, otu_code=nil
+    transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount, otu_code
   end
 
   def issue_credits_to_student school, teacher, student, amount
