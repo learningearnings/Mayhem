@@ -107,6 +107,7 @@
     #manage-printed-credits.tab-pane{role: "tabpanel"}
       .school-settings
         %h3 School Logo
+        = image_tag(@school.printed_credit_logo.thumb('100x100#').url, alt: @school.name)
         %p This logo will get displayed on printed credits.
         .manage-sponsors-text
           = form_for @school, url: printed_credit_logo_path do |f|

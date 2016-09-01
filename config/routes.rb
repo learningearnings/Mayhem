@@ -123,7 +123,7 @@ Leror::Application.routes.draw do
   match '/pages/teachers/news' => 'news#index', visitor_type: 'teacher'
 
   match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
-  match '/schools/printed_credit_logo' => 'schools/settings#update', as: 'printed_credit_logo'
+  match '/schools/printed_credit_logo' => 'schools/settings#upload_school_logo', as: 'printed_credit_logo'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
   match '/schools/settings/update_sponsors_text' => 'schools/settings#update_sponsors_text'
   namespace :schools do
