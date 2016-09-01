@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160824072502) do
+ActiveRecord::Schema.define(:version => 20160831115857) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -760,6 +760,7 @@ ActiveRecord::Schema.define(:version => 20160824072502) do
     t.string   "credits_scope"
     t.string   "credits_type"
     t.integer  "admin_credit_percent",              :default => 5
+    t.string   "printed_credit_logo_uid"
   end
 
   create_table "site_settings", :force => true do |t|
