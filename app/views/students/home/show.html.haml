@@ -27,15 +27,15 @@
         = @featured_activity.body.html_safe
     .featured-activity-callout
       = @featured_activity_callout.body.html_safe
-  .honor-roll
-    .honor-roll-content
-      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%p")) do
-        - honor_roll = HonorRoll.new(current_school, 7.days.ago.beginning_of_day, Date.today.end_of_day)
-        - charity_donations = honor_roll.charity_purchases_per_person(3)
-        %h4 Most Credits Donated to Charity
-        %ol 
-          - charity_donations.each do |person, amount|
-            %li #{person} [#{number_to_bucks amount}]
+  / .honor-roll
+  /   .honor-roll-content
+  /     - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%p")) do
+  /       - honor_roll = HonorRoll.new(current_school, 7.days.ago.beginning_of_day, Date.today.end_of_day)
+  /       - charity_donations = honor_roll.charity_purchases_per_person(3)
+  /       %h4 Most Credits Donated to Charity
+  /       %ol 
+  /         - charity_donations.each do |person, amount|
+  /           %li #{person} [#{number_to_bucks amount}]
 
 .student-logged-in-sidebar
   = render_reward_highlights(@products[0..1])
