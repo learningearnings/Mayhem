@@ -59,7 +59,7 @@ class BuckDistributor
   end
 
   def pay_school(school)
-    amount_school = amount_for_school(school) * ((school.admin_credit_percent.to_f/100)+1)
+    amount_school = amount_for_school(school)
     log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_school.to_s} "
     @credit_manager.issue_credits_to_school school, amount_school
     teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
@@ -77,12 +77,13 @@ class BuckDistributor
     days_left_in_month = (days_in_month - Time.now.day) + 1
 
     if school.district_guid
-      DAILY_STUDENT_AMOUNT * days_left_in_month * school.students.count
+      amount_school = DAILY_STUDENT_AMOUNT * days_left_in_month * school.students.count
     else
-      DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
+      amount_school = DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
     end
+    amount_school = amount_school * ((school.admin_credit_percent.to_f/100)+1)
   end
-  memoize :amount_for_school
+  memoize :amount_for_school 
 
   def handle_teachers
     log_txn "BuckDistributor --  handle teachers start at #{Time.now} "
