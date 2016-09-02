@@ -1,6 +1,6 @@
 module Teachers
   class BulkTeachersController < Teachers::BaseController
-    before_filter :redirect_for_synced_schools
+    #before_filter :redirect_for_synced_schools
     before_filter :load_edit, only: [:edit, :update]
     before_filter :load_manage_credit, only: [:manage_credits]
     before_filter :load_teachers, only: [:edit, :update, :manage_credits]
