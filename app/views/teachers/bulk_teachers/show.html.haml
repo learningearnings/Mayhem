@@ -1,8 +1,8 @@
 .main-content-wrapper
   .primary-content-fw
     %h2 Manage Teachers
-    = link_to "New Teachers", new_teachers_bulk_teachers_path, class: 'btn awesome-button'
-    = link_to "Edit Teachers", edit_teachers_bulk_teachers_path, class: 'btn awesome-button'
+    = link_to "New Teachers", new_teachers_bulk_teachers_path, class: 'btn awesome-button' unless current_school.synced?
+    = link_to "Edit Teachers", edit_teachers_bulk_teachers_path, class: 'btn awesome-button' unless current_school.synced?
     = link_to "Manage Credits", manage_credits_teachers_bulk_teachers_path, class: 'btn awesome-button'
 .primary-content-fw
   %h2 Import Teachers
