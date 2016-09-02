@@ -62,8 +62,8 @@ class BuckDistributor
     amount_school = amount_for_school(school)
     log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_school.to_s} "
     @credit_manager.issue_credits_to_school school, amount_school
-    teachers = school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
-    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers.count, amount: amount_school)
+    teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
+    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers_paid.count, amount: amount_school)
     if school_credit.save
       log_txn "BuckDistributor -- saving school credits for #{school.name} #{school.id} school credit id #{school_credit.id}"
     else
