@@ -96,7 +96,7 @@ module Teachers
         end
       else
         @teachers_reward = Teachers::Reward.new
-        flash[:error] = 'You did not select a classroom for the reward. Hit the back button and try again.'
+        flash[:error] = 'Please select one or more classrooms for your reward. Hit the back button and try again.'
         redirect_to :back
       end
     end
@@ -123,7 +123,7 @@ module Teachers
         end
       else
         @teachers_reward = Teachers::Reward.new
-        flash[:error] = 'You did not select a classroom for the reward. Hit the back button and try again.'
+        flash[:error] = 'Please select one or more classrooms for your reward. Hit the back button and try again.'
         redirect_to :back
       end  
     end
