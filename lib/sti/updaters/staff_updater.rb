@@ -26,6 +26,8 @@ module STI
           school = School.where(:district_guid => @district_guid, :sti_id => school_id).first
           person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
           person_school_link.status = "active"
+          #### Fix for: Credits have been issued to the school but not distributed to the teachers. Updating can_distribute_credits with iNow response. - by Sonam####
+          person_school_link.can_distribute_credits = @data["CanAwardCredits"] || @data["CanAwardCreditsClassroom"]
           person_school_link.save(validate: false)
         end
       end
