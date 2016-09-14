@@ -37,8 +37,12 @@ Spree::User.class_eval do
     if user.nil? && school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
       link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
       return unless link_token
-      client = STI::Client.new(:base_url => link_token.api_url, :username => username, :password => password)
-      session_information = client.session_information
+      begin
+        client = STI::Client.new(:base_url => link_token.api_url, :username => username, :password => password)
+        session_information = client.session_information
+      rescue MultiJson::LoadError => error
+        return
+      end
       return if session_information.response.code == "401"
       sti_user_id = (session_information.parsed_response["StaffId"] || session_information.parsed_response["StudentId"])
       sti_person = Person.where(:district_guid => school.district_guid, :sti_id => sti_user_id).first
