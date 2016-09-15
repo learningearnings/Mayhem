@@ -79,8 +79,8 @@ class ApplicationController < ActionController::Base
       Rails.logger.warn "**************************************"
       Rails.logger.warn home_host
       Rails.logger.warn "**************************************"
-      my_redirect_url = home_host + "/home/?auth_token=#{token}"
 
+      my_redirect_url = home_host + "/home/?auth_token=#{token}"
       current_user.save
       sign_out(current_user)
       redirect_to my_redirect_url

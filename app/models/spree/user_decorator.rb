@@ -23,7 +23,7 @@ Spree::User.class_eval do
     # http://stackoverflow.com/questions/639171/what-is-causing-this-activerecordreadonlyrecord-error
     user = Spree::User.select("spree_users.*").where("LOWER(spree_users.username) = ?", username.downcase)
       .joins(person: {person_school_links: :school})
-      .where(person: {status: "active"}, schools: {status: "active"})
+      .where(person: {status: "active", recovery_password: password}, schools: {status: "active"})
       .where(person_school_links: {school_id: school_id, status: "active"}).first
 
     # LEAdmin user
