@@ -59,7 +59,7 @@ module Mixins
         redirect_to :back and return
       end
 
-      if params[:credits] && params[:credits].values.detect {|x| x.to_s =~ /\D/}
+      if params[:credits] && params[:credits].values.detect {|x| x.to_s =~  /[^-?\d+(.\d+)?$]/}
         flash[:error] = "You must only enter numerical values"
         redirect_to :back and return
       end
