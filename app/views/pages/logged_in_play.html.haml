@@ -19,14 +19,14 @@
         %h4 Auctions
         %p Bid on cool stuff!
         = link_to "Play Now", auctions_path, class: 'btn'
-    .game.row
-      .span2
-        .image-placeholder
-          image
-      .span4
-        %h4 Number Muncher
-        %p= lipsum(200)
-        = link_to "Play Now", "#", class: 'btn'
+    / .game.row
+    /   .span2
+    /     .image-placeholder
+    /       image
+      / .span4
+      /   %h4 Number Muncher
+      /   %p= lipsum(200)
+      /   = link_to "Play Now", "#", class: 'btn'
 
   = render_reward_highlights(@products[0..1])
   .row
