@@ -109,7 +109,9 @@ module STI
 
       # Deactivate all students for school and just let the Sync reactivate students
       school_ids = School.where(district_guid: @district_guid).pluck(:id).uniq
-      psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
+      #psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
+      # Added where students sti_id is not null in Rails 3 way
+      psls = PersonSchoolLink.joins(:person).where("person_school_links.school_id IN (?) AND people.type = ? AND people.sti_id IS NOT NULL", school_ids, 'Student')
       students = Student.where(id: psls.pluck(:person_id)).update_all(status: "inactive")
       psls.update_all(status: "inactive")
 
