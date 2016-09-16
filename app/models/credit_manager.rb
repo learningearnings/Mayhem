@@ -78,8 +78,8 @@ class CreditManager
     transfer_credits "Revoke Credits for Student", student.checking_account, main_account, amount
   end
 
-  def teacher_revoke_credits_from_student(school, teacher, student, amount)
-    transfer_credits "Revoke Credits for Student", teacher.main_account(school), student.checking_account, amount
+  def teacher_revoke_credits_from_student(school, teacher, student, amount, otu_code = nil)
+    transfer_credits "Revoke Credits for Student", teacher.main_account(school), student.checking_account, amount, otu_code
   end
 
   def purchase_printed_bucks school, teacher, amount, buck_batch=nil

@@ -13,6 +13,24 @@ module PeopleHelper
       transaction.spree_product.try(:person).try(:full_name) || transaction.reward_deliverer || transaction.credit_source || "none"
     end  
   end
+  
+  def category_for_transaction(transaction)
+    if commercial_document_link(transaction)
+      commercial_document_link(transaction)
+    elsif transaction.description.include?("Issue Printed Credits to Student")
+      "Printed Credit"
+    elsif transaction.description.include?("Revoke Credits for Student")
+      "Revoke Credits"
+    elsif transaction.description.include?("Perfect Attendance")
+      "Perfect Attendance"
+    elsif transaction.description.include?("No Tardies")
+      "No Tardies"
+    elsif  transaction.description.include?("No Infractions")
+      "No Infractions"
+    end  
+          
+  end
+
   def credit_reason(otu_code)
     if otu_code.otu_code_category.present?
       otu_code.otu_code_category.name
@@ -21,7 +39,7 @@ module PeopleHelper
       if desc.include?("Perfect Attendance")
         "Perfect Attendance"
       elsif desc.include?("No Tardies")
-        "Perfect Attendance"
+        "No Tardies"
       elsif  desc.include?("No Infractions")
         "No Infractions"
       elsif desc.include?("Savings Interest Payment")
@@ -31,6 +49,11 @@ module PeopleHelper
       "none"
     end  
   end
+  
+  def method_name
+    
+  end
+
   def source_from_otu_code(otu_code)
     transaction = otu_code.transactions.last
     if transaction.present?

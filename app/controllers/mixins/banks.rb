@@ -20,7 +20,16 @@ module Mixins
       if params[:points].to_i < 0
         if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           student = Student.find(params[:student][:id])
-          CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points])
+          psql = PersonSchoolLink.where(school_id: current_school.id, person_id: current_person.id).first
+          reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
+          otu_code = OtuCode.create(:expires_at => (Time.now),
+                 :person_school_link_id => psql.id,
+                 :otu_code_category_id => reason_id,
+                 :student_id => student.id,
+                 :ebuck => true,
+                 :points => BigDecimal.new(params[:points]))
+          otu_code.mark_redeemed! 
+          CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points],otu_code)
           flash[:notice] = "The points have been deducted from the student account."
         else
           flash[:error] = "You can't enter negative values"
@@ -96,10 +105,20 @@ module Mixins
     def create_ebucks_for_classroom
       if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
         if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
+          psql = PersonSchoolLink.where(school_id: current_school.id, person_id: current_person.id).first
+          reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
           params[:credits].delete_if do |k, v|
             if v.to_i < 0
               student = Student.find(k)
-              CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, v)
+              otu_code = OtuCode.create(:expires_at => (Time.now),
+                :person_school_link_id => psql.id,
+                :otu_code_category_id => reason_id,
+                :student_id => student.id,
+                :ebuck => true,
+                :points => BigDecimal.new(v))
+              otu_code.mark_redeemed! 
+ 
+              CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, v,otu_code)
             end
           end
         else
