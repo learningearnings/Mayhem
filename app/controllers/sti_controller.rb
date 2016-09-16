@@ -18,7 +18,7 @@ class StiController < ApplicationController
     @district.save
     sti_link_token = StiLinkToken.where(district_guid: @district.guid).last
     client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
-    StiImporterWorker.new.perform(sti_link_token.api_url, "LearningEarnings",sti_link_token.password, @district.guid)
+    StiImporterWorker.setup_sync(sti_link_token.api_url, "LearningEarnings",sti_link_token.password, @district.guid)
     render :text => "Sync job submitted, check Sync Attempts for completion status"
   end
 
