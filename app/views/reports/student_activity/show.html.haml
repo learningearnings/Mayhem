@@ -4,7 +4,11 @@
     %h3= report.range if report.range
     = simple_form_for report.parameters,  :url => student_activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
-        = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
+        .student-activity-date-filter
+          = f.input :date_filter, :label => "Date Range", :collection => report.parameters.date_filter_options
+        .classroom-filter
+          = label_tag :classroom
+          = select_tag :classroom_filter, options_from_collection_for_select(classrooms, :id, :name, params[:classroom_filter]), :prompt => "All"
       .sorting
         = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       = f.submit 'Go!', class: "awesome-button"

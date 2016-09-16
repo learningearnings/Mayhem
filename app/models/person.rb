@@ -70,7 +70,9 @@ class Person < ActiveRecord::Base
   scope :recently_created, lambda { where(self.arel_table[:created_at].gt Time.now - 1.month) }
   scope :created_between, lambda { |start_date, end_date| where(self.arel_table[:created_at].gteq(start_date)).where(self.arel_table[:created_at].lteq(end_date))}
   scope :created_before, lambda { |end_date| where(self.arel_table[:created_at].lteq(end_date))}
-
+  scope :person_with_classroom, lambda {|classroom| joins(:person_school_classroom_links).where("person_school_classroom_links.classroom_id = ?", classroom)}
+  scope :with_credits_between, lambda {|start_date, end_date| where("otu_codes.created_at >= ? AND otu_codes.created_at <= ?", start_date, end_date) }
+  scope :selected_students, lambda {|selected_students| where("people.id IN (?)", selected_students).order("first_name ASC")}
   before_save :ensure_spree_user
   before_validation :strip_whitespace
   after_destroy :delete_user
@@ -155,6 +157,14 @@ class Person < ActiveRecord::Base
 
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
+  end
+  
+  def person_classroom
+    Person.joins(person_school_links: [{ person_school_classroom_links: :classroom }]).select("classrooms.id as classroom_id, classrooms.name as class_name").where("people.id = ?", self.id).order("classrooms.name ASC")
+  end
+
+  def person_classroom_name
+    person_classroom.map{|c| c.class_name}
   end
   # End Relationships
 

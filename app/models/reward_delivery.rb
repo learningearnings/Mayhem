@@ -4,13 +4,16 @@ class RewardDelivery < ActiveRecord::Base
   belongs_to :from, class_name: "Person", foreign_key: :from_id
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
   belongs_to :reward, class_name: "Spree::LineItem", foreign_key: :reward_id
+  belongs_to :delivered_by, class_name: "Person", foreign_key: :delivered_by_id
 
-  scope :order_by_student_last_name, lambda { order("people.last_name") }
+  scope :order_by_student_last_name, lambda { order("people.last_name,reward_deliveries.created_at DESC") }
   scope :order_by_student_grade, lambda { order(:to => :grade) }
   scope :newest_orders, lambda { order("reward_deliveries.created_at DESC") }
   scope :oldest_orders, lambda { order("reward_deliveries.created_at ASC") }
   scope :between, lambda { |start_date, end_date| where(arel_table[:created_at].gteq(start_date)).where(arel_table[:created_at].lteq(end_date)) }
   scope :in_last_7_days, lambda { between(7.days.ago, Time.zone.now) }
+  scope :rewards_between, lambda { |start_date, end_date| where('reward_deliveries.created_at >= ? AND reward_deliveries.created_at <= ?',start_date, end_date) }
+
 
   validates :from_id,   presence: true
   validates :to_id,     presence: true

@@ -16,9 +16,10 @@ class Spree::UserMailer < Devise::Mailer
       @confirmation_url = "http://lvh.me:3000/confirm/#{user.confirmation_token}"      
     end
     headers['X-MC-Track'] = "False, False"      
-
-    mail(:to => user.email, :from => "noreply@learningearnings.com",
+    if user.confirmed_at.nil?
+      mail(:to => user.email, :from => "noreply@learningearnings.com",
          :subject => 'Learning Earnings user account activation required')
+    end
   end  
   
 end

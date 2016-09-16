@@ -33,7 +33,7 @@ every 1.day, :at => '1am' do
 end
 
 every '0 9 1 * *' do
-  runner "BuckDistributor.new.run", :output => "/home/deployer/logs/buck_distributer.log"
+  runner "BuckDistributor.new(nil, CreditManager.new, 0).run", :output => "/home/deployer/logs/buck_distributer.log"
 end
 
 every :saturday do

@@ -8,14 +8,11 @@ class Mobile::V1::Teachers::RewardsController < Mobile::V1::Teachers::BaseContro
   end
 
   def create
-    logger.debug(params[:reward])
     @reward = Teachers::Reward.new(params[:reward])
     @reward.teacher = current_person
     @reward.school = current_school
     @reward.classrooms = Classroom.where(id: params[:reward][:classroom_id]) if params[:reward][:classroom_id]
     if @reward.save
-      logger.debug(@reward.inspect)
-      logger.debug("New reward id is: #{@reward.product.id}")
       render json: { status: :ok, reward: @reward.product.id }
     else
       render json: { status: :unprocessible_entity }

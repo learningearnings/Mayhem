@@ -43,7 +43,9 @@ Spree::User.class_eval do
       sti_person = Person.where(:district_guid => school.district_guid, :sti_id => sti_user_id).first
       sti_person = nil unless sti_person.present? && sti_person.schools.include?(school)
       return if sti_person.nil?
-      user = sti_person.user
+      return if sti_person.user.nil?
+      user = Spree::User.find(sti_person.user.id, readonly: false)
+      return if user.nil?
       user.api_user = true
       user.username = username
       user.save(:validate => false)

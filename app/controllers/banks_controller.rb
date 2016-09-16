@@ -35,7 +35,7 @@ class BanksController < LoggedInController
         end
         person.code_entry_failures.destroy_all
       else
-        flash[:error] = 'You already deposited this credit into your account.'
+        flash[:error] = 'Either your credits is expired or it is already deposited into your account.'
         person.code_entry_failures.create
       end
     else

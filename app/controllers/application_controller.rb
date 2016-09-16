@@ -229,7 +229,21 @@ class ApplicationController < ActionController::Base
   def filter_rewards_by_classroom(products)
     RewardsFilter.by_classroom(current_person, products)
   end
-
+  
+  def filter_by_rewards_for_teacher(products,teacher,reward_type)
+    if teacher.present?
+      products = products.joins(:person).where(person:{id: params[:teacher]})
+    end  
+    if reward_type.present?
+      if reward_type == "Classroom"
+        products = products.includes(:classrooms).where("classrooms.id IS NOT NULL")
+      else
+        products = products.includes(:classrooms).where("classrooms.id IS NULL")
+      end      
+    end
+    products
+  end
+    
   def site_setting
     SiteSetting.last
   end

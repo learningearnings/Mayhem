@@ -6,17 +6,11 @@ json.array! @classrooms do |classroom|
     json.username student.user.username
     json.password student.user.password
     json.email student.user.email    
-
+    json.avatar_url student.avatar.try(:image).try(:url)
     json.classrooms student.classrooms do |classroom|
       json.id classroom.id
       json.name classroom.name
     end     
-  end
-
-  json.goals classroom.classroom_otu_code_categories do |otu_code_category_link|
-    json.id otu_code_category_link.otu_code_category.id
-    json.name otu_code_category_link.otu_code_category.name
-    json.value otu_code_category_link.value
   end
 
   json.rewards classroom.products do |product|

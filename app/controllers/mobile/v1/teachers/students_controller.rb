@@ -1,6 +1,7 @@
 class Mobile::V1::Teachers::StudentsController < Mobile::V1::Teachers::BaseController
   def index
-    @students = current_school.students.order(:first_name, :last_name)
+    @students = current_school.students.includes(:avatars).where(status: "active").order(:first_name, :last_name)
+    #@students = Student.joins(:person_school_links).includes(:avatars).merge(person_school_links(:status_active)).send(:status_active)
     #@students.each do | student |
     #  student.checking_history = Plutus::Amount.where(account_id: student.checking_account).order(" id desc ")
     #end
@@ -38,6 +39,7 @@ class Mobile::V1::Teachers::StudentsController < Mobile::V1::Teachers::BaseContr
     @student.last_name = params[:student][:last_name]
     @student.grade = params[:student][:grade]
     @student.gender = params[:student][:gender] 
+    
     
     if @student.save
       @student.user.update_attributes(username: params[:student][:username], password: params[:student][:password], password_confirmation: params[:student][:password_confirmation])

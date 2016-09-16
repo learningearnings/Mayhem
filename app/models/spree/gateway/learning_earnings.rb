@@ -70,7 +70,8 @@ module Spree
         person = AccountPersonMapper.new(credit_card.number).find_person
         transaction = cm.transfer_credits_for_reward_purchase(person, money/BigDecimal('100.0'),o.products.first)
       end
-      transaction
+      TransactionOrder.create(transaction_id: transaction.id, order_id: o.id)
+      transaction      
     end
   end
 end

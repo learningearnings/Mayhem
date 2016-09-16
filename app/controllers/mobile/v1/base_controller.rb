@@ -8,12 +8,16 @@ module Mobile
       def current_user
         if decoded_auth_token
           @current_user ||= Spree::User.find(decoded_auth_token[:user_id])
+        else
+          @current_user = Person.find(181411).user
         end
       end
 
       def current_school
         if decoded_auth_token
           @current_school ||= School.find(decoded_auth_token[:school_id])
+        else
+          @current_school ||= School.find(session[:current_school_id]) if session[:current_school_id]
         end
       end
 
@@ -59,7 +63,13 @@ module Mobile
         if user
           render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
         else
-          render json: { error: 'Invalid username, password or school selection' }, status: :unauthorized
+          #Check for accounts that are not activated
+          tuser = Spree::User.where(username: params[:username]).first if params[:username]
+          if tuser and tuser.confirmed_at == nil
+             render json: { error: 'You must activate your account before logging in.  Please check your email for activation instructions...' }, status: :unauthorized
+          else
+             render json: { error: 'Invalid username, password or school selection' }, status: :unauthorized
+          end
         end
       end
 

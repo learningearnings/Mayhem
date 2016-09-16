@@ -3,12 +3,22 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
     if params[:username].blank?
       render json: { error: 'Please enter a username' }, status: :unauthorized and return
     end
+    
+    #Check for accounts that are not activated
+    tuser = Spree::User.where(username: params[:username]).first if params[:username]
+    if tuser and tuser.confirmed_at == nil
+         render json: { error: 'You must activate your account before logging in.  Please check your email for activation instructions...' }, status: :unauthorized and return
+    end    
+    
     if params[:password].blank?
       render json: { error: 'Please enter a password' }, status: :unauthorized and return
     end   
     if params[:school_id].blank?
       render json: { error: 'Please select your school' }, status: :unauthorized and return
     end    
+    
+
+    
     user = Spree::User.joins(:person).where('people.type IN (?)', ['Teacher', 'SchoolAdmin']).authenticate_with_school_id(params[:username], params[:password], params[:school_id])
     if user
       render json: { auth_token: user.generate_auth_token_with_school_id(params[:school_id]), user: user }
@@ -16,27 +26,6 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
       render json: { error: 'Invalid username, password or school selection' }, status: :unauthorized
     end
   end
-  
-  def mixpanel_options
-    if current_user and current_school
-      district = District.where(guid: current_school.district_guid).last if current_school.district_guid
-      if district
-        district_name = (district.name.blank? ? "None" : district.name ) 
-      else
-        district_name = "None"
-      end
-      @options = {:env => Rails.env, :email => current_user.email, :username => current_user.username, 
-                  :first_name => current_user.person.first_name, :last_name => current_user.person.last_name,
-                  :grade => current_user.person.try(:grade),
-                  :type => current_user.person.type, :school => current_user.person.school.try(:name),
-                  :district_guid => (current_school.district_guid.blank? ? "None" : current_school.district_guid ),
-                  :district => district_name,                
-                  :credits_scope => current_school.credits_scope, :school_synced => current_school.synced? }
-    else
-      @options = {}
-    end
-    return @options
-  end  
   
   def register
     if params[:user][:first_name].blank?
@@ -71,9 +60,7 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
     if @teacher_signup_form.save
       #sign_in(@teacher_signup_form.person.user)
       #session[:current_school_id] = @teacher_signup_form.school.id
-      UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person) 
-      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, mixpanel_options)        
-      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Mobile Teacher Sign Up', mixpanel_options)         
+      UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)      
       render json: { auth_token: @teacher_signup_form.person.user.generate_auth_token_with_school_id(@teacher_signup_form.school.id), user: @teacher_signup_form.person.user }
     else         
       render json: { error: @teacher_signup_form.errors.first }, status: :unauthorized
@@ -83,10 +70,10 @@ class Mobile::V1::Teachers::BaseController < Mobile::V1::BaseController
   end
   
   def setup_fake_data
-    params[:user][:city] = "Fake City"
-    params[:user][:state_id] = 1
+    params[:user][:city] = "Fake City" if params[:user][:city].blank?
+    params[:user][:state_id] = 1 if params[:user][:state_id].blank?
     params[:user][:password_confirmation] = params[:user][:password]
-    params[:user][:grade] = 5
+    params[:user][:grade] = 5 
     params[:user][:address1] = "Fake Address"
     params[:user][:zip] = 12345
   end

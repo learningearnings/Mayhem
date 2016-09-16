@@ -9,9 +9,15 @@ class Teacher < Person
   scope :game_challengeable, lambda{ where('game_challengeable = ?', true)}
   scope :awaiting_approval, lambda{ where(" status in ('awaiting_approval','new') ") }
   scope :not_awaiting_approval, lambda{ where(" status not in ('awaiting_approval','new')")}
-
-  has_many :reward_distributors, :through => :person_school_links
+  scope :for_grade, lambda { |grade_string|
+    # Map the grade string to the 0..12 interpretation
+    grade_index = School::GRADES.index(grade_string)
+    where(grade: grade_index)
+  }
+  scope :for_gender, lambda { |gender| where(:gender => gender) }
+  
   has_many :otu_codes, through: :person_school_links
+  has_many :teacher_credits
 
   before_create :set_status_to_active
 

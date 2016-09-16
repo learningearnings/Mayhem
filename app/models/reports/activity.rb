@@ -10,13 +10,15 @@ module Reports
       @parameters = Reports::Activity::Params.new(params)
       @school = params[:school]
       @endpoints = date_endpoints(@parameters);
+      @classroom = params[:classroom_filter]
+      @logged_in_person = params[:logged_in_person]
       @data = []
     end
 
     def execute!
       begin
         people.each do |person|
-          data << generate_row(person)
+          @data << generate_row(person) if person_with_classroom_filter(person)
         end
       rescue StandardError => e
         Rails.logger.fatal("Something went bad wrong")
@@ -31,6 +33,20 @@ module Reports
       @endpoints ? "From #{l @endpoints[0]} to #{l @endpoints[1]}" : nil
     end
 
+    def person_with_classroom_filter(person)
+      student_classrooms_array = person.person_classroom_name
+      logged_in_user_classroom_array = @logged_in_person.classrooms_for_school(@school).map{|c| c.name}
+      intersection_array = student_classrooms_array & logged_in_user_classroom_array
+      if @classroom.present?
+        if intersection_array.size > 1 && @logged_in_person.classrooms_for_school(@school).map{|c| c.name if c.id == @classroom.to_i}.include?(student_classrooms_array.first)
+          return true
+        elsif intersection_array.size <= 1 && intersection_array.first == student_classrooms_array.first
+          return true
+        end
+      else
+        return true
+      end  
+    end
 
     # Override what the date filter filters on
     def date_filter
@@ -42,10 +58,16 @@ module Reports
       end
     end
 
+    def classroom_filter
+      if @classroom.present?
+        [:person_with_classroom,  @classroom]
+      end
+    end
+
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter, :sort_by]
+      [:date_filter, :classroom_filter, :sort_by]
     end
 
     def sort_by
@@ -65,7 +87,7 @@ module Reports
       base_scope = person_base_scope
       potential_filters.each do |filter|
         filter_option = send(filter)
-        base_scope = base_scope.send(*filter_option) if filter_option
+        base_scope = base_scope.send(*filter_option) if filter_option        
       end
       # have to do .select here to get both the object and the sums, counts, etc.
       # have a look at the scope called "with_transactions_between" on person
@@ -82,19 +104,22 @@ module Reports
     end
 
     def generate_row(person)
-      Reports::Row[
-        person: person.name,
-        username: person.person_username,
-        account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
-        type: person.type,
-        last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
-      ]
+        Reports::Row[
+          person: person.name,
+          username: person.person_username,
+          classroom: person.person_classroom.present? ? person.person_classroom.first.class_name : "No Classroom",
+          #classroom: "No Classroom",
+          account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
+          type: person.type,
+          last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
+        ]
     end
 
     def headers
       {
         person: "Person",
         username: "Username",
+        classroom: "Classroom",
         type: "Type",
         last_sign_in_at: "Last Sign In",
         account_activity: "Account Balance"
@@ -104,6 +129,7 @@ module Reports
       {
         person: "",
         username: "",
+        classroom: "",
         type: "",
         last_sign_in_at: "",
         account_activity: "currency"
@@ -111,11 +137,11 @@ module Reports
     end
 
     class Params < Reports::ParamsBase
-      attr_accessor :date_filter,:sort_by
+      attr_accessor :date_filter,:sort_by, :classroom_filter
       def initialize options_in = {}
         options_in ||= {}
         options = options_in[self.class.to_s.gsub("::",'').tableize] || options_in || {}
-        [:date_filter, :sort_by].each do |iv|
+        [:date_filter, :sort_by, :classroom_filter].each do |iv|
           default_method = (iv.to_s + "_default").to_sym
           default_value = nil
           default_value = send(default_method) if respond_to? default_method

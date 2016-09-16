@@ -1,17 +1,51 @@
 .main-content-wrapper
   .full-content
-    - if current_user.person.is_a?(SchoolAdmin)
-      - if params[:all_rewards] == 'Y'
-        %h2 All Rewards
-        %p= link_to 'Show School Rewards', teachers_rewards_path
+    = form_tag(teachers_rewards_path, method: :get, class: "noprint" )do
+      -if current_user.person.is_a?(SchoolAdmin)
+        .filter
+          %h4 Filter By
+          - if params[:all_rewards] == 'Y'
+            .filter-teachers
+              = label_tag "Teacher"
+              = select_tag :teacher, options_from_collection_for_select(@teachers, :id, :full_name, params[:teacher]), :prompt => "All"
+              = hidden_field_tag :all_rewards, "Y" if params[:all_rewards] == 'Y'  
+          .filter-rewards
+            = label_tag "Type"
+            = select_tag :reward_type, options_for_select(["Classroom", "School"], params[:reward_type]), :prompt => "All"
+          .filter-search
+            = label_tag "Search"  
+            = search_field_tag :keywords, params[:keywords], :placeholder => "Name, Description"
+            - if params[:search] && params[:search][:ascend_by_master_price]
+              = hidden_field_tag "search[ascend_by_master_price]",params[:search][:ascend_by_master_price], id: 'sort_by_field'            
+          .grade
+            = submit_tag 'Go!', :class => "go-button-filter"
       - else
-        %h2 School Rewards
-        %p= link_to 'Show All Rewards', teachers_rewards_path( :all_rewards => "Y")
-    - else
-      %h2 Your Rewards
-    %ul.action_buttons
-      %li= link_to 'Create a New Reward', teachers_reward_templates_path, :class => "create-reward btn awesome-button"
-    .resp-product
+        .filter
+          %h4 Filter By      
+          .filter-search
+            = label_tag "Search"  
+            = search_field_tag :keywords, params[:keywords], :placeholder => "Name, Description"
+            - if params[:search] && params[:search][:ascend_by_master_price]
+              = hidden_field_tag "search[ascend_by_master_price]",params[:search][:ascend_by_master_price], id: 'sort_by_field'            
+          .grade
+            = submit_tag 'Go!', :class => "go-button-filter"
+
+    %div       
+      - if current_user.person.is_a?(SchoolAdmin)
+        - if params[:all_rewards] == 'Y'
+          %div.left 
+            %h2 All Rewards
+            %p= link_to 'Show My Rewards', teachers_rewards_path
+        - else
+          %div.left
+            %h2 My Rewards
+            %p= link_to 'Show All Rewards', teachers_rewards_path( :all_rewards => "Y")
+      - else
+        %h2 Your Rewards
+      
+      %div.right
+        = link_to 'Create a New Reward', teachers_reward_templates_path, :class => "create-reward btn awesome-button"
+    .resp-product.clear
       = paginate @teachers_rewards, :window => 2
       .resp-product-row
         - if @teachers_rewards.any?

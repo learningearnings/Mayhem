@@ -34,9 +34,10 @@
               .deliverer
                 Delivered By
                 - if @product.person and current_school and current_school.distribution_model == 'Centralized'
-                  = select_tag :deliverer_id, options_from_collection_for_select([@product.person], :id, :to_s)
+                  = select_tag :deliverer_id, options_from_collection_for_select([@product.person], :id, :to_s), :prompt => "Select Deliverer"
                 - else
-                  = select_tag :deliverer_id, options_from_collection_for_select(current_school.distributing_teachers, :id, :to_s)
+                  = select_tag :deliverer_id, options_from_collection_for_select(current_school.distributing_teachers, :id, :to_s), :prompt => "Select Deliverer"
+                = hidden_field_tag 'reward_creator_id', @product.person.id if @product.person.present?
           .actions
             = button_tag :class => 'large primary awesome-button', :id => 'add-to-cart-button', :type => :submit do
               = t(:add_to_cart)

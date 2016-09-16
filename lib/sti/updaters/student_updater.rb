@@ -8,22 +8,26 @@ module STI
 
       def execute!
         person = Student.where(district_guid: @district_guid, sti_id: @data["Id"]).first
-        person.update_attributes(person_mapping, as: :admin)
-        person.user.update_attributes(user_mapping) if person.recovery_password.nil?
-        schools = Hash.from_xml(@data["SchoolsXml"])
-        schools = schools["root"]
-        if schools["row"].kind_of?(Array) 
-          schools_ids = schools["row"].collect { | x | x["id"] }          
-        else
-          schools_ids = [schools["row"]["id"]]
-        end
-        schools_ids.each do |sti_school_id|          
-          school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-          person_school_link = ::PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
-          person_school_link.skip_onboard_credits = true
-          person_school_link.status = "active"
-          person_school_link.save(:validate => false)
-        end
+        if person
+          person.update_attributes(person_mapping, as: :admin)
+          person.user.update_attributes(user_mapping) if person.recovery_password.nil?
+          schools = Hash.from_xml(@data["SchoolsXml"])
+          if schools
+            schools = schools["root"]
+            if schools["row"].kind_of?(Array) 
+              schools_ids = schools["row"].collect { | x | x["id"] }          
+            else
+              schools_ids = [schools["row"]["id"]]
+            end
+            schools_ids.each do |sti_school_id|          
+              school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
+              person_school_link = ::PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
+              person_school_link.skip_onboard_credits = true
+              person_school_link.status = "active"
+              person_school_link.save(:validate => false)
+            end
+          end
+        end  
       end
 
       private

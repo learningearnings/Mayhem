@@ -8,7 +8,7 @@
 $.webshims.setOptions('forms-ext', {
   types: 'range date time number month color'
 });
-<% if Rails.env.production? || Rails.env.sandbox? || Rails.env.qa? || Rails.env.demo?%>
+<% if Rails.env.production? || Rails.env.staging? || Rails.env.sandbox? || Rails.env.qa? || Rails.env.demo?%>
 $.webshims.setOptions('basePath', '/assets/webshims/shims/');
 <% end %>
 $.webshims.polyfill();

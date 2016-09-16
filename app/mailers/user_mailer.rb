@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "admin@learningearnings.com"
+  default from: "noreply@learningearnings.com"
 
   def teacher_admin_email(message, school, alternate_email=nil)
     @message = message

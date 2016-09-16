@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151006144614) do
+ActiveRecord::Schema.define(:version => 20160706075452) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -469,6 +469,7 @@ ActiveRecord::Schema.define(:version => 20151006144614) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "school_id"
+    t.integer  "value"
   end
 
   create_table "otu_code_types", :force => true do |t|
@@ -668,8 +669,9 @@ ActiveRecord::Schema.define(:version => 20151006144614) do
     t.integer  "to_id"
     t.integer  "reward_id"
     t.string   "status"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "delivered_by_id"
   end
 
   create_table "reward_distributors", :force => true do |t|
@@ -692,6 +694,16 @@ ActiveRecord::Schema.define(:version => 20151006144614) do
     t.integer  "min_grade"
     t.integer  "max_grade"
     t.string   "image_uid"
+  end
+
+  create_table "school_credits", :force => true do |t|
+    t.integer  "school_id"
+    t.string   "school_name"
+    t.string   "district_guid"
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
+    t.integer  "total_teachers"
+    t.decimal  "amount",         :precision => 10, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "school_filter_links", :force => true do |t|
@@ -747,6 +759,7 @@ ActiveRecord::Schema.define(:version => 20151006144614) do
     t.integer  "monthly_no_infractions_amount"
     t.string   "credits_scope"
     t.string   "credits_type"
+    t.integer  "admin_credit_percent",              :default => 5
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1450,6 +1463,18 @@ ActiveRecord::Schema.define(:version => 20151006144614) do
     t.text     "staff_response"
   end
 
+  create_table "teacher_credits", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "teacher_id"
+    t.string   "teacher_name"
+    t.string   "district_guid"
+    t.decimal  "amount",        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "credit_source"
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
+    t.text     "reason"
+  end
+
   create_table "tour_events", :force => true do |t|
     t.integer  "person_id"
     t.string   "page"
@@ -1459,6 +1484,11 @@ ActiveRecord::Schema.define(:version => 20151006144614) do
     t.date     "date"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "transaction_orders", :force => true do |t|
+    t.integer "transaction_id"
+    t.integer "order_id"
   end
 
   create_table "uploaded_users", :force => true do |t|

@@ -7,6 +7,7 @@ module Reports
     delegate :total_pages, :limit_value, :current_page, :to => :reward_deliveries
 
     attr_accessor :parameters
+
     def initialize params
       super
       @school = params[:school]
@@ -41,6 +42,33 @@ module Reports
         text << " from #{date_endpoints[0].to_date.to_s(:db)} to #{date_endpoints[1].to_date.to_s(:db)}"
       end
       text
+    end
+
+
+    def date_filter
+      local_date_filter = parameters.date_filter if parameters && parameters.date_filter
+      case local_date_filter
+      when 'last_90_days'
+        [:rewards_between, 90.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_60_days'
+        [:rewards_between, 60.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_7_days'
+        [:rewards_between, 7.days.ago.beginning_of_day, 1.second.from_now]
+      when 'last_month'
+        d_begin = Time.now.beginning_of_month - 1.month
+        d_end = d_begin.end_of_month
+        [:rewards_between, d_begin, d_end]
+      when 'this_month'
+        [:rewards_between, Time.now.beginning_of_month, Time.now]
+      when 'this_week'
+        [:rewards_between, Time.now.beginning_of_week, Time.now]
+      when 'last_week'
+        d_begin = Time.now.beginning_of_week - 1.week
+        d_end = d_begin.end_of_week
+        [:rewards_between, d_begin, d_end]
+      else
+        [:rewards_between, 10.years.ago,1.second.from_now]
+      end
     end
 
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
@@ -96,18 +124,22 @@ module Reports
     end
     
     def reward_creator_filter
-      if parameters.reward_creator_filter.blank?
+      if parameters.page.blank?
         if @teacher
           rewards = @teacher.products.collect { | r | r.id }
-          [:where, { reward: {product: { id: rewards} } }]
+          #[:where, { reward: {product: { id: rewards} } }]
+          [:where, "spree_products.id IN (?) OR (reward_deliveries.delivered_by_id = ? OR (reward_deliveries.from_id =? AND reward_deliveries.delivered_by_id IS NULL)) ", rewards, @teacher.id, @teacher.id ]         
         else
           [:scoped]
-        end        
+        end 
+      elsif parameters.reward_creator_filter.blank?
+          [:scoped]      
       else
         #get all rewards created by the selected rewards creator
         teacher = Teacher.find(parameters.reward_creator_filter)
         rewards = teacher.products.collect { | r | r.id }
         [:where, { reward: {product: { id: rewards} } }]
+        [:where, "spree_products.id IN (?) OR (reward_deliveries.delivered_by_id = ? OR (reward_deliveries.from_id =? AND reward_deliveries.delivered_by_id IS NULL)) ", rewards, teacher.id, teacher.id ]         
       end
     end
     
@@ -149,15 +181,16 @@ module Reports
       Rails.logger.debug("AKT: homeroom #{cr_name}")
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
+        delivered_by: reward_delivery.delivered_by.present? ? reward_delivery.delivered_by.name : reward_delivery.from.name,
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
         classroom: cr_name,
         grade: School::GRADE_NAMES[person.try(:grade)],
-        purchased: time_ago_in_words(reward_delivery.created_at) + " ago",
+        purchased: reward_delivery.created_at,
         reward: reward_delivery.reward.product.name,
         quantity: reward_delivery.reward.quantity,
         status: reward_delivery.status.humanize,
         reward_delivery_id: reward_delivery.id,
-        delivery_status: reward_delivery.status
+        delivery_status: reward_delivery.status   
       ]
     end
 
@@ -170,6 +203,7 @@ module Reports
     def headers
       {
         delivery_teacher: "Reward Creator",
+        delivered_by: "Delivered By",
         student: "Student (username)",
         grade: "Grade",
         purchased: "Purchased",

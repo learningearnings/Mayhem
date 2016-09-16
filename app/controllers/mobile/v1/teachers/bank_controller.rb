@@ -1,6 +1,7 @@
 class Mobile::V1::Teachers::BankController < Mobile::V1::Teachers::BaseController
   include Mixins::Banks
   def award_credits
+    logger.debug("AKT bank->award_credits")
     logger.debug(params.inspect)
     if params[:students].blank? || params[:credits].blank? || params[:students].size == 0 || params[:credits].size == 0
       logger.error "Mobile::V1::Teachers::BankController.award_credits: Must supply students and credits"
@@ -19,12 +20,16 @@ class Mobile::V1::Teachers::BankController < Mobile::V1::Teachers::BaseControlle
     @bank.on_failure = lambda{ @failed = true }
     OtuCode.transaction do
       @students.each do | student |
-
         params[:credits].each do | credit |
           student_credits = SanitizingBigDecimal(credit[:credit_quantity].to_s)
           category_id = credit[:id]
-          logger.debug("Awarding #{student_credits} of credit #{category_id} to student #{student.id}") if student_credits > 0.0
-          issue_ebucks_to_student(student, student_credits, category_id) if student_credits > 0.0
+          if student_credits > 0.0
+            logger.debug("Awarding #{student_credits} of credit #{category_id} to student #{student.id}") 
+            issue_ebucks_to_student(student, student_credits, category_id) 
+          else
+            logger.error("Bank > award_credits, no credit quantity specified #{params.inspect}") 
+            render json: { error: 'No credit quantity specified' }, status: :unprocessible_entity and return 
+          end
         end
       end
       if @failed
