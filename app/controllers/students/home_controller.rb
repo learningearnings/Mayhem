@@ -3,7 +3,7 @@ module Students
     def show
       @products = get_reward_highlights
       @whats_new = whats_new_post
-      @fa_text = featured_activity_post
+      @featured_activity = featured_activity_post
       @featured_activity_callout = featured_activity_callout_post
       @our_sponsor = current_school.sponsor_post
       @our_sponsor_callout = our_sponsor_callout_post

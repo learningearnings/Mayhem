@@ -15,16 +15,18 @@
         = @whats_new.body.html_safe
     - if current_school.name == 'STI'
       .featured-activity
-        %div.king_font
- 
-          Don't Miss.......
-        %div.sketch_font
-          Social Hour
-        %div.sketch_font2
-          5-6 PM Day 1
+        .fa-text
+          %div.king_font
+   
+            Don't Miss.......
+          %div.sketch_font
+            Social Hour
+          %div.sketch_font2
+            5-6 PM Day 1
     - else
       .featured-activity
-        = @featured_activity.body.html_safe
+        .fa-text
+          = @featured_activity.body.html_safe
     .featured-activity-callout
       = @featured_activity_callout.body.html_safe
   / .honor-roll
