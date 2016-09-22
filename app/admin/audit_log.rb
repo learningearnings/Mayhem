@@ -1,15 +1,15 @@
 ActiveAdmin.register AuditLog do
   index do
     column :id
-    column "District Id" do |audit_log|
-      audit_log.initiator.person.district_guid
-    end   
-    column "School Id" do |audit_log|
-      audit_log.initiator.person.school.id if !audit_log.initiator.person.is_a?(LeAdmin)
-    end
-    column "School sti_id" do |audit_log|
-      audit_log.initiator.person.school.sti_id if !audit_log.initiator.person.is_a?(LeAdmin)
-    end
+    # column "District Id" do |audit_log|
+    #   audit_log.initiator.person.district_guid
+    # end   
+    # column "School Id" do |audit_log|
+    #   audit_log.initiator.person.school.id if !audit_log.initiator.person.is_a?(LeAdmin)
+    # end
+    # column "School sti_id" do |audit_log|
+    #   audit_log.initiator.person.school.sti_id if !audit_log.initiator.person.is_a?(LeAdmin)
+    # end
     column "Person id" do |audit_log|
       audit_log.initiator.person.id
     end
