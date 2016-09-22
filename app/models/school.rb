@@ -23,6 +23,7 @@ class School < ActiveRecord::Base
   has_many :teacher_credits
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
+  has_many :audit_logs, :as => :log_event
 
   has_many :reward_exclusions
 

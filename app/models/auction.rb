@@ -17,6 +17,7 @@ class Auction < ActiveRecord::Base
   has_many :schools, :through => :auction_school_links
   has_many :auction_school_links
   has_many :auction_zip_codes
+  has_many :audit_logs, :as => :log_event
 
   attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_codes, :auction_zip_code_ids, as: :le_admin
   attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_code, :auction_zip_code_ids

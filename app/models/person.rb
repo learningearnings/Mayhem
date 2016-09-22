@@ -12,7 +12,7 @@ class Person < ActiveRecord::Base
   ## Need to get rid of spree_users anyway...
   ##
   has_one  :spree_user, :class_name => 'Spree::User'
-
+  has_many :audit_logs, :as => :log_event
   has_many :auctions
   has_many :posts
   has_many :delayed_reports

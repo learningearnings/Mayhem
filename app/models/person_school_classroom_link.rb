@@ -9,6 +9,7 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
   has_one :teacher, :through => :person_school_link, :source => :person, :class_name => 'Teacher'
   has_one :student, :through => :person_school_link, :source => :person, :class_name => 'Student'
   has_one :person, through: :person_school_link, source: :person
+  has_many :audit_logs, :as => :log_event
 
   attr_accessible :owner, :person_school_link_id, :status, :classroom_id, :homeroom
 

@@ -72,6 +72,7 @@ module SchoolAdmins
       @auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
       @auction.update_attribute(:end_date, Time.now)
       @auction.update_attribute(:canceled, true)
+      @auction.audit_logs.create(user_id: current_user.id)
       flash[:notice] = "Auction cancelled."
       redirect_to school_admins_auctions_path
     end

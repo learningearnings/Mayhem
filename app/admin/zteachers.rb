@@ -28,6 +28,9 @@ ActiveAdmin.register Teacher do
         params[:teacher][:user_attributes].delete(:password)
         params[:teacher][:user_attributes].delete(:password_confirmation)
       end
+      if resource.status != "inactive" && params[:teacher][:status] == "inactive"
+        resource.audit_logs.create(user_id: current_user.id)       
+      end  
       super
     end
   end

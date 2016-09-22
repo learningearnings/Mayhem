@@ -106,6 +106,12 @@ ActiveAdmin.register School do
   end
   controller do
     skip_before_filter :add_current_store_id_to_params
+    def update
+      if resource.status != "inactive" && params[:school][:status] == "inactive"
+        resource.audit_logs.create(user_id: current_user.id)       
+      end  
+      super
+    end    
   end
 
 end

@@ -1,11 +1,11 @@
 class TeacherUpdaterWorker
   include Sidekiq::Worker
 
-  def perform(email, teachers, school_id, action)
+  def perform(email, teachers, school_id, action, current_user)
     if action == 'delete!'
-      BatchTeacherUpdater.new(teachers, school_id).delete!
+      BatchTeacherUpdater.new(teachers, school_id,current_user).delete!
     else
-      batch_teacher_updater = Proc.new{BatchTeacherUpdater.new(teachers, school_id).call}
+      batch_teacher_updater = Proc.new{BatchTeacherUpdater.new(teachers, school_id,current_user).call}
       WorkerNotifier.new(email, action, &batch_teacher_updater).call
     end
   end

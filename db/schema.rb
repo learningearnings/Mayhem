@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160831115857) do
+ActiveRecord::Schema.define(:version => 20160920123553) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -93,6 +93,14 @@ ActiveRecord::Schema.define(:version => 20160831115857) do
     t.boolean  "fulfilled",                                      :default => false
     t.integer  "person_id"
     t.boolean  "canceled"
+  end
+
+  create_table "audit_logs", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "log_event_id"
+    t.string   "log_event_type"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "avatars", :force => true do |t|
