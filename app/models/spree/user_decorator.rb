@@ -15,7 +15,7 @@ Spree::User.class_eval do
   #after_create :set_parent_code, :set_parent_code , unless: Proc.new { self.person.type == "Parent" }
 
   before_validation :strip_whitespace
-
+  self.inheritance_column = nil
   def self.authenticate_with_school_id(username,password,school_id)
     return if username.blank? || password.blank?
     # Regular teacher or student
