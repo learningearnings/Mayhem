@@ -38,13 +38,12 @@ class ClassroomsController < LoggedInController
     @classroom = Classroom.find(params[:classroom])
     if psl = PersonSchoolLink.find_by_school_id_and_person_id(@school.id, @student.id)
       link = PersonSchoolClassroomLink.find_by_person_school_link_id_and_classroom_id(psl.id, @classroom.id)
-      audit_log = link.audit_logs.create(user_id: current_user.id)
-      if link.delete
+      if link.deactivate!
+        audit_log = link.audit_logs.create(user_id: current_user.id)
         flash[:notice] = "Student removed from classroom."
         MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom', mixpanel_options)
         redirect_to classroom_path(@classroom)
       else
-        audit_log.delete
         flash[:error] = "Student not removed from classroom."
         render :show
       end

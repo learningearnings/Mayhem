@@ -28,6 +28,8 @@ ActiveAdmin.register AuditLog do
     column "Object Name" do |audit_log|
       if audit_log.log_event_type == 'Auction'
         audit_log.log_event.product.name
+      elsif audit_log.log_event_type == "PersonSchoolLink" || audit_log.log_event_type == "PersonSchoolClassroomLink"
+        audit_log.log_event.person.name
       else
         audit_log.log_event.try(:name)
       end  
