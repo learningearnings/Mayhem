@@ -13,6 +13,7 @@ Spree::User.class_eval do
   has_many :audit_logs, as: "initiator", class_name: "AuditLog"
   after_save :set_recovery_password, :set_student_confirmed_at
   #after_create :set_parent_code, :set_parent_code , unless: Proc.new { self.person.type == "Parent" }
+  self.inheritance_column = nil
 
   before_validation :strip_whitespace
   def self.authenticate_with_school_id(username,password,school_id)
