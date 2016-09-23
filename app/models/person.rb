@@ -12,7 +12,6 @@ class Person < ActiveRecord::Base
   ## Need to get rid of spree_users anyway...
   ##
   has_one  :spree_user, :class_name => 'Spree::User'
-  has_many :audit_logs, :as => :log_event
   has_many :auctions
   has_many :posts
   has_many :delayed_reports
@@ -31,9 +30,12 @@ class Person < ActiveRecord::Base
   has_many :avatars, :through => :person_avatar_links, :order => "#{PersonAvatarLink.table_name}.created_at desc ,#{PersonAvatarLink.table_name}.id desc"
   has_many :interactions
   has_many :code_entry_failures
+  has_many :audit_logs, :as => :log_event
 
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
+
+  has_many :initiator_audit_logs, :foreign_key => :person_id, :class_name => "AuditLog"
 
   validates_uniqueness_of :sti_uuid, allow_blank: true
 
@@ -43,7 +45,7 @@ class Person < ActiveRecord::Base
   has_many :food_fight_players
 
   has_many :votes
-
+  
   accepts_nested_attributes_for :user
 
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :email, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type, :can_distribute_credits
