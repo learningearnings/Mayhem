@@ -35,7 +35,7 @@ class Person < ActiveRecord::Base
   has_many :spree_product_person_links
   has_many :products, :through => :spree_product_person_links
 
-  has_many :initiator_audit_logs, :foreign_key => :person_id, :class_name => "AuditLog"
+  #has_many :initiator_audit_logs, :foreign_key => :person_id, :class_name => "AuditLog"
 
   validates_uniqueness_of :sti_uuid, allow_blank: true
 

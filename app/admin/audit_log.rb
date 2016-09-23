@@ -2,25 +2,25 @@ ActiveAdmin.register AuditLog do
   index do
     column :id
     column "District Id" do |audit_log|
-      audit_log.initiator.person.district_guid
+      audit_log.initiator.district_guid
     end   
     column "School Id" do |audit_log|
-      audit_log.initiator.person.school.id if !audit_log.initiator.person.is_a?(LeAdmin)
+      audit_log.initiator.school.id if !audit_log.initiator.is_a?(LeAdmin)
     end
     column "School sti_id" do |audit_log|
-      audit_log.initiator.person.school.sti_id if !audit_log.initiator.person.is_a?(LeAdmin)
+      audit_log.initiator.school.sti_id if !audit_log.initiator.is_a?(LeAdmin)
     end
     column "Person id" do |audit_log|
-      audit_log.initiator.person.id
+      audit_log.initiator.id
     end
     column "Person sti_id" do |audit_log|
-      audit_log.initiator.person.sti_id if !audit_log.initiator.person.is_a?(LeAdmin)
+      audit_log.initiator.sti_id if !audit_log.initiator.is_a?(LeAdmin)
     end
     column "Person Name" do |audit_log|
-      audit_log.initiator.person.name
+      audit_log.initiator.name
     end   
     column "Person Type" do |audit_log|
-      audit_log.initiator.person.type
+      audit_log.initiator.type
     end
     column "Object Type" do |audit_log|
       audit_log.log_event_type

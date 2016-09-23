@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(:version => 20160920123553) do
   end
 
   create_table "audit_logs", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "person_id"
     t.integer  "log_event_id"
     t.string   "log_event_type"
     t.datetime "created_at",     :null => false

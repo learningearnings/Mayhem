@@ -39,7 +39,7 @@ class ClassroomsController < LoggedInController
     if psl = PersonSchoolLink.find_by_school_id_and_person_id(@school.id, @student.id)
       link = PersonSchoolClassroomLink.find_by_person_school_link_id_and_classroom_id(psl.id, @classroom.id)
       if link.deactivate!
-        audit_log = link.audit_logs.create(user_id: current_user.id)
+        audit_log = link.audit_logs.create(person_id: current_person.id)
         flash[:notice] = "Student removed from classroom."
         MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom', mixpanel_options)
         redirect_to classroom_path(@classroom)
@@ -117,7 +117,7 @@ class ClassroomsController < LoggedInController
     classroom = Classroom.find(params[:id])
     classroom_deactivator = ClassroomDeactivator.new(params[:id])
     if classroom_deactivator.execute!
-      classroom.audit_logs.create(user_id: current_user.id)
+      classroom.audit_logs.create(person_id: current_person.id)
       audit_deleted_rewards(classroom)
       flash[:notice] = 'Classroom deleted.'
       redirect_to classrooms_path
@@ -182,7 +182,7 @@ class ClassroomsController < LoggedInController
     products =  classroom.products.with_property_value("reward_type", "local").readonly(false).where("spree_products.deleted_at >=?", Date.today)
     if products
       products.each do |p|
-        p.audit_logs.create(user_id: current_user.id)
+        p.audit_logs.create(person_id: current_person.id)
       end
     end    
   end  

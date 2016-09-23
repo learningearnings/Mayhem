@@ -22,7 +22,7 @@ module Spree
       def destroy
         @product = Product.where(:permalink => params[:id]).first!
         @product.delete
-        @product.audit_logs.create(user_id: current_user.id)
+        @product.audit_logs.create(person_id: current_person.id)
         flash.notice = I18n.t('notice_messages.product_deleted')
 
         respond_with(@product) do |format|
