@@ -11,7 +11,7 @@ Spree::User.class_eval do
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
   has_many :initiator_audit_logs, :foreign_key => :user_id, :class_name => "AuditLog"
-
+  self.inheritance_column = nil
   after_save :set_recovery_password, :set_student_confirmed_at
   #after_create :set_parent_code, :set_parent_code , unless: Proc.new { self.person.type == "Parent" }
   before_validation :strip_whitespace
