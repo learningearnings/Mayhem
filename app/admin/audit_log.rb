@@ -1,26 +1,34 @@
-ActiveAdmin.register AuditLog do
+ActiveAdmin.register AuditLog do 
+  filter :person_id
+  filter :person_first_name, :as => :string
+  filter :person_last_name, :as => :string
+  filter :person_district_guid, :as => :string
+  #filter :school, as: :select, collection: School.order(:id)
+  filter :log_event_type
+  filter :created_at
+  #filter :"subscription_billing_plan_name" , :as => :select, :collection => BillingPlan.all.map(&:name)
   index do
     column :id
     column "District Id" do |audit_log|
-      audit_log.initiator.district_guid
+      audit_log.person.district_guid
     end   
     column "School Id" do |audit_log|
-      audit_log.initiator.school.id if !audit_log.initiator.is_a?(LeAdmin)
+      audit_log.person.school.id if !audit_log.person.is_a?(LeAdmin)
     end
     column "School sti_id" do |audit_log|
-      audit_log.initiator.school.sti_id if !audit_log.initiator.is_a?(LeAdmin)
+      audit_log.person.school.sti_id if !audit_log.person.is_a?(LeAdmin)
     end
     column "Person id" do |audit_log|
-      audit_log.initiator.id
+      audit_log.person.id
     end
     column "Person sti_id" do |audit_log|
-      audit_log.initiator.sti_id if !audit_log.initiator.is_a?(LeAdmin)
+      audit_log.person.sti_id if !audit_log.person.is_a?(LeAdmin)
     end
     column "Person Name" do |audit_log|
-      audit_log.initiator.name
+      audit_log.person.name
     end   
     column "Person Type" do |audit_log|
-      audit_log.initiator.type
+      audit_log.person.type
     end
     column "Object Type" do |audit_log|
       audit_log.log_event_type
