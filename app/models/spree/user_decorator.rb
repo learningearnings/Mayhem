@@ -10,10 +10,9 @@ Spree::User.class_eval do
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
-  has_many :audit_logs, as: "initiator", class_name: "AuditLog"
+  #has_many :audit_logs, as: "initiator", class_name: "AuditLog"
   after_save :set_recovery_password, :set_student_confirmed_at
   #after_create :set_parent_code, :set_parent_code , unless: Proc.new { self.person.type == "Parent" }
-  self.inheritance_column = nil
 
   before_validation :strip_whitespace
   def self.authenticate_with_school_id(username,password,school_id)
