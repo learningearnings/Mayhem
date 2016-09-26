@@ -72,7 +72,7 @@ module SchoolAdmins
       @auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
       @auction.update_attribute(:end_date, Time.now)
       @auction.update_attribute(:canceled, true)
-      @auction.audit_logs.create(person_id: current_person.id)
+      @auction.audit_logs.create(person_id: current_person.id, action: "Cancelled")
       flash[:notice] = "Auction cancelled."
       redirect_to school_admins_auctions_path
     end
@@ -80,7 +80,8 @@ module SchoolAdmins
     def delete_school_auction
       auction = Auction.find(params[:id])
       auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
-      auction.destroy
+      auction.update_attribute(:deleted_at, Time.now)
+      auction.audit_logs.create(person_id: current_person.id, action: "Deactivate")
       flash[:notice] = "Auction permanently deleted."
       redirect_to school_admins_auctions_path
     end    

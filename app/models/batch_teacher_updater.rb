@@ -43,7 +43,7 @@ class BatchTeacherUpdater
         teacher = @teacher_class.find(teacher_param.delete("id"))
         psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, @school.id)
         psl.deactivate!
-        psl.audit_logs.create(person_id: @current_person.id)
+        psl.audit_logs.create(person_id: @current_person.id, action: "Deactivate")
       end
     end
     true

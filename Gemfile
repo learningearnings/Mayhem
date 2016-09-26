@@ -23,7 +23,6 @@ gem 'bootstrap_forms'
 gem 'jwt'
 gem 'rack-cors'
 gem 'jbuilder'
-
 # for importing
 #gem 'mysql2'
 #gem 'taps'

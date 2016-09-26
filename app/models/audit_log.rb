@@ -1,5 +1,5 @@
 class AuditLog < ActiveRecord::Base
-  attr_accessible :person_id
+  attr_accessible :person_id, :action
   belongs_to :log_event, polymorphic: true
   belongs_to :person, :foreign_key => :person_id
 

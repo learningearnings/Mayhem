@@ -133,7 +133,7 @@ class Spree::Admin::RewardsController < Spree::Admin::BaseController
   def destroy
     @product = Spree::Product.find(params[:id])
     @product.deleted_at = Time.now
-    @product.audit_logs.create(person_id: current_person.id)
+    @product.audit_logs.create(person_id: current_person.id, action: "Deactivate")
     if @product.save
       flash[:notice] = "Your reward was deleted successfully #{view_context.link_to("Undo", admin_undelete_reward_path(:id => params[:id]))}".html_safe
     else

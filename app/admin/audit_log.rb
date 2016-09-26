@@ -30,6 +30,9 @@ ActiveAdmin.register AuditLog do
     column "Person Type" do |audit_log|
       audit_log.person.type
     end
+    column "Object Id" do |audit_log|
+      audit_log.log_event_id
+    end
     column "Object Type" do |audit_log|
       audit_log.log_event_type
     end
@@ -42,6 +45,7 @@ ActiveAdmin.register AuditLog do
         audit_log.log_event.try(:name)
       end  
     end 
+    column "Action", :action
     column "Date", :created_at
   end
 end

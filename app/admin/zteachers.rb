@@ -11,9 +11,9 @@ ActiveAdmin.register Teacher do
     end
   end
   action_item do
-    if current_page?(:action => 'show') && !teacher.district_guid.present?
-      link_to "Delete Teacher", resource_path(resource), :confirm => 'Are you sure?', :method => :delete
-    end
+    # if current_page?(:action => 'show') && !teacher.district_guid.present?
+    #   link_to "Delete Teacher", admin_inactivate_teacher(resource), :confirm => 'Are you sure?', :method => :delete
+    # end
   end
 
   controller do
@@ -29,7 +29,7 @@ ActiveAdmin.register Teacher do
         params[:teacher][:user_attributes].delete(:password_confirmation)
       end
       if resource.status != "inactive" && params[:teacher][:status] == "inactive"
-        resource.audit_logs.create(person_id: current_person.id)       
+        resource.audit_logs.create(person_id: current_person.id, action: "Deactivate")       
       end  
       super
     end
