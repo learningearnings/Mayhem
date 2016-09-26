@@ -24,7 +24,7 @@ ActiveAdmin.register Teacher do
     end
 
     def update
-      if params[:teacher][:user_attributes][:password].blank?
+      if params[:teacher][:user_attributes] && params[:teacher][:user_attributes][:password].blank?
         params[:teacher][:user_attributes].delete(:password)
         params[:teacher][:user_attributes].delete(:password_confirmation)
       end
