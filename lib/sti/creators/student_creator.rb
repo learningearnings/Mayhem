@@ -12,26 +12,28 @@ module STI
         person.user = Spree::User.new  if person.user.nil?
         person.user.update_attributes(user_mapping) if person.recovery_password.nil?
         person.user.confirmed_at = Time.now
-        person.user.save
-
-        schools = Hash.from_xml(@data["SchoolsXml"])
-        if schools == nil
-          Rails.logger.error("Bad XML response for guid: #{@district_guid} schools: #{@data.inspect}")
-          return
-        end        
-        schools = schools["root"]
-        if schools["row"].kind_of?(Array) 
-          schools_ids = schools["row"].collect { | x | x["id"] }          
-        else
-          schools_ids = [schools["row"]["id"]]
-        end
-        schools_ids.each do |sti_school_id|
-          school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
-          person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
-          person_school_link.skip_onboard_credits = true
-          person_school_link.status = "active"
-          person_school_link.save(:validate => false)
-        end
+        if person.user.save
+          schools = Hash.from_xml(@data["SchoolsXml"])
+          if schools == nil
+            Rails.logger.error("Bad XML response for guid: #{@district_guid} schools: #{@data.inspect}")
+            return
+          end        
+          schools = schools["root"]
+          if schools["row"].kind_of?(Array) 
+            schools_ids = schools["row"].collect { | x | x["id"] }          
+          else
+            schools_ids = [schools["row"]["id"]]
+          end
+          if schools_ids
+            schools_ids.each do |sti_school_id|
+              school = School.where(:district_guid => @district_guid, :sti_id => sti_school_id).first
+              person_school_link = PersonSchoolLink.where(:person_id => person.id, :school_id => school.id).first_or_initialize
+              person_school_link.skip_onboard_credits = true
+              person_school_link.status = "active"
+              person_school_link.save(:validate => false)
+            end
+          end  
+        end  
       end
 
       private
