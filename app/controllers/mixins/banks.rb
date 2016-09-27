@@ -74,7 +74,7 @@ module Mixins
         OtuCode.transaction do
           students = Student.includes(:person_school_links).where(id: params[:credits].keys, person_school_links: { school_id: current_person.schools.pluck(:id) })
           students.each do |student|
-            student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+            student_credits = BigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
             issue_ebucks_to_student(student, student_credits, category_id) if student_credits > 0
           end
@@ -119,7 +119,7 @@ module Mixins
         OtuCode.transaction do
           classroom.students.each do |student|
             if params[:credits][student.id.to_s].present?
-              student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+              student_credits = BigDecimal(params[:credits][student.id.to_s])
               category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
               issue_ebucks_to_student(student, student_credits, category_id) if student_credits.to_i > 0
             end
