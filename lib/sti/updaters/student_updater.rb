@@ -11,7 +11,19 @@ module STI
         if person
           person.update_attributes(person_mapping, as: :admin)
           person.user.update_attributes(user_mapping) if person.recovery_password.nil?
+        else
+          person = Student.create(person_mapping, as: :admin)
+          person.user = Spree::User.new  if person.user.nil?
+          person.user.update_attributes(user_mapping) if person.recovery_password.nil?
+          person.user.confirmed_at = Time.now
+          person.save          
+        end  
+        if person
           schools = Hash.from_xml(@data["SchoolsXml"])
+          if schools == nil
+            Rails.logger.error("Bad XML response for guid: #{@district_guid} schools: #{@data.inspect}")
+            return
+          end        
           if schools
             schools = schools["root"]
             if schools["row"].kind_of?(Array) 
@@ -54,6 +66,18 @@ module STI
           confirmed_at: Time.now
         }
       end
+
+      def generate_username_for_district(district_guid, first_name, last_name, iteration = 0)
+        username = first_name.downcase[0] + last_name.downcase[0..4]
+        username += iteration.to_s if iteration > 0
+        return username if username_unique_for_district?(district_guid, username)
+        return generate_username_for_district(district_guid, first_name, last_name, iteration + 1)
+      end
+
+      def username_unique_for_district?(district_guid, username)
+        !Student.joins(:user).where(:district_guid => district_guid, :user => {:username => username}).any?
+      end
+      
     end
   end
 end
