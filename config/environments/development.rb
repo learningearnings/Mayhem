@@ -38,7 +38,7 @@ Leror::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  #config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :letter_opener
 
 ## for testing longer domains like mahyem.lvh.me:3000
 ##  config.action_dispatch.tld_length = 2
