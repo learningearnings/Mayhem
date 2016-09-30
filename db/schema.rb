@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160831115857) do
+ActiveRecord::Schema.define(:version => 20160930072632) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -93,6 +93,17 @@ ActiveRecord::Schema.define(:version => 20160831115857) do
     t.boolean  "fulfilled",                                      :default => false
     t.integer  "person_id"
     t.boolean  "canceled"
+    t.datetime "deleted_at"
+    t.string   "status"
+  end
+
+  create_table "audit_logs", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "log_event_id"
+    t.string   "log_event_type"
+    t.string   "action"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "avatars", :force => true do |t|
@@ -1453,8 +1464,8 @@ ActiveRecord::Schema.define(:version => 20160831115857) do
     t.string   "district_guid"
     t.string   "status"
     t.string   "sync_type"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.text     "error"
     t.text     "backtrace"
     t.text     "students_response"
@@ -1462,6 +1473,10 @@ ActiveRecord::Schema.define(:version => 20160831115857) do
     t.text     "schools_response"
     t.text     "sections_response"
     t.text     "staff_response"
+    t.integer  "student_version",   :limit => 8
+    t.integer  "section_version",   :limit => 8
+    t.integer  "staff_version",     :limit => 8
+    t.integer  "roster_version",    :limit => 8
   end
 
   create_table "teacher_credits", :force => true do |t|

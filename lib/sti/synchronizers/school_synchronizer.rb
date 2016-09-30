@@ -7,11 +7,13 @@ module STI
         # Schools that are synced in our DB but are no longer listed in the api
         (current_schools_for_district - sti_school_ids).each do |school_sti_id|
           school = School.where(:district_guid => @district_guid, :sti_id => school_sti_id).first
-          school.deactivate
+          if school
+            school.deactivate
 
-          sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
-          client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
-          client.set_school_synced(school.sti_id, false)
+            sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+            client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+            client.set_school_synced(school.sti_id, false)
+          end  
         end
         @data.each do |api_school|
           school = School.where(district_guid: @district_guid, sti_id: api_school["Id"]).first_or_initialize
