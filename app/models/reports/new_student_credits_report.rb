@@ -32,7 +32,7 @@ module Reports
                  p.grade AS student_grade,
                  DATE (pt.created_at) AS date,
                  psl.status AS status,
-                 sum (su - deployer -c cd /home/deployer/apps/Mayhem/current/ && RAILS_ENV=staging exec bundle exec sidekiq
+                 sum (
                     CASE
                        WHEN pt.description IN
                                ('Issue Printed Credits to Student',
@@ -66,7 +66,7 @@ module Reports
                        WHEN pt.description = 'Reward Refund' THEN pa.amount
                        ELSE 0
                     END)
-                    AS total_credits_refunded,su - deployer -c cd /home/deployer/apps/Mayhem/current/ && RAILS_ENV=staging exec bundle exec sidekiq
+                    AS total_credits_refunded,
                  sum (
                     CASE
                        WHEN pt.description IN
@@ -83,7 +83,7 @@ module Reports
                                  'Weekly Credits for%'
                          THEN
                             pa.amount
-                         WHEN pt.description ILIKEsu - deployer -c cd /home/deployer/apps/Mayhem/current/ && RAILS_ENV=staging exec bundle exec sidekiq
+                         WHEN pt.description ILIKE
                                  'Monthly Credits for%'
                          THEN
                             pa.amount
