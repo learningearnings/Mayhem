@@ -10,12 +10,12 @@ ActiveAdmin.register_page "User Activity Detail Report" do
       options = {}
       if params[:start_date]
         start_date = Time.strptime(params[:start_date], "%m/%d/%Y")
-        options.merge!(start_date: start_date)
+        options.merge!(beginning_day: start_date)
       end
       if params[:end_date]
         end_date = Time.strptime(params[:end_date], "%m/%d/%Y")
-        options.merge!(end_date: end_date)
-      end
+        options.merge!(ending_day: end_date)
+      end      
       if params[:districts]
         options.merge!(districts: params[:districts])
       end 
