@@ -11,7 +11,7 @@ class AdminMailer < ActionMailer::Base
     mail :to => ["aktaylor@chalkable.com","lrushing@chalkable.com"], :subject => "Tour Access Report", :body => "Tour Access Report"
   end
   
-  def user_activity_detail_report filename
+  def user_activity_detail_report filename, email_recipients
     tlfn = "teacher_logins" + filename
     tcfn = "teacher_credits" + filename
     slfn = "student_logins" + filename
@@ -20,7 +20,7 @@ class AdminMailer < ActionMailer::Base
     #attachments[tcfn] = File.read("/tmp/" + tcfn)
     #attachments[slfn] = File.read("/tmp/" + tslfn)
     #attachments[scfn] = File.read("/tmp/" + scfn)           
-    recipients = ["aktaylor@chalkable.com"] + options["email_recipients"].split(",") 
+    recipients = ["aktaylor@chalkable.com"] + email_recipients.split(",") 
     mail :to => recipients, :subject => "User Activity Detail Reports", :body => "User Activity Detail Reports"
   end
   
