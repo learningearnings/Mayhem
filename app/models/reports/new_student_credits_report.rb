@@ -32,7 +32,7 @@ module Reports
                  p.grade AS student_grade,
                  DATE (pt.created_at) AS date,
                  psl.status AS status,
-                 sum (
+                 sum (su - deployer -c cd /home/deployer/apps/Mayhem/current/ && RAILS_ENV=staging exec bundle exec sidekiq
                     CASE
                        WHEN pt.description IN
                                ('Issue Printed Credits to Student',
@@ -66,7 +66,7 @@ module Reports
                        WHEN pt.description = 'Reward Refund' THEN pa.amount
                        ELSE 0
                     END)
-                    AS total_credits_refunded,
+                    AS total_credits_refunded,su - deployer -c cd /home/deployer/apps/Mayhem/current/ && RAILS_ENV=staging exec bundle exec sidekiq
                  sum (
                     CASE
                        WHEN pt.description IN
@@ -83,7 +83,7 @@ module Reports
                                  'Weekly Credits for%'
                          THEN
                             pa.amount
-                         WHEN pt.description ILIKE
+                         WHEN pt.description ILIKEsu - deployer -c cd /home/deployer/apps/Mayhem/current/ && RAILS_ENV=staging exec bundle exec sidekiq
                                  'Monthly Credits for%'
                          THEN
                             pa.amount
@@ -132,7 +132,7 @@ module Reports
     
     def run
       csv = CSV.generate do |csv|
-        csv << ["Teacher Logins report spaning #{@total_days} days for districts #{@districts}"]
+        csv << ["Student credits report spaning #{@total_days} days for districts #{@districts}"]
         csv << [""]
         csv << ["district_name","sti_district_guid","sti_school_id","le_school_id","school_name","le_person_id","sti_user_id","student_last_name","student_first_name","student_grade","date","status","total_credits_deposited","total_credits_spent_on_purchase","total_credits_refunded","credits_awarded_by_teacher","credits_awarded_by_system"]
         @rows.each do | row |

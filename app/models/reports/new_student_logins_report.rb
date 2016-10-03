@@ -69,7 +69,7 @@ module Reports
     
     def run
       csv = CSV.generate do |csv|
-        csv << ["Student Logins report spaning #{@total_days} days for districts #{@districts}"]
+        csv << ["Student logins report spaning #{@total_days} days for districts #{@districts}"]
         csv << [""]
         csv << ["district_name","sti_district_guid","sti_school_id","le_school_id","school_name","le_person_id","sti_user_id","student_last_name","student_first_name","grade","login_count","date"]
         @rows.each do | row |
