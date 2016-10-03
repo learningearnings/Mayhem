@@ -1,4 +1,4 @@
-- paginated_products = @searcher.retrieve_products if params.key?(:keywords)
+- paginated_products = @products if params.key?(:keywords)
 - paginated_products ||= products
 - if current_person.is_a?(Teacher)
   %h3= link_to('Suggest a Reward', main_app.leadmin_message_path(subject: "I have a reward suggestion.", refurl: current_url), class: 'suggest-reward')
