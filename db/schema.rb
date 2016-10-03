@@ -93,17 +93,6 @@ ActiveRecord::Schema.define(:version => 20160930072632) do
     t.boolean  "fulfilled",                                      :default => false
     t.integer  "person_id"
     t.boolean  "canceled"
-    t.datetime "deleted_at"
-    t.string   "status"
-  end
-
-  create_table "audit_logs", :force => true do |t|
-    t.integer  "person_id"
-    t.integer  "log_event_id"
-    t.string   "log_event_type"
-    t.string   "action"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
   end
 
   create_table "avatars", :force => true do |t|
