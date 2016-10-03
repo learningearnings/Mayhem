@@ -12,8 +12,10 @@ module Reports
       else
         @ending_day = Time.zone.now.end_of_day
       end
+      @districts_where = ""
       if options.has_key?("districts")
         @districts = options["districts"].downcase.split(",").collect {|x| "'#{x.strip}'"}.join(", ")
+        @districts_where = " AND d.guid IN (#{@districts}) "
       end
       @total_days = (@ending_day.to_date - @beginning_day.to_date).to_i
       
@@ -52,7 +54,7 @@ module Reports
                  AND psl.status = 'active'
                  AND i.person_id = psl.person_id
                  AND i.page = '/teachers/home'
-                 AND d.guid IN (#{@districts})
+                 #{@districts_where}
                  AND i.created_at >= '#{@beginning_day}'
                  AND i.created_at <=  '#{@ending_day}'
         GROUP BY le_person_id,
