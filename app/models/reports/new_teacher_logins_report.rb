@@ -79,7 +79,7 @@ module Reports
         csv << [""]
         csv << ["district_name","sti_district_guid","sti_school_id","le_school_id","school_name","le_person_id","sti_user_id","teacher_last_name","teacher_first_name","login_count","date","has_classroom"]
         @rows.each do | row |
-          csv << row.values
+          csv << [row.district_name, row.sti_district_guid,row.sti_school_id,row.le_school_id,row.school_name, row.le_person_id,row.sti_user_id,row.teacher_last_name,row.teacher_first_name,row.login_count,row.date,row.has_classroom]
         end
       end
     end
