@@ -13,7 +13,7 @@ module Reports
         @ending_day = Time.zone.now.end_of_day
       end
       @districts_where = ""
-      if options.has_key?("districts")
+      if options.has_key?("districts") and options["districts"].strip.length > 2
         @districts = options["districts"].downcase.split(",").collect {|x| "'#{x.strip}'"}.join(", ")
         @districts_where = " AND d.guid IN (#{@districts}) "
       end
