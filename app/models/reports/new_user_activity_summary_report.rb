@@ -59,7 +59,7 @@ module Reports
               AND p.type IN ('Teacher','SchoolAdmin')
               AND p.status = 'active' AND psl.status = 'active'
               AND su.person_id = p.id
-              AND su.last_sign_in_at >= '#{beginning_day}' AND su.last_sign_in_at <= '#{ending_day}' ) AS teacher_login_count,
+              AND su.last_sign_in_at >= '#{@beginning_day}' AND su.last_sign_in_at <= '#{@ending_day}' ) AS teacher_login_count,
             (SELECT count(DISTINCT tcp.id)
              FROM people tcp, person_school_links tcpsl, otu_codes tcoc, plutus_transactions tcpt
              WHERE s.id = tcpsl.school_id AND tcp.id = tcpsl.person_id
@@ -69,7 +69,7 @@ module Reports
            AND tcpt.description ilike '%ebucks for student%'
                AND tcp.type IN ('Teacher','SchoolAdmin')
                AND tcp.status = 'active' AND tcpsl.status = 'active'
-               AND tcoc.created_at >= '#{beginning_day}' AND tcoc.created_at <=  '#{@ending_day}' ) AS teachers_issuing_credits_count,
+               AND tcoc.created_at >= '#{@beginning_day}' AND tcoc.created_at <=  '#{@ending_day}' ) AS teachers_issuing_credits_count,
             (SELECT count(sp.id)
               FROM people sp, person_school_links spsl
               WHERE spsl.school_id = s.id
@@ -83,7 +83,7 @@ module Reports
               AND p.type IN ('Student')
               AND p.status = 'active' AND psl.status = 'active'
               AND su.person_id = p.id
-              AND su.last_sign_in_at >= '#{beginning_day}' AND su.last_sign_in_at <= '#{ending_day}') AS student_login_count,
+              AND su.last_sign_in_at >= '#{@beginning_day}' AND su.last_sign_in_at <= '#{@ending_day}') AS student_login_count,
             (SELECT count(DISTINCT sp.id)
               FROM people sp, person_school_links sppsl, plutus_transactions sppt, plutus_amounts sppa, person_account_links sppal
               WHERE sppsl.school_id = s.id AND sppsl.person_id = sp.id AND sp.status = 'active' AND sppsl.status = 'active'
@@ -91,7 +91,7 @@ module Reports
                AND sppa.transaction_id = sppt.id
                AND sppa.account_id = sppal.plutus_account_id AND sppal.person_school_link_id = sppsl.id
                AND sppt.description = 'Reward Purchase'
-               AND sppt.created_at >= '#{beginning_day}' AND sppt.created_at <=  '#{@ending_day}'
+               AND sppt.created_at >= '#{@beginning_day}' AND sppt.created_at <=  '#{@ending_day}'
               ) AS students_purchasing_rewards_count,
             (SELECT count(DISTINCT sr.id)
               FROM people sr, person_school_links srpsl, plutus_transactions srpt, plutus_amounts srpa, person_account_links srpal
@@ -100,7 +100,7 @@ module Reports
                AND srpa.transaction_id = srpt.id
                AND srpa.account_id = srpal.plutus_account_id AND srpal.person_school_link_id = srpsl.id
                AND (srpt.description IN ('Issue Printed Credits to Student','Issue Credits to Student') OR srpt.description ILIKE 'Weekly Credits for%' OR srpt.description ILIKE 'Monthly Credits for%' )
-               AND srpt.created_at >= '#{beginning_day}'  AND srpt.created_at <=  '#{@ending_day}'
+               AND srpt.created_at >= '#{@beginning_day}'  AND srpt.created_at <=  '#{@ending_day}'
               ) AS students_receiving_credits_count,
             (SELECT count(DISTINCT sd.id)
               FROM people sd, person_school_links sdpsl, plutus_transactions sdpt, plutus_amounts sdpa, person_account_links sdpal
@@ -109,7 +109,7 @@ module Reports
                AND sd.type = 'Student'
                AND sdpa.account_id = sdpal.plutus_account_id AND sdpal.person_school_link_id = sdpsl.id
                AND (sdpt.description IN ('Issue Printed Credits to Student','Issue Credits to Student') OR sdpt.description ILIKE 'Credits Earned for %')
-               AND sdpt.created_at >= '#{beginning_day}' AND sdpt.created_at <=  '#{@ending_day}' 
+               AND sdpt.created_at >= '#{@beginning_day}' AND sdpt.created_at <=  '#{@ending_day}' 
               ) AS students_depositing_credits_count
             FROM schools s          
           )

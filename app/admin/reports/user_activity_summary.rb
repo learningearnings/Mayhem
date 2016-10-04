@@ -1,5 +1,5 @@
 ActiveAdmin.register_page "User Activity Summary Report" do
-  menu :parent => "Reports", :priority => 2
+  menu :parent => "Reports", :priority => 10
 
   content do
     render partial: "admin/reports/user_activity_summary_reports"
