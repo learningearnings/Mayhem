@@ -10,13 +10,33 @@ ActiveAdmin.register AuditLog do
   index do
     column :id
     column "District Id" do |audit_log|
-      audit_log.person.district_guid
+      if  audit_log.log_event_type == "PersonSchoolLink"
+        audit_log.log_event.person.district_guid
+      elsif audit_log.log_event_type == "PersonSchoolClassroomLink" 
+        audit_log.log_event.person_school_link.person.district_guid
+      elsif audit_log.log_event_type == "Auction"
+        audit_log.log_event.creator.district_guid
+      else
+        audit_log.log_event.district_guid
+      end  
     end   
     column "School Id" do |audit_log|
-      audit_log.person.school.id if !audit_log.person.is_a?(LeAdmin)
+      if audit_log.log_event_type == "PersonSchoolClassroomLink" 
+        audit_log.log_event.person_school_link.school.id
+      elsif audit_log.log_event_type == "Auction"
+        audit_log.log_event.auction_school_links.first.school.id 
+      else
+        audit_log.log_event.school.id 
+      end  
     end
     column "School sti_id" do |audit_log|
-      audit_log.person.school.sti_id if !audit_log.person.is_a?(LeAdmin)
+      if audit_log.log_event_type == "PersonSchoolClassroomLink" 
+        audit_log.log_event.person_school_link.school.sti_id
+      elsif audit_log.log_event_type == "Auction"
+        audit_log.log_event.auction_school_links.first.school.sti_id 
+      else
+        audit_log.log_event.school.sti_id 
+      end  
     end
     column "Person id" do |audit_log|
       audit_log.person.id
@@ -39,7 +59,7 @@ ActiveAdmin.register AuditLog do
     column "Object Name" do |audit_log|
       if audit_log.log_event_type == 'Auction'
         audit_log.log_event.product.name
-      elsif audit_log.log_event_type == "PersonSchoolLink" || audit_log.log_event_type == "PersonSchoolClassroomLink"
+      elsif ["PersonSchoolLink","PersonSchoolClassroomLink"].include? audit_log.log_event_type
         audit_log.log_event.person.name
       else
         audit_log.log_event.try(:name)
