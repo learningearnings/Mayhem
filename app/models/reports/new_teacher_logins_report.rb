@@ -16,6 +16,8 @@ module Reports
       if options.has_key?("districts") and options["districts"].strip.length > 2
         @districts = options["districts"].downcase.split(",").collect {|x| "'#{x.strip}'"}.join(", ")
         @districts_where = " AND d.guid IN (#{@districts}) "
+      else
+        @districts = "ALL"        
       end
       @total_days = (@ending_day.to_date - @beginning_day.to_date).to_i
       
