@@ -13,7 +13,7 @@ ActiveAdmin.register AuditLog do
       if  audit_log.log_event_type == "PersonSchoolLink"
         audit_log.log_event.person.district_guid
       elsif audit_log.log_event_type == "PersonSchoolClassroomLink" 
-        audit_log.log_event.person_school_link.person.district_guid
+        audit_log.log_event.person_school_link.person.district_guid if audit_log.log_event.person_school_link.present? && audit_log.log_event.person_school_link.person.present?
       elsif audit_log.log_event_type == "Auction"
         audit_log.log_event.product.schools.first.district_guid if audit_log.log_event.product.schools.present?
       elsif audit_log.log_event_type == "Spree::Product"
@@ -23,6 +23,7 @@ ActiveAdmin.register AuditLog do
       end  
     end   
     column "School Id" do |audit_log|
+
       if audit_log.log_event_type == "PersonSchoolClassroomLink" 
         audit_log.log_event.person_school_link.school.id
       elsif audit_log.log_event_type == "Auction"
@@ -32,7 +33,7 @@ ActiveAdmin.register AuditLog do
       elsif audit_log.log_event_type == "School"
         audit_log.log_event.id 
       else
-        audit_log.log_event.school.id 
+        audit_log.log_event.school.id if audit_log.log_event.school.present?
       end  
     end
     column "School sti_id" do |audit_log|
@@ -45,7 +46,7 @@ ActiveAdmin.register AuditLog do
       elsif audit_log.log_event_type == "School"
         audit_log.log_event.sti_id 
       else
-        audit_log.log_event.school.sti_id 
+        audit_log.log_event.school.sti_id if audit_log.log_event.school.present?
       end  
     end
     column "Person id" do |audit_log|
