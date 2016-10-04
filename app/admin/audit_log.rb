@@ -15,9 +15,9 @@ ActiveAdmin.register AuditLog do
       elsif audit_log.log_event_type == "PersonSchoolClassroomLink" 
         audit_log.log_event.person_school_link.person.district_guid
       elsif audit_log.log_event_type == "Auction"
-        audit_log.log_event.product.schools.first.district_guid if audit_log.log_event.product.schools
+        audit_log.log_event.product.schools.first.district_guid if audit_log.log_event.product.schools.present?
       elsif audit_log.log_event_type == "Spree::Product"
-        audit_log.log_event.schools.first.district_guid if audit_log.log_event.schools
+        audit_log.log_event.schools.first.district_guid if audit_log.log_event.schools.present?
       else  
         audit_log.log_event.district_guid
       end  
@@ -26,9 +26,9 @@ ActiveAdmin.register AuditLog do
       if audit_log.log_event_type == "PersonSchoolClassroomLink" 
         audit_log.log_event.person_school_link.school.id
       elsif audit_log.log_event_type == "Auction"
-        audit_log.log_event.product.schools.first.id if audit_log.log_event.product.schools
+        audit_log.log_event.product.schools.first.id if audit_log.log_event.product.schools.present?
       elsif audit_log.log_event_type == "Spree::Product"
-        audit_log.log_event.schools.first.id if audit_log.log_event.schools
+        audit_log.log_event.schools.first.id if audit_log.log_event.schools.present?
       elsif audit_log.log_event_type == "School"
         audit_log.log_event.id 
       else
@@ -39,9 +39,9 @@ ActiveAdmin.register AuditLog do
       if audit_log.log_event_type == "PersonSchoolClassroomLink" 
         audit_log.log_event.person_school_link.school.sti_id
       elsif audit_log.log_event_type == "Auction"
-        audit_log.log_event.product.schools.first.sti_id if audit_log.log_event.product.schools
+        audit_log.log_event.product.schools.first.sti_id if audit_log.log_event.product.schools.present?
       elsif audit_log.log_event_type == "Spree::Product"
-        audit_log.log_event.schools.first.sti_id if  audit_log.log_event.schools
+        audit_log.log_event.schools.first.sti_id if  audit_log.log_event.schools.present?
       elsif audit_log.log_event_type == "School"
         audit_log.log_event.sti_id 
       else
