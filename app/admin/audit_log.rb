@@ -2,7 +2,7 @@ ActiveAdmin.register AuditLog do
   filter :person_id
   filter :person_first_name, :as => :string
   filter :person_last_name, :as => :string
-  filter :person_district_guid, :as => :string
+  #filter :person_district_guid, :as => :string
   #filter :school, as: :select, collection: School.order(:id)
   filter :log_event_type
   filter :created_at
@@ -15,8 +15,10 @@ ActiveAdmin.register AuditLog do
       elsif audit_log.log_event_type == "PersonSchoolClassroomLink" 
         audit_log.log_event.person_school_link.person.district_guid
       elsif audit_log.log_event_type == "Auction"
-        audit_log.log_event.creator.district_guid
-      else
+        audit_log.log_event.product.schools.first.district_guid
+      elsif audit_log.log_event_type == "Spree::Product"
+        audit_log.log_event.schools.first.district_guid
+      else  
         audit_log.log_event.district_guid
       end  
     end   
@@ -24,7 +26,11 @@ ActiveAdmin.register AuditLog do
       if audit_log.log_event_type == "PersonSchoolClassroomLink" 
         audit_log.log_event.person_school_link.school.id
       elsif audit_log.log_event_type == "Auction"
-        audit_log.log_event.auction_school_links.first.school.id 
+        audit_log.log_event.product.schools.first.id 
+      elsif audit_log.log_event_type == "Spree::Product"
+        audit_log.log_event.schools.first.id 
+      elsif audit_log.log_event_type == "School"
+        audit_log.log_event.id 
       else
         audit_log.log_event.school.id 
       end  
@@ -33,7 +39,11 @@ ActiveAdmin.register AuditLog do
       if audit_log.log_event_type == "PersonSchoolClassroomLink" 
         audit_log.log_event.person_school_link.school.sti_id
       elsif audit_log.log_event_type == "Auction"
-        audit_log.log_event.auction_school_links.first.school.sti_id 
+        audit_log.log_event.product.schools.first.sti_id 
+      elsif audit_log.log_event_type == "Spree::Product"
+        audit_log.log_event.schools.first.sti_id 
+      elsif audit_log.log_event_type == "School"
+        audit_log.log_event.sti_id 
       else
         audit_log.log_event.school.sti_id 
       end  
