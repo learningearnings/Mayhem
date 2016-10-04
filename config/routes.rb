@@ -154,6 +154,7 @@ Leror::Application.routes.draw do
     match "checking_history/get_history" => 'checking_history#get_history', :as => :checking_history
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
+    match "remove_auction/:id" => 'auctions#remove_auction', as: :remove_auction
   end
 
   # route to view sidekiq worker status

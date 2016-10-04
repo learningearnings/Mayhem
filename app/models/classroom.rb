@@ -10,6 +10,7 @@ class Classroom < ActiveRecord::Base
   has_many :person_school_classroom_links
   has_many :classroom_filter_links, :inverse_of => :classrooms
   has_many :filters, :through => :classroom_filter_links
+  has_many :audit_logs, :as => :log_event
 
   has_many :classroom_product_links
   has_many :products, :through => :classroom_product_links, :class_name => "Spree::Product", :source => :spree_product
@@ -25,7 +26,6 @@ class Classroom < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :sti_uuid, allow_blank: true
-
   # Roll our own Relationships (with ARel merge!)
   def person_school_links(status = :status_active)
     PersonSchoolLink.joins(:person_school_classroom_links).where(person_school_classroom_links: { classroom_id: id, status: "active" }).send(status)

@@ -44,5 +44,8 @@
             - @students.each do |student|
               = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id, name: student.name}
           %div.clear
+#message.modal.hide
+  = image_tag "loading.gif"
+  %h3 Your student account(s) are being updated, the results will be displayed when it is completed.
         
 = javascript_include_tag "bulk_students"

@@ -1,5 +1,4 @@
 class Auction < ActiveRecord::Base
-  validates :product_id, numericality: true
   validates :person_id, presence: true
   validates :end_date, date: { after: :start_date }
   validates :current_bid, numericality: true
@@ -17,10 +16,11 @@ class Auction < ActiveRecord::Base
   has_many :schools, :through => :auction_school_links
   has_many :auction_school_links
   has_many :auction_zip_codes
+  has_many :audit_logs, :as => :log_event
 
-  attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_codes, :auction_zip_code_ids, as: :le_admin
-  attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_code, :auction_zip_code_ids
-
+  attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_codes, :auction_zip_code_ids, :deleted_at, as: :le_admin
+  attr_accessible :person_id, :state_ids, :school_ids, :start_date, :end_date, :current_bid, :auction_type, :min_grade, :max_grade, :product_id, :starting_bid, :zip_code, :auction_zip_code_ids, :deleted_at
+  
   scope :active, where("NOW() BETWEEN start_date AND end_date")
   scope :not_notified, where("notified IS NOT TRUE")
   scope :unfulfilled, where("fulfilled IS NOT TRUE")
@@ -36,7 +36,7 @@ class Auction < ActiveRecord::Base
     # FIXME: Move this to arel, or possibly find a better solution for
     # how viewable auctions are handled.
     includes(:auction_school_links, :auction_state_links, :auction_zip_codes).
-    where("? BETWEEN min_grade AND max_grade AND NOW() BETWEEN start_date AND end_date AND
+    where("? BETWEEN min_grade AND max_grade AND NOW() BETWEEN start_date AND end_date AND deleted_at IS NULL AND
            ( auction_school_links.school_id = ? OR
              auction_state_links.state_id = ? OR
              auction_zip_codes.zip_code = ?
@@ -45,7 +45,7 @@ class Auction < ActiveRecord::Base
   
   def self.active_for_school(school)
     includes(:auction_school_links, :auction_state_links, :auction_zip_codes).
-    where("NOW() BETWEEN start_date AND end_date AND
+    where("NOW() BETWEEN start_date AND end_date AND deleted_at IS NULL AND
            ( auction_school_links.school_id = ? OR
              auction_state_links.state_id = ? OR
              auction_zip_codes.zip_code = ?
@@ -54,7 +54,7 @@ class Auction < ActiveRecord::Base
   
   def self.for_school(school)
     includes(:auction_school_links, :auction_state_links, :auction_zip_codes).
-    where("( auction_school_links.school_id = ? OR
+    where("deleted_at IS NULL AND ( auction_school_links.school_id = ? OR
              auction_state_links.state_id = ? OR
              auction_zip_codes.zip_code = ?
            )", school.id, school.state.id, school.zip)    
@@ -65,7 +65,7 @@ class Auction < ActiveRecord::Base
     # how viewable auctions are handled.
     includes(:auction_school_links, :auction_state_links, :auction_zip_codes).
     where("NOW() BETWEEN start_date AND end_date AND
-             ? BETWEEN min_grade AND max_grade AND
+             ? BETWEEN min_grade AND max_grade AND deleted_at IS NULL AND 
            ( auction_school_links.school_id = ? OR
              auction_state_links.state_id = ? OR
              auction_zip_codes.zip_code = ?
@@ -78,7 +78,7 @@ class Auction < ActiveRecord::Base
         .where(auction_school_links: { id: nil })
         .where(auction_state_links: { id: nil })
         .where(auction_zip_codes: { id: nil })
-        .where("? BETWEEN min_grade AND max_grade", grade)
+        .where("? BETWEEN min_grade AND max_grade AND deleted_at IS NULL", grade)
   end
 
   def global?

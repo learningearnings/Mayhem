@@ -19,6 +19,8 @@ Spree::Product.class_eval do
 
   has_many :classroom_product_links, :foreign_key => :spree_product_id
   has_many :classrooms, :through => :classroom_product_links
+  
+  has_many :audit_logs, :as => :log_event
 
 
   #   # add_search_scope :with_property_value do |property, value|

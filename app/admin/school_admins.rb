@@ -22,6 +22,9 @@ ActiveAdmin.register SchoolAdmin do
         params[:school_admin][:user_attributes].delete(:password)
         params[:school_admin][:user_attributes].delete(:password_confirmation)
       end
+      if resource.status != "inactive" && params[:school_admin][:status] == "inactive"
+        resource.audit_logs.create(person_id: current_person.id, action: "Deactivate")       
+      end  
       update! do |format|
         format.html { redirect_to admin_school_admins_path }
       end
