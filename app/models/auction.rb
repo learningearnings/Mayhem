@@ -155,6 +155,18 @@ class Auction < ActiveRecord::Base
     current_bid - top_bid_amount
   end
 
+  def auction_school_id
+    product.schools.first.try(:id)
+  end
+
+  def auction_district_guid
+    product.schools.first.try(:district_guid)
+  end 
+
+  def auction_school_sti_id
+    product.schools.first.try(:sti_id)
+  end
+
   protected
   def set_defaults
     self.current_bid  ||= BigDecimal('0')

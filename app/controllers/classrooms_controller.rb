@@ -39,7 +39,7 @@ class ClassroomsController < LoggedInController
     if psl = PersonSchoolLink.find_by_school_id_and_person_id(@school.id, @student.id)
       link = PersonSchoolClassroomLink.find_by_person_school_link_id_and_classroom_id(psl.id, @classroom.id)
       if link.deactivate!
-        audit_log = link.audit_logs.create(person_id: current_person.id, action: "Deactivate")
+        link.audit_logs.create(district_guid: link.person_school_link.school.try(:district_guid), school_id: link.person_school_link.school.try(:id), school_sti_id: link.person_school_link.school.try(:sti_id), person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: link.person.name, action: "Deactivate")
         flash[:notice] = "Student removed from classroom."
         MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom', mixpanel_options)
         redirect_to classroom_path(@classroom)
@@ -117,7 +117,7 @@ class ClassroomsController < LoggedInController
     classroom = Classroom.find(params[:id])
     classroom_deactivator = ClassroomDeactivator.new(params[:id])
     if classroom_deactivator.execute!
-      classroom.audit_logs.create(person_id: current_person.id, action: "Deactivate")
+      classroom.audit_logs.create(district_guid: classroom.school.try(:district_guid), school_id: classroom.school.try(:id), school_sti_id: classroom.school.try(:sti_id), person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: classroom.name, action: "Deactivate")
       audit_deleted_rewards(classroom)
       flash[:notice] = 'Classroom deleted.'
       redirect_to classrooms_path
@@ -182,7 +182,7 @@ class ClassroomsController < LoggedInController
     products =  classroom.products.with_property_value("reward_type", "local").readonly(false).where("spree_products.deleted_at >=?", Date.today)
     if products
       products.each do |p|
-        p.audit_logs.create(person_id: current_person.id, action: "Deactivate")
+        p.audit_logs.create(district_guid: p.schools.first.try(:district_guid), school_id: p.schools.first.try(:id), school_sti_id: p.schools.first.try(:sti_id), person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: p.name, action: "Deactivate")
       end
     end    
   end  

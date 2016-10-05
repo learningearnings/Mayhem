@@ -133,7 +133,7 @@ module Teachers
     def destroy
       product = Spree::Product.find(params[:id])
       product.destroy
-      product.audit_logs.create(person_id: current_person.id, action: "Deactivate")
+      product.audit_logs.create(district_guid: product.schools.first.try(:district_guid), school_id: product.schools.first.try(:id), school_sti_id: product.schools.first.try(:sti_id), person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: product.name, action: "Deactivate")
       respond_to do |format|
         format.html { redirect_to teachers_rewards_url }
         format.json { head :no_content }
