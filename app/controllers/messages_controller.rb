@@ -17,7 +17,7 @@ class MessagesController < LoggedInController
   end
 
   def teacher_messages
-    @messages = @received_messages.from_teacher.page params[:page]
+    @messages = @received_messages.from_teacher.expired_otu_code.page params[:page]
     @messages.map{|x| x.read!}
   end
 
