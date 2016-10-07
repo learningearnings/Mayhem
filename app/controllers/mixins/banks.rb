@@ -76,7 +76,8 @@ module Mixins
           students.each do |student|
             student_credits = BigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-            issue_ebucks_to_student(student, student_credits, category_id) if student_credits > 0
+            issue_ebucks_to_student(student, student_credits, category_id) 
+            #if student_credits > 0
           end
           if failed
             raise ActiveRecord::Rollback
@@ -121,7 +122,8 @@ module Mixins
             if params[:credits][student.id.to_s].present?
               student_credits = BigDecimal(params[:credits][student.id.to_s])
               category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-              issue_ebucks_to_student(student, student_credits, category_id) if student_credits.to_i > 0
+              issue_ebucks_to_student(student, student_credits, category_id) 
+              #if student_credits.to_i > 0
             end
           end
           if failed
@@ -190,7 +192,7 @@ module Mixins
     end
 
     def issue_ebucks_to_student(student, point_value=params[:points], category_id=nil)
-      point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
+      point_value = BigDecimal(point_value) unless point_value.is_a?(BigDecimal)
       @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value, category_id)
       MixPanelTrackerWorker.perform_async(current_user.id, 'Send e-Credits', mixpanel_options)
     end
