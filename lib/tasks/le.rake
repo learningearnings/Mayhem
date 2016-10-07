@@ -35,7 +35,7 @@ namespace :le do
           students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
           students.each do |student|
             ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+            otu_code = OtuCode.create(:expires_at => (Time.now + 90.days),
               :student_id => student.id,
               :ebuck => true,
               :points => BigDecimal.new(school.weekly_perfect_attendance_amount))
@@ -49,7 +49,7 @@ namespace :le do
           students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
           students.each do |student|
             ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+            otu_code = OtuCode.create(:expires_at => (Time.now + 90.days),
                    :student_id => student.id,
                    :ebuck => true,
                    :points => BigDecimal.new(school.weekly_no_tardies_amount))
@@ -63,7 +63,7 @@ namespace :le do
           students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
           students.each do |student|
             ActionController::Base.new.expire_fragment "#{student.id}_balances"
-            otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+            otu_code = OtuCode.create(:expires_at => (Time.now + 90.days),
                    :student_id => student.id,
                    :ebuck => true,
                    :points => BigDecimal.new(school.weekly_no_infractions_amount))
@@ -96,7 +96,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+          otu_code = OtuCode.create(:expires_at => (Time.now + 90.days),
                  :student_id => student.id,
                  :ebuck => true,
                  :points => BigDecimal.new(school.monthly_perfect_attendance_amount))
@@ -110,7 +110,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+          otu_code = OtuCode.create(:expires_at => (Time.now + 90.days),
                  :student_id => student.id,
                  :ebuck => true,
                  :points => BigDecimal.new(school.monthly_no_tardies_amount))
@@ -124,7 +124,7 @@ namespace :le do
         students = Student.where(district_guid: school.district_guid, sti_id: sti_ids)
         students.each do |student|
           ActionController::Base.new.expire_fragment "#{student.id}_balances"
-          otu_code = OtuCode.create(:expires_at => (Time.now + 45.days),
+          otu_code = OtuCode.create(:expires_at => (Time.now + 90.days),
                  :student_id => student.id,
                  :ebuck => true,
                  :points => BigDecimal.new(school.monthly_no_infractions_amount))
