@@ -4,6 +4,64 @@ module Mobile
   module V1
     class BaseController < ActionController::Base
       skip_before_filter :authenticate_request
+      around_filter :track_interaction
+      before_filter :check_mixpanel 
+           
+  def track_interaction
+    start_time = Time.now
+    interaction = Interaction.new ip_address: request.ip
+    interaction.person = current_person if current_person
+    interaction.school_id = session[:current_school_id]
+    yield
+    end_time = Time.now
+    interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
+    interaction.page = request.path
+    # NOTE: Don't know how to get memory usage in here yet
+    interaction.save
+  end
+  
+  def check_mixpanel
+    if !session[:mixpanelinit] and current_user
+      MixPanelIdentifierWorker.perform_async(current_user.id, mixpanel_options)
+      MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', mixpanel_options)
+      session[:mixpanelinit] = true
+
+    end
+  end
+  
+  def mixpanel_options
+    if current_user and current_school
+      district = District.where(guid: current_school.district_guid).last if current_school.district_guid
+      if district
+        district_name = (district.name.blank? ? "None" : district.name ) 
+      else  before_filter :check_mixpanel
+        district_name = "None"
+      end
+      @options = {:env => Rails.env, 
+                  '$email' => current_user.email, 
+                  '$username' => current_user.username, 
+                  '$first_name' => current_user.person.first_name, 
+                  '$last_name' => current_user.person.last_name,
+                  :grade => current_user.person.try(:grade),
+                  :type => current_user.person.type, :school => current_user.person.school.try(:name),
+                  :district_guid => (current_school.district_guid.blank? ? "None" : current_school.district_guid ),
+                  :d  before_filter :check_mixpanelistrict => district_name,                
+                  :credits_scope => current_school.credits_scope, 
+                  :school_synced => current_school.synced? }
+    else
+      @options = {}
+    end
+    return @options
+  end
+  
+  def log_event
+    if current_user
+      MixPanelTrackerWorker.perform_async(current_user.id, params[:event], mixpanel_options) 
+      render :text => "Logged event #{params[:event]}"
+    else
+      render :text => "Could not log event, no user"
+    end
+  end
 
       def current_user
         if decoded_auth_token
