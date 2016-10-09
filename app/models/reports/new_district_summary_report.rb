@@ -145,7 +145,7 @@ module Reports
             student_engagement_percent = (row.students_purchasing_rewards_count.to_f / row.student_login_count.to_f ) * 100.0
           end           
           csv << [row.name, row.guid, row.teacher_count, row.teacher_login_count, row.teachers_issuing_credits_count, 
-            row.student_count.row.student_login_count,row.students_receiving_credits_count,row.students_depositing_credits_count,row.students_purchasing_rewards_count,
+            row.student_count, row.student_login_count, row.students_receiving_credits_count, row.students_depositing_credits_count, row.students_purchasing_rewards_count,
             teacher_engagement, student_login_percent, student_deposits_percent, student_engagement_percent]   
         
           sql2 = %Q(
