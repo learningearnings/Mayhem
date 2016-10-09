@@ -181,7 +181,7 @@ module Reports
              order by (credits_count + login_count) desc
              limit 10
           )
-          top_ten_teachers = Teachers.find_by_sql(sql2)
+          top_ten_teachers = Teacher.find_by_sql(sql2)
           csv << [""]          
           csv << [""]
           csv << ["Top 10 teachers for district #{row.guid}"]
@@ -219,7 +219,7 @@ module Reports
                      grade
             ORDER BY extract(dow from  i.created_at)          
           )
-          student_logins =  Students.find_by_sql(sql3)
+          student_logins =  Student.find_by_sql(sql3)
           csv << [""]          
           csv << [""]
           csv << ["Student login count by grade and weekday for district #{row.guid}"]
