@@ -137,12 +137,12 @@ module Reports
           if row.student_login_count == 0 or row.students_depositing_credits_count == 0
             student_deposits_percent = 0.0
           else
-            student_deposits_percent = (row.students_depositing_credits.to_f / row.student_login_count.to_f ) * 100.0
+            student_deposits_percent = (row.students_depositing_credits_count.to_f / row.student_login_count.to_f ) * 100.0
           end          
           if row.student_login_count == 0 or row.students_purchasing_rewards_count == 0
             student_engagement_percent = 0.0
           else
-            student_engagement_percent = (row.students_purchasing_rewards.to_f / row.student_login_count.to_f ) * 100.0
+            student_engagement_percent = (row.students_purchasing_rewards_count.to_f / row.student_login_count.to_f ) * 100.0
           end           
           csv << [row.name, row.guid, row.teacher_count, row.teacher_login_count, row.teachers_issuing_credits_count, 
             row.student_count.row.student_login_count,row.students_receiving_credits_count,row.students_depositing_credits_count,row.students_purchasing_rewards_count,
