@@ -1550,6 +1550,10 @@ h3 {
   padding: 60px 20px 30px 30px;
 }
 
+.fa-text {
+  transform: rotate(5deg);
+}
+
 .featured-activity-callout {
   position: absolute;
   top: 315px;
@@ -1594,6 +1598,9 @@ h3 {
     width: 291px;
     height: 251px;
     padding: 45px 90px 0px 20px;
+  }
+  .our-sponsors ul {
+    transform: rotate(-3deg);
   }
   .our-sponsors-callout {
     position: absolute;

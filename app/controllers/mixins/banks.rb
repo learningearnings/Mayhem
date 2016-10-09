@@ -20,7 +20,16 @@ module Mixins
       if params[:points].to_i < 0
         if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           student = Student.find(params[:student][:id])
-          CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points])
+          psql = PersonSchoolLink.where(school_id: current_school.id, person_id: current_person.id).first
+          reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
+          otu_code = OtuCode.create(:expires_at => (Time.now),
+                 :person_school_link_id => psql.id,
+                 :otu_code_category_id => reason_id,
+                 :student_id => student.id,
+                 :ebuck => true,
+                 :points => BigDecimal.new(params[:points]))
+          otu_code.mark_redeemed! 
+          CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, params[:points],otu_code)
           flash[:notice] = "The points have been deducted from the student account."
         else
           flash[:error] = "You can't enter negative values"
@@ -59,7 +68,7 @@ module Mixins
         redirect_to :back and return
       end
 
-      if params[:credits] && params[:credits].values.detect {|x| x.to_s =~ /\D/}
+      if params[:credits] && params[:credits].values.detect {|x| x.to_s =~  /[^-?\d+(.\d+)?$]/}
         flash[:error] = "You must only enter numerical values"
         redirect_to :back and return
       end
@@ -74,9 +83,10 @@ module Mixins
         OtuCode.transaction do
           students = Student.includes(:person_school_links).where(id: params[:credits].keys, person_school_links: { school_id: current_person.schools.pluck(:id) })
           students.each do |student|
-            student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+            student_credits = BigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-            issue_ebucks_to_student(student, student_credits, category_id) if student_credits > 0
+            issue_ebucks_to_student(student, student_credits, category_id) 
+            #if student_credits > 0
           end
           if failed
             raise ActiveRecord::Rollback
@@ -96,10 +106,20 @@ module Mixins
     def create_ebucks_for_classroom
       if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
         if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
+          psql = PersonSchoolLink.where(school_id: current_school.id, person_id: current_person.id).first
+          reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
           params[:credits].delete_if do |k, v|
             if v.to_i < 0
               student = Student.find(k)
-              CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, v)
+              otu_code = OtuCode.create(:expires_at => (Time.now),
+                :person_school_link_id => psql.id,
+                :otu_code_category_id => reason_id,
+                :student_id => student.id,
+                :ebuck => true,
+                :points => BigDecimal.new(v))
+              otu_code.mark_redeemed! 
+ 
+              CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, v,otu_code)
             end
           end
         else
@@ -119,9 +139,10 @@ module Mixins
         OtuCode.transaction do
           classroom.students.each do |student|
             if params[:credits][student.id.to_s].present?
-              student_credits = SanitizingBigDecimal(params[:credits][student.id.to_s])
+              student_credits = BigDecimal(params[:credits][student.id.to_s])
               category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-              issue_ebucks_to_student(student, student_credits, category_id) if student_credits.to_i > 0
+              issue_ebucks_to_student(student, student_credits, category_id) 
+              #if student_credits.to_i > 0
             end
           end
           if failed
@@ -190,7 +211,7 @@ module Mixins
     end
 
     def issue_ebucks_to_student(student, point_value=params[:points], category_id=nil)
-      point_value = SanitizingBigDecimal(point_value) unless point_value.is_a?(BigDecimal)
+      point_value = BigDecimal(point_value) unless point_value.is_a?(BigDecimal)
       @bank.create_ebucks(person, current_school, student, current_school.state.abbr, point_value, category_id)
       MixPanelTrackerWorker.perform_async(current_user.id, 'Send e-Credits', mixpanel_options)
     end

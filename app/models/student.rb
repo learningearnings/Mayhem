@@ -181,4 +181,10 @@ class Student < Person
   def set_status_to_active
     self.status = 'active' # Students should default to active
   end
+
+
+  def generate_token
+    token = SecureRandom.hex(3)      
+  end
+
 end

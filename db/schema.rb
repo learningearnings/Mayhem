@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160930072632) do
+ActiveRecord::Schema.define(:version => 20161005095435) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -104,7 +104,20 @@ ActiveRecord::Schema.define(:version => 20160930072632) do
     t.string   "action"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.string   "district_guid"
+    t.integer  "school_id"
+    t.integer  "school_sti_id"
+    t.integer  "person_sti_id"
+    t.string   "person_name"
+    t.string   "person_type"
+    t.string   "log_event_name"
   end
+
+  add_index "audit_logs", ["district_guid"], :name => "index_audit_logs_on_district_guid"
+  add_index "audit_logs", ["log_event_name"], :name => "index_audit_logs_on_log_event_name"
+  add_index "audit_logs", ["log_event_type"], :name => "index_audit_logs_on_log_event_type"
+  add_index "audit_logs", ["person_id"], :name => "index_audit_logs_on_person_id"
+  add_index "audit_logs", ["school_id"], :name => "index_audit_logs_on_school_id"
 
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
