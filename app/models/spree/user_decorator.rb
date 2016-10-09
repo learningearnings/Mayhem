@@ -10,11 +10,9 @@ Spree::User.class_eval do
   belongs_to :person
   has_many :person_school_links, :through => :person
   has_many :schools, :through => :person_school_links
-
   after_save :set_recovery_password, :set_student_confirmed_at
-
+  #after_create :set_parent_code, :set_parent_code , unless: Proc.new { self.person.type == "Parent" }
   before_validation :strip_whitespace
-
   def self.authenticate_with_school_id(username,password,school_id)
     return if username.blank? || password.blank?
     # Regular teacher or student
@@ -57,7 +55,7 @@ Spree::User.class_eval do
     end
     user
   end
-
+ 
   def self.admin_created?
     true
   end
@@ -77,6 +75,13 @@ Spree::User.class_eval do
     AuthToken.encode(payload)
   end
 
+  def generate_parent_auth_token
+    payload = {
+      user_id: self.id
+    }
+    AuthToken.encode(payload)
+  end
+
   protected
   def strip_whitespace
     self.username = self.username.strip unless self.username.blank?
@@ -88,7 +93,7 @@ Spree::User.class_eval do
       person.update_attribute(:recovery_password, password)
     end
   end
-  
+ 
   def set_student_confirmed_at
     if person and person.type == "Student" and self.confirmed_at.nil?
       self.confirmed_at = Time.now

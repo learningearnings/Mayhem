@@ -29,9 +29,11 @@
         %label
           = radio_button_tag :reward_scope, :specific_classrooms, !@teachers_reward.whole_school?
           Specific Classrooms
+  - else
+    = hidden_field_tag 'reward_scope', 'specific_classrooms'
 
   .classrooms-interface
-    %h3 Select Classrooms for your reward
+    %h3 * Select Classrooms for your reward
     .row-fluid.controls-row
       #classrooms.classrooms
         - f.collection_check_boxes :classrooms, current_person.classrooms.sort_by(&:name), :id, :name do |b|
@@ -47,6 +49,7 @@
 
   .control-row
   = f.input :spree_product_id, :as => :hidden
+
   = f.submit :class => 'btn awesome-button'
 
 :coffeescript

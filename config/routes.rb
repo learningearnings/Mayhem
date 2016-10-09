@@ -125,6 +125,7 @@ Leror::Application.routes.draw do
   match '/pages/teachers/news' => 'news#index', visitor_type: 'teacher'
 
   match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
+  match '/schools/printed_credit_logo' => 'schools/settings#upload_school_logo', as: 'printed_credit_logo'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
   match '/schools/settings/update_sponsors_text' => 'schools/settings#update_sponsors_text'
   namespace :schools do
@@ -154,6 +155,7 @@ Leror::Application.routes.draw do
     match "checking_history/get_history" => 'checking_history#get_history', :as => :checking_history
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
+    match "remove_auction/:id" => 'auctions#remove_auction', as: :remove_auction
   end
 
   # route to view sidekiq worker status

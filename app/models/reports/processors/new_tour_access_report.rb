@@ -10,7 +10,7 @@ module Reports
 
       def run
         File.open("/tmp/" + filename, "w") {|f| f.write Reports::NewTourAccessReport.new(options).run }
-        AdminMailer.tour_access_report(filename).deliver
+        AdminMailer.delay.tour_access_report(filename)
       end
     end
   end

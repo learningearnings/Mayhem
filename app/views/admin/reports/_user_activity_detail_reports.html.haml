@@ -1,0 +1,37 @@
+%h4 Choose a start and end date for the User Activity Detail Report 
+
+%p  These are reports created for Shannon ( teacher credits/logins and student credits/logins )
+%p
+  From: 
+  = text_field_tag :start_date, {}, value: (Time.zone.now - 30.days).strftime("%m/%d/%Y")
+  To: 
+  = text_field_tag :end_date, {}, value: (Time.zone.now).strftime("%m/%d/%Y")
+  %br
+  = text_field_tag :districts, nil, size: 60, placeholder: 'enter districts'
+  **Comma separated list of districts to filter, no entry == all districts
+  %br
+  = text_field_tag :email_recipients, nil, size: 60, placeholder: 'enter email recipients'
+  **Comma separated list of email addresses, no entry == report goes to admin
+  %br
+  = button_tag "Run", :class => "run"
+
+:javascript
+  $('#start_date').datepicker();
+  $('#end_date').datepicker();
+  $('.run').click( function(e) {
+    e.preventDefault();
+
+    $.ajax({
+      url: "/admin/user_activity_detail_report/run",
+      type: "POST",
+      data: {
+        start_date: $('#start_date').val(),
+        end_date: $('#end_date').val(),
+        districts: $('#districts').val(),
+        email_recipients: $('#email_recipients').val()
+      }
+    }).done( function(data) {
+      $('.flashes').remove();
+      $('.title_bar').after('<div class="flashes"><div class="flash flash_notice">'+ data.notice +'</div></div>');
+    });
+  });

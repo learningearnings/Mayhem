@@ -40,6 +40,17 @@ class StiController < ApplicationController
       load_students  
     end  
     @teacher_email_form = TeacherEmailForm.new(:person_id => current_person.id)
+    begin
+      start_time = Time.now
+      interaction = Interaction.new ip_address: request.ip
+      interaction.person = current_person if current_person
+      interaction.school_id = session[:current_school_id]
+      end_time = Time.now
+      interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
+      interaction.page = "/sti/give_credits"
+      interaction.save
+    rescue
+    end
     render :layout => false
   end
   

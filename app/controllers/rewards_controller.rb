@@ -89,6 +89,7 @@ class RewardsController < LoggedInController
   def destroy
     @product = Spree::Product.find(params[:product])
     @product.deleted_at = Time.now
+    @product.audit_logs.create(district_guid: @product.schools.first.try(:district_guid), school_id: @product.schools.first.try(:id), school_sti_id: @product.schools.first.try(:sti_id), person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: @product.name, action: "Deactivate")
     if @product.save
       flash[:notice] = "Your reward was deleted successfully."
     else

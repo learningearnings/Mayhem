@@ -10,7 +10,7 @@ module Reports
 
       def run
         File.open("/tmp/" + filename, "w") {|f| f.write Reports::NewUserActivityReport.new(options).run }
-        AdminMailer.user_activity_report(filename).deliver
+        AdminMailer.delay.user_activity_report(filename)
       end
     end
   end

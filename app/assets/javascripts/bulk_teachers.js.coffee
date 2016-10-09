@@ -1,3 +1,7 @@
+  $(document).ready ->
+    $('#teachers_header_sort').tablesorter({ headers:{0: { sorter: false} }})
+    return
+    
   $('#select_all').on 'click', ->
     if $('#select_all').attr('checked')
       $('.edit_control').removeAttr('disabled')
