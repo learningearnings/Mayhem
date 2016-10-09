@@ -223,12 +223,14 @@ module Reports
           csv << [""]
           csv << ["Student login count by grade and weekday for district #{row.guid}"]
           csv << [""]
-          csv << ["School Name","First Name","Last Name","Count Times Logged In","Count Times Issued Credits"]  
+          csv << ["Grade","Day","Login Count"]  
           student_logins.each do | row3 |
               csv << [row3.grade, row3.day_name, row3.login_count ]
           end  
           csv << [""]          
           csv << ["-----------------------------------------------------------------------"]             
+          csv << [""]   
+          csv << [""]   
         end 
       end
     end
