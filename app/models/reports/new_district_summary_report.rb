@@ -35,7 +35,7 @@ module Reports
           (SELECT count(DISTINCT i.id)
             FROM people p, person_school_links psl, interactions i, schools s
             WHERE s.id = psl.school_id AND p.id = psl.person_id
-              AND (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth')
+              AND (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth' or i.page = '/sti/give_credits')
               AND i.person_id = p.id
               AND s.district_guid = d.guid
               AND p.type IN ('Teacher','SchoolAdmin')
@@ -146,8 +146,91 @@ module Reports
           end           
           csv << [row.name, row.guid, row.teacher_count, row.teacher_login_count, row.teachers_issuing_credits_count, 
             row.student_count.row.student_login_count,row.students_receiving_credits_count,row.students_depositing_credits_count,row.students_purchasing_rewards_count,
-            teacher_engagement, student_login_percent, student_deposits_percent, student_engagement_percent]
-        end
+            teacher_engagement, student_login_percent, student_deposits_percent, student_engagement_percent]   
+        
+          sql2 = %Q(
+             select * from
+             (   SELECT d.name as district_name,
+                d.guid as district_guid,
+              s.name as school_name,
+              p.first_name,
+              p.last_name,
+                (SELECT count(DISTINCT i.id)
+                  FROM interactions i
+                  WHERE
+                    (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth')
+                    AND i.person_id = p.id
+                    AND i.created_at >= '#{@beginning_day}'
+                    AND i.created_at <=  '#{@ending_day}'
+                    ) as login_count,
+                 (SELECT count(DISTINCT tcoc.id)
+                 FROM otu_codes tcoc, plutus_transactions tcpt
+                 WHERE tcoc.person_school_link_id = psl.id 
+                 AND tcpt.commercial_document_id  = tcoc.id 
+               AND tcpt.commercial_document_type = 'OtuCode' 
+               AND tcpt.description ilike '%ebucks for student%'
+                    AND tcoc.created_at >= '#{@beginning_day}'
+                   AND tcoc.created_at <=  '#{@ending_day}'
+                   ) as credits_count
+                FROM districts d, schools s, person_school_links psl, people p
+                where d.guid = s.district_guid and s.id = psl.school_id and p.id = psl.person_id and p.type in ('Teacher','SchoolAdmin')
+                AND p.status = 'active' AND psl.status = 'active'
+                WHERE d.current_staff_version is not null
+                   #{@districts_where} 
+                 ) as teacher_ranking
+             order by (credits_count + login_count) desc
+             limit 10
+          )
+          top_ten_teachers = Teachers.find_by_sql(sql2)
+          csv << [""]          
+          csv << [""]
+          csv << ["Top 10 teachers for district #{row.guid}"]
+          csv << [""]
+          csv << ["School Name","First Name","Last Name","Count Times Logged In","Count Times Issued Credits"]  
+          top_ten_teachers.each do | row2 |
+              csv << [row2.school_name, row2.first_name, row2.last_name, row2.login_count, row2.credits_count ]
+          end     
+          
+          sql3 = %Q(
+              SELECT 
+                     p.grade,
+                     COUNT (i.id) AS login_count,
+                     extract(dow from  i.created_at) AS day_index,
+                     to_char(i.created_at, 'day') AS day_name
+                FROM districts d,
+                     schools s,
+                     people p,
+                     person_school_links psl,
+                     interactions i
+               WHERE     s.id = psl.school_id
+                     AND p.id = psl.person_id
+                     AND p.status = 'active'
+                     AND psl.status = 'active'
+                     AND p.type IN ('Student')
+                     AND s.district_guid = d.guid
+                     AND i.person_id = psl.person_id
+                     AND (i.page = '/students/home' or i.page = '/mobile/v1/students/auth')
+                     #{@districts_where}
+                     AND i.created_at >= '#{@beginning_day}'
+                     AND i.created_at <=  '#{@ending_day}'
+            GROUP BY 
+                     extract(dow from  i.created_at),
+                     to_char(i.created_at, 'day'),     
+                     grade
+            ORDER BY extract(dow from  i.created_at)          
+          )
+          student_logins =  Students.find_by_sql(sql3)
+          csv << [""]          
+          csv << [""]
+          csv << ["Student login count by grade and weekday for district #{row.guid}"]
+          csv << [""]
+          csv << ["School Name","First Name","Last Name","Count Times Logged In","Count Times Issued Credits"]  
+          student_logins.each do | row3 |
+              csv << [row3.grade, row3.day_name, row3.login_count ]
+          end  
+          csv << [""]          
+          csv << ["-----------------------------------------------------------------------"]             
+        end 
       end
     end
   end

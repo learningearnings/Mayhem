@@ -3,7 +3,7 @@ class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
   http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:auth, :save_teacher, :link, :give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
-  skip_around_filter :track_interaction
+  skip_around_filter :track_interaction, :except [:give_credits]
   skip_before_filter :subdomain_required
   skip_before_filter :verify_authenticity_token
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]

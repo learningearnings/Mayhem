@@ -53,13 +53,16 @@ module Reports
                 AND tpsl.person_id = tp.id
              AND tpsl.status = 'active'
              AND tp.status = 'active') AS teacher_count,
-            (SELECT count(DISTINCT p.id)
-              FROM people p, person_school_links psl, spree_users su
-              WHERE s.id = psl.school_id AND p.id = psl.person_id
+          (SELECT count(DISTINCT i.id)
+            FROM people p, person_school_links psl, interactions i
+            WHERE s.id = psl.school_id AND p.id = psl.person_id
+              AND (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth' or i.page = '/sti/give_credits')
+              AND i.person_id = p.id
               AND p.type IN ('Teacher','SchoolAdmin')
               AND p.status = 'active' AND psl.status = 'active'
-              AND su.person_id = p.id
-              AND su.last_sign_in_at >= '#{@beginning_day}' AND su.last_sign_in_at <= '#{@ending_day}' ) AS teacher_login_count,
+                 AND i.created_at >= '#{@beginning_day}'
+                 AND i.created_at <=  '#{@ending_day}'
+              ) AS teacher_login_count,
             (SELECT count(DISTINCT tcp.id)
              FROM people tcp, person_school_links tcpsl, otu_codes tcoc, plutus_transactions tcpt
              WHERE s.id = tcpsl.school_id AND tcp.id = tcpsl.person_id
@@ -77,13 +80,16 @@ module Reports
                 AND spsl.person_id = sp.id
              AND spsl.status = 'active'
              AND sp.status = 'active') AS student_count,
-            (SELECT count(DISTINCT p.id)
-              FROM people p, person_school_links psl, spree_users su
-              WHERE s.id = psl.school_id AND p.id = psl.person_id
+               (SELECT count(DISTINCT i.id)
+            FROM people p, person_school_links psl, interactions i
+            WHERE s.id = psl.school_id AND p.id = psl.person_id
+              AND (i.page = '/students/home' or i.page = '/mobile/v1/students/auth')
+              AND i.person_id = p.id
               AND p.type IN ('Student')
               AND p.status = 'active' AND psl.status = 'active'
-              AND su.person_id = p.id
-              AND su.last_sign_in_at >= '#{@beginning_day}' AND su.last_sign_in_at <= '#{@ending_day}') AS student_login_count,
+                 AND i.created_at >= '#{@beginning_day}'
+                 AND i.created_at <=  '#{@ending_day}'
+              ) AS student_login_count,
             (SELECT count(DISTINCT sp.id)
               FROM people sp, person_school_links sppsl, plutus_transactions sppt, plutus_amounts sppa, person_account_links sppal
               WHERE sppsl.school_id = s.id AND sppsl.person_id = sp.id AND sp.status = 'active' AND sppsl.status = 'active'

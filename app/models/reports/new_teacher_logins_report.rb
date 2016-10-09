@@ -55,7 +55,7 @@ module Reports
                  AND p.status = 'active'
                  AND psl.status = 'active'
                  AND i.person_id = psl.person_id
-                 AND i.page = '/teachers/home'
+                 AND (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth' or i.page = '/sti/give_credits')
                  #{@districts_where}
                  AND i.created_at >= '#{@beginning_day}'
                  AND i.created_at <=  '#{@ending_day}'

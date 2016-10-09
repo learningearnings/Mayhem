@@ -46,7 +46,7 @@ module Reports
                  AND p.type IN ('Student')
                  AND s.district_guid = d.guid
                  AND i.person_id = psl.person_id
-                 AND i.page = '/students/home'
+                 AND (i.page = '/students/home' or i.page = '/mobile/v1/students/auth')
                  #{@districts_where}
                  AND i.created_at >= '#{@beginning_day}'
                  AND i.created_at <=  '#{@ending_day}'
