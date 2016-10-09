@@ -175,7 +175,6 @@ module Reports
                 FROM districts d, schools s, person_school_links psl, people p
                 where d.guid = s.district_guid and s.id = psl.school_id and p.id = psl.person_id and p.type in ('Teacher','SchoolAdmin')
                 AND p.status = 'active' AND psl.status = 'active'
-                WHERE d.current_staff_version is not null
                    #{@districts_where} 
                  ) as teacher_ranking
              order by (credits_count + login_count) desc
