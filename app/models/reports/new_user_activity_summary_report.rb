@@ -53,7 +53,7 @@ module Reports
                 AND tpsl.person_id = tp.id
              AND tpsl.status = 'active'
              AND tp.status = 'active') AS teacher_count,
-          (SELECT count(DISTINCT i.id)
+          (SELECT count(DISTINCT p.id)
             FROM people p, person_school_links psl, interactions i
             WHERE s.id = psl.school_id AND p.id = psl.person_id
               AND (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth' or i.page = '/sti/give_credits')
@@ -80,7 +80,7 @@ module Reports
                 AND spsl.person_id = sp.id
              AND spsl.status = 'active'
              AND sp.status = 'active') AS student_count,
-               (SELECT count(DISTINCT i.id)
+               (SELECT count(DISTINCT p.id)
             FROM people p, person_school_links psl, interactions i
             WHERE s.id = psl.school_id AND p.id = psl.person_id
               AND (i.page = '/students/home' or i.page = '/mobile/v1/students/auth')
