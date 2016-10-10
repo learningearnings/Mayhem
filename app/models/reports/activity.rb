@@ -109,7 +109,7 @@ module Reports
           username: person.person_username,
           classroom: person.person_classroom.present? ? person.person_classroom.first.class_name : "No Classroom",
           #classroom: "No Classroom",
-          account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
+          account_activity: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
           last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
         ]
