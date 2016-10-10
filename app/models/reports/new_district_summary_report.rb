@@ -137,15 +137,15 @@ module Reports
           if row.student_login_count == 0 or row.students_depositing_credits_count == 0
             student_deposits_percent = 0.0
           else
-            student_deposits_percent = (row.students_depositing_credits.to_f / row.student_login_count.to_f ) * 100.0
+            student_deposits_percent = (row.students_depositing_credits_count.to_f / row.student_login_count.to_f ) * 100.0
           end          
           if row.student_login_count == 0 or row.students_purchasing_rewards_count == 0
             student_engagement_percent = 0.0
           else
-            student_engagement_percent = (row.students_purchasing_rewards.to_f / row.student_login_count.to_f ) * 100.0
+            student_engagement_percent = (row.students_purchasing_rewards_count.to_f / row.student_login_count.to_f ) * 100.0
           end           
           csv << [row.name, row.guid, row.teacher_count, row.teacher_login_count, row.teachers_issuing_credits_count, 
-            row.student_count.row.student_login_count,row.students_receiving_credits_count,row.students_depositing_credits_count,row.students_purchasing_rewards_count,
+            row.student_count, row.student_login_count, row.students_receiving_credits_count, row.students_depositing_credits_count, row.students_purchasing_rewards_count,
             teacher_engagement, student_login_percent, student_deposits_percent, student_engagement_percent]   
         
           sql2 = %Q(
@@ -175,13 +175,12 @@ module Reports
                 FROM districts d, schools s, person_school_links psl, people p
                 where d.guid = s.district_guid and s.id = psl.school_id and p.id = psl.person_id and p.type in ('Teacher','SchoolAdmin')
                 AND p.status = 'active' AND psl.status = 'active'
-                WHERE d.current_staff_version is not null
                    #{@districts_where} 
                  ) as teacher_ranking
              order by (credits_count + login_count) desc
              limit 10
           )
-          top_ten_teachers = Teachers.find_by_sql(sql2)
+          top_ten_teachers = Teacher.find_by_sql(sql2)
           csv << [""]          
           csv << [""]
           csv << ["Top 10 teachers for district #{row.guid}"]
@@ -219,17 +218,19 @@ module Reports
                      grade
             ORDER BY extract(dow from  i.created_at)          
           )
-          student_logins =  Students.find_by_sql(sql3)
+          student_logins =  Student.find_by_sql(sql3)
           csv << [""]          
           csv << [""]
           csv << ["Student login count by grade and weekday for district #{row.guid}"]
           csv << [""]
-          csv << ["School Name","First Name","Last Name","Count Times Logged In","Count Times Issued Credits"]  
+          csv << ["Grade","Day","Login Count"]  
           student_logins.each do | row3 |
               csv << [row3.grade, row3.day_name, row3.login_count ]
           end  
           csv << [""]          
           csv << ["-----------------------------------------------------------------------"]             
+          csv << [""]   
+          csv << [""]   
         end 
       end
     end
