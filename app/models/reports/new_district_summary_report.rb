@@ -159,7 +159,7 @@ module Reports
                 (SELECT count(DISTINCT i.id)
                   FROM interactions i
                   WHERE
-                    (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth')
+                    (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth' or i.page = '/sti/give_credits')
                     AND i.person_id = p.id
                     AND i.created_at >= '#{@beginning_day}'
                     AND i.created_at <=  '#{@ending_day}'
