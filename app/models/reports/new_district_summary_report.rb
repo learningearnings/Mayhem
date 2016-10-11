@@ -176,7 +176,7 @@ module Reports
                 FROM districts d, schools s, person_school_links psl, people p
                 where d.guid = s.district_guid and s.id = psl.school_id and p.id = psl.person_id and p.type in ('Teacher','SchoolAdmin')
                 AND p.status = 'active' AND psl.status = 'active'
-                   #{@districts_where} 
+                   and d.guid = #{row.guid} 
                  ) as teacher_ranking
              order by (credits_count + login_count) desc
              limit 10
@@ -210,7 +210,7 @@ module Reports
                      AND s.district_guid = d.guid
                      AND i.person_id = psl.person_id
                      AND (i.page = '/students/home' or i.page = '/mobile/v1/students/auth')
-                     #{@districts_where}
+                     and d.guid = #{row.guid} 
                      AND i.created_at >= '#{@beginning_day}'
                      AND i.created_at <=  '#{@ending_day}'
             GROUP BY 
