@@ -14,15 +14,10 @@ module Mixins
         redirect_to main_app.teachers_bank_path
       end
     end
-
     def create_ebucks
       params[:points] = sanitize_points(params[:points]) if params[:points]
       if params[:points].to_i < 0
         student = Student.find(params[:student][:id])
-        if (student.checking_account.balance.to_i + params[:points].to_i) <= 0
-          flash[:error] = "The negative credits you are trying to deduct is greater than the student's account balance."
-          redirect_to main_app.teachers_bank_path and return
-        end  
         if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
           psql = PersonSchoolLink.where(school_id: current_school.id, person_id: current_person.id).first
           reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
@@ -90,7 +85,6 @@ module Mixins
             student_credits = BigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
             issue_ebucks_to_student(student, student_credits, category_id) 
-            #if student_credits > 0
           end
           if failed
             raise ActiveRecord::Rollback
@@ -114,7 +108,7 @@ module Mixins
           reason_id = params["otu_code"]["otu_code_category_id"] if params["otu_code"]
           params[:credits].delete_if do |k, v|
             student = Student.find(k)
-            if v.to_i < 0 && (student.checking_account.balance.to_i + v.to_i) >= 0
+            if v.to_i < 0
               otu_code = OtuCode.create(:expires_at => (Time.now),
                 :person_school_link_id => psql.id,
                 :otu_code_category_id => reason_id,

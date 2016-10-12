@@ -11,7 +11,9 @@ Leror::Application.routes.draw do
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
   post '/sti/save_school_for_credits' => "sti#save_school_for_credits" 
-  get '/sti/begin_le_tour' => "sti#begin_le_tour"   
+  get '/sti/begin_le_tour' => "sti#begin_le_tour"  
+  
+  get '/sti/sync_district' => 'sti#sync_district'
 
   # Mobile App API's
   namespace :mobile, defaults: { format: :json } do
@@ -146,7 +148,6 @@ Leror::Application.routes.draw do
     get :delete_school_admin_school_link, :controller => :school_admins, :action => :delete_school_link
     post 'import_students' => 'imports#import_students', as: :import_students
     post 'import_teachers' => 'imports#import_teachers', as: :import_teachers
-    get 'sync_district' => 'sti#sync_district', as: :sync_district
     get 'run_user_activity_report' => "reports#run_user_activity_report", as: :run_user_activity_report
     get 'handle_interest' => 'imports#handle_interest', as: :handle_interest
     match "fulfill_auctions/:auction_id" => "auctions#fulfill_auction", as: :fulfill_auction
