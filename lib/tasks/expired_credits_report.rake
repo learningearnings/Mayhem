@@ -2,7 +2,8 @@ require 'csv'
 namespace :credits_report do
   desc "Generate the CSV that contains all credits deposited after their expiration date."
   task :expired => :environment do
-    transactions = OtuCode.joins(person_school_link: [:school, :person]).where("otu_codes.redeemed_at > otu_codes.expires_at AND otu_codes.created_at >= '2016-01-01 00:00:00.000000'").order("schools.name ASC, people.first_name ASC, otu_codes.created_at DESC")
+    otu_created_at = "2016-01-01 00:00:00.000000"
+    transactions = OtuCode.joins(person_school_link: [:school, :person]).where("otu_codes.redeemed_at > otu_codes.expires_at AND otu_codes.created_at >= ?", otu_created_at).order("schools.name ASC, people.first_name ASC, otu_codes.created_at DESC")
     file_name = "expired_credit_deposited.csv"
     CSV.open("/home/deployer/#{file_name}", "wb") do |csv|
       csv << ["Otu Code Id","School Name", "Teacher Name", "Student Name", "Points", "Created At", "Redeemed At", "Expires At"]

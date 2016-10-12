@@ -1,10 +1,11 @@
 namespace :missing_teacher_credits do
-  desc "Generate reward delivery record if not found for the associated transactions_orders for Student reward purchase."
+  desc "Generate missing teacher credits for the generated school credit record."
   task :generate_missing_credits => :environment do
-    schools = School.joins(:school_credits).where("school_credits.created_at >= '2016-10-01'")
+    #### Assign Date over here
+    created_date = "2016-07-12 00:00:00.000000"
+    schools = School.joins(:school_credits).where("school_credits.created_at >= ?", created_date)
     schools.each do |school|
-      #school = School.find(5256)
-      if school.teacher_credits.where("created_at >= '2016-10-01'").count == 0
+      if school.teacher_credits.where("created_at >= ?", created_date).count == 0
         
         teachers_to_pay(school, { hide_ignored: false }).each do |teacher|
           if revoke_remainder(school, teacher, teacher.main_account(school).balance)
@@ -19,7 +20,7 @@ namespace :missing_teacher_credits do
             teacher_credit.save
           end
         end
-        school_credit = school.school_credits.where("created_at >= '2016-10-01'").last
+        school_credit = school.school_credits.where("created_at >= ?", created_date).last
         teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
         school_credit.total_teachers = teachers_paid.count
         school_credit.save
