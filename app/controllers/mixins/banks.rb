@@ -64,7 +64,20 @@ module Mixins
         redirect_to :back and return
       end
 
-      if params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
+      if params[:credits] && params[:credits].values.detect{|x| x.to_i < 0 }
+        if current_school.can_revoke_credits && current_person.is_a?(SchoolAdmin)
+          params[:credits].delete_if do |k, v|
+            if v.to_i < 0
+              student = Student.find(k)
+              CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, v)
+            end
+          end
+          flash[:notice] = "The points have been deducted from the student account."
+        else
+          flash[:error] = "You can't enter negative values"
+          redirect_to :back and return
+        end    
+      elsif params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure
@@ -76,8 +89,7 @@ module Mixins
           students.each do |student|
             student_credits = BigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-            issue_ebucks_to_student(student, student_credits, category_id) 
-            #if student_credits > 0
+            issue_ebucks_to_student(student, student_credits, category_id) if student_credits > 0
           end
           if failed
             raise ActiveRecord::Rollback
@@ -103,13 +115,12 @@ module Mixins
               CreditManager.new.teacher_revoke_credits_from_student(current_school, current_person, student, v)
             end
           end
+          flash[:notice] = "The points have been deducted from the student account."
         else
           flash[:error] = "You can't enter negative values"
-          redirect_to main_app.teachers_bank_path and return
         end
-      end
-
-      if params[:classroom] && params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
+        redirect_to main_app.teachers_bank_path and return
+      elsif params[:classroom] && params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure
@@ -122,8 +133,7 @@ module Mixins
             if params[:credits][student.id.to_s].present?
               student_credits = BigDecimal(params[:credits][student.id.to_s])
               category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-              issue_ebucks_to_student(student, student_credits, category_id) 
-              #if student_credits.to_i > 0
+              issue_ebucks_to_student(student, student_credits, category_id)  if student_credits.to_i > 0
             end
           end
           if failed
