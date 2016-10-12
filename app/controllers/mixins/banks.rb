@@ -97,11 +97,7 @@ module Mixins
           students.each do |student|
             student_credits = BigDecimal(params[:credits][student.id.to_s])
             category_id = params[:credit_categories][student.id.to_s] if params[:credit_categories]
-<<<<<<< HEAD
-            issue_ebucks_to_student(student, student_credits, category_id) 
-=======
             issue_ebucks_to_student(student, student_credits, category_id) if student_credits > 0
->>>>>>> staging
           end
           if failed
             raise ActiveRecord::Rollback
