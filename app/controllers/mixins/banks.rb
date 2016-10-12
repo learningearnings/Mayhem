@@ -77,7 +77,7 @@ module Mixins
           flash[:error] = "You can't enter negative values"
           redirect_to :back and return
         end    
-      elsif params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
+      elsif params[:credits] && params[:credits].values.detect{|x| x.present? && x.to_i > 0}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure
@@ -120,7 +120,7 @@ module Mixins
           flash[:error] = "You can't enter negative values"
         end
         redirect_to main_app.teachers_bank_path and return
-      elsif params[:classroom] && params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present?}.present?
+      elsif params[:classroom] && params[:classroom][:id].present? && params[:credits] && params[:credits].values.detect{|x| x.present? && x.to_i > 0}.present?
         get_buck_batches
         get_bank
         # Override on_success and on_failure
