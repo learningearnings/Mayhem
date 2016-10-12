@@ -33,7 +33,11 @@ module Reports
                   staff_member.interactions.between(@start_date, @end_date).first.try(:created_at).try(:strftime, "%m/%d/%Y"),
                   staff_member.interactions.staff_login_between(@start_date, @end_date).count,
                   # TODO: Make sure this is right
-                  staff_member.otu_codes.created_between(@start_date, @end_date).sum(:points).to_s,
+                  begin
+                    staff_member.otu_codes.created_between(@start_date, @end_date).sum(:points).to_s
+                  rescue
+                    "0"
+                  end,
                   staff_member.person_school_classroom_links.where(status: "active").size > 0,
                   staff_member.grade
               ]  

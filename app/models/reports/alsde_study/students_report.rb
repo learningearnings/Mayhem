@@ -33,7 +33,11 @@ module Reports
                 student.interactions.between(@start_date, @end_date).first.try(:created_at).try(:strftime, "%m/%d/%Y"),
                 student.interactions.student_login_between(@start_date, @end_date).count,
                 # TODO: Make sure this is right
-                student.otu_codes.redeemed_between(@start_date, @end_date).sum(:points).to_s,
+                begin
+                  student.otu_codes.redeemed_between(@start_date, @end_date).sum(:points).to_s
+                rescue
+                  "0"
+                end,
                 sum_credits_spent_on_purchases_for(student)
               ]
               puts "Processing student #{index} of #{students.size}"              
