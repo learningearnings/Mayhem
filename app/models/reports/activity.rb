@@ -67,7 +67,7 @@ module Reports
     # Will include date_filter, reward_status_filter(delivered, undelivered) and teachers_filter
     # Only Date Filter for now.
     def potential_filters
-      [:date_filter, :classroom_filter, :sort_by]
+      [:transaction_filter, :date_filter, :classroom_filter, :sort_by]
     end
 
     def sort_by
@@ -91,10 +91,12 @@ module Reports
       end
       # have to do .select here to get both the object and the sums, counts, etc.
       # have a look at the scope called "with_transactions_between" on person
-      base_scope.select("people.*, sum(case when plutus_amounts.type = 'Plutus::DebitAmount' then plutus_amounts.amount else null end) - sum(case when plutus_amounts.type = 'Plutus::CreditAmount' then plutus_amounts.amount else null end) as activity_balance,count(distinct plutus_transactions.id) as num_transactions, spree_users.username as person_username")
-      .having("count(distinct plutus_transactions.id) > 0")
+      base_scope.select("people.*, 
+        sum(plutus_amounts.amount) as activity_balance,
+        count(plutus_transactions.id) as num_credits,
+        spree_users.username as person_username").having("count(distinct plutus_transactions.id) > 0")
     end
-
+    
     def activity_debits_base_scope(person)
       person.primary_account.debit_amounts.joins(:transaction)
     end
@@ -104,14 +106,17 @@ module Reports
     end
 
     def generate_row(person)
+        startdate = @endpoints[0] ? @endpoints[0] : 10.years.ago
+        enddate = @endpoints[1] ? @endpoints[1] : 1.second.from_now
         Reports::Row[
           person: person.name,
           username: person.person_username,
           classroom: person.person_classroom.present? ? person.person_classroom.first.class_name : "No Classroom",
           #classroom: "No Classroom",
-          account_activity: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
+          account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
+          num_credits: person.num_credits,
           type: person.type,
-          last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
+          num_of_logins: person.is_a?(Student) ? person.interactions.student_login_between(startdate, enddate).count :  person.interactions.staff_login_between(startdate, enddate).count 
         ]
     end
 
@@ -121,8 +126,9 @@ module Reports
         username: "Username",
         classroom: "Classroom",
         type: "Type",
-        last_sign_in_at: "Last Sign In",
-        account_activity: "Account Balance"
+        num_of_logins: "Num of Logins",
+        account_activity: "Credits Awarded",
+        num_credits: "Num of Credits Awarded"
       }
     end
     def data_classes
@@ -131,8 +137,9 @@ module Reports
         username: "",
         classroom: "",
         type: "",
-        last_sign_in_at: "",
-        account_activity: "currency"
+        num_of_logins: "",
+        account_activity: "currency",
+        num_credits: ""
       }
     end
 
