@@ -106,8 +106,8 @@ module Reports
     end
 
     def generate_row(person)
-        startdate = @endpoints[0] ? @endpoints[0] : 10.years.ago
-        enddate = @endpoints[1] ? @endpoints[1] : 1.second.from_now
+        startdate = @endpoints ? @endpoints[0] : 10.years.ago
+        enddate = @endpoints ? @endpoints[1] : 1.second.from_now
         Reports::Row[
           person: person.name,
           username: person.person_username,
