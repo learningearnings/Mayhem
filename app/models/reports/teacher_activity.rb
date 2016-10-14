@@ -37,7 +37,7 @@ module Reports
           num_credits: person.num_credits,
           account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
-          num_of_logins: person.is_a?(Student) ? person.interactions.student_login_between(startdate, enddate).count :  person.interactions.staff_login_between(startdate, enddate).count,
+          num_of_logins: person.interactions.staff_login_between(startdate, enddate).count,
           last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
         ]
     end

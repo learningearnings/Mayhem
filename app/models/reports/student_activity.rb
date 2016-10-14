@@ -56,7 +56,7 @@ module Reports
         type: "Type",
         total_credits_received: "Total Credits Received",
         total_credits_deposited: "Total Credits Deposited",
-        total_credits_spent_on_purchase: "Total Credits Spent On Purchase",
+        total_credits_spent_on_purchase: "Total Credits Spent On Purchases",
         num_credits: "Num of Credits Awarded",
         account_balance: "Account Balance",
         num_of_logins: "Num of Logins",
