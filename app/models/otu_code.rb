@@ -37,7 +37,7 @@ class OtuCode < ActiveRecord::Base
     select("SUM(points) as sum_of_credits_deposited").where("otu_codes.redeemed_at >= ? AND otu_codes.redeemed_at <= ?", startdate, enddate)
   } 
   scope :total_credits_received, lambda{|startdate, enddate| 
-    select("SUM(points) as sum_of_credits_received").where("otu_codes.created_at >= ? AND otu_codes.created_at <= ?", startdate, enddate)
+    select("SUM(points) as sum_of_credits_received, count(DISTINCT otu_codes.id) as num_credits").where("otu_codes.created_at >= ? AND otu_codes.created_at <= ?", startdate, enddate)
   }
   def expired?
     self.expires_at <= Time.now

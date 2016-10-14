@@ -18,32 +18,6 @@ module Reports
         sum (CASE WHEN plutus_transactions.description = 'Reward Purchase' THEN plutus_amounts.amount
                  ELSE 0
               END) AS total_credits_spent_on_purchase,
-         sum (CASE
-               WHEN plutus_transactions.description IN
-                       ('Issue Printed Credits to Student',
-                        'Issue Credits to Student')
-               THEN
-                  plutus_amounts.amount
-               WHEN plutus_transactions.description ILIKE
-                       'Credits Earned for %'
-               THEN
-                  plutus_amounts.amount
-               WHEN plutus_transactions.description ILIKE
-                       'Weekly Credits for%'
-               THEN
-                  plutus_amounts.amount
-               WHEN plutus_transactions.description ILIKE
-                       'Monthly Credits for%'
-               THEN
-                  plutus_amounts.amount
-                WHEN plutus_transactions.description ILIKE '% ebucks for student%'
-                THEN 
-                  plutus_amounts.amount  
-               ELSE
-                  0
-            END)
-            AS total_credits_received,
-
         count(plutus_transactions.id) as num_credits,
         spree_users.username as person_username").having("count(distinct plutus_transactions.id) > 0")
     
@@ -66,7 +40,7 @@ module Reports
           total_credits_received: (number_with_precision(person.otu_codes.total_credits_received(startdate, enddate).first.sum_of_credits_received, precision: 2, delimiter: ',') || 0),
           total_credits_deposited: (number_with_precision(person.otu_codes.total_credits_deposited(startdate, enddate).first.sum_of_credits_deposited, precision: 2, delimiter: ',') || 0),
           total_credits_spent_on_purchase: (number_with_precision(person.total_credits_spent_on_purchase, precision: 2, delimiter: ',') || 0),
-          num_credits: person.num_credits,
+          num_credits: person.otu_codes.total_credits_received(startdate, enddate).first.num_credits,
           account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
           num_of_logins: person.is_a?(Student) ? person.interactions.student_login_between(startdate, enddate).count :  person.interactions.staff_login_between(startdate, enddate).count,
