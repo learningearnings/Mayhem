@@ -31,8 +31,8 @@ module Reports
           username: person.person_username,
           classroom: person.person_classroom.present? ? person.person_classroom.first.class_name : "No Classroom",
           #classroom: "No Classroom",
+          num_credits: person.num_credits,          
           account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
-          num_credits: person.num_credits,
           account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
           num_of_logins: person.interactions.staff_login_between(startdate, enddate).count,
@@ -46,9 +46,9 @@ module Reports
         username: "Username",
         classroom: "Classroom",
         type: "Type",
-        account_activity: "Credits Awarded",
-        num_credits: "Num of Credits Awarded",
-        account_balance: "Account Balance",
+        num_credits: "Num of Credits Issued",        
+        account_activity: "Sum of Credits Issued",
+        account_balance: "Current Account Balance",
         num_of_logins: "Num of Logins",
         last_sign_in_at: "Last Sign In"
       }
@@ -59,8 +59,8 @@ module Reports
         username: "",
         classroom: "",
         type: "",
+        num_credits: "",        
         account_activity: "currency",
-        num_credits: "",
         account_balance: "",
         num_of_logins: "",
         last_sign_in_at: ""
