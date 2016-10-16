@@ -5,39 +5,29 @@ module Reports
     end
 
     def people
-      base_scope = person_base_scope
-      potential_filters.each do |filter|
-        filter_option = send(filter)
-        base_scope = base_scope.send(*filter_option) if filter_option        
+      if @endpoints
+        fromStr = @endpoints[0].strftime("%m/%d/%Y")
+      else
+        fromStr = "01/01/2000"
       end
-      # have to do .select here to get both the object and the sums, counts, etc.
-      # have a look at the scope called "with_transactions_between" on person
-      base_scope.select("people.*,   
-        sum(
-          case when plutus_amounts.type = 'Plutus::CreditAmount' then
-            plutus_amounts.amount
-          else 
-            0 
-          end) as issued_balance,
-        count(
-          case when plutus_amounts.type = 'Plutus::CreditAmount' then
-            plutus_transactions.id
-          else 
-            0
-          end) as num_credits,
-        sum(
-          case when plutus_amounts.type = 'Plutus::DebitAmount' then
-            plutus_amounts.amount
-          else 
-            0 
-          end) as received_balance,
-        count(
-          case when plutus_amounts.type = 'Plutus::DebitAmount' then
-            plutus_transactions.id
-          else 
-            0
-          end) as num_debits,          
-        spree_users.username as person_username").having("count(distinct plutus_transactions.id) > 0")
+      sql = %Q(
+        select p.*, u.username as person_username, u.last_sign_in_at as last_sign_in_at,
+        (select sum(oc.points) from otu_codes oc
+         where oc.person_school_link_id = psl.id
+           and oc.created_at > \'#{fromStr}\' ) as issued_balance,
+        (select count(oc.id) from otu_codes oc
+         where oc.person_school_link_id = psl.id
+           and oc.created_at > \'#{fromStr}\' ) as num_credits,
+        count(i.id) as num_logins
+        from people p, spree_users u, person_school_links psl, interactions i
+        where p.id = psl.person_id and psl.school_id = #{school.id} and u.person_id = p.id
+          and p.status = 'active' and psl.status = 'active'
+          and i.person_id = p.id and i.page in ('/teachers/home','/mobile/v1/teachers/auth','/sti/give_credits')
+          and i.created_at >= \'#{fromStr}\'
+        group by p.id, psl.id, u.username, u.last_sign_in_at
+      )
+      teachers = Teacher.find_by_sql(sql)
+      teachers
     end
 
 
@@ -54,12 +44,11 @@ module Reports
           person: person.name,
           username: person.person_username,
           classroom: person.person_classroom.present? ? person.person_classroom.first.class_name : "No Classroom",
-          received_balance: (number_with_precision(person.received_balance, precision: 2, delimiter: ',') || 0),
           issued_balance: (number_with_precision(person.issued_balance, precision: 2, delimiter: ',') || 0),
           num_credits: person.num_credits,
           account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
-          num_of_logins: person.interactions.staff_login_between(startdate, enddate).count,
+          num_of_logins: person.num_logins,
           last_sign_in_at: (person.last_sign_in_at)?time_ago_in_words(person.last_sign_in_at) + " ago":""
         ]
     end
@@ -70,9 +59,8 @@ module Reports
         username: "Username",
         classroom: "Classroom",
         type: "Type",
-        received_balance: "Total Credits Received",
         issued_balance: "Total Credits Issued",
-        num_credits: "Num of Credits Issued",        
+        num_credits: "Num of Credits Issued Txns",        
         account_balance: "Account Balance",
         num_of_logins: "Num of Logins",
         last_sign_in_at: "Last Sign In"
@@ -83,8 +71,7 @@ module Reports
         person: "",
         username: "",
         classroom: "",       
-        type: "",
-        received_balance: "currency",     
+        type: "", 
         issued_balance: "currency",
         num_credits: "",
         account_balance: "",
