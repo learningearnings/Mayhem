@@ -20,9 +20,7 @@ module Reports
 
 
     def transaction_filter
-    	[:where, "plutus_amounts.type = 'Plutus::DebitAmount' and plutus_transactions.description IN
-                               ('Transfer Credits to Teacher',
-                                'Issue Credits to Teacher', 'Issue Monthly Credits to Teacher')"]
+    	[:where, "plutus_amounts.type = 'Plutus::DebitAmount' and plutus_transactions.description ilike '%ebucks for student%'"]
     end
 
     def generate_row(person)
