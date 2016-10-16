@@ -19,7 +19,7 @@ module Reports
                  ELSE 0
               END) AS total_credits_spent_on_purchase,
         count(plutus_transactions.id) as num_credits,
-        spree_users.username as person_username").having("count(distinct plutus_transactions.id) > 0")
+        spree_users.username as person_username")
     
     end
 

@@ -12,15 +12,39 @@ module Reports
       end
       # have to do .select here to get both the object and the sums, counts, etc.
       # have a look at the scope called "with_transactions_between" on person
-      base_scope.select("people.*, 
-        sum(plutus_amounts.amount) as activity_balance,
-        count(plutus_transactions.id) as num_credits,
+      base_scope.select("people.*,   
+        sum(
+          case when plutus_amounts.type = 'Plutus::CreditAmount' then
+            plutus_amounts.amount
+          else 
+            0 
+          end) as issued_balance,
+        count(
+          case when plutus_amounts.type = 'Plutus::CreditAmount' then
+            plutus_transactions.id
+          else 
+            0
+          end) as num_credits,
+        sum(
+          case when plutus_amounts.type = 'Plutus::DebitAmount' then
+            plutus_amounts.amount
+          else 
+            0 
+          end) as received_balance,
+        count(
+          case when plutus_amounts.type = 'Plutus::DebitAmount' then
+            plutus_transactions.id
+          else 
+            0
+          end) as num_debits,          
         spree_users.username as person_username").having("count(distinct plutus_transactions.id) > 0")
     end
 
 
     def transaction_filter
-    	[:where, "plutus_amounts.type = 'Plutus::DebitAmount' and plutus_transactions.description ilike '%ebucks for student%'"]
+    	[:where, "((plutus_amounts.type = 'Plutus::CreditAmount' and plutus_transactions.description ilike '%ebucks for student%') or(plutus_amounts.type = 'Plutus::DebitAmount' and plutus_transactions.description IN
+                               ('Transfer Credits to Teacher',
+                                'Issue Credits to Teacher', 'Issue Monthly Credits to Teacher')))"]
     end
 
     def generate_row(person)
@@ -30,9 +54,9 @@ module Reports
           person: person.name,
           username: person.person_username,
           classroom: person.person_classroom.present? ? person.person_classroom.first.class_name : "No Classroom",
-          #classroom: "No Classroom",
-          num_credits: person.num_credits,          
-          account_activity: (number_with_precision(person.activity_balance, precision: 2, delimiter: ',') || 0),
+          received_balance: (number_with_precision(person.received_balance, precision: 2, delimiter: ',') || 0),
+          issued_balance: (number_with_precision(person.issued_balance, precision: 2, delimiter: ',') || 0),
+          num_credits: person.num_credits,
           account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
           num_of_logins: person.interactions.staff_login_between(startdate, enddate).count,
@@ -46,9 +70,10 @@ module Reports
         username: "Username",
         classroom: "Classroom",
         type: "Type",
+        received_balance: "Total Credits Received",
+        issued_balance: "Total Credits Issued",
         num_credits: "Num of Credits Issued",        
-        account_activity: "Sum of Credits Issued",
-        account_balance: "Current Account Balance",
+        account_balance: "Account Balance",
         num_of_logins: "Num of Logins",
         last_sign_in_at: "Last Sign In"
       }
@@ -57,10 +82,11 @@ module Reports
       {
         person: "",
         username: "",
-        classroom: "",
+        classroom: "",       
         type: "",
-        num_credits: "",        
-        account_activity: "currency",
+        received_balance: "currency",     
+        issued_balance: "currency",
+        num_credits: "",
         account_balance: "",
         num_of_logins: "",
         last_sign_in_at: ""
