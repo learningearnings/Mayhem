@@ -5,7 +5,7 @@ module Reports
       if @endpoints
         fromStr = @endpoints[0].strftime("%m/%d/%Y")
       else
-        fromStr = "01/01/2000"
+        fromStr =  (Date.today - 365).strftime("%m/%d/%Y")
       end
       crfrom = ""
       crand = ""
@@ -13,9 +13,45 @@ module Reports
         crfrom = " person_school_classroom_links pscl,  "
         crand = " AND pscl.person_school_link_id = psl.id and pscl.classroom_id = #{@classroom} "
       end
-      sql = %Q(
-        select p.*, u.username as person_username, 
+      
+      sql1 =  %Q(
+        select p.*, 
+        u.username as person_username, 
+        NULL as last_sign_in,
+        0 AS total_credits_deposited,
+        0 AS total_credits_spent_on_purchase,
+        0 AS total_credits_refunded,
+        0 AS credits_awarded_by_teacher,
+        0 AS credits_awarded_by_system,
+        0 as num_logins,
+        'Y' as has_activity
+        from people p, spree_users u,  #{crfrom} person_school_links psl
+        where p.id = u.person_id and p.id = psl.person_id and psl.school_id = #{school.id} 
+          and p.status = 'active' and psl.status = 'active' and p.type in ('Student') #{crand}
+      )
+      if sort_by.size > 1
+        sql1 = sql1 + " order by #{sort_by[1]} " 
+      else
+        sql1 = sql1 + " order by p.grade, p.last_name, p.first_name "
+      end      
+      students = Student.find_by_sql(sql1)  
+      
+      sql2 = %Q(         
+        select 
+        p.id as person_id,
         max(i.created_at) as last_sign_in,
+        count(i.id) as num_logins        
+        from interactions i, people p, person_school_links psl
+        where p.id = psl.person_id and psl.school_id = #{school.id} 
+         and p.status = 'active' and psl.status = 'active' and p.type in ('Student')          
+          and i.person_id = p.id and i.page in ('/students/home','/mobile/v1/students/auth')
+          and i.created_at >= \'#{fromStr}\'
+        group by p.id
+      )  
+      interactions = Interaction.find_by_sql(sql2)     
+      
+      sql3 = %Q(
+        select p.id as person_id, 
         sum (
           CASE
              WHEN pt.description IN
@@ -47,7 +83,8 @@ module Reports
           AS total_credits_spent_on_purchase,
        sum (
           CASE
-             WHEN pt.description = 'Reward Refund' THEN pa.amount
+             WHEN pt.description =  'Reward Refund' 
+             THEN pa.amount
              ELSE 0
           END)
           AS total_credits_refunded,
@@ -74,29 +111,38 @@ module Reports
                ELSE
                   0
             END)
-          AS credits_awarded_by_system,
-        count(i.id) as num_logins
-        from people p, spree_users u, person_school_links psl, interactions i,
-                 #{crfrom}
+          AS credits_awarded_by_system
+        from people p, person_school_links psl,
                  plutus_transactions pt,
                  plutus_amounts pa,
                  person_account_links pal
-        where p.id = psl.person_id and psl.school_id = #{school.id} and u.person_id = p.id
-                 #{crand}
-                 AND pa.transaction_id = pt.id
-                 AND pa.account_id = pal.plutus_account_id
-                 AND pal.person_school_link_id = psl.id
-          and p.status = 'active' and psl.status = 'active' and p.type in ('Student')
-          and i.person_id = p.id and i.page in ('/students/home','/mobile/v1/students/auth')
-          and i.created_at >= \'#{fromStr}\'
+        where p.id = psl.person_id and psl.school_id = #{school.id} 
+          and p.status = 'active' and psl.status = 'active' and p.type in ('Student')        
+          AND pa.transaction_id = pt.id
+          AND pa.account_id = pal.plutus_account_id
+          AND pal.person_school_link_id = psl.id
           and pt.created_at >= \'#{fromStr}\'
-        group by p.id, psl.id, u.username
+        group by p.id
       )
-      if sort_by.size > 1
-        sql = sql + " order by #{sort_by[1]} " 
+      transactions = Plutus::Transaction.find_by_sql(sql3)
+      students.each do | stud |
+        
+        i = interactions.detect { | int | int.person_id.to_i == stud.id.to_i }
+        t = transactions.detect { | txn | txn.person_id.to_i == stud.id.to_i }
+        stud.has_activity = "N" if !(i or t)
+        if i
+          stud.num_logins = i.num_logins
+          stud.last_sign_in = i.last_sign_in
+        end
+        if t
+          stud.total_credits_deposited = t.total_credits_deposited
+          stud.total_credits_spent_on_purchase = t.total_credits_spent_on_purchase
+          stud.total_credits_refunded = t.total_credits_refunded if !t.total_credits_refunded.blank?
+          stud.credits_awarded_by_teacher = t.credits_awarded_by_teacher
+          stud.credits_awarded_by_system = t.credits_awarded_by_system
+        end
       end
-      students = Student.find_by_sql(sql)
-      students
+      students = students.reject{ | stud | stud.has_activity == "N"}
     end
 
     def generate_row(person)
@@ -108,7 +154,7 @@ module Reports
           grade: person.grade,
           total_credits_awarded_by_teacher: (number_with_precision(person.credits_awarded_by_teacher, precision: 2, delimiter: ',') || 0),
           total_credits_awarded_by_system: (number_with_precision(person.credits_awarded_by_system, precision: 2, delimiter: ',') || 0),
-          total_credits_refunded: (number_with_precision(person.total_credits_refunded, precision: 2, delimiter: ',') || 0),
+          total_credits_refunded: (number_with_precision(person.total_credits_refunded, precision: 2, delimiter: ',') || 0), 
           total_credits_deposited: (number_with_precision(person.total_credits_deposited, precision: 2, delimiter: ',') || 0),
           total_credits_spent_on_purchase: (number_with_precision(person.total_credits_spent_on_purchase, precision: 2, delimiter: ',') || 0),
           account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
@@ -124,7 +170,7 @@ module Reports
         grade: "Grade",
         total_credits_awarded_by_teacher: "Total Credits Awarded By Teacher",
         total_credits_awarded_by_system: "Total Credits Awarded By System",
-        total_credits_awarded_by_refunded: "Total Credits Refunded",                
+        total_credits_refunded: "Total Credits Refunded",                
         total_credits_deposited: "Total Credits Deposited",
         total_credits_spent_on_purchase: "Total Credits Spent On Purchases",
         account_balance: "Current Account Balance",
@@ -139,7 +185,7 @@ module Reports
         grade: "",
         total_credits_awarded_by_teacher: "",
         total_credits_awarded_by_system: "",
-        total_credits_awarded_by_refunded: "",                
+        total_credits_refunded: "",                
         total_credits_deposited: "",
         total_credits_spent_on_purchase: "",
         account_balance: "",

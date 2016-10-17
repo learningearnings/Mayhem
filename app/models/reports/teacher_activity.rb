@@ -8,18 +8,15 @@ module Reports
       if @endpoints
         fromStr = @endpoints[0].strftime("%m/%d/%Y")
       else
-        fromStr = "01/01/2000"
+        fromStr =  (Date.today - 365).strftime("%m/%d/%Y")
       end
-      sql = %Q(
-        select p.*, u.username as person_username, 
-        max(i.created_at) as last_sign_in,
-        (select sum(oc.points) from otu_codes oc
-         where oc.person_school_link_id = psl.id
-           and oc.created_at > \'#{fromStr}\' ) as issued_balance,
-        (select count(oc.id) from otu_codes oc
-         where oc.person_school_link_id = psl.id
-           and oc.created_at > \'#{fromStr}\' ) as num_credits,
-        count(i.id) as num_logins,
+      sql1 =  %Q(
+        select p.*, 
+        u.username as person_username, 
+        NULL as last_sign_in,
+        0 as issued_balance,
+        0 as num_credits,
+        0 as num_logins,
         (CASE
                      WHEN (SELECT count (*)
                              FROM person_school_classroom_links pscl
@@ -29,19 +26,60 @@ module Reports
                      ELSE
                         'N'
                   END)
-                    AS has_classroom
-        from people p, spree_users u, person_school_links psl, interactions i
-        where p.id = psl.person_id and psl.school_id = #{school.id} and u.person_id = p.id
+                    AS has_classroom,
+        'Y' as has_activity
+        from people p, spree_users u, person_school_links psl
+        where p.id = u.person_id and p.id = psl.person_id and psl.school_id = #{school.id} 
           and p.status = 'active' and psl.status = 'active' and p.type in ('Teacher','SchoolAdmin')
-          and i.person_id = p.id and i.page in ('/teachers/home','/mobile/v1/teachers/auth','/sti/give_credits')
-          and i.created_at >= \'#{fromStr}\'
-        group by p.id, psl.id, u.username, u.last_sign_in_at
       )
       if sort_by.size > 1
-        sql = sql + " order by #{sort_by[1]} " 
+        sql1 = sql1 + " order by #{sort_by[1]} " 
+      else  
+        sql1 = sql1 + " order by p.last_name, p.first_name "  
+      end      
+      teachers = Teacher.find_by_sql(sql1)  
+          
+      sql2 = %Q(
+        select 
+        p.id as person_id,
+        max(i.created_at) as last_sign_in,
+        count(i.id) as num_logins        
+        from interactions i, people p, person_school_links psl
+        where p.id = psl.person_id and psl.school_id = #{school.id} 
+          and p.status = 'active' and psl.status = 'active' and p.type in ('Teacher','SchoolAdmin')        
+          and i.person_id = p.id and i.page in ('/teachers/home','/mobile/v1/teachers/auth','/sti/give_credits')
+          and i.created_at >= \'#{fromStr}\'
+        group by p.id
+      )  
+      interactions = Interaction.find_by_sql(sql2)
+          
+      sql3 = %Q(
+        select
+        p.id as person_id, 
+        sum(oc.points) as issued_balance,
+        count(oc.id) as num_credits
+        from people p, person_school_links psl, otu_codes oc
+        where p.id = psl.person_id and psl.school_id = #{school.id} 
+          and p.status = 'active' and psl.status = 'active' and p.type in ('Teacher','SchoolAdmin')
+          and oc.person_school_link_id = psl.id and oc.created_at >= \'#{fromStr}\'
+        group by p.id
+      )
+      otu_codes = OtuCode.find_by_sql(sql3)
+      
+      teachers.each do | teach |
+        i = interactions.detect { | int | int.person_id.to_i == teach.id.to_i }
+        if i
+          teach.num_logins = i.num_logins
+          teach.last_sign_in = i.last_sign_in
+        end
+        o = otu_codes.detect { | oc| oc.person_id.to_i == teach.id.to_i }
+        if o
+          teach.issued_balance = o.issued_balance
+          teach.num_credits = o.num_credits
+        end
+        teach.has_activity = "N" if !(o or i)
       end
-      teachers = Teacher.find_by_sql(sql)
-      teachers
+      teachers = teachers.reject{ | teach | teach.has_activity == "N"}
     end
 
     def generate_row(person)
