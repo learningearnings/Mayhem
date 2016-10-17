@@ -16,17 +16,17 @@ module Reports
     end
 
     def execute!
-      begin
+      #begin
         people.each do |person|
           @data << generate_row(person) 
         end
-      rescue StandardError => e
-        Rails.logger.fatal("Something went bad wrong")
-        Rails.logger.fatal(e.to_s + people.to_yaml)
-      rescue NoMethodError => e
-        Rails.logger.fatal("Something went bad wrong")
-        Rails.logger.fatal(e.to_s + people.to_yaml)
-      end
+      #rescue StandardError => e
+      #  Rails.logger.fatal("Something went bad wrong")
+      #  Rails.logger.fatal(e.to_s + people.to_yaml)
+      #rescue NoMethodError => e
+      #  Rails.logger.fatal("Something went bad wrong")
+      #  Rails.logger.fatal(e.to_s + people.to_yaml)
+      #end
     end
 
     def range
@@ -66,6 +66,19 @@ module Reports
       def sort_by_options
         ["Default", "First, Last", "Last, First", "Username"]
       end
+
+      def date_filter_options
+        [
+          ['Last Year', "all"],
+          ['Last 90 Days', "last_90_days"],
+          ['Last 60 Days', "last_60_days"],
+          ['Last Month', "last_month"],
+          ['This Month', "this_month"],
+          ['This Week', "this_week"],
+          ['Last Week', "last_week"],
+          ['Last 7 Days', "last_7_days"]
+        ]
+      end      
 
       def date_filter_default
         date_filter_options[7][1]
