@@ -17,7 +17,7 @@ module Reports
       sql1 =  %Q(
         select p.*, 
         u.username as person_username, 
-        NULL as last_sign_in,
+        u.last_sign_in_at as last_sign_in,
         0 AS total_credits_deposited,
         0 AS total_credits_spent_on_purchase,
         0 AS total_credits_refunded,
@@ -132,7 +132,7 @@ module Reports
         stud.has_activity = "N" if !(i or t)
         if i
           stud.num_logins = i.num_logins
-          stud.last_sign_in = i.last_sign_in
+          stud.last_sign_in = i.last_sign_in if !i.last_sign_in.blank?
         end
         if t
           stud.total_credits_deposited = t.total_credits_deposited

@@ -13,6 +13,7 @@ module Reports
       sql1 =  %Q(
         select p.*, 
         u.username as person_username, 
+        u.last_sign_in_at as last_sign_in,
         NULL as last_sign_in,
         0 as issued_balance,
         0 as num_credits,
@@ -70,7 +71,7 @@ module Reports
         i = interactions.detect { | int | int.person_id.to_i == teach.id.to_i }
         if i
           teach.num_logins = i.num_logins
-          teach.last_sign_in = i.last_sign_in
+          teach.last_sign_in = i.last_sign_in if !i.last_sign_in.blank?
         end
         o = otu_codes.detect { | oc| oc.person_id.to_i == teach.id.to_i }
         if o
