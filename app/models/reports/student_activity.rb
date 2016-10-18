@@ -24,6 +24,7 @@ module Reports
         0 AS credits_awarded_by_teacher,
         0 AS credits_awarded_by_system,
         0 as num_logins,
+        0 as total_transactions,
         'Y' as has_activity
         from people p, spree_users u,  #{crfrom} person_school_links psl
         where p.id = u.person_id and p.id = psl.person_id and psl.school_id = #{school.id} 
@@ -52,6 +53,7 @@ module Reports
       
       sql3 = %Q(
         select p.id as person_id, 
+        count(pt.id) as total_transactions,
         sum (
           CASE
              WHEN pt.description IN
@@ -140,9 +142,10 @@ module Reports
           stud.total_credits_refunded = t.total_credits_refunded 
           stud.credits_awarded_by_teacher = t.credits_awarded_by_teacher
           stud.credits_awarded_by_system = t.credits_awarded_by_system
+          stud.total_transactions = t.total_transactions
         end
       end
-      students = students.reject{ | stud | stud.has_activity == "N"}
+      students = students.reject{ | stud | stud.total_transactions == 0 and stud.num_logins == 0}
     end
 
     def generate_row(person)
