@@ -145,7 +145,8 @@ module Reports
           stud.total_transactions = t.total_transactions
         end
       end
-      students = students.reject{ | stud | stud.total_transactions == 0 and stud.num_logins == 0}
+      students = students.reject{ | stud | (stud.has_activity == "N" or (stud.total_transactions == 0 and stud.num_logins == 0))}
+      students
     end
 
     def generate_row(person)

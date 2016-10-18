@@ -80,7 +80,8 @@ module Reports
         end
         teach.has_activity = "N" if !(o or i)
       end
-      teachers = teachers.reject{ | teach | teach.num_logins == 0 and teach.num_credits == 0}
+      teachers = teachers.reject{ | teach | (teach.has_activity == "N" or (teach.num_logins == 0 and teach.num_credits == 0))}
+      teachers
     end
 
     def generate_row(person)
