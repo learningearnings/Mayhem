@@ -24,6 +24,7 @@ module Reports
         0 AS credits_awarded_by_teacher,
         0 AS credits_awarded_by_system,
         0 as num_logins,
+        0 as total_transactions,
         'Y' as has_activity
         from people p, spree_users u,  #{crfrom} person_school_links psl
         where p.id = u.person_id and p.id = psl.person_id and psl.school_id = #{school.id} 
@@ -52,6 +53,7 @@ module Reports
       
       sql3 = %Q(
         select p.id as person_id, 
+        count(pt.id) as total_transactions,
         sum (
           CASE
              WHEN pt.description IN
@@ -137,12 +139,14 @@ module Reports
         if t
           stud.total_credits_deposited = t.total_credits_deposited
           stud.total_credits_spent_on_purchase = t.total_credits_spent_on_purchase
-          stud.total_credits_refunded = t.total_credits_refunded if !t.total_credits_refunded.blank?
+          stud.total_credits_refunded = t.total_credits_refunded 
           stud.credits_awarded_by_teacher = t.credits_awarded_by_teacher
           stud.credits_awarded_by_system = t.credits_awarded_by_system
+          stud.total_transactions = t.total_transactions
         end
       end
-      students = students.reject{ | stud | stud.has_activity == "N"}
+      students = students.reject{ | stud | (stud.has_activity == "N" or (stud.total_transactions == 0 and stud.num_logins == 0))}
+      students
     end
 
     def generate_row(person)
@@ -157,9 +161,10 @@ module Reports
           total_credits_refunded: (number_with_precision(person.total_credits_refunded, precision: 2, delimiter: ',') || 0), 
           total_credits_deposited: (number_with_precision(person.total_credits_deposited, precision: 2, delimiter: ',') || 0),
           total_credits_spent_on_purchase: (number_with_precision(person.total_credits_spent_on_purchase, precision: 2, delimiter: ',') || 0),
-          account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           num_of_logins: person.num_logins,
-          last_sign_in_at: (person.last_sign_in)?time_ago_in_words(person.last_sign_in) + " ago":""
+          last_sign_in_at: (person.last_sign_in)?time_ago_in_words(person.last_sign_in) + " ago":"",
+          account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
+
         ]
     end
 
@@ -173,9 +178,9 @@ module Reports
         total_credits_refunded: "Total Credits Refunded",                
         total_credits_deposited: "Total Credits Deposited",
         total_credits_spent_on_purchase: "Total Credits Spent On Purchases",
-        account_balance: "Current Account Balance",
         num_of_logins: "Num of Logins",
-        last_sign_in_at: "Last Sign In"
+        last_sign_in_at: "Last Sign In",
+        account_balance: "Current Account Balance"      
       }
     end
     def data_classes
@@ -188,9 +193,9 @@ module Reports
         total_credits_refunded: "",                
         total_credits_deposited: "",
         total_credits_spent_on_purchase: "",
-        account_balance: "",
         num_of_logins: "",
-        last_sign_in_at: ""
+        last_sign_in_at: "",
+        account_balance: ""       
       }
     end
   end
