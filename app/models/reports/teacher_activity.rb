@@ -92,10 +92,10 @@ module Reports
           classroom: person.has_classroom,
           issued_balance: (number_with_precision(person.issued_balance, precision: 2, delimiter: ',') || 0),
           num_credits: person.num_credits,
-          account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
           type: person.type,
           num_of_logins: person.num_logins,
-          last_sign_in_at: (person.last_sign_in)?time_ago_in_words(person.last_sign_in) + " ago":""
+          last_sign_in_at: (person.last_sign_in)?time_ago_in_words(person.last_sign_in) + " ago":"",
+          account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0)
         ]
     end
 
@@ -107,9 +107,9 @@ module Reports
         type: "Type",
         issued_balance: "Total Credits Issued",
         num_credits: "Num of Credits Issued Txns",        
-        account_balance: "Account Balance",
         num_of_logins: "Num of Logins",
-        last_sign_in_at: "Last Sign In"
+        last_sign_in_at: "Last Sign In",
+        account_balance: "Account Balance",        
       }
     end
     def data_classes
@@ -120,9 +120,9 @@ module Reports
         type: "", 
         issued_balance: "currency",
         num_credits: "",
-        account_balance: "",
         num_of_logins: "",
-        last_sign_in_at: ""
+        last_sign_in_at: "",
+        account_balance: ""        
       }
     end
 
