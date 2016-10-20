@@ -13,22 +13,22 @@
               DAY 2 of the SEMINAR
       - else
         = @whats_new.body.html_safe
-/    - if current_school.name == 'STI'
-/      .featured-activity
-/        .fa-text
-/          %div.king_font
-/   
-/            Don't Miss.......
-/          %div.sketch_font
-/            Social Hour
-/          %div.sketch_font2
-/            5-6 PM Day 1
-/    - else
-/      .featured-activity
-/        .fa-text
-/          = @featured_activity.body.html_safe
-/    .featured-activity-callout
-/      = @featured_activity_callout.body.html_safe
+  /    - if current_school.name == 'STI'
+  /      .featured-activity
+  /        .fa-text
+  /          %div.king_font
+  /   
+  /            Don't Miss.......
+  /          %div.sketch_font
+  /            Social Hour
+  /          %div.sketch_font2
+  /            5-6 PM Day 1
+  /    - else
+  /      .featured-activity
+  /        .fa-text
+  /          = @featured_activity.body.html_safe
+  /    .featured-activity-callout
+  /      = @featured_activity_callout.body.html_safe
   / .honor-roll
   /   .honor-roll-content
   /     - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%p")) do
