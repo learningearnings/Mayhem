@@ -34,7 +34,7 @@ module Mobile
       district = District.where(guid: current_school.district_guid).last if current_school.district_guid
       if district
         district_name = (district.name.blank? ? "None" : district.name ) 
-      else  before_filter :check_mixpanel
+      else  
         district_name = "None"
       end
       @options = {:env => Rails.env, 

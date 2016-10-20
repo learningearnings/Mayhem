@@ -15,7 +15,7 @@ module Reports
         #File.open("/tmp/teacher_credits" + @filename, "w") {|f| f.write Reports::NewTeacherCreditsReport.new(options).run }  
         #File.open("/tmp/student_logins" + @filename, "w") {|f| f.write Reports::NewStudentLoginsReport.new(options).run } 
         #File.open("/tmp/student_credits" + @filename, "w") {|f| f.write Reports::NewStudentCreditsReport.new(options).run }                     
-        AdminMailer.delay.district_dashboard_report(filename, @email_recipients)
+        AdminMailer.delay.district_dashboard_report(filename, @email_recipients, @options)
       end
     end
   end

@@ -32,7 +32,7 @@ module Reports
               AND tpsl.person_id = tp.id
            AND tpsl.status = 'active'
            AND tp.status = 'active') AS teacher_count,
-          (SELECT count(DISTINCT i.id)
+          (SELECT count(DISTINCT p.id)
             FROM people p, person_school_links psl, interactions i, schools s
             WHERE s.id = psl.school_id AND p.id = psl.person_id
               AND (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth' or i.page = '/sti/give_credits')
@@ -64,7 +64,7 @@ module Reports
               AND spsl.person_id = sp.id
            AND spsl.status = 'active'
            AND sp.status = 'active') AS student_count,
-               (SELECT count(DISTINCT i.id)
+               (SELECT count(DISTINCT p.id)
             FROM people p, person_school_links psl, interactions i, schools s
             WHERE s.id = psl.school_id AND p.id = psl.person_id
               AND (i.page = '/students/home' or i.page = '/mobile/v1/students/auth')
@@ -118,11 +118,8 @@ module Reports
     
     def run
       csv = CSV.generate do |csv|
-        csv << ["District summary report spaning #{@total_days} days for districts #{@districts}"]
-        csv << [""]
-        csv << ["District Name","District GUID","Teacher Count","Teacher Logins","Teachers Issueing Credits",
-          "Student Count","Student Logins","Students Receiving Credits","Students Depositing Credits","Students Purchasing Rewards",
-          "% of Teacher Enagement","% of Student Logins","% of Login vs Deposits","% of Student Engagement"]
+        csv << ["District summary report spaning #{@total_days} days from: #{@beginning_day} to: #{@ending_day} for districts: #{@districts}"]
+
         @rows.each do | row |
           if row.teacher_login_count == 0 or row.teachers_issuing_credits_count == 0
             teacher_engagement = 0.0
@@ -137,15 +134,19 @@ module Reports
           if row.student_login_count == 0 or row.students_depositing_credits_count == 0
             student_deposits_percent = 0.0
           else
-            student_deposits_percent = (row.students_depositing_credits.to_f / row.student_login_count.to_f ) * 100.0
+            student_deposits_percent = (row.students_depositing_credits_count.to_f / row.student_login_count.to_f ) * 100.0
           end          
           if row.student_login_count == 0 or row.students_purchasing_rewards_count == 0
             student_engagement_percent = 0.0
           else
-            student_engagement_percent = (row.students_purchasing_rewards.to_f / row.student_login_count.to_f ) * 100.0
-          end           
+            student_engagement_percent = (row.students_purchasing_rewards_count.to_f / row.student_login_count.to_f ) * 100.0
+          end  
+          csv << [""]
+          csv << ["District Name","District GUID","Teacher Count","Teacher Logins","Teachers Issueing Credits", 
+          "Student Count","Student Logins","Students Receiving Credits","Students Depositing Credits","Students Purchasing Rewards",
+          "% of Teacher Enagement","% of Student Logins","% of Login vs Deposits","% of Student Engagement"]                             
           csv << [row.name, row.guid, row.teacher_count, row.teacher_login_count, row.teachers_issuing_credits_count, 
-            row.student_count.row.student_login_count,row.students_receiving_credits_count,row.students_depositing_credits_count,row.students_purchasing_rewards_count,
+            row.student_count, row.student_login_count, row.students_receiving_credits_count, row.students_depositing_credits_count, row.students_purchasing_rewards_count,
             teacher_engagement, student_login_percent, student_deposits_percent, student_engagement_percent]   
         
           sql2 = %Q(
@@ -158,7 +159,7 @@ module Reports
                 (SELECT count(DISTINCT i.id)
                   FROM interactions i
                   WHERE
-                    (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth')
+                    (i.page = '/teachers/home' or i.page = '/mobile/v1/teachers/auth' or i.page = '/sti/give_credits')
                     AND i.person_id = p.id
                     AND i.created_at >= '#{@beginning_day}'
                     AND i.created_at <=  '#{@ending_day}'
@@ -175,13 +176,12 @@ module Reports
                 FROM districts d, schools s, person_school_links psl, people p
                 where d.guid = s.district_guid and s.id = psl.school_id and p.id = psl.person_id and p.type in ('Teacher','SchoolAdmin')
                 AND p.status = 'active' AND psl.status = 'active'
-                WHERE d.current_staff_version is not null
-                   #{@districts_where} 
+                   and d.guid = '#{row.guid}' 
                  ) as teacher_ranking
              order by (credits_count + login_count) desc
              limit 10
           )
-          top_ten_teachers = Teachers.find_by_sql(sql2)
+          top_ten_teachers = Teacher.find_by_sql(sql2)
           csv << [""]          
           csv << [""]
           csv << ["Top 10 teachers for district #{row.guid}"]
@@ -210,7 +210,7 @@ module Reports
                      AND s.district_guid = d.guid
                      AND i.person_id = psl.person_id
                      AND (i.page = '/students/home' or i.page = '/mobile/v1/students/auth')
-                     #{@districts_where}
+                     and d.guid = '#{row.guid}' 
                      AND i.created_at >= '#{@beginning_day}'
                      AND i.created_at <=  '#{@ending_day}'
             GROUP BY 
@@ -219,17 +219,19 @@ module Reports
                      grade
             ORDER BY extract(dow from  i.created_at)          
           )
-          student_logins =  Students.find_by_sql(sql3)
+          student_logins =  Student.find_by_sql(sql3)
           csv << [""]          
           csv << [""]
           csv << ["Student login count by grade and weekday for district #{row.guid}"]
           csv << [""]
-          csv << ["School Name","First Name","Last Name","Count Times Logged In","Count Times Issued Credits"]  
+          csv << ["Grade","Day","Login Count"]  
           student_logins.each do | row3 |
               csv << [row3.grade, row3.day_name, row3.login_count ]
           end  
           csv << [""]          
           csv << ["-----------------------------------------------------------------------"]             
+          csv << [""]   
+          csv << [""]   
         end 
       end
     end

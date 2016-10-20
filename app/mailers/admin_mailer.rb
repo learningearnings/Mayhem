@@ -11,13 +11,14 @@ class AdminMailer < ActionMailer::Base
     mail :to => ["aktaylor@chalkable.com","lrushing@chalkable.com"], :subject => "Tour Access Report", :body => "Tour Access Report"
   end
   
-  def user_activity_summary_report filename, email_recipients
+  def user_activity_summary_report filename, email_recipients, options
     attachments[filename] = File.read("/tmp/" + filename)
     recipients = ["aktaylor@chalkable.com"] + email_recipients.split(",") 
-    mail :to => recipients, :subject => "User Activity Summary Report", :body => "User Activity Summary Report"
+    title = "User Activity Summary Report for districts " + options["districts"]    
+    mail :to => recipients, :subject => title, :body => title
   end
   
-  def user_activity_detail_report filename, email_recipients
+  def user_activity_detail_report filename, email_recipients, options
     tlfn = "teacher_logins" + filename
     tcfn = "teacher_credits" + filename
     slfn = "student_logins" + filename
@@ -27,10 +28,11 @@ class AdminMailer < ActionMailer::Base
     attachments[slfn] = File.read("/tmp/" + slfn)
     attachments[scfn] = File.read("/tmp/" + scfn)           
     recipients = ["aktaylor@chalkable.com"] + email_recipients.split(",") 
-    mail :to => recipients, :subject => "User Activity Detail Reports", :body => "User Activity Detail Reports"
+    title = "User Activity Detail Reports for districts " + options["districts"]
+    mail :to => recipients, :subject => title, :body => title
   end
   
-  def district_dashboard_report filename, email_recipients
+  def district_dashboard_report filename, email_recipients, options
     district_summary = "district_summary" + filename
     #tcfn = "teacher_credits" + filename
     #slfn = "student_logins" + filename
@@ -40,7 +42,8 @@ class AdminMailer < ActionMailer::Base
     #attachments[slfn] = File.read("/tmp/" + slfn)
     #attachments[scfn] = File.read("/tmp/" + scfn)           
     recipients = ["aktaylor@chalkable.com"] + email_recipients.split(",") 
-    mail :to => recipients, :subject => "District Dashboard Report", :body => "District Dashboard Reports"
+    title = "District Dashboard Report for districts " + options["districts"]
+    mail :to => recipients, :subject => title, :body => title
   end  
   
   def teacher_activity_report filename
