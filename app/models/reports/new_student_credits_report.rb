@@ -138,7 +138,7 @@ module Reports
         csv << [""]
         csv << ["district_name","sti_district_guid","sti_school_id","le_school_id","school_name","le_person_id","sti_user_id","student_last_name","student_first_name","student_grade","date","status","total_credits_deposited","total_credits_spent_on_purchase","total_credits_refunded","credits_awarded_by_teacher","credits_awarded_by_system"]
         @rows.each do | row |
-          csv << [row.district_name, row.sti_district_guid, row.sti_school_id, row.school_name, row.le_person_id, row.sti_user_id, row.student_last_name,row.student_first_name,row.student_grade,row.date,row.status,row.total_credits_deposited,row.total_credits_spent_on_purchase,row.total_credits_refunded,row.credits_awarded_by_teacher,row.credits_awarded_by_system]
+          csv << [row.district_name, row.sti_district_guid, row.sti_school_id, row.le_school_id, row.school_name, row.le_person_id, row.sti_user_id, row.student_last_name,row.student_first_name,row.student_grade,row.date,row.status,row.total_credits_deposited,row.total_credits_spent_on_purchase,row.total_credits_refunded,row.credits_awarded_by_teacher,row.credits_awarded_by_system]
         end
       end
     end
