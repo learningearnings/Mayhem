@@ -64,10 +64,24 @@ class BuckDistributor
     @credit_manager.issue_credits_to_school school, amount_school
     teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
     school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers_paid.count, amount: amount_school)
+
     if school_credit.save
       log_txn "BuckDistributor -- saving school credits for #{school.name} #{school.id} school credit id #{school_credit.id}"
     else
       log_txn "BuckDistributor -- unable to save school credits for #{school.name} #{school.id}"
+    end 
+    
+    bonus_amount_school = bonus_amount_for_school(school)
+    log_txn "BuckDistributor --  pay bonus school #{school.name} #{school.id}  $#{bonus_amount_school.to_s} "
+    @credit_manager.issue_bonus_credits_to_school school, bonus_amount_school
+    teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
+    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers_paid.count, amount: bonus_amount_school)
+
+
+    if school_credit.save
+      log_txn "BuckDistributor -- saving school bonus credits for #{school.name} #{school.id} school credit id #{school_credit.id}"
+    else
+      log_txn "BuckDistributor -- unable to save bonus school credits for #{school.name} #{school.id}"
     end  
   end
 
@@ -81,9 +95,23 @@ class BuckDistributor
     else
       amount_school = DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
     end
-    amount_school = amount_school * ((school.admin_credit_percent.to_f/100)+1)
+    #amount_school = amount_school * ((school.admin_credit_percent.to_f/100)+1)
   end
   memoize :amount_for_school 
+  
+    # 25 dollars per student per day
+  def bonus_amount_for_school school
+    days_in_month = Time.days_in_month(Time.now.month)
+    days_left_in_month = (days_in_month - Time.now.day) + 1
+
+    if school.district_guid
+      amount_school = DAILY_STUDENT_AMOUNT * days_left_in_month * school.students.count
+    else
+      amount_school = DAILY_STUDENT_AMOUNT * days_left_in_month * active_students(school).count
+    end
+    bonus_amount_school = (amount_school * (school.admin_credit_percent.to_f/100.0)).round
+  end
+  memoize :bonus_amount_for_school 
 
   def handle_teachers
     log_txn "BuckDistributor --  handle teachers start at #{Time.now} "

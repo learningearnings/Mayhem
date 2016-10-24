@@ -194,16 +194,16 @@
   }
   
   $("#school_weekly_perfect_attendance_amount").on("change", function() {
-        var val = Math.abs(parseInt(this.value, 10) || 1);
+        var val = Math.abs(parseInt(this.value, 10));      
         this.value = val > 100 ? 100 : val;
   });
   
   $("#school_weekly_no_tardies_amount").on("change", function() {
-        var val = Math.abs(parseInt(this.value, 10) || 1);
+        var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
   });
   
   $("#school_weekly_no_infractions_amount").on("change", function() {
-        var val = Math.abs(parseInt(this.value, 10) || 1);
+        var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
   });    
