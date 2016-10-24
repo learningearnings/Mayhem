@@ -174,6 +174,10 @@ class School < ActiveRecord::Base
   def main_account_name
     "SCHOOL#{id} MAIN"
   end
+  
+  def bonus_account_name
+    "SCHOOL#{id} BONUS"
+  end
 
   def store_account_name
     "SCHOOL#{id} STORE"
@@ -181,6 +185,17 @@ class School < ActiveRecord::Base
 
   def main_account
     @school_main_account ||= Plutus::Asset.find_by_name main_account_name
+  end
+  
+  def bonus_account
+    @school_bonus_account ||= Plutus::Asset.find_by_name bonus_account_name
+    if !@school_bonus_account
+      @school_bonus_account = Plutus::Asset.new
+      @school_bonus_account.name = bonus_account_name
+      @school_bonus_account.save
+    end
+    @school_bonus_account
+    
   end
 
   def store_account

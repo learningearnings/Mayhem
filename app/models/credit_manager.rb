@@ -5,6 +5,7 @@ class CreditManager
     @account_class = options[:account_class] || Plutus::Account
     @le_main_account = nil
     @le_game_account = nil
+    @le_bonus_account = nil    
     @transaction_time_stamp = nil
   end
 
@@ -27,6 +28,14 @@ class CreditManager
 
   def game_account
     @le_game_account ||= @account_class.find_by_name(game_account_name)
+  end
+  
+  def bonus_account_name
+    'BONUS_ACCOUNT'
+  end
+
+  def bonus_account
+    @le_bonus_account ||= @account_class.find_by_name(bonus_account_name)
   end
 
   # NOTE: I am confused about why debits and credits are switched here, but to make
@@ -57,6 +66,10 @@ class CreditManager
   def issue_credits_to_school school, amount
     transfer_credits "Issue Credits to School", main_account, school.main_account, amount
   end
+  
+  def issue_bonus_credits_to_school school, amount
+    transfer_credits "Issue Bonus Credits to School", bonus_account, school.bonus_account, amount
+  end  
 
   def issue_store_credits_to_school school, amount
     transfer_credits "Issue Store Credits to School", main_account, school.store_account, amount
@@ -102,6 +115,10 @@ class CreditManager
   def monthly_credits_to_teacher school, teacher, amount
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
+  
+  def issue_bonus_credits_to_teacher school, teacher, amount
+    transfer_credits "Issue Bonus Credits to Teacher", school.bonus_account, teacher.main_account(school), amount
+  end  
 
   def monthly_credits_for_onboarded_student_to_teacher school, teacher, amount
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
@@ -178,4 +195,8 @@ class CreditManager
   def remove_credit_from_teacher school, teacher, amount
     transfer_credits "Remove credits from teacher", teacher.main_account(school), school.main_account, amount
   end
+  
+  def remove_bonus_credits_from_teacher school, teacher, amount
+    transfer_credits "Remove bonus credits from teacher", teacher.main_account(school), school.bonus_account, amount
+  end  
 end

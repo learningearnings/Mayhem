@@ -26,13 +26,13 @@ class TeacherCreditUpdater
   end
 
   def add_credit(teacher)
-    @credit_manager.monthly_credits_to_teacher @school, teacher, @credit_amount
+    @credit_manager.issue_bonus_credits_to_teacher @school, teacher, @credit_amount
     teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: @school.id, teacher_name: teacher.name, district_guid: @school.district_guid, amount: @credit_amount, credit_source: "ADMIN", reason: "Issue Monthly Credits")
     teacher_credit.save
   end
 
   def remove_credit(teacher)
-    @credit_manager.remove_credit_from_teacher @school, teacher, @credit_amount
+    @credit_manager.remove_bonus_credits_from_teacher @school, teacher, @credit_amount
     teacher_credit = TeacherCredit.new(teacher_id: teacher.id, school_id: @school.id, teacher_name: teacher.name, district_guid: @school.district_guid, amount: @credit_amount, credit_source: "ADMIN", reason: "Remove Credits")
     teacher_credit.save
     teachers = @school.teachers.joins(:person_school_links).where(person_school_links: { school_id: school.id, can_distribute_credits: true }).uniq
