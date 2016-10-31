@@ -4,9 +4,9 @@
     .grid_edit_students
       %p.credits-available
         %strong
-          School Current Credit Balance:
+          School Current Bonus Credit Balance:
         %span#current-credit-bal  
-          = number_with_precision(current_school.main_account.balance, precision: 2, delimiter: ',') || 0
+          = number_with_precision(current_school.bonus_account.balance, precision: 2, delimiter: ',') || 0
 
       .controls
         = form_tag '/teachers/bulk_teachers/manage_credits', method: :post do
@@ -32,7 +32,7 @@
         = form_tag '/teachers/bulk_teachers/update_teacher_credits', method: :post, id: 'update_teachers_form' do
           = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
           = hidden_field_tag "credit_qty", nil, id: "credit_qty"
-          = hidden_field_tag "current_school_bal", current_school.main_account.balance()
+          = hidden_field_tag "current_school_bal", current_school.bonus_account.balance()
           %table
             %thead
               %tr
@@ -47,6 +47,6 @@
                 %th
             %tbody.teachers_body
               - @teachers.each do |teacher|
-                = render 'manage_credits_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, grade: teacher.grade, gender: teacher.gender, id: teacher.id, credit_balance: teacher.main_account(current_school).balance }
+                = render 'manage_credits_teacher_row', grades: current_school.grades, options: { selected: false, first_name: teacher.first_name, last_name: teacher.last_name, email: teacher.user.email, username: teacher.user.username, grade: teacher.grade, gender: teacher.gender, id: teacher.id, credit_balance: number_with_precision(teacher.main_account(current_school).balance, precision: 2, delimiter: ',') || 0 }
 = javascript_include_tag "manage_credits"
                 

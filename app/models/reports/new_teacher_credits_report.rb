@@ -63,7 +63,7 @@ module Reports
       csv = CSV.generate do |csv|
         csv << ["Teacher credits report spaning #{@total_days} days for districts #{@districts}"]
         csv << [""]
-        csv << ["district_name","sti_district_guid","sti_school_id le_school_id","school_name le_person_id","sti_user_id","teacher_last_name","teacher_first_name","total_credits","num_of_credits","num_of_students","status","date","credit_description","has_classroom"]
+        csv << ["district_name","sti_district_guid","sti_school_id", "le_school_id","school_name le_person_id","sti_user_id","teacher_last_name","teacher_first_name","total_credits","num_of_credits","num_of_students","status","date","credit_description","has_classroom"]
         @rows.each do | row |
           csv << [row.district_name, row.sti_district_guid, row.sti_school_id, row.school_name, row.le_person_id, row.sti_user_id, row.teacher_last_name,row.teacher_first_name,row.total_credits,row.num_of_credits,row.num_of_students,row.status,row.date,row.credit_description,row.has_classroom]
         end
