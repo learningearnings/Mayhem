@@ -66,7 +66,7 @@ class BuckDistributor
     amount_school = amount_for_school(school)
     log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_school.to_s} "
     @credit_manager.issue_credits_to_school school, amount_school
-    teachers_paid = (teachers_to_@schools.each do |school|pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
+    teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
     school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers_paid.count, amount: amount_school)
 
     if school_credit.save
