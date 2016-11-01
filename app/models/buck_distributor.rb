@@ -47,13 +47,17 @@ class BuckDistributor
     handle_teachers
     log_txn "BuckDistributor --  ended on #{Time.now}"
   end
+  
+  def run_bonus
+    handle_school_bonus
+  end
 
   def handle_schools
     log_txn "BuckDistributor --  processing  #{@schools.size} schools at #{Time.now}"
     @schools.each do |school|
       log_txn "BuckDistributor --  revoke credits for school #{school.name} #{school.id}  $#{school.balance.to_s} "
       @credit_manager.revoke_credits_for_school(school, school.balance)
-      pay_school(school)
+      pay_school_bonus(school)
     end
     log_txn "BuckDistributor --  end schools processing  at #{Time.now}"
   end
@@ -62,7 +66,7 @@ class BuckDistributor
     amount_school = amount_for_school(school)
     log_txn "BuckDistributor --  pay school #{school.name} #{school.id}  $#{amount_school.to_s} "
     @credit_manager.issue_credits_to_school school, amount_school
-    teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
+    teachers_paid = (teachers_to_@schools.each do |school|pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
     school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers_paid.count, amount: amount_school)
 
     if school_credit.save
@@ -83,6 +87,24 @@ class BuckDistributor
     else
       log_txn "BuckDistributor -- unable to save bonus school credits for #{school.name} #{school.id}"
     end  
+  end  
+  
+  def handle_school_bonus
+    @schools.each do |school|
+      
+      bonus_amount_school = bonus_amount_for_school(school)
+      log_txn "BuckDistributor --  pay bonus school #{school.name} #{school.id}  $#{bonus_amount_school.to_s} "
+      @credit_manager.issue_bonus_credits_to_school school, bonus_amount_school
+      teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
+      school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers_paid.count, amount: bonus_amount_school)
+  
+  
+      if school_credit.save
+        log_txn "BuckDistributor -- saving school bonus credits for #{school.name} #{school.id} school credit id #{school_credit.id}"
+      else
+        log_txn "BuckDistributor -- unable to save bonus school credits for #{school.name} #{school.id}"
+      end  
+    end
   end
 
   # 25 dollars per student per day
