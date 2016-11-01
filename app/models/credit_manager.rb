@@ -68,7 +68,7 @@ class CreditManager
   end
   
   def issue_bonus_credits_to_school school, amount
-    transfer_credits "Issue Bonus Credits to School", bonus_account, school.bonus_account, amount
+    transfer_credits "Issue Bonus Credits to School", bonus_account, school.store_account, amount
   end  
 
   def issue_store_credits_to_school school, amount
