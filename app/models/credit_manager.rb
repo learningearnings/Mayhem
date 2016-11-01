@@ -29,14 +29,6 @@ class CreditManager
   def game_account
     @le_game_account ||= @account_class.find_by_name(game_account_name)
   end
-  
-  def bonus_account_name
-    'BONUS_ACCOUNT'
-  end
-
-  def bonus_account
-    @le_bonus_account ||= @account_class.find_by_name(bonus_account_name)
-  end
 
   # NOTE: I am confused about why debits and credits are switched here, but to make
   # my tests pass they needed to be.
@@ -68,7 +60,7 @@ class CreditManager
   end
   
   def issue_bonus_credits_to_school school, amount
-    transfer_credits "Issue Bonus Credits to School", bonus_account, school.store_account, amount
+    transfer_credits "Issue Bonus Credits to School", main_account, school.bonus_account, amount
   end  
 
   def issue_store_credits_to_school school, amount
