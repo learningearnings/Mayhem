@@ -57,7 +57,7 @@ class BuckDistributor
     @schools.each do |school|
       log_txn "BuckDistributor --  revoke credits for school #{school.name} #{school.id}  $#{school.balance.to_s} "
       @credit_manager.revoke_credits_for_school(school, school.balance)
-      pay_school_bonus(school)
+      pay_school(school)
     end
     log_txn "BuckDistributor --  end schools processing  at #{Time.now}"
   end
@@ -75,18 +75,6 @@ class BuckDistributor
       log_txn "BuckDistributor -- unable to save school credits for #{school.name} #{school.id}"
     end 
     
-    bonus_amount_school = bonus_amount_for_school(school)
-    log_txn "BuckDistributor --  pay bonus school #{school.name} #{school.id}  $#{bonus_amount_school.to_s} "
-    @credit_manager.issue_bonus_credits_to_school school, bonus_amount_school
-    teachers_paid = (teachers_to_pay(school, { hide_ignored: false }) + teachers_to_pay(school, { hide_ignored: true })).uniq
-    school_credit = SchoolCredit.new(school_id: school.id, school_name: school.name, district_guid: school.district_guid, total_teachers: teachers_paid.count, amount: bonus_amount_school)
-
-
-    if school_credit.save
-      log_txn "BuckDistributor -- saving school bonus credits for #{school.name} #{school.id} school credit id #{school_credit.id}"
-    else
-      log_txn "BuckDistributor -- unable to save bonus school credits for #{school.name} #{school.id}"
-    end  
   end  
   
   def handle_school_bonus
