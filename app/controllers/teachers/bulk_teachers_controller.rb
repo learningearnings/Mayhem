@@ -1,6 +1,6 @@
 module Teachers
   class BulkTeachersController < Teachers::BaseController
-    before_filter :redirect_for_synced_schools
+    #before_filter :redirect_for_synced_schools
     before_filter :load_edit, only: [:edit, :update]
     before_filter :load_manage_credit, only: [:manage_credits]
     before_filter :load_teachers, only: [:edit, :update, :manage_credits]
@@ -50,7 +50,7 @@ module Teachers
 
     def update
       updater_method = params["form_action_hidden_tag"] == "Delete these teachers" ? :delete! : :call
-      ::TeacherUpdaterWorker.perform_async(current_person.user.email, params["teachers"], current_person.schools.first, updater_method)
+      ::TeacherUpdaterWorker.perform_async(current_person.user.email, params["teachers"], current_school.id, updater_method, current_person)
       flash[:notice] = "Bulk process is running."
       redirect_to action: :show
     end

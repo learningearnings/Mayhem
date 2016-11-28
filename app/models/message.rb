@@ -24,6 +24,7 @@ class Message < ActiveRecord::Base
   scope :from_friend,  where(category: 'friend')
   scope :from_system,  where(category: 'system')
   scope :from_teacher, where(category: 'teacher')
+  scope :expired_otu_code, joins(:otu_codes).where('otu_codes.active = ? and redeemed_at IS NULL and otu_codes.expires_at > ?', true, Time.now).readonly(false)
   scope :from_school,  where(category: 'school')
   scope :for_admin,    where(category: 'le_admin')
   scope :from_games,  where(category: 'games')

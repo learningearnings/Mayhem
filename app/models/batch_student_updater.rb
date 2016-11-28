@@ -2,12 +2,13 @@
 class BatchStudentUpdater
   attr_reader :students, :school_id
 
-  def initialize student_params, school_id, student_class=Student
+  def initialize student_params, school_id, current_person, student_class=Student 
     @students       = []
     @school_id      = school_id
     @school         = School.find(@school_id)
     @student_params = student_params.dup
     @student_class  = student_class
+    @current_person = current_person
   end
 
   def call
@@ -57,6 +58,7 @@ class BatchStudentUpdater
         student = @student_class.find(student_param.delete("id"))
         psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(student.id, @school_id)
         psl.deactivate!
+        psl.audit_logs.create(district_guid: psl.person.try(:district_guid), school_id: psl.school.try(:id), school_sti_id: psl.school.try(:sti_id), person_id: @current_person.id, person_name: @current_person.name, person_type: @current_person.type, person_sti_id: @current_person.sti_id, log_event_name: psl.person.name, action: "Deactivate")
       end
     end
     true

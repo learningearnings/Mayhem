@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160706075452) do
+ActiveRecord::Schema.define(:version => 20161005095435) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -93,7 +93,31 @@ ActiveRecord::Schema.define(:version => 20160706075452) do
     t.boolean  "fulfilled",                                      :default => false
     t.integer  "person_id"
     t.boolean  "canceled"
+    t.datetime "deleted_at"
+    t.string   "status"
   end
+
+  create_table "audit_logs", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "log_event_id"
+    t.string   "log_event_type"
+    t.string   "action"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.string   "district_guid"
+    t.integer  "school_id"
+    t.integer  "school_sti_id"
+    t.integer  "person_sti_id"
+    t.string   "person_name"
+    t.string   "person_type"
+    t.string   "log_event_name"
+  end
+
+  add_index "audit_logs", ["district_guid"], :name => "index_audit_logs_on_district_guid"
+  add_index "audit_logs", ["log_event_name"], :name => "index_audit_logs_on_log_event_name"
+  add_index "audit_logs", ["log_event_type"], :name => "index_audit_logs_on_log_event_type"
+  add_index "audit_logs", ["person_id"], :name => "index_audit_logs_on_person_id"
+  add_index "audit_logs", ["school_id"], :name => "index_audit_logs_on_school_id"
 
   create_table "avatars", :force => true do |t|
     t.string   "image_uid"
@@ -760,6 +784,7 @@ ActiveRecord::Schema.define(:version => 20160706075452) do
     t.string   "credits_scope"
     t.string   "credits_type"
     t.integer  "admin_credit_percent",              :default => 5
+    t.string   "printed_credit_logo_uid"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -1452,8 +1477,8 @@ ActiveRecord::Schema.define(:version => 20160706075452) do
     t.string   "district_guid"
     t.string   "status"
     t.string   "sync_type"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.text     "error"
     t.text     "backtrace"
     t.text     "students_response"
@@ -1461,6 +1486,10 @@ ActiveRecord::Schema.define(:version => 20160706075452) do
     t.text     "schools_response"
     t.text     "sections_response"
     t.text     "staff_response"
+    t.integer  "student_version",   :limit => 8
+    t.integer  "section_version",   :limit => 8
+    t.integer  "staff_version",     :limit => 8
+    t.integer  "roster_version",    :limit => 8
   end
 
   create_table "teacher_credits", :force => true do |t|

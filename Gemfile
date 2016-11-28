@@ -23,7 +23,6 @@ gem 'bootstrap_forms'
 gem 'jwt'
 gem 'rack-cors'
 gem 'jbuilder'
-
 # for importing
 #gem 'mysql2'
 #gem 'taps'
@@ -140,7 +139,7 @@ end
 gem 'unicorn'
 
 # To use debugger
-# gem 'debugger'
+#gem 'debugger'
 
 group :development do
   gem 'slack-notify'

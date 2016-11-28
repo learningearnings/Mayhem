@@ -15,5 +15,10 @@ ActiveAdmin.register SyncAttempt do
     column :error do |sync_attempt|
       link_to sync_attempt.error || "", admin_sync_attempt_path(sync_attempt)
     end
+    column "" do |resource|
+      links = ''.html_safe
+      links += link_to "View", resource_path(resource), :class => "member_link edit_link"
+      links
+    end
   end
 end

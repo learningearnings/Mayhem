@@ -2,11 +2,25 @@ load 'lib/sti/client.rb'
 class StiController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person
-  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:auth, :save_teacher, :link, :give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
+  http_basic_authenticate_with name: "LearningEarnings", password: "ao760!#ACK^*1003rzQa", except: [:sync_district, :auth, :save_teacher, :link, :give_credits, :create_ebucks_for_students, :new_school_for_credits, :save_school_for_credits, :begin_le_tour]
   skip_around_filter :track_interaction
   skip_before_filter :subdomain_required
   skip_before_filter :verify_authenticity_token
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
+  
+  def sync_district
+    @district = District.where(guid: params[:district_guid].downcase ).first if params[:district_guid]
+    @district = District.where(guid: School.find(params[:school_id]).district_guid).first if params[:school_id]
+    @district.current_student_version = nil
+    @district.current_staff_version = nil
+    @district.current_roster_version = nil
+    @district.current_section_version = nil
+    @district.save
+    sti_link_token = StiLinkToken.where(district_guid: @district.guid).last
+    client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
+    StiImporterWorker.setup_sync(sti_link_token.api_url, "LearningEarnings",sti_link_token.password, @district.guid)
+    render :text => "Sync job submitted, check Sync Attempts for completion status"
+  end
 
   def give_credits
     if current_school == nil or current_person == nil or current_person.main_account(current_school) == nil
@@ -26,6 +40,17 @@ class StiController < ApplicationController
       load_students  
     end  
     @teacher_email_form = TeacherEmailForm.new(:person_id => current_person.id)
+    begin
+      start_time = Time.now
+      interaction = Interaction.new ip_address: request.ip
+      interaction.person = current_person if current_person
+      interaction.school_id = session[:current_school_id]
+      end_time = Time.now
+      interaction.elapsed_milliseconds = (end_time - start_time) * 1_000
+      interaction.page = "/sti/give_credits"
+      interaction.save
+    rescue
+    end
     render :layout => false
   end
   

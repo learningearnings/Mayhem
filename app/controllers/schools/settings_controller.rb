@@ -14,6 +14,16 @@ class Schools::SettingsController < SchoolAdmins::BaseController
     redirect_to school_credit_settings_path
   end
 
+  def upload_school_logo
+    if current_school.update_attributes(params[:school])
+      flash[:notice] = "School logo uploaded successfully."
+    else
+      flash[:notice] = "Could not upload School Logo."
+    end  
+    redirect_to '/schools/settings/#tab_manage-printed-credits'
+
+  end
+
   def update_sponsors_text
     sponsor_post = current_school.sponsor_post
     sponsor_post.body = params[:our_sponsor_post][:body]

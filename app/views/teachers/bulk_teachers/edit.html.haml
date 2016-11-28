@@ -25,7 +25,7 @@
       .bulk_form
         = form_tag '/teachers/bulk_teachers', method: :put, id: 'update_teachers_form' do
           = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
-          %table
+          %table#teachers_header_sort.tablesorter
             %thead
               %tr
                 %th= check_box_tag 'select_all'

@@ -4,6 +4,12 @@ ActiveAdmin.register Auction do
   scope :upcoming
   scope :unfulfilled
   config.filters = false
+  config.action_items.delete_if { |item|
+    item.display_on?(:show)
+  }
+  action_item only: :show do
+   link_to I18n.t('active_admin.edit'), edit_resource_path(resource) 
+  end
   controller do
     skip_before_filter :add_current_store_id_to_params
     with_role :le_admin
@@ -24,7 +30,14 @@ ActiveAdmin.register Auction do
       @auction = Auction.new
       @auction.schools = []
     end
-    
+
+    def index
+      index! do |format|
+        @auctions = Auction.where("deleted_at IS ?", nil).page(params[:page]).order("created_at DESC")
+        format.html
+      end 
+    end
+
     def update
       @auction = Auction.find(params[:id])
       @auction.auction_zip_codes.delete_all
@@ -78,6 +91,7 @@ ActiveAdmin.register Auction do
     def cancel_auction
       auction = Auction.find(params[:id])
       auction.open_bids.map{|bid| BidOnAuctionCommand.new(:credit_manager => CreditManager.new).invalidate_bid(bid)}
+      auction.audit_logs.create(district_guid: auction.auction_district_guid, school_id: auction.auction_school_id, school_sti_id: auction.auction_school_sti_id, person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: auction.product.name, action: "Cancelled")
       auction.update_attribute(:end_date, Time.now)
       redirect_to admin_auctions_path
     end
@@ -88,6 +102,15 @@ ActiveAdmin.register Auction do
         @auction.auction_zip_codes.create(:zip_code => zip) if zip.present?
       end
     end
+
+    def remove_auction
+      @auction = Auction.find(params[:id])
+      @auction.deleted_at = Time.now
+      @auction.audit_logs.create(district_guid: @auction.auction_district_guid, school_id: @auction.auction_school_id, school_sti_id: @auction.auction_school_sti_id, person_id: current_person.id, person_name: current_person.name, person_type: current_person.type,person_sti_id: current_person.sti_id, log_event_name: @auction.product.name, action: "Deactivate")
+      @auction.save
+      redirect_to admin_auctions_path
+    end
+
   end
 
   index do
@@ -128,11 +151,11 @@ ActiveAdmin.register Auction do
     column :actions do |auction|
       link_html = ""
       link_html += (link_to "Show", admin_auction_path(auction)) + " "# if auction.upcoming?
-      link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " if auction.upcoming?
-      link_html += (link_to "Delete", admin_auction_path(auction), method: :delete) + " " if auction.upcoming?
+      link_html += (link_to "Edit", edit_admin_auction_path(auction)) + " " 
+      link_html += (link_to "Delete", admin_remove_auction_path(auction)) 
       link_html.html_safe
     end
-    default_actions
+    #default_actions
   end
 
   show do

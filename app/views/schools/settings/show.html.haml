@@ -19,9 +19,12 @@
     %li{role: "presentation"}
       %a{"href" => "#manage-negative-credits", "aria-controls" => "manage-negative-credits", "role" => "tab", "data-toggle" => "tab"}
         <strong>Manage Negative Credits</strong>
+    %li{role: "presentation"}
+      %a{"href" => "#manage-printed-credits", "aria-controls" => "manage-printed-credits", "role" => "tab", "data-toggle" => "tab"}
+        <strong>School Logo</strong>
 
   %div.tab-content
-    #edit-sponsors-text.tab-pane{role: "tabpanel"}
+    #edit-sponsors-text.tab-pane.active{role: "tabpanel"}
       .school-settings
         %h3 Manage Sponsors Text
         %p This is displayed on all student's home pages.  Any updates here will be seen by all students and potentially their parents.
@@ -52,7 +55,7 @@
                   %td= select_tag "[teachers][#{teacher.id}][credit_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits_for_school?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
                   %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.ignored?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
 
-    #import-teachers.tab-pane.active{role: "tabpanel"}
+    #import-teachers.tab-pane{role: "tabpanel"}
       .school-settings
         %h3 Import Teachers
         %h4 Required Format Example:
@@ -101,6 +104,18 @@
                 If you DON'T ALLOW NEGATIVE credits, then LE School Admins will only be allowed to enter positive number values when issuing e-Credits and therefore can only add credits to a students account.
               %li
                 If you ALLOW NEGATIVE e-Credits to be issued then LE School Admins can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately (since a student most likely wouldn't deposit a negative e-Credit - at least we wouldn't).
+    #manage-printed-credits.tab-pane{role: "tabpanel"}
+      .school-settings
+        %h3 School Logo
+        - if @school.printed_credit_logo.present?
+          = image_tag(@school.printed_credit_logo.thumb('100x100#').url, alt: @school.name)
+        %p This logo will get displayed on printed credits.
+        .manage-sponsors-text
+          = form_for @school, url: printed_credit_logo_path do |f|
+            = f.file_field :printed_credit_logo
+            %br
+            = f.submit "Submit"
+
 
 :javascript
   // Javascript to enable link to tab

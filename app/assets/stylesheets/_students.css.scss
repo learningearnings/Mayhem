@@ -13,22 +13,32 @@
 }
 
 .grid_edit_students {
+  font-size:12px;
   th {
     text-align: left;
   }
-  td.text, th.text, td.text input {
-    width: 100px;
+  td.text, th.text{
+    width: 160px;
+  }
+  td.text input {
+    width: 140px;
   }
   td.select, th.select, td.select select {
-    width: 110px;
-    &.grade, &.grade select {
-      width: 60px;
+    width: 90px;
+    &.grade {
+      width: 115px;
+    }
+    &.grade select {
+      width: 90px;
     }
     &.gender, &.gender select {
+      width: 115px;
+    }
+    &.gender select {
       width: 90px;
     }
     .classroom, &.classroom select {
-      width: 200px;
+      width: 100px;
     }
   }
   .controls {
@@ -39,10 +49,10 @@
       display: inline-block;
     }
     #controls_grade {
-      width: 60px;
+      width: 100px;
     }
     #controls_gender {
-      width: 90px;
+      width: 100px;
     }
     #controls_action {
       width: 300px;
@@ -55,4 +65,18 @@
     margin-left: 0; // Overriding something too generic elsewhere
     width: 60px;
   }
+
+  .students_body{
+    td.text{
+      padding-left:14px;
+    }
+    td.student-contact{
+      text-align:center;
+    }  
+    td.grade{
+      text-align: center;
+    } 
+  }
+
+
 }

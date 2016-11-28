@@ -17,7 +17,7 @@ class OtuCode < ActiveRecord::Base
 
   scope :active, where("active = ?", true)
   scope :inactive, where("active = ?", false)
-  scope :not_expired, lambda { where("created_at > ?", Time.now - 45.days)}
+  scope :not_expired, lambda { where("created_at > ?", Time.now - 90.days)}
   scope :ebuck, where(ebuck: true)
   scope :last_30, lambda { where(OtuCode.arel_table[:created_at].gt(Time.now - 30.days)) }
   scope :for_school, lambda { |school| joins(:person_school_link).where({:person_school_link => {school_id: school.id} } ) }
@@ -32,6 +32,12 @@ class OtuCode < ActiveRecord::Base
   }
   scope :total_credited, lambda { |student_id,start_date, end_date|
     where("student_id = ? AND updated_at >= ? AND updated_at <= ?",student_id, start_date, end_date)
+  }
+  scope :total_credits_deposited, lambda{|startdate, enddate| 
+    select("SUM(points) as sum_of_credits_deposited").where("otu_codes.redeemed_at >= ? AND otu_codes.redeemed_at <= ?", startdate, enddate)
+  } 
+  scope :total_credits_received, lambda{|startdate, enddate| 
+    select("SUM(points) as sum_of_credits_received, count(DISTINCT otu_codes.id) as num_credits").where("otu_codes.created_at >= ? AND otu_codes.created_at <= ?", startdate, enddate)
   }
   def expired?
     self.expires_at <= Time.now

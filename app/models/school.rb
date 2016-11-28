@@ -23,20 +23,22 @@ class School < ActiveRecord::Base
   has_many :teacher_credits
   has_many :school_product_links
   has_many :products, :through => :school_product_links, :class_name => "Spree::Product", :source => :spree_product
+  has_many :audit_logs, :as => :log_event
 
   has_many :reward_exclusions
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address,:store_subdomain, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
-                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,
+                  :logo, :logo_name, :logo_uid,:printed_credit_logo, :mascot_name, :max_grade, :min_grade, :name,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :legacy_school_id, :sti_id, :district_guid,
                   :weekly_perfect_attendance_amount, :monthly_perfect_attendance_amount, :weekly_no_tardies_amount, :monthly_no_tardies_amount,
                   :weekly_no_infractions_amount, :monthly_no_infractions_amount, :credits_scope, :credits_type, :admin_credit_percent
 
   attr_accessible :ad_profile, :distribution_model, :gmt_offset,:address, :city, :state_id, :zip, :address1, :address2, :can_revoke_credits,
-                  :logo, :logo_name, :logo_uid, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,:credits_scope, :credits_type,
+                  :logo, :logo_name, :logo_uid, :printed_credit_logo, :mascot_name, :max_grade, :min_grade, :name,:store_subdomain,:credits_scope, :credits_type,
                   :school_demo, :school_mail_to, :school_phone, :school_type_id, :status, :timezone, :created_at, :admin_credit_percent, :as => :admin
 
   image_accessor :logo
+  image_accessor :printed_credit_logo
 
   validates_presence_of :name, :city, :state_id, :zip, :address1
   validates_uniqueness_of :sti_uuid, allow_blank: true
@@ -172,6 +174,10 @@ class School < ActiveRecord::Base
   def main_account_name
     "SCHOOL#{id} MAIN"
   end
+  
+  def bonus_account_name
+    "SCHOOL#{id} BONUS"
+  end
 
   def store_account_name
     "SCHOOL#{id} STORE"
@@ -179,6 +185,17 @@ class School < ActiveRecord::Base
 
   def main_account
     @school_main_account ||= Plutus::Asset.find_by_name main_account_name
+  end
+  
+  def bonus_account
+    @school_bonus_account ||= Plutus::Asset.find_by_name bonus_account_name
+    if !@school_bonus_account
+      @school_bonus_account = Plutus::Asset.new
+      @school_bonus_account.name = bonus_account_name
+      @school_bonus_account.save
+    end
+    @school_bonus_account
+    
   end
 
   def store_account

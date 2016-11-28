@@ -3,10 +3,10 @@
     text-align: left;
   }
   td.text, th.text, td.text input {
-    width: 100px;
+    width: 50px;
   }
   td.select, th.select, td.select select {
-    width: 110px;
+    width: 50px;
     &.grade, &.grade select {
       width: 60px;
     }
