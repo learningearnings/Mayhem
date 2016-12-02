@@ -310,7 +310,7 @@ Leror::Application.routes.draw do
     resource  :lounge
     resources :rewards
     resources :reward_templates
-    match "home" => "home#show", as: 'home'
+    match "home" => "bank#show", as: 'home'
     match "save" => "home#save", as: 'save'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch', defaults: { :format => 'html' }
