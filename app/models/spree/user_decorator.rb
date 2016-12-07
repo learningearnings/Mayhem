@@ -28,7 +28,7 @@ Spree::User.class_eval do
       where(:username => username).joins(:person).
       merge(LeAdmin.status_active).first if user.nil?
 
-    user = nil if user && user.api_user != false && user.api_user != nil && !user.valid_password?(password)
+    user = nil if user && user.api_user != false && !user.valid_password?(password)
     # If there is no user found from the traditional methods lets check the sti
     # api
 
