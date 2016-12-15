@@ -71,7 +71,8 @@ $how-to-active-color: #f05c1a;
 }
 
 body {
-  font-size: 62.5%;
+  //font-size: 62.5%;
+  background: #075B7F;
 }
 
 .sti_table_heading {
@@ -141,7 +142,7 @@ span.join,
 .primary-nav
 .awesome-button
 {
-  font-family: 'sketch_rockwellregular';
+  font-family: 'Sans-serif';
 }
 
 @mixin really-awesom-button {
@@ -181,18 +182,18 @@ html, body {
     margin: 0 auto;
     padding: 0;
     height: 100%;
-    min-width: 960px;
-    background: url(asset_path('notebook_bg_lines.png', image)) repeat;
+    #min-width: 960px;
+    #background: url(asset_path('notebook_bg_lines.png', image)) repeat;
 }
 
 html.resp, body.resp {
     margin: 0 auto;
     padding: 0;
     height: 100%;
-    max-width: 960px;
-    min-width: 320px;
-    background: url(asset_path('lines.png', image)) repeat-y scroll center;
-    background-position: center 170px;
+    #-width: 960px;
+    #min-width: 320px;
+    #background: url(asset_path('lines.png', image)) repeat-y scroll center;
+    #background-position: center 170px;
 }
 
 .container-full {
@@ -391,7 +392,7 @@ html.resp, body.resp {
   height: 37px;
 }
 
-.lt-ie9 .form-inline .login-button {
+.lt-ie9 .form-inline .login-button {    background: #075B7F;
   display:inline-block;
   margin-right:-35px;
   margin-left:20px;
@@ -556,25 +557,17 @@ html.resp, body.resp {
 }
 
 .custom-nav-bar {
-  position: relative;
-  top: 0;
-  float: right;
-  .primary-nav {
-    list-style-type: none;
-    margin: 0;
-    padding:0;
-    li {
-      display: inline;
-      padding: 1.7em 0;
-
-      a {
-        text-decoration: none;
-        font-family: 'sketch_rockwellregular';
-        display: inline-block;
-      }
-    }
-  }
+    width: 210px;
+    padding-bottom: 10px;
+    padding-left: 0;
+    position: relative;
+    word-wrap: break-word;
+    vertical-align: top;
+    float: left;
+    display: block;
+    background: #075B7F;
 }
+
 
 .navbar-inner {
   border-radius: 0;
@@ -1120,29 +1113,38 @@ html.resp, body.resp {
 }
 
 .foot {
-  color: $supporting-text-color;
-  text-align: center;
+  //color: $supporting-text-color;
+  text-align: right;
   clear: both;
   margin-top: 4em;
-  p {
-      font-family: Arial, Sans-Serif;
-      color: #000000;
-      }
-  .secondary-nav {
-    list-style-type: none;
-    li {
-      display: inline-block;
-      padding: 0 1.5em 0 1em;
-      border-right: solid 1px #000000;
-        a {
-         font-family: Arial, Sans-Serif;
-         color: #000000;
-        }
-    }
-    li:last-child {
-      border-right: none;
-    }
-  }
+  font-family: "Sans-serif";
+  font-weight: 400;
+  font-size: 12px;
+  color: white;
+
+  a {
+    color: #dedeff;
+    margin-left: 20px;
+    margin-right: 20px;
+  } 
+  //    font-family: Arial, Sans-Serif;
+  //    color: #000000;
+  //    }
+  //.secondary-nav {
+  //  list-style-type: none;
+  //  li {
+  //    display: inline-block;
+  //    padding: 0 1.5em 0 1em;
+  //    border-right: solid 1px #000000;
+  //      a {
+  //       font-family: Arial, Sans-Serif;
+  //       color: #000000;
+  //      }
+  //  }
+  //  li:last-child {
+  //    border-right: none;
+  //  }
+  //}
 }
 
 .visible {
@@ -1440,20 +1442,34 @@ h3 {
 }
 
 .person-details {
-  margin-right: 1em;
+  font-family: "Sans-serif";
+
+
+  margin-right: 20px;
+  margin-left: 20px;
   max-width: 500px;
   float: left;
   h3 {
+    font-size: 18px;
     line-height: 24px;
-    color: #F63;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    color: white;
   }
   .links {
     list-style-type: none;
     margin-left: -12px;
+    color: white;
     li {
       display: inline;
       margin-left: 1em;
-      a { color: #336;
+            font-family: "Sans-serif";
+            font-weight: 400;
+      a { color: white;
+            font-family: "Sans-serif";
+            font-weight: 400;
+            font-size: 14px;
       ; }
     }
   }
@@ -1720,18 +1736,22 @@ h3 {
 }
 
 .main-content-wrapper {
+  position: relative;
+  top: 0px;
+  left: 20px;
+  width: 95%;  
   padding: 2em;
   display: inline-block;
   vertical-align: top;
   height: auto;
-  width:99%;
+  //width:99%;
   background-color: #fff;
   -moz-box-shadow:    1px 2px 5px 1px #ccc;
   -webkit-box-shadow: 1px 2px 5px 1px #ccc;
   box-shadow:         1px 2px 5px 1px #ccc;
 
   .full-content {
-    width: 99%;
+    width: 75%;
     display: inline-block;
     vertical-align: top;
   }

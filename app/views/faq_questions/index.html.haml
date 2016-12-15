@@ -5,49 +5,11 @@
     %h3 
       = link_to "Browse online help", :tour
     = "Click the above link to see a comprehensive guide to LE pages and features.  "      
-  %li
-    %h3 
-      = link_to "LE Tour", :begin_tour
-    = "Click the above link to take a guided tour of LE.  "
   - if current_user.person.is_a?(Teacher) || current_user.person.is_a?(SchoolAdmin)  
     %li
       %h3 
         = link_to "Teacher Resources", "http://www.chalkable.com/resources/#LearningEarnings", :target => "_blank"
       = "Click the above link to view Teachers resources.  "
 
-%h1 FAQ
-
-#search-help
-  = form_for 'faq_question_search', remote: true, id: 'faq-search-form' do |f|
-    = f.text_field :search
-    = submit_tag 'Search', :class => 'awesome-button'
-
-#faqs
-  - @questions.each do |question|
-    %h3= question.question
-    %div
-      %p= question.answer
-  
-:javascript
-  $(document).ready(function() {
-    load_answers();
-
-    $("#search-help").children().on("ajax:success", function(e, data, status, xhr){
-      $("#faqs").replaceWith(xhr.responseText);
-      load_answers();
-    });
-
-  });
-
-  function load_answers() {
-    $('#faqs h3').each(function() {
-      var tis = $(this), state = false, answer = tis.next('div').hide().css('height','auto').slideUp();
-      tis.click(function() {
-        state = !state;
-        answer.slideToggle(state);
-        tis.toggleClass('active',state);
-      });
-    });
-  };
 
 

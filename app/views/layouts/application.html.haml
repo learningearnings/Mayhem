@@ -29,13 +29,12 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
   %body.resp
+
     .resp-page-content-container
       .resp-head
         = render "layouts/resp_head"
+        = render "layouts/navbar"
         = render "layouts/resp_content_container"
         = render "layouts/footer"
 
-      .resp-content-container
-        .resp-side-art
-          .resp-side-art-students
     = oboe_rum_footer rescue ""
