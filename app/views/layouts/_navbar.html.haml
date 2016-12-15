@@ -1,6 +1,9 @@
 - # FIXME: This is not good, needs to be replaced with something that just knows what to render without these...things
 
+   
 .custom-nav-bar
+  .resp-logo
+    = link_to(image_tag('common/LELogo.png'), root_path)
   - if current_user
     - if current_person
       - if current_person.is_a?(SchoolAdmin)
@@ -19,3 +22,12 @@
         = render 'layouts/menu_parent'
       - else
         = render 'layouts/menu'
+.profile
+  .avatar
+    = avatar_for(current_person, '80x80#')          
+  .person-details
+    %h3= current_person.full_name
+    //  %ul.links
+    //    %li= link_to "Edit My Profile", main_app.person_path(current_person)
+    //    %li= link_to 'Sign out', spree.get_destroy_user_session_path
+    

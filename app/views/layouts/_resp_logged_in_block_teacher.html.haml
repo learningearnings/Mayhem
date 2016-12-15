@@ -9,10 +9,10 @@
     //      %tr
     //        %td.table-bordered-tl.cb-heading Credits
     //        %td.table-bordered-tr.cb-value.currency= number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-    .person-details
-      %h3= current_person.full_name
-      %ul.links
-        %li= link_to "Edit My Profile", main_app.person_path(current_person)
-        %li= link_to 'Sign out', spree.get_destroy_user_session_path
-    .avatar
-      = avatar_for(current_person, '80x80#')
+    //.person-details
+    //  %h3= current_person.full_name
+    //  %ul.links
+    //    %li= link_to "Edit My Profile", main_app.person_path(current_person)
+    //    %li= link_to 'Sign out', spree.get_destroy_user_session_path
+    //.avatar
+    //  = avatar_for(current_person, '80x80#')

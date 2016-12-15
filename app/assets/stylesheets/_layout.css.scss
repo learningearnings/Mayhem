@@ -556,8 +556,17 @@ html.resp, body.resp {
   }
 }
 
+.profile {
+  position: absolute;
+  padding: 8px;
+  width: 280px;
+  bottom: 15%;
+  left: 0px;
+  border-top: 1px solid LightBlue;
+}
+
 .custom-nav-bar {
-    width: 210px;
+    width: 260px;
     padding-bottom: 10px;
     padding-left: 0;
     position: relative;
@@ -1482,6 +1491,10 @@ h3 {
 .current-person-avatar.supplemental-part {
   position: absolute;
   margin-left: -90px;
+}
+
+.avatar {
+  float: left;
 }
 
 .cb-value {

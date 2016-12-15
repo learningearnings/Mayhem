@@ -69,7 +69,9 @@
 
 .resp-logo {
   @extend .span2;
+  width: 280px;
   float: left;
+  border-bottom: 1px solid LightBlue;
 }
 
 .resp-white-board {
