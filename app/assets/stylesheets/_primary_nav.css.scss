@@ -54,11 +54,11 @@ $red: #ff2204;
   //padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
   color: white;
-  font-family: "Sans-serif";
+  font-family: "Open Sans";
   font-weight: 400;
   li a {
     color: white;
-    padding: 8px 8px 8px 32px;
+    padding: 8px 8px 8px 8px;
     text-decoration: none;
     font-size: 18px;
     background: #075B7F;
@@ -70,7 +70,7 @@ $red: #ff2204;
     border-right: 0px;
   }
   li {
-
+    text-align: center;
     display: block;
   }
   li a:hover, li a:focus, li:hover {

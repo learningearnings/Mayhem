@@ -1,9 +1,9 @@
 %ul.primary-nav
-  %li= link_to "Bank <span class='pull-right'><i class='glyphicon glyphicon-usd'></i></span>".html_safe,            main_app.teachers_bank_path, :class => 'bank'
-  %li= link_to (inbox_label_with_message_count("Inbox", current_person.received_messages) + " <span class='pull-right'><i class='glyphicon glyphicon-envelope'></i></span>").html_safe,           main_app.teachers_inbox_path, :class => inbox_count(inbox_label_with_message_count("Inbox", current_person.received_messages).count("["))
-  %li= link_to "Students <span class='pull-right'><i class='glyphicon glyphicon-user'></i></span>".html_safe,        students_path, class: 'manage_students'
-  %li= link_to "Classrooms <span class='pull-right'><i class='glyphicon glyphicon-book'></i></span>".html_safe,      main_app.classrooms_path, :class => 'classrooms'
-  %li= link_to "Shop <span class='pull-right'><i class='glyphicon glyphicon-shopping-cart'></i></span>".html_safe,            '/store', :class => 'shop'
-  %li= link_to "Reports <span class='pull-right'><i class='glyphicon glyphicon-signal'></i></span>".html_safe,         main_app.teachers_reports_path, :class => 'reports'
-  %li= link_to "Help <span class='pull-right'><i class='glyphicon glyphicon-question-sign'></i></span>".html_safe,      	    main_app.help_path, class: 'help'
+  %li= link_to "<i class='glyphicon glyphicon-usd'></i><br/>Bank".html_safe,            main_app.teachers_bank_path, :class => 'bank'
+  %li= link_to ("<i class='glyphicon glyphicon-envelope'></i><br/>" + inbox_label_with_message_count("Inbox", current_person.received_messages) ).html_safe,           main_app.teachers_inbox_path, :class => inbox_count(inbox_label_with_message_count("Inbox", current_person.received_messages).count("["))
+  %li= link_to "<i class='glyphicon glyphicon-user'></i><br/>Students".html_safe,        students_path, class: 'manage_students'
+  %li= link_to "<i class='glyphicon glyphicon-book'></i><br/>Classrooms".html_safe,      main_app.classrooms_path, :class => 'classrooms'
+  %li= link_to "<i class='glyphicon glyphicon-shopping-cart'></i><br/>Shop".html_safe,            '/store', :class => 'shop'
+  %li= link_to "<i class='glyphicon glyphicon-signal'></i><br/>Reports".html_safe,         main_app.teachers_reports_path, :class => 'reports'
+  %li= link_to "<i class='glyphicon glyphicon-question-sign'></i><br/>Help".html_safe,      	    main_app.help_path, class: 'help'
 
