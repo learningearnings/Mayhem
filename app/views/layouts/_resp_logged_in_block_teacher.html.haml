@@ -1,14 +1,14 @@
 .resp-supplemental-part
   .current-person
-    .credit-balance
-      %table.table
-        %thead
-          %tr
-            %th.cb-heading-primary{:colspan => "3"} Credit Balance
-        %tbody
-          %tr
-            %td.table-bordered-tl.cb-heading Credits
-            %td.table-bordered-tr.cb-value.currency= number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+    //.credit-balance
+    //  %table.table
+    //    %thead
+    //      %tr
+    //        %th.cb-heading-primary{:colspan => "3"} Credit Balance
+    //    %tbody
+    //      %tr
+    //        %td.table-bordered-tl.cb-heading Credits
+    //        %td.table-bordered-tr.cb-value.currency= number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
     .person-details
       %h3= current_person.full_name
       %ul.links

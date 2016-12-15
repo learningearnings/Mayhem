@@ -1,35 +1,35 @@
 %small-circle {
   &.active, &:hover {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
+    color: white;
+    background: #07668F;
   }
 }
 
 %medium-circle {
   &.active, &:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
+    color: white;
+    background: #07668F;
   }
 }
 
 %medium-circle2 {
   &.active, &:hover {
-    background-image: url(asset_path('rewards_selected.png', image));
-    background-repeat: no-repeat;
+    color: white;
+    background: #07668F;
   }
 }
 
 %large-circle {
   &.active, &:hover {
-    background-image: url(asset_path('how_it_works_selected.png', image));
-    background-repeat: no-repeat;
+    color: white;
+    background: #07668F;
   }
 }
 
 %large-circle2 {
   &.active, &:hover {
-    background-image: url(asset_path('classrooms_selected.png', image));
-    background-repeat: no-repeat;
+    color: white;
+    background: #07668F;
   }
 }
 
@@ -43,108 +43,138 @@ $red: #ff2204;
 
 
 .primary-nav {
+  height: 100%; /* 100% Full-height */
+  width: 200px; /* 0 width - change this with JavaScript */
+  position: relative; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  left: 0;
+  background-color: #042d40; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  //top: 100px;
+  //padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  color: white;
+  font-family: "Sans-serif";
+  font-weight: 400;
   li a {
-    padding: 15px 25px 15px 15px;
-    font-size: 1.6em;
+    color: white;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    background: #075B7F;
+    display: block;
+    transition: 0.3s;
+    border-radius: 4px;
+    border: 1px solid #B6B6B6;
+    border-bottom: 0px;
+    border-right: 0px;
   }
+  li {
+
+    display: block;
+  }
+  li a:hover, li a:focus, li:hover {
+    color: white;
+    background: #07668F;
+  } 
 
   .home {
-    color: $green;
+    color: white;
     @extend %small-circle;
   }
 
   .how-it-works {
-    color: $orange;
+    color: white;
     @extend %large-circle;
   }
 
   .testimonials {
-    color: $purple;
+    color: white;
     @extend %large-circle;
   }
 
   .locker {
-    color: $darkBlue;
+    color: white;
     @extend %medium-circle;
   }
 
   .inbox {
-    color: $purple;
+    color: white;
     @extend %small-circle;
   }
 
   .inbox_with_count {
-    color: $purple;
+     color: white;
     @extend %medium-circle2;
   }
 
   .restock {
-    color: $fadedOrange;
+    color: white;
     @extend %medium-circle;
   }
 
   .manage_students {
-    color: $fadedOrange;
+    color: white;
     @extend %medium-circle;
   }
 
   .manage_teachers {
-    color: $green;
+     color: white;
     @extend %medium-circle2;
   }
 
   .help {
-    color: $red;
+    color: white;
     @extend %small-circle;
   }
 
   .bank {
-    color: $blue;
+     color: white;
     @extend %small-circle;
   }
 
   .play {
-    color: $fadedOrange;
+     color: white;
     @extend %small-circle;
   }
 
   .shop {
-    color: $purple;
+    color: white;
     @extend %small-circle;
   }
 
   .charities {
-    color: $blue;
+     color: white;
     @extend %medium-circle2;
   }
 
   .rewards {
-    color: $purple;
+     color: white;
     @extend %large-circle;
   }
 
   .reports {
-    color: $blue;
+    color: white;
     @extend %medium-circle;
   }
 
   .settings {
-    color: $orange;
+    color: white;
     @extend %medium-circle;
   }
 
   .classrooms {
-    color: $orange;
+    color: white;
     @extend %large-circle2;
   }
 
   .lounge {
-    color: $fadedOrange;
+    color: white;
     @extend %medium-circle;
   }
 
   .news {
-    color: $red;
+    color: white;
     @extend %small-circle;
   }
 }

@@ -1,7 +1,9 @@
 .foot
-  %ul.secondary-nav.noprint
-    %li= link_to "FAQ", main_app.page_path('faq')
-    %li= link_to "Privacy", main_app.page_path("privacy")
-    %li= link_to "Contact", main_app.page_path('contact')
+  //%ul.secondary-nav.noprint
+  //  %li= link_to "FAQ", main_app.page_path('faq')
+  //  %li= link_to "Privacy", main_app.page_path("privacy")
+  //  %li= link_to "Contact", main_app.page_path('contact')
 
-  %p Copyright &copy; 2016 Learning Earnings. All Rights Reserved.
+  Copyright &copy; 2016 Learning Earnings. All Rights Reserved.  
+  = link_to "Privacy Policy", main_app.page_path("privacy")
+    

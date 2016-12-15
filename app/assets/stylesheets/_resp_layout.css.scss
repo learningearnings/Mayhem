@@ -1,8 +1,9 @@
 .resp-masthead {
   @extend .row-fluid;
-  background-image: url(asset_path('header-bg-large.png', image));
-  background-repeat: no-repeat;
-  background-position: right -20px;
+  #background-image: url(asset_path('header-bg-large.png', image));
+  #background-repeat: no-repeat;
+  #background-position: right -20px;
+
 }
 
 .resp-nav-bar {
@@ -14,6 +15,7 @@
   /*    @extend .container-fluid; */
   border-left: solid 1px pink;
   border-right: solid 1px pink;
+  background: #075B7F;
 }
 
 .how-nav {
@@ -204,14 +206,12 @@
 }
 
 .resp-page-content {
-  width: 100%;
-  position: relative;
-  min-height: 650px;
-  padding: 1em;
-  /*  text-align: center; */
-  > p {
-    font-size: 2em;
-  }
+    padding: 1px 0 10px;
+    position: relative;
+    vertical-align: top;
+    margin-left: 181px;
+    display: block;
+    min-height: 650px;
 }
 
 .resp-sir-francis-bacon {
@@ -278,8 +278,8 @@ html.resp, body.resp {
   margin: 0 auto;
   padding: 0;
   height: 100%;
-  max-width: 960px;
-  min-width: 320px;
+  #max-width: 960px;
+  #min-width: 320px;
 }
 
 .resp-supplemental-part {
@@ -294,6 +294,7 @@ html.resp, body.resp {
       }
     }
     .avatar {
+      margin-top: 20px;
       float: right;
     }
   }
