@@ -14,6 +14,14 @@
         = render 'layouts/logged_in_menu'
     - else
       = render 'layouts/logged_in_menu'
+    .profile
+      .avatar
+        = avatar_for(current_person, '80x80#')          
+      .person-details
+        %h3= current_person.full_name
+        //  %ul.links
+        //    %li= link_to "Edit My Profile", main_app.person_path(current_person)
+        //    %li= link_to 'Sign out', spree.get_destroy_user_session_path
   - else
     - case params[:visitor_type]
       - when 'teacher'
@@ -22,13 +30,5 @@
         = render 'layouts/menu_parent'
       - else
         = render 'layouts/menu'
- - if current_user
-  .profile
-    .avatar
-      = avatar_for(current_person, '80x80#')          
-    .person-details
-      %h3= current_person.full_name
-      //  %ul.links
-      //    %li= link_to "Edit My Profile", main_app.person_path(current_person)
-      //    %li= link_to 'Sign out', spree.get_destroy_user_session_path
+
     
