@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1605 -1671 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-inbox);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-inbox">
+      <rect x="-1605" y="-1671" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon-inbox" class="cls-1">
+    <g id="Symbol_42_1" data-name="Symbol 42 – 1" transform="translate(-1604 -1668.99)">
+      <path id="Union_9" data-name="Union 9" class="cls-2" d="M1624,1623.01h-19v-13h.7l.011-.011.011.011h18.571l.011-.011.011.011h.69v.69l.006.006-.006.006v12.3Zm-.651-1-4.847-4.8-3.536,3.536-.707-.707.038-.038-2.894-2.894-4.9,4.9Zm.651-.7v-9.6l-4.794,4.794Zm-18-.214,4.695-4.695-4.695-4.694Zm9-1.8,8.286-8.285h-16.571Z" transform="translate(-1600 -1603.01)"/>
+    </g>
+  </g>
+</svg>

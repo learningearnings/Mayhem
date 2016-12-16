@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1345 -1671 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-shop);
+      }
+
+      .cls-2, .cls-4 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #fff;
+        stroke-width: 1px;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+    </style>
+    <clipPath id="clip-icon-shop">
+      <rect x="-1345" y="-1671" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon-shop" class="cls-1">
+    <g id="Symbol_15_2" data-name="Symbol 15 – 2" transform="translate(-2130.689 -1679)">
+      <g id="Group_3992" data-name="Group 3992">
+        <path id="Path_679" data-name="Path 679" class="cls-2" d="M-65.837-576.865l17.313.823-.366,8.924-16.226.45Z" transform="translate(862 595)"/>
+        <path id="Path_680" data-name="Path 680" class="cls-2" d="M-48.28-563.958H-64.9L-66.156-580.7l-5.155-1.282" transform="translate(862 595)"/>
+        <g id="Ellipse_219" data-name="Ellipse 219" class="cls-2" transform="translate(796 32)">
+          <circle class="cls-3" cx="2" cy="2" r="2"/>
+          <circle class="cls-4" cx="2" cy="2" r="1.5"/>
+        </g>
+        <g id="Ellipse_220" data-name="Ellipse 220" class="cls-2" transform="translate(810 32)">
+          <circle class="cls-3" cx="2" cy="2" r="2"/>
+          <circle class="cls-4" cx="2" cy="2" r="1.5"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
