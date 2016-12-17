@@ -15,7 +15,7 @@
   /*    @extend .container-fluid; */
   border-left: solid 1px pink;
   border-right: solid 1px pink;
-  background: #075B7F;
+  background: white;
 }
 
 .how-nav {
@@ -69,9 +69,18 @@
 
 .resp-logo {
   @extend .span2;
-  width: 280px;
+  width: 250px;
+  height: 70px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
   float: left;
-  border-bottom: 1px solid LightBlue;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 1px solid DarkBlue;
+  //border-style: groove;
 }
 
 .resp-white-board {
@@ -208,10 +217,11 @@
 }
 
 .resp-page-content {
+    background: white;
     padding: 1px 0 10px;
     position: relative;
     vertical-align: top;
-    margin-left: 181px;
+    margin-left: 251px;
     display: block;
     min-height: 650px;
 }

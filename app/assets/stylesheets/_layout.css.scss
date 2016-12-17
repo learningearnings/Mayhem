@@ -72,7 +72,7 @@ $how-to-active-color: #f05c1a;
 
 body {
   //font-size: 62.5%;
-  background: #075B7F;
+  background: white;
 }
 
 .sti_table_heading {
@@ -558,15 +558,25 @@ html.resp, body.resp {
 
 .profile {
   position: absolute;
-  padding: 8px;
-  width: 280px;
-  bottom: 15%;
+  padding: 0;
+  width: 250px;
+  bottom: 0px;
   left: 0px;
   border-top: 1px solid LightBlue;
+  .arrow {
+    border-left: 1px solid LightBlue;
+    width: 50px;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 }
 
 .custom-nav-bar {
-    width: 260px;
+    width: 250px;
+    height: 100vh;
     padding-bottom: 10px;
     padding-left: 0;
     position: relative;
@@ -1123,16 +1133,22 @@ html.resp, body.resp {
 
 .foot {
   //color: $supporting-text-color;
-  text-align: right;
-  clear: both;
-  margin-top: 4em;
+    position: absolute;
+    bottom: 0px;
+    right: 20px;
+    margin: 0px 0px 0px 0px;
+    color: #000;
+    text-align: right;
+    padding: 0;
+    margin: 0;
+  width: 500px;  
   font-family: "Open Sans";
   font-weight: 400;
   font-size: 12px;
-  color: white;
+  color: black;
 
   a {
-    color: #dedeff;
+    color: #2c7c9f;
     margin-left: 20px;
     margin-right: 20px;
   } 
@@ -1452,36 +1468,19 @@ h3 {
 
 .person-details {
   font-family: "Open Sans";
-
-
-  margin-right: 20px;
-  margin-left: 20px;
-  max-width: 500px;
+  font-weight: 400;
+  
+  width: 140px;
+  max-width: 140px;
+  margin-left: 10px;
   float: left;
-  h3 {
-    font-size: 18px;
-    line-height: 24px;
-    font-style: normal;
-    font-variant: normal;
-    font-weight: 400;
-    color: white;
-  }
-  .links {
-    list-style-type: none;
-    margin-left: -12px;
-    color: white;
-    li {
-      display: inline;
-      margin-left: 1em;
-            font-family: "Open Sans";
-            font-weight: 400;
-      a { color: white;
-            font-family: "Open Sans";
-            font-weight: 400;
-            font-size: 14px;
-      ; }
-    }
-  }
+  color: white;
+  font-size: 18px;
+  vertical-align: middle;
+  height: 50px;
+  padding-top: auto;
+  padding-bottom: auto;
+
 }
 
 .credit-balance {
@@ -1495,6 +1494,7 @@ h3 {
 
 .avatar {
   float: left;
+  padding: 8px 8px 8px 8px;
 }
 
 .cb-value {

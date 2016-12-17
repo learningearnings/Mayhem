@@ -43,12 +43,14 @@ $red: #ff2204;
 
 
 .primary-nav {
-  height: 100%; /* 100% Full-height */
+  //height: 100%; /* 100% Full-height */
   width: 250px; /* 0 width - change this with JavaScript */
   position: relative; /* Stay in place */
   z-index: 1; /* Stay on top */
   left: 0;
-  background-color: #042d40; /* Black*/
+  margin-left: 0px;
+  padding-left: 10px;
+  background-color: #075B7F; /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
   //top: 100px;
   //padding-top: 60px; /* Place content 60px from the top */
@@ -70,6 +72,7 @@ $red: #ff2204;
   }
   li {
     display: block;
+    height: 50px;
   }
   li a:hover, li a:focus, li:hover {
     color: white;
@@ -97,14 +100,33 @@ $red: #ff2204;
   }
 
   .inbox {
-    color: white;
-    @extend %small-circle;
-  }
+     color: white;
+     background-image: url(asset_path('common/icon-inbox.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .inbox:hover, .inbox.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-inbox-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
 
   .inbox_with_count {
      color: white;
-    @extend %medium-circle2;
-  }
+     background-image: url(asset_path('common/icon-inbox.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .inbox_with_count:hover, .inbox_with_count.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-inbox-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
+   
 
   .restock {
     color: white;
@@ -112,35 +134,91 @@ $red: #ff2204;
   }
 
   .manage_students {
-    color: white;
-    @extend %medium-circle;
-  }
+     color: white;
+     background-image: url(asset_path('common/icon-students.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .manage_students:hover, .manage_students.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-students-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
 
   .manage_teachers {
      color: white;
-    @extend %medium-circle2;
-  }
+     background-image: url(asset_path('common/icon-teachers.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .manage_teachers:hover, .manage_teachers.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-teachers-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
 
   .help {
-    color: white;
-    @extend %small-circle;
-  }
+     color: white;
+     background-image: url(asset_path('common/icon-help.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .help:hover, .help.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-help-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
+
 
   .bank {
      color: white;
-    @extend %small-circle;
-  }
+     background-image: url(asset_path('common/icon-bank.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .bank:hover, .bank.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-bank-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
+
 
   .play {
      color: white;
-    @extend %small-circle;
-  }
+     background-image: url(asset_path('common/icon-play.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .play:hover, .play.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-play-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
 
   .shop {
-    color: white;
-    @extend %small-circle;
-  }
-
+     color: white;
+     background-image: url(asset_path('common/icon-shop.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .shop:hover, .shop.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-ishop-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
+   
   .charities {
      color: white;
     @extend %medium-circle2;
@@ -152,9 +230,18 @@ $red: #ff2204;
   }
 
   .reports {
-    color: white;
-    @extend %medium-circle;
-  }
+     color: white;
+     background-image: url(asset_path('common/icon-reports.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .reports:hover, .reports.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-reports-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
 
   .settings {
     color: white;
@@ -162,9 +249,18 @@ $red: #ff2204;
   }
 
   .classrooms {
-    color: white;
-    @extend %large-circle2;
-  }
+     color: white;
+     background-image: url(asset_path('common/icon-classrooms.svg', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .classrooms:hover, .classrooms.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('common/icon-classrooms-selected.svg', image));
+      background-repeat: no-repeat;      
+   }
 
   .lounge {
     color: white;

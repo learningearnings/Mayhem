@@ -64,9 +64,9 @@ module ApplicationHelper
 
   def avatar_for(person, geometry='50x50#')
     if person && person.avatar.present?
-       image_tag(person.avatar.image.thumb(geometry).url,size: "50x50")
+       image_tag(person.avatar.image.thumb(geometry).url,size: "34x34")
      else
-       image_tag('/assets/default_avatar.png',size: "50x50")
+       image_tag('/assets/default_avatar.png',size: "34x34")
      end
   end
 

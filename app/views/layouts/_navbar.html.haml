@@ -3,7 +3,7 @@
    
 .custom-nav-bar
   .resp-logo
-    = link_to(image_tag('common/LELogo.png'), root_path)
+    = link_to(image_tag('common/logo-learning-earnings.svg'), root_path)
   - if current_user
     - if current_person
       - if current_person.is_a?(SchoolAdmin)
@@ -22,15 +22,13 @@
         = render 'layouts/menu_parent'
       - else
         = render 'layouts/menu'
-- if current_user        
-  .profile
-    .avatar
-      = avatar_for(current_person, '80x80#')          
-    .person-details
-      %h3= current_person.full_name
-      = link_to 'Sign out', spree.get_destroy_user_session_path
-      //  %ul.links
-      //    %li= link_to "Edit My Profile", main_app.person_path(current_person)
-      //    %li= link_to 'Sign out', spree.get_destroy_user_session_path        
+  - if current_user        
+    .profile
+      .avatar
+        = avatar_for(current_person, '34x34')          
+      .person-details
+        = current_person.full_name
+      .arrow
+        = link_to(image_tag('common/arrow-left.png'), spree.get_destroy_user_session_path)
 
     
