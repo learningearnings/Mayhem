@@ -43,9 +43,55 @@ $how-to-active-color: #f05c1a;
 }
 
 .login-div {
-  float: right;
-  width: 630px;
-  margin-right: 10px;
+  position: relative;
+  left: 30%;
+  top: 10%;
+  background: #075B7F;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding: 0;
+  width: 500px;
+  h1 {
+    font-family: "Open Sans";
+    font-size: 30px;
+    font-weight: 600;
+    color: white;
+  }
+  a {
+    color: white;
+  }
+  
+}
+
+.log-in-form ul li  {
+  list-style: none;
+  height: 50px;
+}
+
+.log-in-form button {
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  background: #137ABB;
+  width: 300px;
+  font-size: 20px;
+  border: 0;
+  border-radius: 4px;
+}
+
+.log-in-form ul li select {
+  border-radius: 4px;
+  background: white;
+  width: 300px;
+  font-size: 18px;
+}
+
+.log-in-form ul li input {
+  border-radius: 4px;
+  background: white;
+  width: 300px;
+  font-size: 18px;
 }
 
 .join-div {
@@ -377,38 +423,17 @@ html.resp, body.resp {
 
 .btn.students,
 .btn.parents,
-.btn.teachers,
-.btn.login-button {
-  font-family: 'sketch_rockwellregular';
-  color: #1f2870;
+.btn.teachers {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-size: 20px;
+  color: white;
+  background: #05597C;
   cursor: pointer;
-  padding: 7px 0;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  background-position: 0;
-  border: none;
-  @include box-shadow(none);
-  width: 96px;
+  width: 300px;
   height: 37px;
 }
 
-.lt-ie9 .form-inline .login-button {    background: #075B7F;
-  display:inline-block;
-  margin-right:-35px;
-  margin-left:20px;
-}
-
-.btn.students {
-  background-image: url(asset_path('common/join-menu-green-no-text-bg.png', image));
-}
-
-.btn.parents {
-  background-image: url(asset_path('common/join-menu-orange-no-text-bg.png', image));
-}
-
-.btn.teachers {
-  background-image: url(asset_path('common/join-menu-blue-no-text-bg.png', image));
-}
 
 .nav-container, .nav-container-corkboard {
   position: absolute;
@@ -2126,9 +2151,12 @@ dl.details {
 }
 
 .login {
-  background: white;
-  position: fixed; /* or absolute */
-  top: 30%;
-  left: 30%;
+  position:absolute;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  background: #075B7F;
+  margin: 0;
+  padding: 0;
 }
 

@@ -1,24 +1,20 @@
 %div.login-div
-  %div.join-div
-    %ul.join-links
-      %li
-        %span.join Need an Account?
-        %br
-        %span= link_to "Sign Up", main_app.new_teachers_path, class: 'btn students'
+  %h1 Welcome to Learning Earnings!
   = form_tag spree.user_session_path, :class => 'form-inline resp-login-form-fields', autocomplete: 'off' do
-    .log-in-form
-      %label.log-in.text
-        LOG-IN
-      = text_field_tag 'user[username]', nil, :placeholder => 'Username', :class => 'focus-on-me input-medium'
-      = password_field_tag 'user[password]', nil, :placeholder => 'Password', :class => 'input-medium'
+    .log-in-form  
+      %ul
+        %li= text_field_tag 'user[username]', nil, :placeholder => 'Username', :class => 'focus-on-me input-medium'
+        %li= password_field_tag 'user[password]', nil, :placeholder => 'Password', :class => 'input-medium'
+        %li= select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "Select...."
+        %button Sign In  
       .resp-forgot-password
-        = link_to "Forgot your password?", spree.new_user_password_path('user'), tabindex: "-1"
-    .school-select
-      %label.log-in.select
-        SCHOOL
-      = select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "Select...."
-      %button.btn.login-button
+        = link_to "Forgot Username/Password?", spree.new_user_password_path('user'), tabindex: "-1"
+      %ul.join-links
+        %li
+          %span.join First time here?
+          %br
+          %span= link_to "Create an Account", main_app.new_teachers_path, class: 'btn students'
   
-  :coffeescript
-    ($ "document").ready ->
-      $(".chzn-select").chosen({width: "300px"});
+    :coffeescript
+      ($ "document").ready ->
+        $(".chzn-select").chosen({width: "300px"});
