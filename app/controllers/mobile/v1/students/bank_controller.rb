@@ -13,7 +13,7 @@ class Mobile::V1::Students::BankController < Mobile::V1::Students::BaseControlle
         @bank = Bank.new
         @bank.claim_bucks(current_person, otu_code)
         @msg = 'Credits claimed!'
-        MixPanelTrackerWorker.perform_async(current_user.id, 'Enter Credit Code')
+        #MixPanelTrackerWorker.perform_async(current_user.id, 'Enter Credit Code')
         current_person.code_entry_failures.destroy_all
         render json: { status: :ok, msg: @msg } 
       else
