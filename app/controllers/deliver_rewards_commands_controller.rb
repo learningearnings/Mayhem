@@ -9,7 +9,7 @@ class DeliverRewardsCommandsController < LoggedInController
     end
     command = DeliverRewardsCommand.new reward_deliveries: reward_deliveries, current_person_id: current_person.id
     command.execute!
-    MixPanelTrackerWorker.perform_async(current_user.id, 'Mark Item as Delivered', mixpanel_options)
+    #MixPanelTrackerWorker.perform_async(current_user.id, 'Mark Item as Delivered', mixpanel_options)
     redirect_to purchases_report_path(params)
   end
 

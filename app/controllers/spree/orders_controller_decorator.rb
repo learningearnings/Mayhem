@@ -105,7 +105,7 @@ Spree::OrdersController.class_eval do
                   product = Spree::Variant.find(variant_id)
                   quantity = params[:variants][variant_id]
                   message = "Congratulations, you bought #{quantity} #{product.name}!"
-                  MixPanelTrackerWorker.perform_async(current_user.id, 'Purchase Reward Item', mixpanel_options)
+                  #MixPanelTrackerWorker.perform_async(current_user.id, 'Purchase Reward Item', mixpanel_options)
                 end
                 redirect_to root_path, notice: message
               end
