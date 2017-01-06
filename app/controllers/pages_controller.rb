@@ -20,11 +20,16 @@ class PagesController < HighVoltage::PagesController
 
   protected
   def layout_for_page
+    
     case params[:id]
     when /pdf/
       false
     else
-      'application'
+      if current_person
+        'application'
+      else
+        'login'
+      end
     end
   end
 
