@@ -100,6 +100,11 @@ $how-to-active-color: #f05c1a;
   
 }
 
+.log-in-form ul  {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
 .log-in-form ul li  {
   list-style: none;
   border-radius: 4px;
@@ -111,7 +116,7 @@ $how-to-active-color: #f05c1a;
   font-weight: 400;
   color: white;
   background: #137ABB;
-  width: 420px;
+  width: 450px;
   height: 50px;
   font-size: 20px;
   border: 0;
@@ -124,7 +129,7 @@ $how-to-active-color: #f05c1a;
   font-weight: 400;
   color: white;
   background: #05597C;
-  width: 420px;
+  width: 450px;
   height: 50px;
   font-size: 24px;
   border: 0;
@@ -139,7 +144,7 @@ $how-to-active-color: #f05c1a;
   font-weight: 400;
   color: white;
   background: #00516f;
-  width: 420px;
+  width: 450px;
   height: 50px;
   font-size: 24px;
   border: 0;
@@ -196,7 +201,7 @@ $how-to-active-color: #f05c1a;
 
 
 .middle-line {
-   width: 420px; 
+   width: 450px; 
    text-align: center; 
    border-bottom: 1px solid #fff; 
    line-height: 0.1em;
@@ -229,7 +234,7 @@ $how-to-active-color: #f05c1a;
 .log-in-form ul li input {
   border-radius: 4px;
   background: white;
-  width: 420px;
+  width: 450px;
   height: 50px;
   font-size: 18px;
   box-shadow: 3px 3px 1px #888888;   
@@ -521,16 +526,6 @@ html.resp, body.resp {
 .form-inline input {
   padding-top:0;
   padding-bottom:0;
-}
-
-.login-form-fields input {
-  width: 130px;
-  font-size: 1em;
-}
-
-.login-form-fields select {
-  height: 25px;
-  width: 104px;
 }
 
 .chosen {
