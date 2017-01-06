@@ -93,6 +93,9 @@ $how-to-active-color: #f05c1a;
   }
   a {
     color: white;
+    font-family: "Open Sans";
+    font-weight: 400;
+    font-size: 14px;
   }
   
 }
@@ -108,10 +111,100 @@ $how-to-active-color: #f05c1a;
   font-weight: 400;
   color: white;
   background: #137ABB;
-  width: 300px;
+  width: 420px;
+  height: 50px;
   font-size: 20px;
   border: 0;
   border-radius: 4px;
+  
+}
+
+.create-account-button {
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  background: #05597C;
+  width: 420px;
+  height: 50px;
+  font-size: 24px;
+  border: 0;
+  border-radius: 4px;
+  
+}
+.btn.students,
+.btn.parents,
+.btn.teachers {
+  cursor: pointer;
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  background: #00516f;
+  width: 420px;
+  height: 50px;
+  font-size: 24px;
+  border: 0;
+  border-radius: 4px;  
+  padding-top: 10px;
+  box-shadow: 0px 0px 0px;
+}
+.login-logo {
+  height: 40px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+#login-footer {
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  font-size: 10px;  
+}
+#login-username {
+  background-image: url(bg.jpg);
+  background-repeat: no-repeat;
+  text-indent: 20px;
+}
+#login-password {
+    background-image: url(bg.jpg);
+    background-repeat: no-repeat;
+    text-indent: 20px;  
+}
+#login-school {
+    background-image: url(bg.jpg);
+    background-repeat: no-repeat;
+    text-indent: 20px;  
+}
+#login-username:active {
+  background-image: none;
+}
+#login-password:active {
+  background-image: none;
+}
+#login-school:active {
+  background-image: none;
+}
+
+
+.middle-line {
+   width: 420px; 
+   text-align: center; 
+   border-bottom: 1px solid #fff; 
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 30px;
+   margin-bottom: 40px;
+   font-family: "Open Sans";
+   font-weight: 600;
+   font-size: 16px;
+}
+
+.middle-line-text {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: #075B7F;
 }
 
 .log-in-form ul li select {
@@ -119,6 +212,7 @@ $how-to-active-color: #f05c1a;
   background: white;
   width: 300px;
   font-size: 18px;
+  box-shadow: 3px 3px 1px #888888; 
 }
 
 .log-in-form ul li input {
@@ -127,7 +221,7 @@ $how-to-active-color: #f05c1a;
   width: 420px;
   height: 50px;
   font-size: 18px;
-  box-shadow: 3px 3px 3px #888888;   
+  box-shadow: 3px 3px 1px #888888;   
 }
 
 .chosen {font-family: "Open Sans" !important; font-size: 16px !important; color: black !important;}
@@ -475,18 +569,6 @@ html.resp, body.resp {
   }
 }
 
-.btn.students,
-.btn.parents,
-.btn.teachers {
-  font-family: 'Open Sans';
-  font-weight: 400;
-  font-size: 20px;
-  color: white;
-  background: #05597C;
-  cursor: pointer;
-  width: 300px;
-  height: 37px;
-}
 
 
 .nav-container, .nav-container-corkboard {

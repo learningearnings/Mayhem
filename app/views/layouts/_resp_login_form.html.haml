@@ -3,25 +3,36 @@
   = form_tag spree.user_session_path, :class => 'form-inline resp-login-form-fields', autocomplete: 'off' do
     .log-in-form  
       %ul
-        %li= text_field_tag 'user[username]', nil, :placeholder => 'Username'
-        %li= password_field_tag 'user[password]', nil, :placeholder => 'Password'
-        %li= select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "Select...."
-        %button Sign In  
+        %li= text_field_tag 'user[username]', nil, :placeholder => "Username", :id => "login-username"
+        %li= password_field_tag 'user[password]', nil, :placeholder => "Password" , :id => "login-password"
+        %li= select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "School", :id => "login-school"
+        %button Sign in  
       .resp-forgot-password
         = link_to "Forgot Username/Password?", spree.new_user_password_path('user'), tabindex: "-1"
       %ul.join-links
         %li
-          %span.join First time here?
-          %br
+          .middle-line
+            %span.middle-line-text First time here?
+        %li
           %span= link_to "Create an Account", main_app.new_teachers_path, class: 'btn students'
-  
+        %li
+          =image_tag('common/logo-learning-earnings2.svg', class: "login-logo")
+        %li
+          %span#login-footer Copyright &copy; 2016 Learning Earnings. All Rights Reserved. Privacy Policy
+          
+          
     :coffeescript
       ($ "document").ready ->
         $(".chzn-select").chosen({width: "420px"});
+        
         $(".chosen-results").css('font-family','Open Sans');
         $(".chosen-results").css('color','black');        
         $(".chosen-results").css('font-size','14px');
+        $(".chosen-results").css('text-align','left');        
+        
+        $(".chosen-single").css('text-align','left');   
         $(".chosen-single").css('height','50px');    
         $(".chosen-single").css('font-family','Open Sans');
         $(".chosen-single").css('color','black');        
-        $(".chosen-single").css('font-size','16px');            
+        $(".chosen-single").css('font-size','16px');  
+        $(".chosen-single").css('box-shadow','3px 3px 1px #888888');             
