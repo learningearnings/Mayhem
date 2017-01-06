@@ -159,17 +159,17 @@ $how-to-active-color: #f05c1a;
   font-size: 10px;  
 }
 #login-username {
-  background-image: url(bg.jpg);
+  background-image: url(asset_path('common/icon-bank.svg', image));
   background-repeat: no-repeat;
   text-indent: 20px;
 }
 #login-password {
-    background-image: url(bg.jpg);
+    background-image: url(asset_path('common/icon-bank.svg', image));
     background-repeat: no-repeat;
     text-indent: 20px;  
 }
 #login-school {
-    background-image: url(bg.jpg);
+    background-image: url(asset_path('common/icon-bank.svg', image));
     background-repeat: no-repeat;
     text-indent: 20px;  
 }
@@ -1489,24 +1489,26 @@ html.resp, body.resp {
   .alert {
     text-align: center;
     border: none;
-    background:transparent url(asset_path('message-blue.png', image)) no-repeat 0 0;
-    width: 254px;
-    height: 259px;
+    //background:transparent url(asset_path('message-blue.png', image)) no-repeat 0 0;
+    background: white;
+    width: 300px;
+    padding-bottom: 30px;
+    //height: 259px;
     p {
-      margin: 45px 0 0 15px;
+      margin: 25px 0 0 15px;
       color: #333366;
-      width: 205px;
+      //width: 205px;
       text-align: left;
-      font-family: verdana;
+      font-family: "Open Sans";
       font-weight: 400;
       @include text-shadow(none);
       text-shadow: none;
-      @include rotate(6deg);
+      //@include rotate(6deg);
       font-size:1.4em;
     }
     .close {
       position:relative;
-      top:20px;
+      top:4px;
       line-height:15px;
       font-size:2.4em;
       color: #ee5b1a;
@@ -1515,7 +1517,7 @@ html.resp, body.resp {
       height: 25px;
       width: 25px;
       border: solid 2px #ee5b1a;
-      @include border-radius(35px);
+      //@include border-radius(35px);
     }
   }
 }

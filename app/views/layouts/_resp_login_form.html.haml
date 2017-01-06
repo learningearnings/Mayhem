@@ -19,7 +19,8 @@
           =image_tag('common/logo-learning-earnings2.svg', class: "login-logo")
         %li
           %span#login-footer Copyright &copy; 2016 Learning Earnings. All Rights Reserved. Privacy Policy
-          
+    .messages-container
+      = render "layouts/flashes"         
           
     :coffeescript
       ($ "document").ready ->
