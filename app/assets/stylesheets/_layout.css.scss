@@ -182,6 +182,17 @@ $how-to-active-color: #f05c1a;
 #login-school:active {
   background-image: none;
 }
+.header {
+  //width: 100%;
+  height: 70px;
+  padding-left: 25px;
+  color: #000;
+  background: #fff;
+  border-bottom: 1px solid #000;
+  h1 {
+    color: #000;
+  }
+}
 
 
 .middle-line {
@@ -259,7 +270,7 @@ body {
 
 .sketch_font  {
   margin-top: 20px;
-  font-family: SketchRockwell;
+  font-family: "Open Sans";
   font-size: 25pt;
   width:110%;
   color: rgb(228,30,31)
@@ -276,7 +287,7 @@ body {
 .king_font  {
   margin-left: 5px;
   font-weight: bold;
-  font-family: king_cool_kcregular;
+  font-family: "Open Sans";
   margin-top: 20px;
   font-size: 24pt;
   color: rgb(241,201,252)
@@ -285,7 +296,7 @@ body {
 .king_font_welcome  {
   margin-left: 5px;
   font-weight: bold;
-  font-family: king_cool_kcregular;
+  font-family: "Open Sans";
   margin-top: 20px;
   font-size: 18pt;
   color: rgb(9,126,186)
@@ -295,12 +306,12 @@ body {
 
   text-align: center;
   font-weight: bold;
-  font-family: king_cool_kcregular;
+  font-family: "Open Sans";
   font-size: 16pt;
 }
 
 .sketch_font_welcome  {
-  font-family: SketchRockwell;
+  font-family: "Open Sans";
   font-size: 20pt;
   text-align: center;
   width:160%;
@@ -324,7 +335,7 @@ span.join,
 }
 
 @mixin really-awesom-button {
-  font-family: 'sketch_rockwellregular';
+  font-family: '"Open Sans"';
 }
 
 
@@ -347,12 +358,12 @@ h4 {
 .blue_color {
  color: #08C;
  font-size: 18px;
- font-family: sketch_rockwellregular;
+ font-family: "Open Sans";
 }
 
 .black_color {
  font-size: 18px;
- font-family: sketch_rockwellregular;
+ font-family: "Open Sans";
 }
 
 
@@ -368,6 +379,7 @@ html.resp, body.resp {
     margin: 0 auto;
     padding: 0;
     height: 100%;
+    overflow: hidden;
     #-width: 960px;
     #min-width: 320px;
     #background: url(asset_path('lines.png', image)) repeat-y scroll center;
@@ -399,11 +411,6 @@ html.resp, body.resp {
 }
 .head {
   width: 940px;
-}
-
-.header {
-  height: 140px;
-  background-color: #fff;
 }
 
 .content-section {
@@ -593,7 +600,7 @@ html.resp, body.resp {
     display: inline;
     margin: 0 12px;
     a {
-      font-family: 'sketch_rockwellregular';
+      font-family: "Open Sans";
     }
   }
 }
@@ -844,7 +851,7 @@ html.resp, body.resp {
     position: absolute;
     top: 50px;
     right: 55px;
-    font-family:'sketch_rockwellregular';
+    font-family:"Open Sans";
     font-weight:200;
     text-align:justify;
     &.students {
@@ -875,7 +882,7 @@ html.resp, body.resp {
     &.teachers {
       width:320px;
       text-align:center;
-      font-family:'sketch_wallregular';
+      font-family: "Open Sans";
       color:#0D5A02;
       line-height:1;
       .large {
@@ -953,7 +960,7 @@ html.resp, body.resp {
 
 .kids-credits-cta {
   background-image: url(asset_path('kids_credits_cta.png', image));
-  font-family:'sketch_rockwellregular';
+  font-family: "Open Sans";
   height: 200px;
   width: 304px;
   position: absolute;
@@ -1158,7 +1165,7 @@ html.resp, body.resp {
     li {
       list-style:none;
       margin:0 0 .25em .35em;
-      font-family: 'king_cool_kcregular';
+      font-family: "Open Sans";
       font-size:1.8em;
       .product-image {
         height: inherit;
@@ -1192,7 +1199,7 @@ html.resp, body.resp {
     padding:0;
   }
   p {
-    font-family: 'king_cool_kcregular';
+    font-family: "Open Sans";
     font-size:2em;
   }
 }
@@ -1209,7 +1216,7 @@ html.resp, body.resp {
   padding-left: 20px;
 
   p {
-      font-family: 'sketch_wallregular';
+      font-family: "Open Sans";
       color: $small-content-color;
       font-size: 2.5em;
       line-height: 1em;
@@ -1263,7 +1270,7 @@ html.resp, body.resp {
   p {
     font-size: 60px;
     color: #f05c1a;
-    font-family: 'sketch_rockwellregular';
+    font-family: "Open Sans";
   }
 }
 .testimonial-title {
@@ -1273,7 +1280,7 @@ html.resp, body.resp {
   font-size: 3em;
   line-height: 1em;
   color: $small-content-color;
-  font-family: 'sketch_rockwellregular';
+  font-family: "Open Sans";
 }
 .testimonial-body {
   padding: 20px 30px 0px 40px;;
@@ -1379,7 +1386,7 @@ html.resp, body.resp {
 
 .bank-content {
   position: absolute;
-  font-family: 'king_cool_kcregular';
+  font-family: "Open Sans";
   top: 100px;
   padding-right: 60px;
   p {
@@ -1821,7 +1828,7 @@ h3 {
     margin: 0 0 0 50px;
     .product-title {
       a.info {
-        font-family: 'sketch_rockwellregular';
+        font-family: "Open Sans";
         font-size: 1.35em;
         font-weight: bold;
       }
@@ -1832,7 +1839,7 @@ h3 {
     .product-details {
       display: inline-block;
       a.info {
-        font-family: 'sketch_rockwellregular';
+        font-family: "Open Sans";
         font-size: 1.35em;
         font-weight: bold;
       }
@@ -2030,7 +2037,7 @@ h3 {
       -webkit-transform: rotate(-3deg);
       -moz-transform: rotate(-3deg);
       -o-transform: rotate(-3deg);
-      font-family: SketchRockwell;
+      font-family: "Open Sans";
       font-size: 1.3em;
       text-shadow: 1px 1px 2px #333;
   }
@@ -2047,7 +2054,7 @@ h3 {
     -webkit-transform: rotate(-3deg);
     -moz-transform: rotate(-3deg);
     -o-transform: rotate(-3deg);
-    font-family: SketchRockwell;
+    font-family: "Open Sans";
     font-size: 1.3em;
     text-shadow: 1px 1px 2px #333;
     color: #fff;
