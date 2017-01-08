@@ -25,10 +25,10 @@
   - if current_user        
     .profile
       .avatar
-        = avatar_for(current_person, '34x34')          
+        = link_to(avatar_for(current_person, '34x34'), spree.get_destroy_user_session_path)          
       .person-details
         = current_person.full_name
       .arrow
-        = link_to(image_tag('common/arrow-left.png'), spree.get_destroy_user_session_path)
+        = image_tag('common/arrow-left.png')
 
     

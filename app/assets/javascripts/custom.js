@@ -152,6 +152,15 @@ $(document).ready(function(){
  else {
    $(".side-art").css( "display","block" );
  }
+ 
+ $('.arrow img').click(function(){
+	//alert('clicked');
+	if ($('.custom-nav-bar').css('margin-left') == "-200px")
+ 		$('.custom-nav-bar').animate({"margin-left": "0px"}); 
+    else
+    	$('.custom-nav-bar').animate({"margin-left": "-200px"}); 
+ });
+ 
 });
 //update the width value when the browser is resized
 $(window).resize(function(){
@@ -182,3 +191,7 @@ $.fn.animateHighlight = function( highlightColor, duration ) {
 };
 
 });
+
+
+
+ 

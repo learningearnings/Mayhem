@@ -189,11 +189,11 @@ $how-to-active-color: #f05c1a;
 }
 .header {
   //width: 100%;
-  height: 70px;
+  height: 56px;
   padding-left: 25px;
   color: #000;
   background: #fff;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #e0e0e0;
   h1 {
     color: #000;
   }
@@ -725,9 +725,9 @@ html.resp, body.resp {
   width: 250px;
   bottom: 0px;
   left: 0px;
-  border-top: 1px solid LightBlue;
+  border-top: 1px solid #2c7c9f;
   .arrow {
-    border-left: 1px solid LightBlue;
+    border-left: 1px solid #2c7c9f;
     width: 50px;
     float: right;
     padding-left: 10px;
@@ -1924,9 +1924,9 @@ h3 {
   height: auto;
   //width:99%;
   background-color: #fff;
-  -moz-box-shadow:    1px 2px 5px 1px #ccc;
-  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;
+  -moz-box-shadow:    0px 0px 0px 0px #ccc;
+  -webkit-box-shadow: 0px 0px 0px 0px #ccc;
+  box-shadow:         0px 0px 0px 0px #ccc;
 
   .full-content {
     width: 75%;
@@ -1947,11 +1947,11 @@ h3 {
 
   }
   p {
-    font-size: 1.5em;
+    //font-size: 1.5em;
   }
   .bank_content {
     p {
-      font-size: 1.8em;
+      //font-size: 1.8em;
       line-height: 140%;
     }
     input.credits {
@@ -2299,4 +2299,3 @@ dl.details {
   margin: 0;
   padding: 0;
 }
-
