@@ -52,6 +52,8 @@ $red: #ff2204;
   padding-left: 10px;
   background-color: #075B7F; /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: hidden;
+  
   //top: 100px;
   //padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -66,6 +68,7 @@ $red: #ff2204;
     background: #075B7F;
     display: block;
     transition: 0.3s;
+    white-space: nowrap;
   }
   i {
     margin-right: 14px;
@@ -73,6 +76,7 @@ $red: #ff2204;
   li {
     display: block;
     height: 50px;
+    overflow: hidden;
   }
   li a:hover, li a:focus, li:hover {
     color: white;
