@@ -737,7 +737,31 @@ html.resp, body.resp {
   }
 }
 
+.profile-collapsed {
+  display: none;
+  position: absolute;
+  padding: 0;
+  width: 60px;
+  bottom: 0px;
+  right: 0px;
+  border-top: 1px solid #2c7c9f;
+  .arrow {
+    border-left: 1px solid #2c7c9f;
+    width: 50px;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .avatar {
+    border-top: 1px solid #2c7c9f;
+    float: right;
+  }
+}
+
 .custom-nav-bar {
+    display: none;
     width: 250px;
     height: 100vh;
     padding-bottom: 10px;
@@ -746,7 +770,6 @@ html.resp, body.resp {
     word-wrap: break-word;
     vertical-align: top;
     float: left;
-    display: block;
     background: #075B7F;
 }
 
