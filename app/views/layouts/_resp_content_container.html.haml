@@ -4,9 +4,8 @@
     = #breadcrumbs(@taxon)
    
 .resp-page-content
-  =render "layouts/header" 
-  =yield
-= render "layouts/footer"
+  = yield
+  = render "layouts/footer"
 -# - if (sidebar = yield :sidebar).empty?
 -#   .resp-page-content= yield
 -# - else

@@ -1319,15 +1319,17 @@ html.resp, body.resp {
 
 .foot {
   //color: $supporting-text-color;
-    position: absolute;
-    bottom: 0px;
+    position: relative;
+    top: -20px;
+    //float: right;
+    //bottom: 0px;
     right: 20px;
     margin: 0px 0px 0px 0px;
     color: #000;
     text-align: right;
     padding: 0;
     margin: 0;
-  width: 500px;  
+  //width: 500px;  
   font-family: "Open Sans";
   font-weight: 400;
   font-size: 12px;

@@ -84,19 +84,23 @@
 }
 
 .resp-logo-collapsed {
-  @extend .span2;
   display: none;
-  width: 250px;
-  height: 70px;
-  padding-left: 20px;
+  width: 60px;
+  height: 60px;
+  padding-left: 24px;
   padding-top: 20px;
   padding-bottom: 20px;
-  padding-right: 20px;
-  float: left;
+  padding-right: 16px;
+  float: right;
   border-top: 0px;
   border-left: 0px;
   border-right: 0px;
   border-bottom: 1px solid #044a69;
+  img {
+    width: 40px;
+    float: right;
+    margin-left: 10px;
+  }
   //border-style: groove;
 }
 
