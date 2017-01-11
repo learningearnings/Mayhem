@@ -2,29 +2,6 @@
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
 /* FONTS */
-
-@font-face {
-  font-family: 'king_cool_kcregular';
-  src: url('king_cool_kc-webfont.eot');
-  src: url('king_cool_kc-webfont.eot?#iefix') format("embedded-opentype"), url('king_cool_kc-webfont.woff') format("woff"), url('king_cool_kc-webfont.ttf') format("truetype"), url('king_cool_kc-webfont.svg#king_cool_kcregular') format("svg");
-  font-weight: normal;
-  font-style: normal; }
-
-
-@font-face {
-  font-family: 'sketch_rockwellregular';
-  src: url('sketchrockwell-bold-webfont.eot');
-  src: url('sketchrockwell-bold-webfont.eot?#iefix') format("embedded-opentype"), url('sketchrockwell-bold-webfont.woff') format("woff"), url('sketchrockwell-bold-webfont.ttf') format("truetype"), url('sketchrockwell-bold-webfont.svg#sketch_rockwellregular') format("svg");
-  font-weight: normal;
-  font-style: normal; }
-
-
-@font-face {
-  font-family: 'sketch_wallregular';
-  src: url('sketch_wall-webfont.eot');
-  src: url('sketch_wall-webfont.eot?#iefix') format("embedded-opentype"), url('sketch_wall-webfont.woff') format("woff"), url('sketch_wall-webfont.ttf') format("truetype"), url('sketch_wall-webfont.svg#sketch_wallregular') format("svg");
-  font-weight: normal;
-  font-style: normal; }
   
 @font-face {
 font-family: "Open Sans";
@@ -187,17 +164,6 @@ $how-to-active-color: #f05c1a;
 #login-school:active {
   background-image: none;
 }
-.header {
-  //width: 100%;
-  height: 56px;
-  padding-left: 25px;
-  color: #000;
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  h1 {
-    color: #000;
-  }
-}
 
 
 .middle-line {
@@ -341,23 +307,6 @@ span.join,
 
 @mixin really-awesom-button {
   font-family: '"Open Sans"';
-}
-
-
-h1 {
-  color: #25860B;
-}
-
-h2 {
-  color: #470BC1;
-}
-
-h3 {
-  color: #EA4E08;
-}
-
-h4 {
- color: #08C;
 }
 
 .blue_color {
