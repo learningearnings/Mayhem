@@ -3,9 +3,9 @@
    
 .custom-nav-bar
   .resp-logo
-    = link_to(image_tag('common/logo-learning-earnings2.svg'), root_path)
+    = link_to(image_tag('logo-learning-earnings-ondark.png'), root_path)
   .resp-logo-collapsed
-    = link_to(image_tag('common/logo-learning-earnings2.svg'), root_path)    
+    = link_to(image_tag('logo-learning-earnings-ondark.png'), root_path)    
   - if current_user
     - if current_person
       - if current_person.is_a?(SchoolAdmin)
@@ -31,10 +31,10 @@
       .person-details
         = current_person.full_name
       .arrow
-        = image_tag('common/arrow-left.png')
+        = image_tag('Collapse.png')
     .profile-collapsed
       .arrow
-        = image_tag('common/arrow-left.png')      
+        = image_tag('Expand.png')      
       %br
       .avatar
         = link_to(avatar_for(current_person, '34x34'), spree.get_destroy_user_session_path)          
