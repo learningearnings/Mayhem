@@ -1,6 +1,6 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Teacher Activity Report
+    %h1 Teacher Activity Report
     %h3= report.range if report.range
     = simple_form_for report.parameters,  :url => teacher_activity_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter

@@ -1,4 +1,4 @@
-%h2 Classroom: 
+%h1 Classroom: 
 %ul.action_buttons
   %li= link_to "Set Homeroom", "/classrooms/set_homeroom/#{@classroom.id}", confirm: classroom_set_homeroom_confirmation_message, class: 'btn awesome-button'
   - unless @classroom.sti_id  

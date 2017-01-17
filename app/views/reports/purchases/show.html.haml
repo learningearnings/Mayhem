@@ -4,7 +4,7 @@
   .primary-content-fw
 
     - if report.state == "complete"
-      %h2 Purchases Report
+      %h1 Purchases Report
       - report_params = Reports::Purchases.new(params.merge(school: current_school)).parameters
       = simple_form_for report_params,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
         .form-sections

@@ -2,7 +2,7 @@
 
   .primary-content
     .create-classroom
-      %h3 Create a Classroom
+      %h1 Create a Classroom
       %hr
       = form_for Classroom.new do |f|
         = f.label :classroom_name
@@ -12,7 +12,7 @@
 
 
   .secondary-content
-    %h2 Classrooms
+    %h1 Classrooms
     #classrooms
       - @classrooms.each do |classroom|
         %h3= link_to classroom.name, classroom_path(classroom), { class: "classroom", "data-id" => classroom.id }

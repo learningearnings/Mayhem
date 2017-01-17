@@ -4,7 +4,7 @@
   .primary-content-fw
 
     - if report.state == "complete"
-      %h2 Student Credit History Report
+      %h1 Student Credit History Report
       = form_tag student_credit_history_report_path, method: :get, class: "noprint" do
         .filter
           %h4 Filter By

@@ -4,7 +4,7 @@
 
 .main-content-wrapper
   .primary-content-fw
-    %h2 Student Earnings Report
+    %h1 Student Earnings Report
     //%h3= report.range if report.range
     = simple_form_for report.parameters,  :url => student_earning_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
