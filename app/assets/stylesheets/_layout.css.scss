@@ -713,7 +713,6 @@ html.resp, body.resp {
 }
 
 .custom-nav-bar {
-    display: none;
     width: 250px;
     height: 100vh;
     padding-bottom: 10px;
@@ -723,7 +722,52 @@ html.resp, body.resp {
     vertical-align: top;
     float: left;
     background: #075B7F;
+    transition: 0.2s;
 }
+
+.custom-nav-bar.nav-closed {
+  margin-left: -200px;
+}
+.custom-nav-bar.nav-closed .resp-logo {
+  display: none;
+}
+
+.custom-nav-bar.nav-closed .resp-logo-collapsed {
+    display: block;
+}
+.custom-nav-bar.nav-closed .primary-nav a {
+    margin-left: 190px;
+    text-indent: 200px;
+}
+ 
+.custom-nav-bar.nav-closed .profile {
+    display: none;
+}
+.custom-nav-bar.nav-closed .profile-collapsed {
+    display: block;
+}
+
+.custom-nav-bar.nav-open {
+    margin-left: 0px;
+}
+.custom-nav-bar.nav-open .resp-logo {
+    display: block;
+}
+.custom-nav-bar.nav-open .resp-logo-collapsed {
+    display: none;
+}
+.custom-nav-bar.nav-open .primary-nav li a {
+    margin-left: 0px;
+    text-indent: 20px !important;
+}
+ 
+.custom-nav-bar.nav-open .profile {
+    display: block;
+}
+.custom-nav-bar.nav-open .profile-collapsed {
+    display: none;
+}
+ 
 
 
 .navbar-inner {

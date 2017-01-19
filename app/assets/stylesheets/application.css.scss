@@ -71,16 +71,7 @@ h1 {
    font-weight: 600; //typically used for page title, this is going to be heavier font than what is used elsewhere
 }
 
-.login .chosen-container-single .chosen-single div {
-    top: 14px;
-    height: 50%
-}
 
-@media (max-width: 768px) {
-    .login-div {
-        top: 0;
-    }
-}
 h2 {
    font-size: 22px;
    line-height: 22px;
@@ -110,3 +101,37 @@ h6 {
    line-height: 18px;
    padding: 16px 0;
 }
+
+.login .chosen-container-single .chosen-single div {
+    top: 14px;
+    height: 50%
+}
+
+@media (max-width: 768px) {
+    .login-div {
+        top: 0;
+    }
+}
+@media (max-width: 768px) {
+  .custom-nav-bar {
+                margin-left: -200px;
+                }
+                .custom-nav-bar .resp-logo {
+                display: none;
+                }
+                .custom-nav-bar .resp-logo-collapsed {
+                display: block;
+                }
+                .custom-nav-bar .primary-nav a {
+                margin-left: 190px;
+                text-indent: 200px;
+                }
+ 
+                .custom-nav-bar .profile {
+                display: none;
+                }
+                .custom-nav-bar .profile-collapsed {
+                display: block;
+                }
+}
+ 

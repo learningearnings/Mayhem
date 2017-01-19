@@ -1,4 +1,4 @@
-$('.custom-nav-bar').css("display", "none"); 
+
 $(document).ready(function() {
   var pathArray = window.location.hostname.split( '.' );
   var current_subdomain = pathArray[0];
@@ -156,42 +156,22 @@ $(document).ready(function(){
  
  $('.arrow img').click(function(){
 
-	if ($('.custom-nav-bar').css('margin-left') == "-200px") {
-		
-    	$('.resp-logo-collapsed').css("display","none");  
-    	$('.profile-collapsed').css("display","none");      			
- 		$('.custom-nav-bar').animate({"margin-left": "0px"}); 
-    	$('.primary-nav li a').css("margin-left","0px"); 	
-    	$('.primary-nav li a').css("text-indent","20px");
-		$('.resp-logo').css("display","block");    	
-    	$('.profile').css("display","block"); 
-    	sessionStorage.setItem('menuCollapsed', "N");  		
+	if ($('.custom-nav-bar').hasClass('nav-closed'))  {
+  		$('.custom-nav-bar').removeClass('nav-closed');
+		$('.custom-nav-bar').addClass('nav-open');
+    	sessionStorage.setItem('menuCollapsed', "N"); 			
  	}
     else {
-    	$('.profile').css("display","none");      	
-    	$('.resp-logo').css("display","none"); 
-    	$('.custom-nav-bar').animate({"margin-left": "-200px"}); 
-    	$('.primary-nav li a').css("margin-left","190px");
-    	$('.primary-nav li a').css("text-indent","200px");
-    	$('.resp-logo-collapsed').css("display","block");
-   	    $('.profile-collapsed').css("display","block");    
-    	sessionStorage.setItem('menuCollapsed', "Y"); 	
-    	
+		$('.custom-nav-bar').removeClass('nav-open');
+		$('.custom-nav-bar').addClass('nav-closed');
+    	sessionStorage.setItem('menuCollapsed', "Y");  
     }
  });
  
  if (sessionStorage.getItem('menuCollapsed') == "Y") {
- 	    $('.profile').css("display","none");      	
-    	$('.resp-logo').css("display","none"); 
-    	$('.custom-nav-bar').css("margin-left", "-200px"); 
-    	$('.primary-nav li a').css("margin-left","190px");
-    	$('.primary-nav li a').css("text-indent","200px");
-    	$('.resp-logo-collapsed').css("display","block");
-   	    $('.profile-collapsed').css("display","block");
-   	    
+   	   	$('.custom-nav-bar').removeClass('nav-open');
+		$('.custom-nav-bar').addClass('nav-closed'); 
  } 
- $('.custom-nav-bar').css("display", "block"); 
- //$('.custom-nav-bar').animate({"display": "block"});  
  
 });
 //update the width value when the browser is resized
