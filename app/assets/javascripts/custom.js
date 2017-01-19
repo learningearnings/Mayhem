@@ -126,6 +126,7 @@ $(document).ready(function() {
   highlightNavigation('bank',          'bank');
   highlightNavigation('classrooms',    'classrooms');
   highlightNavigation('lounge',        'lounge');
+  highlightNavigation('store',          'shop');  
   highlightNavigation('play',          'play');
   highlightNavigation('games',         'play');
   highlightNavigation('rewards',       'rewards');

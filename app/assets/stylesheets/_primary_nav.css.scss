@@ -78,7 +78,7 @@ $red: #ff2204;
     height: 50px;
     overflow: hidden;
   }
-  li a:hover, li a:focus, li:hover {
+  li a:hover, li a:focus {
     color: white;
     background: #07668F;
   } 
@@ -208,7 +208,7 @@ $red: #ff2204;
       background-image: url(asset_path('common/icon-play-selected.svg', image));
       background-repeat: no-repeat;      
    }
-
+   
   .shop {
      color: white;
      background-image: url(asset_path('common/icon-shop.svg', image));
@@ -222,6 +222,7 @@ $red: #ff2204;
       background-image: url(asset_path('common/icon-ishop-selected.svg', image));
       background-repeat: no-repeat;      
    }
+   
    
   .charities {
      color: white;
