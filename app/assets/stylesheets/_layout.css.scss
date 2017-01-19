@@ -206,7 +206,7 @@ $how-to-active-color: #f05c1a;
   width: 450px;
   height: 50px;
   font-size: 18px;
-  box-shadow: 3px 3px 1px #888888;   
+  box-shadow: none;   
 }
 
 .chosen {font-family: "Open Sans" !important; font-size: 16px !important; color: black !important;}
@@ -2274,6 +2274,7 @@ dl.details {
 }
 
 .login {
+  overflow: auto;
   position:absolute;
   top: 0px;
   width: 100%;
