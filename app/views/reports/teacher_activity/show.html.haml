@@ -7,8 +7,8 @@
         = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
       .sorting
         = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
-      = f.submit 'Go!', class: "awesome-button"
-      = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+      = f.submit 'Go!', class: "btn awesome-button"
+      = button_to_function "Print Report", "window.print();", class: "noprint btn awesome-button"
     .report
       %table.table.table-bordered.table-striped.solid-background
         %thead

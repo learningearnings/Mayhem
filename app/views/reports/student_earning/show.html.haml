@@ -16,13 +16,13 @@
 
       .sorting
         = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
-      = f.submit 'Go!', class: "awesome-button"
-      = button_tag "Print Report", class: "noprint awesome-button",type: 'button', onclick: "window.print();"
+      = f.submit 'Go!', class: "btn awesome-button"
+      = button_tag "Print Report", class: "noprint btn awesome-button",type: 'button', onclick: "window.print();"
       -if report.endpoints
         %span#start_date{:style => 'display:none'}= report.endpoints[0]
         %span#end_date{:style => 'display:none'}= report.endpoints[1]
     .btn-print-selected
-      = button_to "Print Selected Students", print_student_earning_report_path, class: 'noprint awesome-button print-selected', id: "print-report"
+      = button_to "Print Selected Students", print_student_earning_report_path, class: 'noprint btn awesome-button print-selected', id: "print-report"
     .report
       %br.onlyprint/
       %table#credit_report_table.table.table-bordered.table-striped.solid-background

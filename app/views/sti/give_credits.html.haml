@@ -72,7 +72,7 @@
                               %td= text_field_tag "credits[#{student.id}]", nil, class: "classroom_student_points", style: "width: 50px"
                               - if current_otu_code_categories.any?
                                 %td= select_tag "credit_categories[#{student.id}]", options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), prompt: "Select Category", class: "student_category"
-                      %input.awesome-button{type: "submit", name: "commit", value: "Send These Credits"}
+                      %input.awesome-button{type: "submit", name: "commit", value: "Send These Credits", class: "btn"}
 
 :coffeescript
   jQuery ->

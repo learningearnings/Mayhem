@@ -53,7 +53,7 @@
               = text_field_tag :point5, nil, :class => 'input-mini credits'
               = label_tag '10s'
               = text_field_tag :point10, nil, :class => 'input-mini credits'
-              = f.submit 'Print These Credits', :class => 'awesome-button'
+              = f.submit 'Print These Credits', :class => 'btn awesome-button'
 
           .tab-pane#electronic-credits
             .electronic-credits-for-student
@@ -65,7 +65,7 @@
                 = text_field_tag :points, nil, :class => "input-mini credits"
                 = f.label :otu_code_category_id, "Credit Category"
                 = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
-                = f.submit 'Send These Credits', :class => 'awesome-button'
+                = f.submit 'Send These Credits', :class => 'btn awesome-button'
 
             .electronic-credits-for-classroom
               %h4 Issue Electronic Credits to each student in a classroom
@@ -77,7 +77,7 @@
                 = f.label :otu_code_category_id, "Credit Category"
                 = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
                 #classroom_distribution
-                = f.submit 'Send These Credits', class: 'awesome-button'
+                = f.submit 'Send These Credits', class: 'btn awesome-button'
 
           .tab-pane#transfer-credits
             %h4 Transfer Credits Between Teachers
@@ -88,7 +88,7 @@
               = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = label_tag :to_teacher
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
-              = f.submit 'Send These Credits', class: 'awesome-button'
+              = f.submit 'Send These Credits', class: 'btn awesome-button'
 
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
@@ -112,7 +112,7 @@
                   %br/
                   = f.text_field :weekly_no_infractions_amount, :value => @school.weekly_no_infractions_amount, :class => "input-mini credits"
                   %br/
-                  = f.submit 'Update Auto-Credits', :class => 'awesome-button'
+                  = f.submit 'Update Auto-Credits', :class => 'btn awesome-button'
               - else
                 %p
                   This functionality is not supported for your school.

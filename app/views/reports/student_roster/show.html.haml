@@ -16,7 +16,7 @@
           = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
         .grade
           = submit_tag 'Go!'
-    = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+    = button_to_function "Print Report", "window.print();", class: "noprint btn awesome-button"
     .report
       %br.onlyprint/
       %table#report_table.table.table-bordered.table-striped.solid-background
