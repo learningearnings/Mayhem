@@ -107,6 +107,56 @@ h6 {
     height: 50%
 }
 
+.btn:hover:not([disabled]) {
+    color: #137abb;
+    text-decoration: none;
+    background-color: #f7f7f7;
+}
+.btn {
+    height: 36px;
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-width: 100px;
+    display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0 0 1rem 0;
+    text-align: center;
+    line-height: 1;
+    cursor: pointer;
+    vertical-align: middle;
+    padding: 9px 20px;
+    color: #137abb;
+    background-color: #fff;
+    width: auto;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+}
+//primary button styles (used for form submits)
+.btn.primary:hover:not([disabled]), input[type="submit"].btn:hover:not([disabled]) {
+    background-color: #287218;
+    color: #fff;
+}
+.btn.primary, input[type="submit"].btn {
+    background-color: #287218;
+    color: #fff;
+    border: 1px solid transparent;
+}
+//disabled button style
+.btn.disabled, .btn[disabled] {
+    opacity: 1;
+    cursor: not-allowed;
+    color: #c3ddee;
+    border-color: #f7f7f7;
+    background-color: #fff;
+    pointer-events: initial;
+}
+//disabled primary button
+.btn.primary.disabled, .btn.primary[disabled], input[type="submit"].btn.disabled, input[type="submit"].btn[disabled] {
+    background-color: #c8e6c2;
+    color: #fff;
+}
+
 @media (max-width: 768px) {
     .login-div {
         top: 0;

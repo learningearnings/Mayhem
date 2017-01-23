@@ -2049,46 +2049,6 @@ h3 {
     margin-top: 2em;
     color: #EB731C;
   }
-  .btn.primary-button {
-      background: rgba(37, 134, 11, .8);
-      padding: .5em;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      -webkit-box-shadow: 0 0 5px #888;
-      -moz-box-shadow: 0 0 5px #888;
-      box-shadow: 2px 2px 2px #CCC;
-      -webkit-transform: rotate(-3deg);
-      -moz-transform: rotate(-3deg);
-      -o-transform: rotate(-3deg);
-      font-family: "Open Sans";
-      font-size: 1.3em;
-      text-shadow: 1px 1px 2px #333;
-  }
-}
-
-.awesome-button {
-    background: rgb(37, 134, 11);
-/*    background: rgba(37, 134, 11, .8); */
-    padding: .5em;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    -webkit-box-shadow: 0 0 5px #888;
-    -moz-box-shadow: 0 0 5px #888;
-    box-shadow: 2px 2px 2px #CCC;
-    -webkit-transform: rotate(-3deg);
-    -moz-transform: rotate(-3deg);
-    -o-transform: rotate(-3deg);
-    font-family: "Open Sans";
-    font-size: 1.3em;
-    text-shadow: 1px 1px 2px #333;
-    color: #fff;
-    margin: .5em;
-    &:hover {
-      background: rgb(71, 11, 193);
-      color: #fff;
-    }
-}
-
-input.awesome-button {
-  padding-bottom: .5em;
 }
 
 .distribute-credits {
