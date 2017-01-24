@@ -1513,8 +1513,8 @@ html.resp, body.resp {
   text-align: center;
   .alert {
     text-align: center;
-    border: none;
-    //background:transparent url(asset_path('message-blue.png', image)) no-repeat 0 0;
+    //border: none;
+    background:transparent url(asset_path('message-blue.png', image)) no-repeat 0 0;
     background: white;
     width: 300px;
     padding-bottom: 30px;
