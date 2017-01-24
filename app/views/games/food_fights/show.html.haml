@@ -1,59 +1,60 @@
-%h1 Food Fight
-
-%ul.action_buttons
-  %li= link_to "Find Opponent", challenge_opponent_games_food_fight_path, class: 'btn awesome-button'
-
-- if current_person.food_fight_matches.any?
-  :ruby
-    # Only loop over this once.
-    their_turn_matches = []
-    your_turn_matches = []
-    current_person.food_fight_matches.each do |match|
-      if match.turn.person == current_person.person
-        your_turn_matches << match
-      else
-        their_turn_matches << match
+.main-content-wrapper
+  %h1 Food Fight
+  
+  %ul.action_buttons
+    %li= link_to "Find Opponent", challenge_opponent_games_food_fight_path, class: 'btn awesome-button'
+  
+  - if current_person.food_fight_matches.any?
+    :ruby
+      # Only loop over this once.
+      their_turn_matches = []
+      your_turn_matches = []
+      current_person.food_fight_matches.each do |match|
+        if match.turn.person == current_person.person
+          your_turn_matches << match
+        else
+          their_turn_matches << match
+        end
       end
-    end
-  %h3 Active Matches
-  %h5 Your Turn
-  %ul.student_list
-    - your_turn_matches.each do |match|
-      %li
-        .avatar= avatar_for(match.player(current_person).opponent.person)
-        .name= link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
-  %h5 Their Turn
-  %ul.student_list
-    - their_turn_matches.each do |match|
-      %li
-        .avatar= avatar_for(match.player(current_person).opponent.person)
-        .name= link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
-- else
-  %p
-    You do not have any active food fight matches.  Once you've started one, your active matches will show up here.  Go ahead and 
-    = link_to "challenge someone to a match.", challenge_opponent_games_food_fight_path
-
-- if current_person.food_fight_wins.any?
-  %h4 Wins
-  - current_person.food_fight_wins.each do |win|
-    %ul
-      %li= win.match.score
-
-%h3 Current Round: #{current_round}
-
-%h4 Top players at your school
-%table.table.table-bordered.table-striped.solid-background
-  %thead
-    %tr
-      %th Person
-      %th Score
-  %tbody
-    - leaderboard.each do |row|
+    %h3 Active Matches
+    %h5 Your Turn
+    %ul.student_list
+      - your_turn_matches.each do |match|
+        %li
+          .avatar= avatar_for(match.player(current_person).opponent.person)
+          .name= link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
+    %h5 Their Turn
+    %ul.student_list
+      - their_turn_matches.each do |match|
+        %li
+          .avatar= avatar_for(match.player(current_person).opponent.person)
+          .name= link_to match.player(current_person).opponent.person.name, continue_match_games_food_fight_path(match)
+  - else
+    %p
+      You do not have any active food fight matches.  Once you've started one, your active matches will show up here.  Go ahead and 
+      = link_to "challenge someone to a match.", challenge_opponent_games_food_fight_path
+  
+  - if current_person.food_fight_wins.any?
+    %h4 Wins
+    - current_person.food_fight_wins.each do |win|
+      %ul
+        %li= win.match.score
+  
+  %h3 Current Round: #{current_round}
+  
+  %h4 Top players at your school
+  %table.table.table-bordered.table-striped.solid-background
+    %thead
       %tr
-        %td= row.person
-        %td= row.score
-
-:javascript
-  $('.student_list li').on('click', function(){
-    window.location = $('a', $(this)).attr('href');
-  });
+        %th Person
+        %th Score
+    %tbody
+      - leaderboard.each do |row|
+        %tr
+          %td= row.person
+          %td= row.score
+  
+  :javascript
+    $('.student_list li').on('click', function(){
+      window.location = $('a', $(this)).attr('href');
+    });
