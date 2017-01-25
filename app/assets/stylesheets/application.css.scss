@@ -207,6 +207,18 @@ input[type="file"] {
     color: #fff;
 }
 
+a {
+  cursor: pointer;
+  color: #137abb;
+  text-decoration: none;
+}
+
+a:focus, a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #042d40;
+}
+
 @media (max-width: 768px) {
     .login-div {
         top: 0;
