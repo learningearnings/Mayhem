@@ -27,17 +27,32 @@
   - if current_user        
     .profile
       .avatar
-        = link_to(avatar_for(current_person, '50x50#'), spree.get_destroy_user_session_path)          
+        = avatar_for(current_person, '50x50#')          
       .person-details
         = current_person.full_name
       .arrow
         = image_tag('Collapse.png')
+      .secondary-user-nav.nav.hidden
+        %ul
+          %li= link_to "Profile",       main_app.edit_person_path(current_person), :class => 'eprofile'
+          - if current_person.is_a?(SchoolAdmin)
+            %li= link_to "Settings",      '/schools/settings', :class => 'settings'       
+          %li= link_to "Help",       '/help', :class => 'help'
+          %li= link_to "Logout",    spree.get_destroy_user_session_path, :class =>'logout'             
     .profile-collapsed
       .arrow
         = image_tag('Expand.png')      
       %br
       .avatar
-        = link_to(avatar_for(current_person, '34x34'), spree.get_destroy_user_session_path)          
+        = avatar_for(current_person, '34x34')  
+      .secondary-user-nav.nav.hidden
+        %ul
+          %li= link_to "Profile",       main_app.edit_person_path(current_person), :class => 'eprofile'
+          - if current_person.is_a?(SchoolAdmin)
+            %li= link_to "Settings",      '/schools/settings', :class => 'settings'       
+          %li= link_to "Help",       '/help', :class => 'help'
+          %li= link_to "Logout",    spree.get_destroy_user_session_path, :class =>'logout'      
+ 
        
 
     

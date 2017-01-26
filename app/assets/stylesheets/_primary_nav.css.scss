@@ -1,47 +1,3 @@
-%small-circle {
-  &.active, &:hover {
-    color: white;
-    background: #07668F;
-  }
-}
-
-%medium-circle {
-  &.active, &:hover {
-    color: white;
-    background: #07668F;
-  }
-}
-
-%medium-circle2 {
-  &.active, &:hover {
-    color: white;
-    background: #07668F;
-  }
-}
-
-%large-circle {
-  &.active, &:hover {
-    color: white;
-    background: #07668F;
-  }
-}
-
-%large-circle2 {
-  &.active, &:hover {
-    color: white;
-    background: #07668F;
-  }
-}
-
-$green: #25860b;
-$orange: #ea4e08;
-$fadedOrange: #EB731C;
-$purple: #B611B0;
-$darkBlue: #1f2870;
-$blue: #470bc1;
-$red: #ff2204;
-
-
 .primary-nav {
   //height: 100%; /* 100% Full-height */
   width: 250px; /* 0 width - change this with JavaScript */
@@ -82,16 +38,6 @@ $red: #ff2204;
     color: white;
     background: #07668F;
   } 
-
-  .how-it-works {
-    color: white;
-    @extend %large-circle;
-  }
-
-  .testimonials {
-    color: white;
-    @extend %large-circle;
-  }
 
   .home {
      color: white;
@@ -148,12 +94,6 @@ $red: #ff2204;
       background-image: url(asset_path('common/icon-inbox-selected.svg', image));
       background-repeat: no-repeat;      
    }
-   
-
-  .restock {
-    color: white;
-    @extend %medium-circle;
-  }
 
   .manage_students {
      color: white;
@@ -183,19 +123,6 @@ $red: #ff2204;
       background-repeat: no-repeat;      
    }
 
-  .help {
-     color: white;
-     background-image: url(asset_path('common/icon-help.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 50px;
-    }
-    
-  .help:hover, .help.active {
-      color: white;
-      background-color: #07668F;
-      background-image: url(asset_path('common/icon-help-selected.svg', image));
-      background-repeat: no-repeat;      
-   }
 
 
   .bank {
@@ -240,17 +167,6 @@ $red: #ff2204;
       background-image: url(asset_path('common/icon-ishop-selected.svg', image));
       background-repeat: no-repeat;      
    }
-   
-   
-  .charities {
-     color: white;
-    @extend %medium-circle2;
-  }
-
-  .rewards {
-     color: white;
-    @extend %large-circle;
-  }
 
   .reports {
      color: white;
@@ -263,13 +179,8 @@ $red: #ff2204;
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-reports-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat;        
    }
-
-  .settings {
-    color: white;
-    @extend %medium-circle;
-  }
 
   .classrooms {
      color: white;
@@ -285,13 +196,135 @@ $red: #ff2204;
       background-repeat: no-repeat;      
    }
 
-  .lounge {
-    color: white;
-    @extend %medium-circle;
-  }
+}
 
-  .news {
+.profile, .profile-collapsed {
+  background-color: #065272;
+}
+
+
+ 
+//new styles for secondary user menu
+.custom-nav-bar.secondary-open .profile {
+    display: none !important;
+}
+.custom-nav-bar.secondary-open .secondary-profile-menu {
+    bottom: 0;
+}
+.custom-nav-bar.secondary-open .profile-collapsed {
+    display: none !important;
+}
+ 
+.secondary-profile-menu {
+    position: fixed;
+    padding: 0;
+    width: 250px;
+    bottom: -300px; //default style is present, but positioned off screen
+    left: 0px;
+    border-top: 1px solid #2c7c9f;
+    background-color: #065272;
+    z-index: 100;
+    transition: 0.3s;
+}
+ 
+.profile-container {
+    border-bottom: 1px solid #2c7c9f;
+    height: 55px;
+}
+ 
+.secondary-profile-menu .person-details {
+    width: 180px;
+    max-width: 180px;
+}
+
+.hidden {
+  display: none;
+}
+ 
+.secondary-user-nav {
+    width: 250px;
+    position: relative;
+    z-index: 1;
+    left: 0;
+    margin-left: 0px;
+    padding-left: 10px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    transition: 0.5s;
     color: white;
-    @extend %small-circle;
-  }
+    font-family: "Open Sans";
+    font-weight: 400;
+    
+    .help {
+       background-image: url(asset_path('icon-help.png', image));
+       background-repeat: no-repeat;
+       padding-left: 50px;
+    }
+    .help:hover, .help.active {
+        background-color: #07668F;
+        background-image: url(asset_path('icon-help.png', image));
+        background-repeat: no-repeat;      
+     }
+     
+     .settings {
+       background-image: url(asset_path('icon-settings.png', image));
+       background-repeat: no-repeat;
+       padding-left: 50px;
+      }
+      
+    .settings:hover, .settings.active {
+        background-color: #07668F;
+        background-image: url(asset_path('icon-settings.png', image));
+        background-repeat: no-repeat;      
+     }
+    
+     .logout {
+       background-image: url(asset_path('icon-settings.png', image));
+       background-repeat: no-repeat;
+       padding-left: 50px;
+      }
+      
+    .logout:hover, .logout.active {
+        background-color: #07668F;
+        background-image: url(asset_path('icon-settings.png', image));
+        background-repeat: no-repeat;      
+     }
+     
+     .eprofile {
+       background-image: url(asset_path('icon-profile.png', image));
+       background-repeat: no-repeat;
+       padding-left: 50px;
+      }
+      
+    .eprofile:hover, .eprofile.active {
+        background-color: #07668F;
+        background-image: url(asset_path('icon-profile.png', image));
+        background-repeat: no-repeat;      
+     }
+     ul {
+       background-color: #065272;
+     }
+}
+.secondary-user-nav ul {
+                margin: 0 0 13px 0;
+}
+ 
+.secondary-user-nav li {
+    display: block;
+    height: 45px;
+    overflow: hidden;
+}
+ 
+.secondary-user-nav a {
+    color: white;
+    padding: 8px 8px 8px 40px;
+    text-decoration: none;
+    font-size: 16px;
+    background: #065272;
+    display: block;
+    white-space: nowrap;
+}
+ 
+.secondary-user-nav li a:hover {
+    background-color: #07668F;
 }

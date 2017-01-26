@@ -109,7 +109,13 @@ $(document).ready(function() {
 	  $(".attention-teachers").css("display", "block");
           return false;
 	});
-
+	
+	
+    $(".avatar").click(function(){
+	      $(".secondary-user-nav").toggleClass("hidden");
+          return false;
+	});
+	
   function highlightNavigation(path_part, nav_selector, subdomain){
       if((subdomain != undefined && subdomain != current_subdomain) || already_selected) {
           return;
