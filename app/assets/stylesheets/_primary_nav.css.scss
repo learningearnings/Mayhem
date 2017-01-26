@@ -83,11 +83,6 @@ $red: #ff2204;
     background: #07668F;
   } 
 
-  .home {
-    color: white;
-    @extend %small-circle;
-  }
-
   .how-it-works {
     color: white;
     @extend %large-circle;
@@ -98,10 +93,33 @@ $red: #ff2204;
     @extend %large-circle;
   }
 
+  .home {
+     color: white;
+     background-image: url(asset_path('icon-home.png', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .home:hover, .home.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('icon-home-selected.png', image));
+      background-repeat: no-repeat;      
+   }
+
   .locker {
-    color: white;
-    @extend %medium-circle;
-  }
+     color: white;
+     background-image: url(asset_path('icon-locker.png', image));
+     background-repeat: no-repeat;
+     padding-left: 50px;
+    }
+    
+  .locker:hover, .locker.active {
+      color: white;
+      background-color: #07668F;
+      background-image: url(asset_path('icon-locker-selected.png', image));
+      background-repeat: no-repeat;      
+   }
 
   .inbox {
      color: white;
