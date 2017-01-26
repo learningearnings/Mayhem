@@ -41,7 +41,7 @@
 
   .home {
      color: white;
-     background-image: url(asset_path('icon-home.png', image));
+     background-image: url(asset_path('icon-home.svg', image));
      background-repeat: no-repeat;
      padding-left: 50px;
     }
@@ -49,13 +49,13 @@
   .home:hover, .home.active {
       color: white;
       background-color: #07668F;
-      background-image: url(asset_path('icon-home-selected.png', image));
+      background-image: url(asset_path('icon-home-selected.svg', image));
       background-repeat: no-repeat;      
    }
 
   .locker {
      color: white;
-     background-image: url(asset_path('icon-locker.png', image));
+     background-image: url(asset_path('icon-locker.svg', image));
      background-repeat: no-repeat;
      padding-left: 50px;
     }
@@ -63,7 +63,7 @@
   .locker:hover, .locker.active {
       color: white;
       background-color: #07668F;
-      background-image: url(asset_path('icon-locker-selected.png', image));
+      background-image: url(asset_path('icon-locker-selected.svg', image));
       background-repeat: no-repeat;      
    }
 
@@ -256,49 +256,49 @@
     font-weight: 400;
     
     .help {
-       background-image: url(asset_path('icon-help.png', image));
+       background-image: url(asset_path('icon-help.svg', image));
        background-repeat: no-repeat;
        padding-left: 50px;
     }
     .help:hover, .help.active {
         background-color: #07668F;
-        background-image: url(asset_path('icon-help.png', image));
+        background-image: url(asset_path('icon-help.svg', image));
         background-repeat: no-repeat;      
      }
      
      .settings {
-       background-image: url(asset_path('icon-settings.png', image));
+       background-image: url(asset_path('icon-settings.svg', image));
        background-repeat: no-repeat;
        padding-left: 50px;
       }
       
     .settings:hover, .settings.active {
         background-color: #07668F;
-        background-image: url(asset_path('icon-settings.png', image));
+        background-image: url(asset_path('icon-settings.svg', image));
         background-repeat: no-repeat;      
      }
     
      .logout {
-       background-image: url(asset_path('icon-settings.png', image));
+       background-image: url(asset_path('icon-settings.svg', image));
        background-repeat: no-repeat;
        padding-left: 50px;
       }
       
     .logout:hover, .logout.active {
         background-color: #07668F;
-        background-image: url(asset_path('icon-settings.png', image));
+        background-image: url(asset_path('icon-settings.svg', image));
         background-repeat: no-repeat;      
      }
      
      .eprofile {
-       background-image: url(asset_path('icon-profile.png', image));
+       background-image: url(asset_path('icon-profile.svg', image));
        background-repeat: no-repeat;
        padding-left: 50px;
       }
       
     .eprofile:hover, .eprofile.active {
         background-color: #07668F;
-        background-image: url(asset_path('icon-profile.png', image));
+        background-image: url(asset_path('icon-profile.svg', image));
         background-repeat: no-repeat;      
      }
      ul {

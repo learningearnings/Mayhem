@@ -146,7 +146,8 @@ $how-to-active-color: #f05c1a;
 #login-username {
   background-image: url(asset_path('common/icon-bank.svg', image));
   background-repeat: no-repeat;
-  text-indent: 20px;
+  //text-indent: 20px;
+  color: #333;
 }
 #login-password {
     background-image: url(asset_path('common/icon-bank.svg', image));
