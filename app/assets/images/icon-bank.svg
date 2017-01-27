@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1657 -11034 50 50">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-bank_1);
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 1px;
+      }
+    </style>
+    <clipPath id="clip-icon-bank_1">
+      <rect x="-1657" y="-11034" width="50" height="50"/>
+    </clipPath>
+  </defs>
+  <g id="icon-bank_1" data-name="icon-bank – 1" class="cls-1">
+    <g id="Symbol_47_9" data-name="Symbol 47 – 9" transform="translate(-1648.301 -11024.572)">
+      <path id="culture" class="cls-2" d="M20.537,9.308h1.408L12.1,3.466,2.363,9.308H3.655V22.33H20.537V9.308ZM10.589,22.33H7.163V9.308h3.427V22.33Zm6.413,0H13.618V9.308H17Z" transform="translate(4.253 3.106)"/>
+    </g>
+  </g>
+</svg>

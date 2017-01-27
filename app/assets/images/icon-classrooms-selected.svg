@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1449 -10973 50 50">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-classrooms-selected_1);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-classrooms-selected_1">
+      <rect x="-1449" y="-10973" width="50" height="50"/>
+    </clipPath>
+  </defs>
+  <g id="icon-classrooms-selected_1" data-name="icon-classrooms-selected – 1" class="cls-1">
+    <g id="Symbol_52_3" data-name="Symbol 52 – 3" transform="translate(-1440 -10964)">
+      <path id="Subtraction_7" data-name="Subtraction 7" class="cls-2" d="M7.5,21h-6V17h6v4Zm0-5h-6V3h6V16Zm0-14h-6V-2h6V2Z" transform="translate(10.5 7)"/>
+      <path id="Subtraction_8" data-name="Subtraction 8" class="cls-2" d="M6.5,18h-5V15h5v3Zm0-4h-5V3h5V14Zm0-12h-5V-1h5V2Z" transform="translate(4.5 10)"/>
+      <path id="Subtraction_9" data-name="Subtraction 9" class="cls-2" d="M3.19,21.452h0l-.366-2.977,4.963-.609.366,2.977ZM2.7,17.483h0L1.235,5.548,6.2,4.938,7.664,16.874ZM1.114,4.555h0L.751,1.6,5.713.993l.363,2.953Z" transform="translate(17.249 6.5)"/>
+    </g>
+  </g>
+</svg>

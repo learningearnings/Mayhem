@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1449 -11034 50 50">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-classrooms_1);
+      }
+
+      .cls-2, .cls-5 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #fff;
+        stroke-width: 1px;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        stroke: none;
+      }
+    </style>
+    <clipPath id="clip-icon-classrooms_1">
+      <rect x="-1449" y="-11034" width="50" height="50"/>
+    </clipPath>
+  </defs>
+  <g id="icon-classrooms_1" data-name="icon-classrooms – 1" class="cls-1">
+    <g id="Symbol_51_9" data-name="Symbol 51 – 9" transform="translate(-1440 -11025)">
+      <g id="Rectangle_2455" data-name="Rectangle 2455" class="cls-2" transform="translate(12 4)">
+        <rect class="cls-4" width="6" height="23"/>
+        <rect class="cls-5" x="0.5" y="0.5" width="5" height="22"/>
+      </g>
+      <rect id="Rectangle_2456" data-name="Rectangle 2456" class="cls-3" width="6" height="1" transform="translate(12 8)"/>
+      <g id="Rectangle_2457" data-name="Rectangle 2457" class="cls-2" transform="translate(6 8)">
+        <rect class="cls-4" width="5" height="19"/>
+        <rect class="cls-5" x="0.5" y="0.5" width="4" height="18"/>
+      </g>
+      <rect id="Rectangle_2458" data-name="Rectangle 2458" class="cls-3" width="5" height="1" transform="translate(6 11)"/>
+      <rect id="Rectangle_2459" data-name="Rectangle 2459" class="cls-3" width="5" height="1" transform="translate(6 23)"/>
+      <g id="Rectangle_2460" data-name="Rectangle 2460" class="cls-2" transform="translate(18 7.385) rotate(-7)">
+        <rect class="cls-4" width="5" height="20"/>
+        <rect class="cls-5" x="0.5" y="0.5" width="4" height="19"/>
+      </g>
+      <rect id="Rectangle_2461" data-name="Rectangle 2461" class="cls-3" width="5" height="1" transform="translate(18.339 10.353) rotate(-7)"/>
+      <rect id="Rectangle_2462" data-name="Rectangle 2462" class="cls-3" width="5" height="1" transform="translate(19.95 23.266) rotate(-7)"/>
+      <rect id="Rectangle_2463" data-name="Rectangle 2463" class="cls-3" width="6" height="1" transform="translate(12 22)"/>
+    </g>
+  </g>
+</svg>

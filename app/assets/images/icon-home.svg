@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1189 -11034 50 50">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-home_1);
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 1px;
+      }
+    </style>
+    <clipPath id="clip-icon-home_1">
+      <rect x="-1189" y="-11034" width="50" height="50"/>
+    </clipPath>
+  </defs>
+  <g id="icon-home_1" data-name="icon-home – 1" class="cls-1">
+    <path id="culture" class="cls-2" d="M20.537,8.794l3.7,3,1.514-2L12.093-2.106-1.253,9.794l1.909,2,3-3V20.656H9.983V13.794h4.154v6.862h6.4V8.794Z" transform="translate(-1176.247 -11018.393)"/>
+  </g>
+</svg>

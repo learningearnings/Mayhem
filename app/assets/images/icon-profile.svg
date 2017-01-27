@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1137 -11034 50 50">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-profile);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-profile">
+      <rect x="-1137" y="-11034" width="50" height="50"/>
+    </clipPath>
+  </defs>
+  <g id="icon-profile" class="cls-1">
+    <g id="Group_14894" data-name="Group 14894" transform="translate(-1070 -11017.897)">
+      <path id="Path_3833" data-name="Path 3833" class="cls-2" d="M8.049,18.193A3.5,3.5,0,0,0,5.929,11.9a3.492,3.492,0,0,0-3.511,3.511,3.435,3.435,0,0,0,1.391,2.782A5.885,5.885,0,0,0,0,23.724H0a.523.523,0,0,0,.53.53h10.8a.523.523,0,0,0,.53-.53h0A5.885,5.885,0,0,0,8.049,18.193Z" transform="translate(-48 -9.002)"/>
+    </g>
+  </g>
+</svg>
