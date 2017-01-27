@@ -18,7 +18,9 @@
         %li
           =image_tag('logo-powerschool-ondark.png', class: "login-logo")
         %li
-          %span#login-footer Copyright &copy; 2016 Learning Earnings. All Rights Reserved. Privacy Policy
+          %span#login-footer 
+            Copyright &copy; 2016 Learning Earnings. All Rights Reserved. 
+            = link_to "Privacy Policy", main_app.page_path("privacy")
     .messages-container
       = render "layouts/flashes"         
           

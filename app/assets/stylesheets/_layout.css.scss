@@ -77,6 +77,15 @@ $how-to-active-color: #f05c1a;
   
 }
 
+#login-footer {
+  a, a:hover, a:active {
+    font-size: 10px;
+    color: #ffffff;
+    margin-left: 10px;
+    margin-right: 20px;
+  } 
+}
+
 .log-in-form ul  {
   margin-left: 0px;
   padding-left: 0px;
@@ -1324,20 +1333,20 @@ html.resp, body.resp {
   //bottom: 0px;
   right: 20px;
   margin: 0px 0px 0px 0px;
-  color: #000;
+  color: #333;
   text-align: right;
   padding: 0;
   margin: 0;
   //width: 500px;  
   font-family: "Open Sans";
   font-weight: 400;
-  font-size: 12px;
+  font-size: 10px;
   color: black;
   clear: both;  
 
-  a {
-    color: #2c7c9f;
-    margin-left: 20px;
+  a, a:hover, a:active {
+    color: #137abb;
+    margin-left: 10px;
     margin-right: 20px;
   } 
   //    font-family: Arial, Open Sans;

@@ -5,7 +5,7 @@
   z-index: 1; /* Stay on top */
   left: 0;
   margin-left: 0px;
-  padding-left: 10px;
+  padding-left: 0px;
   background-color: #075B7F; /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
   overflow-y: hidden;
@@ -242,12 +242,14 @@
 }
  
 .secondary-user-nav {
+    background-color: #065272;
     width: 250px;
     position: relative;
     z-index: 1;
     left: 0;
     margin-left: 0px;
-    padding-left: 10px;
+    margin-bottom: 0px;
+    padding-left: 0px;
     overflow-x: hidden;
     overflow-y: hidden;
     transition: 0.5s;
@@ -279,14 +281,14 @@
      }
     
      .logout {
-       background-image: url(asset_path('icon-settings.svg', image));
+       background-image: url(asset_path('icon-logout.svg', image));
        background-repeat: no-repeat;
        padding-left: 50px;
       }
       
     .logout:hover, .logout.active {
         background-color: #07668F;
-        background-image: url(asset_path('icon-settings.svg', image));
+        background-image: url(asset_path('icon-logout.svg', image));
         background-repeat: no-repeat;      
      }
      
