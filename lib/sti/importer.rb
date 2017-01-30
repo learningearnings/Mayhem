@@ -44,7 +44,11 @@ module STI
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
         if teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
           teacher.person_school_links.map(&:deactivate)
-          teacher.deactivate
+          begin
+            teacher.deactivate
+          rescue
+            Rails.logger.error "SYNC-ERROR: Could not deactivate teacher #{teacher.inspect}"
+          end
         end
       end
       
