@@ -17,6 +17,10 @@ class PagesController < HighVoltage::PagesController
     end
     super
   end
+  
+  def privacy
+    
+  end
 
   protected
   def layout_for_page
@@ -24,6 +28,8 @@ class PagesController < HighVoltage::PagesController
     case params[:id]
     when /pdf/
       false
+    when /privacy/
+      'application'
     else
       if current_person
         'application'
