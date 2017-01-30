@@ -43,7 +43,8 @@
      color: white;
      background-image: url(asset_path('icon-home.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     background-position: 10px 0;
+     padding-left: 60px;
     }
     
   .home:hover, .home.active {
@@ -51,76 +52,87 @@
       background-color: #07668F;
       background-image: url(asset_path('icon-home-selected.svg', image));
       background-repeat: no-repeat;      
+     background-position: 10px 0;      
    }
 
   .locker {
      color: white;
      background-image: url(asset_path('icon-locker.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .locker:hover, .locker.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('icon-locker-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat;   
+      background-position: 10px 0;         
    }
 
   .inbox {
      color: white;
      background-image: url(asset_path('common/icon-inbox.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .inbox:hover, .inbox.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-inbox-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat;   
+      background-position: 10px 0;         
    }
 
   .inbox_with_count {
      color: white;
      background-image: url(asset_path('common/icon-inbox.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .inbox_with_count:hover, .inbox_with_count.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-inbox-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat;  
+      background-position: 10px 0;          
    }
 
   .manage_students {
      color: white;
      background-image: url(asset_path('common/icon-students.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .manage_students:hover, .manage_students.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-students-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat;  
+      background-position: 10px 0;          
    }
 
   .manage_teachers {
      color: white;
      background-image: url(asset_path('common/icon-teachers.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .manage_teachers:hover, .manage_teachers.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-teachers-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat; 
+      background-position: 10px 0;           
    }
 
 
@@ -129,14 +141,16 @@
      color: white;
      background-image: url(asset_path('common/icon-bank.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .bank:hover, .bank.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-bank-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat;  
+      background-position: 10px 0;          
    }
 
 
@@ -144,7 +158,8 @@
      color: white;
      background-image: url(asset_path('common/icon-play.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .play:hover, .play.active {
@@ -152,48 +167,55 @@
       background-color: #07668F;
       background-image: url(asset_path('common/icon-play-selected.svg', image));
       background-repeat: no-repeat;      
+      background-position: 10px 0;      
    }
    
   .shop {
      color: white;
      background-image: url(asset_path('common/icon-shop.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .shop:hover, .shop.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-ishop-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat; 
+      background-position: 10px 0;           
    }
 
   .reports {
      color: white;
      background-image: url(asset_path('common/icon-reports.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .reports:hover, .reports.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-reports-selected.svg', image));
-      background-repeat: no-repeat;        
+      background-repeat: no-repeat; 
+      background-position: 10px 0;             
    }
 
   .classrooms {
      color: white;
      background-image: url(asset_path('common/icon-classrooms.svg', image));
      background-repeat: no-repeat;
-     padding-left: 50px;
+     padding-left: 60px;
+     background-position: 10px 0;     
     }
     
   .classrooms:hover, .classrooms.active {
       color: white;
       background-color: #07668F;
       background-image: url(asset_path('common/icon-classrooms-selected.svg', image));
-      background-repeat: no-repeat;      
+      background-repeat: no-repeat;  
+      background-position: 10px 0;          
    }
 
 }
@@ -260,48 +282,56 @@
     .help {
        background-image: url(asset_path('icon-help.svg', image));
        background-repeat: no-repeat;
-       padding-left: 50px;
+       padding-left: 60px;
+       background-position: 10px 0;       
     }
     .help:hover, .help.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-help.svg', image));
-        background-repeat: no-repeat;      
+        background-repeat: no-repeat;  
+        background-position: 10px 0;            
      }
      
      .settings {
        background-image: url(asset_path('icon-settings.svg', image));
        background-repeat: no-repeat;
-       padding-left: 50px;
+       padding-left: 60px;
+       background-position: 10px 0;       
       }
       
     .settings:hover, .settings.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-settings.svg', image));
-        background-repeat: no-repeat;      
+        background-repeat: no-repeat;  
+        background-position: 10px 0;            
      }
     
      .logout {
        background-image: url(asset_path('icon-logout.svg', image));
        background-repeat: no-repeat;
-       padding-left: 50px;
+       padding-left: 60px;
+       background-position: 10px 0;       
       }
       
     .logout:hover, .logout.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-logout.svg', image));
-        background-repeat: no-repeat;      
+        background-repeat: no-repeat;
+        background-position: 10px 0;              
      }
      
      .eprofile {
        background-image: url(asset_path('icon-profile.svg', image));
        background-repeat: no-repeat;
-       padding-left: 50px;
+       padding-left: 60px;
+       background-position: 10px 0;       
       }
       
     .eprofile:hover, .eprofile.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-profile.svg', image));
-        background-repeat: no-repeat;      
+        background-repeat: no-repeat; 
+        background-position: 10px 0;             
      }
      ul {
        background-color: #065272;
@@ -329,4 +359,6 @@
  
 .secondary-user-nav li a:hover {
     background-color: #07668F;
+    color: white;
+    text-decoration: none;
 }
