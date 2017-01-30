@@ -10,7 +10,7 @@
         = message.body.html_safe
         - if message.message_images.present?
           = image_tag(message.message_images.first.image.thumb('50x50#').url)
-      - if message.replyable?
+      - if 1 == 0 #message.replyable?
         = link_to "Reply to this message", reply_message_path(message, refurl: url_for(params)), class: 'btn awesome-button', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
 - else
   = "You have 0 #{controller.action_name.humanize.titlecase}"

@@ -1,15 +1,16 @@
-%h1 Help 
-
-%ul
-  %li
-    %h3 
-      = link_to "Browse online help", :tour
-    = "Click the above link to see a comprehensive guide to LE pages and features.  "      
-  - if current_user.person.is_a?(Teacher) || current_user.person.is_a?(SchoolAdmin)  
+.main-content-wrapper
+  %h1 Help 
+  
+  %ul
     %li
       %h3 
-        = link_to "Teacher Resources", "http://www.chalkable.com/resources/#LearningEarnings", :target => "_blank"
-      = "Click the above link to view Teachers resources.  "
+        = link_to "Browse online help", :tour
+      = "Click the above link to see a comprehensive guide to LE pages and features.  "      
+    - if current_user.person.is_a?(Teacher) || current_user.person.is_a?(SchoolAdmin)  
+      %li
+        %h3 
+          = link_to "Teacher Resources", "http://www.chalkable.com/resources/#LearningEarnings", :target => "_blank"
+        = "Click the above link to view Teachers resources.  "
 
 
 

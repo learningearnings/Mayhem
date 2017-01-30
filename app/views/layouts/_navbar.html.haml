@@ -34,7 +34,7 @@
         = image_tag('Collapse.png')
       .secondary-user-nav.nav.hidden
         %ul
-          %li= link_to "Profile",       main_app.edit_person_path(current_person), :class => 'eprofile'
+          %li= link_to "Profile",       main_app.person_path(current_person), :class => 'eprofile'
           - if current_person.is_a?(SchoolAdmin)
             %li= link_to "Settings",      '/schools/settings', :class => 'settings'       
           %li= link_to "Help",       '/help', :class => 'help'

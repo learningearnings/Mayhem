@@ -1,28 +1,29 @@
-.full-content
-  %h1 Your Profile
-
-  .row
-    .span2
-      .avatar= image_tag(@person.avatar.image.url) if @person.avatar
-    .span3
-      %dl.details
-        %dt Name
-        %dd= @person.first_name + @person.last_name
-        %dt Username
-        %dd= @person.user.username
-        - if !current_person.is_a? Student
-          %dt Email
-          %dd= @person.user.email
-    .span3
-      %dl.details
-        %dt School
-        %dd= current_school.name
-
-      .link
-        - if @person.sti_id && !@person.is_a?(Student)
-          = link_to_function "Edit", "sti_edit()", class: 'btn awesome-button'
-        - else
-          = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
+.main-content-wrapper
+  .full-content
+    %h1 Your Profile
+  
+    .row
+      .span2
+        .avatar= image_tag(@person.avatar.image.url) if @person.avatar
+      .span3
+        %dl.details
+          %dt Name
+          %dd= @person.first_name + @person.last_name
+          %dt Username
+          %dd= @person.user.username
+          - if !current_person.is_a? Student
+            %dt Email
+            %dd= @person.user.email
+      .span3
+        %dl.details
+          %dt School
+          %dd= current_school.name
+  
+        .link
+          - if @person.sti_id && !@person.is_a?(Student)
+            = link_to_function "Edit", "sti_edit()", class: 'btn awesome-button'
+          - else
+            = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
 :javascript
   function sti_edit() {
     alert("This user was created in iNow. You will have to edit it there") 
