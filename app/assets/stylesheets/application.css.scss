@@ -227,6 +227,10 @@ a:focus, a:hover {
   color: #042d40;
 }
 
+.btn {
+  text-shadow: 0 0 0;
+}
+
 @media (max-width: 768px) {
     .login-div {
         top: 0;
