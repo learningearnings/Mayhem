@@ -117,7 +117,7 @@ input[type="submit"], input[type="button"], input[type="text"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     margin: 0 0 1rem 0;
-    text-align: center;
+    //text-align: center;
     line-height: 1;
     cursor: pointer;
     vertical-align: middle;
@@ -127,6 +127,12 @@ input[type="submit"], input[type="button"], input[type="text"] {
     width: auto;
     transition: background-color 0.25s ease-out, color 0.25s ease-out;
     background-image: none;
+}
+input[type="submit"], input[type="button"] {
+    text-align: center;
+}
+input[type="text"] {
+    text-align: left;
 }
 
 

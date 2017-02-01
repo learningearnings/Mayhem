@@ -22,7 +22,7 @@
     text-decoration: none;
     font-size: 18px;
     background: #075B7F;
-    display: block;
+    display: blockinput[type="submit"], input[type="button"], ;
     //transition: 0.3s;
     white-space: nowrap;
   }
@@ -361,4 +361,14 @@
     background-color: #07668F;
     color: white;
     text-decoration: none;
+}
+.profile .arrow img, 
+.profile-collapsed .arrow img {
+    cursor: pointer;
+}
+
+.profile .avatar img, 
+.profile-collapsed .avatar img, 
+.person-details {
+    cursor: pointer;
 }

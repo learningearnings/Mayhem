@@ -115,6 +115,10 @@ $(document).ready(function() {
 	      $(".secondary-user-nav").toggleClass("hidden");
           return false;
 	});
+    $(".person-details").click(function(){
+	      $(".secondary-user-nav").toggleClass("hidden");
+          return false;
+	});	
 	
   function highlightNavigation(path_part, nav_selector, subdomain){
       if((subdomain != undefined && subdomain != current_subdomain) || already_selected) {
