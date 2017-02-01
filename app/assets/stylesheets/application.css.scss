@@ -230,7 +230,16 @@ a:focus, a:hover {
 .btn {
   text-shadow: 0 0 0;
 }
+.profile .arrow img, 
+.profile-collapsed .arrow img {
+    cursor: pointer;
+}
 
+.profile .avatar img, 
+.profile-collapsed .avatar img, 
+.person-details {
+    cursor: pointer;
+}
 @media (max-width: 768px) {
     .login-div {
         top: 0;
