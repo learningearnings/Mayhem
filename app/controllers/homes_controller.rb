@@ -10,7 +10,7 @@ class HomesController < ApplicationController
     if person.is_a?(Student)
       redirect_to main_app.students_home_path
     elsif person.is_a?(SchoolAdmin)
-      redirect_to main_app.teachers_bank_path
+      redirect_to main_app.school_admins_bank_path
     elsif person.is_a?(Teacher)
       redirect_to main_app.teachers_bank_path
     elsif person.is_a?(LeAdmin)
