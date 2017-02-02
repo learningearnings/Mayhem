@@ -291,11 +291,13 @@ span.form-label-control {
   display: block;
   margin-left: 10px;
 }
-
 span.form-label-control input, span.form-label-control select {
   margin-bottom: 0;
 }
-
+span.form-input-control {
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 
 

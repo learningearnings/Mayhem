@@ -42,16 +42,16 @@
           .tab-pane#print-credits
             %p Print Physical Credits
             = form_for OtuCode.new, :url => school_admins_create_print_bucks_path do |f|
-              .span.form-input-control
+              %span.form-input-control
                 = label_tag "Teacher"
                 = select("teacher", "id", current_school.teachers.order('last_name, first_name').collect {|p| [ p.name, p.id ] })
-              .span.form-input-control             
+              %span.form-input-control             
                 = label_tag '1s'
                 = text_field_tag :point1, nil, :class => 'focus-on-me input-mini credits'
-              .span.form-input-control              
+              %span.form-input-control              
                 = label_tag '5s'
                 = text_field_tag :point5, nil, :class => 'input-mini credits'
-              .span.form-input-control              
+              %span.form-input-control              
                 = label_tag '10s'
                 = text_field_tag :point10, nil, :class => 'input-mini credits' 
               = f.submit 'Print These Credits', :class => 'btn awesome-button'
@@ -60,13 +60,13 @@
             .electronic-credits-for-student
               %p Issue Electronic Credits to a single student
               = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
-                .span.form-input-control              
+                %span.form-input-control              
                   = label_tag 'Student'
                   = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
-                .span.form-input-control
+                %span.form-input-control
                   = label_tag 'Credits'
                   = text_field_tag :points, nil, :class => "input-mini credits"
-                .span.form-input-control
+                %span.form-input-control
                   = f.label :otu_code_category_id, "Credit Category"
                   = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
                 = f.submit 'Send', :class => 'btn awesome-button'
@@ -74,13 +74,13 @@
             .electronic-credits-for-classroom
               %p Issue Electronic Credits to each student in a classroom
               = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
-                .span.form-input-control
+                %span.form-input-control
                   = label_tag 'Classroom'
                   = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
-                .span.form-input-control
+                %span.form-input-control
                   = label_tag 'Credits'
                   = text_field_tag :class_points, nil,:class => 'class_points input-mini credits', :onclick => 'copy_points();'
-                .span.form-input-control
+                %span.form-input-control
                   = f.label :otu_code_category_id, "Credit Category"
                   = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
                 #classroom_distribution
@@ -89,13 +89,13 @@
           .tab-pane#transfer-credits
             %p Transfer Credits Between Teachers
             = form_for OtuCode.new, :url => school_admins_transfer_bucks_path do |f|
-              .span.form-input-control
+              %span.form-input-control
                 = label_tag 'Credits'
                 = text_field_tag :transfer_points, nil, :class => "input-mini credits"
-              .span.form-input-control
+              %span.form-input-control
                 = label_tag :from_teacher
                 = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
-              .span.form-input-control
+              %span.form-input-control
                 = label_tag :to_teacher
                 = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
               = f.submit 'Send These Credits', class: 'btn awesome-button'
