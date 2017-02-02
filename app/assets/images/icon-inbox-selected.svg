@@ -1,20 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1605 -10973 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1623 -10833 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-inbox-selected_1);
+        clip-path: url(#clip-icon-inbox-selected);
       }
 
       .cls-2 {
         fill: #fff;
       }
     </style>
-    <clipPath id="clip-icon-inbox-selected_1">
-      <rect x="-1605" y="-10973" width="50" height="50"/>
+    <clipPath id="clip-icon-inbox-selected">
+      <rect x="-1623" y="-10833" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-inbox-selected_1" data-name="icon-inbox-selected – 1" class="cls-1">
-    <g id="Symbol_45_13" data-name="Symbol 45 – 13" transform="translate(-1596 -10963.011)">
+  <g id="icon-inbox-selected" class="cls-1">
+    <g id="Symbol_45_15" data-name="Symbol 45 – 15" transform="translate(-1629 -10838.011)">
       <path id="Union_9" data-name="Union 9" class="cls-2" d="M1624.351,1623.01H1605.5l5.9-5.9,2.9,2.9.669.745,3.536-3.536,5.848,5.8Zm.65-.7,0,0-5.793-5.8,5.8-5.8v11.6Zm-20-.214v-11.39l5.7,5.7L1605,1622.1Zm10-2.8h0l-9.285-9.285h18.572Z" transform="translate(-1599 -1601)"/>
     </g>
   </g>

@@ -1,19 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1241 -11034 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1385 -10863 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-locker_1);
+        clip-path: url(#clip-icon-locker);
       }
 
       .cls-2 {
         fill: #fff;
       }
     </style>
-    <clipPath id="clip-icon-locker_1">
-      <rect x="-1241" y="-11034" width="50" height="50"/>
+    <clipPath id="clip-icon-locker">
+      <rect x="-1385" y="-10863" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-locker_1" data-name="icon-locker – 1" class="cls-1">
-    <path id="Union_17" data-name="Union 17" class="cls-2" d="M1241,1691v-20h12v20Zm11-1v-18h-10v18Zm-7-1v-1h4v1Zm0-2v-1h4v1Zm-2-4v-3h2v3Zm2-7v-1h4v1Zm0-2v-1h4v1Z" transform="translate(-2463 -12690)"/>
+  <g id="icon-locker" class="cls-1">
+    <path id="Subtraction_17" data-name="Subtraction 17" class="cls-2" d="M1253,1630h-12v-20h12v20Zm-8-3v1h4v-1Zm0-2v1h4v-1Zm-2-6v3h2v-3Zm2-5v1h4v-1Zm0-2v1h4v-1Z" transform="translate(-2622 -12473)"/>
   </g>
 </svg>

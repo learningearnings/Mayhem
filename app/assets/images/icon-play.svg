@@ -1,58 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1397 -11034 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1487 -10863 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-play_1);
+        clip-path: url(#clip-icon-play);
       }
 
-      .cls-2, .cls-6 {
-        fill: none;
-      }
-
-      .cls-2, .cls-3 {
-        stroke: #fff;
-        stroke-width: 1px;
-      }
-
-      .cls-3, .cls-4 {
+      .cls-2 {
         fill: #fff;
       }
-
-      .cls-5 {
-        stroke: none;
-      }
     </style>
-    <clipPath id="clip-icon-play_1">
-      <rect x="-1397" y="-11034" width="50" height="50"/>
+    <clipPath id="clip-icon-play">
+      <rect x="-1487" y="-10863" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-play_1" data-name="icon-play – 1" class="cls-1">
-    <g id="Symbol_22_10" data-name="Symbol 22 – 10" transform="translate(-2111.43 -11031.181)">
-      <g id="Group_3995" data-name="Group 3995" transform="translate(23 -4)">
-        <g id="i1J4Hq.tif_1_" transform="translate(432.993 259)">
-          <path id="Path_682" data-name="Path 682" class="cls-2" d="M6.693,16.922C5.289,18.145-.7,20.463.07,13.795A24.526,24.526,0,0,1,5.033,1.021,4.455,4.455,0,0,1,7.436,0H18.892a4.99,4.99,0,0,1,2.585,1.021A23.752,23.752,0,0,1,26.8,13.8c.834,6.668-6.145,4.355-7.107,3.127s-3.825-4.264-6.668-4.239S8.1,15.7,6.693,16.922Z" transform="translate(270.436 -241.819)"/>
-        </g>
-        <g id="Group_3994" data-name="Group 3994" transform="translate(3 3)">
-          <g id="Ellipse_221" data-name="Ellipse 221" class="cls-3" transform="translate(719 20)">
-            <circle class="cls-5" cx="1" cy="1" r="1"/>
-            <circle class="cls-6" cx="1" cy="1" r="0.5"/>
-          </g>
-          <g id="Ellipse_222" data-name="Ellipse 222" class="cls-3" transform="translate(719 24)">
-            <circle class="cls-5" cx="1" cy="1" r="1"/>
-            <circle class="cls-6" cx="1" cy="1" r="0.5"/>
-          </g>
-          <g id="Ellipse_223" data-name="Ellipse 223" class="cls-3" transform="translate(721 22)">
-            <circle class="cls-5" cx="1" cy="1" r="1"/>
-            <circle class="cls-6" cx="1" cy="1" r="0.5"/>
-          </g>
-          <g id="Ellipse_224" data-name="Ellipse 224" class="cls-3" transform="translate(717 22)">
-            <circle class="cls-5" cx="1" cy="1" r="1"/>
-            <circle class="cls-6" cx="1" cy="1" r="0.5"/>
-          </g>
-        </g>
-        <rect id="Rectangle_2430" data-name="Rectangle 2430" class="cls-4" width="1" height="5" transform="translate(710.43 23)"/>
-        <rect id="Rectangle_2431" data-name="Rectangle 2431" class="cls-4" width="5" height="1" transform="translate(708.43 25)"/>
-      </g>
+  <g id="icon-play" class="cls-1">
+    <g id="Symbol_40_3" data-name="Symbol 40 – 3" transform="translate(-1490 -10866.18)">
+      <path id="Subtraction_1" data-name="Subtraction 1" class="cls-2" d="M1414.594,1623.647a4.556,4.556,0,0,1-2.936-1.046c-.253-.323-2.543-3.156-4.937-3.156-1.677.016-3.006,1.392-3.976,2.4-.28.291-.535.554-.764.754a5.086,5.086,0,0,1-2.884,1.044,1.938,1.938,0,0,1-1.521-.6,3.513,3.513,0,0,1-.524-2.771,18.412,18.412,0,0,1,3.693-9.508,3.324,3.324,0,0,1,1.789-.76h8.527a3.693,3.693,0,0,1,1.925.76,17.647,17.647,0,0,1,3.963,9.513,3.321,3.321,0,0,1-.533,2.669A2.342,2.342,0,0,1,1414.594,1623.647Zm-12.382-6.338v1.489h.744v-1.489h1.489v-.744h-1.489v-1.489h-.744v1.489h-1.489v.744Zm9.356,0a.744.744,0,1,0,.744.744A.745.745,0,0,0,1411.568,1617.309Zm1.489-1.489a.745.745,0,1,0,.744.745A.746.746,0,0,0,1413.056,1615.82Zm-2.977,0a.745.745,0,1,0,.744.745A.745.745,0,0,0,1410.079,1615.82Zm1.489-1.489a.744.744,0,1,0,.744.744A.745.745,0,0,0,1411.568,1614.331Z" transform="translate(-1394 -1603.819)"/>
     </g>
   </g>
 </svg>

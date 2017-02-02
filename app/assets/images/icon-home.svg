@@ -1,21 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1189 -11034 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1351 -10863 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-home_1);
+        clip-path: url(#clip-icon-home);
       }
 
       .cls-2 {
-        fill: none;
-        stroke: #fff;
-        stroke-width: 1px;
+        fill: #fff;
       }
     </style>
-    <clipPath id="clip-icon-home_1">
-      <rect x="-1189" y="-11034" width="50" height="50"/>
+    <clipPath id="clip-icon-home">
+      <rect x="-1351" y="-10863" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-home_1" data-name="icon-home – 1" class="cls-1">
-    <path id="culture" class="cls-2" d="M20.537,8.794l3.7,3,1.514-2L12.093-2.106-1.253,9.794l1.909,2,3-3V20.656H9.983V13.794h4.154v6.862h6.4V8.794Z" transform="translate(-1176.247 -11018.393)"/>
+  <g id="icon-home" class="cls-1">
+    <path id="culture" class="cls-2" d="M14.888,5.968,17.626,8.19l1.121-1.481L8.633-2.106-1.253,6.709.161,8.19,2.383,5.968v8.787h12.5V5.968Zm-4.741,8.785H7.128V9.672h3.019Z" transform="translate(-1349.747 -10858.894)"/>
   </g>
 </svg>

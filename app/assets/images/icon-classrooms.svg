@@ -1,51 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1449 -11034 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1521 -10863 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-classrooms_1);
-      }
-
-      .cls-2, .cls-5 {
-        fill: none;
+        clip-path: url(#clip-icon-classrooms);
       }
 
       .cls-2 {
-        stroke: #fff;
-        stroke-width: 1px;
-      }
-
-      .cls-3 {
         fill: #fff;
       }
-
-      .cls-4 {
-        stroke: none;
-      }
     </style>
-    <clipPath id="clip-icon-classrooms_1">
-      <rect x="-1449" y="-11034" width="50" height="50"/>
+    <clipPath id="clip-icon-classrooms">
+      <rect x="-1521" y="-10863" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-classrooms_1" data-name="icon-classrooms – 1" class="cls-1">
-    <g id="Symbol_51_9" data-name="Symbol 51 – 9" transform="translate(-1440 -11025)">
-      <g id="Rectangle_2455" data-name="Rectangle 2455" class="cls-2" transform="translate(12 4)">
-        <rect class="cls-4" width="6" height="23"/>
-        <rect class="cls-5" x="0.5" y="0.5" width="5" height="22"/>
+  <g id="icon-classrooms" class="cls-1">
+    <g id="Symbol_52_5" data-name="Symbol 52 – 5" transform="translate(-1526 -10868)">
+      <g id="Group_15112" data-name="Group 15112">
+        <path id="Subtraction_7" data-name="Subtraction 7" class="cls-2" d="M5.217,20H0V16.522H5.218V20Zm0-4.347H0V4.347H5.218v11.3Zm0-12.174H0V0H5.218V3.477Z" transform="translate(11.217 5)"/>
+        <path id="Subtraction_8" data-name="Subtraction 8" class="cls-2" d="M4.347,16.522H0V13.913H4.348v2.608Zm0-3.478H0V3.478H4.348v9.565Zm0-10.435H0V0H4.348V2.608Z" transform="translate(6 8.478)"/>
+        <path id="Subtraction_9" data-name="Subtraction 9" class="cls-2" d="M2.121,17.791h0L1.8,15.2l4.315-.529.318,2.589ZM1.7,14.339h0L.421,3.961l4.315-.53L6.011,13.81ZM.316,3.1h0L0,.53,4.315,0l.315,2.568Z" transform="translate(16.435 7.168)"/>
       </g>
-      <rect id="Rectangle_2456" data-name="Rectangle 2456" class="cls-3" width="6" height="1" transform="translate(12 8)"/>
-      <g id="Rectangle_2457" data-name="Rectangle 2457" class="cls-2" transform="translate(6 8)">
-        <rect class="cls-4" width="5" height="19"/>
-        <rect class="cls-5" x="0.5" y="0.5" width="4" height="18"/>
-      </g>
-      <rect id="Rectangle_2458" data-name="Rectangle 2458" class="cls-3" width="5" height="1" transform="translate(6 11)"/>
-      <rect id="Rectangle_2459" data-name="Rectangle 2459" class="cls-3" width="5" height="1" transform="translate(6 23)"/>
-      <g id="Rectangle_2460" data-name="Rectangle 2460" class="cls-2" transform="translate(18 7.385) rotate(-7)">
-        <rect class="cls-4" width="5" height="20"/>
-        <rect class="cls-5" x="0.5" y="0.5" width="4" height="19"/>
-      </g>
-      <rect id="Rectangle_2461" data-name="Rectangle 2461" class="cls-3" width="5" height="1" transform="translate(18.339 10.353) rotate(-7)"/>
-      <rect id="Rectangle_2462" data-name="Rectangle 2462" class="cls-3" width="5" height="1" transform="translate(19.95 23.266) rotate(-7)"/>
-      <rect id="Rectangle_2463" data-name="Rectangle 2463" class="cls-3" width="6" height="1" transform="translate(12 22)"/>
     </g>
   </g>
 </svg>

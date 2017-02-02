@@ -1,39 +1,43 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1345 -11034 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1453 -10863 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-shop_1);
-      }
-
-      .cls-2, .cls-4 {
-        fill: none;
+        clip-path: url(#clip-icon-shop);
       }
 
       .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-3 {
         stroke: #fff;
         stroke-width: 1px;
       }
 
-      .cls-3 {
+      .cls-3, .cls-5 {
+        fill: none;
+      }
+
+      .cls-4 {
         stroke: none;
       }
     </style>
-    <clipPath id="clip-icon-shop_1">
-      <rect x="-1345" y="-11034" width="50" height="50"/>
+    <clipPath id="clip-icon-shop">
+      <rect x="-1453" y="-10863" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-shop_1" data-name="icon-shop – 1" class="cls-1">
-    <g id="Symbol_15_10" data-name="Symbol 15 – 10" transform="translate(-2122.689 -11033.014)">
-      <g id="Group_3992" data-name="Group 3992">
-        <path id="Path_679" data-name="Path 679" class="cls-2" d="M-65.837-576.865l17.313.823-.366,8.924-16.226.45Z" transform="translate(862 595)"/>
-        <path id="Path_680" data-name="Path 680" class="cls-2" d="M-48.28-563.958H-64.9L-66.156-580.7l-5.155-1.282" transform="translate(862 595)"/>
-        <g id="Ellipse_219" data-name="Ellipse 219" class="cls-2" transform="translate(796 32)">
-          <circle class="cls-3" cx="2" cy="2" r="2"/>
-          <circle class="cls-4" cx="2" cy="2" r="1.5"/>
+  <g id="icon-shop" class="cls-1">
+    <g id="Symbol_39_8" data-name="Symbol 39 – 8" transform="translate(-1458 -10867.015)">
+      <g id="Group_15122" data-name="Group 15122">
+        <path id="Path_679" data-name="Path 679" class="cls-2" d="M-65.837-576.865l14.853.706L-51.3-568.5l-13.921.386Z" transform="translate(75.534 585.273)"/>
+        <path id="Path_680" data-name="Path 680" class="cls-3" d="M-51.551-566.518H-65.813l-1.075-14.367-4.423-1.1" transform="translate(76.311 586)"/>
+        <g id="Ellipse_219" data-name="Ellipse 219" class="cls-3" transform="translate(9.557 20.303)">
+          <circle class="cls-4" cx="1.716" cy="1.716" r="1.716"/>
+          <circle class="cls-5" cx="1.716" cy="1.716" r="1.216"/>
         </g>
-        <g id="Ellipse_220" data-name="Ellipse 220" class="cls-2" transform="translate(810 32)">
-          <circle class="cls-3" cx="2" cy="2" r="2"/>
-          <circle class="cls-4" cx="2" cy="2" r="1.5"/>
+        <g id="Ellipse_220" data-name="Ellipse 220" class="cls-3" transform="translate(21.568 20.303)">
+          <circle class="cls-4" cx="1.716" cy="1.716" r="1.716"/>
+          <circle class="cls-5" cx="1.716" cy="1.716" r="1.216"/>
         </g>
       </g>
     </g>

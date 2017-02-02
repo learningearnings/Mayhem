@@ -1,21 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1293 -11034 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1419 -10863 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-reports_1);
+        clip-path: url(#clip-icon-reports);
       }
 
       .cls-2 {
         fill: #fff;
       }
     </style>
-    <clipPath id="clip-icon-reports_1">
-      <rect x="-1293" y="-11034" width="50" height="50"/>
+    <clipPath id="clip-icon-reports">
+      <rect x="-1419" y="-10863" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-reports_1" data-name="icon-reports – 1" class="cls-1">
-    <g id="Symbol_16_10" data-name="Symbol 16 – 10" transform="translate(-2171 -11033.001)">
-      <path id="path-7" class="cls-2" d="M15,23H12V3h4V23Zm0-1V4H13V22ZM9,23H6V9h4V23Zm0-1V10H7V22ZM3,23H0V15H4v8Zm0-1V16H1v6Z" transform="translate(895 11)"/>
+  <g id="icon-reports" class="cls-1">
+    <g id="Symbol_38_3" data-name="Symbol 38 – 3" transform="translate(-1425 -10868.001)">
+      <path id="path-7" class="cls-2" d="M12,23V3h4V23ZM6,23V9h4V23ZM0,23V15H4v8Z" transform="translate(8 2)"/>
     </g>
   </g>
 </svg>

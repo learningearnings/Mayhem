@@ -1,21 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1605 -11034 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1623 -10863 20 20">
   <defs>
     <style>
       .cls-1 {
-        clip-path: url(#clip-icon-inbox_1);
+        clip-path: url(#clip-icon-inbox);
       }
 
       .cls-2 {
         fill: #fff;
       }
     </style>
-    <clipPath id="clip-icon-inbox_1">
-      <rect x="-1605" y="-11034" width="50" height="50"/>
+    <clipPath id="clip-icon-inbox">
+      <rect x="-1623" y="-10863" width="20" height="20"/>
     </clipPath>
   </defs>
-  <g id="icon-inbox_1" data-name="icon-inbox – 1" class="cls-1">
-    <g id="Symbol_42_4" data-name="Symbol 42 – 4" transform="translate(-1595 -11022.99)">
-      <path id="Union_9" data-name="Union 9" class="cls-2" d="M1624,1623.01h-19v-13h.7l.011-.011.011.011h18.571l.011-.011.011.011h.69v.69l.006.006-.006.006v12.3Zm-.651-1-4.847-4.8-3.536,3.536-.707-.707.038-.038-2.894-2.894-4.9,4.9Zm.651-.7v-9.6l-4.794,4.794Zm-18-.214,4.695-4.695-4.695-4.694Zm9-1.8,8.286-8.285h-16.571Z" transform="translate(-1600 -1603.01)"/>
+  <g id="icon-inbox" class="cls-1">
+    <g id="Symbol_45_15" data-name="Symbol 45 – 15" transform="translate(-1629 -10868.011)">
+      <path id="Union_9" data-name="Union 9" class="cls-2" d="M1624.351,1623.01H1605.5l5.9-5.9,2.9,2.9.669.745,3.536-3.536,5.848,5.8Zm.65-.7,0,0-5.793-5.8,5.8-5.8v11.6Zm-20-.214v-11.39l5.7,5.7L1605,1622.1Zm10-2.8h0l-9.285-9.285h18.572Z" transform="translate(-1599 -1601)"/>
     </g>
   </g>
 </svg>
