@@ -1,41 +1,42 @@
-%h3 My Credit Categories
-%p Click on a category to edit or delete it.
-
 .main-content-wrapper
-  .primary-content
-    .create-classroom.table.table-striped
-      %table
-        %thead
-          %tr
-            %th.categories-text{width: '100'} Type
-            %th.categories-text{width: '100'} Category
-            %th.categories-text{width: '100'} School wide?
-            %th.categories-text{width: '100'} Delete
-        %tbody
-          - @categories.each do |category|
+  %h1 My Credit Categories
+  %p Click on a category to edit or delete it.
+  
+  .main-content-wrapper
+    .primary-content
+      .create-classroom.table.table-striped
+        %table
+          %thead
             %tr
-              %td.type-name= category.otu_code_type.name
-              %td= link_to category.name, '#', :onclick => 'set_category_form(this.id);return false;', :id => "#{category.id}", :class => 'cat-name'
-              %td= category.school_wide? ? "✓" : "No"
-              %td
-                - if current_person.is_a?(SchoolAdmin) || !category.school_wide?
-                  = link_to "Delete", teachers_otu_code_category_path(category), method: :delete, confirm: "Are you sure you want to delete this category?"
-
-
-  .secondary-content
-    .new-category-form
-      = form_for @new_category, :url => new_teachers_otu_code_category_path do |f|
-        .categories-text= f.label :type
-        = f.select :otu_code_type_id, options_for_select(@types.map{|x| [x.name.capitalize, x.id]})
-        .categories-text= f.label :category
-        = f.text_field :name
-        - if current_person.is_a?(SchoolAdmin)
-          .categories-text= f.label "Scope"
-          = f.select :person_id, options_for_select([["Just Me", current_person.id], ["School Wide", nil]])
-        - else
-          = f.hidden_field :person_id, value: current_person.id
-        = hidden_field_tag :otu_code_category_id, nil, :id => 'hidden_category_id'
-        = f.submit 'Add', class: 'btn awesome-button'
+              %th.categories-text{width: '100'} Type
+              %th.categories-text{width: '100'} Category
+              %th.categories-text{width: '100'} School wide?
+              %th.categories-text{width: '100'} Delete
+          %tbody
+            - @categories.each do |category|
+              %tr
+                %td.type-name= category.otu_code_type.name
+                %td= link_to category.name, '#', :onclick => 'set_category_form(this.id);return false;', :id => "#{category.id}", :class => 'cat-name'
+                %td= category.school_wide? ? "✓" : "No"
+                %td
+                  - if current_person.is_a?(SchoolAdmin) || !category.school_wide?
+                    = link_to "Delete", teachers_otu_code_category_path(category), method: :delete, confirm: "Are you sure you want to delete this category?"
+  
+  
+    .secondary-content
+      .new-category-form
+        = form_for @new_category, :url => new_teachers_otu_code_category_path do |f|
+          .categories-text= f.label :type
+          = f.select :otu_code_type_id, options_for_select(@types.map{|x| [x.name.capitalize, x.id]})
+          .categories-text= f.label :category
+          = f.text_field :name
+          - if current_person.is_a?(SchoolAdmin)
+            .categories-text= f.label "Scope"
+            = f.select :person_id, options_for_select([["Just Me", current_person.id], ["School Wide", nil]])
+          - else
+            = f.hidden_field :person_id, value: current_person.id
+          = hidden_field_tag :otu_code_category_id, nil, :id => 'hidden_category_id'
+          = f.submit 'Add', class: 'btn awesome-button'
 
 :javascript
 
