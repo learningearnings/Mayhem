@@ -117,7 +117,7 @@ $(document).ready(function() {
 	});
 	$(".main-content-wrapper").click(function(){
 	      $(".secondary-user-nav").addClass("hidden");
-          return false;
+          //return false;
 	});
     $(".person-details").click(function(){
 	      $(".secondary-user-nav").toggleClass("hidden");
