@@ -259,6 +259,46 @@ a:focus, a:hover {
 .person-details {
     cursor: pointer;
 }
+
+.pull-right {
+  float: right;
+}
+.nav.nav-tabs {
+  margin-bottom: 0;
+}
+.nav.nav-tabs+.tab-content {
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+p.credits-available {
+  font-size: 21px;
+}
+p.credits-available strong {
+  font-size: 16px;
+}
+
+span.form-label-control {
+  display: inline-block;
+  margin: 0 0 20px 20px;
+}
+span.form-label-control {
+  display: block;
+  margin-left: 10px;
+}
+
+span.form-label-control input, span.form-label-control select {
+  margin-bottom: 0;
+}
+
+
+
+
 @media (max-width: 768px) {
     .login-div {
         top: 0;
