@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1657 -1610 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1657 -10833 20 20">
   <defs>
     <style>
       .cls-1 {
@@ -10,12 +10,12 @@
       }
     </style>
     <clipPath id="clip-icon-bank-selected">
-      <rect x="-1657" y="-1610" width="32" height="32"/>
+      <rect x="-1657" y="-10833" width="20" height="20"/>
     </clipPath>
   </defs>
   <g id="icon-bank-selected" class="cls-1">
-    <g id="Symbol_48_1" data-name="Symbol 48 – 1" transform="translate(-1657 -1610)">
-      <path id="culture" class="cls-2" d="M20.537,9.794h3.21l-11.654-6.9L.747,9.794H3.655V21.853H2.048v.8h20.1v-.8H20.537V9.794ZM10.086,21.853H7.674V9.794h2.412V21.853Zm6.431,0H14.105V9.794h2.412Z" transform="translate(4.253 3.106)"/>
+    <g id="Symbol_48_31" data-name="Symbol 48 – 31" transform="translate(-1662 -10838)">
+      <path id="culture" class="cls-2" d="M17.955,8.894h2.792l-10.134-6-9.866,6H3.276V19.38h-1.4v.7H19.354v-.7h-1.4V8.894ZM8.868,19.38h-2.1V8.894h2.1V19.38Zm5.592,0h-2.1V8.894h2.1Z" transform="translate(4.253 3.106)"/>
     </g>
   </g>
 </svg>

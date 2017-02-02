@@ -283,55 +283,63 @@
        background-image: url(asset_path('icon-help.svg', image));
        background-repeat: no-repeat;
        padding-left: 60px;
-       background-position: 10px 0;       
+       background-size: 14px;
+       background-position: 20px center;       
     }
     .help:hover, .help.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-help.svg', image));
         background-repeat: no-repeat;  
-        background-position: 10px 0;            
+       background-size: 14px;
+       background-position: 20px center;       
      }
      
      .settings {
        background-image: url(asset_path('icon-settings.svg', image));
        background-repeat: no-repeat;
        padding-left: 60px;
-       background-position: 10px 0;       
+       background-size: 14px;
+       background-position: 20px center;       
       }
       
     .settings:hover, .settings.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-settings.svg', image));
         background-repeat: no-repeat;  
-        background-position: 10px 0;            
+       background-size: 14px;
+       background-position: 20px center;       
      }
     
      .logout {
        background-image: url(asset_path('icon-logout.svg', image));
        background-repeat: no-repeat;
        padding-left: 60px;
-       background-position: 10px 0;       
+       background-size: 14px;
+       background-position: 20px center;       
       }
       
     .logout:hover, .logout.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-logout.svg', image));
         background-repeat: no-repeat;
-        background-position: 10px 0;              
+       background-size: 14px;
+       background-position: 20px center;       
      }
      
      .eprofile {
        background-image: url(asset_path('icon-profile.svg', image));
        background-repeat: no-repeat;
        padding-left: 60px;
-       background-position: 10px 0;       
+       background-size: 14px;
+       background-position: 20px center;       
       }
       
     .eprofile:hover, .eprofile.active {
         background-color: #07668F;
         background-image: url(asset_path('icon-profile.svg', image));
         background-repeat: no-repeat; 
-        background-position: 10px 0;             
+       background-size: 14px;
+       background-position: 20px center;       
      }
      ul {
        background-color: #065272;
