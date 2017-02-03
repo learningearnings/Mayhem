@@ -39,183 +39,128 @@
     background: #07668F;
   } 
 
-  .home {
+
+  .primary-icon {
      color: white;
-     background-image: url(asset_path('icon-home.svg', image));
      background-repeat: no-repeat;
      background-position: 10px 0;
-     padding-left: 60px;
-    }
-    
+     padding-left: 60px;    
+  }
+  .primary-icon-selected {
+     color: white;
+     background-repeat: no-repeat;
+     background-position: 10px 0;
+     padding-left: 60px;   
+     background-color: #07668F;      
+  }  
+  
+  .home {
+    @extend .primary-icon;
+    background-image: url(asset_path('icon-home.svg', image)); 
+  }
   .home:hover, .home.active {
-      color: white;
-      background-color: #07668F;
-      background-image: url(asset_path('icon-home-selected.svg', image));
-      background-repeat: no-repeat;      
-     background-position: 10px 0;      
-   }
+     @extend .primary-icon-selected;    
+     background-image: url(asset_path('icon-home-selected.svg', image));    
+  }
 
   .locker {
-     color: white;
-     background-image: url(asset_path('icon-locker.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('icon-locker.svg', image)); 
     }
     
   .locker:hover, .locker.active {
-      color: white;
-      background-color: #07668F;
-      background-image: url(asset_path('icon-locker-selected.svg', image));
-      background-repeat: no-repeat;   
-      background-position: 10px 0;         
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('icon-locker-selected.svg', image));         
    }
 
   .inbox {
-     color: white;
-     background-image: url(asset_path('common/icon-inbox.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-inbox.svg', image));   
     }
     
   .inbox:hover, .inbox.active {
-      color: white;
-      background-color: #07668F;
+      @extend .primary-icon-selected;
       background-image: url(asset_path('common/icon-inbox-selected.svg', image));
-      background-repeat: no-repeat;   
-      background-position: 10px 0;         
    }
 
   .inbox_with_count {
-     color: white;
+     @extend .primary-icon;
      background-image: url(asset_path('common/icon-inbox.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
     }
     
   .inbox_with_count:hover, .inbox_with_count.active {
-      color: white;
-      background-color: #07668F;
+      @extend .primary-icon-selected;
       background-image: url(asset_path('common/icon-inbox-selected.svg', image));
-      background-repeat: no-repeat;  
-      background-position: 10px 0;          
    }
 
   .manage_students {
-     color: white;
-     background-image: url(asset_path('common/icon-students.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-students.svg', image));  
     }
     
   .manage_students:hover, .manage_students.active {
-      color: white;
-      background-color: #07668F;
+      @extend .primary-icon-selected;
       background-image: url(asset_path('common/icon-students-selected.svg', image));
-      background-repeat: no-repeat;  
-      background-position: 10px 0;          
    }
 
   .manage_teachers {
-     color: white;
-     background-image: url(asset_path('common/icon-teachers.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
-    }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-teachers.svg', image)); 
+   }
     
   .manage_teachers:hover, .manage_teachers.active {
-      color: white;
-      background-color: #07668F;
+      @extend .primary-icon-selected;
       background-image: url(asset_path('common/icon-teachers-selected.svg', image));
-      background-repeat: no-repeat; 
-      background-position: 10px 0;           
    }
 
-
-
   .bank {
-     color: white;
-     background-image: url(asset_path('common/icon-bank.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-bank.svg', image));  
     }
     
   .bank:hover, .bank.active {
-      color: white;
-      background-color: #07668F;
-      background-image: url(asset_path('common/icon-bank-selected.svg', image));
-      background-repeat: no-repeat;  
-      background-position: 10px 0;          
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-bank-selected.svg', image));         
    }
 
-
   .play {
-     color: white;
-     background-image: url(asset_path('common/icon-play.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-play.svg', image));     
     }
     
   .play:hover, .play.active {
-      color: white;
-      background-color: #07668F;
+      @extend .primary-icon-selected;
       background-image: url(asset_path('common/icon-play-selected.svg', image));
-      background-repeat: no-repeat;      
-      background-position: 10px 0;      
    }
    
   .shop {
-     color: white;
-     background-image: url(asset_path('common/icon-shop.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-shop.svg', image));   
     }
     
   .shop:hover, .shop.active {
-      color: white;
-      background-color: #07668F;
-      background-image: url(asset_path('common/icon-shop-selected.svg', image));
-      background-repeat: no-repeat; 
-      background-position: 10px 0;           
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-shop-selected.svg', image));         
    }
 
   .reports {
-     color: white;
-     background-image: url(asset_path('common/icon-reports.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-reports.svg', image));     
     }
     
   .reports:hover, .reports.active {
-      color: white;
-      background-color: #07668F;
-      background-image: url(asset_path('common/icon-reports-selected.svg', image));
-      background-repeat: no-repeat; 
-      background-position: 10px 0;             
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-reports-selected.svg', image));            
    }
 
   .classrooms {
-     color: white;
-     background-image: url(asset_path('common/icon-classrooms.svg', image));
-     background-repeat: no-repeat;
-     padding-left: 60px;
-     background-position: 10px 0;     
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-classrooms.svg', image));     
     }
     
   .classrooms:hover, .classrooms.active {
-      color: white;
-      background-color: #07668F;
-      background-image: url(asset_path('common/icon-classrooms-selected.svg', image));
-      background-repeat: no-repeat;  
-      background-position: 10px 0;          
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-classrooms-selected.svg', image));      
    }
 
 }
@@ -279,67 +224,50 @@
     font-family: "Open Sans";
     font-weight: 400;
     
-    .help {
-       background-image: url(asset_path('icon-help.svg', image));
+    
+    .sec-nav {
        background-repeat: no-repeat;
        padding-left: 60px;
        background-size: 14px;
        background-position: 20px center;       
     }
+    .sec-nav-sel {
+       background-color: #07668F;  
+       background-repeat: no-repeat;  
+       background-size: 14px;
+       background-position: 20px center;             
+    }
+    .help {
+       @extend .sec-nav;
+       background-image: url(asset_path('icon-help.svg', image));
+    }
     .help:hover, .help.active {
-        background-color: #07668F;
-        background-image: url(asset_path('icon-help.svg', image));
-        background-repeat: no-repeat;  
-       background-size: 14px;
-       background-position: 20px center;       
-     }
-     
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-help.svg', image));      
+     }   
      .settings {
-       background-image: url(asset_path('icon-settings.svg', image));
-       background-repeat: no-repeat;
-       padding-left: 60px;
-       background-size: 14px;
-       background-position: 20px center;       
-      }
-      
+       @extend .sec-nav;       
+       background-image: url(asset_path('icon-settings.svg', image));  
+      } 
     .settings:hover, .settings.active {
-        background-color: #07668F;
-        background-image: url(asset_path('icon-settings.svg', image));
-        background-repeat: no-repeat;  
-       background-size: 14px;
-       background-position: 20px center;       
-     }
-    
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-settings.svg', image));      
+     } 
      .logout {
-       background-image: url(asset_path('icon-logout.svg', image));
-       background-repeat: no-repeat;
-       padding-left: 60px;
-       background-size: 14px;
-       background-position: 20px center;       
+       @extend .sec-nav;       
+       background-image: url(asset_path('icon-logout.svg', image));    
       }
-      
-    .logout:hover, .logout.active {
-        background-color: #07668F;
-        background-image: url(asset_path('icon-logout.svg', image));
-        background-repeat: no-repeat;
-       background-size: 14px;
-       background-position: 20px center;       
-     }
-     
+     .logout:hover, .logout.active {
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-logout.svg', image));     
+     }  
      .eprofile {
-       background-image: url(asset_path('icon-profile.svg', image));
-       background-repeat: no-repeat;
-       padding-left: 60px;
-       background-size: 14px;
-       background-position: 20px center;       
-      }
-      
-    .eprofile:hover, .eprofile.active {
-        background-color: #07668F;
-        background-image: url(asset_path('icon-profile.svg', image));
-        background-repeat: no-repeat; 
-       background-size: 14px;
-       background-position: 20px center;       
+       @extend .sec-nav;       
+       background-image: url(asset_path('icon-profile.svg', image));     
+      }     
+     .eprofile:hover, .eprofile.active {
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-profile.svg', image));    
      }
      ul {
        background-color: #065272;
