@@ -119,6 +119,8 @@ gem 'spree_auth_devise', :github => "learningearnings/spree_auth_devise", :ref =
 gem 'sinatra'
 gem 'spree_multi_domain', :github => 'learningearnings/spree-multi-domain'
 gem 'valid_email'
+gem 'net-http-persistent'
+gem 'rest-client'
 # Hope we can use master again soon, they need to accept PR 25 o
 group :assets do
   gem 'chosen-rails'
