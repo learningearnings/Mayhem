@@ -27,6 +27,7 @@ gem 'jbuilder'
 #gem 'mysql2'
 #gem 'taps'
 #gem 'sqlite3'
+gem 'faraday'
 
 gem 'modernizr-rails', '~> 2.6.2.3'
 gem "webshims-rails", "~> 1.11.1" # if we move to rails 4, please read https://github.com/whatcould/webshims-rails for changes.
