@@ -634,6 +634,7 @@ DEPENDENCIES
   draper (= 0.18.0)
   factory_girl_rails
   faker
+  faraday
   fog
   googlecharts
   guard (~> 1.2.3)

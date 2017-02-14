@@ -165,7 +165,7 @@ class PowerschoolImporter
       le_student.grade  = student.school_enrollment["grade_level"]
       le_student.status = "active"
       le_student.user.api_user = false
-      if le_student.recovery_password.nil?
+      if le_student.user.username.blank?
         username = generate_username_for_district(@district.guid, student.first_name, student.last_name)
         password = UUIDTools::UUID.random_create.to_s[0..3]
         le_student.user.username = username
