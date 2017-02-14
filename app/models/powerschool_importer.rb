@@ -106,8 +106,8 @@ class PowerschoolImporter
   def sync_teachers(school_id, le_school_id)
     staff = client.get_staff(school_id)
     staff.each do | teacher |
- 
-      le_teacher = Person.where(district_guid: @district.guid, sti_id: teacher.id).first_or_initialize
+      puts teacher.inspect
+      le_teacher = Teacher.where(district_guid: @district.guid, sti_id: teacher.id).first_or_initialize
       le_teacher.user = Spree::User.new unless le_teacher.user
       le_teacher.user.confirmed_at = Time.now
       le_teacher.status = "active"
@@ -115,10 +115,8 @@ class PowerschoolImporter
       le_teacher.grade = 5
       le_teacher.first_name = teacher.first_name
       le_teacher.last_name = teacher.last_name  
-      #todo -- ensure uniqueness of email
-      email = "#{@email_id}.#{teacher.emails["work_email"]}"
-      @email_id = @email_id + 1
       le_teacher.user.api_user = true
+      email = teacher.emails["work_email"]
       le_teacher.user.email = email 
       le_teacher.user.username = email     
       if !le_teacher.save(validate: false)
@@ -129,7 +127,7 @@ class PowerschoolImporter
       end      
       le_teacher.reload      
 
-      if !le_teacher.user.save
+      if !le_teacher.user.save(validate: false)
         @logger.puts "Error saving teacher user: "
         @logger.puts "LE Teacher: #{le_teacher.inspect}" 
         @logger.puts "PS Teacher User: #{le_teacher.user.inspect}"                   
@@ -174,7 +172,7 @@ class PowerschoolImporter
         le_student.user.password = password
         le_student.user.password_confirmation = password 
       end 
-      if !le_student.save(validate: false)
+      if !le_student.save
         @logger.puts "Error saving student: "
         @logger.puts "PS Student: #{student.inspect}"  
         @logger.puts "LE Student: #{le_student.inspect}"          
@@ -200,6 +198,7 @@ class PowerschoolImporter
       
       if !psl.save(validate: false)
         @logger.puts "Error:"
+        @logger.puts "Student: #{le_student.inspect}"
         @logger.puts "PSL: #{psl.inspect}" 
         exit
       end 
@@ -234,19 +233,23 @@ class PowerschoolImporter
       if teacher
         psl = PersonSchoolLink.where(school_id: le_school_id, person_id: teacher.id).first
         if !psl
-          @logger.puts "No Person School Link for Teacher #{teacher.inspect}"
-          next
+          psl = PersonSchoolLink.new
+          psl.school_id = le_school_id
+          psl.person_id = teacher.id
+          psl.status = "active"
+          psl.save(validate: false)
+          psl.reload
         end
         pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: cr.id).first
         if !pscl
           pscl = PersonSchoolClassroomLink.new
-          pscl.person_school_classroom_link_id = psl.id
+          pscl.person_school_link_id = psl.id
           pscl.classroom_id = cr.id
         end
         pscl.status = "active"
         if !pscl.save(validate: false)
           @logger.puts "Error saving teacher school classroom link #{pscl.inspect}"
-          next
+          exit
         end
       else
         @logger.puts "Section: #{section.inspect}"
@@ -263,8 +266,12 @@ class PowerschoolImporter
       if student
         psl = PersonSchoolLink.where(school_id: le_school_id, person_id: student.id).first
         if !psl
-          @logger.puts "Could not find PSL for student #{student.inspect} "
-          next
+          psl = PersonSchoolLink.new
+          psl.school_id = le_school_id
+          psl.person_id = student.id
+          psl.status = "active"
+          psl.save(validate: false)
+          psl.reload
         end
         cr = Classroom.where(district_guid: @district.guid, school_id: le_school_id, sti_id: enrollment[:class_id]).first
         if !cr
@@ -275,13 +282,13 @@ class PowerschoolImporter
         pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: cr.id).first
         if !pscl
           pscl = PersonSchoolClassroomLink.new
-          pscl.person_school_classroom_link_id = psl.id
+          pscl.person_school_link_id = psl.id
           pscl.classroom_id = cr.id
         end
         pscl.status = "active"
         if !pscl.save(validate: false)
           @logger.puts "Error saving student school classroom link #{pscl.inspect}"
-          next
+          exit
         end
       else
         @logger.puts "Enrollment: #{enrollment.inspect}"        
