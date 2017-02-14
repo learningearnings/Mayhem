@@ -238,14 +238,7 @@ class PowerschoolImporter
       teacher = Teacher.where(district_guid: @district.guid, sti_id: section[:staff_id]).first
       if teacher
         psl = PersonSchoolLink.where(school_id: le_school_id, person_id: teacher.id).first
-        if !psl
-          psl = PersonSchoolLink.new
-          psl.school_id = le_school_id
-          psl.person_id = teacher.id
-          psl.status = "active"
-          psl.save(validate: false)
-          psl.reload
-        end
+        next if !psl
         pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: cr.id).first
         if !pscl
           pscl = PersonSchoolClassroomLink.new
@@ -271,14 +264,7 @@ class PowerschoolImporter
       student = Student.where(district_guid: @district.guid, sti_id: enrollment[:user_id]).first
       if student
         psl = PersonSchoolLink.where(school_id: le_school_id, person_id: student.id).first
-        if !psl
-          psl = PersonSchoolLink.new
-          psl.school_id = le_school_id
-          psl.person_id = student.id
-          psl.status = "active"
-          psl.save(validate: false)
-          psl.reload
-        end
+        next if !psl
         cr = Classroom.where(district_guid: @district.guid, school_id: le_school_id, sti_id: enrollment[:class_id]).first
         if !cr
           @logger.puts "Enrollment: #{enrollment.inspect}"
