@@ -156,7 +156,7 @@ class PowerschoolImporter
     students.each do | student |
       
       le_student = Student.where(district_guid: @district.guid, sti_id: student.id).first_or_initialize
-      le_student.user = Spree::User.new unless le_student.user      
+      le_student.user = Spree::User.new unless le_student.user
       le_student.user.confirmed_at = Time.now
       #todo
       le_student.gender = "M"
@@ -164,6 +164,14 @@ class PowerschoolImporter
       le_student.last_name = student.last_name
       le_student.grade  = student.school_enrollment["grade_level"]
       le_student.status = "active"
+      le_student.user.api_user = false
+      if le_student.recovery_password.nil?
+        username = generate_username_for_district(@district.guid, student.first_name, student.last_name)
+        password = UUIDTools::UUID.random_create.to_s[0..3]
+        le_student.user.username = username
+        le_student.user.password = password
+        le_student.user.password_confirmation = password 
+      end 
       if !le_student.save
         @logger.puts "Error saving student: "
         @logger.puts "PS Student: #{student.inspect}"  
@@ -171,17 +179,12 @@ class PowerschoolImporter
         exit
       end         
       le_student.reload
-      le_student.user = Spree::User.new unless le_student.user
       if le_student.user.username.blank?
         username = generate_username_for_district(@district.guid, student.first_name, student.last_name)
         password = UUIDTools::UUID.random_create.to_s[0..3]
         le_student.user.username = username
         le_student.user.password = password
         le_student.user.password_confirmation = password 
-        le_student.user.save(validate: false)
-        le_student.user.api_user = false        
-        le_student.user.confirmed_at = Time.now 
-        le_student.user.person_id = le_student.id       
       end 
       if !le_student.user.save
          @logger.puts "Error:"
