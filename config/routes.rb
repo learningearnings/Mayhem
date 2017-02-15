@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
   get '/consumer/index' => "consumer#index"
+  post '/consumer/index' => "consumer#index"  
   get '/consumer/complete' => "consumer#complete"  
   post '/consumer/complete' => "consumer#complete"    
   get 'sso_signin' => "consumer#start"
