@@ -449,6 +449,7 @@ GEM
     ruby-graphviz (1.0.9)
     ruby-hmac (0.4.0)
     ruby-ole (1.2.11.7)
+    ruby-openid (2.7.0)
     ruby-progressbar (1.2.0)
     rubyzip (0.9.9)
     rvm-capistrano (1.5.0)
@@ -684,6 +685,7 @@ DEPENDENCIES
   rest-client
   roo (= 1.12.1)
   rspec-rails
+  ruby-openid
   rubyzip (= 0.9.9)
   rvm-capistrano
   sanitizing_bigdecimal

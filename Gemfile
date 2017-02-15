@@ -23,6 +23,7 @@ gem 'bootstrap_forms'
 gem 'jwt'
 gem 'rack-cors'
 gem 'jbuilder'
+gem 'ruby-openid', :require => 'openid'
 # for importing
 #gem 'mysql2'
 #gem 'taps'
