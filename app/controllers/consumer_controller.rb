@@ -28,22 +28,13 @@ class ConsumerController < ApplicationController
       redirect_to :action => 'index'
       return
     end
-    if params[:use_sreg]
-      sregreq = OpenID::SReg::Request.new
-      # required fields
-      sregreq.request_fields(['email','nickname'], true)
-      # optional fields
-      sregreq.request_fields(['dob', 'fullname'], false)
-      oidreq.add_extension(sregreq)
-      oidreq.return_to_args['did_sreg'] = 'y'
-    end
-    if params[:use_pape]
-      papereq = OpenID::PAPE::Request.new
-      papereq.add_policy_uri(OpenID::PAPE::AUTH_PHISHING_RESISTANT)
-      papereq.max_auth_age = 2*60*60
-      oidreq.add_extension(papereq)
-      oidreq.return_to_args['did_pape'] = 'y'
-    end
+    sregreq = OpenID::SReg::Request.new
+    # required fields
+    sregreq.request_fields(['email','username','role','id','school_id'], true)
+    # optional fields
+    sregreq.request_fields(['dob', 'fullname','first_name','last_name'], false)
+    oidreq.add_extension(sregreq)
+    oidreq.return_to_args['did_sreg'] = 'y'
     if params[:force_post]
       oidreq.return_to_args['force_post']='x'*2048
     end
