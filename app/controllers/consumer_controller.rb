@@ -1,6 +1,7 @@
 require 'pathname'
 
 require "openid"
+require 'openid/extensions/ax'
 require 'openid/extensions/sreg'
 require 'openid/extensions/pape'
 require 'openid/store/filesystem'
@@ -28,13 +29,13 @@ class ConsumerController < ApplicationController
       redirect_to :action => 'index'
       return
     end
-    sregreq = OpenID::SReg::Request.new
+    sregreq = OpenID::AX::Request.new
     # required fields
-    sregreq.request_fields(['email','fullname'], true)
+    sregreq.request_fields(['dcid','usertype','email','schoolID'], true)
     # optional fields
-    sregreq.request_fields(['dob', 'gender','postcode'], false)
+    #sregreq.request_fields(['dob', 'gender','postcode'], false)
     oidreq.add_extension(sregreq)
-    oidreq.return_to_args['did_sreg'] = 'y'
+    oidreq.return_to_args['did_ax'] = 'y'
     return_to = url_for :action => 'complete', :only_path => false
     #realm = url_for :action => 'index', :id => nil, :only_path => false
     realm = "https://demo.learningearnings.com/"
