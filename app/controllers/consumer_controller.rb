@@ -32,12 +32,9 @@ class ConsumerController < ApplicationController
     # required fields
     sregreq.request_fields(['email'], true)
     # optional fields
-    sregreq.request_fields(['dob', 'fullname','gender','postcode','country','language','timezone'], false)
+    #sregreq.request_fields(['dob', 'fullname','gender','postcode','country','language','timezone'], false)
     oidreq.add_extension(sregreq)
     oidreq.return_to_args['did_sreg'] = 'y'
-    if params[:force_post]
-      oidreq.return_to_args['force_post']='x'*2048
-    end
     return_to = url_for :action => 'complete', :only_path => false
     #realm = url_for :action => 'index', :id => nil, :only_path => false
     realm = "https://demo.learningearnings.com/"
@@ -81,15 +78,6 @@ class ConsumerController < ApplicationController
       ax_resp = OpenID::AX::FetchResponse.from_success_response(oidresp)
       Rails.logger.info("AKT: SSO Complete SUCCESS sreg_resp:  #{sreg_resp.inspect}")        
       Rails.logger.info("AKT: SSO Complete SUCCESS ax_resp:  #{ax_resp.inspect}")
-      sreg_message = "Simple Registration data was requested"
-      if sreg_resp.empty?
-        sreg_message << ", but none was returned."
-      else
-        sreg_message << ". The following data were sent:"
-        sreg_resp.data.each {|k,v|
-          sreg_message << "<br/><b>#{k}</b>: #{v}"
-        }
-      end
       flash[:sreg_results] = "AKT: SSO Complete SUCCESS ax_resp:  #{ax_resp.inspect}"
 
     when OpenID::Consumer::SETUP_NEEDED
