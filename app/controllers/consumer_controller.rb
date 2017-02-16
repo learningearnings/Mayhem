@@ -30,9 +30,9 @@ class ConsumerController < ApplicationController
     end
     sregreq = OpenID::SReg::Request.new
     # required fields
-    sregreq.request_fields(['email','username','role','id','school_id'], true)
+    sregreq.request_fields(['email'], true)
     # optional fields
-    sregreq.request_fields(['dob', 'fullname','first_name','last_name'], false)
+    sregreq.request_fields(['dob', 'fullname','gender','postcode','country','language','timezone'], false)
     oidreq.add_extension(sregreq)
     oidreq.return_to_args['did_sreg'] = 'y'
     if params[:force_post]
