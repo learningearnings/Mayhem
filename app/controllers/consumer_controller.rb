@@ -31,10 +31,11 @@ class ConsumerController < ApplicationController
     end
     # required fields
     ax_req = OpenID::AX::FetchRequest.new
-    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/dcid", "dcid", true))    
-    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/email", "email", true))
-    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/schoolID", "schoolID", true))
-    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/usertype", "usertype", true))
+    ax_req.add(OpenID::AX::AttrInfo.new("http://powerschool.com/entity/id", "dcid", true))    
+    ax_req.add(OpenID::AX::AttrInfo.new("http://powerschool.com/entity/email", "email", true))
+    ax_req.add(OpenID::AX::AttrInfo.new("http://powerschool.com/entity/schoolID", "schoolID", true))
+    ax_req.add(OpenID::AX::AttrInfo.new("http://powerschool.com/entity/districtName", "districtName", true))    
+    ax_req.add(OpenID::AX::AttrInfo.new("http://powerschool.com/entity/usertype", "usertype", true))
 
     oidreq.add_extension(ax_req)
 
@@ -79,12 +80,18 @@ class ConsumerController < ApplicationController
         ax_message << "<br/><b>#{k}</b>: #{v}"
       end
       Rails.logger.info("AKT: #{ax_message}")
-      flash[:success] = ax_message  # startup something      
-      #user = Spree::User.where(username: username).first
-      #person = user.person
-      #session[:current_school_id] = person.school.id 
-      #sign_in(user)
-      #redirect_to "/" and return
+      flash[:success] = ax_message  # startup something    
+      sti_id = ax_resp.data["http://powerschool.com/entity/dcid"]  
+      school_id = ax_resp.data["http://powerschool.com/entity/schoolID"]
+      district_name = ax_resp.data["http://powerschool.com/entity/districtName"] 
+      email = ax_resp.data["http://powerschool.com/entity/email"]            
+      Rails.logger.info("sti_id: #{sti_id.inspect}")
+      @district = District.where(name: district_name).first
+      @person = Person.where(district_guid: @district.guid, sti_id: sti_id)
+      @school = School.where(district_guid: @district.guid, sti_id: school_id)
+      session[:current_school_id] = @school.id 
+      sign_in(@person.user)
+      redirect_to "/" and return
       
 
     when OpenID::Consumer::SETUP_NEEDED
