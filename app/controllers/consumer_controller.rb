@@ -87,8 +87,8 @@ class ConsumerController < ApplicationController
       email = ax_resp.data["http://powerschool.com/entity/email"][0]            
       Rails.logger.info("sti_id: #{sti_id.inspect}")
       @district = District.where(name: district_name).first
-      @person = Person.where(district_guid: @district.guid, sti_id: sti_id)
-      @school = School.where(district_guid: @district.guid, sti_id: school_id)
+      @person = Person.where(district_guid: @district.guid, sti_id: sti_id).first
+      @school = School.where(district_guid: @district.guid, sti_id: school_id).first
       session[:current_school_id] = @school.id 
       sign_in(@person.user)
       redirect_to "/" and return
