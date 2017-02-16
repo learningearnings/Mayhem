@@ -52,10 +52,10 @@ class ConsumerController < ApplicationController
     Rails.logger.info("AKT: SSO Start realm: #{realm.inspect}")
     Rails.logger.info("AKT: SSO Start return_to: #{return_to.inspect}")    
     if oidreq.send_redirect?(realm, return_to, params[:immediate])
-      Rails.logger.info("AKT: SSO Start redirect to oidreq.redirect_url: #{oidreq.redirect_url.inspect}")
+      Rails.logger.info("AKT: SSO Start redirect to oidreq.redirect_url: #{oidreq.inspect}")
       redirect_to oidreq.redirect_url(realm, return_to, params[:immediate])
     else
-      Rails.logger.info("AKT: SSO Start render text : #{oidreq.html_markup.inspect}")
+      Rails.logger.info("AKT: SSO Start render text : #{oidreq.inspect}")
       render :text => oidreq.html_markup(realm, return_to, params[:immediate], {'id' => 'openid_form'})
     end
   end
