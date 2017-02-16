@@ -29,13 +29,15 @@ class ConsumerController < ApplicationController
       redirect_to :action => 'index'
       return
     end
-    sregreq = OpenID::AX::Request.new
     # required fields
-    sregreq.request_fields(['dcid','usertype','email','schoolID'], true)
-    # optional fields
-    #sregreq.request_fields(['dob', 'gender','postcode'], false)
-    oidreq.add_extension(sregreq)
-    oidreq.return_to_args['did_ax'] = 'y'
+    ax_req = OpenID::AX::FetchRequest.new
+    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/dcid", "dcid", true))    
+    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/email", "email", true))
+    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/schoolID", "schoolID", true))
+    ax_req.add(OpenID::AX::AttrInfo.new("http://openid.net/srv/ax/1.0/usertype", "usertype", true))
+
+    oidreq.add_extension(ax_req)
+
     return_to = url_for :action => 'complete', :only_path => false
     #realm = url_for :action => 'index', :id => nil, :only_path => false
     realm = "https://demo.learningearnings.com/"
@@ -58,6 +60,7 @@ class ConsumerController < ApplicationController
     parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
     Rails.logger.info("AKT: SSO Complete parameters: #{parameters.inspect}")
     oidresp = consumer.complete(parameters, current_url)
+    openid = oidresp.display_identifier
     Rails.logger.info("AKT: SSO Complete oidresp: #{oidresp.inspect}")
     case oidresp.status
     when OpenID::Consumer::FAILURE
@@ -69,11 +72,14 @@ class ConsumerController < ApplicationController
         flash[:error] = "Verification failed: #{oidresp.message}"
       end
     when OpenID::Consumer::SUCCESS
-      username = oidresp.display_identifier.split('/').last 
-      #flash[:success] = ("Verification of #{username} succeeded.")
-      Rails.logger.info("Verification of #{username} succeeded.")                 
-      #flash[:sreg_results] = username
-      Rails.logger.info("Sreg Params: #{params.inspect}")
+      ax_resp = OpenID::AX::FetchResponse.from_success_response(oidresp)
+      ax_message = "Simple Registration data was requested"
+      ax_message << ". The following data were sent:"
+      ax_resp.data.each do |k,v|
+        ax_message << "<br/><b>#{k}</b>: #{v}"
+      end
+      Rails.logger.info("AKT: #{ax_message}")
+      flash[:success] = ax_message  # startup something      
       #user = Spree::User.where(username: username).first
       #person = user.person
       #session[:current_school_id] = person.school.id 
