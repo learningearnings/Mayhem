@@ -118,7 +118,8 @@ class PowerschoolImporter
       le_teacher.user.api_user = true
       email = teacher.emails["work_email"]
       le_teacher.user.email = email 
-      le_teacher.user.username = email     
+      #todo try to get actual username; check api
+      le_teacher.user.username = teacher.teacher_username     
       if !le_teacher.save(validate: false)
         @logger.puts "Error saving teacher: "
         @logger.puts "PS Teacher: #{teacher.inspect}"  

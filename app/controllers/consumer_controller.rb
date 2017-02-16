@@ -30,9 +30,9 @@ class ConsumerController < ApplicationController
     end
     sregreq = OpenID::SReg::Request.new
     # required fields
-    sregreq.request_fields(['email'], true)
+    sregreq.request_fields(['email','fullname'], true)
     # optional fields
-    #sregreq.request_fields(['dob', 'fullname','gender','postcode','country','language','timezone'], false)
+    sregreq.request_fields(['dob', 'gender','postcode'], false)
     oidreq.add_extension(sregreq)
     oidreq.return_to_args['did_sreg'] = 'y'
     return_to = url_for :action => 'complete', :only_path => false
@@ -72,12 +72,12 @@ class ConsumerController < ApplicationController
       #flash[:success] = ("Verification of #{username} succeeded.")
       Rails.logger.info("Verification of #{username} succeeded.")                 
       #flash[:sreg_results] = username
-      
-      user = Spree::User.where(username: username).first
-      person = user.person
-      session[:current_school_id] = person.school.id 
-      sign_in(user)
-      redirect_to "/" and return
+      Rails.logger.info("Sreg Params: #{params.inspect}")
+      #user = Spree::User.where(username: username).first
+      #person = user.person
+      #session[:current_school_id] = person.school.id 
+      #sign_in(user)
+      #redirect_to "/" and return
       
 
     when OpenID::Consumer::SETUP_NEEDED
