@@ -48,7 +48,8 @@ class ConsumerController < ApplicationController
       oidreq.return_to_args['force_post']='x'*2048
     end
     return_to = url_for :action => 'complete', :only_path => false
-    realm = url_for :action => 'index', :id => nil, :only_path => false
+    #realm = url_for :action => 'index', :id => nil, :only_path => false
+    realm = "https://demo.learningearnings.com/"
     Rails.logger.info("AKT: SSO Start realm: #{realm.inspect}")
     Rails.logger.info("AKT: SSO Start return_to: #{return_to.inspect}")    
     if oidreq.send_redirect?(realm, return_to, params[:immediate])
