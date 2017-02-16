@@ -16,6 +16,7 @@ class ConsumerController < ApplicationController
   def start
     begin
       identifier = params[:openid_identifier]
+      Rails.logger.info("AKT: SSO Start params: #{params.inspect}")
       if identifier.nil?
         flash[:error] = "Enter an OpenID identifier"
         redirect_to :action => 'index'
@@ -48,22 +49,28 @@ class ConsumerController < ApplicationController
     end
     return_to = url_for :action => 'complete', :only_path => false
     realm = url_for :action => 'index', :id => nil, :only_path => false
-    
+    Rails.logger.info("AKT: SSO Start realm: #{realm.inspect}")
+    Rails.logger.info("AKT: SSO Start return_to: #{return_to.inspect}")    
     if oidreq.send_redirect?(realm, return_to, params[:immediate])
+      Rails.logger.info("AKT: SSO Start redirect to oidreq.redirect_url: #{oidreq.redirect_url.inspect}")
       redirect_to oidreq.redirect_url(realm, return_to, params[:immediate])
     else
+      Rails.logger.info("AKT: SSO Start render text : #{oidreq.html_markup.inspect}")
       render :text => oidreq.html_markup(realm, return_to, params[:immediate], {'id' => 'openid_form'})
     end
   end
 
   def complete
     # FIXME - url_for some action is not necessarily the current URL.
+    Rails.logger.info("AKT: SSO Complete params: #{params.inspect}")    
     current_url = url_for(:action => 'complete', :only_path => false)
     parameters = params.reject{|k,v|request.path_parameters[k]}
     parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
+    Rails.logger.info("AKT: SSO Complete parameters: #{parameters.inspect}")
     oidresp = consumer.complete(parameters, current_url)
     case oidresp.status
     when OpenID::Consumer::FAILURE
+      Rails.logger.info("AKT: SSO Complete Failure: #{oidresp.inspect}")
       if oidresp.display_identifier
         flash[:error] = ("Verification of #{oidresp.display_identifier}"\
                          " failed: #{oidresp.message}")
@@ -73,8 +80,11 @@ class ConsumerController < ApplicationController
     when OpenID::Consumer::SUCCESS
       flash[:success] = ("Verification of #{oidresp.display_identifier}"\
                          " succeeded.")
+      Rails.logger.info("AKT: SSO Complete SUCCESS: #{params.inspect}")                   
       if params[:did_sreg]
+
         sreg_resp = OpenID::SReg::Response.from_success_response(oidresp)
+        Rails.logger.info("AKT: SSO Complete SUCCESS did_sreg sreg_resp:  #{sreg_resp.inspect}")
         sreg_message = "Simple Registration data was requested"
         if sreg_resp.empty?
           sreg_message << ", but none was returned."
@@ -88,6 +98,7 @@ class ConsumerController < ApplicationController
       end
       if params[:did_pape]
         pape_resp = OpenID::PAPE::Response.from_success_response(oidresp)
+        Rails.logger.info("AKT: SSO Complete SUCCESS did_pape pape_resp:  #{pape_resp.inspect}")        
         pape_message = "A phishing resistant authentication method was requested"
         if pape_resp.auth_policies.member? OpenID::PAPE::AUTH_PHISHING_RESISTANT
           pape_message << ", and the server reported one."
@@ -103,8 +114,10 @@ class ConsumerController < ApplicationController
         flash[:pape_results] = pape_message
       end
     when OpenID::Consumer::SETUP_NEEDED
+      Rails.logger.info("AKT: SSO Complete FAILED setup needed")
       flash[:alert] = "Immediate request failed - Setup Needed"
     when OpenID::Consumer::CANCEL
+      Rails.logger.info("AKT: SSO Complete FAILED transaction canceled")      
       flash[:alert] = "OpenID transaction cancelled."
     else
     end
