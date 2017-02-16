@@ -81,10 +81,10 @@ class ConsumerController < ApplicationController
       end
       Rails.logger.info("AKT: #{ax_message}")
       flash[:success] = ax_message  # startup something    
-      sti_id = ax_resp.data["http://powerschool.com/entity/dcid"]  
-      school_id = ax_resp.data["http://powerschool.com/entity/schoolID"]
-      district_name = ax_resp.data["http://powerschool.com/entity/districtName"] 
-      email = ax_resp.data["http://powerschool.com/entity/email"]            
+      sti_id = ax_resp.data["http://powerschool.com/entity/dcid"][0]  
+      school_id = ax_resp.data["http://powerschool.com/entity/schoolID"][0]
+      district_name = ax_resp.data["http://powerschool.com/entity/districtName"][0] 
+      email = ax_resp.data["http://powerschool.com/entity/email"][0]            
       Rails.logger.info("sti_id: #{sti_id.inspect}")
       @district = District.where(name: district_name).first
       @person = Person.where(district_guid: @district.guid, sti_id: sti_id)
