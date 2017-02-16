@@ -89,7 +89,7 @@ class ConsumerController < ApplicationController
     else
     end
     redirect_to :action => 'index'
- 
+  end
 
   private
 
