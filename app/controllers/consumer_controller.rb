@@ -68,23 +68,10 @@ class ConsumerController < ApplicationController
         flash[:error] = "Verification failed: #{oidresp.message}"
       end
     when OpenID::Consumer::SUCCESS
-      flash[:success] = ("Verification of #{oidresp.display_identifier}"\
-                         " succeeded.")
-      Rails.logger.info("AKT: SSO Complete SUCCESS: #{params.inspect}")  
-      Rails.logger.info("AKT:Verification of #{oidresp.display_identifier}"\
-                         " succeeded.")                 
-
-      sreg_resp = OpenID::SReg::Response.from_success_response(oidresp)
-      Rails.logger.info("AKT: SSO Complete SUCCESS sreg_resp:  #{sreg_resp.inspect}") 
-      display_identifier = endpoint.display_identifier 
-      flash[:sreg_results] = "AKT: SSO Complete SUCCESS display_identifier:  #{display_identifier}"
-      begin
-        ax_resp = OpenID::AX::FetchResponse.from_success_response(oidresp)    
-        Rails.logger.info("AKT: SSO Complete SUCCESS ax_resp:  #{ax_resp.inspect}")
-        flash[:sreg_results] = "AKT: SSO Complete SUCCESS ax_resp:  #{ax_resp.inspect}"
-      rescue
-        Rails.logger.error("AX processing failed")
-      end
+      username = oidresp.display_identifier.split('/').last 
+      flash[:success] = ("Verification of #{username} succeeded.")
+      Rails.logger.info("Verification of #{username} succeeded.")                 
+      flash[:sreg_results] = username
 
     when OpenID::Consumer::SETUP_NEEDED
       Rails.logger.info("AKT: SSO Complete FAILED setup needed")
