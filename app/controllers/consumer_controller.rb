@@ -69,9 +69,16 @@ class ConsumerController < ApplicationController
       end
     when OpenID::Consumer::SUCCESS
       username = oidresp.display_identifier.split('/').last 
-      flash[:success] = ("Verification of #{username} succeeded.")
+      #flash[:success] = ("Verification of #{username} succeeded.")
       Rails.logger.info("Verification of #{username} succeeded.")                 
-      flash[:sreg_results] = username
+      #flash[:sreg_results] = username
+      
+      user = Spree::User.where(username: username).first
+      person = user.person
+      session[:current_school_id] = person.school.id 
+      sign_in(user)
+      redirect_to "/" and return
+      
 
     when OpenID::Consumer::SETUP_NEEDED
       Rails.logger.info("AKT: SSO Complete FAILED setup needed")
