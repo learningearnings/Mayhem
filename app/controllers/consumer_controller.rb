@@ -76,38 +76,21 @@ class ConsumerController < ApplicationController
       Rails.logger.info("AKT: SSO Complete SUCCESS: #{params.inspect}")  
       Rails.logger.info("AKT:Verification of #{oidresp.display_identifier}"\
                          " succeeded.")                 
-      if params[:did_pape]
-        pape_resp = OpenID::PAPE::Response.from_success_response(oidresp)
-        Rails.logger.info("AKT: SSO Complete SUCCESS did_pape pape_resp:  #{pape_resp.inspect}")        
-        pape_message = "A phishing resistant authentication method was requested"
-        if pape_resp.auth_policies.member? OpenID::PAPE::AUTH_PHISHING_RESISTANT
-          pape_message << ", and the server reported one."
-        else
-          pape_message << ", but the server did not report one."
-        end
-        if pape_resp.auth_time
-          pape_message << "<br><b>Authentication time:</b> #{pape_resp.auth_time} seconds"
-        end
-        if pape_resp.nist_auth_level
-          pape_message << "<br><b>NIST Auth Level:</b> #{pape_resp.nist_auth_level}"
-        end
-        flash[:pape_results] = pape_message
-      else
-        sreg_resp = OpenID::SReg::Response.from_success_response(oidresp)
-        Rails.logger.info("AKT: SSO Complete SUCCESS did_sreg sreg_resp:  #{sreg_resp.inspect}")
-        sreg_message = "Simple Registration data was requested"
-        if sreg_resp.empty?
-          sreg_message << ", but none was returned."
-        else
-          sreg_message << ". The following data were sent:"
-          sreg_resp.data.each {|k,v|
-            sreg_message << "<br/><b>#{k}</b>: #{v}"
-          }
-        end
-        flash[:sreg_results] = sreg_message
-      end
+
       sreg_resp = OpenID::SReg::Response.from_success_response(oidresp)
-      Rails.logger.info("AKT: SSO Complete SUCCESS did_sreg sreg_resp:  #{sreg_resp.inspect}")
+      ax_resp = OpenID::AX::FetchResponse.from_success_response(oidresp)
+      Rails.logger.info("AKT: SSO Complete SUCCESS sreg_resp:  #{sreg_resp.inspect}")        
+      Rails.logger.info("AKT: SSO Complete SUCCESS ax_resp:  #{ax_resp.inspect}")
+      sreg_message = "Simple Registration data was requested"
+      if sreg_resp.empty?
+        sreg_message << ", but none was returned."
+      else
+        sreg_message << ". The following data were sent:"
+        sreg_resp.data.each {|k,v|
+          sreg_message << "<br/><b>#{k}</b>: #{v}"
+        }
+      end
+      flash[:sreg_results] = "AKT: SSO Complete SUCCESS ax_resp:  #{ax_resp.inspect}"
 
     when OpenID::Consumer::SETUP_NEEDED
       Rails.logger.info("AKT: SSO Complete FAILED setup needed")
@@ -118,7 +101,7 @@ class ConsumerController < ApplicationController
     else
     end
     redirect_to :action => 'index'
-  end
+ 
 
   private
 
