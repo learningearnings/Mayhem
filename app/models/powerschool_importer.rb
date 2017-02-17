@@ -74,10 +74,10 @@ class PowerschoolImporter
       if !le_school
         le_school = School.new
         le_school.district_guid = @district.guid
-        le_school.sti_id = school.id
-        le_school.legacy_school_id = school.school_number
-        le_school.status = 'active'
       end
+      le_school.sti_id = school.id
+      le_school.legacy_school_id = school.school_number
+      le_school.status = 'active'      
       le_school.name = school.name
       le_school.min_grade = school.low_grade
       le_school.max_grade = school.high_grade

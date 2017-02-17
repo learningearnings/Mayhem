@@ -117,6 +117,9 @@ class ConsumerController < ApplicationController
       end              
       session[:current_school_id] = @school.id  
       Rails.logger.info "AKT: Begin sign in"
+      @current_person = @person
+      @current_user = @person.user
+      @current_school = @school
       sign_in(@person.user)
       Rails.logger.info "AKT: Sign in Success"
       redirect_to "/" and return
