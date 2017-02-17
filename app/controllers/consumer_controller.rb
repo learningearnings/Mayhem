@@ -10,7 +10,7 @@ class ConsumerController < ApplicationController
   include Mixins::Banks
   helper_method :current_school, :current_person  
   skip_around_filter :track_interaction
-  skip_before_filter :subdomain_required
+  #skip_before_filter :subdomain_required
   skip_before_filter :verify_authenticity_token  
 
   def index
@@ -134,7 +134,7 @@ class ConsumerController < ApplicationController
       sign_in(@person.user)
       Rails.logger.info "AKT: Sign in Success"
       flash.notice = t(:logged_in_succesfully)
-      redirect_to main_app.home_path
+      redirect_to "/"
       
 
     when OpenID::Consumer::SETUP_NEEDED
