@@ -103,7 +103,7 @@ class ConsumerController < ApplicationController
         Rails.logger.info "AKT: User with email #{email} not found!"
         redirect_to "/" and return        
       end      
-      @school = School.where(district_guid: @district.guid, legacy_school_id: school_id).first
+      @school = School.where(district_guid: @district.guid, sti_id: school_id).first
       if !@school
         #flash[:error] = "School with id #{school_id} not found!"
         Rails.logger.info "AKT: School with id #{school_id} not found!"
