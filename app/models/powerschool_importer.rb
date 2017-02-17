@@ -75,6 +75,7 @@ class PowerschoolImporter
         le_school = School.new
         le_school.district_guid = @district.guid
         le_school.sti_id = school.id
+        le_school.legacy_school_id = school.school_number
         le_school.status = 'active'
       end
       le_school.name = school.name

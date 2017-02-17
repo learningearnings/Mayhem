@@ -87,9 +87,25 @@ class ConsumerController < ApplicationController
       email = ax_resp.data["http://powerschool.com/entity/email"][0]            
       Rails.logger.info("sti_id: #{sti_id.inspect}")
       @district = District.where(name: district_name).first
+      if !@district
+        flash[:alert] = "District #{district_name} not found!"
+        redirect_to "/" and return
+      end
       @person = Person.where(district_guid: @district.guid, sti_id: sti_id).first
-      @school = School.where(district_guid: @district.guid, sti_id: school_id).first
-      session[:current_school_id] = @person.schools.first.id  
+      if !@person
+        flash[:alert] = "Person with email #{email} not found!"
+        redirect_to "/" and return        
+      end
+      if !@person.user
+        flash[:alert] = "User with email #{email} not found!"
+        redirect_to "/" and return        
+      end      
+      @school = School.where(district_guid: @district.guid, legacy_school_id: school_id).first
+      if !@school
+        flash[:alert] = "School with id #{school_id} not found!"
+        redirect_to "/" and return        
+      end       
+      session[:current_school_id] = @school.id  
       sign_in(@person.user)
       redirect_to "/" and return
       
