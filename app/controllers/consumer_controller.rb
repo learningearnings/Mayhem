@@ -124,25 +124,8 @@ class ConsumerController < ApplicationController
         @person.user.username = @person.user.email
         @person.user.save
       end
-      session[:last_school_id] = @school.id 
-      session[:current_school_id] = @school.id    
-      cookies[:last_logged_in_school_id] = { :value => @school.id, :expires => 1.year.from_now, :domain => ".learningearnings.com"}   
-      Rails.logger.info "AKT: Begin sign in"
-      @current_person = @person
-      @current_user = @person.user
-      @current_school = @school
-      sign_in(@person.user)
       Rails.logger.info "AKT: Sign in Success"
-      flash.notice = t(:logged_in_succesfully)
-      if @person.is_a?(Student)
-        redirect_to main_app.students_home_path
-      elsif @person.is_a?(SchoolAdmin)
-        redirect_to main_app.teachers_home_path
-      elsif @person.is_a?(Teacher)
-        redirect_to main_app.teachers_home_path
-      elsif @person.is_a?(LeAdmin)
-        redirect_to  "/admin/le_admin_dashboard"
-      end
+      redirect_to "https://demo.learningearnings.com/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}"
       return
       
 
