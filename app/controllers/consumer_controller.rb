@@ -134,7 +134,16 @@ class ConsumerController < ApplicationController
       sign_in(@person.user)
       Rails.logger.info "AKT: Sign in Success"
       flash.notice = t(:logged_in_succesfully)
-      redirect_to main_app.page_path('home') and return
+      if @person.is_a?(Student)
+        redirect_to main_app.students_home_path
+      elsif @person.is_a?(SchoolAdmin)
+        redirect_to main_app.teachers_home_path
+      elsif @person.is_a?(Teacher)
+        redirect_to main_app.teachers_home_path
+      elsif @person.is_a?(LeAdmin)
+        redirect_to  "/admin/le_admin_dashboard"
+      end
+      return
       
 
     when OpenID::Consumer::SETUP_NEEDED
