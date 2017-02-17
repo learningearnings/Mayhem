@@ -81,7 +81,7 @@ class ConsumerController < ApplicationController
       end
       Rails.logger.info("AKT: #{ax_message}")
       flash[:success] = ax_message  # startup something    
-      sti_id = ax_resp.data["http://powerschool.com/entity/dcid"][0]  
+      sti_id = ax_resp.data["http://powerschool.com/entity/id"][0]  
       school_id = ax_resp.data["http://powerschool.com/entity/schoolID"][0]
       district_name = ax_resp.data["http://powerschool.com/entity/districtName"][0] 
       email = ax_resp.data["http://powerschool.com/entity/email"][0]            
