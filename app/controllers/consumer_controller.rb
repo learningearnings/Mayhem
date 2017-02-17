@@ -7,7 +7,11 @@ require 'openid/extensions/pape'
 require 'openid/store/filesystem'
 
 class ConsumerController < ApplicationController
-  layout nil
+  include Mixins::Banks
+  helper_method :current_school, :current_person  
+  skip_around_filter :track_interaction
+  skip_before_filter :subdomain_required
+  skip_before_filter :verify_authenticity_token  
 
   def index
     render :layout => false
@@ -115,14 +119,22 @@ class ConsumerController < ApplicationController
         Rails.logger.info "AKT: User with email #{email} is not enrolled in any schools!"
         redirect_to "/" and return        
       end              
-      session[:current_school_id] = @school.id  
+      #todo remove after next sync
+      if !person.user.username
+        person.user.username = person.user.email
+        person.user.save
+      end
+      session[:last_school_id] = @school.id 
+      session[:current_school_id] = @school.id    
+      cookies[:last_logged_in_school_id] = { :value => @school.id, :expires => 1.year.from_now, :domain => ".learningearnings.com"}   
       Rails.logger.info "AKT: Begin sign in"
       @current_person = @person
       @current_user = @person.user
       @current_school = @school
       sign_in(@person.user)
       Rails.logger.info "AKT: Sign in Success"
-      redirect_to "/" and return
+      flash.notice = t(:logged_in_succesfully)
+      redirect_to main_app.home_path
       
 
     when OpenID::Consumer::SETUP_NEEDED
