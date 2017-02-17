@@ -89,7 +89,7 @@ class ConsumerController < ApplicationController
       @district = District.where(name: district_name).first
       @person = Person.where(district_guid: @district.guid, sti_id: sti_id).first
       @school = School.where(district_guid: @district.guid, sti_id: school_id).first
-      session[:current_school_id] = @person.school.id  
+      session[:current_school_id] = @person.schools.first.id  
       sign_in(@person.user)
       redirect_to "/" and return
       
