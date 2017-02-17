@@ -107,25 +107,22 @@ class ConsumerController < ApplicationController
         Rails.logger.info "AKT: User with email #{email} not found!"
         redirect_to "/" and return        
       end      
-      @school = School.where(district_guid: @district.guid, sti_id: school_id).first
+      @school = School.where(district_guid: @district.guid, legacy_school_id: school_id).first
       if !@school
-        #flash[:error] = "School with id #{school_id} not found!"
+        flash[:error] = "School with id #{school_id} not found!"
         Rails.logger.info "AKT: School with id #{school_id} not found!"
-        #redirect_to "/" and return        
-      end
-      @school = @person.schools.first unless @school
-      if !@school
-        flash[:error] = "User with email #{email} is not enrolled in any schools!"
-        Rails.logger.info "AKT: User with email #{email} is not enrolled in any schools!"
         redirect_to "/" and return        
-      end              
-      #todo remove after next sync
-      if !@person.user.username
-        @person.user.username = @person.user.email
-        @person.user.save
       end
+      session[:last_school_id] = @school.id 
+      session[:current_school_id] = @school.id    
+      Rails.logger.info "AKT: Begin sign in"
+      @current_person = @person
+      @current_user = @person.user
+      @current_school = @school
+      sign_in(@person.user)
       Rails.logger.info "AKT: Sign in Success"
-      redirect_to "https://demo.learningearnings.com/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}"
+      redirect_to "/"
+      #redirect_to "https://demo.learningearnings.com/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}"
       return
       
 
