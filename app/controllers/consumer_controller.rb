@@ -120,9 +120,9 @@ class ConsumerController < ApplicationController
         redirect_to "/" and return        
       end              
       #todo remove after next sync
-      if !person.user.username
-        person.user.username = person.user.email
-        person.user.save
+      if !@person.user.username
+        @person.user.username = @person.user.email
+        @person.user.save
       end
       session[:last_school_id] = @school.id 
       session[:current_school_id] = @school.id    
