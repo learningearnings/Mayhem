@@ -80,7 +80,7 @@ class ConsumerController < ApplicationController
         ax_message << "<br/><b>#{k}</b>: #{v}"
       end
       Rails.logger.info("AKT: #{ax_message}")
-      flash[:success] = ax_message  # startup something    
+      #flash[:success] = ax_message  # startup something    
       sti_id = ax_resp.data["http://powerschool.com/entity/id"][0]  
       school_id = ax_resp.data["http://powerschool.com/entity/schoolID"][0]
       district_name = ax_resp.data["http://powerschool.com/entity/districtName"][0] 
@@ -109,7 +109,7 @@ class ConsumerController < ApplicationController
         Rails.logger.info "AKT: School with id #{school_id} not found!"
         #redirect_to "/" and return        
       end
-      @school = person.schools.first
+      @school = @person.schools.first unless @school
       if !@school
         flash[:error] = "User with email #{email} is not enrolled in any schools!"
         Rails.logger.info "AKT: User with email #{email} is not enrolled in any schools!"
