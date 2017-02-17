@@ -88,25 +88,37 @@ class ConsumerController < ApplicationController
       Rails.logger.info("sti_id: #{sti_id.inspect}")
       @district = District.where(name: district_name).first
       if !@district
-        flash[:alert] = "District #{district_name} not found!"
+        flash[:error] = "District #{district_name} not found!"
+        
         redirect_to "/" and return
       end
       @person = Person.where(district_guid: @district.guid, sti_id: sti_id).first
       if !@person
-        flash[:alert] = "Person with email #{email} not found!"
+        flash[:error] = "Person with email #{email} not found!"
+        Rails.logger.info "AKT: Person with email #{email} not found!"
         redirect_to "/" and return        
       end
       if !@person.user
-        flash[:alert] = "User with email #{email} not found!"
+        flash[:error] = "User with email #{email} not found!"
+        Rails.logger.info "AKT: User with email #{email} not found!"
         redirect_to "/" and return        
       end      
       @school = School.where(district_guid: @district.guid, legacy_school_id: school_id).first
       if !@school
-        flash[:alert] = "School with id #{school_id} not found!"
+        #flash[:error] = "School with id #{school_id} not found!"
+        Rails.logger.info "AKT: School with id #{school_id} not found!"
+        #redirect_to "/" and return        
+      end
+      @school = person.schools.first
+      if !@school
+        flash[:error] = "User with email #{email} is not enrolled in any schools!"
+        Rails.logger.info "AKT: User with email #{email} is not enrolled in any schools!"
         redirect_to "/" and return        
-      end       
+      end              
       session[:current_school_id] = @school.id  
+      Rails.logger.info "AKT: Begin sign in"
       sign_in(@person.user)
+      Rails.logger.info "AKT: Sign in Success"
       redirect_to "/" and return
       
 
