@@ -121,8 +121,8 @@ class ConsumerController < ApplicationController
       @current_school = @school
       sign_in(@person.user)
       Rails.logger.info "AKT: Sign in Success"
-      #redirect_to "/"
-      redirect_to "https://demo.learningearnings.com/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}"
+      redirect_to "/"
+      #redirect_to "https://demo.learningearnings.com/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}"
       return
       
 
