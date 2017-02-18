@@ -60,6 +60,8 @@ class ConsumerController < ApplicationController
       end
     when OpenID::Consumer::SUCCESS
       ax_resp = OpenID::AX::FetchResponse.from_success_response(oidresp)
+      @data = ax_resp.data
+      Rails.logger.info "AX Resp Data: #{ax_resp.data.inspect}"
       sti_id = ax_resp.data["http://powerschool.com/entity/id"][0]  
       school_id = ax_resp.data["http://powerschool.com/entity/schoolID"][0]
       district_name = ax_resp.data["http://powerschool.com/entity/districtName"][0] 
@@ -67,22 +69,26 @@ class ConsumerController < ApplicationController
       Rails.logger.info("sti_id: #{sti_id.inspect}")
       @district = District.where(name: district_name).first
       if !@district
-        flash[:error] = "District #{district_name} not found!"       
-        redirect_to "/" and return
+        flash[:error] = "District #{district_name} not found!"   
+        return    
+        #redirect_to "/" and return
       end
       @person = Person.where(district_guid: @district.guid, sti_id: sti_id).first
       if !@person
         flash[:error] = "Person with email #{email} not found!"
-        redirect_to "/" and return        
+        return
+        #redirect_to "/" and return        
       end
       if !@person.user
         flash[:error] = "User with email #{email} not found!"
-        redirect_to "/" and return        
+        return
+        #redirect_to "/" and return        
       end      
       @school = School.where(district_guid: @district.guid, legacy_school_id: school_id).first
       if !@school
         flash[:error] = "School with id #{school_id} not found!"
-        redirect_to "/" and return        
+        return
+        #redirect_to "/" and return        
       end
       redirect_to "https://#{request.domain}/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}" and return
     when OpenID::Consumer::SETUP_NEEDED
@@ -91,7 +97,7 @@ class ConsumerController < ApplicationController
       flash[:alert] = "OpenID transaction cancelled."
     else
     end
-    redirect_to "/"
+    #redirect_to "/"
   end
 
   private
