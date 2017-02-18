@@ -44,6 +44,7 @@ class ConsumerController < ApplicationController
   end
 
   def complete
+    @district_guid = "ed5b2055-c7e7-3737-bcfd-e99a96bff2a4"
     current_url = url_for(:action => 'complete', :only_path => false)
     parameters = params.reject{|k,v|request.path_parameters[k]}
     parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
@@ -68,13 +69,7 @@ class ConsumerController < ApplicationController
       district_name = ax_resp.data["http://powerschool.com/entity/districtName"][0] 
       email = ax_resp.data["http://powerschool.com/entity/email"][0]            
       Rails.logger.info("sti_id: #{sti_id.inspect}")
-      @district = District.where(name: district_name).first
-      if !@district
-        flash[:error] = "District #{district_name} not found!"   
-        render :layout => false and return    
-        #redirect_to "/" and return
-      end
-      @person = Person.where(district_guid: @district.guid, sti_id: sti_id).first
+      @person = Person.where(district_guid: @district_guid, sti_id: sti_id).first
       if !@person
         flash[:error] = "Person with email #{email} not found!"
         render :layout => false and return    
@@ -85,12 +80,8 @@ class ConsumerController < ApplicationController
         render :layout => false and return    
         #redirect_to "/" and return        
       end      
-      @school = School.where(district_guid: @district.guid, legacy_school_id: school_id).first
-      if !@school
-        flash[:error] = "School with id #{school_id} not found!"
-        render :layout => false and return    
-        #redirect_to "/" and return        
-      end
+      @school = School.where(district_guid: @district_guid, legacy_school_id: school_id).first
+      @school = @person.schools.first unless @school
       redirect_to "https://#{request.domain}/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}" and return
     when OpenID::Consumer::SETUP_NEEDED
       flash[:alert] = "Immediate request failed - Setup Needed"
