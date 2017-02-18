@@ -58,6 +58,7 @@ class ConsumerController < ApplicationController
       else
         flash[:error] = "Verification failed: #{oidresp.message}"
       end
+      render :layout => false and return    
     when OpenID::Consumer::SUCCESS
       ax_resp = OpenID::AX::FetchResponse.from_success_response(oidresp)
       @data = ax_resp.data
@@ -70,24 +71,24 @@ class ConsumerController < ApplicationController
       @district = District.where(name: district_name).first
       if !@district
         flash[:error] = "District #{district_name} not found!"   
-        return    
+        render :layout => false and return    
         #redirect_to "/" and return
       end
       @person = Person.where(district_guid: @district.guid, sti_id: sti_id).first
       if !@person
         flash[:error] = "Person with email #{email} not found!"
-        return
+        render :layout => false and return    
         #redirect_to "/" and return        
       end
       if !@person.user
         flash[:error] = "User with email #{email} not found!"
-        return
+        render :layout => false and return    
         #redirect_to "/" and return        
       end      
       @school = School.where(district_guid: @district.guid, legacy_school_id: school_id).first
       if !@school
         flash[:error] = "School with id #{school_id} not found!"
-        return
+        render :layout => false and return    
         #redirect_to "/" and return        
       end
       redirect_to "https://#{request.domain}/sti/auth?districtGUID=#{@district.guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}" and return
@@ -97,7 +98,7 @@ class ConsumerController < ApplicationController
       flash[:alert] = "OpenID transaction cancelled."
     else
     end
-    #redirect_to "/"
+    render :layout => false and return    
   end
 
   private
