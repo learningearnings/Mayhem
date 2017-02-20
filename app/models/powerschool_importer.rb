@@ -64,13 +64,34 @@ class PowerschoolImporter
   
   end
   
+  def run_school(school_id)
+    @logger = File.open("sync.log","w")    
+    ps_district = get_district
+    @district = District.where(guid: ps_district[:guid]).first
+    if !@district
+      @district = District.new
+      @district.guid = ps_district[:guid]
+    end
+    @district.name = ps_district[:name]
+    @district.save
+    @district_state = (State.where(abbr: ps_district[:state]).first.id)
+    le_school = School.where(district_guid: @district.guid, sti_id: school_id)
+    sync_teachers(school_id, le_school.id)
+    sync_students(school_id, le_school.id)
+    sync_classrooms(school_id, le_school.id)
+    
+    @logger.puts "Success!"
+    @logger.close
+  
+  end
+  
 
   
   def sync_schools
     ps_schools = get_schools
     ps_schools.each do | school |
       
-      le_school = School.where(district_guid: @district.guid, sti_id: school.school_number).first
+      le_school = School.where(district_guid: @district.guid, sti_id: school.id).first
       if !le_school
         le_school = School.new
         le_school.district_guid = @district.guid
@@ -221,7 +242,7 @@ class PowerschoolImporter
   end
   
   def load_sections(sections, le_school_id)
-    puts "Sections: #{sections.inspect}"
+    @logger.puts "Loading #{sections.size} sections for school #{le_school_id}: #{sections.inspect}"
     sections.each do | section |
       cr = Classroom.where(district_guid: @district.guid, school_id: le_school_id, sti_id: section[:id]).first
       if !cr
@@ -393,14 +414,6 @@ class PowerschoolImporter
     end
 
     mutex = Mutex.newreload!
-options = {}
-options["url"]  = 'https://rw3wtqualapp493.powerschool.com'
-options["id"]  = '4b09bd84-64a6-4488-a8fb-96401925772c'
-options["secret"] = 'bf6e327e-79af-4d7f-b83e-8f7fa42240c4'
-options["retries"] = 1
-options["import_dir"] = '/srv/'
-options['start_year'] = '2016'
-ps = PowerschoolImporter.new(options).run
     client.get_staff(school_id).each do |teacher|
       mutex.synchronize do
         @teacher_ids << teacher.id
