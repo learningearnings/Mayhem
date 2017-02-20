@@ -75,7 +75,7 @@ class PowerschoolImporter
     @district.name = ps_district[:name]
     @district.save
     @district_state = (State.where(abbr: ps_district[:state]).first.id)
-    le_school = School.where(district_guid: @district.guid, sti_id: school_id)
+    le_school = School.where(district_guid: @district.guid, sti_id: school_id).first
     sync_teachers(school_id, le_school.id)
     sync_students(school_id, le_school.id)
     sync_classrooms(school_id, le_school.id)
@@ -244,19 +244,21 @@ class PowerschoolImporter
   def load_sections(sections, le_school_id)
     @logger.puts "Loading #{sections.size} sections for school #{le_school_id}: #{sections.inspect}"
     sections.each do | section |
-      cr = Classroom.where(district_guid: @district.guid, school_id: le_school_id, sti_id: section[:id]).first
+      @logger.puts "Processing #{section[:import_id]} section  #{section.inspect}"
+      cr = Classroom.where(district_guid: @district.guid, school_id: le_school_id, sti_id: section[:import_id]).first
       if !cr
         cr = Classroom.new
         cr.district_guid = @district.guid
-        cr.school_id = le_school_id
-        cr.sti_id = section[:id]
       end
+      cr.school_id = le_school_id
+      cr.sti_id = section[:import_id]
       cr.name = section[:name]            
       if !cr.save
         @logger.puts "Error saving classroom #{cr.inspect}"
         exit
       end
       cr.reload
+      @logger.puts("Updated classroom: #{cr.inspect}")
       teacher = Teacher.where(district_guid: @district.guid, sti_id: section[:staff_id]).first
       if teacher
         psl = PersonSchoolLink.where(school_id: le_school_id, person_id: teacher.id).first
