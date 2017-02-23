@@ -50,18 +50,18 @@ class PowerschoolImporter
     
     #deactivate all entities for this district
     #todo
-    #PersonSchoolClassroomLink.delete_all("created_at > '#{1.day.ago}'")
-    #Classroom.delete_all(district_guid: @district.guid) 
-    #PersonSchoolLink.delete_all("created_at > '#{1.day.ago}'")
+    PersonSchoolClassroomLink.delete_all("created_at > '#{1.day.ago}'")
+    Classroom.delete_all(district_guid: @district.guid) 
+    PersonSchoolLink.delete_all("created_at > '#{1.day.ago}'")
+    Spree::User.delete_all("created_at > '#{1.day.ago}'")    
+    Person.delete_all(district_guid: @district.guid)        
+    School.delete_all(district_guid: @district.guid)
+    #PersonSchoolClassroomLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
+    #Classroom.where(district_guid: @district.guid).update_all(status: "inactive") 
+    #PersonSchoolLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
     #Spree::User.delete_all("created_at > '#{1.day.ago}'")    
-    #Person.delete_all(district_guid: @district.guid)        
-    #School.delete_all(district_guid: @district.guid)
-    PersonSchoolClassroomLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
-    Classroom.where(district_guid: @district.guid).update_all(status: "inactive") 
-    PersonSchoolLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
-    #Spree::User.delete_all("created_at > '#{1.day.ago}'")    
-    Person.where(district_guid: @district.guid).update_all(status: "inactive")        
-    School.where(district_guid: @district.guid).update_all(status: "inactive")
+    #Person.where(district_guid: @district.guid).update_all(status: "inactive")        
+    #School.where(district_guid: @district.guid).update_all(status: "inactive")
     
     sync_schools
     
@@ -248,9 +248,9 @@ class PowerschoolImporter
   end
   
   def load_sections(sections, le_school_id)
-    @logger.puts "Loading #{sections.size} sections for school #{le_school_id}: #{sections.inspect}"
+    #@logger.puts "Loading #{sections.size} sections for school #{le_school_id}: #{sections.inspect}"
     sections.each do | section |
-      @logger.puts "Processing #{section[:import_id]} section  #{section.inspect}"
+      #@logger.puts "Processing #{section[:import_id]} section  #{section.inspect}"
       cr = Classroom.where(district_guid: @district.guid, school_id: le_school_id, sti_id: section[:import_id]).first
       if !cr
         cr = Classroom.new
@@ -264,7 +264,7 @@ class PowerschoolImporter
         exit
       end
       cr.reload
-      @logger.puts("Updated classroom: #{cr.inspect}")
+      #@logger.puts("Updated classroom: #{cr.inspect}")
       teacher = Teacher.where(district_guid: @district.guid, sti_id: section[:staff_id]).first
       if teacher
         psl = PersonSchoolLink.where(school_id: le_school_id, person_id: teacher.id).first
@@ -288,9 +288,9 @@ class PowerschoolImporter
   end
   
   def load_enrollments(enrollments, le_school_id)
-    @logger.puts "Processing enrollments for school #{le_school_id}"
+    #@logger.puts "Processing enrollments for school #{le_school_id}"
     enrollments.each do | enrollment |
-      @logger.puts "Processing enrollment #{enrollment.inspect}"
+      #@logger.puts "Processing enrollment #{enrollment.inspect}"
       student = Student.where(district_guid: @district.guid, sti_id: enrollment[:user_id]).first
       if student
         psl = PersonSchoolLink.where(school_id: le_school_id, person_id: student.id).first
@@ -386,14 +386,14 @@ class PowerschoolImporter
   def get_schools
     
     ps_schools = client.get_schools
-    @logger.puts "Importer last school: #{ps_schools.last.inspect}"
+    #@logger.puts "Importer last school: #{ps_schools.last.inspect}"
     ps_schools
   end
 
   def get_district
     response = client.get_district
-    @logger.puts "Importer get_district response2: #{response.inspect}"
-    @logger.puts "Importer get_district response2: #{response["district"]["addresses"].inspect}"    
+    #@logger.puts "Importer get_district response2: #{response.inspect}"
+    #@logger.puts "Importer get_district response2: #{response["district"]["addresses"].inspect}"    
     district = 
       {
        :guid => response["district"]["uuid"],
@@ -653,7 +653,7 @@ class PowerschoolImporter
     end
     csv.close
 
-    @logger.puts (return_file_path ? file :  "(#{Time.now}) wrote file #{file}")
+    #@logger.puts (return_file_path ? file :  "(#{Time.now}) wrote file #{file}")
   end
 
   def export_to_file(file, data, return_file_path=false)
@@ -662,7 +662,7 @@ class PowerschoolImporter
     FileUtils.mkdir_p File.dirname(file)
     File.open(file, 'w') { |f| f.write(data) }
 
-    @logger.puts(return_file_path ? file :  "(#{Time.now}) wrote file #{file}")
+    #@logger.puts(return_file_path ? file :  "(#{Time.now}) wrote file #{file}")
   end
 
   def csv_dir
@@ -671,7 +671,7 @@ class PowerschoolImporter
 
   def log(msg)
     unless @silence_log_messages
-      @logger.puts "PowerschoolConnector: #{msg}"
+      #@logger.puts "PowerschoolConnector: #{msg}"
     end
   end
 
