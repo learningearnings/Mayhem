@@ -50,12 +50,18 @@ class PowerschoolImporter
     
     #deactivate all entities for this district
     #todo
-    PersonSchoolClassroomLink.delete_all("created_at > '#{1.day.ago}'")
-    Classroom.delete_all(district_guid: @district.guid) 
-    PersonSchoolLink.delete_all("created_at > '#{1.day.ago}'")
-    Spree::User.delete_all("created_at > '#{1.day.ago}'")    
-    Person.delete_all(district_guid: @district.guid)        
-    School.delete_all(district_guid: @district.guid)
+    #PersonSchoolClassroomLink.delete_all("created_at > '#{1.day.ago}'")
+    #Classroom.delete_all(district_guid: @district.guid) 
+    #PersonSchoolLink.delete_all("created_at > '#{1.day.ago}'")
+    #Spree::User.delete_all("created_at > '#{1.day.ago}'")    
+    #Person.delete_all(district_guid: @district.guid)        
+    #School.delete_all(district_guid: @district.guid)
+    PersonSchoolClassroomLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
+    Classroom.where(district_guid: @district.guid).update_all(status: "inactive") 
+    PersonSchoolLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
+    #Spree::User.delete_all("created_at > '#{1.day.ago}'")    
+    Person.where(district_guid: @district.guid).update_all(status: "inactive")        
+    School.where(district_guid: @district.guid).update_all(status: "inactive")
     
     sync_schools
     
