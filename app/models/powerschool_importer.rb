@@ -615,9 +615,10 @@ class PowerschoolImporter
       return
     end
 
-    section_name = "#{section.course.course_name} (#{section.section_number})"
-    period = /([0-9]+)/.match(section.expression)
-    section_name += " - #{period.to_s}" if period
+    #section_name = "#{section.course.course_name} (#{section.section_number})"
+    section_name = "#{section.section_number} #{section.course.course_name}"
+    #period = /([0-9]+)/.match(section.expression)
+    #section_name += " - #{period.to_s}" if period
 
     {
       :import_id        => section.id,
