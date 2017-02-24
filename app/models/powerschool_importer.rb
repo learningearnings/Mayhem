@@ -50,18 +50,21 @@ class PowerschoolImporter
     
     #deactivate all entities for this district
     #todo
-    PersonSchoolClassroomLink.delete_all("created_at > '#{1.day.ago}'")
-    Classroom.delete_all(district_guid: @district.guid) 
-    PersonSchoolLink.delete_all("created_at > '#{1.day.ago}'")
-    Spree::User.delete_all("created_at > '#{1.day.ago}'")    
+    #PersonSchoolClassroomLink.delete_all("created_at > '#{1.day.ago}'")
+    #Classroom.delete_all(district_guid: @district.guid) 
+    #PersonSchoolLink.delete_all("created_at > '#{1.day.ago}'")
+    #Spree::User.delete_all("created_at > '#{1.day.ago}'")    
+    #Person.delete_all(district_guid: @district.guid)        
+    #School.delete_all(district_guid: @district.guid)
+    classrooms = Classroom.where(district_guid: @district.guid) 
+    PersonSchoolClassroomLink.delete_all(classroom_id: classrooms.pluck(:id))
+    Classroom.delete_all(district_guid: @district.guid)
+    schools = School.where(district_guid: @district.guid)
+    PersonSchoolLink.delete_all(school_id: schools.pluck(:id))
+    people = Person.where(district_guid: @district.guid)
+    Spree::User.delete_all(person_id: people.pluck(:id))    
     Person.delete_all(district_guid: @district.guid)        
     School.delete_all(district_guid: @district.guid)
-    #PersonSchoolClassroomLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
-    #Classroom.where(district_guid: @district.guid).update_all(status: "inactive") 
-    #PersonSchoolLink.where("created_at > '#{1.day.ago}'").update_all(status: "inactive")
-    #Spree::User.delete_all("created_at > '#{1.day.ago}'")    
-    #Person.where(district_guid: @district.guid).update_all(status: "inactive")        
-    #School.where(district_guid: @district.guid).update_all(status: "inactive")
     
     sync_schools
     
@@ -138,23 +141,23 @@ class PowerschoolImporter
       le_teacher = Teacher.where(district_guid: @district.guid, sti_id: teacher.id).first_or_initialize
       le_teacher.user = Spree::User.new unless le_teacher.user
       le_teacher.user.confirmed_at = Time.now
+
       le_teacher.status = "active"
       #le_teacher.dob = teacher.dob
       le_teacher.grade = 5
       le_teacher.first_name = teacher.first_name
       le_teacher.last_name = teacher.last_name  
-      le_teacher.user.api_user = true
-      email = teacher.emails["work_email"]
-      le_teacher.user.email = email 
-      le_teacher.user.username = teacher.teacher_username     
       if !le_teacher.save(validate: false)
         @logger.puts "Error saving teacher: "
         @logger.puts "PS Teacher: #{teacher.inspect}"  
         @logger.puts "LE Teacher: #{le_teacher.inspect}"          
         exit
       end      
-      le_teacher.reload      
-
+      le_teacher.reload     
+      le_teacher.user.api_user = true    
+      email = teacher.emails["work_email"]
+      le_teacher.user.email = email 
+      le_teacher.user.username = teacher.teacher_username     
       if !le_teacher.user.save(validate: false)
         @logger.puts "Error saving teacher user: "
         @logger.puts "LE Teacher: #{le_teacher.inspect}" 
@@ -256,6 +259,7 @@ class PowerschoolImporter
         cr = Classroom.new
         cr.district_guid = @district.guid
       end
+      cr.status = "active"
       cr.school_id = le_school_id
       cr.sti_id = section[:import_id]
       cr.name = section[:name]            
@@ -392,8 +396,8 @@ class PowerschoolImporter
 
   def get_district
     response = client.get_district
-    #@logger.puts "Importer get_district response2: #{response.inspect}"
-    #@logger.puts "Importer get_district response2: #{response["district"]["addresses"].inspect}"    
+    puts "Importer get_district response2: #{response.inspect}"
+    puts "Importer get_district response2: #{response["district"]["addresses"].inspect}"    
     district = 
       {
        :guid => response["district"]["uuid"],

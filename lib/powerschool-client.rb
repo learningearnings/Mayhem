@@ -28,6 +28,7 @@ module Powerschool
     def initialize(options)
       @connector = RestConnector::Connector.new(options["url"], options["id"], options["secret"], options["retries"])
       @connector.start_logging_responses_to options["log_responses"] unless options["log_responses"].nil?
+      puts "Connector: #{@connector}"
     end
 
     def required_fields?(req=[], fields)
