@@ -9,16 +9,20 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
   
   def sync_district
-    @district = District.where(guid: params[:district_guid].downcase ).first if params[:district_guid]
-    @district = District.where(guid: School.find(params[:school_id]).district_guid).first if params[:school_id]
-    @district.current_student_version = nil
-    @district.current_staff_version = nil
-    @district.current_roster_version = nil
-    @district.current_section_version = nil
-    @district.save
-    sti_link_token = StiLinkToken.where(district_guid: @district.guid).last
-    client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
-    StiImporterWorker.setup_sync(sti_link_token.api_url, "LearningEarnings",sti_link_token.password, @district.guid)
+    sti_link_token = StiLinkToken.where(district_guid: params[:district_guid].downcase).last      
+    if sti_link_token.username == "PowerSchool"
+      PSImporterWorker.setup_sync(district_guid: sti_link_token.district_guid)
+    else
+      @district = District.where(guid: params[:district_guid].downcase ).first if params[:district_guid]
+      @district = District.where(guid: School.find(params[:school_id]).district_guid).first if params[:school_id]
+      @district.current_student_version = nil
+      @district.current_staff_version = nil
+      @district.current_roster_version = nil
+      @district.current_section_version = nil
+      @district.save
+    
+      StiImporterWorker.setup_sync(sti_link_token.api_url, "LearningEarnings",sti_link_token.password, @district.guid)
+    end
     render :text => "Sync job submitted, check Sync Attempts for completion status"
   end
 

@@ -56,38 +56,27 @@ class PowerschoolImporter
     #Spree::User.delete_all("created_at > '#{1.day.ago}'")    
     #Person.delete_all(district_guid: @district.guid)        
     #School.delete_all(district_guid: @district.guid)
+    
+    #classrooms = Classroom.where(district_guid: @district.guid) 
+    #PersonSchoolClassroomLink.delete_all(classroom_id: classrooms.pluck(:id))
+    #Classroom.delete_all(district_guid: @district.guid)
+    #schools = School.where(district_guid: @district.guid)
+    #PersonSchoolLink.delete_all(school_id: schools.pluck(:id))
+    #people = Person.where(district_guid: @district.guid)
+    #Spree::User.delete_all(person_id: people.pluck(:id))    
+    #Person.delete_all(district_guid: @district.guid)        
+    #School.delete_all(district_guid: @district.guid)
+
     classrooms = Classroom.where(district_guid: @district.guid) 
-    PersonSchoolClassroomLink.delete_all(classroom_id: classrooms.pluck(:id))
-    Classroom.delete_all(district_guid: @district.guid)
+    PersonSchoolClassroomLink.where(classroom_id: classrooms.pluck(:id)).update_all(status: 'inactive')
+    Classroom.where(district_guid: @district.guid).update_all(status: 'inactive')
     schools = School.where(district_guid: @district.guid)
-    PersonSchoolLink.delete_all(school_id: schools.pluck(:id))
+    PersonSchoolLink.where(school_id: schools.pluck(:id)).update_all(status: 'inactive')
     people = Person.where(district_guid: @district.guid)
-    Spree::User.delete_all(person_id: people.pluck(:id))    
-    Person.delete_all(district_guid: @district.guid)        
-    School.delete_all(district_guid: @district.guid)
-    
+    #Spree::User.delete_all(person_id: people.pluck(:id))    
+    Person.where(district_guid: @district.guid).update_all(status: 'inactive')        
+    School.where(district_guid: @district.guid).update_all(status: 'inactive')
     sync_schools
-    
-    @logger.puts "Success!"
-    @logger.close
-  
-  end
-  
-  def run_school(school_id)
-    @logger = File.open("sync.log","w")    
-    ps_district = get_district
-    @district = District.where(guid: ps_district[:guid]).first
-    if !@district
-      @district = District.new
-      @district.guid = ps_district[:guid]
-    end
-    @district.name = ps_district[:name]
-    @district.save
-    @district_state = (State.where(abbr: ps_district[:state]).first.id)
-    le_school = School.where(district_guid: @district.guid, sti_id: school_id).first
-    sync_teachers(school_id, le_school.id)
-    sync_students(school_id, le_school.id)
-    sync_classrooms(school_id, le_school.id)
     
     @logger.puts "Success!"
     @logger.close
@@ -99,6 +88,7 @@ class PowerschoolImporter
   def sync_schools
     ps_schools = get_schools
     ps_schools.each do | school |
+      next unless @schools and @schools.include? school.id
       
       le_school = School.where(district_guid: @district.guid, sti_id: school.id).first
       if !le_school
