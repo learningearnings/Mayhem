@@ -5,10 +5,10 @@ class PSImporterWorker
 
     sync_attempt = SyncAttempt.create(:district_guid => district_guid, :status => "Running")
     begin
-      slt = StiLinkToken.where(district_guid: district_guid).first
-      options["url"]  = slt.api_url
-      options["id"]  = slt.link_key
-      options["secret"] = slt.password
+      #slt = StiLinkToken.where(district_guid: district_guid).first
+      options["url"]  = 'https://powerschool.hcde.org'
+      options["id"]  = '8bb3e9cc-ccd3-44c4-91b3-1d1ebaa19feb'
+      options["secret"] = 'c233dc29-3e66-4109-986b-c92110fe3505'
       options["retries"] = 1
       options["import_dir"] = '/srv/'
       options['start_year'] = '2016'
