@@ -89,7 +89,7 @@ class PowerschoolImporter
     @new_schools = []
     ps_schools = get_schools
     ps_schools.each do | school |
-      next unless @schools and @schools.include? school.id
+      next unless (!@schools or @schools.include? school.id)
       
       le_school = School.where(district_guid: @district.guid, sti_id: school.id).first
       if !le_school
