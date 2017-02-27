@@ -86,6 +86,7 @@ class PowerschoolImporter
 
   
   def sync_schools
+    @new_schools = []
     ps_schools = get_schools
     ps_schools.each do | school |
       next unless @schools and @schools.include? school.id
@@ -94,6 +95,7 @@ class PowerschoolImporter
       if !le_school
         le_school = School.new
         le_school.district_guid = @district.guid
+        @new_schools << le_school
       end
       le_school.sti_id = school.id
       le_school.legacy_school_id = school.school_number
@@ -120,6 +122,8 @@ class PowerschoolImporter
     end
     
     #Distribute Bucks
+    BuckDistributor.new(@new_schools).run
+    
     
     
   end
