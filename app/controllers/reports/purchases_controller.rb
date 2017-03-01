@@ -18,8 +18,10 @@ module Reports
     end
 
     def refund_purchase
+      Rails.logger.info("AKT: refund_purchase #{params.inspect}")
       reward_delivery = RewardDelivery.find(params[:reward_delivery_id])
       if reward_delivery.refund_purchase
+        Rails.logger.info("AKT: success refurn purchase #{reward_delivery.inspect}")
         respond_to do |format|
           format.html {
             flash[:notice] = "Successfully refunded purchase"
@@ -30,6 +32,7 @@ module Reports
           }
         end
       else
+        Rails.logger.info("AKT: failed refund purchase #{params.inspect}")
         respond_to do |format|
           format.html {
             flash[:alert] = "Could not refund the purchase you selected"

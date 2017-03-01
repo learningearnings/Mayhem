@@ -43,7 +43,7 @@ Spree::OrdersController.class_eval do
 
     #If another student is purchasing this reward, wait 10 seconds and then return an error if the reward has not freed up    
     mutex = RedisMutex.new("orders-blocking-#{variant.product_id}", block: 10)
-
+      Rails.logger.info("AKT: purchase reward #{params.inspect}")
     if mutex.lock
       begin
         if insufficient_quantity?
@@ -84,10 +84,12 @@ Spree::OrdersController.class_eval do
             if @order.store == Spree::Store.find_by_code('le') && current_person.is_a?(SchoolAdmin)
               respond_with(@order) { |format| format.html { redirect_to main_app.restock_path } }
             else
+                    Rails.logger.info("AKT: orders populate #{@order.inspect}")
               if @order.total > current_person.checking_account.balance
                 flash[:notice] = t(:not_enough_credits_to_purchase)
                 product = @order.line_items.first.product
                 @order.empty!
+                  Rails.logger.info("AKT: not enough credits #{current_person.checking_account.balance}")
                 redirect_to product and return
               else
                 if params[:deliverer_id].present?
@@ -98,6 +100,7 @@ Spree::OrdersController.class_eval do
                   flash[:error] = 'Please select a teacher to deliver this reward.'
                   redirect_to :back and return
                 end  
+                Rails.logger.info("AKT: purchasing #{@order.inspect}")
                 OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, deliverer_id).execute!
                 message = "Purchase successful!."
                 if params[:variants].is_a?(Hash)
@@ -106,6 +109,8 @@ Spree::OrdersController.class_eval do
                   quantity = params[:variants][variant_id]
                   message = "Congratulations, you bought #{quantity} #{product.name}!"
                   MixPanelTrackerWorker.perform_async(current_user.id, 'Purchase Reward Item', mixpanel_options)
+                else
+                  Rails.logger.info("AKT: not a hash #{params[:variants]}")
                 end
                 redirect_to root_path, notice: message
               end
