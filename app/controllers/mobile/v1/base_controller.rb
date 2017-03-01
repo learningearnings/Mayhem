@@ -96,12 +96,12 @@ module Mobile
       end
 
       def authenticate_request
-        Rails.logger.warn("AKT: Authenticate Request")
+        #Rails.logger.warn("AKT: Authenticate Request")
         if auth_token_expired?
-          Rails.logger.warn("AKT: auth_token_expired")
+          #Rails.logger.warn("AKT: auth_token_expired")
           fail AuthenticationTimeoutError
         elsif !current_user
-          Rails.logger.warn("AKT: !current_user")
+          #Rails.logger.warn("AKT: !current_user")
           fail NotAuthenticatedError
         end
       end
@@ -132,8 +132,8 @@ module Mobile
       end
 
       def decoded_auth_token
-        Rails.logger.info("AKT: decoded_auth_token: http_auth_header_content #{http_auth_header_content}")
-        Rails.logger.info("AKT: decoded_auth_token: AuthToken.decode #{AuthToken.decode(http_auth_header_content)}")        
+        #Rails.logger.info("AKT: decoded_auth_token: http_auth_header_content #{http_auth_header_content}")
+        #Rails.logger.info("AKT: decoded_auth_token: AuthToken.decode #{AuthToken.decode(http_auth_header_content)}")        
         @decoded_auth_token ||= AuthToken.decode(http_auth_header_content)
       end
 

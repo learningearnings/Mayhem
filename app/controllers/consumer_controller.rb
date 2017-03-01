@@ -48,7 +48,7 @@ class ConsumerController < ApplicationController
     current_url = url_for(:action => 'complete', :only_path => false)
     parameters = params.reject{|k,v|request.path_parameters[k]}
     parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
-    Rails.logger.info("AKT: SSO Complete parameters: #{parameters.inspect}")
+    #Rails.logger.info("AKT: SSO Complete parameters: #{parameters.inspect}")
     oidresp = consumer.complete(parameters, current_url)
     openid = oidresp.display_identifier
     case oidresp.status

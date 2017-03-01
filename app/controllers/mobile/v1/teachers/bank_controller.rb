@@ -1,7 +1,7 @@
 class Mobile::V1::Teachers::BankController < Mobile::V1::Teachers::BaseController
   include Mixins::Banks
   def award_credits
-    logger.debug("AKT bank->award_credits")
+    #logger.debug("AKT bank->award_credits")
     logger.debug(params.inspect)
     if params[:students].blank? || params[:credits].blank? || params[:students].size == 0 || params[:credits].size == 0
       logger.error "Mobile::V1::Teachers::BankController.award_credits: Must supply students and credits"
