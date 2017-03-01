@@ -59,7 +59,7 @@ class StiController < ApplicationController
   end
   
   def auth
-    Rails.logger.info("AKT: Enter auth with params: #{params.inspect}")
+    #Rails.logger.info("AKT: Enter auth with params: #{params.inspect}")
     if params["sti_session_variable"]
       #integrated
       sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
@@ -70,7 +70,7 @@ class StiController < ApplicationController
       sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
       sti_client.session_token = params["sti_session_variable"]
       @client_response = sti_client.session_information.parsed_response
-      Rails.logger.info("AKT Client response: #{@client_response.inspect}")
+      #Rails.logger.info("AKT Client response: #{@client_response.inspect}")
       if @client_response == nil or  ( @client_response["StaffId"].blank? and @client_response["StudentId"].blank? )
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; sti link client bad response"
         return
@@ -81,12 +81,12 @@ class StiController < ApplicationController
           if current_school
             redirect_to "/" and return
           else
-            Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in student")
+            #Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in student")
             flash[:error] = "Integrated sign in failed for district GUID, No school for logged in student"        
             redirect_to "#{request.protocol}#{request.env["HTTP_HOST"]}" and return          
           end   
         else
-          Rails.logger.error("AKT Integrated sign in failed for district GUID, Student login failed")        
+          #Rails.logger.error("AKT Integrated sign in failed for district GUID, Student login failed")        
           flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}, "  
           return               
         end
