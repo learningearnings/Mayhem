@@ -34,6 +34,7 @@ module Teachers
     end
 
     def refund_teacher_reward
+      #Rails.logger.info("AKT: refund_teacher_reward #{params.inspect}")
       @reward_delivery = RewardDelivery.find(params[:id])
       @reward_delivery.refund_purchase
       @product = RewardDelivery.find(params[:id]).reward.variant.product

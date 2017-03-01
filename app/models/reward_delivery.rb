@@ -40,6 +40,7 @@ class RewardDelivery < ActiveRecord::Base
   scope :except_refunded, lambda { where(self.arel_table[:status].not_eq('refunded'))}
 
   def refund_purchase
+    Rails.logger.info("AKT: Refund purchase: #{self.reward.inspect}")
     if self.reward.order.payment.state != "void"
       self.reward.order.payment.void_transaction!
       self.refund

@@ -152,6 +152,7 @@ class CreditManager
 
   def transfer_credits_for_reward_refund student, amount, document = nil
     #return false if main_account.balance < amount
+    Rails.logger.info("AKT: transfer credits #{amount.inspect}")
     transfer_credits "Reward Refund", main_account, student.checking_account, amount, document
   end
 
