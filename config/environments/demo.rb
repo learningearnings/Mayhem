@@ -18,9 +18,10 @@ Leror::Application.configure do
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
+  config.assets.js_compressor = :uglifier
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = true
+  config.assets.compile = false
 
   # Generate digests for assets URLs
   config.assets.digest = true
@@ -55,7 +56,6 @@ Leror::Application.configure do
   config.assets.precompile += %w( schooladmin_background.css person_background.css student_background.css teacher_background.css leadmin_background.css image_pager.js store/all.js )
   config.assets.precompile += %w( admin/icons/icon-plus.png noimage/small.jpg noimage/mini.png )
   config.assets.precompile += %w( tours/school_admin/overview.js tours/teacher/overview.js tours/student/overview.js  student_earning.js manage_credits.js bulk_teachers.js bulk_students.js)
-  
 
   # Disable delivery errors, bad email addresses will be ignored
   config.action_mailer.delivery_method = :smtp
