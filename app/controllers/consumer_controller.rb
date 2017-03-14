@@ -44,7 +44,6 @@ class ConsumerController < ApplicationController
   end
 
   def complete
-    @district_guid = "ed5b2055-c7e7-3737-bcfd-e99a96bff2a4"
     current_url = url_for(:action => 'complete', :only_path => false)
     parameters = params.reject{|k,v|request.path_parameters[k]}
     parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
@@ -67,11 +66,12 @@ class ConsumerController < ApplicationController
       sti_id = ax_resp.data["http://powerschool.com/entity/id"][0]  
       school_id = ax_resp.data["http://powerschool.com/entity/schoolID"][0]
       district_name = ax_resp.data["http://powerschool.com/entity/districtName"][0] 
+      district = District.where(name: district_name).first
       email = ax_resp.data["http://powerschool.com/entity/email"][0]            
       Rails.logger.info("sti_id: #{sti_id.inspect}")
-      @person = Person.where(district_guid: @district_guid, sti_id: sti_id).first
+      @person = Person.where(district_guid: district.guid, sti_id: sti_id).first
       if !@person
-        flash[:error] = "Person with email #{email} not found!"
+        flash[:error] = "Person within district #{district_name}:#{district.guid} having sis id #{sti_id} not found!"
         render :layout => false and return    
         #redirect_to "/" and return        
       end

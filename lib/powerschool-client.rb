@@ -161,6 +161,10 @@ module Powerschool
       results = @connector.get(:district, paginated: false)
       #create_powerschool_objects(Powerschool::District, results["district"]["district"])
     end
+    
+    def get_weekly_credits_no_absences
+      results = records = power_query("com.powerschool.le.students.attendance.weekly")
+    end
 
 
     def get_schools
