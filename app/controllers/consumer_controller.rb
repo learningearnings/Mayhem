@@ -87,9 +87,10 @@ class ConsumerController < ApplicationController
         render :layout => false and return    
         #redirect_to "/" and return        
       end      
+      
       @school = School.where(district_guid: @district_guid, legacy_school_id: school_id).first
       @school = @person.schools.first unless @school
-      redirect_to "https://#{request.domain}/sti/auth?districtGUID=#{@district_guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}" and return
+      redirect_to "https://#{request.domain}/sti/auth?districtGUID=#{@person.district_guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}" and return
     when OpenID::Consumer::SETUP_NEEDED
       flash[:alert] = "Immediate request failed - Setup Needed"
     when OpenID::Consumer::CANCEL  
