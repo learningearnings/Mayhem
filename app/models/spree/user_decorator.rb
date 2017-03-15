@@ -37,7 +37,7 @@ Spree::User.class_eval do
       school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
       link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
       if link_token.username == 'PowerSchool'
-        flash[:error] = "Authentication not enabled for this school"
+        #flash[:error] = "Authentication not enabled for this school"
         return
       end
     end
