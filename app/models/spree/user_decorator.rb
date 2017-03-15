@@ -31,6 +31,17 @@ Spree::User.class_eval do
     user = nil if user && user.api_user != false && !user.valid_password?(password)
     # If there is no user found from the traditional methods lets check the sti
     # api
+    
+    #todo -- change the below when PowerSchool authentication is enabled
+    if !user 
+      school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
+      link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
+      if link_token.username == 'PowerSchool'
+        flash[:error] = "Authentication not enabled for this school"
+        return
+      end
+    end
+    
 
     if user.nil? && school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
       link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
