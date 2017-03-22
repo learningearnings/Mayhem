@@ -287,9 +287,8 @@ module RestConnector
       opts[:paginated] = false
       opts[:queries] ||= {}
       opts[:queries][:page] = (page = 1)
-      opts[:queries][:pagesize] = MAX_PAGE_SIZE
+      opts[:queries][:pagesize] = 100
       result, results, current_size = {}, [], 0
-
 
       target_size = get(key, opts.merge({count:true}))["resource"]["count"]
       while current_size < target_size
