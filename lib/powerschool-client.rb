@@ -166,7 +166,15 @@ module Powerschool
       results = records = power_query("com.powerschool.le.students.attendance.weekly")
     end
 
-
+    def get_weekly_credits_no_tardies
+      results = records = power_query("com.powerschool.le.students.tardies.weekly")
+    end
+    
+    def get_weekly_credits_no_infractions
+      results = records = power_query("com.powerschool.le.students.infractions.weekly")
+    end
+    
+        
     def get_schools
       results = @connector.get(:schools, :expansions => 'school_boundary', paginated: false)
       puts "Client get schools connector: #{@connector.inspect}"
