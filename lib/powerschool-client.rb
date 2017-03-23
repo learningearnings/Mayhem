@@ -171,7 +171,7 @@ module Powerschool
     end
     
     def get_weekly_credits_no_infractions
-      results = records = power_query("com.powerschool.le.students.infractions.weekly")
+      results = records = power_query("com.powerschool.le.students.infraction.weekly")
     end
     
         
