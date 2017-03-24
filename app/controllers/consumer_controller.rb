@@ -44,7 +44,6 @@ class ConsumerController < ApplicationController
   end
 
   def complete
-    @district_guid = "ed5b2055-c7e7-3737-bcfd-e99a96bff2a4"
     current_url = url_for(:action => 'complete', :only_path => false)
     parameters = params.reject{|k,v|request.path_parameters[k]}
     parameters.reject!{|k,v|%w{action controller}.include? k.to_s}
@@ -67,11 +66,19 @@ class ConsumerController < ApplicationController
       sti_id = ax_resp.data["http://powerschool.com/entity/id"][0]  
       school_id = ax_resp.data["http://powerschool.com/entity/schoolID"][0]
       district_name = ax_resp.data["http://powerschool.com/entity/districtName"][0] 
+
+
       email = ax_resp.data["http://powerschool.com/entity/email"][0]            
       Rails.logger.info("sti_id: #{sti_id.inspect}")
+      #todo figure out how to get district from student response
+      if district_name.blank?
+         @district_guid = ["ed5b2055-c7e7-3737-bcfd-e99a96bff2a4","903cd06f-623c-3909-a0e4-d503d57b8131"]
+      else
+         @district_guid = District.where(name: district_name).first.guid
+      end
       @person = Person.where(district_guid: @district_guid, sti_id: sti_id).first
       if !@person
-        flash[:error] = "Person with email #{email} not found!"
+        flash[:error] = "Person within district #{@district_guid.inspect} having sis id #{sti_id} not found!"
         render :layout => false and return    
         #redirect_to "/" and return        
       end
@@ -80,9 +87,10 @@ class ConsumerController < ApplicationController
         render :layout => false and return    
         #redirect_to "/" and return        
       end      
+      
       @school = School.where(district_guid: @district_guid, legacy_school_id: school_id).first
       @school = @person.schools.first unless @school
-      redirect_to "https://#{request.domain}/sti/auth?districtGUID=#{@district_guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}" and return
+      redirect_to "https://#{request.domain}/sti/auth?districtGUID=#{@person.district_guid}&sti_school_id=#{@school.sti_id}&userid=#{@person.sti_id}" and return
     when OpenID::Consumer::SETUP_NEEDED
       flash[:alert] = "Immediate request failed - Setup Needed"
     when OpenID::Consumer::CANCEL  

@@ -22,7 +22,7 @@ module RestConnector
 
     BASE_PATH = "/ws/v1"
 
-    MAX_PAGE_SIZE = 100
+    MAX_PAGE_SIZE = 10000
     PATHS = {
       :token                  => "/oauth/access_token",
       :district               => "/district",
@@ -176,7 +176,12 @@ module RestConnector
       send_opts.delete(:queries)
       send_opts.delete(:base_path)
       send_opts.delete(:query_params)
-
+      if query_options.blank?
+        query_options = "?pagesize=0"
+      else
+        query_options = query_options + "&pagesize=0"
+      end
+      puts "Post: " + url + options + query_options
       results = RestClient.post(url + options + query_options, is_counting ? "" : "#{send_opts.to_json}", default_headers, &block)
 
       archive_response_from_endpoint(endpoint,results) if is_logging_responses?
@@ -282,9 +287,8 @@ module RestConnector
       opts[:paginated] = false
       opts[:queries] ||= {}
       opts[:queries][:page] = (page = 1)
-      opts[:queries][:pagesize] = MAX_PAGE_SIZE
+      opts[:queries][:pagesize] = 100
       result, results, current_size = {}, [], 0
-
 
       target_size = get(key, opts.merge({count:true}))["resource"]["count"]
       while current_size < target_size
