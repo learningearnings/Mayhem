@@ -12,6 +12,8 @@ module Reports
       @data   = []
       @endpoints = date_endpoints(@parameters)
       @classroom = params[:classroom_filter]
+      @cr = Classroom.find(@classroom) if @classroom
+      @cr_students = @cr.students.pluck(:id) if @cr
       @logged_in_person = params[:logged_in_person]
     end
 
@@ -23,18 +25,9 @@ module Reports
     end
 
     def student_with_classroom_filter(student)
-      student_classrooms_array = student.person_classroom_name
-      logged_in_user_classroom_array = @logged_in_person.classrooms_for_school(@school).map{|c| c.name}
-      intersection_array = student_classrooms_array & logged_in_user_classroom_array
-      if @classroom.present?
-        if intersection_array.size > 1 && @logged_in_person.classrooms_for_school(@school).map{|c| c.name if c.id == @classroom.to_i}.include?(student_classrooms_array.first)
-          return true
-        elsif intersection_array.size <= 1 && intersection_array.first == student_classrooms_array.first
-          return true
-        end
-      else
-        return true
-      end  
+      return true unless @classroom
+      return false unless @cr_students
+      return @cr_students.include?(student.id)
     end
   
 
