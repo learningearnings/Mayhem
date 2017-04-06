@@ -4,6 +4,8 @@ require File.expand_path('../boot', __FILE__)
 require 'pdfkit'
 require 'rails/all'
 
+LE_APP_VERSION = '2.5.0'
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
