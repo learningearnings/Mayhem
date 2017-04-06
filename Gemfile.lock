@@ -213,6 +213,8 @@ GEM
       railties (~> 3.1)
       warden (~> 1.1.1)
     diff-lcs (1.2.5)
+    domain_name (0.5.20161129)
+      unf (>= 0.0.5, < 1.0.0)
     dragonfly (0.9.15)
       multi_json (~> 1.0)
       rack
@@ -271,6 +273,8 @@ GEM
     high_voltage (1.2.4)
     highline (1.6.11)
     hike (1.2.3)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     httparty (0.8.3)
       multi_json (~> 1.0)
       multi_xml
@@ -332,6 +336,7 @@ GEM
     nested_set (1.7.0)
       activerecord (>= 3.0.0)
       railties (>= 3.0.0)
+    net-http-persistent (2.9.4)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -339,6 +344,7 @@ GEM
     net-ssh (2.7.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    netrc (0.11.0)
     newrelic_rpm (3.7.2.195)
     nokogiri (1.5.11)
     orm_adapter (0.0.7)
@@ -420,6 +426,10 @@ GEM
     ref (1.0.5)
     responders (1.0.0)
       railties (>= 3.2, < 5)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     roo (1.12.1)
       nokogiri
       rubyzip
@@ -439,6 +449,7 @@ GEM
     ruby-graphviz (1.0.9)
     ruby-hmac (0.4.0)
     ruby-ole (1.2.11.7)
+    ruby-openid (2.7.0)
     ruby-progressbar (1.2.0)
     rubyzip (0.9.9)
     rvm-capistrano (1.5.0)
@@ -569,6 +580,9 @@ GEM
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
     unicorn (4.6.3)
       kgio (~> 2.6)
       rack
@@ -621,6 +635,7 @@ DEPENDENCIES
   draper (= 0.18.0)
   factory_girl_rails
   faker
+  faraday
   fog
   googlecharts
   guard (~> 1.2.3)
@@ -647,6 +662,7 @@ DEPENDENCIES
   mocha (~> 0.14.0)
   modernizr-rails (~> 2.6.2.3)
   nested_form!
+  net-http-persistent
   newrelic_rpm
   nokogiri (~> 1.5.10)
   pdfkit
@@ -666,8 +682,10 @@ DEPENDENCIES
   rdiscount
   redis-mutex
   responders
+  rest-client
   roo (= 1.12.1)
   rspec-rails
+  ruby-openid
   rubyzip (= 0.9.9)
   rvm-capistrano
   sanitizing_bigdecimal
