@@ -33,8 +33,9 @@ Spree::User.class_eval do
     # api
     
     #todo -- change the below when PowerSchool authentication is enabled
-    if !user 
-      school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
+    school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
+    
+    if user.nil? and school
       link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
       if link_token.username == 'PowerSchool'
         #flash[:error] = "Authentication not enabled for this school"
@@ -42,8 +43,7 @@ Spree::User.class_eval do
       end
     end
     
-
-    if user.nil? && school = School.where(:id => school_id).where("schools.district_guid IS NOT NULL AND schools.sti_id IS NOT NULL").first
+    if user.nil? and school
       link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
       return unless link_token
       begin
