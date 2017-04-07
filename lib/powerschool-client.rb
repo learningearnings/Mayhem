@@ -176,7 +176,7 @@ module Powerschool
     
         
     def get_schools
-      results = @connector.get(:schools, :expansions => 'school_boundary', paginated: false)
+      results = @connector.get(:schools, :expansions => 'school_boundary', paginated: true)
       puts "Client get schools connector: #{@connector.inspect}"
       puts "Client get schools results: #{results.inspect}"      
       create_powerschool_objects(Powerschool::School, results["schools"]["school"])
@@ -185,7 +185,7 @@ module Powerschool
     def get_sections(school_id, start_year = nil)
       
       q = start_year ? {query: "term.start_year==#{start_year}"} : nil
-      results = @connector.get(:sections, school_id: school_id, paginated:false, queries: q)
+      results = @connector.get(:sections, school_id: school_id, paginated:true, queries: q)
       create_powerschool_objects(Powerschool::Section, results["sections"]["section"])
     rescue
       puts "Error section results: #{results.inspect}"
