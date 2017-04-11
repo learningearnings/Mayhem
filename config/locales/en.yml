@@ -170,10 +170,10 @@ en:
     school_admin:
       integrated:
         menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."        
-        create_classroom: "Classrooms allow you to give your students LE credits quickly. If you have classrooms in iNow, they should come over automatically, but you can still create more if you like."
-        add_students_to_class: "You can't edit Classrooms that are synced with iNow, but any additional Classrooms you create can be customized by you."               
+        create_classroom: "Classrooms allow you to give your students LE credits quickly. If you have classrooms in the Student Information System, they should come over automatically, but you can still create more if you like."
+        add_students_to_class: "You can't edit Classrooms that are synced with the Student Information System, but any additional Classrooms you create can be customized by you."               
         menu_bank: "The Bank page is where you manage your LE credits.  You can print credits to give to your students or send them LE credits electronically."
-        auto_credits: "This tab allows you to set parameters for iNow to automatically send electronic credits to your students."  
+        auto_credits: "This tab allows you to set parameters for the Student Information System to automatically send electronic credits to your students."  
         menu_students: "The Students page is where you can edit your students accounts and reset passwords if necessary."
         adding_teachers: "Adding teachers is just as easy as adding students.  You can upload a spreadsheet of many teachers or create them."
         menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
@@ -199,13 +199,13 @@ en:
     teacher:
       integrated:
         menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."        
-        create_classroom: "Classrooms allow you to give your students LE credits quickly. If you have classrooms in iNow, they should come over automatically, but you can still create more if you like."  
-        add_students_to_class: "You can't edit Classrooms that are synced with iNow, but any additional Classrooms you create can be customized by you."                                      
+        create_classroom: "Classrooms allow you to give your students LE credits quickly. If you have classrooms in the Student Information System, they should come over automatically, but you can still create more if you like."  
+        add_students_to_class: "You can't edit Classrooms that are synced with the Student Information System, but any additional Classrooms you create can be customized by you."                                      
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
         print_credits: "Here you can create Credits that can be printed and given to your students."
         e_credits: "You can also electronically send credits to any student or classroom of students you create."
         credit_categories: "When sending Credits electronically you can also attach a category, or reason for the award.  Create and edit those here if you would like to use this feature."
-        menu_students: "The Students page is where you manage your student accounts that are synced with iNow, including resetting passwords if you need to."
+        menu_students: "The Students page is where you manage your student accounts that are synced with the Student Information System, including resetting passwords if you need to."
         menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
         menu_store: "The shop page allows you to select from hundreds of popular student rewards or create your very own!"
         add_or_manage_your_rewards: "You can add a new reward or update and existing one here."
