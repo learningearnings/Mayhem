@@ -12,7 +12,7 @@ module Reports
       @data   = []
       @endpoints = date_endpoints(@parameters)
       @classroom = params[:classroom_filter]
-      @cr = Classroom.find(@classroom) if @classroom
+      @cr = Classroom.find(@classroom) unless @classroom.blank?
       @cr_students = @cr.students.pluck(:id) if @cr
       @logged_in_person = params[:logged_in_person]
     end
@@ -25,7 +25,7 @@ module Reports
     end
 
     def student_with_classroom_filter(student)
-      return true unless @classroom
+      return true unless @classroom and !@classroom.blank?
       return false unless @cr_students
       return @cr_students.include?(student.id)
     end
@@ -48,7 +48,7 @@ module Reports
     end
 
     def classroom_filter
-      if @classroom.present?
+      if @classroom.present? and !@classroom.blank?
         [:person_with_classroom,  @classroom]
       end
     end
