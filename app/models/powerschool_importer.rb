@@ -121,6 +121,8 @@ class PowerschoolImporter
       
     end
     
+    remove_empty_classrooms
+    
     #Distribute Bucks
     BuckDistributor.new(@new_schools).run
     
@@ -240,8 +242,24 @@ class PowerschoolImporter
     sr = get_sections(school_id)
     sections = sr[0]
     enrollments = sr[1]
-    load_sections(sections, le_school_id)
-    load_enrollments(enrollments, le_school_id)
+    if enrollments.size > 0
+      load_sections(sections, le_school_id)
+      load_enrollments(enrollments, le_school_id)
+    end
+  end
+  
+  def remove_empty_classrooms
+    schools = School.where(district_guid: "903cd06f-623c-3909-a0e4-d503d57b8131")
+    schools.each do | school |
+      crs = school.classrooms
+      crs.each do | cr |
+        if cr.students.size == 0 
+          classroom = Classroom.find(cr.id)
+          classroom.destroy
+        end
+    end 
+  end
+
   end
   
   def load_sections(sections, le_school_id)
