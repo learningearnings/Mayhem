@@ -82,9 +82,7 @@ class PowerschoolImporter
     @logger.close
   
   end
-  
 
-  
   def sync_schools
     @new_schools = []
     ps_schools = get_schools
@@ -118,10 +116,9 @@ class PowerschoolImporter
       sync_teachers(school.id, le_school.id)
       sync_students(school.id, le_school.id)
       sync_classrooms(school.id, le_school.id)
+      remove_empty_classrooms(le_school.id)
       
     end
-    
-    remove_empty_classrooms
     
     #Distribute Bucks
     BuckDistributor.new(@new_schools).run
@@ -248,18 +245,15 @@ class PowerschoolImporter
     end
   end
   
-  def remove_empty_classrooms
-    schools = School.where(district_guid: "903cd06f-623c-3909-a0e4-d503d57b8131")
-    schools.each do | school |
-      crs = school.classrooms
-      crs.each do | cr |
-        if cr.students.size == 0 
-          classroom = Classroom.find(cr.id)
-          classroom.destroy
-        end
-    end 
-  end
-
+  def remove_empty_classrooms(school_id)
+    school = School.find(school_id)
+    crs = school.classrooms
+    crs.each do | cr |
+      if cr.students.size == 0 
+        classroom = Classroom.find(cr.id)
+        classroom.destroy
+      end
+    end
   end
   
   def load_sections(sections, le_school_id)
