@@ -8,6 +8,7 @@ class OneClickSpreeProductPurchaseCommand
 
   def execute!
     skip_irrelevant_spree_order_steps
+    Rails.logger.info("AKT OneClickSpreeProductPurchaseCommand: #{@school.inspect}")
     purchase
  
     if can_create_school_products?
@@ -41,6 +42,7 @@ class OneClickSpreeProductPurchaseCommand
   # Create a RewardDelivery from the teacher to the purchasing student for these
   # products
   def queue_delivery(line_items)
+    Rails.logger.info("AKT: queue_delivery #{line_items.inspect}")
     line_items.each do |line_item|
       RewardDelivery.create(from_id: @deliverer_id, to_id: @person.id, reward_id: line_item.id)
     end

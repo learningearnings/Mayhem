@@ -15,7 +15,7 @@ Spree::ProductsController.class_eval do
     if current_person.is_a?(Student) && current_person.classrooms.present?
       temp_params[:classrooms] = current_person.classrooms.map(&:id)
     end
-    Rails.logger.debug "AKT Filters: #{session[:filters].inspect}"
+    #Rails.logger.debug "AKT Filters: #{session[:filters].inspect}"
     @searcher = Spree::Search::Filter.new(temp_params)
     @products = @searcher.retrieve_products
     if current_user.person.is_a?(SchoolAdmin) && params[:current_store_id]
