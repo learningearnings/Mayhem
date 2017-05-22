@@ -143,6 +143,7 @@ GEM
       sass (>= 3.2.0)
       thor
     builder (3.0.4)
+    byebug (9.0.6)
     cancan (1.6.7)
     capistrano (2.15.5)
       highline
@@ -615,6 +616,7 @@ DEPENDENCIES
   airbrake
   animation
   bootstrap_forms
+  byebug
   cancan
   capistrano (~> 2.15.5)
   capistrano-unicorn
@@ -722,3 +724,9 @@ DEPENDENCIES
   webshims-rails (~> 1.11.1)
   whenever
   whereabouts (~> 0.9.0)
+
+RUBY VERSION
+   ruby 2.0.0p353
+
+BUNDLED WITH
+   1.14.6
