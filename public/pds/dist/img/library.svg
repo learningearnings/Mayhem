@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-291 -674 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon_library);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon_library">
+      <rect x="-291" y="-674" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon_library" data-name="icon–library" class="cls-1">
+    <path id="path-26" class="cls-2" d="M9,18V17H1V1h9V15H9V2H2V16H19V2H12V15H11V1h9V17H12v1Z" transform="translate(-285 -667)"/>
+  </g>
+</svg>

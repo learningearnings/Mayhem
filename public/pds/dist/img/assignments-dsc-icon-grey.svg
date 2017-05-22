@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="3478.857 2967 27.56 20">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #666;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #666;
+        stroke-width: 1px;
+      }
+    </style>
+  </defs>
+  <g id="Symbol_14_1" data-name="Symbol 14 – 1" transform="translate(3201 2787)">
+    <g id="Group_2" data-name="Group 2">
+      <g id="group-18" transform="translate(277.857 180)">
+        <path id="path" class="cls-1" d="M14.286,4.519,9.885,0H0V20H14.286V4.519Zm-.866,0H9.885V.889ZM.577.593H9.235V5.111h4.4V19.333H.577"/>
+      </g>
+      <g id="group-13" transform="translate(550.989 383.025) rotate(180)">
+        <line id="line-4" class="cls-2" y2="16.287" transform="translate(250.479 184.213)"/>
+        <line id="line-5" class="cls-2" x1="0.095" y2="6.905" transform="translate(250.107 183.592) rotate(-45)"/>
+        <line id="line-5-2" data-name="line-5" class="cls-2" x2="0.132" y2="6.868" transform="translate(250.789 183.525) rotate(45)"/>
+      </g>
+    </g>
+  </g>
+</svg>
