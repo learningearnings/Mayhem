@@ -299,33 +299,18 @@ span.form-input-control {
   padding-right: 10px;
 }
 
-
-
-@media (max-width: 768px) {
-    .login-div {
-        top: 0;
-    }
+.pds-app {
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
+    align-items: stretch;
 }
-@media (max-width: 768px) {
-  .custom-nav-bar {
-                margin-left: -200px;
-                }
-                .custom-nav-bar .resp-logo {
-                display: none;
-                }
-                .custom-nav-bar .resp-logo-collapsed {
-                display: block;
-                }
-                .custom-nav-bar .primary-nav a {
-                margin-left: 190px;
-                text-indent: 200px;
-                }
- 
-                .custom-nav-bar .profile {
-                display: none;
-                }
-                .custom-nav-bar .profile-collapsed {
-                display: block;
-                }
+.pds-app pds-app-nav {
+    flex: 0 0 250px;
 }
- 
+@media screen and (min-width: 64em) {
+  .pds-app, .pds-app-constrain {
+      margin-left: 0px;
+  }
+}
+

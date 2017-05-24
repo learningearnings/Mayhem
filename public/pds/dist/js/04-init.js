@@ -783,41 +783,36 @@ var Nav = (function () {
         this.contextManager = contextManager;
         this.navComponent = document.createElement('pds-app-nav');
         this.navComponent.setAttribute('app-name', 'Classroom');
+        this.navComponent.setAttribute('class','pds-app-nav');
         this.navComponent.navigation = new Array();
         this.navComponent.user = {};
         this.navComponent.userNavigation = [];
         //alert($('.unified-classroom-wrapper'));
-        jQuery('.unified-classroom-wrapper').prepend(this.navComponent);
+        jQuery('.pds-app').prepend(this.navComponent);
     }
     Nav.prototype.initLinks = function () {
         var _this = this;
-        var navItems = [
-		    {
-		        id: 'home-link',
-		        name: 'Home',
-		        activeAt: '^/home',
-		        route: '/home',
-		        iconClass: 'home'
-		    }        ,
-		    {
-		        id: 'teachers-bank-link',
-		        name: 'Bank',
-		        activeAt: '^/teachers-bank',
-		        route: '/teachers/bank',
-		        iconClass: 'bank'
-		    }
-		];
+        var navItems = [];
+        $.ajax({
+  			url: "/navmenus"
+		})
+  		.done(function( data ) {
+    		if ( console && console.log ) {
+      			console.log( "Sample of data:", data );
+      	    }
+  			_this.navComponent.homeNavItem = data["home"] ;
+ 			_this.navComponent.navigation = data["main"] ;  			
+ 			_this.navComponent.userNavigation = data["user"] ; 
+         	_this.navComponent.user = 'Allen Taylor';	
+    
+  		});
         //navigation_http_1.NavigationHttp.getNavigationLinksFor('MAIN_NAV', this.contextManager).then(function (navItems) {
             _this.navComponent.homeNavItem = navItems.shift();
             _this.navComponent.navigation = navItems;
-        //});
-        //navigation_http_1.NavigationHttp.getNavigationLinksFor('USER', this.contextManager).then(function (navItems) {
-            _this.navComponent.userNavigation = navItems;
-        //});
     };
     Nav.prototype.initUserInfo = function () {
         //this.navComponent.user = config_1.Config.getUserName();
-        this.navComponent.user = [{name: 'Allen Taylor'}] ;       
+        //this.navComponent.user = [{name: 'Allen Taylor'}] ;       
     };
     return Nav;
 }());
@@ -836,10 +831,10 @@ window.powerSchoolDesignSystemToolkit.svgSpritePath = '/pds/dist/img/pds-icons.s
 window.addEventListener('DOMContentLoaded', function (e) {
     var contextManager = new context_manager_1.ContextManager();
     var navComp = new nav_1.Nav(contextManager);
-    alert('init user info');
+    //alert('init user info');
     navComp.initUserInfo();
     
-    alert('init links');
+    //alert('init links');
     navComp.initLinks();
 //    ApiAccessInfo.initAccess('unified_classroom', '/do/account/access_info_uc').then(function (accessInfo) {
 //        config_1.Config.setUserInfo(accessInfo);
