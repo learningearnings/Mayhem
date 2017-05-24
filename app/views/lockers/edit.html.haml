@@ -14,7 +14,7 @@
         %p Pick out your favorite stickers and add some pizazz to your locker.
         - available_stickers.each do |sticker|
           .sticker{"data-id" => sticker.id}
-            = image_tag(sticker.image.url)
+            = image_tag(sticker.image.try(:url))
 
     #share-locker-modal.modal.hide
       .modal-body
