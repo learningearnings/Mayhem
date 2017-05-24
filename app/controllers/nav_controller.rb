@@ -24,7 +24,7 @@ class NavController < LoggedInController
         "school-settings-link" =>  '/schools/settings',
         "logout-link" => spree.get_destroy_user_session_path
       }
-      
+       
       home <<  {
                 id: 'home',
                 name: 'Home'
@@ -37,49 +37,49 @@ class NavController < LoggedInController
                 id: 'school-admins-bank-link',
                 name: 'Bank',
                 activeAt: '^/school-admins-bank',
-                iconName: 'bank'
+                iconName: 'calculator-f'
             },
             {
                 id: 'inbox-link',
                 name: inbox_label_with_message_count("Inbox", current_person.received_messages),
                 activeAt: '^/inbox',
-                iconName: 'inbox'
+                iconName: 'message-bubbles-f'
             },             
             {
                 id: 'students-link',
                 name: 'Students',
                 activeAt: '^/students',
-                iconName: 'students'
+                iconName: 'student-f'
             },   
             {
                 id: 'teachers-link',
                 name: 'Teachers',
                 activeAt: '^/teachers',
-                iconName: 'teachers'
+                iconName: 'book-f'
             },                 
             {
                 id: 'classrooms-link',
                 name: 'Classrooms',
-                activeAt: '^/classrooms',
-                iconName: 'classrooms'
+                activeAt: '/classrooms/',
+                iconName: 'desk'
             }, 
             {
                 id: 'play-link',
                 name: 'Play',
                 activeAt: '^/play',
-                iconName: 'play'
+                iconName: 'rocket-f'
             },    
             {
                 id: 'shop-link',
                 name: 'Shop',
                 activeAt: '^/shop',
-                iconName: 'shop'
+                iconName: 'global-f'
             },  
             {
                 id: 'school-admin-reports-link',
                 name: 'Reports',
                 activeAt: '^/reports',
-                iconName: 'reports'
+                iconName: 'bar-graph-f'
             }                                             
           ]
         elsif current_person.is_a?(Teacher)
@@ -88,37 +88,37 @@ class NavController < LoggedInController
                 id: 'teachers-bank-link',
                 name: 'Bank',
                 activeAt: '^/teachers-bank',
-                iconName: 'bank'
+                iconName: 'calculator-f'
             },
             {
                 id: 'inbox-link',
                 name: inbox_label_with_message_count("Inbox", current_person.received_messages),
                 activeAt: '^/inbox',
-                iconName: 'inbox'
+                iconName: 'message-bubbles-f'
             },            
             {
                 id: 'students-link',
                 name: 'Students',
                 activeAt: '^/students',
-                iconName: 'students'
+                iconName: 'student-f'
             },                   
             {
                 id: 'classrooms-link',
                 name: 'Classrooms',
                 activeAt: '^/classrooms',
-                iconName: 'classrooms'
+                iconName: 'desk'
             },    
             {
                 id: 'shop-link',
                 name: 'Shop',
                 activeAt: '^/shop',
-                iconName: 'shop'
+                iconName: 'global-f'
             },  
             {
                 id: 'reports-link',
                 name: 'Reports',
                 activeAt: '^/reports',
-                iconName: 'reports'
+                iconName: 'bar-graph-f'
             }                                             
           ]
         else
@@ -127,38 +127,38 @@ class NavController < LoggedInController
                 id: 'home-link',
                 name: 'Home',
                 activeAt: '^/home',
-                iconName: 'home'
+                iconName: 'pointer-up'
             },
             {
                 id: 'locker-link',
                 name: 'Locker',
                 activeAt: '^/locker',
-                iconName: 'locker'
+                iconName: 'menu'
             },            
             {
                 id: 'inbox-link',
                 name: inbox_label_with_message_count("Inbox", current_person.received_messages),
                 activeAt: '^/inbox',
-                iconName: 'inbox'
+                iconName: 'message-bubbles-f'
             },            
             {
                 id: 'students-bank-link',
                 name: 'Bank',
                 activeAt: '^/students-bank',
-                iconName: 'bank'
+                iconName: 'calculator-f'
                 
             },                   
             {
                 id: 'play-link',
                 name: 'Play',
                 activeAt: '^/play',
-                iconName: 'play'
+                iconName: 'rocket-f'
             },    
             {
                 id: 'shop-link',
                 name: 'Shop',
                 activeAt: '^/shop',
-                iconName: 'bank'
+                iconName: 'global-f'
             }                                          
           ]
         end
@@ -169,14 +169,13 @@ class NavController < LoggedInController
               id: 'profile-link',
               name: 'Profile',
               activeAt: '^/profile',
-              iconName: 'profile'
+              iconName: 'person-card-s'
         }
         if current_person.is_a?(SchoolAdmin)
           user << {
               id: 'school-settings-link',
               name: 'Settings',
               activeAt: '^/settings',
-              route:  '/schools/settings',
               iconName: 'settings-f'
           }
         end
@@ -184,14 +183,12 @@ class NavController < LoggedInController
               id: 'help-link',
               name: 'Help',
               activeAt: '^/help',
-              route: '/help',
               iconName: 'help-f'
         }  
         user << {
               id: 'logout-link',
               name: 'Logout',
               activeAt: '^/logout',
-              route: spree.get_destroy_user_session_path,
               iconName: 'logout'
         }                
       end
@@ -207,6 +204,6 @@ class NavController < LoggedInController
           lastName: 'User'
         }        
       end
-      render json: { home: home, main: main, user: user, username: username, routes: routes }.to_json
+      render json: { home: home, main: main, user: user, username: username, routes: routes}.to_json
   end
 end

@@ -93,17 +93,20 @@ var Nav = (function () {
       	    }
       	    data["home"]["onUserClick"] = function () {
     				var id = $(this).attr('id');
+    				window.localStorage.setItem('active_id',id);
                     window.location = data["routes"][id];
                };
       	    data["main"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
+    				window.localStorage.setItem('active_id',id);    				
                     window.location = data["routes"][id];
                };
 			});	
       	    data["user"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
+    				window.localStorage.setItem('active_id',id);
                     window.location = data["routes"][id];
                };
 			});						
@@ -111,6 +114,8 @@ var Nav = (function () {
  			_this.navComponent.navigation = data["main"] ;  			
  			_this.navComponent.userNavigation = data["user"] ; 
          	_this.navComponent.user = data['username'];	
+         	
+   	
     
   		});
   		
@@ -136,6 +141,10 @@ window.addEventListener('DOMContentLoaded', function (e) {
     var navComp = new nav_1.Nav();
     navComp.initUserInfo();
     navComp.initLinks();
+    console.log(window.localStorage.getItem('active_id'));
+    $('#' + window.localStorage.getItem('active_id')).addClass("pds-is-active");
+    
+    
     
 });
 
