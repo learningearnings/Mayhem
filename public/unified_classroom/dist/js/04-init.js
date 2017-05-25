@@ -138,15 +138,23 @@ window.addEventListener('DOMContentLoaded', function (e) {
     var navComp = new nav_1.Nav();
     navComp.initUserInfo();
     navComp.initLinks();
-	var _active_id = window.localStorage.getItem('active_id');
-	var _active_menu_id = '#' + _active_id;  
 	// Set active tab
 	$(document).arrive(_active_menu_id, function() {
 	    // 'this' refers to the newly created element
-	    var $newElem = $(this);
-	    $newElem.addClass('pds-is-active');
-	});      
+	    var newElem = $(this);
+	    console.log("Active menu item has arrived!");
+	    newElem.addClass('pds-is-active');
+	    // Firfox fix
+	    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
+	});    
+	  
 });
+	
 
 /***/ })
 /******/ ]);
+
+
+var _active_id = window.localStorage.getItem('active_id');
+var _active_menu_id = '#' + _active_id;  
+
