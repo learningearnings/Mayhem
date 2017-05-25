@@ -8,6 +8,7 @@ class NavController < LoggedInController
         "home" => "/",
         "school-admins-bank-link" => main_app.school_admins_bank_path,
         "inbox-link" => main_app.inbox_path,
+        "teachers-inbox-link" => main_app.teachers_inbox_path,
         "students-link" =>  '/teachers/bulk_students',
         "teachers-link" =>  main_app.teachers_bulk_teachers_path,
         "classrooms-link" =>  main_app.classrooms_path,
@@ -40,7 +41,7 @@ class NavController < LoggedInController
                 iconName: 'calculator-f'
             },
             {
-                id: 'inbox-link',
+                id: 'teachers-inbox-link',
                 name: inbox_label_with_message_count("Inbox", current_person.received_messages),
                 activeAt: '^/inbox',
                 iconName: 'message-bubbles-f'
@@ -91,7 +92,7 @@ class NavController < LoggedInController
                 iconName: 'calculator-f'
             },
             {
-                id: 'inbox-link',
+                id: 'teachers-inbox-link',
                 name: inbox_label_with_message_count("Inbox", current_person.received_messages),
                 activeAt: '^/inbox',
                 iconName: 'message-bubbles-f'
