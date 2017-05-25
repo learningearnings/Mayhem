@@ -145,7 +145,8 @@ class NavController < LoggedInController
                 id: 'students-bank-link',
                 name: 'Bank',
                 activeAt: '^/students-bank',
-                iconName: 'calculator-f'
+                iconName: 'calculator-f',
+                isCurrentRoute?: true
                 
             },                   
             {

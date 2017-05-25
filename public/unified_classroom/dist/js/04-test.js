@@ -88,6 +88,7 @@ var Nav = (function () {
   			url: "/navmenus"
 		})
   		.done(function( data ) {
+  			/*
       	    data["home"]["onUserClick"] = function () {
     				var id = $(this).attr('id');
     				window.localStorage.setItem('active_id',id);
@@ -106,7 +107,31 @@ var Nav = (function () {
     				window.localStorage.setItem('active_id',id);
                     window.location = data["routes"][id];
                };
-			});							
+			});		
+			
+      	    data["main"].forEach(function (entry) {
+       	    	var id = entry["id"];
+    			var active_id = window.localStorage.getItem('active_id'); 
+      	    	if (id == active_id) {
+      	    		console.log("Setting current route true");      	    		
+	      	    	entry["isCurrentRoute?"] = true;
+      	    	}  else {
+      	    		console.log("Setting current route false");      	    		
+	      	    	entry["isCurrentRoute?"] = false;
+      	    	}
+			});	
+      	    data["user"].forEach(function (entry) {
+       	    	var id = entry["id"];
+    			var active_id = window.localStorage.getItem('active_id'); 
+      	    	if (id == active_id) {
+      	    		console.log("Setting current route true");      	    		
+	      	    	entry["isCurrentRoute?"] = true;
+      	    	}  else {
+      	    		console.log("Setting current route false");      	    		
+	      	    	entry["isCurrentRoute?"] = false;
+      	    	}
+			});	 		
+			*/				
   			_this.navComponent.homeNavItem = data["home"] ;
  			_this.navComponent.navigation = data["main"] ;  			
  			_this.navComponent.userNavigation = data["user"] ; 
@@ -138,15 +163,11 @@ window.addEventListener('DOMContentLoaded', function (e) {
     var navComp = new nav_1.Nav();
     navComp.initUserInfo();
     navComp.initLinks();
-	var _active_id = window.localStorage.getItem('active_id');
-	var _active_menu_id = '#' + _active_id;  
-	// Set active tab
-	$(document).arrive(_active_menu_id, function() {
-	    // 'this' refers to the newly created element
-	    var $newElem = $(this);
-	    $newElem.addClass('pds-is-active');
-	});      
+    
+	var active_id = window.localStorage.getItem('active_id');    
+	console.log("Active id : " + active_id);    
 });
+
 
 /***/ })
 /******/ ]);
