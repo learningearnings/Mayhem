@@ -9,6 +9,7 @@ class NavController < LoggedInController
         "school-admins-bank-link" => main_app.school_admins_bank_path,
         "inbox-link" => main_app.inbox_path,
         "teachers-inbox-link" => main_app.teachers_inbox_path,
+        "students-edit-link" => '/teachers/bulk_students/edit',
         "students-link" =>  '/teachers/bulk_students',
         "teachers-link" =>  main_app.teachers_bulk_teachers_path,
         "classrooms-link" =>  main_app.classrooms_path,
@@ -47,7 +48,7 @@ class NavController < LoggedInController
                 iconName: 'message-bubbles-f'
             },             
             {
-                id: 'students-link',
+                id: current_person.synced? ? 'students-edit-link' : 'students-link',
                 name: 'Students',
                 activeAt: '^/students',
                 iconName: 'student-f'
@@ -98,7 +99,7 @@ class NavController < LoggedInController
                 iconName: 'message-bubbles-f'
             },            
             {
-                id: 'students-link',
+                id: current_person.synced? ? 'students-edit-link' : 'students-link',
                 name: 'Students',
                 activeAt: '^/students',
                 iconName: 'student-f'
