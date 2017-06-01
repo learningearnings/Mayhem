@@ -130,7 +130,6 @@ body {
   margin-left: -60px;
 }
 
-h1, h2, h3, h4, h5, h6,
 .navbar ul.nav li,
 .person-details ul.links li,
 .boxes-nav-container ul li,
@@ -149,21 +148,24 @@ span.join,
 }
 
 
-h1 {
-  color: #25860B;
-}
-
-h2 {
-  color: #470BC1;
-}
-
-h3 {
-  color: #EA4E08;
-}
-
-h4 {
- color: #08C;
-}
+//All headings have the same color
+h1, h2, h3, h4, h5, h6
+{ font-color: #333 }
+//all headers after h1 have the same weight
+h2, h3, h4, h5, h6
+{ font-weight: 300; }
+h1
+{ font-size: 24px; line-height: 24px; padding: 21px 0; font-weight: 600; //typically used for page title, this is going to be heavier font than what is used elsewhere }
+h2
+{ font-size: 22px; line-height: 22px; padding: 20px 0; }
+h3
+{ font-size: 21px; line-height: 21px; padding: 19px 0; }
+h4
+{ font-size: 20px; line-height: 20px; padding: 18px 0; }
+h5
+{ font-size: 19px; line-height: 19px; padding: 17px 0; }
+h6
+{ font-size: 18px; line-height: 18px; padding: 16px 0; }
 
 .blue_color {
  color: #08C;
