@@ -130,13 +130,17 @@ class NavController < LoggedInController
                 name: 'Home',
                 activeAt: '^/home',
                 iconName: 'pointer-up'
-            },
-            {
-                id: 'locker-link',
-                name: 'Locker',
-                activeAt: '^/locker',
-                iconName: 'menu'
-            },            
+            }
+           ]
+           if current_person.grade < 9
+              main << {
+                  id: 'locker-link',
+                  name: 'Locker',
+                  activeAt: '^/locker',
+                  iconName: 'menu'
+              }   
+           end     
+           main.concat( [    
             {
                 id: 'inbox-link',
                 name: inbox_label_with_message_count("Inbox", current_person.received_messages),
@@ -163,7 +167,7 @@ class NavController < LoggedInController
                 activeAt: '^/shop',
                 iconName: 'global-f'
             }                                          
-          ]
+          ])
         end
       end
       
