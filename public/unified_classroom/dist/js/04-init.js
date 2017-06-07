@@ -101,14 +101,18 @@ var Nav = (function () {
       	    data["main"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);   
-    				$.ajax({
-					        type: "GET",
-					        url: data["routes"][id] + "/?inline=Y",
-					        success: function(data){
-					        	$(".resp-page-content").html(data);
-					        }
-					    }); 				
+    				window.localStorage.setItem('active_id',id);  
+    				if (id == "home-link")  {
+    					 window.location = data["routes"][id];
+    				} else {
+	    				$.ajax({
+						        type: "GET",
+						        url: data["routes"][id] + "/?inline=Y",
+						        success: function(data){
+						        	$(".resp-page-content").html(data);
+						        }
+						    }); 	
+					}			
                     //window.location = data["routes"][id];
                };
 			});	
