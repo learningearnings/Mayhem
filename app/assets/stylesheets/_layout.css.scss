@@ -319,8 +319,9 @@ span.join,
 }
 
 @mixin really-awesom-button {
-  font-family: '"Open Sans"';
+  font-family: 'sketch_rockwellregular';
 }
+
 
 //All headings have the same color
 h1, h2, h3, h4, h5, h6
@@ -329,7 +330,7 @@ h1, h2, h3, h4, h5, h6
 h2, h3, h4, h5, h6
 { font-weight: 300; }
 h1
-{ font-size: 24px; line-height: 24px; padding: 21px 0; font-weight: 600; } //typically used for page title, this is going to be heavier font than what is used elsewhere 
+{ font-size: 24px; line-height: 24px; padding: 21px 0; font-weight: 600; } //typically used for page title, this is going to be heavier font than what is used elsewhere
 h2
 { font-size: 22px; line-height: 22px; padding: 20px 0; }
 h3
