@@ -86,40 +86,27 @@ var Nav = (function () {
     }
     Nav.prototype.initLinks = function () {
     	var _this = this;
-    	/*
-        $.ajax({
-  			url: "/navmenus"
-		})
-  		.done(function( data ) {
-  			*/
+
   			var data = menu_json;
       	    data["home"]["onUserClick"] = function () {
-    				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);			
+    				var id = $(this).attr('id');		
                     window.location = data["routes"][id];
                };
       	    data["main"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
-    				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);  
-    				if (id == "home-link")  {
-    					 window.location = data["routes"][id];
-    				} else {
-	    				$.ajax({
-						        type: "GET",
-						        url: data["routes"][id] + "/?inline=Y",
-						        success: function(data){
-						        	$(".resp-page-content").html(data);
-						        }
-						    }); 	
-					}			
-                    //window.location = data["routes"][id];
+    				var id = $(this).attr('id'); 
+    				$.ajax({
+					        type: "GET",
+					        url: data["routes"][id] + "/?inline=Y",
+					        success: function(data){
+					        	$(".resp-page-content").html(data);
+					        }
+					    }); 				
                };
 			});	
       	    data["user"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);
     				$.ajax({
 					        type: "GET",
 					         url: data["routes"][id] + "/?inline=Y",
@@ -127,7 +114,6 @@ var Nav = (function () {
 					        	$(".resp-page-content").html(data);
 					        }
 					    }); 				
-                    //window.location = data["routes"][id];
                };
 			});				
 				
@@ -135,12 +121,6 @@ var Nav = (function () {
  			_this.navComponent.navigation = data["main"] ;  			
  			_this.navComponent.userNavigation = data["user"] ; 
          	_this.navComponent.user = data['username'];	
-         	
-  /* 	
-    
-  		});
-  */
-  
     };
     Nav.prototype.initUserInfo = function () {
 
@@ -164,9 +144,6 @@ $(document).ready(function (e) {
     var navComp = new nav_1.Nav();
     navComp.initUserInfo();
     navComp.initLinks();
-    jQuery("#nav_place_holder").remove();
-    $("#nav_place_holder").remove();    
-   
 });
 
 	
@@ -175,15 +152,5 @@ $(document).ready(function (e) {
 /******/ ]);
 
 
-var _active_id = window.localStorage.getItem('active_id');
-var _active_menu_id = '#' + _active_id; 
-$(document).arrive(_active_menu_id, function() {
-    // 'this' refers to the newly created element
-    var newElem = $(this);
-    console.log("Active menu item has arrived!");
-    newElem.addClass('pds-is-active');
-
-    // Firfox fix
-    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
-});     
+    
 
