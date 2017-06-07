@@ -16,6 +16,7 @@
     = javascript_include_tag 'application'
     = stylesheet_link_tag    'application', media: 'all'
     = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
+    = menu_json
     :plain 
       <script src="/unified_classroom/dist/js/arrive.min.js"></script>       
       <script src="/unified_classroom/dist/js/01-wc-lite.js"></script>      
@@ -23,7 +24,7 @@
       <link rel="import" href="/unified_classroom/dist/js/03-pds-components.html" />    
       <script src="/unified_classroom/dist/js/04-init.js"></script>      
       <link rel="stylesheet" href="/unified_classroom/cp-override.css">      
-    :javascript
+    :javascript    
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
       _gaq.push(['_trackPageview']);

@@ -84,10 +84,13 @@ var Nav = (function () {
     }
     Nav.prototype.initLinks = function () {
     	var _this = this;
+    	/*
         $.ajax({
   			url: "/navmenus"
 		})
   		.done(function( data ) {
+  			*/
+  			var data = menu_json;
       	    data["home"]["onUserClick"] = function () {
     				var id = $(this).attr('id');
     				window.localStorage.setItem('active_id',id);
@@ -106,16 +109,18 @@ var Nav = (function () {
     				window.localStorage.setItem('active_id',id);
                     window.location = data["routes"][id];
                };
-			});							
+			});				
+				
   			_this.navComponent.homeNavItem = data["home"] ;
  			_this.navComponent.navigation = data["main"] ;  			
  			_this.navComponent.userNavigation = data["user"] ; 
          	_this.navComponent.user = data['username'];	
          	
-   	
+  /* 	
     
   		});
-  		
+  */
+  
     };
     Nav.prototype.initUserInfo = function () {
 
