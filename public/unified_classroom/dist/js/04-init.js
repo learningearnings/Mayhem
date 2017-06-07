@@ -107,13 +107,17 @@ var Nav = (function () {
       	    data["user"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				$.ajax({
-					        type: "GET",
-					         url: data["routes"][id] + "/?inline=Y",
-					        success: function(data){
-					        	$(".resp-page-content").html(data);
-					        }
-					    }); 				
+    				if (id == "logout-link") {
+    					window.location = data["routes"][id];
+    				} else {
+	    				$.ajax({
+						        type: "GET",
+						         url: data["routes"][id] + "/?inline=Y",
+						        success: function(data){
+						        	$(".resp-page-content").html(data);
+						        }
+						    }); 
+					}				
                };
 			});				
 				
