@@ -80,7 +80,9 @@ var Nav = (function () {
         this.navComponent.navigation = new Array();
         this.navComponent.user = {};
         this.navComponent.userNavigation = [];
+
         jQuery('.unified_classroom_wrapper').prepend(this.navComponent);
+
     }
     Nav.prototype.initLinks = function () {
     	var _this = this;
@@ -139,21 +141,14 @@ exports.Nav = Nav;
 Object.defineProperty(exports, "__esModule", { value: true });
 var nav_1 = __webpack_require__(0);
 window.powerSchoolDesignSystemToolkit.svgSpritePath = '/unified_classroom/dist/img/pds-icons.svg';
-window.addEventListener('DOMContentLoaded', function (e) {
+
+$(document).ready(function (e) {
     var navComp = new nav_1.Nav();
     navComp.initUserInfo();
     navComp.initLinks();
-	// Set active tab
-	$(document).arrive(_active_menu_id, function() {
-	    // 'this' refers to the newly created element
-	    var newElem = $(this);
-	    console.log("Active menu item has arrived!");
-	    newElem.addClass('pds-is-active');
-	    // Firfox fix
-	    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
-	});    
-	  
+   
 });
+
 	
 
 /***/ })
@@ -161,5 +156,14 @@ window.addEventListener('DOMContentLoaded', function (e) {
 
 
 var _active_id = window.localStorage.getItem('active_id');
-var _active_menu_id = '#' + _active_id;  
+var _active_menu_id = '#' + _active_id; 
+$(document).arrive(_active_menu_id, function() {
+    // 'this' refers to the newly created element
+    var newElem = $(this);
+    console.log("Active menu item has arrived!");
+    newElem.addClass('pds-is-active');
+    jQuery('#nav_place_holder').hide(); 
+    // Firfox fix
+    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
+});     
 

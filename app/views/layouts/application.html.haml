@@ -36,6 +36,17 @@
       })();
   %body
     .unified_classroom_wrapper
+      :plain  
+        <div id="nav_place_holder" class="pds-app-nav-content  style-scope pds-app-nav" style="position:absolute;top:0px;left:0px;z-index:1;width:250px;">
+          <a id="nav-hamburger-link" class="pds-app-nav-trigger style-scope pds-app-nav" aria-label="Open Navigation Menu" href="">
+            <i class="fa fa-bars style-scope pds-app-nav" aria-hidden="true"></i>
+          </a>
+          <header class="style-scope pds-app-nav">
+            <a href="" class="pds-powerschool-logo style-scope pds-app-nav" id="nav-logo-link">
+              <span class="style-scope pds-app-nav">PowerSchool</span>
+            </a>
+          </header>
+        </div>
       .pds-main.main-content-wrapper.resp-page-content
         = render "layouts/resp_content_container" 
                
