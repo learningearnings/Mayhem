@@ -58,7 +58,7 @@
     - if Poll.active.present?
       .poll
         %h2 Polls 
-        %h6= link_to 'View All Polls', polls_path
+        = link_to 'View All Polls', polls_path
         - if @poll
           %h5= @poll.question
           = form_for Vote.new do |f|
