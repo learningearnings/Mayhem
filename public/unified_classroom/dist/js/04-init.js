@@ -146,6 +146,8 @@ $(document).ready(function (e) {
     var navComp = new nav_1.Nav();
     navComp.initUserInfo();
     navComp.initLinks();
+    jQuery("#nav_place_holder").remove();
+    $("#nav_place_holder").remove();    
    
 });
 
@@ -162,10 +164,8 @@ $(document).arrive(_active_menu_id, function() {
     var newElem = $(this);
     console.log("Active menu item has arrived!");
     newElem.addClass('pds-is-active');
-    jQuery('#nav_place_holder').hide(); 
-    jQUery$('#nav_place_holder').css('display', 'none');
-    $('#nav_place_holder').css('display', 'none');
+
     // Firfox fix
-    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); jQuery('#nav_place_holder').css('display', 'none');}, 2000);
+    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
 });     
 
