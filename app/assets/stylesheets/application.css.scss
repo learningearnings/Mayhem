@@ -241,9 +241,9 @@ a {
 }
 
 a:focus, a:hover {
-  text-decoration: underline;
-  cursor: pointer;
+  text-decoration: none;
   color: #042d40;
+  cursor: pointer;
 }
 
 .btn {
