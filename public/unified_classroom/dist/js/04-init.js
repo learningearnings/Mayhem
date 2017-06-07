@@ -95,21 +95,35 @@ var Nav = (function () {
   			var data = menu_json;
       	    data["home"]["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);
+    				window.localStorage.setItem('active_id',id);			
                     window.location = data["routes"][id];
                };
       	    data["main"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);    				
-                    window.location = data["routes"][id];
+    				window.localStorage.setItem('active_id',id);   
+    				$.ajax({
+					        type: "GET",
+					        url: data["routes"][id] + "/?inline=Y",
+					        success: function(data){
+					        	$(".resp-page-content").html(data);
+					        }
+					    }); 				
+                    //window.location = data["routes"][id];
                };
 			});	
       	    data["user"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
     				window.localStorage.setItem('active_id',id);
-                    window.location = data["routes"][id];
+    				$.ajax({
+					        type: "GET",
+					         url: data["routes"][id] + "/?inline=Y",
+					        success: function(data){
+					        	$(".resp-page-content").html(data);
+					        }
+					    }); 				
+                    //window.location = data["routes"][id];
                };
 			});				
 				

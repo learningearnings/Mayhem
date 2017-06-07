@@ -4,6 +4,9 @@ require 'mixpanel-ruby'
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
+  layout :choose_layout
+
+
   respond_to :html
   include UrlHelper
   include MessagesHelper
@@ -19,6 +22,14 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
+
+  def choose_layout
+    if params[:inline].blank?
+      "application"
+    else
+      false
+    end
+  end  
 
   def clear_balance_cache!
     expire_fragment "#{current_person.id}_balances"
