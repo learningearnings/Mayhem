@@ -49,10 +49,22 @@ set :deploy_to, "/home/deployer/apps/#{application}"
 set :user, "deployer"
 set :use_sudo, false
 
+# Bonus! Colors are pretty!
+def red(str)
+  "\e[31m#{str}\e[0m"
+end
+
+# Figure out the name of the current local branch
+def current_git_branch
+  branch = `git symbolic-ref HEAD 2> /dev/null`.strip.gsub(/^refs\/heads\//, '')
+  puts "Deploying branch #{red branch}"
+  branch
+end
+
 # repo details
-set :scm,             :git
-set :repository,      "git@github.com:learningearnings/Mayhem.git"
-set :branch,          "develop"
+set :scm, :git
+set :repository, 'git@github.com:learningearnings/Mayhem.git'
+set :branch, current_git_branch
 
 # Slack config
 set :slack_webhook_url, 'https://hooks.slack.com/services/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'
