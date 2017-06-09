@@ -1,16 +1,20 @@
 set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
-require "rvm/capistrano"
+#require "rvm/capistrano"
+require 'capistrano/rvm'
 require 'sidekiq/capistrano'
-require "rvm/capistrano/selector"
-require "rvm/capistrano/gem_install_uninstall"
-require "rvm/capistrano/alias_and_wrapp"
+
+# require "rvm/capistrano/selector"
+# require "rvm/capistrano/gem_install_uninstall"
+# require "rvm/capistrano/alias_and_wrapp"
+
 # Bundler bootstrap
 require 'bundler/capistrano'
-require 'capistrano-unicorn'
+require 'capistrano3-unicorn'
 require 'capistrano/ext/multistage'
-require 'slack-notifier'
+#require 'slack-notifier'
+require 'slackistrano/capistrano'
 
 # Setup whenever to work right in staging
 set :whenever_command, "bundle exec whenever"
@@ -52,9 +56,10 @@ set :use_sudo, false
 # repo details
 set :scm,             :git
 set :repository,      "git@github.com:learningearnings/Mayhem.git"
-set :branch,          "develop"
+# set :branch,          "develop"
 
 # Slack config
+=begin
 set :slack_webhook_url, 'https://hooks.slack.com/services/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'
 set :slack_channel, "#learningearnings-dev"
 set :current_branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -62,6 +67,11 @@ set :slack_application, "Mayhem"
 set :slack_emoji, ":ghost:"
 set :slack_username, "slackbot"
 set :slack_local_user, `git config user.name`.chomp
+=end
+set :slackistrano, {
+  channel: "#learningearnings-dev",
+  webhook: 'https://hooks.slack.com/services/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'
+}
 
 # tasks
 namespace :deploy do
