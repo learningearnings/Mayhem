@@ -146,7 +146,8 @@ gem 'unicorn'
 #gem 'debugger'
 
 group :development do
-  gem 'slack-notifier'
+  #gem 'slack-notifier'
+  gem 'slackistrano'
   gem 'quiet_assets'
   gem 'pry', '~> 0.9.10'
   gem 'unicorn'
@@ -154,9 +155,12 @@ group :development do
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'
   gem 'letter_opener'
   # Deploy with Capistrano
-  gem 'capistrano', '~> 2.15.5'
-  gem 'rvm-capistrano', require: false
-  gem 'capistrano-unicorn', require: false
+  #gem 'capistrano', '~> 2.15.5'
+  gem 'capistrano', '>=3.8.1'
+  #gem 'rvm-capistrano', require: false
+  gem 'capistrano-rvm', require: false
+  #gem 'capistrano-unicorn', require: false
+  gem 'capistrano3-unicorn', require: false
   # Generate ERD diagrams from your models
   gem 'rails-erd'
 end
