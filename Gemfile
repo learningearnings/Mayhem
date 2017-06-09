@@ -156,6 +156,7 @@ group :development do
   gem 'letter_opener'
   # Deploy with Capistrano
   #gem 'capistrano', '~> 2.15.5'
+  #gem 'sshkit', '>=1.9.0'
   gem 'capistrano', '>=3.8.1'
   #gem 'rvm-capistrano', require: false
   gem 'capistrano-rvm', require: false
