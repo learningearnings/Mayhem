@@ -157,7 +157,9 @@ group :development do
   # Deploy with Capistrano
   #gem 'capistrano', '~> 2.15.5'
   #gem 'sshkit', '>=1.9.0'
-  gem 'capistrano', '>=3.8.1'
+  gem 'capistrano', '>=3.8.1', require: false
+  gem 'capistrano-rails',   '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
   #gem 'rvm-capistrano', require: false
   gem 'capistrano-rvm', require: false
   #gem 'capistrano-unicorn', require: false

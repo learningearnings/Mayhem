@@ -1,8 +1,13 @@
+# config valid only for current version of Capistrano
+lock "3.8.1"
+
 set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
 #require "rvm/capistrano"
 require 'capistrano/rvm'
+require 'capistrano/rails'
+require 'capistrano/bundler'
 require 'sidekiq/capistrano'
 
 # require "rvm/capistrano/selector"
@@ -55,7 +60,7 @@ set :use_sudo, false
 
 # repo details
 set :scm,             :git
-set :repository,      "git@github.com:learningearnings/Mayhem.git"
+set :repo_url,      "git@github.com:learningearnings/Mayhem.git"
 # set :branch,          "develop"
 
 # Slack config
