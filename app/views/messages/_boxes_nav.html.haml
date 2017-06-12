@@ -4,7 +4,7 @@
   %ul.nav-group
     %li= inbox_link_for("Friend Messages", @received_messages.from_friend, friend_messages_path, 'friend-message')
     %li= inbox_link_for("Games Messages", @received_messages.from_games, games_messages_path, 'games-message')
-    %li= inbox_link_for("Auctions Messages", @received_messages.from_auctions, 'auctions_messages', 'auctions-message')    
+    %li= inbox_link_for("Auctions Messages", @received_messages.from_auctions, auctions_messages_path, 'auctions-message')
     /%li= inbox_link_for("School Messages", @received_messages.from_school, school_messages_path, 'school-message')
     %li= inbox_link_for("Teacher Messages", @received_messages.from_teacher, teacher_messages_path, 'teacher-message')
     /%li= inbox_link_for("System Messages", @received_messages.from_system, system_messages_path, 'system-message')
@@ -12,5 +12,5 @@
     /%br
 
   /%h3 Send a Message:
-  /%hr 
+  /%hr
   /= link_to "Send a Message", new_message_path, class: 'btn awesome-button', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
