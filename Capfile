@@ -54,7 +54,7 @@ require 'capistrano3-unicorn'
 require 'slackistrano/capistrano'
 
 
-require 'whenever/capistrano'
+
 #cut till here
 
 

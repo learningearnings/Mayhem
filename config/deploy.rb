@@ -1,6 +1,6 @@
 # config valid only for current version of Capistrano
 lock "3.8.1"
-
+require 'whenever/capistrano'
 set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
