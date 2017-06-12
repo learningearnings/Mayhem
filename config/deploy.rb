@@ -4,27 +4,10 @@ lock "3.8.1"
 set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
-#require "rvm/capistrano"
-require 'capistrano/rvm'
-require 'capistrano/rails'
-require 'capistrano/bundler'
-require 'sidekiq/capistrano'
-
-# require "rvm/capistrano/selector"
-# require "rvm/capistrano/gem_install_uninstall"
-# require "rvm/capistrano/alias_and_wrapp"
-
-# Bundler bootstrap
-require 'bundler/capistrano'
-require 'capistrano3-unicorn'
-require 'capistrano/ext/multistage'
-#require 'slack-notifier'
-require 'slackistrano/capistrano'
 
 # Setup whenever to work right in staging
 set :whenever_command, "bundle exec whenever"
 set :whenever_environment, defer { stage }
-require 'whenever/capistrano'
 
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
@@ -38,7 +21,7 @@ set :sidekiq_default_hooks, true
 set :bundle_flags, '--system --quiet'
 
 set :stages, %w(production demo staging sandbox qa demo)
-set :default_stage, "staging"
+#set :default_stage, "staging"
 
 after 'deploy:start',   'unicorn:start'
 # after 'deploy:stop',    'unicorn:stop'
@@ -51,7 +34,7 @@ set :application,     "Mayhem"
 set :unicorn_bin, "unicorn_rails"
 
 # server details
-default_run_options[:pty] = true
+#default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "learning_earnings_prod")]
 set :deploy_to, "/home/deployer/apps/#{application}"
@@ -61,7 +44,7 @@ set :use_sudo, false
 # repo details
 set :scm,             :git
 set :repo_url,      "git@github.com:learningearnings/Mayhem.git"
-# set :branch,          "develop"
+set :branch,          "slackistrano"
 
 # Slack config
 =begin

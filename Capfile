@@ -1,4 +1,4 @@
-=begin
+
 # Load DSL and set up stages
 require "capistrano/setup"
 
@@ -35,11 +35,36 @@ install_plugin Capistrano::SCM::Git
 # require "capistrano/rails/migrations"
 # require "capistrano/passenger"
 
+#cut from deploy.rb
+#require "rvm/capistrano"
+require 'capistrano/rvm'
+require 'capistrano/rails'
+# require 'capistrano/bundler'
+require 'sidekiq/capistrano'
+
+# require "rvm/capistrano/selector"
+# require "rvm/capistrano/gem_install_uninstall"
+# require "rvm/capistrano/alias_and_wrapp"
+
+# Bundler bootstrap
+#require 'bundler/capistrano'
+require 'capistrano3-unicorn'
+require 'capistrano/ext/multistage'
+#require 'slack-notifier'
+require 'slackistrano/capistrano'
+
+
+require 'whenever/capistrano'
+#cut till here
+
+
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined
 Dir.glob("lib/capistrano/tasks/*.rake").each { |r| import r }
-=end
 
+
+=begin
 load 'deploy'
 # Uncomment if you are using Rails' asset pipeline
     # load 'deploy/assets'
 load 'config/deploy' # remove this line to skip loading any of the default tasks
+=end
