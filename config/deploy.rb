@@ -1,6 +1,6 @@
 # config valid only for current version of Capistrano
 lock "3.8.1"
-require 'whenever/capistrano'
+
 set :rvm_ruby_string, :local
 set :rvm_autolibs_flag, "read-only"
 set :rvm_type, :user
@@ -8,6 +8,7 @@ set :rvm_type, :user
 # Setup whenever to work right in staging
 set :whenever_command, "bundle exec whenever"
 set :whenever_environment, defer { stage }
+require 'whenever/capistrano'
 
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
