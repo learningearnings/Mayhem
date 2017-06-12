@@ -49,7 +49,7 @@ require 'sidekiq/capistrano'
 # Bundler bootstrap
 #require 'bundler/capistrano'
 require 'capistrano3-unicorn'
-require 'capistrano/ext/multistage'
+#require 'capistrano/ext/multistage'
 #require 'slack-notifier'
 require 'slackistrano/capistrano'
 
