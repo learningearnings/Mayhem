@@ -60,7 +60,7 @@
                 = text_field_tag :points, nil
                 = f.label :otu_code_category_id, "Credit Category"
                 = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
-                = f.submit 'Send Credits', :class => 'btn awesome-button'
+                = f.submit 'Send Credits', :class => 'btn awesome-button', style: 'float:right;'
 
             .electronic-credits-for-classroom
               %h4 Issue Electronic Credits to each student in a classroom
@@ -72,7 +72,7 @@
                 = f.label :otu_code_category_id, "Credit Category"
                 = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
                 #classroom_distribution
-                = f.submit 'Send Credits', class: 'btn awesome-button'
+                = f.submit 'Send Credits', class: 'btn awesome-button', style: 'float:right;'
 
           .tab-pane#transfer-credits
             %h4 Transfer Credits to Another Teacher
