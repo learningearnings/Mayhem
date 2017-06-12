@@ -8,7 +8,7 @@ set :rvm_type, :user
 # Setup whenever to work right in staging
 set :whenever_command, "bundle exec whenever"
 set :whenever_environment, defer { stage }
-require 'whenever/capistrano'
+#require 'whenever/capistrano'
 
 before 'deploy:setup', 'rvm:install_rvm'
 before 'deploy:setup', 'rvm:install_ruby'
