@@ -80,6 +80,7 @@ $how-to-active-color: #f05c1a;
 #login-footer {
   a, a:hover, a:active {
     font-size: 10px;
+    text-decoration: none;   
     color: #ffffff;
     margin-left: 10px;
     margin-right: 20px;
@@ -589,7 +590,7 @@ html.resp, body.resp {
 
 .content-section .how-nav li span a:hover {
   text-decoration: none;
-  color: #f05c1a;
+  color: #042d40;
 }
 
 .content-section .how-nav li span a:active {
@@ -1366,7 +1367,12 @@ html.resp, body.resp {
   a, a:hover, a:active {
     margin-left: 10px;
     margin-right: 20px;
+    
   } 
+  a:hover, a:active {
+    text-decoration: none;
+    color: #042d40;
+  }
   
   //    font-family: Arial, Open Sans;
   //    color: #000000;

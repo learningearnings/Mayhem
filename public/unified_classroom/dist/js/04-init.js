@@ -80,42 +80,68 @@ var Nav = (function () {
         this.navComponent.navigation = new Array();
         this.navComponent.user = {};
         this.navComponent.userNavigation = [];
+
         jQuery('.unified_classroom_wrapper').prepend(this.navComponent);
+
     }
     Nav.prototype.initLinks = function () {
     	var _this = this;
+    	/*
         $.ajax({
   			url: "/navmenus"
 		})
   		.done(function( data ) {
+  			*/
+  			var data = menu_json;
       	    data["home"]["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);
+    				window.localStorage.setItem('active_id',id);			
                     window.location = data["routes"][id];
                };
       	    data["main"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);    				
-                    window.location = data["routes"][id];
+    				window.localStorage.setItem('active_id',id);  
+    				$.ajax({
+					        type: "GET",
+					        url: data["routes"][id] + "/?inline=Y",
+					        success: function(data){
+					        	$(".resp-page-content").html(data);
+					        }
+					    }); 	
+			
+                    //window.location = data["routes"][id];
                };
 			});	
       	    data["user"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
     				window.localStorage.setItem('active_id',id);
-                    window.location = data["routes"][id];
+    				if (id == "logout-link") {
+    					window.location = data["routes"][id];
+    				} else {
+	    				$.ajax({
+						        type: "GET",
+						         url: data["routes"][id] + "/?inline=Y",
+						        success: function(data){
+						        	$(".resp-page-content").html(data);
+						        }
+						    }); 
+					}					
+                    //window.location = data["routes"][id];
                };
-			});							
+			});				
+				
   			_this.navComponent.homeNavItem = data["home"] ;
  			_this.navComponent.navigation = data["main"] ;  			
  			_this.navComponent.userNavigation = data["user"] ; 
          	_this.navComponent.user = data['username'];	
          	
-   	
+  /* 	
     
   		});
-  		
+  */
+  
     };
     Nav.prototype.initUserInfo = function () {
 
@@ -134,21 +160,13 @@ exports.Nav = Nav;
 Object.defineProperty(exports, "__esModule", { value: true });
 var nav_1 = __webpack_require__(0);
 window.powerSchoolDesignSystemToolkit.svgSpritePath = '/unified_classroom/dist/img/pds-icons.svg';
-window.addEventListener('DOMContentLoaded', function (e) {
+
+$(document).ready(function (e) {
     var navComp = new nav_1.Nav();
     navComp.initUserInfo();
     navComp.initLinks();
-	// Set active tab
-	$(document).arrive(_active_menu_id, function() {
-	    // 'this' refers to the newly created element
-	    var newElem = $(this);
-	    console.log("Active menu item has arrived!");
-	    newElem.addClass('pds-is-active');
-	    // Firfox fix
-	    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
-	});    
-	  
 });
+
 	
 
 /***/ })
@@ -156,5 +174,17 @@ window.addEventListener('DOMContentLoaded', function (e) {
 
 
 var _active_id = window.localStorage.getItem('active_id');
-var _active_menu_id = '#' + _active_id;  
+var _active_menu_id = '#' + _active_id; 
+$(document).arrive(_active_menu_id, function() {
+    // 'this' refers to the newly created element
+    var newElem = $(this);
+    //console.log("Active menu item has arrived!");
+    newElem.addClass('pds-is-active');
+    $(".nav_place_holder").hide();
+    $(".nav_place_holder").css("display","none");    
+    $(".nav_place_holder").remove();
+
+    // Firfox fix
+    window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
+});     
 
