@@ -105,7 +105,7 @@ class BidOnAuctionCommand < ActiveModelCommand
                          to: bid.person,
                          subject: "You've been outbid on an auction",
                          body: body,
-                         category: 'system')
+                         category: 'auctions')
   end
 
   protected
