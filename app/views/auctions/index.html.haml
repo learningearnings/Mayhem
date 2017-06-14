@@ -1,12 +1,12 @@
-.auctions-content
-  %h1 Auctions
-  .span8
-    .auctions
-      - if @auctions.any? && current_school.name != 'STI'
-        %p
-          %h4 Here are the currently-open auctions.
-        = render @auctions
-
-      - else
-        %p
-          %h4 There are no auctions currently open, sorry.
+.main-content-wrapper
+  .auctions-content
+    %h2 Auctions
+    .span8
+      .auctions
+        - if @auctions.any? && current_school.name != 'STI'
+          %p
+            %h4 Here are the currently-open auctions.
+          = render @auctions
+        - else
+          %p
+            %h4 There are no auctions currently open, sorry.
