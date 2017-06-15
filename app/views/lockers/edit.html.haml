@@ -14,15 +14,15 @@
         %p Pick out your favorite stickers and add some pizazz to your locker.
         - available_stickers.each do |sticker|
           .sticker{"data-id" => sticker.id}
-            = image_tag(sticker.image.try(:url))
+            = image_tag(sticker.image.url)
 
-    #share-locker-modal.modal
+    #share-locker-modal.modal.hide
       .modal-body
 
-    #visit-locker-modal.modal
+    #visit-locker-modal.modal.hide
       .modal-body
 
-  /# Render a template for our javascript to tie into
+  -# Render a template for our javascript to tie into
   %script#sticker_template{type: 'text/html'}
     = render 'locker_sticker_template', x: '{{x}}', y: '{{y}}', id: '{{id}}', image_url: '{{image_url}}'
-  /= javascript_include_tag 'lockers'
+  = javascript_include_tag 'lockers'
