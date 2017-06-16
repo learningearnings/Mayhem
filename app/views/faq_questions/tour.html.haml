@@ -1,68 +1,68 @@
-%h1 LE Tour
+.main-content-wrapper
+  %h1 LE Tour
 
-- if current_person.is_a?(Student)
-  = link_to "Inbox Page",  main_app.inbox_path + "?tour=Y"
-  = tour_text("menu_inbox", current_person)
-  %ul
-  = link_to "Bank Page",  main_app.bank_path + "?tour=Y"
-  = tour_text("menu_bank", current_person)
-  %ul
-    %li Deposit printed codes:
-    = tour_text("deposit_printed_codes", current_person)
-    %li View checking history:
-    = tour_text("view_checking_history", current_person)
-  = link_to "Shop Page",  '/store?tour=Y'
-  = tour_text('menu_store', current_person)
-  %ul
--elsif current_person.is_a?(SchoolAdmin)
-  = link_to "Bank Page",  main_app.bank_path + "?tour=Y"
-  = tour_text("menu_bank", current_person)
-  %ul
-    - if current_person.try(:school).try(:synced?)
-      %li Auto-credits:
-      = tour_text("auto_credits", current_person)
-  = link_to "Students Page",  students_path + "?tour=Y"
-  = tour_text("menu_students", current_person)
-  %ul
-    %li Adding students:
-    = tour_text("adding_students", current_person)
-    %li Adding teachers:
-    = tour_text("adding_teachers", current_person)
-  = link_to "Classrooms Page",  main_app.classrooms_path + "?tour=Y"
-  = tour_text("menu_classrooms", current_person)
-  %ul
-  = link_to "Play Page",  main_app.games_path + "?tour=Y"
-  = tour_text("menu_play", current_person)
-  %ul
-  = link_to "Shop Page",  '/store?tour=Y'
-  = tour_text('menu_store', current_person)
-  %ul
-    %li Adding or Manage Your Rewards:
-    = tour_text("add_or_manage_your_rewards", current_person)
-    - if !current_person.try(:school).try(:synced?)
-      %li Create a New Custom Reward:
-      = tour_text("create_new_custom_reward", current_person)
-- elsif current_person.is_a?(Teacher)
-  = link_to "Bank Page",  main_app.teachers_bank_path + "?tour=Y"
-  = tour_text("menu_bank", current_person)
-  %ul
-  = link_to "Students Page",  students_path + "?tour=Y"
-  = tour_text("menu_students", current_person)
-  %ul
-    %li Adding students:
-    = tour_text("adding_students", current_person)
-  = link_to "Classrooms Page",  main_app.classrooms_path + "?tour=Y"
-  = tour_text("menu_classrooms", current_person)
-  %ul
-  = link_to "Shop Page",  '/store?tour=Y'
-  = tour_text('menu_store', current_person)
-  %ul
-    %li Adding or Manage Your Rewards:
-    = tour_text("add_or_manage_your_rewards", current_person)
-    - if !current_person.try(:school).try(:synced?)
-      %li Create a New Custom Reward:
-      = tour_text("create_new_custom_reward", current_person)
-  = link_to "Reports Page",  main_app.teachers_reports_path + "?tour=Y"
-  = tour_text("menu_reports", current_person)
-  %ul
-
+  - if current_person.is_a?(Student)
+    = link_to "Inbox Page",  main_app.inbox_path + "?tour=Y"
+    = tour_text("menu_inbox", current_person)
+    %ul
+    = link_to "Bank Page",  main_app.bank_path + "?tour=Y"
+    = tour_text("menu_bank", current_person)
+    %ul
+      %li Deposit printed codes:
+      = tour_text("deposit_printed_codes", current_person)
+      %li View checking history:
+      = tour_text("view_checking_history", current_person)
+    = link_to "Shop Page",  '/store?tour=Y'
+    = tour_text('menu_store', current_person)
+    %ul
+  -elsif current_person.is_a?(SchoolAdmin)
+    = link_to "Bank Page",  main_app.bank_path + "?tour=Y"
+    = tour_text("menu_bank", current_person)
+    %ul
+      - if current_person.try(:school).try(:synced?)
+        %li Auto-credits:
+        = tour_text("auto_credits", current_person)
+    = link_to "Students Page",  students_path + "?tour=Y"
+    = tour_text("menu_students", current_person)
+    %ul
+      %li Adding students:
+      = tour_text("adding_students", current_person)
+      %li Adding teachers:
+      = tour_text("adding_teachers", current_person)
+    = link_to "Classrooms Page",  main_app.classrooms_path + "?tour=Y"
+    = tour_text("menu_classrooms", current_person)
+    %ul
+    = link_to "Play Page",  main_app.games_path + "?tour=Y"
+    = tour_text("menu_play", current_person)
+    %ul
+    = link_to "Shop Page",  '/store?tour=Y'
+    = tour_text('menu_store', current_person)
+    %ul
+      %li Adding or Manage Your Rewards:
+      = tour_text("add_or_manage_your_rewards", current_person)
+      - if !current_person.try(:school).try(:synced?)
+        %li Create a New Custom Reward:
+        = tour_text("create_new_custom_reward", current_person)
+  - elsif current_person.is_a?(Teacher)
+    = link_to "Bank Page",  main_app.teachers_bank_path + "?tour=Y"
+    = tour_text("menu_bank", current_person)
+    %ul
+    = link_to "Students Page",  students_path + "?tour=Y"
+    = tour_text("menu_students", current_person)
+    %ul
+      %li Adding students:
+      = tour_text("adding_students", current_person)
+    = link_to "Classrooms Page",  main_app.classrooms_path + "?tour=Y"
+    = tour_text("menu_classrooms", current_person)
+    %ul
+    = link_to "Shop Page",  '/store?tour=Y'
+    = tour_text('menu_store', current_person)
+    %ul
+      %li Adding or Manage Your Rewards:
+      = tour_text("add_or_manage_your_rewards", current_person)
+      - if !current_person.try(:school).try(:synced?)
+        %li Create a New Custom Reward:
+        = tour_text("create_new_custom_reward", current_person)
+    = link_to "Reports Page",  main_app.teachers_reports_path + "?tour=Y"
+    = tour_text("menu_reports", current_person)
+    %ul
