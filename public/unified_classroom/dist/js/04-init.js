@@ -106,7 +106,7 @@ var Nav = (function () {
 					        type: "GET",
 					        url: data["routes"][id] + "/?inline=Y",
 					        success: function(data){
-					        	$(".resp-page-content").html(data);
+					        	$(".right-content-area").html(data);
 					        }
 					    }); 	
 			
@@ -124,7 +124,7 @@ var Nav = (function () {
 						        type: "GET",
 						         url: data["routes"][id] + "/?inline=Y",
 						        success: function(data){
-						        	$(".resp-page-content").html(data);
+						        	$(".right-content-area").html(data);
 						        }
 						    }); 
 					}					
