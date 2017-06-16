@@ -11,7 +11,7 @@ en:
   only_logged_in_students_can_purchase: "Only logged in students can purchase from this store"
   school_store_is_for_students: "This is the School Store for %{school}.  Only logged in students from %{school} can purchase items from this store with their LE Credits"
   sa_restock_intro:  This is your school store restocking page.   Now Learning Earnings lets you pick the rewards for your school based
-                     on what motivates your students the most.   Click "Shop for Rewards" below to pick the rewards that are school and 
+                     on what motivates your students the most.   Click "Shop for Rewards" below to pick the rewards that are school and
                      age appropriate for your students.
   pending_shipments: "You have Pending Shipments:"
   transmit_notice: "Learning Earnings has been notified of your order.   You may still update this order until the order moves into the \"Pending Shipments\" list above"
@@ -161,30 +161,31 @@ en:
         forgot_your_password: "Forgot your password?"
   tour:
     student:
-      menu_home: "Welcome to LE! On the Home page you will find messages about new features, check out sponsors and polls you can vote on."      
+      menu_home: "Welcome to LE! On the Home page you will find messages about new features, check out sponsors and polls you can vote on."
       menu_bank: "Bank page is where you deposit and save your hard earned Credits."
       deposit_printed_codes: "If you received a printed Credit use this button to enter the code and deposit your Credits."
       view_checking_history: "You can also look at your checking history to see what has been deposited and purchased."
       menu_inbox: "If your teacher sends you an electronic credit, you will receive a message below. You can deposit electronic credits by clicking on the Claim Credits link in the message."
-      menu_store: "The shopping page displays all of the rewards in your school's store. Just click on a reward to make a purchase."     
+      menu_store: "The shopping page displays all of the rewards in your school's store. Just click on a reward to make a purchase."
     school_admin:
       integrated:
-        menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."        
+        menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."
         create_classroom: "Classrooms allow you to give your students LE credits quickly. If you have classrooms in the Student Information System, they should come over automatically, but you can still create more if you like."
-        add_students_to_class: "You can't edit Classrooms that are synced with the Student Information System, but any additional Classrooms you create can be customized by you."               
+        add_students_to_class: "You can't edit Classrooms that are synced with the Student Information System, but any additional Classrooms you create can be customized by you."
         menu_bank: "The Bank page is where you manage your LE credits.  You can print credits to give to your students or send them LE credits electronically."
-        auto_credits: "This tab allows you to set parameters for the Student Information System to automatically send electronic credits to your students."  
+        auto_credits: "This tab allows you to set parameters for the Student Information System to automatically send electronic credits to your students."
         menu_students: "The Students page is where you can edit your students accounts and reset passwords if necessary."
+        adding_students: 'Click the new students button to add students. You may also upload a file to import students many students at one time.'
         adding_teachers: "Adding teachers is just as easy as adding students.  You can upload a spreadsheet of many teachers or create them."
         menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
         menu_play: "This page allows you to create auctions for your school and see the games your students have access to when they login to LE."
         menu_store: "The Store is where you create and manage prizes or rewards for your classrooms.  This page will show you all the rewards in your school."
         add_or_manage_your_rewards: "You can add a new reward or update and existing one here."
         create_new_custom_reward: "Click this button to add a completely new reward. You may also customize an existing reward templates below created by other teachers by clicking on it and setting it to the values you want."
-        menu_reports: "Run a Purchase Report to see what items your students have purchased from the store.  You can also check student Credit balances or see who's logging in."          
+        menu_reports: "Run a Purchase Report to see what items your students have purchased from the store.  You can also check student Credit balances or see who's logging in."
       non_integrated:
-        menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."        
-        create_classroom: "Create a Classroom first.  This will allow you to give your students LE credits quickly."          
+        menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."
+        create_classroom: "Create a Classroom first.  This will allow you to give your students LE credits quickly."
         add_students_to_class: "Clicking on the Classroom name will allow you to add or remove any exisitng students from your Classroom. But since you don't have any yet, let us show you how to add some."
         menu_bank: "The bank page is where manage your LE credits.  You can print credits to give to your students or issue electronic LE credits."
         menu_students: "The Students page is where you add new or manage your existing students' accounts, including resetting passwords if you need to."
@@ -195,30 +196,31 @@ en:
         menu_store: "The Store is where you create and manage prizes or rewards for your classrooms.  This page will show you all the rewards in your school."
         add_or_manage_your_rewards: "You can add a new reward or update and existing one here."
         create_new_custom_reward: "Click this button to add a completely new reward. You may also customize an existing reward templates below created by other teachers by clicking on it and setting it to the values you want."
-        menu_reports: "Run a Purchase Report to see what items your students have purchased from the store.  You can also check student Credit balances or see who's logging in."          
+        menu_reports: "Run a Purchase Report to see what items your students have purchased from the store.  You can also check student Credit balances or see who's logging in."
     teacher:
       integrated:
-        menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."        
-        create_classroom: "Classrooms allow you to give your students LE credits quickly. If you have classrooms in the Student Information System, they should come over automatically, but you can still create more if you like."  
-        add_students_to_class: "You can't edit Classrooms that are synced with the Student Information System, but any additional Classrooms you create can be customized by you."                                      
+        menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."
+        create_classroom: "Classrooms allow you to give your students LE credits quickly. If you have classrooms in the Student Information System, they should come over automatically, but you can still create more if you like."
+        add_students_to_class: "You can't edit Classrooms that are synced with the Student Information System, but any additional Classrooms you create can be customized by you."
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
         print_credits: "Here you can create Credits that can be printed and given to your students."
         e_credits: "You can also electronically send credits to any student or classroom of students you create."
         credit_categories: "When sending Credits electronically you can also attach a category, or reason for the award.  Create and edit those here if you would like to use this feature."
         menu_students: "The Students page is where you manage your student accounts that are synced with the Student Information System, including resetting passwords if you need to."
+        adding_students: 'Click the new students button to add students. You may also upload a file to import students many students at one time.'
         menu_classrooms: "The classrooms page allows you to create groups of students. Simply enter a name for the classroom, click create, then click the classroom name."
         menu_store: "The shop page allows you to select from hundreds of popular student rewards or create your very own!"
         add_or_manage_your_rewards: "You can add a new reward or update and existing one here."
         create_new_custom_reward: "Click this button to add a completely new reward. You may also customize an existing reward templates below created by other teachers by clicking on it and setting it to the values you want."
-        menu_reports: "Run a Purchase Report to see what items your students have purchased from the store.  You can also check student Credit balances or see who's logging in."          
+        menu_reports: "Run a Purchase Report to see what items your students have purchased from the store.  You can also check student Credit balances or see who's logging in."
       non_integrated:
         menu_home: "Welcome to LE! Let us give you a quick tour and show you how to get started."
-        create_classroom: "To create one, click here and just add the name you want it to have."           
-        add_students_to_class: "Clicking on the Classroom name will allow you to add or remove any exisitng students from your Classroom. But since you don't have any yet, let us show you how to add some."        
+        create_classroom: "To create one, click here and just add the name you want it to have."
+        add_students_to_class: "Clicking on the Classroom name will allow you to add or remove any exisitng students from your Classroom. But since you don't have any yet, let us show you how to add some."
         menu_bank: "The bank page is where you print LE credits and issue electronic LE credits."
         print_credits: "Here you can create Credits that can be printed and given to your students."
         e_credits: "You can also electronically send credits to any student or classroom of students you create."
-        credit_categories: "When sending Credits electronically you can also attach a category, or reason for the award.  Create and edit those here if you would like to use this feature."        
+        credit_categories: "When sending Credits electronically you can also attach a category, or reason for the award.  Create and edit those here if you would like to use this feature."
         menu_students: "The Students page is where you add new or manage your existing students' accounts, including resetting passwords if you need to."
         adding_students: "Click the new students button to add students. You may also upload a file to import students many students at one time."
         menu_classrooms: "Create a Classroom first.  This will allow you to find and give your students LE credits quickly."
