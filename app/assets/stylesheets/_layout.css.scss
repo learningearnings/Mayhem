@@ -2,37 +2,37 @@
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
 /* FONTS */
-  
+
 @font-face {
 font-family: "Open Sans";
 src: url("OpenSans-Regular.ttf");
 font-weight: normal;
 font-style: normal; }
- 
+
 @font-face {
 font-family: "Open Sans";
 src: url("OpenSans-Light.ttf");
 font-weight: 300;
 font-style: normal; }
- 
+
 @font-face {
 font-family: "Open Sans";
 src: url("OpenSans-Semibold.ttf");
 font-weight: bold;
 font-style: normal; }
- 
+
 @font-face {
 font-family: "Open Sans";
 src: url("OpenSans-BoldItalic.ttf");
 font-weight: bold;
 font-style: italic; }
- 
+
 @font-face {
 font-family: "Open Sans";
 src: url("OpenSans-Italic.ttf");
 font-weight: normal;
 font-style: italic; }
-  
+
 
 /* Variables */
 $how-to-active-color: #f05c1a;
@@ -74,17 +74,17 @@ $how-to-active-color: #f05c1a;
     font-weight: 400;
     font-size: 14px;
   }
-  
+
 }
 
 #login-footer {
   a, a:hover, a:active {
     font-size: 10px;
-    text-decoration: none;   
+    text-decoration: none;
     color: #ffffff;
     margin-left: 10px;
     margin-right: 20px;
-  } 
+  }
 }
 
 .log-in-form ul  {
@@ -108,7 +108,7 @@ $how-to-active-color: #f05c1a;
   font-size: 20px;
   border: 0;
   border-radius: 4px;
-  
+
 }
 
 .create-account-button {
@@ -121,7 +121,7 @@ $how-to-active-color: #f05c1a;
   font-size: 24px;
   border: 0;
   border-radius: 4px;
-  
+
 }
 .btn.students,
 .btn.parents,
@@ -135,12 +135,12 @@ $how-to-active-color: #f05c1a;
   height: 50px;
   font-size: 24px;
   border: 0;
-  border-radius: 4px;  
+  border-radius: 4px;
   padding-top: 10px;
   box-shadow: 0px 0px 0px;
   background-image: url('/assets/Create.png');
   background-repeat: no-repeat;
-  background-position: 90%;   
+  background-position: 90%;
 }
 .login-logo {
   height: 40px;
@@ -151,7 +151,7 @@ $how-to-active-color: #f05c1a;
   font-family: "Open Sans";
   font-weight: 400;
   color: white;
-  font-size: 10px;  
+  font-size: 10px;
 }
 #login-username {
   background-image: url(asset_path('common/icon-bank.svg', image));
@@ -162,12 +162,12 @@ $how-to-active-color: #f05c1a;
 #login-password {
     background-image: url(asset_path('common/icon-bank.svg', image));
     background-repeat: no-repeat;
-    text-indent: 20px;  
+    text-indent: 20px;
 }
 #login-school {
     background-image: url(asset_path('common/icon-bank.svg', image));
     background-repeat: no-repeat;
-    text-indent: 20px;  
+    text-indent: 20px;
 }
 #login-username:active {
   background-image: none;
@@ -181,11 +181,11 @@ $how-to-active-color: #f05c1a;
 
 
 .middle-line {
-   width: 450px; 
-   text-align: center; 
-   border-bottom: 1px solid #fff; 
+   width: 450px;
+   text-align: center;
+   border-bottom: 1px solid #fff;
    line-height: 0.1em;
-   margin: 10px 0 20px; 
+   margin: 10px 0 20px;
    margin-left: auto;
    margin-right: auto;
    margin-top: 30px;
@@ -208,7 +208,7 @@ $how-to-active-color: #f05c1a;
   background: white;
   width: 300px;
   font-size: 18px;
-  box-shadow: 3px 3px 1px #888888; 
+  box-shadow: 3px 3px 1px #888888;
 }
 
 .log-in-form ul li input {
@@ -217,7 +217,7 @@ $how-to-active-color: #f05c1a;
   width: 450px;
   height: 50px;
   font-size: 18px;
-  box-shadow: none;   
+  box-shadow: none;
   text-align: left;
 }
 
@@ -512,17 +512,17 @@ html.resp, body.resp {
 }
 
 .chosen {
-  font-family: "Open Sans" !important; 
+  font-family: "Open Sans" !important;
   font-size: 16px !important;
   color: black !important;
-  
+
  }
 
 .chzn-container  {
   width: 175px!important;
   font-size: 16px!important;
   font-family: "Open Sans";
-  color: black;  
+  color: black;
 }
 
 .chzn-select {
@@ -770,7 +770,7 @@ html.resp, body.resp {
     margin-left: 190px;
     text-indent: 200px;
 }
- 
+
 .custom-nav-bar.nav-closed .profile {
     display: none;
 }
@@ -791,14 +791,14 @@ html.resp, body.resp {
     margin-left: 0px;
     text-indent: 0px !important;
 }
- 
+
 .custom-nav-bar.nav-open .profile {
     display: block;
 }
 .custom-nav-bar.nav-open .profile-collapsed {
     display: none;
 }
- 
+
 
 
 .navbar-inner {
@@ -1166,7 +1166,7 @@ html.resp, body.resp {
 /* Pages */
 .privacy-content {
   //margin: -8px 0 0 180px;
-  padding: 2em;   
+  padding: 2em;
 }
 
 .picaso-pig {
@@ -1357,23 +1357,23 @@ html.resp, body.resp {
   text-align: right;
   padding: 0;
   margin: 0;
-  //width: 500px;  
+  //width: 500px;
   font-family: "Open Sans";
   font-weight: 400;
   font-size: 10px;
   //color: black;
-  clear: both;  
+  clear: both;
 
   a, a:hover, a:active {
     margin-left: 10px;
     margin-right: 20px;
-    
-  } 
+
+  }
   a:hover, a:active {
     text-decoration: none;
     color: #042d40;
   }
-  
+
   //    font-family: Arial, Open Sans;
   //    color: #000000;
   //    }
@@ -1693,7 +1693,7 @@ h3 {
 .person-details {
   font-family: "Open Sans";
   font-weight: 400;
-  
+
   width: 140px;
   max-width: 140px;
   margin-left: 10px;
@@ -1854,7 +1854,7 @@ h3 {
   }
   .our-sponsors ul {
     transform: rotate(-3deg);
-  
+
   }
   .our-sponsors-callout {
     position: absolute;
@@ -1978,7 +1978,7 @@ h3 {
   //left: 20px;
   width: 100%;
   padding: 0 2em 2em;
-  display: inline-block;
+  display: flex;
   vertical-align: top;
   height: auto;
   //width:99%;
