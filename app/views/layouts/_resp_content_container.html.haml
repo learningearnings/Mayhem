@@ -4,7 +4,8 @@
     = #breadcrumbs(@taxon)
    
 .resp-page-content
-  = yield
+  .right-content-area
+    = yield
   = render "layouts/footer"
 -# - if (sidebar = yield :sidebar).empty?
 -#   .resp-page-content= yield
