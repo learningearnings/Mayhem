@@ -1,12 +1,12 @@
 %div.login-div
   %h1 Welcome to Learning Earnings!
   = form_tag spree.user_session_path, :class => 'form-inline resp-login-form-fields', autocomplete: 'off' do
-    .log-in-form  
+    .log-in-form
       %ul
         %li= text_field_tag 'user[username]', nil, :placeholder => "Username", :id => "login-username"
         %li= password_field_tag 'user[password]', nil, :placeholder => "Password" , :id => "login-password"
-        %li= select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), :class => 'chzn-select', prompt: "School", :id => "login-school"
-        %button Sign in  
+        %li= select_tag 'user[school_id]',options_from_collection_for_select(login_schools_list, :id, :name_and_location, last_school_id_or_by_subdomain), id: 'login-school', class: 'chzn-select'
+        %button Sign in
       .resp-forgot-password
         = link_to "Forgot Username/Password?", spree.new_user_password_path('user'), tabindex: "-1"
       %ul.join-links
