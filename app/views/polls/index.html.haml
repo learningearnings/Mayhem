@@ -1,11 +1,13 @@
-- @polls.each do |poll|
-  .poll
-    %h5= poll.question
-    = form_for Vote.new do |f|
-      - poll.poll_choices.each do |choice|
-        = hidden_field_tag :poll_id, poll.id
-        = f.label choice.choice
-        = f.radio_button(:poll_choice_id, choice.id)
-        = "#{choice.votes.count} Votes"
-      %br
-      = f.submit 'Vote'
+.main-content-wrapper
+  .primary-content
+    - @polls.each do |poll|
+      .poll
+        %h5= poll.question
+        = form_for(Vote.new, html: { style: 'margin-left:26px' }) do |f|
+          - poll.poll_choices.each do |choice|
+            = hidden_field_tag :poll_id, poll.id
+            = f.label choice.choice
+            = f.radio_button(:poll_choice_id, choice.id)
+            = "#{choice.votes.count} Votes"
+          %br
+          = f.submit 'Vote'
