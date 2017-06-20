@@ -64,7 +64,9 @@ ul.student_list {
     margin-top: 2em;
   }
 }
-
+.game.row {
+  width: 900px;
+}
 @include keyframes(food-thrown){
   0% {
     @include transform(scale(1, 1) rotate(0deg));
