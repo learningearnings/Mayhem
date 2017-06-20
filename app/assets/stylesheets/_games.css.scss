@@ -90,7 +90,7 @@ ul.student_list {
 
 .food-thrown-wrapper{
   p {
-    font-size: 1.5em;
+    //font-size: 1.5em;
   }
 }
 
@@ -100,7 +100,9 @@ ul.student_list {
 .ui-timepicker-div dl { text-align: left; }
 .ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
 .ui-timepicker-div dl dd { margin: 0 10px 10px 45%; }
-.ui-timepicker-div td { font-size: 90%; }
+.ui-timepicker-div td { 
+  //font-size: 90%; 
+  }
 .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
 .ui-timepicker-select { width:90px; }
 

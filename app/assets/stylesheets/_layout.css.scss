@@ -47,7 +47,7 @@ $how-to-active-color: #f05c1a;
 .reward-template-instructions {
   display: block;
   width: 70%;
-  font-size: 14px;
+  //font-size: 14px;
 }
 
 .login-div {
@@ -257,15 +257,15 @@ body {
 .sketch_font  {
   margin-top: 20px;
   font-family: "Open Sans";
-  font-size: 25pt;
+  //font-size: 25pt;
   width:110%;
   color: rgb(228,30,31)
 }
 
 .sketch_font2  {
   margin-top: 5px;
-  font-family: SketchRockwell;
-  font-size: 22pt;
+  //font-family: SketchRockwell;
+  //font-size: 22pt;
   width:110%;
   color: rgb(228,30,31)
 }
@@ -275,7 +275,7 @@ body {
   font-weight: bold;
   font-family: "Open Sans";
   margin-top: 20px;
-  font-size: 24pt;
+  //font-size: 24pt;
   color: rgb(241,201,252)
 }
 
@@ -284,7 +284,7 @@ body {
   font-weight: bold;
   font-family: "Open Sans";
   margin-top: 20px;
-  font-size: 18pt;
+  //font-size: 18pt;
   color: rgb(9,126,186)
 }
 
@@ -293,12 +293,12 @@ body {
   text-align: center;
   font-weight: bold;
   font-family: "Open Sans";
-  font-size: 16pt;
+  //font-size: 16pt;
 }
 
 .sketch_font_welcome  {
   font-family: "Open Sans";
-  font-size: 20pt;
+  //font-size: 20pt;
   text-align: center;
   width:160%;
   color: rgb(161, 72, 245);
@@ -345,12 +345,12 @@ h6
 
 .blue_color {
  color: #08C;
- font-size: 18px;
+ //font-size: 18px;
  font-family: "Open Sans";
 }
 
 .black_color {
- font-size: 18px;
+ //font-size: 18px;
  font-family: "Open Sans";
 }
 
@@ -438,7 +438,7 @@ html.resp, body.resp {
       }
       li:nth-child(1) {
         font-weight: bold;
-        font-size: 1.4em;
+        //font-size: 1.4em;
         color: #1f2870;
       }
       li span a {
@@ -587,7 +587,7 @@ html.resp, body.resp {
 
 .content-section .how-nav li span a {
   color: #312d68;
-  font-size: 1.6em;
+  //font-size: 1.6em;
 }
 
 .content-section .how-nav li span a:hover {
@@ -907,19 +907,19 @@ html.resp, body.resp {
       color:#312D68;
       line-height:1;
       .large {
-        font-size:85px;
+        //font-size:85px;
         text-align:center;
       }
       .medium {
-        font-size:31px;
+        //font-size:31px;
         color:tint(#312D68, 10);
         &.bump {
           text-align:center;
-          font-size:38px;
+          //font-size:38px;
         }
       }
       .small {
-        font-size:19px;
+        //font-size:19px;
         margin:10px;
         color:tint(#312D68, 20);
       }
@@ -933,15 +933,15 @@ html.resp, body.resp {
       color:#0D5A02;
       line-height:1;
       .large {
-        font-size:86px;
+        //font-size:86px;
       }
       .medium {
-        font-size:44px;
+        //font-size:44px;
         color:tint(#0D5A02, 5);
         margin-bottom:10px;
       }
       .small {
-        font-size:34px;
+        //font-size:34px;
       }
     }
   }
@@ -1241,14 +1241,14 @@ html.resp, body.resp {
   padding:3.25em 2em 2em;
   h3 {
     text-transform:uppercase;
-    font-size:2em;
+    //font-size:2em;
     margin:0;
     color:#333366;
     padding:0;
   }
   p {
     font-family: "Open Sans";
-    font-size:2em;
+    //font-size:2em;
   }
 }
 
@@ -1266,7 +1266,7 @@ html.resp, body.resp {
   p {
       font-family: "Open Sans";
       color: $small-content-color;
-      font-size: 2.5em;
+      //font-size: 2.5em;
       line-height: 1em;
       letter-spacing: 1px;
       font-weight: normal;
@@ -1316,7 +1316,7 @@ html.resp, body.resp {
     padding: 50px 20px 0 20px;
     text-align: center;
   p {
-    font-size: 60px;
+    //font-size: 60px;
     color: #f05c1a;
     font-family: "Open Sans";
   }
@@ -1325,7 +1325,7 @@ html.resp, body.resp {
   position: relative;
   padding: 10px 0px 0px 0px;;
   text-align: center;
-  font-size: 3em;
+  //font-size: 3em;
   line-height: 1em;
   color: $small-content-color;
   font-family: "Open Sans";
@@ -1333,7 +1333,7 @@ html.resp, body.resp {
 .testimonial-body {
   padding: 20px 30px 0px 40px;;
   text-align: left;
-  font-size: 2em;
+  //font-size: 2em;
   color: $small-content-color;
   p { display: inline; }
 }
@@ -1424,7 +1424,7 @@ html.resp, body.resp {
   position: absolute;
   top: 0;
   p {
-    font-size: 60px;
+    //font-size: 60px;
     //color: #470BC1;
     margin: 60px 0 0 180px;
   }
@@ -1434,7 +1434,7 @@ html.resp, body.resp {
   position: absolute;
   top: 0;
   p {
-    font-size: 60px;
+    //font-size: 60px;
     color: #f05c1a;
     margin: 60px 0 0 180px;
   }
@@ -1446,7 +1446,7 @@ html.resp, body.resp {
   top: 100px;
   padding-right: 60px;
   p {
-      font-size: 3em;
+      //font-size: 3em;
       line-height: 1em;
       color: #244398;
       margin: 80px 0 0 180px;
@@ -1567,13 +1567,13 @@ html.resp, body.resp {
       @include text-shadow(none);
       text-shadow: none;
       //@include rotate(6deg);
-      font-size:1.4em;
+      //font-size:1.4em;
     }
     .close {
       position:relative;
       top:4px;
       line-height:15px;
-      font-size:2.4em;
+      //font-size:2.4em;
       color: #ee5b1a;
       @include opacity(.9);
       text-shadow: none;
@@ -1587,7 +1587,7 @@ html.resp, body.resp {
 
 .lt-ie9 .messages-container .alert .close {
   border:0;
-  font-size:3em;
+  //font-size:3em;
 }
 
 .flash-message {
@@ -1657,7 +1657,7 @@ h3 {
   .header-info {
     p {
       margin-bottom:0;
-      font-size:1.4em;
+      //font-size:1.4em;
       font-weight:bold;
       span {
         font-weight:normal;
@@ -1673,7 +1673,7 @@ h3 {
     overflow: hidden;
     margin-left: 100px;
     .auction-item {
-      font-size: 1.5em;
+      //font-size: 1.5em;
       .start_date, .end_date {
         color: #666;
       }
@@ -1701,7 +1701,7 @@ h3 {
   margin-left: 10px;
   float: left;
   color: white;
-  font-size: 18px;
+  //font-size: 18px;
   vertical-align: middle;
   height: 50px;
   padding-top: auto;
@@ -1736,7 +1736,7 @@ h3 {
 
 .cb-heading-primary {
   color: #336;
-  font-size: 1.4em;
+  //font-size: 1.4em;
   text-align: center!important;
   text-transform: uppercase;
 }
@@ -1796,7 +1796,7 @@ h3 {
 }
 
 .featured-activity {
-  font-size: 1.5em;
+  //font-size: 1.5em;
   background-image: url(asset_path('featured_activity.png', image));
   position: absolute;
   width: 256px;
@@ -1994,7 +1994,7 @@ h3 {
 }
 
 #product-description {
-  font-size: 1.5em;
+  //font-size: 1.5em;
 }
 
 .games-image-container {
@@ -2127,7 +2127,7 @@ h3 {
     margin-left: 1em;
     font-weight: bold;
     //color: #470BC1;
-    font-size: 16px;
+    //font-size: 16px;
   }
   h3 {
     margin-top: 2em;
@@ -2242,7 +2242,7 @@ hr {
 .product-details {
   padding-left: .5em;
   a {
-    font-size: 1.3em;
+    //font-size: 1.3em;
     font-weight: bold;
   }
 }
@@ -2263,7 +2263,7 @@ hr {
 
 #existing-customer {
   label {
-    font-size: 1em;
+    //font-size: 1em;
     display: inline-block;
     margin-top: 15px;
   }
@@ -2287,7 +2287,7 @@ hr {
   }
   h3 {
     input {
-      font-size: 14px;
+      //font-size: 14px;
       margin-left: 4em;
     }
   }
@@ -2300,7 +2300,7 @@ hr {
 }
 
 dl.details {
-  font-size: 150%;
+  //font-size: 150%;
 }
 
 .student-account-content {
@@ -2335,7 +2335,7 @@ dl.details {
 }
 
 .welcome-sticky {
-  font-size: 80%;
+  //font-size: 80%;
 }
 
 #reward-templates #template-controls {
