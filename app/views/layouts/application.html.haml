@@ -17,14 +17,14 @@
     = stylesheet_link_tag    'application', media: 'all'
     = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
     = menu_json
-    :plain 
-      <script src="/unified_classroom/dist/js/arrive.min.js"></script>       
-      <script src="/unified_classroom/dist/js/01-wc-lite.js"></script>      
+    :plain
+      <script src="/unified_classroom/dist/js/arrive.min.js"></script>
+      <script src="/unified_classroom/dist/js/01-wc-lite.js"></script>
       <script src="/unified_classroom/dist/js/02-pds-toolkit.js"></script>
-      <link rel="import" href="/unified_classroom/dist/js/03-pds-components.html" />    
-      <script src="/unified_classroom/dist/js/04-init.js"></script>      
-      <link rel="stylesheet" href="/unified_classroom/cp-override.css">      
-    :javascript    
+      <link rel="import" href="/unified_classroom/dist/js/03-pds-components.html" />
+      <script src="/unified_classroom/dist/js/04-init.js"></script>
+      <link rel="stylesheet" href="/unified_classroom/cp-override.css">
+    :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
       _gaq.push(['_trackPageview']);
@@ -36,12 +36,12 @@
       })();
   %body
     .unified_classroom_wrapper
-      :plain  
+      :plain
         <div class="nav_place_holder" style="position:absolute;top:0px;left:0px;z-index:-1;width:250px;">
         </div>
       .pds-main.main-content-wrapper.resp-page-content
-        = render "layouts/resp_content_container" 
-               
- 
+        = render "layouts/resp_content_container"
+    = render "layouts/footer"
+
 
     = oboe_rum_footer rescue ""

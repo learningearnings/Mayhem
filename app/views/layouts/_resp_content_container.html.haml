@@ -2,11 +2,10 @@
   = render "layouts/flashes"
   - if respond_to? :breadcrumbs
     = #breadcrumbs(@taxon)
-   
+
 .resp-page-content
   .right-content-area
     = yield
-  = render "layouts/footer"
 -# - if (sidebar = yield :sidebar).empty?
 -#   .resp-page-content= yield
 -# - else
