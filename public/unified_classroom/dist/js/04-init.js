@@ -102,13 +102,25 @@ var Nav = (function () {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
     				window.localStorage.setItem('active_id',id);  
-    				$.ajax({
-					        type: "GET",
-					        url: data["routes"][id] + "/?inline=Y",
-					        success: function(data){
-					        	$(".right-content-area").html(data);
-					        }
-					    }); 	
+    				if (id == 'shop-link') {
+	    				$.ajax({
+						        type: "GET",
+						        url: data["routes"][id] + "/?inline=Y",
+						        success: function(data){
+						        	var result = $(data).find('.main-content-wrapper').html();
+						        	//alert(result);
+						        	$(".right-content-area").html(result);
+						        }
+						    }); 	    					
+    				} else {
+	    				$.ajax({
+						        type: "GET",
+						        url: data["routes"][id] + "/?inline=Y",
+						        success: function(data){
+						        	$(".right-content-area").html(data);
+						        }
+						    }); 	
+					   }
 			
                     //window.location = data["routes"][id];
                };
