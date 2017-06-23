@@ -1,5 +1,8 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
+  
+
+
   get  'navmenus' => 'nav#menus'  
   get '/consumer/index' => "consumer#index"
   post '/consumer/index' => "consumer#index"  
