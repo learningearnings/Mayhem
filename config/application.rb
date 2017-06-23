@@ -86,8 +86,6 @@ module Leror
       Spree::Config.searcher_class = Spree::Search::Filter
     end
     config.middleware.use 'Dragonfly::Middleware', :images
-    
-    config.exceptions_app = self.routes
 
     config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
       allow do
