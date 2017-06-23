@@ -403,6 +403,8 @@ Leror::Application.routes.draw do
   # spree admin manual orders
   match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
   match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
+  
+  match '*' => 'errors#not_found'
 end
 
 # Any routes we add to Spree go here:
