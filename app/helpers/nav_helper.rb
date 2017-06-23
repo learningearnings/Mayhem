@@ -46,7 +46,7 @@ module NavHelper
                 id: 'school-admins-bank-link',
                 name: 'Bank',
                 activeAt: '^/school-admins-bank',
-                iconName: 'calculator-f'
+                iconName: 'alert-balance-f'
             },
             {
                 id: 'teachers-inbox-link',
@@ -97,7 +97,7 @@ module NavHelper
                 id: 'teachers-bank-link',
                 name: 'Bank',
                 activeAt: '^/teachers-bank',
-                iconName: 'calculator-f'
+                iconName: 'alert-balance-f'
             },
             {
                 id: 'teachers-inbox-link',
@@ -136,7 +136,7 @@ module NavHelper
                 id: 'home-link',
                 name: 'Home',
                 activeAt: '^/home',
-                iconName: 'pointer-up'
+                iconName: 'board'
             }
            ]
            if current_person.grade < 9
@@ -144,7 +144,7 @@ module NavHelper
                   id: 'locker-link',
                   name: 'Locker',
                   activeAt: '^/locker',
-                  iconName: 'menu'
+                  iconName: 'book-f'
               }   
            end     
            main.concat( [    
@@ -158,7 +158,7 @@ module NavHelper
                 id: 'students-bank-link',
                 name: 'Bank',
                 activeAt: '^/students-bank',
-                iconName: 'calculator-f',
+                iconName: 'alert-balance-f',
                 isCurrentRoute?: true
                 
             },                   
