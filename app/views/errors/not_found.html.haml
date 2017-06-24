@@ -6,7 +6,7 @@
 %html.resp
   / <![endif]
   %head
-    %title Learning Earnings
+    %title Learning Earnings - Page not found (404)
     = csrf_meta_tags
     %meta{:name => "viewport", :content => "width=device-width"}
     = oboe_rum_header rescue ""
@@ -16,8 +16,6 @@
     = javascript_include_tag 'application'
     = stylesheet_link_tag    'application', media: 'all'  
     = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
-    - if current_user && current_user.person
-      = stylesheet_link_tag current_user.person.type.downcase + '_background', media: 'all'
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
@@ -28,5 +26,18 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-  %body.resp
-    %h1 AKT 404
+  :plain
+    <body style="color:#ffffff;background-color: #005c7e;" >
+      <div style="text-align: center;position:relative;top: 25%;">
+        <span style="font-size:36px;">404</span><br/>
+        <span style="font-size:18px;">Server Error</span><br/>
+        <input type="button" onclick="window.location= '/';" value="Go to Homepage" style="margin-top: 30px;border: 0px; background-color: #137abb;color:#ffffff;width:300px;border-radius: 2px;">
+        <br/>
+        <span style="margin-top: 40px;font-size: 14px;">We're Sorry...</span>
+        <br/>
+        <span style="font-size: 10px;">This page doesn't exist.  Please check the url you used.</span>
+        <br/>
+        <img alt="Logo-powerschool-ondark" class="login-logo" src="/assets/logo-powerschool-ondark.png">
+      </div>
+    </body>
+      
