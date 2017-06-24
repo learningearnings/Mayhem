@@ -46,7 +46,7 @@ module NavHelper
                 id: 'school-admins-bank-link',
                 name: 'Bank',
                 activeAt: '^/school-admins-bank',
-                iconName: 'alert-balance-f'
+                iconName: 'bank'
             },
             {
                 id: 'teachers-inbox-link',
@@ -70,7 +70,7 @@ module NavHelper
                 id: 'classrooms-link',
                 name: 'Classrooms',
                 activeAt: '/classrooms/',
-                iconName: 'desk'
+                iconName: 'group'
             }, 
             {
                 id: 'play-link',
@@ -97,7 +97,7 @@ module NavHelper
                 id: 'teachers-bank-link',
                 name: 'Bank',
                 activeAt: '^/teachers-bank',
-                iconName: 'alert-balance-f'
+                iconName: 'bank'
             },
             {
                 id: 'teachers-inbox-link',
@@ -115,7 +115,7 @@ module NavHelper
                 id: 'classrooms-link',
                 name: 'Classrooms',
                 activeAt: '^/classrooms',
-                iconName: 'desk'
+                iconName: 'group'
             },    
             {
                 id: 'shop-link',
@@ -136,7 +136,7 @@ module NavHelper
                 id: 'home-link',
                 name: 'Home',
                 activeAt: '^/home',
-                iconName: 'board'
+                iconName: 'home'
             }
            ]
            if current_person.grade < 9
@@ -144,7 +144,7 @@ module NavHelper
                   id: 'locker-link',
                   name: 'Locker',
                   activeAt: '^/locker',
-                  iconName: 'book-f'
+                  iconName: 'lock'
               }   
            end     
            main.concat( [    
@@ -158,7 +158,7 @@ module NavHelper
                 id: 'students-bank-link',
                 name: 'Bank',
                 activeAt: '^/students-bank',
-                iconName: 'alert-balance-f',
+                iconName: 'bank',
                 isCurrentRoute?: true
                 
             },                   

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>video-f</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="video-f" fill="#000000">
+            <path d="M20.9549583,17.9765183 L17.8402554,15.2014934 L17.8402554,7.84379568 L20.9549583,5.06877076 C21.4479025,4.83510848 22,5.22556043 22,5.80705221 L22,17.2374758 C22,17.8189675 21.4479025,18.2094195 20.9549583,17.9765183 Z M2,7.00967984 C2,5.89976431 2.88794616,5 3.99515383,5 L14.9133218,5 C16.0152148,5 16.9084756,5.89662992 16.9084756,7.00967984 L16.9084756,16.0352363 C16.9084756,17.1451519 16.0205295,18.0449162 14.9133218,18.0449162 L3.99515383,18.0449162 C2.8932608,18.0449162 2,17.1482863 2,16.0352363 L2,7.00967984 Z" id="Video"></path>
+        </g>
+    </g>
+</svg>

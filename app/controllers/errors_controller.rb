@@ -1,9 +1,10 @@
 class ErrorsController < ApplicationController
+  
   def not_found
-    render :status => 404, :formats => [:html]
+    render :layout => false
   end
 
   def server_error
-    render :status => 500, :formats => [:html]
+    render :layout => false    
   end
 end

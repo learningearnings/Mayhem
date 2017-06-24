@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>circle-half-fill</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="circle-half-fill" fill="#000000">
+            <path d="M12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 Z M19.4403547,9.05461265 C18.2673192,6.09388565 15.3781862,4 12,4 C8.63838932,4 5.76104441,6.07338822 4.57703609,9.01109384 C4.57703609,10.9914844 19.4403547,10.9668025 19.4403547,9.05461265 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

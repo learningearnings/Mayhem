@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-390 -674 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon_communication);
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 1px;
+      }
+    </style>
+    <clipPath id="clip-icon_communication">
+      <rect x="-390" y="-674" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon_communication" data-name="icon–communication" class="cls-1">
+    <g id="group-34" transform="translate(-878 -680)">
+      <path id="path-20" class="cls-2" d="M3.793,9.914h0L1.878,8H0V1H4V4h6V8H5.707Z" transform="translate(495.5 20.5)"/>
+      <path id="path-14" class="cls-2" d="M7.879,9H0V-1H14V9H11.707L9.793,10.914Z" transform="translate(499.5 15.5)"/>
+    </g>
+  </g>
+</svg>

@@ -22,7 +22,17 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
-
+  
+  rescue_from ActiveRecord::RecordNotFound, :with => :render_not_found
+  rescue_from ActionController::RoutingError, :with => :render_not_found
+  rescue_from ActionController::UnknownController, :with => :render_not_found
+  rescue_from ActionController::UnknownAction, :with => :render_not_found
+  rescue_from ActionView::MissingTemplate, :with => :render_not_found
+  
+  def render_not_found
+    redirect_to "/errors/not_found"
+  end
+  
   def choose_layout
     if params[:inline].blank?
       "application"
