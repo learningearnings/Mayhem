@@ -4,8 +4,6 @@ Leror::Application.routes.draw do
   get 'errors/not_found' 
   get 'errors/server_error'
 
-
-
   get  'navmenus' => 'nav#menus'  
   get '/consumer/index' => "consumer#index"
   post '/consumer/index' => "consumer#index"  
