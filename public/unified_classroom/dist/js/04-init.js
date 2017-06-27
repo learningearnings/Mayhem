@@ -102,7 +102,7 @@ var Nav = (function () {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
     				window.localStorage.setItem('active_id',id);  
-    				if ((id == 'shop-link') || (id = 'home-link')) {
+    				if ((id == 'shop-link') || (id == 'home-link')) {
 	    				$.ajax({
 						        type: "GET",
 						        url: data["routes"][id] + "/?inline=Y",
