@@ -95,24 +95,25 @@ var Nav = (function () {
   			var data = menu_json;
       	    data["home"]["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);
+    				window.localStorage.setItem('active_id',id);			
                     window.location = data["routes"][id];
                };
       	    data["main"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
-    				window.localStorage.setItem('active_id',id);
-            var doubleFooterIds = ['shop-link', 'home-link']
-    				if (doubleFooterIds.includes(id)) {
+    				window.localStorage.setItem('active_id',id);  
+    				if ((id == 'shop-link') || (id = 'home-link')) {
 	    				$.ajax({
 						        type: "GET",
 						        url: data["routes"][id] + "/?inline=Y",
 						        success: function(data){
-						        	var result = $(data).find('.main-content-wrapper').html();
-						        	//alert(result);
-						        	$(".right-content-area").html(result);
+						        	var result = $('.resp-page-content',data);
+						        	//var result2 = $('.main-content-wrapper',result);
+						        	//alert(result.html());
+						        	//alert(result2.html());
+						        	$(".resp-page-content").html(result.html());
 						        }
-						    });
+						    }); 	    					
     				} else {
 	    				$.ajax({
 						        type: "GET",
@@ -120,51 +121,41 @@ var Nav = (function () {
 						        success: function(data){
 						        	$(".right-content-area").html(data);
 						        }
-						    });
+						    }); 	
 					   }
-
+			
                     //window.location = data["routes"][id];
                };
-			});
+			});	
       	    data["user"].forEach(function (entry) {
     			entry["onUserClick"] = function () {
     				var id = $(this).attr('id');
     				window.localStorage.setItem('active_id',id);
     				if (id == "logout-link") {
     					window.location = data["routes"][id];
-    				} else if (id == 'profile-link') {
-              $.ajax({
-                    type: "GET",
-                    url: data["routes"][id] + "/?inline=Y",
-                    success: function(data){
-                      var result = $(data).find('.main-content-wrapper').html();
-                      //alert(result);
-                      $(".right-content-area").html(result);
-                    }
-                });
-            } else {
+    				} else {
 	    				$.ajax({
 						        type: "GET",
 						         url: data["routes"][id] + "/?inline=Y",
 						        success: function(data){
 						        	$(".right-content-area").html(data);
 						        }
-						    });
-            }
+						    }); 
+					}					
                     //window.location = data["routes"][id];
                };
-			});
-
+			});				
+				
   			_this.navComponent.homeNavItem = data["home"] ;
- 			_this.navComponent.navigation = data["main"] ;
- 			_this.navComponent.userNavigation = data["user"] ;
-         	_this.navComponent.user = data['username'];
-
-  /*
-
+ 			_this.navComponent.navigation = data["main"] ;  			
+ 			_this.navComponent.userNavigation = data["user"] ; 
+         	_this.navComponent.user = data['username'];	
+         	
+  /* 	
+    
   		});
   */
-
+  
     };
     Nav.prototype.initUserInfo = function () {
 
@@ -190,24 +181,23 @@ $(document).ready(function (e) {
     navComp.initLinks();
 });
 
-
+	
 
 /***/ })
 /******/ ]);
 
 
 var _active_id = window.localStorage.getItem('active_id');
-var _active_menu_id = '#' + _active_id;
+var _active_menu_id = '#' + _active_id; 
 $(document).arrive(_active_menu_id, function() {
     // 'this' refers to the newly created element
     var newElem = $(this);
     //console.log("Active menu item has arrived!");
     newElem.addClass('pds-is-active');
     $(".nav_place_holder").hide();
-    $(".nav_place_holder").css("display","none");
+    $(".nav_place_holder").css("display","none");    
     $(".nav_place_holder").remove();
 
     // Firfox fix
     window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
-});
-
+});     
