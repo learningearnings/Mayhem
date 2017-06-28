@@ -6,7 +6,7 @@
         %strong
           Credits Available:
         = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-        = link_to 'Manage Categories', teachers_otu_code_types_path, :class => 'btn awesome-button pull-right'
+        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, :class => 'btn awesome-button pull-right'
 
       .distribute-credits
         %h3 Credits
@@ -15,7 +15,7 @@
             %a.electronic_credits{:href => "#electronic-credits", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-envelope"}
-                Electronic       
+                Electronic
           %li
             %a{:href => "#print-credits", 'data-toggle' => 'tab'}
               %p
@@ -31,7 +31,7 @@
               %a{'href' => '#auto-credits', 'data-toggle' => 'tab'}
                 %p
                   %i{:class => "icon-star"}
-                  Automatic                
+                  Automatic
           %li
             %a{:href => "#lookup-code", 'data-toggle' => 'tab'}
               %p
@@ -45,22 +45,22 @@
               %span.form-input-control
                 = label_tag "Teacher"
                 = select("teacher", "id", current_school.teachers.order('last_name, first_name').collect {|p| [ p.name, p.id ] })
-              %span.form-input-control             
+              %span.form-input-control
                 = label_tag '1s'
                 = text_field_tag :point1, nil, :class => 'focus-on-me input-mini credits'
-              %span.form-input-control              
+              %span.form-input-control
                 = label_tag '5s'
                 = text_field_tag :point5, nil, :class => 'input-mini credits'
-              %span.form-input-control              
+              %span.form-input-control
                 = label_tag '10s'
-                = text_field_tag :point10, nil, :class => 'input-mini credits' 
+                = text_field_tag :point10, nil, :class => 'input-mini credits'
               = f.submit 'Print These Credits', :class => 'btn awesome-button'
 
           .tab-pane#electronic-credits
             .electronic-credits-for-student
               %p Issue Electronic Credits to a single student
               = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
-                %span.form-input-control              
+                %span.form-input-control
                   = label_tag 'Student'
                   = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
                 %span.form-input-control
@@ -202,18 +202,18 @@
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
-  
+
   $("#school_weekly_perfect_attendance_amount").on("change", function() {
-        var val = Math.abs(parseInt(this.value, 10));      
+        var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
   });
-  
+
   $("#school_weekly_no_tardies_amount").on("change", function() {
         var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
   });
-  
+
   $("#school_weekly_no_infractions_amount").on("change", function() {
         var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
-  });    
+  });
