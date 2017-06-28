@@ -69,8 +69,9 @@
                 %span.form-input-control
                   = f.label :otu_code_category_id, "Credit Category"
                   = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
-                = f.submit 'Send', :class => 'btn awesome-button'
-
+                %div
+                = f.submit 'Send Credits', :class => 'btn awesome-button', style: 'float:left;'
+            %br
             .electronic-credits-for-classroom
               %p Issue Electronic Credits to each student in a classroom
               = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
@@ -84,7 +85,7 @@
                   = f.label :otu_code_category_id, "Credit Category"
                   = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
                 #classroom_distribution
-                = f.submit 'Send', class: 'btn awesome-button'
+                = f.submit 'Send Credits', class: 'btn awesome-button', style: 'float:left;'
 
           .tab-pane#transfer-credits
             %p Transfer Credits Between Teachers
