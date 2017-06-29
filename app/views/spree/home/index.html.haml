@@ -15,11 +15,11 @@
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 
-- if current_person.is_a? SchoolAdmin
-  .auctions
-    %h2 School Auctions
-    %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
-    %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
+    - if current_person.is_a? SchoolAdmin
+      .auctions
+        %h2 School Auctions
+        %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
+        %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
 
 = javascript_include_tag "tours/school_admin/overview"
 = javascript_include_tag "tours/student/overview"
