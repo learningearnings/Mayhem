@@ -15,17 +15,17 @@
             %a.electronic_credits{:href => "#electronic-credits", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-envelope"}
-                Electronic
+                Electronic Credits
           %li
             %a{:href => "#print-credits", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-print"}
-                Print
+                Print Credits
           %li
             %a{:href => "#transfer-credits", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-random"}
-                Transfer
+                Transfer Credits
           - if current_user.person.is_a?(SchoolAdmin)
             %li
               %a{'href' => '#auto-credits', 'data-toggle' => 'tab'}
@@ -36,7 +36,7 @@
             %a{:href => "#lookup-code", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-search"}
-                Code Lookup
+                Lookup A Code
 
         .tab-content
           .tab-pane#print-credits
