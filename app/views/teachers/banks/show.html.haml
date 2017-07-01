@@ -1,17 +1,15 @@
 .main-content-wrapper
-
-  .full-content
-    .bank_content
-      %h2 The Bank
-      %p
-        Teachers have enough to worry about, which is why we made LE Credits the
-        easiest and simplest way to reward students for a job well done.
-        Below you'll find everything you need to manage your classroom's LE credits.
-      %p.credits-available
-        %strong
-          Credits Available:
-        = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, {:class => 'btn awesome-button edit-credit-categories'}
+  .bank_content
+    %h1 The Bank
+    %p
+      Teachers have enough to worry about, which is why we made LE Credits the
+      easiest and simplest way to reward students for a job well done.
+      Below you'll find everything you need to manage your classroom's LE credits.
+    %p.credits-available
+      %strong
+        Credits Available:
+      = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
+      = link_to 'Edit Credit Categories', teachers_otu_code_types_path, {:class => 'btn awesome-button edit-credit-categories'}
 
     - if current_person.can_distribute_credits_for_school?(current_school)
       .distribute-credits
@@ -47,7 +45,7 @@
               = text_field_tag :point5, nil,:min => '0',:step => '1',:type => "number"
               = label_tag '10'
               = text_field_tag :point10, nil,:min => '0', :step => '1',:type => "number"
-              = f.submit 'Print These Credits', :class => 'awesome-button'
+              = f.submit 'Print These Credits', :class => 'btn awesome-button'
 
           .tab-pane#electronic-credits
             .electronic-credits-for-student
@@ -60,8 +58,9 @@
                 = text_field_tag :points, nil
                 = f.label :otu_code_category_id, "Credit Category"
                 = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
-                = f.submit 'Send These Credits', :class => 'awesome-button'
-
+                %div
+                = f.submit 'Send Credits', :class => 'btn awesome-button', style: 'float:left;'
+            %br
             .electronic-credits-for-classroom
               %h4 Issue Electronic Credits to each student in a classroom
               = form_for OtuCode.new, :url => teachers_create_ebucks_for_classroom_path do |f|
@@ -72,7 +71,7 @@
                 = f.label :otu_code_category_id, "Credit Category"
                 = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
                 #classroom_distribution
-                = f.submit 'Send These Credits', class: 'awesome-button'
+                = f.submit 'Send Credits', class: 'btn awesome-button', style: 'float:left;'
 
           .tab-pane#transfer-credits
             %h4 Transfer Credits to Another Teacher
@@ -82,7 +81,7 @@
               = hidden_field_tag :from_teacher_id, current_person.id
               = label_tag :to_teacher
               = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers + current_school.school_admins).uniq - [current_person], :id, :to_s), :include_blank => true
-              = f.submit 'Transfer Credits', :class => 'awesome-button'
+              = f.submit 'Transfer Credits', :class => 'btn awesome-button'
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
 

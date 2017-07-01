@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="2467 912 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-error);
+      }
+
+      .cls-2 {
+        fill: #e41700;
+      }
+    </style>
+    <clipPath id="clip-icon-error">
+      <rect x="2467" y="912" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon-error" class="cls-1">
+    <path id="path" class="cls-2" d="M156.1,90.8l-7.6,7.6v10.8l7.6,7.6h10.8l7.6-7.6V98.5l-7.6-7.6-10.8-.1Zm3.8,4.9h3.2V107h-3.2V95.7Zm-.1,13H163v3.2h-3.2Z" transform="translate(2322.015 824.2)"/>
+  </g>
+</svg>

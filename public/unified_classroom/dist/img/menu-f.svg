@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="692 511 30 30">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-menu-f);
+      }
+    </style>
+    <clipPath id="clip-menu-f">
+      <rect x="692" y="511" width="30" height="30"/>
+    </clipPath>
+  </defs>
+  <g id="menu-f" class="cls-1">
+    <path id="path-20" d="M-692-541v-2h18v2Zm0-4v-2h18v2Zm0-4v-2h18v2Z" transform="translate(1390 1072)"/>
+  </g>
+</svg>

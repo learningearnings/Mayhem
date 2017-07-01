@@ -1,8 +1,9 @@
-.message.center-content.loading
-  = image_tag "loading.gif"
-  %h3 Your credits are currently processing, they will show up here when it is completed.
-.message.center-content.loaded
-  %h3 Your credits have been processed and downloaded.
+.main-content-wrapper
+  .message.center-content.loading
+    = image_tag "loading.gif"
+    %h3 Your credits are currently processing, they will show up here when it is completed.
+  .message.center-content.loaded
+    %h3 Your credits have been processed and downloaded.
 
 :javascript
   $('.loaded').hide();

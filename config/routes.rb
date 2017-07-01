@@ -1,5 +1,10 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
+  
+  get 'errors/not_found' 
+  get 'errors/server_error'
+
+  get  'navmenus' => 'nav#menus'  
   get '/consumer/index' => "consumer#index"
   post '/consumer/index' => "consumer#index"  
   get '/consumer/complete' => "consumer#complete"  
@@ -306,6 +311,7 @@ Leror::Application.routes.draw do
   post "/undeliver_reward" => "deliver_rewards_commands#undeliver", :as => :undeliver_reward
   namespace :teachers do
     get "balance" => "teachers#get_balance"
+    #get "home", to: redirect('bank')    
     match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
@@ -324,7 +330,7 @@ Leror::Application.routes.draw do
     resource  :lounge
     resources :rewards
     resources :reward_templates
-    match "home" => "home#show", as: 'home'
+    #match "home" => "home#show", as: 'home'
     match "save" => "home#save", as: 'save'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch', defaults: { :format => 'html' }
@@ -401,6 +407,7 @@ Leror::Application.routes.draw do
   # spree admin manual orders
   match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
   match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
+ 
 end
 
 # Any routes we add to Spree go here:

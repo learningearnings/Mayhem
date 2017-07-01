@@ -10,7 +10,7 @@ require "rvm/capistrano/alias_and_wrapp"
 require 'bundler/capistrano'
 require 'capistrano-unicorn'
 require 'capistrano/ext/multistage'
-require 'slack-notify'
+require 'slack-notifier'
 
 # Setup whenever to work right in staging
 set :whenever_command, "bundle exec whenever"
@@ -51,27 +51,25 @@ set :use_sudo, false
 
 # repo details
 set :scm,             :git
-set :repository,      "git@github.com:learningearnings/Mayhem.git"
+set :repository,      "https://github.com/learningearnings/Mayhem.git"
 set :branch,          "develop"
 
 # Slack config
-set :slack_token, "LQS1Y3049h0I56StyZ1LKNHS"
-set :slack_subdomain, "learn"
-set :slack_channel, "#general"
+set :slack_webhook_url, 'https://hooks.slack.com/services/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'
+set :slack_channel, "#learningearnings-dev"
+set :current_branch, `git rev-parse --abbrev-ref HEAD`.chomp
 set :slack_application, "Mayhem"
-set :slack_emoji, ":bradleybot:"
-set :slack_username, "bradleybot"
+set :slack_emoji, ":ghost:"
+set :slack_username, "slackbot"
 set :slack_local_user, `git config user.name`.chomp
 
 # tasks
 namespace :deploy do
   desc "Sends deployment notification to Slack."
-  task :start_notify_slack, :roles => :app do
-    ::SlackNotify::Client.new(slack_subdomain, slack_token, {
-      channel: slack_channel,
-      username: slack_username,
-      icon_emoji: slack_emoji
-    }).notify("#{slack_local_user} started deploying #{slack_application}'s #{branch} to #{fetch(:stage, 'production')}")
+  task :start_notify_slack, roles: :app do
+    text = "#{slack_local_user} started deploying #{slack_application}'s #{current_branch} to #{fetch(:stage, 'production')}"
+    notifier = Slack::Notifier.new slack_webhook_url, channel: slack_channel, username: slack_username
+    notifier.post text: text, icon_emoji: slack_emoji
   end
 
   desc "Symlink shared resources on each release"
@@ -101,11 +99,9 @@ namespace :deploy do
 
   desc "Sends deployment notification to Slack."
   task :end_notify_slack, :roles => :app do
-    ::SlackNotify::Client.new(slack_subdomain, slack_token, {
-      channel: slack_channel,
-      username: slack_username,
-      icon_emoji: slack_emoji
-    }).notify("#{slack_local_user} has finished deploying #{slack_application}'s #{branch} to #{fetch(:stage, 'production')}")
+    text = "#{slack_local_user} has finished deploying #{slack_application}'s #{current_branch} to #{fetch(:stage, 'production')}"
+    notifier = Slack::Notifier.new slack_webhook_url, channel: slack_channel, username: slack_username
+    notifier.post text: text, icon_emoji: slack_emoji
   end
 
   desc "Automatically trust .rvmrc after deploy"

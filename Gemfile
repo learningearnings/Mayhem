@@ -146,9 +146,10 @@ gem 'unicorn'
 #gem 'debugger'
 
 group :development do
-  gem 'slack-notify'
+  gem 'slack-notifier'
   gem 'quiet_assets'
   gem 'pry', '~> 0.9.10'
+  gem 'byebug'
   gem 'unicorn'
   gem 'thin'
   gem 'rack-bug', github: 'learningearnings/rack-bug', branch: 'rails3'

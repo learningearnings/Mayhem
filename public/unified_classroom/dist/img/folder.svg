@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>folder</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="folder" fill="#020000">
+            <path d="M6.69497,3.31904707 C7.16982003,3.31904707 7.62113521,3.52393862 7.93262575,3.88249885 L9.36271343,5.52440009 C9.67420397,5.88296031 10.1255192,6.08785187 10.6003692,6.08785187 L20.3594832,6.08785187 C21.2662667,6.08785187 22,6.82296954 22,7.72975311 L22,18.0214006 C22,18.9267997 21.2662667,19.6619174 20.3594832,19.6619174 L3.64190125,19.6619174 C2.73511767,19.6619174 2,18.9267997 2,18.0214006 L2,4.96094832 C2,4.05416474 2.73511767,3.31904707 3.64190125,3.31904707 L6.69497,3.31904707 Z"></path>
+        </g>
+    </g>
+</svg>

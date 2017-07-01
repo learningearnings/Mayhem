@@ -2,7 +2,7 @@ namespace :missing_teacher_credits do
   desc "Generate missing teacher credits for the generated school credit record."
   task :generate_missing_credits => :environment do
     #### Assign Date over here
-    created_date = "2017-03-01 00:00:00.000000"
+    created_date = Date.today.strftime("%Y-%m-01 00:00:00.000000")
     schools = School.joins(:school_credits).where("school_credits.created_at >= ?", created_date)
     schools.each do |school|
       if school.teacher_credits.where("created_at >= ?", created_date).count == 0
