@@ -4,6 +4,9 @@ require 'mixpanel-ruby'
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
+  layout :choose_layout
+
+
   respond_to :html
   include UrlHelper
   include MessagesHelper
@@ -19,6 +22,24 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, :alert => exception.message
   end
+  
+  rescue_from ActiveRecord::RecordNotFound, :with => :render_not_found
+  rescue_from ActionController::RoutingError, :with => :render_not_found
+  rescue_from ActionController::UnknownController, :with => :render_not_found
+  rescue_from ActionController::UnknownAction, :with => :render_not_found
+  rescue_from ActionView::MissingTemplate, :with => :render_not_found
+  
+  def render_not_found
+    redirect_to "/errors/not_found"
+  end
+  
+  def choose_layout
+    if params[:inline].blank?
+      "application"
+    else
+      false
+    end
+  end  
 
   def clear_balance_cache!
     expire_fragment "#{current_person.id}_balances"

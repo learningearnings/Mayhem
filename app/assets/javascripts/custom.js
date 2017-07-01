@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
   var pathArray = window.location.hostname.split( '.' );
   var current_subdomain = pathArray[0];
@@ -108,7 +109,21 @@ $(document).ready(function() {
 	  $(".attention-teachers").css("display", "block");
           return false;
 	});
-
+	
+	
+    $(".avatar").click(function(){
+	      $(".secondary-user-nav").toggleClass("hidden");
+          return false;
+	});
+	$(".main-content-wrapper").click(function(){
+	      $(".secondary-user-nav").addClass("hidden");
+          //return false;
+	});
+    $(".person-details").click(function(){
+	      $(".secondary-user-nav").toggleClass("hidden");
+          return false;
+	});	
+	
   function highlightNavigation(path_part, nav_selector, subdomain){
       if((subdomain != undefined && subdomain != current_subdomain) || already_selected) {
           return;
@@ -118,13 +133,14 @@ $(document).ready(function() {
           already_selected = 1;
       }
   }
-	// Primary Nav Selected
+	// Primary Nav Selected-collapsed
   highlightNavigation('locker',        'locker');
   highlightNavigation('charities',     'charities')
   highlightNavigation('inbox',         'inbox');
   highlightNavigation('bank',          'bank');
   highlightNavigation('classrooms',    'classrooms');
   highlightNavigation('lounge',        'lounge');
+  highlightNavigation('store',          'shop');  
   highlightNavigation('play',          'play');
   highlightNavigation('games',         'play');
   highlightNavigation('rewards',       'rewards');
@@ -152,6 +168,26 @@ $(document).ready(function(){
  else {
    $(".side-art").css( "display","block" );
  }
+ 
+ $('.arrow img').click(function(){
+
+	if ($('.custom-nav-bar').hasClass('nav-closed'))  {
+  		$('.custom-nav-bar').removeClass('nav-closed');
+		$('.custom-nav-bar').addClass('nav-open');
+    	sessionStorage.setItem('menuCollapsed', "N"); 			
+ 	}
+    else {
+		$('.custom-nav-bar').removeClass('nav-open');
+		$('.custom-nav-bar').addClass('nav-closed');
+    	sessionStorage.setItem('menuCollapsed', "Y");  
+    }
+ });
+ 
+ if (sessionStorage.getItem('menuCollapsed') == "Y") {
+   	   	$('.custom-nav-bar').removeClass('nav-open');
+		$('.custom-nav-bar').addClass('nav-closed'); 
+ } 
+ 
 });
 //update the width value when the browser is resized
 $(window).resize(function(){
@@ -182,3 +218,7 @@ $.fn.animateHighlight = function( highlightColor, duration ) {
 };
 
 });
+
+
+
+ 

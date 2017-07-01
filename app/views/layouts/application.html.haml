@@ -16,8 +16,16 @@
     = javascript_include_tag 'application'
     = stylesheet_link_tag    'application', media: 'all'
     = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
-    - if current_user && current_user.person
-      = stylesheet_link_tag current_user.person.type.downcase + '_background', media: 'all'
+    = menu_json
+    :plain
+      <link class="pds-icon-src" rel="import" href="/unified_classroom/dist/img/pds-icons.svg" />
+      <script src="/unified_classroom/dist/js/html-import.js"></script>
+      <script src="/unified_classroom/dist/js/arrive.min.js"></script>
+      <script src="/unified_classroom/dist/js/01-wc-lite.js"></script>
+      <script src="/unified_classroom/dist/js/02-pds-toolkit.js"></script>
+      <link rel="import" href="/unified_classroom/dist/js/03-pds-components.html" />
+      <script src="/unified_classroom/dist/js/04-init.js"></script>
+      <link rel="stylesheet" href="/unified_classroom/cp-override.css">
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
@@ -28,14 +36,14 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-  %body.resp
-    .resp-page-content-container
-      .resp-head
-        = render "layouts/resp_head"
+  %body
+    .unified_classroom_wrapper
+      :plain
+        <div class="nav_place_holder" style="position:absolute;top:0px;left:0px;z-index:-1;width:250px;">
+        </div>
+      .pds-main.main-content-wrapper.resp-page-content
         = render "layouts/resp_content_container"
         = render "layouts/footer"
 
-      .resp-content-container
-        .resp-side-art
-          .resp-side-art-students
+
     = oboe_rum_footer rescue ""

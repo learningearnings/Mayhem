@@ -34,11 +34,14 @@ class ClassroomsController < LoggedInController
 
   def remove_student
     @student = Student.find(params[:student])
+    
     @school = current_school
     @classroom = Classroom.find(params[:classroom])
     if psl = PersonSchoolLink.find_by_school_id_and_person_id(@school.id, @student.id)
       link = PersonSchoolClassroomLink.find_by_person_school_link_id_and_classroom_id(psl.id, @classroom.id)
-      if link.deactivate!
+      link.status = 'inactive'
+      link.homeroom = nil
+      if link.save
         link.audit_logs.create(district_guid: link.person_school_link.school.try(:district_guid), school_id: link.person_school_link.school.try(:id), school_sti_id: link.person_school_link.school.try(:sti_id), person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: link.person.name, action: "Deactivate")
         flash[:notice] = "Student removed from classroom."
         MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom', mixpanel_options)

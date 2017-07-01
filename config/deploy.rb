@@ -51,7 +51,7 @@ set :use_sudo, false
 
 # repo details
 set :scm,             :git
-set :repository,      "git@github.com:learningearnings/Mayhem.git"
+set :repository,      "https://github.com/learningearnings/Mayhem.git"
 set :branch,          "develop"
 
 # Slack config

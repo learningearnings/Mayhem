@@ -1,10 +1,11 @@
-%h1 You have been hit by food!
-
-%ul.action_buttons
-  - if @match.winner
-    %li= link_to "Rematch!", rematch_games_food_fight_path(@match.winner.person.id), class: 'btn awesome-button'
-  %li= link_to "Challenge someone else!", games_food_fight_path, class: 'btn awesome-button'
-
-.food-thrown-wrapper
-  %p= "#{@match.food_person_link.person}! You have been hit by #{@match.winner.try(:person).try(:name)}."
-  .food-thrown= image_tag @food.image.url, :id => @food.id
+.main-content-wrapper
+  %h1 You have been hit by food!
+  
+  %ul.action_buttons
+    - if @match.winner
+      %li= link_to "Rematch!", rematch_games_food_fight_path(@match.winner.person.id), class: 'btn awesome-button'
+    %li= link_to "Challenge someone else!", games_food_fight_path, class: 'btn awesome-button'
+  
+  .food-thrown-wrapper
+    %p= "#{@match.food_person_link.person}! You have been hit by #{@match.winner.try(:person).try(:name)}."
+    .food-thrown= image_tag @food.image.url, :id => @food.id

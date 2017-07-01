@@ -1,16 +1,18 @@
-- if @match.active
-  %h1 Round End
-  %h5 Food Fight!
-  %p We have notified the student of the incoming attack!
-  %p= @match.score
-  %p= link_to "Click Here to Challenge someone else!", games_food_fight_path
-- else
-  - if @player.winner?
-    %h1 Game Over
-    %h5= "Congratulations #{@player.person.name}!"
-    = link_to "Throw Food", choose_food_path(@match.id), class: 'btn awesome-button'
+.main-content-wrapper
+  .full-content
+    - if @match.active
+      %h1 Round End
+      %h5 Food Fight!
+      %p We have notified the student of the incoming attack!
+      %p= @match.score
+      %p= link_to "Click Here to Challenge someone else!", games_food_fight_path
+    - else
+      - if @player.winner?
+        %h1 Game Over
+        %h5= "Congratulations #{@player.person.name}!"
+        = link_to "Throw Food", choose_food_path(@match.id), class: 'btn awesome-button'
 
-  - elsif @player.loser?
-    %h1 Game Over
-    %h5= "Sorry #{@player.person.name}! Better luck next time."
-    = link_to "Click Here to Challenge someone else!", games_food_fight_path, class: 'btn awesome-button'
+      - elsif @player.loser?
+        %h1 Game Over
+        %h5= "Sorry #{@player.person.name}! Better luck next time."
+        = link_to "Click Here to Challenge someone else!", games_food_fight_path, class: 'btn awesome-button'

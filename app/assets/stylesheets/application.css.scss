@@ -8,6 +8,7 @@
 @import 'compass';
 @import 'compass_twitter_bootstrap_awesome';
 @import 'compass_twitter_bootstrap_responsive';
+@import url('//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css');
 
 // Site styles
 
@@ -44,3 +45,260 @@
     display: none;
   }
 }
+
+body {
+  font-family: "Open Sans";
+  font-weight: 400;
+  font-size: 16px;
+}
+
+//All headings have the same color
+h1, h2, h3, h4, h5, h6 {
+   font-family: "Open Sans";  
+   font-color: #333;
+   color: #333;
+}
+
+//all headers after h1 have the same weight
+h2, h3, h4, h5, h6 {
+   font-weight: 300;
+}
+
+h1 {
+   font-size: 24px;
+   line-height: 24px;
+   padding: 21px 0;
+   font-weight: 600; //typically used for page title, this is going to be heavier font than what is used elsewhere
+}
+
+
+h2 {
+   font-size: 22px;
+   line-height: 22px;
+   padding: 20px 0;
+}
+
+h3 {
+   font-size: 21px;
+   line-height: 21px;
+   padding: 19px 0;
+}
+
+h4 {
+   font-size: 20px;
+   line-height: 20px;
+   padding: 18px 0;
+}
+
+h5 {
+   font-size: 19px;
+   line-height: 19px;
+   padding: 17px 0;
+}
+
+h6 {
+   font-size: 18px;
+   line-height: 18px;
+   padding: 16px 0;
+}
+
+.login .chosen-container-single .chosen-single div {
+    top: 14px;
+    height: 50%
+}
+.chosen-container-single .chosen-single span {
+  padding-left: 16px;
+}
+
+input[type="submit"], input[type="button"], input[type="text"] {
+    height: 36px;
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-width: 100px;
+    display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0 0 1rem 0;
+    //text-align: center;
+    line-height: 1;
+    cursor: pointer;
+    vertical-align: middle;
+    padding: 9px 20px;
+    color: #137abb;
+    background-color: #fff;
+    width: auto;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    background-image: none;
+}
+input[type="submit"], input[type="button"] {
+    text-align: center;
+}
+input[type="text"] {
+    text-align: left;
+}
+
+
+
+::-webkit-file-upload-button {
+    height: 36px;
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-width: 100px;
+    display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0 0 1rem 0;
+    text-align: center;
+    line-height: 1;
+    cursor: pointer;
+    vertical-align: middle;
+    padding: 9px 20px;
+    color: #137abb;
+    background-color: #fff;
+    width: auto;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    background-image: none;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+  margin-bottom: 20px;
+}
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  color: #333;
+}
+
+.btn:hover:not([disabled]) {
+    color: #137abb;
+    text-decoration: none;
+    background-color: #f7f7f7;
+}
+.btn {
+    height: 36px;
+    font-size: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    min-width: 100px;
+    display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0 0 1rem 0;
+    text-align: center;
+    line-height: 1;
+    cursor: pointer;
+    vertical-align: middle;
+    padding: 9px 20px;
+    color: #137abb;
+    background-color: #fff;
+    width: auto;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    background-image: none;
+}
+//primary button styles (used for form submits)
+.btn.primary:hover:not([disabled]), input[type="submit"].btn:hover:not([disabled]) {
+    background-color: #287218;
+    color: #fff;
+}
+.btn.primary, input[type="submit"].btn {
+    background-color: #2b9e12;
+    color: #fff;
+    border: 1px solid transparent;
+}
+//disabled button style
+.btn.disabled, .btn[disabled] {
+    opacity: 1;
+    cursor: not-allowed;
+    color: #c3ddee;
+    border-color: #f7f7f7;
+    background-color: #fff;
+    pointer-events: initial;
+}
+//disabled primary button
+.btn.primary.disabled, .btn.primary[disabled], input[type="submit"].btn.disabled, input[type="submit"].btn[disabled] {
+    background-color: #c8e6c2;
+    color: #fff;
+}
+
+a {
+  cursor: pointer;
+  color: #137abb;
+  text-decoration: none;
+}
+
+a:focus, a:hover {
+  text-decoration: none;
+  color: #042d40;
+  cursor: pointer;
+}
+
+.btn {
+  text-shadow: 0 0 0;
+}
+.profile .arrow img, 
+.profile-collapsed .arrow img {
+    cursor: pointer;
+}
+
+.profile .avatar img, 
+.profile-collapsed .avatar img, 
+.person-details {
+    cursor: pointer;
+}
+
+.pull-right {
+  float: right;
+}
+.nav.nav-tabs {
+  margin-bottom: 0;
+}
+.nav.nav-tabs+.tab-content {
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+p.credits-available {
+  //font-size: 21px;
+}
+p.credits-available strong {
+  //font-size: 16px;
+}
+
+span.form-label-control {
+  display: inline-block;
+  margin: 0 0 20px 20px;
+}
+span.form-label-control {
+  display: block;
+  margin-left: 10px;
+}
+span.form-label-control input, span.form-label-control select {
+  margin-bottom: 0;
+}
+span.form-input-control {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+

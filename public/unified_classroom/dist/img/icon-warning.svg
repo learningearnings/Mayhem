@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="2467 858 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-warning);
+      }
+
+      .cls-2 {
+        fill: #e24e0f;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-warning">
+      <rect x="2467" y="858" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon-warning" class="cls-1">
+    <path id="path-4" class="cls-2" d="M3030.147,2652.44l13.524,23.161h-27Z" transform="translate(-547.671 -1790.481)"/>
+    <rect id="rectangle-13" class="cls-3" width="3" height="9" transform="translate(2481 869)"/>
+    <rect id="rectangle-13-2" data-name="rectangle-13" class="cls-3" width="3" height="3" transform="translate(2481 880)"/>
+  </g>
+</svg>

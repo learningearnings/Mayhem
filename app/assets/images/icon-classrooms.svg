@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1521 -10863 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-classrooms);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-classrooms">
+      <rect x="-1521" y="-10863" width="20" height="20"/>
+    </clipPath>
+  </defs>
+  <g id="icon-classrooms" class="cls-1">
+    <g id="Symbol_52_5" data-name="Symbol 52 – 5" transform="translate(-1526 -10868)">
+      <g id="Group_15112" data-name="Group 15112">
+        <path id="Subtraction_7" data-name="Subtraction 7" class="cls-2" d="M5.217,20H0V16.522H5.218V20Zm0-4.347H0V4.347H5.218v11.3Zm0-12.174H0V0H5.218V3.477Z" transform="translate(11.217 5)"/>
+        <path id="Subtraction_8" data-name="Subtraction 8" class="cls-2" d="M4.347,16.522H0V13.913H4.348v2.608Zm0-3.478H0V3.478H4.348v9.565Zm0-10.435H0V0H4.348V2.608Z" transform="translate(6 8.478)"/>
+        <path id="Subtraction_9" data-name="Subtraction 9" class="cls-2" d="M2.121,17.791h0L1.8,15.2l4.315-.529.318,2.589ZM1.7,14.339h0L.421,3.961l4.315-.53L6.011,13.81ZM.316,3.1h0L0,.53,4.315,0l.315,2.568Z" transform="translate(16.435 7.168)"/>
+      </g>
+    </g>
+  </g>
+</svg>

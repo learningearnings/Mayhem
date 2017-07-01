@@ -2,7 +2,7 @@
   = form_tag "/banks/code_lookup", remote: true, id: "code-lookup-form" do |f|
     %h4 Enter the code to lookup:
     = text_field_tag :code, params[:code]
-    = submit_tag 'Lookup Code', :class => 'awesome-button'
+    = submit_tag 'Lookup Code', :class => 'btn awesome-button'
     -if params[:code] && @looked_up_code.nil?
       %p We could not find the code you entered
     -if @looked_up_code

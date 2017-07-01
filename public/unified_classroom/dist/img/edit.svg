@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>edit</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.988339552">
+        <g id="edit" fill="#000000">
+            <path d="M15.3340949,5.11201273 L18.8923207,8.67023855 L7.0668052,20.5115775 L3.12595439,21.9220279 C3.12595439,21.9220279 2.56281871,22.1749669 2.19386533,21.7697072 C1.82491195,21.3644475 2.09597519,20.7906951 2.09597519,20.7906951 L3.51095678,16.9509711 L15.3340949,5.11201273 Z M15.974303,4.47094798 L18.1782839,2.26401801 C18.5315137,1.91031561 19.108853,1.91496253 19.4535774,2.26014823 L21.7379969,4.5476245 C22.0890923,4.89918968 22.0868513,5.47143345 21.7341323,5.82462441 L19.5325288,8.02917381 L15.974303,4.47094798 Z" id="Edit"></path>
+        </g>
+    </g>
+</svg>

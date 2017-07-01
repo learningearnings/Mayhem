@@ -3,7 +3,7 @@
 
 .main-content-wrapper
   .primary-content-fw
-    %h2 Bucks Distributed Report
+    %h1 Bucks Distributed Report
     //%h3= report.range if report.range
     = simple_form_for report.parameters,  :url => buck_distributed_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
       .filter
@@ -11,8 +11,8 @@
       //.sorting
       -# f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       %br
-      = f.submit 'Go!', class: "awesome-button"
-      = button_tag "Print Report", class: "noprint awesome-button",type: 'button', onclick: "window.print();"
+      = f.submit 'Go!', class: "btn awesome-button"
+      = button_tag "Print Report", class: "noprint btn awesome-button",type: 'button', onclick: "window.print();"
     %p.credits-available
       %strong
         School Current Credit Balance:
