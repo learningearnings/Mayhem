@@ -2,11 +2,12 @@
 class BatchTeacherUpdater
   attr_reader :teachers, :school
 
-  def initialize teacher_params, school, teacher_class=Teacher
+  def initialize teacher_params, school, current_person, teacher_class=Teacher
     @teachers       = []
     @school         = school
     @teacher_params = teacher_params.dup
     @teacher_class  = teacher_class
+    @current_person = current_person
   end
 
   def call
@@ -40,8 +41,9 @@ class BatchTeacherUpdater
       responses = []
       @teacher_params.each do |teacher_param|
         teacher = @teacher_class.find(teacher_param.delete("id"))
-        psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, @school["school"]["id"])
+        psl = PersonSchoolLink.find_or_create_by_person_id_and_school_id(teacher.id, @school)
         psl.deactivate!
+        psl.audit_logs.create(district_guid: psl.person.try(:district_guid), school_id: psl.school.try(:id), school_sti_id: psl.school.try(:sti_id), person_id: @current_person.id, person_name: @current_person.name, person_type: @current_person.type, person_sti_id: @current_person.sti_id, log_event_name: psl.person.name, action: "Deactivate")
       end
     end
     true

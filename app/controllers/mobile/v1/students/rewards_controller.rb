@@ -15,7 +15,7 @@ class Mobile::V1::Students::RewardsController < Mobile::V1::Students::BaseContro
   end
   
   def purchase
-    Rails.logger.debug("AKT: Mobile Rewards Controller params: #{params.inspect}")
+    #Rails.logger.debug("AKT: Mobile Rewards Controller params: #{params.inspect}")
     variant  = Spree::Variant.where(product_id: params[:reward][:id]).first
     quantity = params[:reward][:purchase_quantity]
     
@@ -44,7 +44,7 @@ class Mobile::V1::Students::RewardsController < Mobile::V1::Students::BaseContro
           @order.empty!
           render json: { status: :unprocessible_entity, msg: message }        
         else
-          OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:deliverer_id]).execute!
+          OneClickSpreeProductPurchaseCommand.new(@order, current_person, current_school, params[:reward][:teacher]).execute!
           message = "Purchase successful!"
           render json: { status: :ok, msg: message } and return
         end

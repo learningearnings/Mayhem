@@ -1,6 +1,6 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Edit Students
+    %h1 Edit Students
     .grid_edit_students
       .controls
         = form_tag '/teachers/bulk_students/edit', method: :get do
@@ -19,7 +19,7 @@
           %span#number_of_students
           Selected Students:
         .control
-          = select_tag 'controls_action', options_for_select(@actions)
+          = select_tag 'controls_action', options_for_select(@actions.collect.with_index.to_a)
           %span.password_field.secondary
             %label Password:
             = text_field_tag 'controls_password'
@@ -30,7 +30,7 @@
 
       = form_tag '/teachers/bulk_students', method: :put, id: 'update_students_form' do
         = hidden_field_tag "form_action_hidden_tag", nil, id: "form_action_hidden_tag"
-        %table#students.tablesorter
+        %table#students_header_sort.tablesorter
           %thead
             %tr
               %th= check_box_tag 'select_all'
@@ -40,141 +40,12 @@
               %th.select.grade Grade
               %th.select.gender Gender
               %th.text.password Password
-              %th
           %tbody.students_body
             - @students.each do |student|
-              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id }
-
-#message.modal.hide
+              = render 'edit_student_row', grades: current_school.grades, options: { selected: false, first_name: student.first_name, last_name: student.last_name, username: student.user.username, password: student.recovery_password, grade: student.grade, gender: student.gender, id: student.id, name: student.name}
+          %div.clear
+#message.modal
   = image_tag "loading.gif"
   %h3 Your student account(s) are being updated, the results will be displayed when it is completed.
-         
-:javascript
-  $(document).ready(function() 
-    { 
-        $("#students").tablesorter(); 
-    } 
-   ); 
-  function checkUpdateStatus(delayed_report_id) {
-    $.get("/delayed_reports/" + delayed_report_id + "/status.json", function(delayed_report) {
-      if (delayed_report.status == "complete") {
-        loadResults();
-      } else {
-        setTimeout(checkUpdateStatus(delayed_report_id), 1000);
-      }
-    });
-  }
-
-  function loadResults() {
-    location.reload();
-  }
-
-:coffeescript
-  $('#select_all').on 'click', ->
-    if $('#select_all').attr('checked')
-      $('.edit_control').removeAttr('disabled')
-      $('input.selected').attr('checked', true)
-    else
-      $('input.selected').removeAttr('checked')
-      $('.edit_control').attr('disabled', 'disabled')
-    updateNumberOfStudents()
-
-  $('.students_body').on 'click', (evt) ->
-    if $(evt.target).hasClass('row_checkbox')
-      children = $(evt.target).closest('tr').find('.edit_control')
-      if $(evt.target).attr('checked') == "checked"
-        children.removeAttr('disabled')
-      else
-        $('#select_all').removeAttr('checked')
-        children.attr('disabled', 'disabled')
-      updateNumberOfStudents()
-
-  updateNumberOfStudents = ->
-    $('#number_of_students').html(numberOfStudents())
-
-  numberOfStudents = ->
-    $('.row_checkbox:checked').size()
-
-  chosenAction = ->
-    $('#controls_action').val()
-
-  whichSecondaryActionElementToShow = () ->
-    switch chosenAction()
-      when "Update Passwords to this Password" then $('.control span.secondary.password_field')
-      when "Add to Classroom I select:" then $('.control span.secondary.classroom_field')
-      else $([])
-
-  showAppropriateSecondaryAction = () ->
-    $('.control span.secondary').hide()
-    whichSecondaryActionElementToShow().show()
-
-  shouldShowEdit = ->
-    switch chosenAction()
-      when "Update Passwords to this Password" then false
-      when "Edit Student Information" then true
-      else false
-
-  conditionallyShowEditFields = () ->
-    if shouldShowEdit()
-      $('tbody .edit').show()
-      $('tbody .display').hide()
-    else
-      $('tbody .edit').hide()
-      $('tbody .display').show()
-
-    # We also potentially show only the password field, if "as indicated" is chosen
-    if chosenAction() == 'Update Passwords as Indicated'
-      $('tbody td.password .edit').show()
-      $('tbody td.password .display').hide()
-
-  handleInterfaceState = ->
-    showAppropriateSecondaryAction()
-    conditionallyShowEditFields()
-
-  $('#controls_action').on 'change', handleInterfaceState
-
-  $('#update_these_students').on 'click', (evt) ->
-    evt.preventDefault()
-    if numberOfStudents() > 0
-      performSelectedStudentAction()
-      setFormActionHiddenTag()
-      $('#message').modal('show');
-      $.ajax '/teachers/bulk_students',
-        type: 'POST',
-        dataType: 'json',
-        data: $('#update_students_form').serialize(), 
-        error: (jqXHR, textStatus, errorThrown) ->
-          alert('There was an error, please try again.');
-        success: (data, textStatus, jqXHR) ->
-          setTimeout(checkUpdateStatus(data.delayed_report_id), 1000);
-    else
-      alert("You must select at least one student to modify.")
-
-  setFormActionHiddenTag = () ->
-    action = $('#controls_action').val()
-    $('#form_action_hidden_tag').val(action)
-
-  performSelectedStudentAction = () ->
-    switch chosenAction()
-      when "Update Passwords to this Password"
-        updatePasswordsToPassword($('#controls_password').val())
-      when "Update Passwords = Usernames"
-        updatePasswordsToUsername()
-      when "Add to Classroom I select:"
-        updateClassroomsToClassroom($('#controls_classroom_selection').val())
-
-  updateClassroomsToClassroom = (classroom_id) ->
-    $('.edit_control.classroom').val(classroom_id)
-
-  updatePasswordsToPassword = (password) ->
-    $('input.password').val(password)
-
-  updatePasswordsToUsername = () ->
-    $('input.password').each (elm) ->
-      username = $(this).closest("tr").find("input.username").val()
-      $(this).val(username)
-
-  handleInterfaceState()
-
-  $('.edit_control').attr('disabled', 'disabled')
-  updateNumberOfStudents()
+        
+= javascript_include_tag "bulk_students"

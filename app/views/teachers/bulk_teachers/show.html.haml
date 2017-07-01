@@ -1,35 +1,37 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Manage Teachers
-    = link_to "New Teachers", new_teachers_bulk_teachers_path, class: 'btn awesome-button'
-    = link_to "Edit Teachers", edit_teachers_bulk_teachers_path, class: 'btn awesome-button'
-.primary-content-fw
-  %h2 Import Teachers
-  %h4 Required Format Example:
-  %table.table.table-bordered.table-striped.solid-background
-    %tr
-      %th First
-      %th Last
-      %th Email Address
-      %th Grade
-      %th Gender
-      %th Username
-      %th Password
-      %th LE Admin (Y/N)?
-    %tr
-      %td John
-      %td Doe
-      %td jdoe@example.com
-      %td 1
-      %td m
-      %td jdoe1
-      %td password
-      %th Y
-  = link_to "Click here to download an example spreadsheet.", "/teacher_sample_template.xls"
-  %p
-    = "Upload the teachers for #{current_school.name}"
-  = form_tag import_teachers_teachers_bulk_teachers_path, :multipart => true, :method => :post do
-    = hidden_field_tag :school_id, current_school.id
-    .field
-      = file_field_tag :file
-    = submit_tag 'Import Teachers', class: "btn awesome-button"
+    %h1 Manage Teachers
+    = link_to "New Teachers", new_teachers_bulk_teachers_path, class: 'btn awesome-button' unless current_school.synced?
+    = link_to "Edit Teachers", edit_teachers_bulk_teachers_path, class: 'btn awesome-button' unless current_school.synced?
+    = link_to "Manage Credits", manage_credits_teachers_bulk_teachers_path, class: 'btn awesome-button'
+  - unless current_school.synced?
+    .primary-content-fw
+      %h2 Import Teachers
+      %h4 Required Format Example:
+      %table.table.table-bordered.table-striped.solid-background
+        %tr
+          %th First
+          %th Last
+          %th Email Address
+          %th Grade
+          %th Gender
+          %th Username
+          %th Password
+          %th LE Admin (Y/N)?
+        %tr
+          %td John
+          %td Doe
+          %td jdoe@example.com
+          %td 1
+          %td m
+          %td jdoe1
+          %td password
+          %th Y
+      = link_to "Click here to download an example spreadsheet.", "/teacher_sample_template.xls"
+      %p
+        = "Upload the teachers for #{current_school.name}"
+      = form_tag import_teachers_teachers_bulk_teachers_path, :multipart => true, :method => :post do
+        = hidden_field_tag :school_id, current_school.id
+        .field
+          = file_field_tag :file
+        = submit_tag 'Import Teachers', class: "btn awesome-button"

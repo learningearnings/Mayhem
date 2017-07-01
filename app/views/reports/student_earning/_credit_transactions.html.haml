@@ -1,0 +1,58 @@
+.credit-transaction-header
+  .credit-student-title
+    %h3= student.name
+  .credit-print-button
+
+    = form_tag(print_student_earning_report_path, method: :post, class: 'form-horizontal noprint print-form') do
+      = button_to "Show All", print_student_earning_report_path, class: 'noprint btn awesome-button print-submit'
+      = hidden_field_tag  'student_id', student.id
+      = hidden_field_tag 'credit_type', credit_type
+      = hidden_field_tag 'start_date', start_date
+      = hidden_field_tag 'end_date', end_date
+
+%div.clear
+  = paginate otu_codes,:window => 2, :remote => true
+%div
+  %h4= credit_transactions_title(credit_type) 
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th.teacher Type
+        %th.amount Amount
+        %th.teacher Source
+        %th.date Date
+
+    - otu_codes.each do |otu_code|
+      %tr
+        %td{:nowrap => "nowrap"}= credit_reason(otu_code)
+        %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
+        %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
+        %td.date= credit_type == "total_credit" ? l(otu_code.created_at.to_date) : l(otu_code.updated_at.to_date)
+        
+
+:javascript
+  $('.print-submit').on('click', function(e){
+    e.preventDefault(); //prevents the default submit action
+    $('.print-form').attr('target', '_blank').submit();
+  });
+  $(".print-form").submit( function(eventObj) {
+      $('<input />').attr('type', 'hidden')
+          .attr('name', 'student_id')
+          .attr('value', $('#student_id').val())
+          .appendTo('.print-form');
+      $('<input />').attr('type', 'hidden')
+          .attr('name', 'credit_type')
+          .attr('value', $('#credit_type').val())
+          .appendTo('.print-form');
+      $('<input />').attr('type', 'hidden')
+        .attr('name', 'start_date')
+        .attr('value', $('#start_date').text())
+        .appendTo('.print-form');
+      $('<input />').attr('type', 'hidden')
+        .attr('name', 'end_date')
+        .attr('value', $('#end_date').text())
+        .appendTo('.print-form');
+      return true;
+  });
+
+

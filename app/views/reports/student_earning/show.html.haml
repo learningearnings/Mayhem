@@ -1,0 +1,57 @@
+= javascript_include_tag "https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"
+= javascript_include_tag "student_earning"
+= stylesheet_link_tag "https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css"
+
+.main-content-wrapper
+  .primary-content-fw
+    %h1 Student Earnings Report
+    //%h3= report.range if report.range
+    = simple_form_for report.parameters,  :url => student_earning_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+      .filter
+        .student-activity-date-filter
+          = f.input :date_filter,:label => "Date Range", :collection => report.parameters.date_filter_options
+        .classroom-filter
+          = label_tag :classroom
+          = select_tag :classroom_filter, options_from_collection_for_select(classrooms, :id, :name, params[:classroom_filter]), :prompt => "All"
+
+      .sorting
+        = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
+      = f.submit 'Go!', class: "btn awesome-button"
+      = button_tag "Print Report", class: "noprint btn awesome-button",type: 'button', onclick: "window.print();"
+      -if report.endpoints
+        %span#start_date{:style => 'display:none'}= report.endpoints[0]
+        %span#end_date{:style => 'display:none'}= report.endpoints[1]
+    .btn-print-selected
+      = button_to "Print Selected Students", print_student_earning_report_path, class: 'noprint btn awesome-button print-selected', id: "print-report"
+    .report
+      %br.onlyprint/
+      %table#credit_report_table.table.table-bordered.table-striped.solid-background
+        %thead
+          %tr
+            %th= check_box_tag 'select_all', "1", false, id: "example-select-all"
+            %th Student
+            %th Username
+            - if report.classroom.blank?
+              %th Classroom
+            %th Total Credits
+            %th Total Deposited
+            %th Total Undeposited
+          %tbody
+            - report.data.each do |row|
+              %tr
+                %td= check_box_tag 'student_id[]', row[:id], false, class: "student-select"
+                %td= row[:student_name]
+                %td= row[:username]
+                - if report.classroom.blank?
+                  %td= row[:classroom]
+                %td= link_to(row[:total_credits], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "total_credit")
+                %td= link_to(row[:total_deposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "deposited")
+                %td= link_to(row[:total_undeposited], "#history-modal", class: 'history-action', 'data-id' => row[:id], 'data-name' => row[:student_name], 'data-toggle' => 'modal', 'data-credit-type' => "undeposited")
+
+
+#history-modal.modal
+  .modal-header
+    #credit-history
+
+
+

@@ -1,4 +1,4 @@
-- paginated_products = @searcher.retrieve_products if params.key?(:keywords)
+- paginated_products = @products if params.key?(:keywords)
 - paginated_products ||= products
 - if current_person.is_a?(Teacher)
   %h3= link_to('Suggest a Reward', main_app.leadmin_message_path(subject: "I have a reward suggestion.", refurl: current_url), class: 'suggest-reward')
@@ -11,9 +11,13 @@
     .filter-rewards
       = label_tag "Type"
       = select_tag :reward_type, options_for_select(["Classroom", "School"], params[:reward_type]), :prompt => "All"
+    .filter-search
+      = label_tag "Search"  
+      = search_field_tag :keywords, params[:keywords], :placeholder => "Name, Description"
+      - if params[:search] && params[:search][:ascend_by_master_price]
+        = hidden_field_tag "search[ascend_by_master_price]",params[:search][:ascend_by_master_price], id: 'sort_by_field'
     .grade
       = submit_tag 'Go!'
-
 - if products.empty?
   = t(:no_products_found)
 - elsif params.key?(:keywords)

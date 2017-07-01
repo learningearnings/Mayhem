@@ -1,0 +1,73 @@
+/* common portal style override */
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.unified_classroom_wrapper {
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+  align-items: stretch;
+}
+
+pds-app-nav {
+  flex: 0 0 250px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; /* firefox */
+}
+
+pds-app-nav i {
+  color: #fff;
+}
+
+pds-app-nav.pds-is-collapsed {
+  flex-basis: auto;
+}
+
+@media (max-width: 1024px) {
+  pds-app-nav {
+    flex-basis: auto;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .unified_classroom_wrapper {
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  pds-app-nav {
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-preferred-size: 60px;
+    flex-basis: 60px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+#pds-main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  align-items: center;
+
+  position: relative;
+}
+
+
+
+#pds-class-picker {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  min-height: 60px;
+  height: 60px; /* For IE */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; /* firefox */
+}

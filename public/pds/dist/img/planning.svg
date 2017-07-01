@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-688 -674 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-planning);
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 1px;
+      }
+    </style>
+    
+  </defs>
+  <g id="icon-planning" class="cls-1">
+    <path id="path-3" class="cls-2" d="M-502-272v-3h3v3Zm6-1v-1h9v1Zm-6-6v-3h3v3Zm6-1v-1h9v1Zm-6-6v-3h3v3Zm6-1v-1h9v1Z" transform="translate(-176.5 -377.5)"/>
+  </g>
+</svg>

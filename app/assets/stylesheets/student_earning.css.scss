@@ -1,0 +1,32 @@
+.credit-student-title{
+  float:left;	
+}
+.credit-print-button{
+	float:right;
+}
+.credit-type{
+	clear:both;
+}
+.clear{
+	clear:both;
+}
+.print-title{
+	display: none;
+}
+.btn-print-report{
+	float: right;
+}
+.btn-print-selected{
+	float:left;
+}
+.student-select{
+	margin-left:7px !important;
+}
+@media print {
+	.student-info{
+	  page-break-after: always;
+	 }
+	.print-title{
+    display: block;
+	}
+}

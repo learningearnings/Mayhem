@@ -4,8 +4,9 @@ class RewardDelivery < ActiveRecord::Base
   belongs_to :from, class_name: "Person", foreign_key: :from_id
   belongs_to :to,   class_name: "Person", foreign_key: :to_id
   belongs_to :reward, class_name: "Spree::LineItem", foreign_key: :reward_id
+  belongs_to :delivered_by, class_name: "Person", foreign_key: :delivered_by_id
 
-  scope :order_by_student_last_name, lambda { order("people.last_name") }
+  scope :order_by_student_last_name, lambda { order("people.last_name,reward_deliveries.created_at DESC") }
   scope :order_by_student_grade, lambda { order(:to => :grade) }
   scope :newest_orders, lambda { order("reward_deliveries.created_at DESC") }
   scope :oldest_orders, lambda { order("reward_deliveries.created_at ASC") }
@@ -39,6 +40,7 @@ class RewardDelivery < ActiveRecord::Base
   scope :except_refunded, lambda { where(self.arel_table[:status].not_eq('refunded'))}
 
   def refund_purchase
+    Rails.logger.info("AKT: Refund purchase: #{self.reward.inspect}")
     if self.reward.order.payment.state != "void"
       self.reward.order.payment.void_transaction!
       self.refund

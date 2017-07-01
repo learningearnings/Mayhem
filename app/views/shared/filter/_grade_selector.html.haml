@@ -1,4 +1,4 @@
-#filter_widget_grade_selector.modal.hide
+#filter_widget_grade_selector.modal
   = form_tag "", :onsubmit => "$('#filter_widget_user_selector').modal('show');$('#filter_widget_grade_selector').modal('hide'); return false;", :remote => true, :class => "form-horizontal" do
     .modal-header
       %h3 Select Grades

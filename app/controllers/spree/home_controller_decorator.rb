@@ -3,6 +3,13 @@ Spree::HomeController.class_eval do
 
   def index
     @auction = ::Auction.new
+    if params[:search]
+      [:ascend_by_master_price].each do |field|
+        if params[:search][field] && params[:search][field] == ''
+          params[:search][field] = nil
+        end
+      end
+    end
     temp_params = params
     temp_params[:current_school] = current_school
     temp_params[:searcher_current_person] = current_person

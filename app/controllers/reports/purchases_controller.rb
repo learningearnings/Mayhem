@@ -2,15 +2,7 @@ module Reports
   class PurchasesController < Reports::BaseController
 
     def new
-      if params[:reports_purchases_params].blank?
-        report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)
-      else
-        if current_person.is_a?(SchoolAdmin)
-          report = Reports::Purchases.new params.merge(school: current_school, status: "pending")
-        else
-          report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)
-        end         
-      end
+      report = Reports::Purchases.new params.merge(school: current_school, status: "pending", teacher: current_person)        
       delayed_report = DelayedReport.create(person_id: current_person.id)
       DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
       redirect_to purchases_report_show_path(delayed_report.id, params)
@@ -26,8 +18,10 @@ module Reports
     end
 
     def refund_purchase
+      #Rails.logger.info("AKT: refund_purchase #{params.inspect}")
       reward_delivery = RewardDelivery.find(params[:reward_delivery_id])
       if reward_delivery.refund_purchase
+        #Rails.logger.info("AKT: success refurn purchase #{reward_delivery.inspect}")
         respond_to do |format|
           format.html {
             flash[:notice] = "Successfully refunded purchase"
@@ -38,6 +32,7 @@ module Reports
           }
         end
       else
+        #Rails.logger.info("AKT: failed refund purchase #{params.inspect}")
         respond_to do |format|
           format.html {
             flash[:alert] = "Could not refund the purchase you selected"

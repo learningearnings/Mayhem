@@ -4,6 +4,8 @@ require File.expand_path('../boot', __FILE__)
 require 'pdfkit'
 require 'rails/all'
 
+LE_APP_VERSION = 'Version 2.5.0'
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
@@ -78,12 +80,14 @@ module Leror
     config.assets.version = '1.0'
 
     # For generating pdfs from routes in the site
-    config.middleware.use PDFKit::Middleware, {}, :only => %r[^/pages/pdf]
+    config.middleware.use PDFKit::Middleware, {}, :only => %r[^/pages/pdf], :print_media_type => true
 
     config.after_initialize do
       Spree::Config.searcher_class = Spree::Search::Filter
     end
     config.middleware.use 'Dragonfly::Middleware', :images
+    
+    config.exceptions_app = self.routes
 
     config.middleware.insert_before 0, "Rack::Cors", :debug => true, :logger => (-> { Rails.logger }) do
       allow do

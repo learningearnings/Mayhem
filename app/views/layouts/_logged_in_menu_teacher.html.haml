@@ -1,10 +1,9 @@
 %ul.primary-nav
-  %li= link_to "Home",            main_app.home_path, :class => 'home'
-  %li= link_to inbox_label_with_message_count("Inbox", current_person.received_messages),           main_app.teachers_inbox_path, :class => 'inbox'
   %li= link_to "Bank",            main_app.teachers_bank_path, :class => 'bank'
-  %li= link_to "Students",        students_path, class: 'manage_students'
+  %li= link_to inbox_label_with_message_count("Inbox", current_person.received_messages),           main_app.teachers_inbox_path, :class => 'inbox'
+  %li= link_to "Students",       students_path, class: 'manage_students'
   %li= link_to "Classrooms",      main_app.classrooms_path, :class => 'classrooms'
   %li= link_to "Shop",            '/store', :class => 'shop'
   %li= link_to "Reports",         main_app.teachers_reports_path, :class => 'reports'
-  %li= link_to "Help",      	    main_app.help_path, class: 'help'
+  //%li= link_to "Help",      	    main_app.help_path, class: 'help'
 

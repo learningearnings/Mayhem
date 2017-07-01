@@ -2,6 +2,9 @@ require 'basic_statuses'
 
 class PersonSchoolClassroomLink < ActiveRecord::Base
   state_machine :status, :initial => :active do
+    event :deactivate do
+      transition :active => :inactive
+    end
   end
   include BasicStatuses
   belongs_to :person_school_link, :inverse_of => :person_school_classroom_links
@@ -9,6 +12,7 @@ class PersonSchoolClassroomLink < ActiveRecord::Base
   has_one :teacher, :through => :person_school_link, :source => :person, :class_name => 'Teacher'
   has_one :student, :through => :person_school_link, :source => :person, :class_name => 'Student'
   has_one :person, through: :person_school_link, source: :person
+  has_many :audit_logs, :as => :log_event
 
   attr_accessible :owner, :person_school_link_id, :status, :classroom_id, :homeroom
 

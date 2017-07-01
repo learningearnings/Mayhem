@@ -5,6 +5,7 @@ class CreditManager
     @account_class = options[:account_class] || Plutus::Account
     @le_main_account = nil
     @le_game_account = nil
+    @le_bonus_account = nil    
     @transaction_time_stamp = nil
   end
 
@@ -46,17 +47,21 @@ class CreditManager
     transaction
   end
 
-  def issue_weekly_automatic_credits_to_student message, school, student, amount
-    transfer_credits message, school.main_account, student.checking_account, amount
+  def issue_weekly_automatic_credits_to_student message, school, student, amount, otu_code=nil
+    transfer_credits message, school.main_account, student.checking_account, amount, otu_code
   end
 
-  def issue_monthly_automatic_credits_to_student message, school, student, amount
-    transfer_credits message, school.main_account, student.checking_account, amount
+  def issue_monthly_automatic_credits_to_student message, school, student, amount, otu_code=nil
+    transfer_credits message, school.main_account, student.checking_account, amount, otu_code
   end
 
   def issue_credits_to_school school, amount
     transfer_credits "Issue Credits to School", main_account, school.main_account, amount
   end
+  
+  def issue_bonus_credits_to_school school, amount
+    transfer_credits "Issue Bonus Credits to School", main_account, school.bonus_account, amount
+  end  
 
   def issue_store_credits_to_school school, amount
     transfer_credits "Issue Store Credits to School", main_account, school.store_account, amount
@@ -78,8 +83,8 @@ class CreditManager
     transfer_credits "Revoke Credits for Student", student.checking_account, main_account, amount
   end
 
-  def teacher_revoke_credits_from_student(school, teacher, student, amount)
-    transfer_credits "Revoke Credits for Student", teacher.main_account(school), student.checking_account, amount
+  def teacher_revoke_credits_from_student(school, teacher, student, amount, otu_code = nil)
+    transfer_credits "Revoke Credits for Student", teacher.main_account(school), student.checking_account, amount, otu_code
   end
 
   def purchase_printed_bucks school, teacher, amount, buck_batch=nil
@@ -102,21 +107,25 @@ class CreditManager
   def monthly_credits_to_teacher school, teacher, amount
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
+  
+  def issue_bonus_credits_to_teacher school, teacher, amount
+    transfer_credits "Issue Bonus Credits to Teacher", school.bonus_account, teacher.main_account(school), amount
+  end  
 
   def monthly_credits_for_onboarded_student_to_teacher school, teacher, amount
     transfer_credits "Issue Monthly Credits to Teacher", school.main_account, teacher.main_account(school), amount
   end
 
-  def issue_interest_to_student student, amount
-    transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount
+  def issue_interest_to_student student, amount, otu_code=nil
+    transfer_credits "Savings Interest Payment", main_account, student.savings_account, amount, otu_code
   end
 
   def issue_credits_to_student school, teacher, student, amount
     transfer_credits "Issue Credits to Student", teacher.unredeemed_account(school), student.checking_account, amount
   end
 
-  def issue_print_credits_to_student school, teacher, student, amount
-    transfer_credits "Issue Credits to Student", teacher.unredeemed_account(school), student.checking_account, amount
+  def issue_print_credits_to_student school, teacher, student, amount, otu_code=nil
+    transfer_credits "Issue Printed Credits to Student", teacher.unredeemed_account(school), student.checking_account, amount, otu_code
   end
 
   def issue_ecredits_to_student school, teacher, student, amount, otu_code=nil
@@ -143,6 +152,7 @@ class CreditManager
 
   def transfer_credits_for_reward_refund student, amount, document = nil
     #return false if main_account.balance < amount
+    Rails.logger.info("AKT: transfer credits #{amount.inspect}")
     transfer_credits "Reward Refund", main_account, student.checking_account, amount, document
   end
 
@@ -170,4 +180,16 @@ class CreditManager
     return false if student.hold_balance < amount
     transfer_credits "Transfer from Hold to Checking", student.hold_account, student.checking_account, amount
   end
+
+  def add_credit_to_teacher school, teacher, amount
+    transfer_credits "Add credits to teacher", school.main_account, teacher.main_account(school), amount
+  end
+
+  def remove_credit_from_teacher school, teacher, amount
+    transfer_credits "Remove credits from teacher", teacher.main_account(school), school.main_account, amount
+  end
+  
+  def remove_bonus_credits_from_teacher school, teacher, amount
+    transfer_credits "Remove bonus credits from teacher", teacher.main_account(school), school.bonus_account, amount
+  end  
 end

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="692 568 30 30">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-calendar-f);
+      }
+    </style>
+    <clipPath id="clip-calendar-f">
+      <rect x="692" y="568" width="30" height="30"/>
+    </clipPath>
+  </defs>
+  <g id="calendar-f" class="cls-1">
+    <path id="path-66" d="M-652-544v-16h22v16l0,0Zm0-17v-5h22v5l0,0Zm14.5-1.249h1.5v-1.5h-1.5Zm-8.5,0h1.5v-1.5H-646Z" transform="translate(1348 1138)"/>
+  </g>
+</svg>

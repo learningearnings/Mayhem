@@ -1,4 +1,4 @@
-%h2 Classroom: 
+%h1 Classroom: 
 %ul.action_buttons
   %li= link_to "Set Homeroom", "/classrooms/set_homeroom/#{@classroom.id}", confirm: classroom_set_homeroom_confirmation_message, class: 'btn awesome-button'
   - unless @classroom.sti_id  
@@ -7,7 +7,7 @@
 %h2 #{@classroom.name}
 - if @classroom.sti_id
   .classrooms-alert.alert.alert-warning
-    You must log into iNow to manage this classroom.
+    You must log into the Student Information System to manage this classroom.
 
 %p
   Please Note:
@@ -15,7 +15,6 @@
   You can only add students from your school that have already been added to
   Learning Earnings. If you need to add or upload students for your school visit
   the #{link_to("Students", teachers_bulk_students_path)} page.
-
 %table#classroom-students.table.table-bordered.table-striped.solid-background
   %thead
     %tr
@@ -40,7 +39,7 @@
   .btn.btn-success.add-new-student
     Add New Student
 
-#add-new-student-modal.modal.hide
+#add-new-student-modal.modal
   .modal-header
     %h3 Add New Student
   .modal-body
@@ -51,7 +50,7 @@
     .btn.btn-danger.cancel-modal
       Cancel
 
-#add-existing-student-modal.modal.hide
+#add-existing-student-modal.modal
   .modal-header
     %h3 Add Existing Student
   .modal-body
@@ -78,6 +77,7 @@
 = javascript_include_tag "tours/teacher/overview"
 
 :javascript
+
   $(".chzn-select").chosen();
 
   if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y')) {

@@ -2,7 +2,7 @@
   .primary-content-fw
     = render :partial => 'spree/shared/error_messages', :locals => { :target => @person } 
 
-    %h2 Edit Your Profile
+    %h1 Edit Your Profile
     = form_for @person,:url => person_path(@person) do |f|
       #hover_value= hidden_field_tag :avatar_id
       #avatar_partial= render :partial => 'avatars'

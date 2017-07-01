@@ -1,23 +1,24 @@
-%h2 Choose a food
-
-= form_for FoodPersonLink.new, :url => throw_food_path do |f|
-  #hover_value= hidden_field_tag :food_id 
-  = hidden_field_tag :match_id, @match.id
-  - if current_person.favorite_foods.present?
-    %h4 Favorite Foods
+.main-content-wrapper
+  %h1 Choose a food
+  
+  = form_for FoodPersonLink.new, :url => throw_food_path do |f|
+    #hover_value= hidden_field_tag :food_id 
+    = hidden_field_tag :match_id, @match.id
+    - if current_person.favorite_foods.present?
+      %h4 Favorite Foods
+      %ul.foods
+        - current_person.favorite_foods.each do |food|
+          %li.food= image_tag food.image.url, :id => food.id
+    %h4 All Foods
     %ul.foods
-      - current_person.favorite_foods.each do |food|
+      - (@foods - current_person.favorite_foods).each do |food|
         %li.food= image_tag food.image.url, :id => food.id
-  %h4 All Foods
-  %ul.foods
-    - (@foods - current_person.favorite_foods).each do |food|
-      %li.food= image_tag food.image.url, :id => food.id
-
-:javascript
-  $('.food').click( function() {
-    $('.food').removeClass('active');
-    $(this).addClass('active');
-    var imageId = $('img', this).attr("id");
-    $("input[id=food_id]").val(imageId);
-    $(this).closest("form").submit();
-  });
+  
+  :javascript
+    $('.food').click( function() {
+      $('.food').removeClass('active');
+      $(this).addClass('active');
+      var imageId = $('img', this).attr("id");
+      $("input[id=food_id]").val(imageId);
+      $(this).closest("form").submit();
+    });

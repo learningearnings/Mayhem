@@ -1,10 +1,10 @@
 %ul.primary-nav
   %li= link_to "Home",      main_app.home_path,  :class => 'home'
   %li= link_to "Locker",    main_app.locker_path, class: 'locker' unless current_person.is_a?(Student) && current_person.grade > 8
-  %li= link_to inbox_label_with_message_count("Inbox", current_person.received_messages), main_app.inbox_path, :class => 'inbox_with_count'
+  %li= link_to inbox_label_with_message_count("Inbox", current_person.received_messages), main_app.inbox_path, :class => 'inbox'
   %li= link_to "Bank",      main_app.bank_path, :class => 'bank'
-  %li= link_to "Charities", main_app.charities_path, class: 'charities' unless current_person.is_a?(Student) && current_person.grade > 8
+  //%li= link_to "Charities", main_app.charities_path, class: 'charities' unless current_person.is_a?(Student) && current_person.grade > 8
   %li= link_to "Play",      main_app.games_path,  class: 'play'
   %li= link_to "Shop",     '/store', :class => 'shop'
-  %li= link_to "News",      main_app.news_posts_path, class: 'news'
-  %li= link_to "Help",      main_app.help_path, class: 'help'
+  //%li= link_to "News",      main_app.news_posts_path, class: 'news'
+  //%li= link_to "Help",      main_app.help_path, class: 'help'

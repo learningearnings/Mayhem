@@ -44,7 +44,11 @@ module STI
       (current_staff_for_district - sti_staff_ids).each do |sti_staff_id|
         if teacher = Person.where(:district_guid => @district_guid, :sti_id => sti_staff_id).first
           teacher.person_school_links.map(&:deactivate)
-          teacher.deactivate
+          begin
+            teacher.deactivate
+          rescue
+            Rails.logger.warn "SYNC-ERROR:  Could not deactivate teacher #{teacher.inspect}"
+          end
         end
       end
       
@@ -100,6 +104,7 @@ module STI
         classroom.reload
         ClassroomActivator.new(classroom.id).execute!
         teacher = Teacher.where(:district_guid => @district_guid, :sti_id => api_classroom["TeacherId"]).first
+        next unless teacher
         person_school_link = teacher.person_school_links.includes(:school).where("schools.district_guid" => @district_guid, "schools.sti_id" => api_classroom["SchoolId"]).first
         if person_school_link and classroom
           PersonSchoolClassroomLink.where(:person_school_link_id => person_school_link.id, :classroom_id => classroom.id).first_or_create    
@@ -108,7 +113,9 @@ module STI
 
       # Deactivate all students for school and just let the Sync reactivate students
       school_ids = School.where(district_guid: @district_guid).pluck(:id).uniq
-      psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
+      #psls = PersonSchoolLink.joins(:person).where(school_id: school_ids, person: { type: 'Student' })
+      # Added where students sti_id is not null in Rails 3 way
+      psls = PersonSchoolLink.joins(:person).where("person_school_links.school_id IN (?) AND people.type = ? AND people.sti_id IS NOT NULL", school_ids, 'Student')
       students = Student.where(id: psls.pluck(:person_id)).update_all(status: "inactive")
       psls.update_all(status: "inactive")
 
@@ -163,26 +170,27 @@ module STI
 
       students_hash.each_pair do |sti_student_id, sti_classroom_ids|
         next if sti_student_id.nil?
-        student = Student.where(district_guid: @district_guid, sti_id: sti_student_id).first
+        student = Student.where(district_guid: @district_guid, sti_id: sti_student_id, status: 'active').first
+        next if student.nil? or student.school.nil? or student.school.id.nil?
+        school_id = student.school.id
+        psl = student.person_school_links.where(school_id: school_id).first
+        next unless psl
         
         # Deactivate all existing classroom links
         PersonSchoolClassroomLink.where(id: student.person_school_classroom_links.pluck(:id)).each do |pscl|
           #Only deactive INOW classroom links
           pscl.update_attribute(:status, "inactive") if !pscl.classroom.sti_id.nil?
         end
-        
-        next if student.school.nil?   
-             
+     
         # Update the new classrooms for the student
         sti_classroom_ids.compact.each do |sti_classroom_id|
-          if classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
-            psl = student.person_school_links.where(school_id: student.school.id).first
-            if psl and classroom
+          classroom = Classroom.where(district_guid: @district_guid, sti_id: sti_classroom_id).first
+          if classroom
               pscl = PersonSchoolClassroomLink.where(person_school_link_id: psl.id, classroom_id: classroom.id).first_or_create
               pscl.activate      
-            end
           end
         end
+        
       end
       newly_synced_schools = sti_schools.select {|school| school["IsSyncComplete"] != true}.map{|school| School.where(:district_guid => @district_guid, :sti_id => school["Id"]).first }
       BuckDistributor.new(newly_synced_schools).run

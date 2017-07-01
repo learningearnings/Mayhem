@@ -124,18 +124,22 @@ module Reports
     end
     
     def reward_creator_filter
-      if parameters.reward_creator_filter.blank?
+      if parameters.page.blank?
         if @teacher
           rewards = @teacher.products.collect { | r | r.id }
-          [:where, { reward: {product: { id: rewards} } }]
+          #[:where, { reward: {product: { id: rewards} } }]
+          [:where, "spree_products.id IN (?) OR (reward_deliveries.delivered_by_id = ? OR (reward_deliveries.from_id =? AND reward_deliveries.delivered_by_id IS NULL)) ", rewards, @teacher.id, @teacher.id ]         
         else
           [:scoped]
-        end        
+        end 
+      elsif parameters.reward_creator_filter.blank?
+          [:scoped]      
       else
         #get all rewards created by the selected rewards creator
         teacher = Teacher.find(parameters.reward_creator_filter)
         rewards = teacher.products.collect { | r | r.id }
         [:where, { reward: {product: { id: rewards} } }]
+        [:where, "spree_products.id IN (?) OR (reward_deliveries.delivered_by_id = ? OR (reward_deliveries.from_id =? AND reward_deliveries.delivered_by_id IS NULL)) ", rewards, teacher.id, teacher.id ]         
       end
     end
     
@@ -177,6 +181,7 @@ module Reports
       Rails.logger.debug("AKT: homeroom #{cr_name}")
       Reports::Row[
         delivery_teacher: name_with_options(deliverer, parameters.teachers_name_option),
+        delivered_by: reward_delivery.delivered_by.present? ? reward_delivery.delivered_by.name : reward_delivery.from.name,
         student: [name_with_options(person, parameters.students_name_option), "(#{person.user.username})"].join(" "),
         classroom: cr_name,
         grade: School::GRADE_NAMES[person.try(:grade)],
@@ -185,7 +190,7 @@ module Reports
         quantity: reward_delivery.reward.quantity,
         status: reward_delivery.status.humanize,
         reward_delivery_id: reward_delivery.id,
-        delivery_status: reward_delivery.status
+        delivery_status: reward_delivery.status   
       ]
     end
 
@@ -198,6 +203,7 @@ module Reports
     def headers
       {
         delivery_teacher: "Reward Creator",
+        delivered_by: "Delivered By",
         student: "Student (username)",
         grade: "Grade",
         purchased: "Purchased",

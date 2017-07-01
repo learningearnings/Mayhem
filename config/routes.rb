@@ -1,5 +1,24 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
+  
+  get 'errors/not_found' 
+  get 'errors/server_error'
+
+  get  'navmenus' => 'nav#menus'  
+  get '/consumer/index' => "consumer#index"
+  post '/consumer/index' => "consumer#index"  
+  get '/consumer/complete' => "consumer#complete"  
+  post '/consumer/complete' => "consumer#complete"    
+  get 'sso_signin' => "consumer#start"
+  post 'sso_signin' => "consumer#start"
+  get '/confirm/:id' => "teachers#confirm"
+  post '/sti/auth' => "sti#auth"   
+  get '/sti/auth' => "sti#auth" 
+  get '/homes/schools_for_username' => "homes#schools_for_username"
+  get  '/teachers/home/defer_email' => "teachers/home#defer_email"
+  post '/teachers/log_event' => "teachers#log_event"
+  post '/sti/save_teacher' => "sti#save_teacher"
+  post '/teachers/home/save' => "home#save"  
   get '/confirm/:id' => "teachers#confirm"
   post '/sti/auth' => "sti#auth"   
   get '/sti/auth' => "sti#auth" 
@@ -11,7 +30,9 @@ Leror::Application.routes.draw do
   get '/sti/give_credits' => "sti#give_credits"
   get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
   post '/sti/save_school_for_credits' => "sti#save_school_for_credits" 
-  get '/sti/begin_le_tour' => "sti#begin_le_tour"   
+  get '/sti/begin_le_tour' => "sti#begin_le_tour"  
+  
+  get '/sti/sync_district' => 'sti#sync_district'
 
   # Mobile App API's
   namespace :mobile, defaults: { format: :json } do
@@ -56,12 +77,17 @@ Leror::Application.routes.draw do
       end
       namespace :students do
         post "rewards/purchase" => 'rewards#purchase'
+        post "/bank/transfer_credits" => 'bank#transfer_credits'
         post "/bank/redeem_bucks" => 'bank#redeem_bucks'        
         post 'auth'             => 'base#authenticate'
         get  'classrooms'       => 'classrooms#index'
         get  'classrooms/:id'   => 'classrooms#show'
         get  'student/:id'     => 'profile#show'
-        post 'student/:id'     => 'profile#update'        
+        post 'student/:id'     => 'profile#update' 
+        get  'profile/:id/update' => 'profile#update'
+        get  'auctions' => 'auctions#index'
+        get 'auctions/:id/bid'       => 'auctions#bid'
+        post 'auctions/:id/bid'       => 'auctions#bid'
       end
     end
   end
@@ -118,6 +144,7 @@ Leror::Application.routes.draw do
   match '/pages/teachers/news' => 'news#index', visitor_type: 'teacher'
 
   match '/schools/revoke_credits_setting' => 'schools/settings#update', as: 'revoke_credit_setting'
+  match '/schools/printed_credit_logo' => 'schools/settings#upload_school_logo', as: 'printed_credit_logo'
   match '/schools/credits_settings' => 'schools/settings#index', as: 'school_credit_settings'
   match '/schools/settings/update_sponsors_text' => 'schools/settings#update_sponsors_text'
   namespace :schools do
@@ -147,6 +174,7 @@ Leror::Application.routes.draw do
     match "checking_history/get_history" => 'checking_history#get_history', :as => :checking_history
     match "savings_history/get_history/:person_id" => 'savings_history#get_history', :as => :savings_history
     match "savings_history/get_history" => 'savings_history#get_history', :as => :savings_history
+    match "remove_auction/:id" => 'auctions#remove_auction', as: :remove_auction
   end
 
   # route to view sidekiq worker status
@@ -214,6 +242,10 @@ Leror::Application.routes.draw do
   match '/reports/student_roster' => 'reports/student_roster#show', as: 'student_roster_report'
   match '/reports/student_activity' => 'reports/student_activity#show', as: 'student_activity_report'
   match '/reports/teacher_activity' => 'reports/teacher_activity#show', as: 'teacher_activity_report'
+  match '/reports/student_earning' => 'reports/student_earning#show', as: 'student_earning_report'
+  match '/reports/student_earning_transactions' => 'reports/student_earning#credit_transactions'
+  match '/reports/print_student_earning_transactions' => 'reports/student_earning#print_credit_transactions', as: 'print_student_earning_report'
+  match '/reports/bucks_distributed' => 'reports/buck_distributed#show', as: 'buck_distributed_report'
 
   match '/reports/student_credit_history' => 'reports/student_credit_history#new', as: 'student_credit_history_report'
   get '/reports/student_credit_history/:id' => 'reports/student_credit_history#show', as: 'student_credit_history_report_show'
@@ -279,6 +311,7 @@ Leror::Application.routes.draw do
   post "/undeliver_reward" => "deliver_rewards_commands#undeliver", :as => :undeliver_reward
   namespace :teachers do
     get "balance" => "teachers#get_balance"
+    #get "home", to: redirect('bank')    
     match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
@@ -288,6 +321,8 @@ Leror::Application.routes.draw do
     end
     resource :bulk_teachers do
       post "import_teachers" => "bulk_teachers#import_teachers", :as => :import_teachers
+      match  "manage_credits" => "bulk_teachers#manage_credits", :as => :manage_credits
+      post  "update_teacher_credits" => "bulk_teachers#update_teacher_credits", :as => :update_teacher_credits
     end
     resources :reports
     resource  :bank
@@ -295,7 +330,7 @@ Leror::Application.routes.draw do
     resource  :lounge
     resources :rewards
     resources :reward_templates
-    match "home" => "home#show", as: 'home'
+    #match "home" => "home#show", as: 'home'
     match "save" => "home#save", as: 'save'
     match "/refund_teacher_reward/:id" => 'rewards#refund_teacher_reward', as: 'refund_teacher_reward'
     match "/print_batch/:id" => 'banks#print_batch', as: 'print_batch', defaults: { :format => 'html' }
@@ -372,6 +407,7 @@ Leror::Application.routes.draw do
   # spree admin manual orders
   match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
   match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
+ 
 end
 
 # Any routes we add to Spree go here:

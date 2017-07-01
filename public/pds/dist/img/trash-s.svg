@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="652 711 30 30">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-trash-s);
+      }
+    </style>
+    <clipPath id="clip-trash-s">
+      <rect x="652" y="711" width="30" height="30"/>
+    </clipPath>
+  </defs>
+  <g id="trash-s" class="cls-1">
+    <g id="trash" transform="translate(651.13 710.327)">
+      <path id="path" d="M25.628,5.792h-5.2V4.753a2.08,2.08,0,0,0-2.08-2.08h-5.2a2.08,2.08,0,0,0-2.08,2.08v1.04H5.87v1.04H6.942l1.041,19.76a2.08,2.08,0,0,0,2.08,2.081H21.5a2.08,2.08,0,0,0,2.08-2.081L24.6,6.832H25.63V5.792ZM12.11,4.752a1.041,1.041,0,0,1,1.04-1.04h5.2a1.041,1.041,0,0,1,1.04,1.04v1.04H12.109V4.752ZM22.543,26.538l0,.026v.027a1.041,1.041,0,0,1-1.04,1.04H10.063a1.042,1.042,0,0,1-1.04-1.04v-.055L7.983,6.831h15.58l-1.02,19.707Z" transform="translate(0 0)"/>
+      <path id="path-2" data-name="path" d="M15.467,9.069h1.04v16.64h-1.04V9.069Z" transform="translate(-0.237 -0.157)"/>
+      <path id="path-3" data-name="path" d="M13.3,25.676,12.241,9.068,11.2,9.134l1.064,16.608Z" transform="translate(-0.132 -0.157)"/>
+      <path id="path-4" data-name="path" d="M20.752,9.1l-1.038-.065-1.049,16.64,1.038.065Z" transform="translate(-0.316 -0.157)"/>
+    </g>
+  </g>
+</svg>

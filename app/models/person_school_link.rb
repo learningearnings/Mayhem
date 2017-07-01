@@ -16,8 +16,8 @@ class PersonSchoolLink < ActiveRecord::Base
 
   belongs_to :school
   belongs_to :person
-
   has_many :person_school_classroom_links, :inverse_of => :person_school_link
+  has_many :audit_logs, :as => :log_event
   has_many :classrooms, :through => :person_school_classroom_links, :source => :classroom, :inverse_of => :classroom
   has_many :person_account_links
   has_many :plutus_accounts, :through => :person_account_links, :class_name => 'Plutus::Account'
@@ -75,7 +75,7 @@ class PersonSchoolLink < ActiveRecord::Base
 
   ################### Validations ########################
   def username_taken?
-    errors.add(:status, "Person must be present") and return unless person && person.user.username
+    errors.add(:status, "Person must be present") and return unless person && person.user && person.user.username
     return if status == "inactive"
     ignored_ids = [person.id]
     @students = school.students.where("people.id NOT IN (?)", ignored_ids)

@@ -1,8 +1,7 @@
-%h3 My Credit Categories
-%p Click on a category to edit or delete it.
-
 .main-content-wrapper
   .primary-content
+    %h4 My Credit Categories
+    %p Click on a category to edit or delete it.
     .create-classroom.table.table-striped
       %table
         %thead
@@ -20,8 +19,6 @@
               %td
                 - if current_person.is_a?(SchoolAdmin) || !category.school_wide?
                   = link_to "Delete", teachers_otu_code_category_path(category), method: :delete, confirm: "Are you sure you want to delete this category?"
-
-
   .secondary-content
     .new-category-form
       = form_for @new_category, :url => new_teachers_otu_code_category_path do |f|

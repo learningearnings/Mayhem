@@ -34,7 +34,7 @@ class Bank
     return @on_failure.call unless account_has_enough_money_for(account, points)
 
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
-                   :expires_at => (Time.now + 45.days),
+                   :expires_at => (Time.now + 90.days),
                    :student_id => student.id,
                    :ebuck => true,
                    :otu_code_category_id => category_id}
@@ -66,7 +66,7 @@ class Bank
         @credit_manager.issue_game_credits_to_student(otu_code.source_string, student, otu_code.points, otu_code)
       end
     else
-      @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points)
+      @credit_manager.issue_print_credits_to_student(otu_code.school, otu_code.teacher, student, otu_code.points, otu_code)
     end
     if otu_code.messages.present?
       otu_code.messages.first.update_attributes(:body => 'You have already claimed these bucks.')
@@ -130,7 +130,7 @@ class Bank
 
   def create_bucks(person, school, prefix, bucks)
     buck_params = {:person_school_link_id => person_school_link(person, school).id,
-                   :expires_at => (Time.now + 45.days) }
+                   :expires_at => (Time.now + 90.days) }
     _bucks = []
     bucks[:ones].times do
       _bucks << create_buck(prefix, 1, buck_params)

@@ -1,150 +1,301 @@
-%small-circle {
-  &.active, &:hover {
-    background-image: url(asset_path('home_selected.png', image));
-    background-repeat: no-repeat;
-  }
-}
-
-%medium-circle {
-  &.active, &:hover {
-    background-image: url(asset_path('locker_selected.png', image));
-    background-repeat: no-repeat;
-  }
-}
-
-%medium-circle2 {
-  &.active, &:hover {
-    background-image: url(asset_path('rewards_selected.png', image));
-    background-repeat: no-repeat;
-  }
-}
-
-%large-circle {
-  &.active, &:hover {
-    background-image: url(asset_path('how_it_works_selected.png', image));
-    background-repeat: no-repeat;
-  }
-}
-
-%large-circle2 {
-  &.active, &:hover {
-    background-image: url(asset_path('classrooms_selected.png', image));
-    background-repeat: no-repeat;
-  }
-}
-
-$green: #25860b;
-$orange: #ea4e08;
-$fadedOrange: #EB731C;
-$purple: #B611B0;
-$darkBlue: #1f2870;
-$blue: #470bc1;
-$red: #ff2204;
-
-
 .primary-nav {
+  //height: 100%; /* 100% Full-height */
+  width: 250px; /* 0 width - change this with JavaScript */
+  position: relative; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  left: 0;
+  margin-left: 0px;
+  padding-left: 0px;
+  background-color: #075B7F; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: hidden;
+  
+  //top: 100px;
+  //padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  color: white;
+  font-family: "Open Sans";
+  font-weight: 400;
   li a {
-    padding: 1em 1em 1em 1em;
-    font-size: 1.6em;
+    color: white;
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    font-size: 18px;
+    background: #075B7F;
+    display: block;
+    //transition: 0.3s;
+    white-space: nowrap;
   }
+  i {
+    margin-right: 14px;
+  }
+  li {
+    display: block;
+    height: 50px;
+    overflow: hidden;
+  }
+  li a:hover, li a:focus {
+    color: white;
+    background: #07668F;
+    text-decoration: none;   
+  } 
 
+
+  .primary-icon {
+     color: white;
+     background-repeat: no-repeat;
+     background-position: 10px 0;
+     padding-left: 60px;    
+  }
+  .primary-icon-selected {
+     color: white;
+     background-repeat: no-repeat;
+     background-position: 10px 0;
+     padding-left: 60px;   
+     background-color: #07668F;      
+  }  
+  
   .home {
-    color: $green;
-    @extend %small-circle;
+    @extend .primary-icon;
+    background-image: url(asset_path('icon-home.svg', image)); 
   }
-
-  .how-it-works {
-    color: $orange;
-    @extend %large-circle;
-  }
-
-  .testimonials {
-    color: $purple;
-    @extend %large-circle;
+  .home:hover, .home.active {
+     @extend .primary-icon-selected;    
+     background-image: url(asset_path('icon-home-selected.svg', image));    
   }
 
   .locker {
-    color: $darkBlue;
-    @extend %medium-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('icon-locker.svg', image)); 
+    }
+    
+  .locker:hover, .locker.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('icon-locker-selected.svg', image));         
+   }
 
   .inbox {
-    color: $purple;
-    @extend %small-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-inbox.svg', image));   
+    }
+    
+  .inbox:hover, .inbox.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-inbox-selected.svg', image));
+   }
 
   .inbox_with_count {
-    color: $purple;
-    @extend %medium-circle2;
-  }
-
-  .restock {
-    color: $fadedOrange;
-    @extend %medium-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-inbox.svg', image));
+    }
+    
+  .inbox_with_count:hover, .inbox_with_count.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-inbox-selected.svg', image));
+   }
 
   .manage_students {
-    color: $fadedOrange;
-    @extend %medium-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-students.svg', image));  
+    }
+    
+  .manage_students:hover, .manage_students.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-students-selected.svg', image));
+   }
 
   .manage_teachers {
-    color: $green;
-    @extend %medium-circle2;
-  }
-
-  .help {
-    color: $red;
-    @extend %small-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-teachers.svg', image)); 
+   }
+    
+  .manage_teachers:hover, .manage_teachers.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-teachers-selected.svg', image));
+   }
 
   .bank {
-    color: $blue;
-    @extend %small-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-bank.svg', image));  
+    }
+    
+  .bank:hover, .bank.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-bank-selected.svg', image));         
+   }
 
   .play {
-    color: $fadedOrange;
-    @extend %small-circle;
-  }
-
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-play.svg', image));     
+    }
+    
+  .play:hover, .play.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-play-selected.svg', image));
+   }
+   
   .shop {
-    color: $purple;
-    @extend %small-circle;
-  }
-
-  .charities {
-    color: $blue;
-    @extend %medium-circle2;
-  }
-
-  .rewards {
-    color: $purple;
-    @extend %large-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-shop.svg', image));   
+    }
+    
+  .shop:hover, .shop.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-shop-selected.svg', image));         
+   }
 
   .reports {
-    color: $blue;
-    @extend %medium-circle;
-  }
-
-  .settings {
-    color: $orange;
-    @extend %medium-circle;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-reports.svg', image));     
+    }
+    
+  .reports:hover, .reports.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-reports-selected.svg', image));            
+   }
 
   .classrooms {
-    color: $orange;
-    @extend %large-circle2;
-  }
+     @extend .primary-icon;
+     background-image: url(asset_path('common/icon-classrooms.svg', image));     
+    }
+    
+  .classrooms:hover, .classrooms.active {
+      @extend .primary-icon-selected;
+      background-image: url(asset_path('common/icon-classrooms-selected.svg', image));      
+   }
 
-  .lounge {
-    color: $fadedOrange;
-    @extend %medium-circle;
-  }
+}
 
-  .news {
-    color: $red;
-    @extend %small-circle;
-  }
+.profile, .profile-collapsed {
+  background-color: #065272;
+}
+
+
+ 
+//new styles for secondary user menu
+.custom-nav-bar.secondary-open .profile {
+    display: none !important;
+}
+.custom-nav-bar.secondary-open .secondary-profile-menu {
+    bottom: 0;
+}
+.custom-nav-bar.secondary-open .profile-collapsed {
+    display: none !important;
+}
+ 
+.secondary-profile-menu {
+    position: fixed;
+    padding: 0;
+    width: 250px;
+    bottom: -300px; //default style is present, but positioned off screen
+    left: 0px;
+    border-top: 1px solid #2c7c9f;
+    background-color: #065272;
+    z-index: 100;
+    transition: 0.3s;
+}
+ 
+.profile-container {
+    border-bottom: 1px solid #2c7c9f;
+    height: 55px;
+}
+ 
+.secondary-profile-menu .person-details {
+    width: 180px;
+    max-width: 180px;
+}
+
+.hidden {
+  display: none;
+}
+ 
+.secondary-user-nav {
+    background-color: #065272;
+    width: 250px;
+    position: relative;
+    z-index: 1;
+    left: 0;
+    margin-left: 0px;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    transition: 0.5s;
+    color: white;
+    font-family: "Open Sans";
+    font-weight: 400;
+    
+    
+    .sec-nav {
+       background-repeat: no-repeat;
+       padding-left: 60px;
+       background-size: 14px;
+       background-position: 20px center;       
+    }
+    .sec-nav-sel {
+       background-color: #07668F;  
+       background-repeat: no-repeat;  
+       background-size: 14px;
+       background-position: 20px center;             
+    }
+    .help {
+       @extend .sec-nav;
+       background-image: url(asset_path('icon-help.svg', image));
+    }
+    .help:hover, .help.active {
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-help.svg', image));      
+     }   
+     .settings {
+       @extend .sec-nav;       
+       background-image: url(asset_path('icon-settings.svg', image));  
+      } 
+    .settings:hover, .settings.active {
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-settings.svg', image));      
+     } 
+     .logout {
+       @extend .sec-nav;       
+       background-image: url(asset_path('icon-logout.svg', image));    
+      }
+     .logout:hover, .logout.active {
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-logout.svg', image));     
+     }  
+     .eprofile {
+       @extend .sec-nav;       
+       background-image: url(asset_path('icon-profile.svg', image));     
+      }     
+     .eprofile:hover, .eprofile.active {
+       @extend .sec-nav-sel;
+       background-image: url(asset_path('icon-profile.svg', image));    
+     }
+     ul {
+       background-color: #065272;
+     }
+}
+.secondary-user-nav ul {
+                margin: 0 0 13px 0;
+}
+ 
+.secondary-user-nav li {
+    display: block;
+    height: 45px;
+    overflow: hidden;
+}
+ 
+.secondary-user-nav a {
+    color: white;
+    padding: 8px 8px 8px 40px;
+    text-decoration: none;
+    font-size: 16px;
+    background: #065272;
+    display: block;
+    white-space: nowrap;
+}
+ 
+.secondary-user-nav li a:hover {
+    background-color: #07668F;
+    color: white;
+    text-decoration: none;
 }

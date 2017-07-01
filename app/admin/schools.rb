@@ -39,6 +39,7 @@ ActiveAdmin.register School do
     end
     column :school_phone
     column :mascot_name
+    column :admin_credit_percent
     column :status
     column :timezone
     column "Distribution",:distribution_model
@@ -105,6 +106,12 @@ ActiveAdmin.register School do
   end
   controller do
     skip_before_filter :add_current_store_id_to_params
+    def update
+      if resource.status != "inactive" && params[:school][:status] == "inactive"
+        resource.audit_logs.create(district_guid: resource.district_guid, school_id: resource.id, school_sti_id: resource.sti_id, person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: resource.name, action: "Deactivate")
+      end  
+      super
+    end    
   end
 
 end

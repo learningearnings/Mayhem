@@ -1,5 +1,5 @@
 ActiveAdmin.register SyncAttempt do
-  menu :parent => "STI", :priority => 2
+  menu :parent => "Chalkable", :priority => 2
   config.clear_action_items!
   index do
     column :created_at
@@ -14,6 +14,11 @@ ActiveAdmin.register SyncAttempt do
     column :status
     column :error do |sync_attempt|
       link_to sync_attempt.error || "", admin_sync_attempt_path(sync_attempt)
+    end
+    column "" do |resource|
+      links = ''.html_safe
+      links += link_to "View", resource_path(resource), :class => "member_link edit_link"
+      links
     end
   end
 end

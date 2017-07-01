@@ -1,84 +1,61 @@
-.student-logged-in-content
-  .bacon-small
-  .corkboard
-    .whats-new
+.main-content-wrapper
+  %h1
+  .student-logged-in-content
+    .corkboard
+      .whats-new
+        - if current_school.name == 'STI'
+          .welcome-sticky
+            .welcome-callout
+              .king_font_welcome DON'T FORGET TO PICK-UP YOUR REWARDS BY:
+              .sketch_font_welcome
+   
+                1:15 pm on
+                %br/
+                DAY 2 of the SEMINAR
+        - else
+          = @whats_new.body.html_safe
+  .student-logged-in-sidebar
+    = render_reward_highlights(@products[0..1])
+    .our-sponsors
+   
       - if current_school.name == 'STI'
-        .welcome-sticky
-          .welcome-callout
-            .king_font_welcome DON'T FORGET TO PICK-UP YOUR REWARDS BY:
-            .sketch_font_welcome
- 
-              1:15 pm on
-              %br/
-              DAY 2 of the SEMINAR
+        .king_font_thanks
+          THANK YOU TO ALL OF OUR WONDERFUL SPONSORS AND SEMINAR PARTICIPANTS!
+          %br/
+          %br/
+          WE HOPE YOU HAVE A GREAT TIME!
       - else
-        = @whats_new.body.html_safe
-    - if current_school.name == 'STI'
-      .featured-activity
-        %div.king_font
- 
-          Don't Miss.......
-        %div.sketch_font
-          Social Hour
-        %div.sketch_font2
-          5-6 PM Day 1
-    - else
-      .featured-activity
-        = @featured_activity.body.html_safe
-    .featured-activity-callout
-      = @featured_activity_callout.body.html_safe
-  .honor-roll
-    .honor-roll-content
-      - cache(Time.now.strftime("school-#{current_school.id}-honor-roll-%m%d%y-%p")) do
-        - honor_roll = HonorRoll.new(current_school, 7.days.ago.beginning_of_day, Date.today.end_of_day)
-        - charity_donations = honor_roll.charity_purchases_per_person(3)
-        %h4 Most Credits Donated to Charity
-        %ol 
-          - charity_donations.each do |person, amount|
-            %li #{person} [#{number_to_bucks amount}]
-
-.student-logged-in-sidebar
-  = render_reward_highlights(@products[0..1])
-  .our-sponsors
- 
-    - if current_school.name == 'STI'
-      .king_font_thanks
-        THANK YOU TO ALL OF OUR WONDERFUL SPONSORS AND SEMINAR PARTICIPANTS!
-        %br/
-        %br/
-        WE HOPE YOU HAVE A GREAT TIME!
-    - else
-      = @our_sponsor.body.html_safe
-    .our-sponsors-callout
-      .our-sponsors-callout-content
-        = @our_sponsor_callout.body.html_safe
-  - if Poll.active.present?
-    .poll
-      %h2 Polls 
-      %h6= link_to 'View All Polls', polls_path
-      - if @poll
-        %h5= @poll.question
-        = form_for Vote.new do |f|
-          - @poll.poll_choices.each do |choice|
-            = hidden_field_tag :poll_id, @poll.id
-            = f.label choice.choice
-            = f.radio_button(:poll_choice_id, choice.id)
-            = "#{choice.votes.count} Votes"
-          %br
-          = f.submit 'Vote'
-
- 
-= javascript_include_tag "tours/student/overview"
-
-:javascript
-  localStorage.setItem('tour:shouldStartTour','N');
-  hopscotch.endTour();
+        = @our_sponsor.body.html_safe
+      .our-sponsors-callout
+        .our-sponsors-callout-content
+          = @our_sponsor_callout.body.html_safe
+    - if Poll.active.present?
+      .poll
+        %h2 Polls 
+        = link_to 'View All Polls', polls_path
+        - if @poll
+          %h5= @poll.question
+          = form_for Vote.new do |f|
+            - @poll.poll_choices.each do |choice|
+              = hidden_field_tag :poll_id, @poll.id
+              = f.label choice.choice
+              = f.radio_button(:poll_choice_id, choice.id)
+              = "#{choice.votes.count} Votes"
+            %br
+            = f.submit 'Vote'
   
-- if params[:tour] == "Y" or first_time_logged_in
+   
+  = javascript_include_tag "tours/student/overview"
+  
   :javascript
-    localStorage.setItem('tour:shouldStartTour','Y');
+    localStorage.setItem('tour:shouldStartTour','N');
+    hopscotch.endTour();
     
-:javascript
-  if (localStorage.getItem('tour:shouldStartTour') == 'Y') {  
-    hopscotch.startTour(student_overview);
-  }
+  - if params[:tour] == "Y" or first_time_logged_in
+    :javascript
+      localStorage.setItem('tour:shouldStartTour','Y');
+      
+  :javascript
+    if (localStorage.getItem('tour:shouldStartTour') == 'Y') {  
+      hopscotch.startTour(student_overview);
+    }

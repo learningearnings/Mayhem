@@ -1,13 +1,15 @@
 .main-content-wrapper
   .primary-content
-    %h2 Teacher Reports
+    %h1 Teacher Reports
     %hr
     %h4= link_to "Purchases Report", purchases_report_path
     %h4= link_to "Student Roster",   student_roster_report_path
     %h4= link_to "Student Activity Report",  student_activity_report_path
     - if current_person.is_a?(SchoolAdmin)
       %h4= link_to "Teacher Activity Report", teacher_activity_report_path
+      %h4= link_to "Bucks Distributed Report", buck_distributed_report_path
     %h4= link_to "Student Credit History Report",  student_credit_history_report_path
+    %h4= link_to "Student Earnings Report",  student_earning_report_path
 
 = javascript_include_tag "tours/school_admin/overview"
 = javascript_include_tag "tours/teacher/overview"

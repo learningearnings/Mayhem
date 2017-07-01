@@ -1,94 +1,105 @@
 .main-content-wrapper
   .full-content
     .bank_content
-      %h2 The Bank
-      %p
-        Teachers have enough to worry about, which is why we made LE Credits the
-        easiest and simplest way to reward students for a job well done.
-        Below you'll find everything you need to manage your classroom's LE funds.
+      %h1 Bank
       %p.credits-available
         %strong
           Credits Available:
         = number_with_precision(current_person.main_account(current_school).balance, precision: 2, delimiter: ',')
-        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, :class => 'btn awesome-button'
+        = link_to 'Edit Credit Categories', teachers_otu_code_types_path, :class => 'btn awesome-button pull-right'
 
       .distribute-credits
-        %h3 Distribute Credits
+        %h3 Credits
         %ul#distribute-credits{:class => "nav nav-tabs"}
-          %li
-            %a{:href => "#print-credits", 'data-toggle' => 'tab'}
-              %p
-                %i{:class => "icon-print"}
-                Print Credits
           %li
             %a.electronic_credits{:href => "#electronic-credits", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-envelope"}
                 Electronic Credits
           %li
+            %a{:href => "#print-credits", 'data-toggle' => 'tab'}
+              %p
+                %i{:class => "icon-print"}
+                Print Credits
+          %li
             %a{:href => "#transfer-credits", 'data-toggle' => 'tab'}
               %p
                 %i{:class => "icon-random"}
                 Transfer Credits
-          %li
-            %a{:href => "#lookup-code", 'data-toggle' => 'tab'}
-              %p
-                %i{:class => "icon-search"}
-                Lookup A Code
           - if current_user.person.is_a?(SchoolAdmin)
             %li
               %a{'href' => '#auto-credits', 'data-toggle' => 'tab'}
                 %p
                   %i{:class => "icon-star"}
-                  Auto-Credits
+                  Automatic
+          %li
+            %a{:href => "#lookup-code", 'data-toggle' => 'tab'}
+              %p
+                %i{:class => "icon-search"}
+                Lookup A Code
+
         .tab-content
           .tab-pane#print-credits
-            %h4 Print Physical Credits
+            %p Print Physical Credits
             = form_for OtuCode.new, :url => school_admins_create_print_bucks_path do |f|
-              = label_tag "Teacher"
-              = select("teacher", "id", current_school.teachers.order('last_name, first_name').collect {|p| [ p.name, p.id ] })
-              = label_tag '1s'
-              = text_field_tag :point1, nil, :class => 'focus-on-me input-mini credits'
-              = label_tag '5s'
-              = text_field_tag :point5, nil, :class => 'input-mini credits'
-              = label_tag '10s'
-              = text_field_tag :point10, nil, :class => 'input-mini credits'
-              = f.submit 'Print These Credits', :class => 'awesome-button'
+              %span.form-input-control
+                = label_tag "Teacher"
+                = select("teacher", "id", current_school.teachers.order('last_name, first_name').collect {|p| [ p.name, p.id ] })
+              %span.form-input-control
+                = label_tag '1s'
+                = text_field_tag :point1, nil, :class => 'focus-on-me input-mini credits'
+              %span.form-input-control
+                = label_tag '5s'
+                = text_field_tag :point5, nil, :class => 'input-mini credits'
+              %span.form-input-control
+                = label_tag '10s'
+                = text_field_tag :point10, nil, :class => 'input-mini credits'
+              = f.submit 'Print These Credits', :class => 'btn awesome-button'
 
           .tab-pane#electronic-credits
             .electronic-credits-for-student
-              %h4 Issue Electronic Credits to a single student
+              %p Issue Electronic Credits to a single student
               = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
-                = label_tag 'Student'
-                = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
-                = label_tag 'Credits'
-                = text_field_tag :points, nil, :class => "input-mini credits"
-                = f.label :otu_code_category_id, "Credit Category"
-                = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
-                = f.submit 'Send These Credits', :class => 'awesome-button'
-
+                %span.form-input-control
+                  = label_tag 'Student'
+                  = select("student", "id", current_school.students.order('last_name, first_name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
+                %span.form-input-control
+                  = label_tag 'Credits'
+                  = text_field_tag :points, nil, :class => "input-mini credits"
+                %span.form-input-control
+                  = f.label :otu_code_category_id, "Credit Category"
+                  = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]})
+                %div
+                = f.submit 'Send Credits', :class => 'btn awesome-button', style: 'float:left;'
+            %br
             .electronic-credits-for-classroom
-              %h4 Issue Electronic Credits to each student in a classroom
+              %p Issue Electronic Credits to each student in a classroom
               = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
-                = label_tag 'Classroom'
-                = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
-                = label_tag 'Credits'
-                = text_field_tag :class_points, nil,:class => 'class_points input-mini credits', :onclick => 'copy_points();'
-                = f.label :otu_code_category_id, "Credit Category"
-                = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
+                %span.form-input-control
+                  = label_tag 'Classroom'
+                  = select("classroom", "id", current_person.classrooms.uniq.order('name').collect {|p| [ p.name, p.id ] }, :include_blank => true)
+                %span.form-input-control
+                  = label_tag 'Credits'
+                  = text_field_tag :class_points, nil,:class => 'class_points input-mini credits', :onclick => 'copy_points();'
+                %span.form-input-control
+                  = f.label :otu_code_category_id, "Credit Category"
+                  = f.select :otu_code_category_id, options_for_select(current_otu_code_categories.map{|x| [x.name, x.id]}), {}, id: "classroom_otu_code_category"
                 #classroom_distribution
-                = f.submit 'Send These Credits', class: 'awesome-button'
+                = f.submit 'Send Credits', class: 'btn awesome-button', style: 'float:left;'
 
           .tab-pane#transfer-credits
-            %h4 Transfer Credits Between Teachers
+            %p Transfer Credits Between Teachers
             = form_for OtuCode.new, :url => school_admins_transfer_bucks_path do |f|
-              = label_tag 'Credits'
-              = text_field_tag :transfer_points, nil, :class => "input-mini credits"
-              = label_tag :from_teacher
-              = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
-              = label_tag :to_teacher
-              = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
-              = f.submit 'Send These Credits', class: 'awesome-button'
+              %span.form-input-control
+                = label_tag 'Credits'
+                = text_field_tag :transfer_points, nil, :class => "input-mini credits"
+              %span.form-input-control
+                = label_tag :from_teacher
+                = select_tag :from_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
+              %span.form-input-control
+                = label_tag :to_teacher
+                = select_tag :to_teacher_id, options_from_collection_for_select((current_school.teachers << SchoolAdmin.find(current_person.id)), :id, :to_s), :include_blank => true
+              = f.submit 'Send Credits', class: 'btn awesome-button'
 
           .tab-pane#lookup-code
             =render "/banks/code_lookup"
@@ -112,7 +123,7 @@
                   %br/
                   = f.text_field :weekly_no_infractions_amount, :value => @school.weekly_no_infractions_amount, :class => "input-mini credits"
                   %br/
-                  = f.submit 'Update Auto-Credits', :class => 'awesome-button'
+                  = f.submit 'Update Auto-Credits', :class => 'btn awesome-button'
               - else
                 %p
                   This functionality is not supported for your school.
@@ -192,18 +203,18 @@
     var points = $('.class_points').val();
     $('input.classroom_student_points').val(points);
   }
-  
+
   $("#school_weekly_perfect_attendance_amount").on("change", function() {
-        var val = Math.abs(parseInt(this.value, 10) || 1);
+        var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
   });
-  
+
   $("#school_weekly_no_tardies_amount").on("change", function() {
-        var val = Math.abs(parseInt(this.value, 10) || 1);
+        var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
   });
-  
+
   $("#school_weekly_no_infractions_amount").on("change", function() {
-        var val = Math.abs(parseInt(this.value, 10) || 1);
+        var val = Math.abs(parseInt(this.value, 10));
         this.value = val > 100 ? 100 : val;
-  });    
+  });

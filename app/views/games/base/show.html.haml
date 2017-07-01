@@ -1,47 +1,35 @@
-.row.play-header-container
-  .span10
-    %h2= t('.title')
-
-    .games-image-container
-      .games-image
-
-.games.row
-  .span6
-    .game.row
-      .span2
-        = link_to "Play Now", current_person.is_a?(SchoolAdmin) ? school_admins_auctions_path : auctions_path, class: 'btn awesome-button play-now'
-      .span4
-        %h4= t('.auction_title')
-        %p
-          = t('.auction_desc')
-
-    .game.row
-      .span2
-        = link_to "Play Now", games_food_fight_path, class: 'btn awesome-button play-now'
-      .span4
-        %h4= t('.ff_title')
-        %p
-          = t('.ff_desc')
-
-    .game.row
-      .span2
-        = link_to "Play Now", games_number_muncher_path, class: 'btn awesome-button play-now'
-      .span4
-        %h4= t('.nm_title')
-        %p
-          = t('.nm_desc')
-
-    .game.row
-      .span2
-        = link_to "Play Now", games_ken_ken_path, class: 'btn awesome-button play-now'
-      .span4
-        %h4 KenKen&reg;
-        %p Play this sudoku like math game
-
-
-.row.games-footer
-  .span4
-    %h3 Reward Highlights
-    = render_reward_highlights(@products[0..1])
-  .span4
-    = link_to 'Suggest a Game', leadmin_message_path(subject: "I have a game suggestion!", refurl: current_url), class: 'btn awesome-button suggest-a-game'
+.main-content-wrapper
+  .row.play-header-container
+    .span10
+      %h1= t('.title')
+  
+      .games-image-container
+        .games-image
+      %br
+      .game.row.le-tile
+        .span2
+          = link_to "Play Now", current_person.is_a?(SchoolAdmin) ? school_admins_auctions_path : auctions_path, class: 'btn awesome-button play-now'
+        .span4
+          %h4= t('.auction_title')
+          %p
+            = t('.auction_desc')
+  
+      .game.row.le-tile
+        .span2
+          = link_to "Play Now", games_food_fight_path, class: 'btn awesome-button play-now'
+        .span4
+          %h4= t('.ff_title')
+          %p
+            = t('.ff_desc')
+  
+      .game.row.le-tile
+        .span2
+          = link_to "Play Now", games_ken_ken_path, class: 'btn awesome-button play-now'
+        .span4
+          %h4 KenKen&reg;
+          %p Play this sudoku like math game
+      .game.row
+        %br
+        %br
+        .span4
+          = link_to 'Suggest a Game', leadmin_message_path(subject: "I have a game suggestion!", refurl: current_url), class: 'btn awesome-button suggest-a-game'

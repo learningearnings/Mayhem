@@ -47,7 +47,7 @@ Spree::Admin::OrdersController.class_eval do
   end
 
   def create_manual_order
-    Rails.logger.debug("AKT Create Manual Order: disabled for now...")
+    #Rails.logger.debug("AKT Create Manual Order: disabled for now...")
     
     #order = current_user.orders.create
     #order.school_id = params[:school]

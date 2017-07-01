@@ -13,7 +13,7 @@
         display: inline-block;
         margin: 0px auto;
         margin-bottom: 10px;
-        font-size: 1.2em;
+        //font-size: 1.2em;
         list-style: none;
         @extend .thumbnail !optional;
         min-height: 150px;
@@ -47,7 +47,7 @@
             }
         }
         .resp-product-details {
-            font-size: 1.3em;
+            //font-size: 1.3em;
             font-weight: bold;
             text-align: left;
 /*            width: auto; */
@@ -61,7 +61,7 @@
             }
         }
         .resp-product-moreinfo {
-            font-size: 1.3em;
+            //font-size: 1.3em;
             font-weight: bold;
             text-align: left;
             line-height: 1.1em;
@@ -71,7 +71,7 @@
             color: orange;
         }
         .resp-product-classrooms {
-            font-size: 1.3em;
+            //font-size: 1.3em;
             font-weight: bold;
             text-align: left;
             line-height: 1.1em;
