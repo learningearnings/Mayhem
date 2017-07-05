@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="1854 501 48 65">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-logo-powerschool-P);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" y1="0.499" x2="1" y2="0.499" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#e04e5b"/>
+      <stop offset="0.25" stop-color="#faa930"/>
+      <stop offset="0.37" stop-color="#c1ae42"/>
+      <stop offset="0.51" stop-color="#7db457"/>
+      <stop offset="0.53" stop-color="#7cb45c"/>
+      <stop offset="0.67" stop-color="#70b783"/>
+      <stop offset="0.8" stop-color="#68b9a0"/>
+      <stop offset="0.92" stop-color="#63bab1"/>
+      <stop offset="1" stop-color="#61bab7"/>
+    </linearGradient>
+    <clipPath id="clip-logo-powerschool-P">
+      <rect x="1854" y="501" width="48" height="65"/>
+    </clipPath>
+  </defs>
+  <g id="logo-powerschool-P" class="cls-1">
+    <path id="path" class="cls-2" d="M25.21,10.5a1.31,1.31,0,0,0-1.31,1.31V71.89H19.75V11.81a1.31,1.31,0,0,0-1.31-1.31H11.7a1.31,1.31,0,0,0-1.31,1.31V73.19a1.31,1.31,0,1,0,2.61,0V13.11h4.14V73.19a1.31,1.31,0,0,0,1.31,1.31h6.77a1.31,1.31,0,0,0,1.31-1.31V13.11h5C45.35,13.11,55,21.55,55,33.63,55,45.25,46,53.48,32.81,54V50.07C43,49.53,50.22,42.76,50.22,33.58,50.22,23.84,42.52,17,31.5,17a1.31,1.31,0,0,0-1.31,1.31v6.82a1.31,1.31,0,0,0,1.31,1.31c4.14,0,8.31,2.19,8.31,7.1,0,4.18-3.42,7.1-8.31,7.1a1.31,1.31,0,0,0,0,2.61c6.33,0,10.92-4.08,10.92-9.71,0-5.32-3.89-9.15-9.62-9.65V19.7c8.78.5,14.8,6.07,14.8,13.88,0,8.19-6.62,13.92-16.11,13.92a1.31,1.31,0,0,0-1.31,1.31v6.53a1.31,1.31,0,0,0,1.31,1.31c15.15,0,26.14-9.68,26.14-23C57.64,20,46.89,10.5,31.5,10.5Z" transform="translate(1843.615 490.5)"/>
+  </g>
+</svg>

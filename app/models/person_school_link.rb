@@ -75,7 +75,7 @@ class PersonSchoolLink < ActiveRecord::Base
 
   ################### Validations ########################
   def username_taken?
-    errors.add(:status, "Person must be present") and return unless person && person.user.username
+    errors.add(:status, "Person must be present") and return unless person && person.user && person.user.username
     return if status == "inactive"
     ignored_ids = [person.id]
     @students = school.students.where("people.id NOT IN (?)", ignored_ids)

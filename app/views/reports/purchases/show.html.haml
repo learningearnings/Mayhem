@@ -4,7 +4,7 @@
   .primary-content-fw
 
     - if report.state == "complete"
-      %h2 Purchases Report
+      %h1 Purchases Report
       - report_params = Reports::Purchases.new(params.merge(school: current_school)).parameters
       = simple_form_for report_params,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
         .form-sections
@@ -30,8 +30,8 @@
             .filter-dates
               = f.input :teachers_name_option, :label => "Teachers Name", :collection => report_params.teacher_name_options, :include_blank => false
             %br/
-          = f.submit 'Run Report', :class => 'awesome-button', :id => "run_report_button"
-          = button_to_function "Print Report", "window.print();", class: "noprint awesome-button"
+          = f.submit 'Run Report', :class => 'btn awesome-button', :id => "run_report_button"
+          = button_to_function "Print Report", "window.print();", class: "noprint btn awesome-button"
 
       .report
         = form_tag DeliverRewardsCommand.new, method: :post do
@@ -96,7 +96,7 @@
 
           - if enable_mark_button
             %br/
-            = submit_tag 'Mark Rewards Delivered', :class => "awesome-button noprint"
+            = submit_tag 'Mark Rewards Delivered', :class => "btn awesome-button noprint"
     - else
       .message.center-content
         = image_tag "loading.gif"

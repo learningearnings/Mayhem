@@ -7,7 +7,7 @@
 
 .main-content-wrapper
   .full-content
-    %h2= t('.products', :school => current_school_name, :scope => [store_type])
+    %h1= t('.products', :school => current_school_name, :scope => [store_type])
     - if current_person.is_a?(Teacher)
       %p
         = t('.products_message', :scope => [store_type,current_person.type.downcase])
@@ -15,11 +15,11 @@
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }
 
-- if current_person.is_a? SchoolAdmin
-  .auctions
-    %h2 School Auctions
-    %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
-    %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
+    - if current_person.is_a? SchoolAdmin
+      .auctions
+        %h2 School Auctions
+        %h5= link_to 'New Auction', main_app.new_school_admins_auction_path
+        %h5= link_to 'All Auctions', main_app.school_admins_auctions_path
 
 = javascript_include_tag "tours/school_admin/overview"
 = javascript_include_tag "tours/student/overview"

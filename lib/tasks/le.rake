@@ -1,4 +1,23 @@
 require 'readline'
+require 'powerschool-client'
+
+ARRAY_OF_PS_POWERSCHOOL_CRITERIAS = [
+  {
+    ps_client_method_name: 'get_weekly_credits_no_absences',
+    school_method_name: 'weekly_perfect_attendance_amount',
+    message_string: 'PS Perfect Attendance'
+  },
+  {
+    ps_client_method_name: 'get_weekly_credits_no_tardies',
+    school_method_name: 'weekly_no_tardies_amount',
+    message_string: 'PS No Tardies'
+  },
+  {
+    ps_client_method_name: 'get_weekly_credits_no_infractions',
+    school_method_name: 'weekly_no_infractions_amount',
+    message_string: 'PS No Infractions'
+  }
+]
 
 namespace :le do
   desc "User Activity Report"
@@ -80,6 +99,40 @@ namespace :le do
         puts "Issue with weekly credits for school: #{school.id}"
         puts "Here's the error: #{e}"
         next
+      end
+    end
+  end
+
+  desc 'Award weekly automatic credits for Powerschool'
+  task award_weekly_automatic_credits_powerschool: :environment do
+    ARRAY_OF_PS_POWERSCHOOL_CRITERIAS.each do |criteria|
+      options = {
+        url: 'https://powerschool.hcde.org',
+        id: '3058d3a6-2081-403e-8030-875e04cc22fb',
+        secret: '567044a7-23b0-45b4-987f-b2113366d3e2',
+        retires: 1,
+        import_dir: '/srv/',
+        start_year: '2016',
+        schools: [1, 21, 62]
+      }.stringify_keys!
+      district_guid = '903cd06f-623c-3909-a0e4-d503d57b8131'
+      psc = Powerschool::Client.new(options)
+      rows = psc.send(criteria[:ps_client_method_name])
+      credit_manager = CreditManager.new
+      rows.each do | row |
+        student = Student.where(district_guid: district_guid, sti_id: row['dcid']).first
+        next unless student
+        school = student.school
+        next unless school
+        next unless school.send(criteria[:school_method_name])
+        amount = school.send(criteria[:school_method_name])
+        ActionController::Base.new.expire_fragment "#{student.id}_balances"
+        otu_code = OtuCode.create(:expires_at => (Time.now + 90.days),
+          :student_id => student.id,
+          :ebuck => true,
+          :points => BigDecimal.new(amount))
+        otu_code.mark_redeemed!
+        credit_manager.issue_weekly_automatic_credits_to_student("Weekly Credits for #{criteria[:message_string]}", school, student, amount, otu_code)
       end
     end
   end

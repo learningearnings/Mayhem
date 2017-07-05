@@ -1,11 +1,12 @@
-= render '/games/food_fights/head'
-
-.food-fight-question
-  %h4= food_fight_play_command.question_body
-  %ul.answers
-    - food_fight_play_command.answer_options.each do |answer|
-      %li{ class: answer.html_class }
-        = label_tag :answer_id, answer, value: answer.id
-  = link_to "New Question", play_games_food_fight_path, class: 'btn'
-
-= render '/games/food_fights/question_statistics', question_statistics: question_statistics
+.main-content-wrapper
+  = render '/games/food_fights/head'
+  
+  .food-fight-question
+    %h4= food_fight_play_command.question_body
+    %ul.answers
+      - food_fight_play_command.answer_options.each do |answer|
+        %li{ class: answer.html_class }
+          = label_tag :answer_id, answer, value: answer.id
+    = link_to "New Question", play_games_food_fight_path, class: 'btn'
+  
+  = render '/games/food_fights/question_statistics', question_statistics: question_statistics

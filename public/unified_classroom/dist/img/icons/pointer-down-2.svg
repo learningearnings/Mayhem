@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="14px" height="8px" viewBox="0 0 14 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>pointer down 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Student-Profile" stroke="none" stroke-width="0" fill="none" fill-rule="evenodd">
+        <g id="CPF-800" transform="translate(-701.000000, -631.000000)" fill="#000000">
+            <g id="Group-34" transform="translate(240.000000, 538.000000)">
+                <path d="M464.29575,90.668 C463.90175,91.083 463.90175,91.756 464.29575,92.171 L468.88375,97 L464.29575,101.829 C463.90175,102.244 463.90175,102.916 464.29575,103.332 L464.63475,103.688 C465.02875,104.103 465.66875,104.103 466.06275,103.688 L471.70375,97.751 C472.09775,97.336 472.09775,96.664 471.70375,96.248 L466.06275,90.311 C465.66875,89.896 465.02875,89.896 464.63475,90.311 L464.29575,90.668 Z" id="grey-arrow-down" transform="translate(467.999750, 96.999500) rotate(-270.000000) translate(-467.999750, -96.999500) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

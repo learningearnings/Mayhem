@@ -39,7 +39,7 @@
                   = select_tag :deliverer_id, options_from_collection_for_select(current_school.distributing_teachers, :id, :to_s), :prompt => "Select Deliverer"
                 = hidden_field_tag 'reward_creator_id', @product.person.id if @product.person.present?
           .actions
-            = button_tag :class => 'large primary awesome-button', :id => 'add-to-cart-button', :type => :submit do
+            = button_tag :class => 'large primary btn awesome-button', :id => 'add-to-cart-button', :type => :submit do
               = t(:add_to_cart)
           - else
             = content_tag('strong', t(:only_logged_in_students_can_purchase))

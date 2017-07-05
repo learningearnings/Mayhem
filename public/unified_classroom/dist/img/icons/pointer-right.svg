@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="14px" viewBox="0 0 8 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Pointer Right</title>
+    <desc>A right pointing chevron</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="pointer-right" transform="translate(-1.000000, -1.000000)" fill-rule="nonzero" fill="#000000">
+            <g id="group-8" transform="translate(4.670000, 8.130000) rotate(-90.000000) translate(-4.670000, -8.130000) translate(-2.830000, 4.130000)">
+                <polygon id="path" points="6.95 7.15 7.8 8 14.62 1.18 13.77 0.33 7.77 6.33 1.82 0.35 0.97 1.2 4.38 4.61"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -33,6 +33,7 @@ log/sunspot-solr-test.log.lck
 /log/*.log
 /log/sunspot*
 /tmp
+.byebug_history
 
 coverage
 

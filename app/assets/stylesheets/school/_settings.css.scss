@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .school-settings {
-  font-size: 1em;
+//  font-size: 1em;
   h3 {
     text-align: left;
   }
@@ -11,7 +11,7 @@
   }
   .teacher-tile {
     text-align: left;
-    font-size: 1.2em;
+    //font-size: 1.2em;
     margin-bottom: 10px;
     margin-left: 5px;
     min-width: 180px;
@@ -50,7 +50,7 @@
     float: left;
     padding-left: 2em;
     .our-sponsors {
-      font-size: 1.4em;
+//      font-size: 1.4em;
       background-image: url(asset_path('our_sponsors.png', image));
       background-repeat: no-repeat;
       position: relative;

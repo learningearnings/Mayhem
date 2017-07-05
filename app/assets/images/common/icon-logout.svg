@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1293 -10833 14 14">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-logout);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-logout">
+      <rect x="-1293" y="-10833" width="14" height="14"/>
+    </clipPath>
+  </defs>
+  <g id="icon-logout" class="cls-1">
+    <g id="Group_15099" data-name="Group 15099" transform="translate(-2120 -10913.563)">
+      <path id="Subtraction_16" data-name="Subtraction 16" class="cls-2" d="M6.778,12.748A6.782,6.782,0,0,1,3.555,0l.661,1.206a5.386,5.386,0,0,0-2.8,4.733v.278a1.088,1.088,0,0,1,.03.277.726.726,0,0,0,.015.169.6.6,0,0,1,.016.109.773.773,0,0,0,.03.277L1.54,7.2a.953.953,0,0,0,.031.124,5.6,5.6,0,0,0,.245.766,5.418,5.418,0,0,0,4.961,3.27A5.507,5.507,0,0,0,11.768,8.1a5.123,5.123,0,0,0,.246-.739.972.972,0,0,0,.03-.12.949.949,0,0,1,.032-.127.666.666,0,0,1,.015-.153.6.6,0,0,0,.016-.125.63.63,0,0,1,.015-.139.608.608,0,0,0,.015-.107,1.059,1.059,0,0,0,.031-.278V5.97A5.429,5.429,0,0,0,9.383,1.208L10.024.013A6.782,6.782,0,0,1,6.778,12.748Z" transform="translate(827 81.815)"/>
+      <rect id="Rectangle_3316" data-name="Rectangle 3316" class="cls-2" width="2.035" height="8.14" rx="1.017" transform="translate(832.66 80.563)"/>
+    </g>
+  </g>
+</svg>

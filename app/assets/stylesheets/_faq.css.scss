@@ -2,7 +2,11 @@
 #faqs h3  { cursor:pointer; }
 #faqs h3.active { color:#d74646; }
 #faqs div { height:0; overflow:hidden; position:relative; }
-#faqs div p { font-size:1.6em; padding:0; margin-bottom:15px; }
+#faqs div p { 
+
+//font-size:1.6em; 
+padding:0; 
+margin-bottom:15px; }
 
 #search-help {
   float:right;

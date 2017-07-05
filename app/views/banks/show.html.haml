@@ -1,6 +1,6 @@
 .main-content-wrapper
   .primary-content
-    %h2= t('.title')
+    %h1= t('.title')
 
     .bank-account
       %h4= t('.subtitle')
@@ -38,22 +38,22 @@
   .secondary-content
     = render_reward_highlights(@products[0..3])
 
-#transfer-credits-modal.modal.hide
+#transfer-credits-modal.modal
   = render 'transfer_credits'
 
-#checking-history-modal.modal.hide
+#checking-history-modal.modal
   %h3 Checking History
 
   #checking-history
     = render 'checking_ledger_table', amounts: @recent_checking_amounts
 
-#savings-history-modal.modal.hide
+#savings-history-modal.modal
   %h3 Savings History
 
   #savings-history
     = render 'savings_ledger_table', amounts: @recent_savings_amounts
 
-#enter-codes-modal.modal.hide
+#enter-codes-modal.modal
   %h3 Enter Codes
   .enter_codes_content
     .span6
@@ -78,10 +78,6 @@
     var tour = window[hopscotch.getState().split(":")[0]];
     hopscotch.startTour(tour);
   }
-
-  $('#enter-codes-modal').on('shown.bs.modal', function() {
-    $('#code').focus();
-  });
   
   $('a:contains("Deposit e-Credit")').click( function(event) {
     if (this.clicked) {
@@ -90,11 +86,11 @@
     else {
       this.clicked = true
     }
-    return true;
+    return true;$('#enter-codes-modal')
   });
   
   $(':submit').click( function(event) {
-    if (this.clicked) {
+    if (this.clicked) {$('#enter-codes-modal')
       return false;
     }
     else {

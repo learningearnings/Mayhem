@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>drop-down-arrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="drop-down-arrow" fill="#000000">
+            <path d="M11.9475853,6.00040486 C12.2797009,5.99197302 12.6154231,6.11523831 12.8709572,6.3707725 L21.5238636,15.0236788 C22.0150666,15.5148818 22.0209405,16.3054053 21.5293818,16.796964 C21.0412264,17.2851194 20.2493012,17.2846503 19.7560966,16.7914458 L11.9475853,8.98293451 L4.13907408,16.7914458 C3.64586954,17.2846503 2.85394427,17.2851194 2.3657889,16.796964 C1.87423021,16.3054053 1.88010413,15.5148818 2.37130713,15.0236788 L11.0242134,6.3707725 C11.2797476,6.11523831 11.6154698,5.99197302 11.9475853,6.00040486 Z" id="Chevron" transform="translate(11.947585, 11.581109) scale(1, -1) translate(-11.947585, -11.581109) "></path>
+        </g>
+    </g>
+</svg>

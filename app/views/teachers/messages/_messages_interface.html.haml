@@ -10,15 +10,16 @@
         = message.body.html_safe
         - if message.message_images.present?
           = image_tag(message.message_images.first.image.thumb('50x50#').url)
-      = link_to "Reply to this message", teachers_reply_message_path(message, refurl: url_for(params)), class: 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
+      - if 1 == 0 #message.replyable?          
+        = link_to "Reply to this message", teachers_reply_message_path(message, refurl: url_for(params)), class: 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#send-message-modal'
   = paginate @messages
 - else
   /= "You have 0 #{controller.action_name.humanize.titlecase}"
   = "You have 0 Messages"
 
 
-#read-message-modal.modal.hide
+#read-message-modal.modal
   .modal-body
 
-#send-message-modal.modal.hide
+#send-message-modal.modal
   .modal-body

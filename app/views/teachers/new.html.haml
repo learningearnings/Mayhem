@@ -1,27 +1,28 @@
 .main-content-wrapper
-  %h2 Setup Your Account
-  %p
-    To get started with LE you just need to create an account and a school for your students.
-    You will create logins for your students inside LE once you've created your account.
+  .primary-content
+    %h1 Setup Your Account
+    %p
+      To get started with LE you just need to create an account and a school for your students.
+      You will create logins for your students inside LE once you've created your account.
 
-  = bootstrap_form_for @teacher_signup_form do |f|
-    .row
-      .span4
-        %h3 Teacher
-        = f.text_field :first_name, label: "First Name *"
-        = f.text_field :last_name, label: "Last Name *"
-        = f.text_field :email, label: "Email *"
-        = f.text_field :username, label: "Username *"
-        = f.password_field :password, label: "Password *"
-        = f.password_field :password_confirmation, label: "Password Confirmation *"
-      .span4
-        %h3 School
-        = f.text_field :name, label: "School or Classroom Name *"
-        = f.text_field :city, label: "City *"
-        = f.select :state_id, options_from_collection_for_select(State.all, 'id', 'abbr', selected: @teacher_signup_form.state_id), include_blank: true, label: "State *"
-        = f.hidden_field :min_grade, :value => "0"
-        = f.hidden_field :max_grade, :value => "12"
-    = f.submit 'Submit', class: 'btn awesome-button'
+    = bootstrap_form_for @teacher_signup_form do |f|
+      .row
+        .span4
+          %h3 Teacher
+          = f.text_field :first_name, label: "First Name *"
+          = f.text_field :last_name, label: "Last Name *"
+          = f.text_field :email, label: "Email *"
+          = f.text_field :username, label: "Username *"
+          = f.password_field :password, label: "Password *"
+          = f.password_field :password_confirmation, label: "Password Confirmation *"
+        .span4
+          %h3 School
+          = f.text_field :name, label: "School or Classroom Name *"
+          = f.text_field :city, label: "City *"
+          = f.select :state_id, options_from_collection_for_select(State.all, 'id', 'abbr', selected: @teacher_signup_form.state_id), include_blank: true, label: "State *"
+          = f.hidden_field :min_grade, :value => "0"
+          = f.hidden_field :max_grade, :value => "12"
+      = f.submit 'Submit', class: 'btn awesome-button'
 
   :javascript
     $(function() {

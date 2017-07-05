@@ -63,13 +63,11 @@ module ApplicationHelper
   end
 
   def avatar_for(person, geometry='50x50#')
-    avatar_img = if person && person.avatar.present?
-                   person.avatar.image
-                 else
-                   default_avatar_path = Rails.root.join('app/assets/images/default_avatar.png').to_s
-                   image_processor.fetch_file(default_avatar_path)
-                 end
-    image_tag(avatar_img.thumb(geometry).url)
+    if person && person.avatar.present?
+       image_tag(person.avatar.image.thumb(geometry).url,size: "34x34")
+     else
+       image_tag('/assets/default_avatar.png',size: "34x34")
+     end
   end
 
   def resized_image(image_file_url, geometry='50x50#')

@@ -62,6 +62,7 @@ def current_git_branch
 end
 
 # repo details
+
 set :scm, :git
 set :repository, 'git@github.com:learningearnings/Mayhem.git'
 set :branch, current_git_branch

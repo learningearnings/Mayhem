@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>menu</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="menu" fill="#000000">
+            <path d="M2,6 C2,5.17157288 2.66543579,4.5 3.5032506,4.5 L20.4967494,4.5 C21.3269718,4.5 22,5.16579723 22,6 C22,6.82842712 21.3345642,7.5 20.4967494,7.5 L3.5032506,7.5 C2.67302822,7.5 2,6.83420277 2,6 Z M2,12 C2,11.1715729 2.66543579,10.5 3.5032506,10.5 L20.4967494,10.5 C21.3269718,10.5 22,11.1657972 22,12 C22,12.8284271 21.3345642,13.5 20.4967494,13.5 L3.5032506,13.5 C2.67302822,13.5 2,12.8342028 2,12 Z M2,18 C2,17.1715729 2.66543579,16.5 3.5032506,16.5 L20.4967494,16.5 C21.3269718,16.5 22,17.1657972 22,18 C22,18.8284271 21.3345642,19.5 20.4967494,19.5 L3.5032506,19.5 C2.67302822,19.5 2,18.8342028 2,18 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>
