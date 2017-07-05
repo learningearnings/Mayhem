@@ -1,0 +1,12 @@
+%li.product-tile
+  .product-title
+    = charity.name
+  .product-image
+    = cache("#{Time.now.strftime("%Y%m%d")}image_product_id-#{charity.id}") do
+      = link_to image_tag(charity.thumb), spree.product_url(charity), itemprop: 'url'
+  %br
+  .product-details
+    .price.selling{itemprop: "on_hand"}= "Available: #{charity.on_hand.to_s}"
+    .type Type: School
+    .owner.label.label-default= "Teacher: #{charity.person}"
+

@@ -1,15 +1,13 @@
-.my-charities
+.purchased-charities
   %h2 Your Charities
-  - if charities.blank?
+  - if purchased_charities.blank?
     %p You haven't purchased any charities.
-  -else
-    - if charities.respond_to?(:num_pages)
-      .charities-row
-        = paginate charities
-    %ul
-      - charities.each do |c|
-        = render 'charity', charity: c, tile_class: cycle('first','last') unless c.nil?
-    - if charities.respond_to?(:num_pages)
-      .charities-row
-        = paginate charities
-
+  - else
+    = render 'purchased_charities', purchased_charities: purchased_charities
+.clear
+.available-charities
+  %h2 Available Charities
+  - if available_charities.blank?
+    %p There are currently no charities available.
+  - else
+    = render 'available_charities', available_charities: available_charities

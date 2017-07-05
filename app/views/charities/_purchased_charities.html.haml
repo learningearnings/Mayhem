@@ -1,0 +1,5 @@
+.charities-row
+  = paginate purchased_charities, param_name: "purchased_charities_page"
+  %ul.products.inline.products-listing
+    - purchased_charities.each do |charity|
+      = render 'charity', charity: charity, tile_class: cycle('first','last')

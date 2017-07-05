@@ -1,16 +1,15 @@
-%li{:class => "charity-product-tile #{tile_class}", "data-hook" => "products_list_item", :id => "product_#{charity.spree_product.id}", :itemscope => "", :itemtype => "http://schema.org/Product"}
+%li.product-tile
+  .product-title
+    = link_to truncate("#{charity.spree_product.name}", length: 50), spree.product_path(charity.spree_product), class: 'info', itemprop: 'name', title: charity.spree_product.name
   .product-image
     - unless charity.spree_product.svg.blank? || charity.spree_product.svg.path.blank?
       = le_svg_tag charity.spree_product.svg.to_s do
-        = render :file => charity.spree_product.svg.path,:formats => [:svg], :locals => {:name => current_person.name, :school_name => current_school.name}
+        = render file: charity.spree_product.svg.path, formats: [:svg], locals: { name: current_person.name, school_name: current_school.name }
     - else
-      = link_to image_tag(charity.spree_product.images.first.attachment.url(:small)), spree.product_url(charity.spree_product), :itemprop => 'url'
+      = link_to image_tag(charity.spree_product.thumb), spree.product_url(charity.spree_product), itemprop: 'url'
+  %br
   .product-details
-    .product-name
-      = link_to truncate("#{charity.spree_product.name}", :length => 50), spree.product_path(charity.spree_product), :class => 'info', :itemprop => "name", :title => charity.spree_product.name
     .product-purchased
-      .info= "Donation On: " + l(charity.created_at.to_date,format: :short)
-      .info= "You Donated: " + charity.debit_amounts.sum(:amount).to_s
-  - unless charity.spree_product.svg.blank? || charity.spree_product.svg.path.blank?
-    .print
-      = link_to "Print Your Certificate", charity_print_path(charity),class: 'btn awesome-button'
+      .info= "Donation On: #{charity.created_at.to_date}"
+      .info= "You Donated: #{charity.debit_amounts.sum(:amount).to_s}"
+      = link_to "Print Your Certificate", charity_print_path(charity)
