@@ -38,6 +38,7 @@ end
 
 every :saturday do
   rake "le:award_weekly_automatic_credits", :output => "/home/deployer/logs/award_weekly_automatic_credits.log"
+  rake 'le:award_weekly_automatic_credits_powerschool'
 end
 
 every "0 0 1 * *" do
