@@ -100,9 +100,9 @@ class StiController < ApplicationController
       if login_teacher
         if current_school    
           if @teacher.is_a?(SchoolAdmin)
-            redirect_to main_app.school_admins_bank_path
+            redirect_to main_app.school_admins_bank_path and return
           else
-            redirect_to main_app.teachers_bank_path
+            redirect_to main_app.teachers_bank_path and return
           end
         else
           Rails.logger.error("AKT Integrated sign in failed for district GUID, No school for logged in teacher")
