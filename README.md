@@ -166,3 +166,16 @@ the page content into your bookmarks toolbar:
     http://RAILS_APP/__rack_bug__/bookmarklet.html
 
 Then visit the site in dev mode and click the bookmarklet.  Use the password: "Seriouslythoughthisisadebugkey"
+
+
+## Troubleshooting
+
+if you get an "access to remote repository failed on deploy" then your identities have been corrupted and you can do the following:
+ $ ssh-add -D   #remove existing identities
+ $ ssh-agent    #copy the lines & run them
+ $ ssh-add      #uses the output from above
+
+
+
+
+

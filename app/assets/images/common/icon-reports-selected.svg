@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1419 -10833 20 20">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-reports-selected);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-reports-selected">
+      <rect x="-1419" y="-10833" width="20" height="20"/>
+    </clipPath>
+  </defs>
+  <g id="icon-reports-selected" class="cls-1">
+    <g id="Symbol_38_3" data-name="Symbol 38 – 3" transform="translate(-1425 -10838.001)">
+      <path id="path-7" class="cls-2" d="M12,23V3h4V23ZM6,23V9h4V23ZM0,23V15H4v8Z" transform="translate(8 2)"/>
+    </g>
+  </g>
+</svg>

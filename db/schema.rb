@@ -94,7 +94,6 @@ ActiveRecord::Schema.define(:version => 20161005095435) do
     t.integer  "person_id"
     t.boolean  "canceled"
     t.datetime "deleted_at"
-    t.string   "status"
   end
 
   create_table "audit_logs", :force => true do |t|

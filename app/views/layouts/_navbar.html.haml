@@ -1,6 +1,20 @@
 - # FIXME: This is not good, needs to be replaced with something that just knows what to render without these...things
 
+:plain
+  <a id="nav-hamburger-link" class="pds-app-nav-trigger style-scope pds-app-nav" aria-label="Open Navigation Menu" href="">
+    <i class="fa fa-bars style-scope pds-app-nav" aria-hidden="true"></i>
+  </a>
+  <header class="style-scope pds-app-nav">
+    <a href="" class="pds-powerschool-logo style-scope pds-app-nav" id="nav-logo-link">
+      <span class="style-scope pds-app-nav">PowerSchool</span>
+    </a>
+  </header>
+   
 .custom-nav-bar
+  .resp-logo
+    = link_to(image_tag('logo-learning-earnings-ondark.png'), root_path)
+  .resp-logo-collapsed
+    = link_to(image_tag('logo-powerschool-P.png'), root_path)    
   - if current_user
     - if current_person
       - if current_person.is_a?(SchoolAdmin)
@@ -19,3 +33,35 @@
         = render 'layouts/menu_parent'
       - else
         = render 'layouts/menu'
+  - if current_user        
+    .profile
+      .avatar
+        = avatar_for(current_person, '50x50#')          
+      .person-details
+        = current_person.full_name
+      .arrow
+        = image_tag('Collapse.png')
+      .secondary-user-nav.nav.hidden
+        %ul
+          %li= link_to "Profile",       main_app.person_path(current_person), :class => 'eprofile'
+          - if current_person.is_a?(SchoolAdmin)
+            %li= link_to "Settings",      '/schools/settings', :class => 'settings'       
+          %li= link_to "Help",       '/help', :class => 'help'
+          %li= link_to "Logout",    spree.get_destroy_user_session_path, :class =>'logout'             
+    .profile-collapsed
+      .arrow
+        = image_tag('Expand.png')      
+      %br
+      .avatar
+        = avatar_for(current_person, '34x34')  
+      .secondary-user-nav.nav.hidden
+        %ul
+          %li= link_to "Profile",       main_app.edit_person_path(current_person), :class => 'eprofile'
+          - if current_person.is_a?(SchoolAdmin)
+            %li= link_to "Settings",      '/schools/settings', :class => 'settings'       
+          %li= link_to "Help",       '/help', :class => 'help'
+          %li= link_to "Logout",    spree.get_destroy_user_session_path, :class =>'logout'      
+ 
+       
+
+    

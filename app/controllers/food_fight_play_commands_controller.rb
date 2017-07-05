@@ -17,6 +17,8 @@ class FoodFightPlayCommandsController < LoggedInController
   end
 
   def on_failure(command, match, player)
+    redirect_to :back, flash: { error: 'Invalid input.' } unless player
+    return false unless player
     handle_turn
     flash.now[:error] = "Incorrect answer."
     question_statistics = Games::QuestionStatisticsPresenter.new(command.question)

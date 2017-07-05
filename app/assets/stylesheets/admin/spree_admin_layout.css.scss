@@ -32,6 +32,8 @@
     overflow: hidden;
   }
   .secondary-content {
+    //margin-left: 20px;
+    margin-top: 80px;
     width: 37%;
     display: inline-block;
     vertical-align: top;
@@ -39,7 +41,7 @@
 
   }
   p {
-    font-size: 1.5em;
+    //font-size: 1.5em;
   }
 }
 
@@ -69,7 +71,7 @@ h2.object-title {
 
 
 .product-tile {
-    font-size: 1.1em;
+    //font-size: 1.1em;
     float: left;
     margin-bottom: 10px;
     margin-left: 10px;
@@ -125,7 +127,7 @@ a.info {
     color: rgba(255,255,255, 0.9);
     z-index: 1;
     width: 100px;
-    font-size: 1.1em;
+//    font-size: 1.1em;
     display: inline-block;
     position: absolute;
     line-height: 1.5em;

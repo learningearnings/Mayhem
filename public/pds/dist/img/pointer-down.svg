@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="652 891 30 30">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-pointer-down);
+      }
+    </style>
+    <clipPath id="clip-pointer-down">
+      <rect x="652" y="891" width="30" height="30"/>
+    </clipPath>
+  </defs>
+  <g id="pointer-down" class="cls-1">
+    <g id="group-8" transform="translate(660.03 894.67)">
+      <path id="path" d="M346.283,639.925l.872.872,6.995-6.995-.872-.872-6.154,6.154-6.1-6.133-.872.872,3.5,3.5Z" transform="translate(-340.18 -625.6)"/>
+    </g>
+  </g>
+</svg>

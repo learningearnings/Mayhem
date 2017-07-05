@@ -1,6 +1,9 @@
-.poll
-  %h2= @poll.question
-  - @poll.poll_choices.each do |choice|
-    = "#{choice.choice}  -  #{choice.votes.count} Votes"
-    %br
-%h5= link_to 'All Polls', polls_path
+.main-content-wrapper
+  .primary-content
+    .poll
+      %h2= @poll.question
+      - @poll.poll_choices.each do |choice|
+        = "#{choice.choice}  -  #{choice.votes.count} Votes"
+        %br
+  .secondary-content
+    %h5= link_to 'All Polls', polls_path

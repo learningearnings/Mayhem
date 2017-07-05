@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-1345 -1610 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-ishop-selected);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #fff;
+        stroke-width: 1px;
+      }
+
+      .cls-3, .cls-5 {
+        fill: none;
+      }
+
+      .cls-4 {
+        stroke: none;
+      }
+    </style>
+    <clipPath id="clip-icon-ishop-selected">
+      <rect x="-1345" y="-1610" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon-ishop-selected" class="cls-1">
+    <g id="Symbol_39_1" data-name="Symbol 39 – 1" transform="translate(-1345 -1610)">
+      <path id="Path_679" data-name="Path 679" class="cls-2" d="M-65.837-576.865l17.313.823-.366,8.924-16.226.45Z" transform="translate(76.311 586)"/>
+      <path id="Path_680" data-name="Path 680" class="cls-3" d="M-48.28-563.958H-64.9L-66.156-580.7l-5.155-1.282" transform="translate(76.311 586)"/>
+      <g id="Ellipse_219" data-name="Ellipse 219" class="cls-3" transform="translate(10.311 23)">
+        <circle class="cls-4" cx="2" cy="2" r="2"/>
+        <circle class="cls-5" cx="2" cy="2" r="1.5"/>
+      </g>
+      <g id="Ellipse_220" data-name="Ellipse 220" class="cls-3" transform="translate(24.311 23)">
+        <circle class="cls-4" cx="2" cy="2" r="2"/>
+        <circle class="cls-5" cx="2" cy="2" r="1.5"/>
+      </g>
+    </g>
+  </g>
+</svg>

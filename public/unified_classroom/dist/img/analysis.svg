@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-489 -674 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        clip-path: url(#clip-icon-analysis);
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-icon-analysis">
+      <rect x="-489" y="-674" width="32" height="32"/>
+    </clipPath>
+  </defs>
+  <g id="icon-analysis" class="cls-1">
+    <path id="path-7" class="cls-2" d="M15,20H0V14H4v2H6V14h4v2h2V14h4v6Zm0-1V15H13v2H9V15H7v2H3V15H1v4Zm0-6H12V3h4V13Zm0-1V4H13v8ZM9,13H6V6h4v7Zm0-1V7H7v5ZM3,13H0V9H4v4Zm0-1V10H1v2Z" transform="translate(-481 -669)"/>
+  </g>
+</svg>

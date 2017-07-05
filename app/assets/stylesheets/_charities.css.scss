@@ -1,6 +1,6 @@
 .my-charities {
   p {
-    font-size: 2em;
+//    font-size: 2em;
   }
   .charities-row {
     @extend .row-fluid;
@@ -18,7 +18,7 @@
     @include ctb-fluid-span(6);
     display: inline-block;
     margin: 1em 9px 1em 0px;
-    font-size: 1.2em;
+//    font-size: 1.2em;
     list-style: none;
     @extend .thumbnail !optional;
     @extend .pull-left;

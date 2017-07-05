@@ -1,6 +1,6 @@
 .main-content-wrapper
   .full-content
-    %h2= t(:products, :school => current_school_name, :scope => [store_type])
+    %h1= t(:products, :school => current_school_name, :scope => [store_type])
     %p= t(:products_message, :scope => [store_type])
     %div{"data-hook" => "homepage_products"}
       = render :partial => 'spree/shared/products', :locals => { :products => @products }

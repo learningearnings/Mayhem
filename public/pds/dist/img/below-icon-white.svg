@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="3328 2969.32 27 13.18">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #FFF;
+      }
+
+      .cls-1 {
+        stroke-width: 2px;
+      }
+
+      .cls-2 {
+        stroke-width: 1px;
+      }
+    </style>
+  </defs>
+  <g id="Symbol_11_1" data-name="Symbol 11 – 1" transform="translate(3201 2787)">
+    <g id="group-11" transform="translate(52.783 -0.963)">
+      <line id="line-4" class="cls-1" y2="13.18" transform="translate(82.934 183.283)"/>
+      <line id="line-4-2" data-name="line-4" class="cls-2" x2="14.85" transform="translate(86.367 191.676)"/>
+      <line id="line-4-3" data-name="line-4" class="cls-2" x2="5.4" transform="translate(74.217 191.676)"/>
+    </g>
+  </g>
+</svg>

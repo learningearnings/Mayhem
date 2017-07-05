@@ -1,57 +1,24 @@
-%h1 Help 
+.main-content-wrapper
+  .primary-content
+    %h1 Help
+    %ul
+      - if current_user.person.is_a?(Teacher) || current_user.person.is_a?(SchoolAdmin)  
+        %li
+          %h3
+            = link_to "Administrator Guide", "http://support.sti-k12.com/documentation/quickref/Learning%20Earnings%20-%20Administrator%20Guide.pdf", :target => "_blank"
+          = "A guide of administrator-level options including managing the bank, students, teachers, classrooms and more." 
+        %li
+          %h3
+            = link_to "Teacher Getting Started Guide", "http://support.sti-k12.com/documentation/quickref/Learning%20Earnings%20-%20Teacher%20Getting%20Started%20Guide.pdf", :target => "_blank"
+          = "A detailed guide for teachers with instructions for navigation, bank, students, classroom, shopping and reports." 
+        %li
+          %h3
+            = link_to "Teacher Tri-Fold Guide", "http://support.sti-k12.com/documentation/quickref/Learning%20Earnings%20-%20Teacher%20Tri-Fold.pdf", :target => "_blank"
+          = "A handy brochure-style guide to use as an introduction to Learning Earnings or as a refresher for seasoned users." 
+      %li
+        %h3
+          = link_to "Student Tri-Fold Guide", "http://support.sti-k12.com/documentation/quickref/Learning%20Earnings%20-%20Student%20Tri-Fold.pdf", :target => "_blank"
+        = "A quick guide to introduce Learning Earnings to your students."       
 
-%ul
-  %li
-    %h3
-      = link_to "Getting Started - Quick Reference Guide", "http://support.sti-k12.com/documentation/quickref/Learning Earnings - Getting Started.pdf", :target => "_blank"  
-    = "Click the above link to download the LE getting started quick reference guide.  "
-  %li
-    %h3 
-      = link_to "Browse online help", :tour
-    = "Click the above link to see a comprehensive guide to LE pages and features.  "      
-  %li
-    %h3 
-      = link_to "LE Tour", :begin_tour
-    = "Click the above link to take a guided tour of LE.  "
-  - if current_user.person.is_a?(Teacher) || current_user.person.is_a?(SchoolAdmin)  
-    %li
-      %h3 
-        = link_to "Teacher Resources", "http://www.chalkable.com/resources/#LearningEarnings", :target => "_blank"
-      = "Click the above link to view Teachers resources.  "
-
-%h1 FAQ
-
-#search-help
-  = form_for 'faq_question_search', remote: true, id: 'faq-search-form' do |f|
-    = f.text_field :search
-    = submit_tag 'Search', :class => 'awesome-button'
-
-#faqs
-  - @questions.each do |question|
-    %h3= question.question
-    %div
-      %p= question.answer
-  
-:javascript
-  $(document).ready(function() {
-    load_answers();
-
-    $("#search-help").children().on("ajax:success", function(e, data, status, xhr){
-      $("#faqs").replaceWith(xhr.responseText);
-      load_answers();
-    });
-
-  });
-
-  function load_answers() {
-    $('#faqs h3').each(function() {
-      var tis = $(this), state = false, answer = tis.next('div').hide().css('height','auto').slideUp();
-      tis.click(function() {
-        state = !state;
-        answer.slideToggle(state);
-        tis.toggleClass('active',state);
-      });
-    });
-  };
 
 

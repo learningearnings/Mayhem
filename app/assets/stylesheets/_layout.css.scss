@@ -4,27 +4,35 @@
 /* FONTS */
 
 @font-face {
-  font-family: 'king_cool_kcregular';
-  src: url('king_cool_kc-webfont.eot');
-  src: url('king_cool_kc-webfont.eot?#iefix') format("embedded-opentype"), url('king_cool_kc-webfont.woff') format("woff"), url('king_cool_kc-webfont.ttf') format("truetype"), url('king_cool_kc-webfont.svg#king_cool_kcregular') format("svg");
-  font-weight: normal;
-  font-style: normal; }
-
+font-family: "Open Sans";
+src: url("OpenSans-Regular.ttf");
+font-weight: normal;
+font-style: normal; }
 
 @font-face {
-  font-family: 'sketch_rockwellregular';
-  src: url('sketchrockwell-bold-webfont.eot');
-  src: url('sketchrockwell-bold-webfont.eot?#iefix') format("embedded-opentype"), url('sketchrockwell-bold-webfont.woff') format("woff"), url('sketchrockwell-bold-webfont.ttf') format("truetype"), url('sketchrockwell-bold-webfont.svg#sketch_rockwellregular') format("svg");
-  font-weight: normal;
-  font-style: normal; }
-
+font-family: "Open Sans";
+src: url("OpenSans-Light.ttf");
+font-weight: 300;
+font-style: normal; }
 
 @font-face {
-  font-family: 'sketch_wallregular';
-  src: url('sketch_wall-webfont.eot');
-  src: url('sketch_wall-webfont.eot?#iefix') format("embedded-opentype"), url('sketch_wall-webfont.woff') format("woff"), url('sketch_wall-webfont.ttf') format("truetype"), url('sketch_wall-webfont.svg#sketch_wallregular') format("svg");
-  font-weight: normal;
-  font-style: normal; }
+font-family: "Open Sans";
+src: url("OpenSans-Semibold.ttf");
+font-weight: bold;
+font-style: normal; }
+
+@font-face {
+font-family: "Open Sans";
+src: url("OpenSans-BoldItalic.ttf");
+font-weight: bold;
+font-style: italic; }
+
+@font-face {
+font-family: "Open Sans";
+src: url("OpenSans-Italic.ttf");
+font-weight: normal;
+font-style: italic; }
+
 
 /* Variables */
 $how-to-active-color: #f05c1a;
@@ -39,14 +47,181 @@ $how-to-active-color: #f05c1a;
 .reward-template-instructions {
   display: block;
   width: 70%;
-  font-size: 14px;
+  //font-size: 14px;
 }
 
 .login-div {
-  float: right;
-  width: 630px;
-  margin-right: 10px;
+  position: relative;
+  left: auto;
+  right: auto;
+  top: 100px;
+  background: #075B7F;
+  text-align: center;
+  color: white;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  h1 {
+    font-family: "Open Sans";
+    font-size: 30px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 30px;
+  }
+  a {
+    color: white;
+    font-family: "Open Sans";
+    font-weight: 400;
+    font-size: 14px;
+  }
+
 }
+
+#login-footer {
+  a, a:hover, a:active {
+    font-size: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    margin-left: 10px;
+    margin-right: 20px;
+  }
+}
+
+.log-in-form ul  {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.log-in-form ul li  {
+  list-style: none;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.log-in-form button {
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  background: #137ABB;
+  width: 450px;
+  height: 50px;
+  font-size: 20px;
+  border: 0;
+  border-radius: 4px;
+
+}
+
+.create-account-button {
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  background: #05597C;
+  width: 450px;
+  height: 50px;
+  font-size: 24px;
+  border: 0;
+  border-radius: 4px;
+
+}
+.btn.students,
+.btn.parents,
+.btn.teachers {
+  cursor: pointer;
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  background: #00516f;
+  width: 450px;
+  height: 50px;
+  font-size: 24px;
+  border: 0;
+  border-radius: 4px;
+  padding-top: 10px;
+  box-shadow: 0px 0px 0px;
+  background-image: url('/assets/Create.png');
+  background-repeat: no-repeat;
+  background-position: 90%;
+}
+.login-logo {
+  height: 40px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+#login-footer {
+  font-family: "Open Sans";
+  font-weight: 400;
+  color: white;
+  font-size: 10px;
+}
+#login-username {
+  background-image: url(asset_path('common/icon-bank.svg', image));
+  background-repeat: no-repeat;
+  //text-indent: 20px;
+  color: #333;
+}
+#login-password {
+    background-image: url(asset_path('common/icon-bank.svg', image));
+    background-repeat: no-repeat;
+    text-indent: 20px;
+}
+#login-school {
+    background-image: url(asset_path('common/icon-bank.svg', image));
+    background-repeat: no-repeat;
+    text-indent: 20px;
+}
+#login-username:active {
+  background-image: none;
+}
+#login-password:active {
+  background-image: none;
+}
+#login-school:active {
+  background-image: none;
+}
+
+
+.middle-line {
+   width: 450px;
+   text-align: center;
+   border-bottom: 1px solid #fff;
+   line-height: 0.1em;
+   margin: 10px 0 20px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 30px;
+   margin-bottom: 40px;
+   font-family: "Open Sans";
+   font-weight: 600;
+   font-size: 16px;
+}
+
+.middle-line-text {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: #075B7F;
+}
+
+.log-in-form ul li select {
+  border-radius: 4px;
+  background: white;
+  width: 300px;
+  font-size: 18px;
+  box-shadow: 3px 3px 1px #888888;
+}
+
+.log-in-form ul li input {
+  border-radius: 4px;
+  background: white;
+  width: 450px;
+  height: 50px;
+  font-size: 18px;
+  box-shadow: none;
+  text-align: left;
+}
+
+.chosen {font-family: "Open Sans" !important; font-size: 16px !important; color: black !important;}
 
 .join-div {
   float: left;
@@ -71,7 +246,8 @@ $how-to-active-color: #f05c1a;
 }
 
 body {
-  font-size: 62.5%;
+  //font-size: 62.5%;
+  background: white;
 }
 
 .sti_table_heading {
@@ -80,16 +256,16 @@ body {
 
 .sketch_font  {
   margin-top: 20px;
-  font-family: SketchRockwell;
-  font-size: 25pt;
+  font-family: "Open Sans";
+  //font-size: 25pt;
   width:110%;
   color: rgb(228,30,31)
 }
 
 .sketch_font2  {
   margin-top: 5px;
-  font-family: SketchRockwell;
-  font-size: 22pt;
+  //font-family: SketchRockwell;
+  //font-size: 22pt;
   width:110%;
   color: rgb(228,30,31)
 }
@@ -97,18 +273,18 @@ body {
 .king_font  {
   margin-left: 5px;
   font-weight: bold;
-  font-family: king_cool_kcregular;
+  font-family: "Open Sans";
   margin-top: 20px;
-  font-size: 24pt;
+  //font-size: 24pt;
   color: rgb(241,201,252)
 }
 
 .king_font_welcome  {
   margin-left: 5px;
   font-weight: bold;
-  font-family: king_cool_kcregular;
+  font-family: "Open Sans";
   margin-top: 20px;
-  font-size: 18pt;
+  //font-size: 18pt;
   color: rgb(9,126,186)
 }
 
@@ -116,13 +292,13 @@ body {
 
   text-align: center;
   font-weight: bold;
-  font-family: king_cool_kcregular;
-  font-size: 16pt;
+  font-family: "Open Sans";
+  //font-size: 16pt;
 }
 
 .sketch_font_welcome  {
-  font-family: SketchRockwell;
-  font-size: 20pt;
+  font-family: "Open Sans";
+  //font-size: 20pt;
   text-align: center;
   width:160%;
   color: rgb(161, 72, 245);
@@ -130,7 +306,6 @@ body {
   margin-left: -60px;
 }
 
-h1, h2, h3, h4, h5, h6,
 .navbar ul.nav li,
 .person-details ul.links li,
 .boxes-nav-container ul li,
@@ -141,7 +316,7 @@ span.join,
 .primary-nav
 .awesome-button
 {
-  font-family: 'sketch_rockwellregular';
+  font-family: 'Open Sans';
 }
 
 @mixin really-awesom-button {
@@ -149,31 +324,34 @@ span.join,
 }
 
 
-h1 {
-  color: #25860B;
-}
-
-h2 {
-  color: #470BC1;
-}
-
-h3 {
-  color: #EA4E08;
-}
-
-h4 {
- color: #08C;
-}
+//All headings have the same color
+h1, h2, h3, h4, h5, h6
+{ font-color: #333; }
+//all headers after h1 have the same weight
+h2, h3, h4, h5, h6
+{ font-weight: 300; }
+h1
+{ font-size: 24px; line-height: 24px; padding: 21px 0; font-weight: 600; } //typically used for page title, this is going to be heavier font than what is used elsewhere
+h2
+{ font-size: 22px; line-height: 22px; padding: 20px 0; }
+h3
+{ font-size: 21px; line-height: 21px; padding: 19px 0; }
+h4
+{ font-size: 20px; line-height: 20px; padding: 18px 0; }
+h5
+{ font-size: 19px; line-height: 19px; padding: 17px 0; }
+h6
+{ font-size: 18px; line-height: 18px; padding: 16px 0; }
 
 .blue_color {
  color: #08C;
- font-size: 18px;
- font-family: sketch_rockwellregular;
+ //font-size: 18px;
+ font-family: "Open Sans";
 }
 
 .black_color {
- font-size: 18px;
- font-family: sketch_rockwellregular;
+ //font-size: 18px;
+ font-family: "Open Sans";
 }
 
 
@@ -181,18 +359,19 @@ html, body {
     margin: 0 auto;
     padding: 0;
     height: 100%;
-    min-width: 960px;
-    background: url(asset_path('notebook_bg_lines.png', image)) repeat;
+    #min-width: 960px;
+    #background: url(asset_path('notebook_bg_lines.png', image)) repeat;
 }
 
 html.resp, body.resp {
     margin: 0 auto;
     padding: 0;
     height: 100%;
-    max-width: 960px;
-    min-width: 320px;
-    background: url(asset_path('lines.png', image)) repeat-y scroll center;
-    background-position: center 170px;
+    overflow: hidden;
+    #-width: 960px;
+    #min-width: 320px;
+    #background: url(asset_path('lines.png', image)) repeat-y scroll center;
+    #background-position: center 170px;
 }
 
 .container-full {
@@ -207,8 +386,8 @@ html.resp, body.resp {
 
 .container-940 {
   width: 940px;
-  border-left: solid 1px pink;
-  border-right: solid 1px pink;
+  //border-left: solid 1px pink;
+  //border-right: solid 1px pink;
   min-height: 1000px;
   position: absolute;
   top: 0;
@@ -220,11 +399,6 @@ html.resp, body.resp {
 }
 .head {
   width: 940px;
-}
-
-.header {
-  height: 140px;
-  background-color: #fff;
 }
 
 .content-section {
@@ -264,7 +438,7 @@ html.resp, body.resp {
       }
       li:nth-child(1) {
         font-weight: bold;
-        font-size: 1.4em;
+        //font-size: 1.4em;
         color: #1f2870;
       }
       li span a {
@@ -337,18 +511,26 @@ html.resp, body.resp {
   padding-bottom:0;
 }
 
-.login-form-fields input {
-  width: 130px;
-  font-size: 1em;
-}
+.chosen {
+  font-family: "Open Sans" !important;
+  font-size: 16px !important;
+  color: black !important;
 
-.login-form-fields select {
-  height: 25px;
-  width: 104px;
-}
+ }
 
 .chzn-container  {
   width: 175px!important;
+  font-size: 16px!important;
+  font-family: "Open Sans";
+  color: black;
+}
+
+.chzn-select {
+  font-size: 16px!important;
+  font-family: "Open Sans";
+  color: black;
+  border-radius: 4px!important;
+  margin-bottom: 20px!important;
 }
 
 .login-form-fields .login-button {
@@ -374,40 +556,7 @@ html.resp, body.resp {
   }
 }
 
-.btn.students,
-.btn.parents,
-.btn.teachers,
-.btn.login-button {
-  font-family: 'sketch_rockwellregular';
-  color: #1f2870;
-  cursor: pointer;
-  padding: 7px 0;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  background-position: 0;
-  border: none;
-  @include box-shadow(none);
-  width: 96px;
-  height: 37px;
-}
 
-.lt-ie9 .form-inline .login-button {
-  display:inline-block;
-  margin-right:-35px;
-  margin-left:20px;
-}
-
-.btn.students {
-  background-image: url(asset_path('common/join-menu-green-no-text-bg.png', image));
-}
-
-.btn.parents {
-  background-image: url(asset_path('common/join-menu-orange-no-text-bg.png', image));
-}
-
-.btn.teachers {
-  background-image: url(asset_path('common/join-menu-blue-no-text-bg.png', image));
-}
 
 .nav-container, .nav-container-corkboard {
   position: absolute;
@@ -431,19 +580,19 @@ html.resp, body.resp {
     display: inline;
     margin: 0 12px;
     a {
-      font-family: 'sketch_rockwellregular';
+      font-family: "Open Sans";
     }
   }
 }
 
 .content-section .how-nav li span a {
   color: #312d68;
-  font-size: 1.6em;
+  //font-size: 1.6em;
 }
 
 .content-section .how-nav li span a:hover {
   text-decoration: none;
-  color: #f05c1a;
+  color: #042d40;
 }
 
 .content-section .how-nav li span a:active {
@@ -555,26 +704,104 @@ html.resp, body.resp {
   }
 }
 
-.custom-nav-bar {
-  position: relative;
-  top: 0;
-  float: right;
-  .primary-nav {
-    list-style-type: none;
-    margin: 0;
-    padding:0;
-    li {
-      display: inline;
-      padding: 1.7em 0;
-
-      a {
-        text-decoration: none;
-        font-family: 'sketch_rockwellregular';
-        display: inline-block;
-      }
-    }
+.profile {
+  position: absolute;
+  padding: 0;
+  width: 250px;
+  bottom: 0px;
+  left: 0px;
+  border-top: 1px solid #2c7c9f;
+  .arrow {
+    border-left: 1px solid #2c7c9f;
+    width: 50px;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
+
+.profile-collapsed {
+  display: none;
+  position: absolute;
+  padding: 0;
+  width: 60px;
+  bottom: 0px;
+  right: 0px;
+  border-top: 1px solid #2c7c9f;
+  .arrow {
+    border-left: 1px solid #2c7c9f;
+    width: 50px;
+    float: right;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .avatar {
+    border-top: 1px solid #2c7c9f;
+    float: right;
+  }
+}
+
+.custom-nav-bar {
+    width: 250px;
+    height: 100vh;
+    padding-bottom: 10px;
+    padding-left: 0;
+    position: relative;
+    word-wrap: break-word;
+    vertical-align: top;
+    float: left;
+    background: #075B7F;
+    transition: 0.2s;
+}
+
+.custom-nav-bar.nav-closed {
+  margin-left: -200px;
+}
+.custom-nav-bar.nav-closed .resp-logo {
+  display: none;
+}
+
+.custom-nav-bar.nav-closed .resp-logo-collapsed {
+    display: block;
+}
+.custom-nav-bar.nav-closed .primary-nav a {
+    margin-left: 190px;
+    text-indent: 200px;
+}
+
+.custom-nav-bar.nav-closed .profile {
+    display: none;
+}
+.custom-nav-bar.nav-closed .profile-collapsed {
+    display: block;
+}
+
+.custom-nav-bar.nav-open {
+    margin-left: 0px;
+}
+.custom-nav-bar.nav-open .resp-logo {
+    display: block;
+}
+.custom-nav-bar.nav-open .resp-logo-collapsed {
+    display: none;
+}
+.custom-nav-bar.nav-open .primary-nav li a {
+    margin-left: 0px;
+    text-indent: 0px !important;
+}
+
+.custom-nav-bar.nav-open .profile {
+    display: block;
+}
+.custom-nav-bar.nav-open .profile-collapsed {
+    display: none;
+}
+
+
 
 .navbar-inner {
   border-radius: 0;
@@ -671,7 +898,7 @@ html.resp, body.resp {
     position: absolute;
     top: 50px;
     right: 55px;
-    font-family:'sketch_rockwellregular';
+    font-family:"Open Sans";
     font-weight:200;
     text-align:justify;
     &.students {
@@ -680,19 +907,19 @@ html.resp, body.resp {
       color:#312D68;
       line-height:1;
       .large {
-        font-size:85px;
+        //font-size:85px;
         text-align:center;
       }
       .medium {
-        font-size:31px;
+        //font-size:31px;
         color:tint(#312D68, 10);
         &.bump {
           text-align:center;
-          font-size:38px;
+          //font-size:38px;
         }
       }
       .small {
-        font-size:19px;
+        //font-size:19px;
         margin:10px;
         color:tint(#312D68, 20);
       }
@@ -702,19 +929,19 @@ html.resp, body.resp {
     &.teachers {
       width:320px;
       text-align:center;
-      font-family:'sketch_wallregular';
+      font-family: "Open Sans";
       color:#0D5A02;
       line-height:1;
       .large {
-        font-size:86px;
+        //font-size:86px;
       }
       .medium {
-        font-size:44px;
+        //font-size:44px;
         color:tint(#0D5A02, 5);
         margin-bottom:10px;
       }
       .small {
-        font-size:34px;
+        //font-size:34px;
       }
     }
   }
@@ -780,7 +1007,7 @@ html.resp, body.resp {
 
 .kids-credits-cta {
   background-image: url(asset_path('kids_credits_cta.png', image));
-  font-family:'sketch_rockwellregular';
+  font-family: "Open Sans";
   height: 200px;
   width: 304px;
   position: absolute;
@@ -940,7 +1167,8 @@ html.resp, body.resp {
 
 /* Pages */
 .privacy-content {
-  margin: -8px 0 0 180px;
+  //margin: -8px 0 0 180px;
+  padding: 2em;
 }
 
 .picaso-pig {
@@ -967,7 +1195,7 @@ html.resp, body.resp {
       color: #1f2870;
     }
     p {
-      font-size: 1.8em;
+      //font-size: 1.8em;
       margin-bottom: 2em;
       line-height: 140%;
     }
@@ -985,8 +1213,8 @@ html.resp, body.resp {
     li {
       list-style:none;
       margin:0 0 .25em .35em;
-      font-family: 'king_cool_kcregular';
-      font-size:1.8em;
+      font-family: "Open Sans";
+      //font-size:1.8em;
       .product-image {
         height: inherit;
       }
@@ -1013,14 +1241,14 @@ html.resp, body.resp {
   padding:3.25em 2em 2em;
   h3 {
     text-transform:uppercase;
-    font-size:2em;
+    //font-size:2em;
     margin:0;
     color:#333366;
     padding:0;
   }
   p {
-    font-family: 'king_cool_kcregular';
-    font-size:2em;
+    font-family: "Open Sans";
+    //font-size:2em;
   }
 }
 
@@ -1036,9 +1264,9 @@ html.resp, body.resp {
   padding-left: 20px;
 
   p {
-      font-family: 'sketch_wallregular';
+      font-family: "Open Sans";
       color: $small-content-color;
-      font-size: 2.5em;
+      //font-size: 2.5em;
       line-height: 1em;
       letter-spacing: 1px;
       font-weight: normal;
@@ -1088,24 +1316,24 @@ html.resp, body.resp {
     padding: 50px 20px 0 20px;
     text-align: center;
   p {
-    font-size: 60px;
+    //font-size: 60px;
     color: #f05c1a;
-    font-family: 'sketch_rockwellregular';
+    font-family: "Open Sans";
   }
 }
 .testimonial-title {
   position: relative;
   padding: 10px 0px 0px 0px;;
   text-align: center;
-  font-size: 3em;
+  //font-size: 3em;
   line-height: 1em;
   color: $small-content-color;
-  font-family: 'sketch_rockwellregular';
+  font-family: "Open Sans";
 }
 .testimonial-body {
   padding: 20px 30px 0px 40px;;
   text-align: left;
-  font-size: 2em;
+  //font-size: 2em;
   color: $small-content-color;
   p { display: inline; }
 }
@@ -1120,29 +1348,52 @@ html.resp, body.resp {
 }
 
 .foot {
-  color: $supporting-text-color;
-  text-align: center;
+  //color: $supporting-text-color;
+  position: relative;
+  top: -20px;
+  //float: right;
+  //bottom: 0px;
+  right: 20px;
+  margin: 0px 0px 0px 0px;
+  color: #333;
+  text-align: right;
+  padding: 0;
+  margin: 0;
+  //width: 500px;
+  font-family: "Open Sans";
+  font-weight: 400;
+  font-size: 10px;
+  //color: black;
   clear: both;
-  margin-top: 4em;
-  p {
-      font-family: Arial, Sans-Serif;
-      color: #000000;
-      }
-  .secondary-nav {
-    list-style-type: none;
-    li {
-      display: inline-block;
-      padding: 0 1.5em 0 1em;
-      border-right: solid 1px #000000;
-        a {
-         font-family: Arial, Sans-Serif;
-         color: #000000;
-        }
-    }
-    li:last-child {
-      border-right: none;
-    }
+
+  a, a:hover, a:active {
+    margin-left: 10px;
+    margin-right: 20px;
+
   }
+  a:hover, a:active {
+    text-decoration: none;
+    color: #042d40;
+  }
+
+  //    font-family: Arial, Open Sans;
+  //    color: #000000;
+  //    }
+  //.secondary-nav {
+  //  list-style-type: none;
+  //  li {
+  //    display: inline-block;
+  //    padding: 0 1.5em 0 1em;
+  //    border-right: solid 1px #000000;
+  //      a {
+  //       font-family: Arial, Open Sans;
+  //       color: #000000;
+  //      }
+  //  }
+  //  li:last-child {
+  //    border-right: none;
+  //  }
+  //}
 }
 
 .visible {
@@ -1173,8 +1424,8 @@ html.resp, body.resp {
   position: absolute;
   top: 0;
   p {
-    font-size: 60px;
-    color: #470BC1;
+    //font-size: 60px;
+    //color: #470BC1;
     margin: 60px 0 0 180px;
   }
 }
@@ -1183,7 +1434,7 @@ html.resp, body.resp {
   position: absolute;
   top: 0;
   p {
-    font-size: 60px;
+    //font-size: 60px;
     color: #f05c1a;
     margin: 60px 0 0 180px;
   }
@@ -1191,11 +1442,11 @@ html.resp, body.resp {
 
 .bank-content {
   position: absolute;
-  font-family: 'king_cool_kcregular';
+  font-family: "Open Sans";
   top: 100px;
   padding-right: 60px;
   p {
-      font-size: 3em;
+      //font-size: 3em;
       line-height: 1em;
       color: #244398;
       margin: 80px 0 0 180px;
@@ -1214,10 +1465,10 @@ html.resp, body.resp {
 .nav-group {
   li {
     a {
-      font-size: 1.6em;
+      font-size: 16px;
       &:hover, &.active {
         text-decoration: none;
-        color: #ee5b1a;
+        //color: #ee5b1a;
       }
 
     }
@@ -1300,41 +1551,46 @@ html.resp, body.resp {
   text-align: center;
   .alert {
     text-align: center;
-    border: none;
+    //border: none;
     background:transparent url(asset_path('message-blue.png', image)) no-repeat 0 0;
-    width: 254px;
-    height: 259px;
+    background: lightyellow;
+    -moz-box-shadow:    1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow:         1px 2px 5px 1px #ccc;
+    width: 300px;
+    padding-bottom: 30px;
+    //height: 259px;
     p {
-      margin: 45px 0 0 15px;
+      margin: 25px 0 0 15px;
       color: #333366;
-      width: 205px;
+      //width: 205px;
       text-align: left;
-      font-family: verdana;
+      font-family: "Open Sans";
       font-weight: 400;
       @include text-shadow(none);
       text-shadow: none;
-      @include rotate(6deg);
-      font-size:1.4em;
+      //@include rotate(6deg);
+      //font-size:1.4em;
     }
     .close {
       position:relative;
-      top:20px;
+      top:4px;
       line-height:15px;
-      font-size:2.4em;
+      //font-size:2.4em;
       color: #ee5b1a;
       @include opacity(.9);
       text-shadow: none;
       height: 25px;
       width: 25px;
       border: solid 2px #ee5b1a;
-      @include border-radius(35px);
+      //@include border-radius(35px);
     }
   }
 }
 
 .lt-ie9 .messages-container .alert .close {
   border:0;
-  font-size:3em;
+  //font-size:3em;
 }
 
 .flash-message {
@@ -1379,7 +1635,7 @@ h3 {
   }
   p {
     padding-right: 4em;
-    font-size: 1.8em;
+    //font-size: 1.8em;
     line-height: 130%;
   }
 }
@@ -1404,7 +1660,7 @@ h3 {
   .header-info {
     p {
       margin-bottom:0;
-      font-size:1.4em;
+      //font-size:1.4em;
       font-weight:bold;
       span {
         font-weight:normal;
@@ -1420,12 +1676,12 @@ h3 {
     overflow: hidden;
     margin-left: 100px;
     .auction-item {
-      font-size: 1.5em;
+      //font-size: 1.5em;
       .start_date, .end_date {
         color: #666;
       }
       .current_bid {
-        color: #ee5b1a;
+        //color: #ee5b1a;
         margin-bottom: 1em;
       }
     }
@@ -1440,23 +1696,20 @@ h3 {
 }
 
 .person-details {
-  margin-right: 1em;
-  max-width: 500px;
+  font-family: "Open Sans";
+  font-weight: 400;
+
+  width: 140px;
+  max-width: 140px;
+  margin-left: 10px;
   float: left;
-  h3 {
-    line-height: 24px;
-    color: #F63;
-  }
-  .links {
-    list-style-type: none;
-    margin-left: -12px;
-    li {
-      display: inline;
-      margin-left: 1em;
-      a { color: #336;
-      ; }
-    }
-  }
+  color: white;
+  //font-size: 18px;
+  vertical-align: middle;
+  height: 50px;
+  padding-top: auto;
+  padding-bottom: auto;
+
 }
 
 .credit-balance {
@@ -1466,6 +1719,11 @@ h3 {
 .current-person-avatar.supplemental-part {
   position: absolute;
   margin-left: -90px;
+}
+
+.avatar {
+  float: left;
+  padding: 8px 8px 8px 8px;
 }
 
 .cb-value {
@@ -1481,7 +1739,7 @@ h3 {
 
 .cb-heading-primary {
   color: #336;
-  font-size: 1.4em;
+  //font-size: 1.4em;
   text-align: center!important;
   text-transform: uppercase;
 }
@@ -1514,6 +1772,8 @@ h3 {
 }
 
 .student-logged-in-content {
+  margin-top: 60px;
+  width: 70%;
   .bacon-small {
     background-image: url(asset_path('sir_francis_bacon_shadows_small.png', image));
     width: 170px;
@@ -1540,7 +1800,7 @@ h3 {
 }
 
 .featured-activity {
-  font-size: 1.5em;
+  //font-size: 1.5em;
   background-image: url(asset_path('featured_activity.png', image));
   position: absolute;
   width: 256px;
@@ -1571,37 +1831,47 @@ h3 {
 
 .student-logged-in-sidebar {
   position: relative;
-  top: -385px;
-  width: 300px;
+  //top: -385px;
+  width: 30%;
+  margin-top: 60px;
+  margin-left: 40px;
   float: right;
   .reward-highlights {
-    background-image: url(asset_path('reward_highlights_with_tape.png', image));
+    //background-image: url(asset_path('reward_highlights_with_tape.png', image));
     position: relative;
     width: 294px;
-    height: 262px;
+    //height: 262px;
     .product {
+      background: rgba(240,255,255,0.5);
+      width: 250px;
+      background-color: #fff;
+      -moz-box-shadow:    1px 2px 5px 1px #ccc;
+      -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+      box-shadow:         1px 2px 5px 1px #ccc;
+      height: 200px;
       .product-image {
         float: left;
-        height: 100px;
+        //height: 100px;
       }
       .product-details {
-        width: 130px;
+        width: 250pxpx;
         float: left;
       }
     }
   }
   .our-sponsors {
-    font-size: 1.4em;
+    //font-size: 1.4em;
     background-image: url(asset_path('our_sponsors.png', image));
     background-repeat: no-repeat;
     position: relative;
+    margin-top: 40px;
     width: 291px;
     height: 251px;
     padding: 45px 90px 0px 20px;
   }
   .our-sponsors ul {
     transform: rotate(-3deg);
-  
+
   }
   .our-sponsors-callout {
     position: absolute;
@@ -1619,33 +1889,63 @@ h3 {
     position: relative;
     width: 296px;
     height: 268px;
+    //font-size: 1.2em;
+    //float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    background-color: white;
+    padding: 1em;
+    -moz-box-shadow: 1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow: 1px 2px 5px 1px #ccc;
   }
 }
 
+.poll {
+    //font-size: 1.2em;
+    //float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    background-color: white;
+    padding: 1em;
+    -moz-box-shadow: 1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow: 1px 2px 5px 1px #ccc;
+}
+
 .reward-highlights {
-  padding-top: 70px;
+  //padding-top: 70px;
   .product {
+    background: rgba(240,255,255,0.5);
+    margin-bottom: 10px;
+    margin-left: 10px;
+    background-color: white;
+    padding: 1em;
+    -moz-box-shadow: 1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow: 1px 2px 5px 1px #ccc;
     width: 240px;
-    margin: 0 0 0 50px;
     .product-title {
       a.info {
-        font-family: 'sketch_rockwellregular';
-        font-size: 1.35em;
+        font-family: "Open Sans";
+//        font-size: 1.35em;
         font-weight: bold;
       }
+
     }
+
     .product-image {
       display: inline-block;
     }
     .product-details {
       display: inline-block;
       a.info {
-        font-family: 'sketch_rockwellregular';
-        font-size: 1.35em;
+        font-family: "Open Sans";
+//        font-size: 1.35em;
         font-weight: bold;
       }
       .selling.price {
-        font-size: 1.35em;
+//        font-size: 1.35em;
         font-weight: bold;
       }
     }
@@ -1698,7 +1998,7 @@ h3 {
 }
 
 #product-description {
-  font-size: 1.5em;
+  //font-size: 1.5em;
 }
 
 .games-image-container {
@@ -1708,30 +2008,35 @@ h3 {
   -moz-box-shadow: rgba(76, 76, 76, 0.33) 0px 0px 12px 3px;
   background-color: white;
   width: 920px;
-  height: 405px;
+  //height: 405px;
   background-color: #fff;
   margin-bottom: 2em;
 }
 .games-image {
   background-image: url(asset_path('games.png', image));
   width: 900px;
-  height: 375px;
+  height: 280px;
   border: solid 1px #c9c9c9;
+  background-repeat: no-repeat;
 }
 
 .main-content-wrapper {
-  padding: 2em;
-  display: inline-block;
+  position: relative;
+  //top: 0px;
+  //left: 20px;
+  width: 100%;
+  padding: 0 2em 2em;
+  display: flex;
   vertical-align: top;
   height: auto;
-  width:99%;
+  //width:99%;
   background-color: #fff;
-  -moz-box-shadow:    1px 2px 5px 1px #ccc;
-  -webkit-box-shadow: 1px 2px 5px 1px #ccc;
-  box-shadow:         1px 2px 5px 1px #ccc;
+  -moz-box-shadow:    0px 0px 0px 0px #ccc;
+  -webkit-box-shadow: 0px 0px 0px 0px #ccc;
+  box-shadow:         0px 0px 0px 0px #ccc;
 
   .full-content {
-    width: 99%;
+    width: 100%;
     display: inline-block;
     vertical-align: top;
   }
@@ -1742,6 +2047,8 @@ h3 {
     overflow: hidden;
   }
   .secondary-content {
+    //margin-left: 20px;
+    margin-top: 80px;
     width: 37%;
     display: inline-block;
     vertical-align: top;
@@ -1749,11 +2056,11 @@ h3 {
 
   }
   p {
-    font-size: 1.5em;
+    //font-size: 1.5em;
   }
   .bank_content {
     p {
-      font-size: 1.8em;
+      //font-size: 1.8em;
       line-height: 140%;
     }
     input.credits {
@@ -1764,8 +2071,12 @@ h3 {
 
 }
 
+.main-content-wrapper-no-bg, .main-content-wrapper  {
+    min-height: calc(100vh - 40px);
+}
+
 .main-content-wrapper-no-bg {
-  padding: 2em;
+  padding: 0 2em 2em;
   display: inline-block;
   vertical-align: top;
   width: 99%;
@@ -1785,6 +2096,8 @@ h3 {
     }
   }
   .secondary-content {
+    //margin-left: 20px;
+    margin-top: 80px;
     width: 37%;
     display: inline-block;
     vertical-align: top;
@@ -1818,52 +2131,13 @@ h3 {
     float: left;
     margin-left: 1em;
     font-weight: bold;
-    color: #470BC1;
+    //color: #470BC1;
+    //font-size: 16px;
   }
   h3 {
     margin-top: 2em;
-    color: #EB731C;
+    //color: #EB731C;
   }
-  .btn.primary-button {
-      background: rgba(37, 134, 11, .8);
-      padding: .5em;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      -webkit-box-shadow: 0 0 5px #888;
-      -moz-box-shadow: 0 0 5px #888;
-      box-shadow: 2px 2px 2px #CCC;
-      -webkit-transform: rotate(-3deg);
-      -moz-transform: rotate(-3deg);
-      -o-transform: rotate(-3deg);
-      font-family: SketchRockwell;
-      font-size: 1.3em;
-      text-shadow: 1px 1px 2px #333;
-  }
-}
-
-.awesome-button {
-    background: rgb(37, 134, 11);
-/*    background: rgba(37, 134, 11, .8); */
-    padding: .5em;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    -webkit-box-shadow: 0 0 5px #888;
-    -moz-box-shadow: 0 0 5px #888;
-    box-shadow: 2px 2px 2px #CCC;
-    -webkit-transform: rotate(-3deg);
-    -moz-transform: rotate(-3deg);
-    -o-transform: rotate(-3deg);
-    font-family: SketchRockwell;
-    font-size: 1.3em;
-    text-shadow: 1px 1px 2px #333;
-    color: #fff;
-    margin: .5em;
-    &:hover {
-      background: rgb(71, 11, 193);
-      color: #fff;
-    }
-}
-
-input.awesome-button {
-  padding-bottom: .5em;
 }
 
 .distribute-credits {
@@ -1957,7 +2231,7 @@ input.awesome-button {
 
   table thead tr th {
     background-color: #5cc5e8;
-    color: #470BC1;
+    //color: #470BC1;
   }
 }
 
@@ -1973,7 +2247,7 @@ hr {
 .product-details {
   padding-left: .5em;
   a {
-    font-size: 1.3em;
+    //font-size: 1.3em;
     font-weight: bold;
   }
 }
@@ -1994,7 +2268,7 @@ hr {
 
 #existing-customer {
   label {
-    font-size: 1em;
+    //font-size: 1em;
     display: inline-block;
     margin-top: 15px;
   }
@@ -2004,7 +2278,7 @@ hr {
   form {
     margin-top: 30px;
     font-weigth: bold;
-    font-size: 1.8em;
+    //font-size: 1.8em;
   }
 }
 
@@ -2018,7 +2292,7 @@ hr {
   }
   h3 {
     input {
-      font-size: 14px;
+      //font-size: 14px;
       margin-left: 4em;
     }
   }
@@ -2031,7 +2305,7 @@ hr {
 }
 
 dl.details {
-  font-size: 150%;
+  //font-size: 150%;
 }
 
 .student-account-content {
@@ -2044,16 +2318,12 @@ dl.details {
       height: 35px;
     }
     .btn {
-      height: 50px;
+      //height: 50px;
     }
     select {
       width: 205px;
     }
   }
-}
-
-.auction_product a {
-  color: black;
 }
 
 .sponsor-list {
@@ -2066,7 +2336,7 @@ dl.details {
 }
 
 .welcome-sticky {
-  font-size: 80%;
+  //font-size: 80%;
 }
 
 #reward-templates #template-controls {
@@ -2090,4 +2360,28 @@ dl.details {
   border:none;
   width:300px;
   text-align:center;
+}
+
+.login {
+  overflow: auto;
+  position:absolute;
+  top: 0px;
+  width: 100%;
+  height: 100vh;
+  background: #075B7F;
+  margin: 0;
+  padding: 0;
+}
+.le-tile {
+    //font-size: 1.2em;
+    //float: left;
+    //font-size: 1.2em;
+    //float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    background-color: white;
+    padding: 1em;
+    -moz-box-shadow: 1px 2px 5px 1px #ccc;
+    -webkit-box-shadow: 1px 2px 5px 1px #ccc;
+    box-shadow: 1px 2px 5px 1px #ccc;
 }

@@ -9,7 +9,7 @@
 = link_to 'Share My Locker', '#share-locker-modal', class: 'btn share-locker', "data-toggle" => 'modal'
 = link_to "Visit My Friend's Locker", '#visit-locker-modal', class: 'btn visit-locker', "data-toggle" => 'modal'
 
-#share-locker-modal.modal.hide
+#share-locker-modal.modal
   %h3 Share Header
   %p= lipsum
   %strong Pick Your Friends:
@@ -17,7 +17,7 @@
     Paginated Friend List
   = link_to "Share", "#", class: 'btn btn-primary'
 
-#visit-locker-modal.modal.hide
+#visit-locker-modal.modal
   %h3 Visit Locker Header
   %p= lipsum
   %strong Pick The Friend's Locker:
