@@ -2,10 +2,10 @@
   .full-content
     %h1 Classroom:
     %ul.action_buttons
-      %li= link_to "Set Homeroom", "/classrooms/set_homeroom/#{@classroom.id}", confirm: classroom_set_homeroom_confirmation_message, class: 'btn awesome-button'
+      %li= button_to "Set Homeroom", set_homeroom_path(@classroom), confirm: classroom_set_homeroom_confirmation_message, method: :get, class: 'btn awesome-button'
       - unless @classroom.sti_id
         %li= button_to "Delete classroom", classroom_path(@classroom), confirm: classroom_delete_confirmation_message, method: :delete, class: 'btn awesome-button'
-        %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
+        %li= button_to "Edit classroom", edit_classroom_path(@classroom), method: :get, class: 'btn awesome-button'
     %h2 #{@classroom.name}
     - if @classroom.sti_id
       .classrooms-alert.alert.alert-warning
@@ -35,11 +35,9 @@
                 = link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
     - unless @classroom.sti_id
-      .btn.btn-success.add-existing-student
-        Add Existing Student
+      = submit_tag 'Add Existing Student', class: 'btn awesome-button add-existing-student'
       OR
-      .btn.btn-success.add-new-student
-        Add New Student
+      = submit_tag 'Add New Student', class: 'btn awesome-button add-new-student'
 
     #add-new-student-modal.modal
       .modal-header
