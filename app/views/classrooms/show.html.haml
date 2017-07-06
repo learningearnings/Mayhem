@@ -1,80 +1,82 @@
-%h1 Classroom: 
-%ul.action_buttons
-  %li= link_to "Set Homeroom", "/classrooms/set_homeroom/#{@classroom.id}", confirm: classroom_set_homeroom_confirmation_message, class: 'btn awesome-button'
-  - unless @classroom.sti_id  
-    %li= button_to "Delete classroom", classroom_path(@classroom), confirm: classroom_delete_confirmation_message, method: :delete, class: 'btn awesome-button'
-    %li= link_to "Edit classroom", edit_classroom_path(@classroom), class: 'btn awesome-button'
-%h2 #{@classroom.name}
-- if @classroom.sti_id
-  .classrooms-alert.alert.alert-warning
-    You must log into the Student Information System to manage this classroom.
+.main-content-wrapper
+  .full-content
+    %h1 Classroom:
+    %ul.action_buttons
+      %li= button_to "Set Homeroom", set_homeroom_path(@classroom), confirm: classroom_set_homeroom_confirmation_message, method: :get, class: 'btn awesome-button'
+      - unless @classroom.sti_id
+        %li= button_to "Delete classroom", classroom_path(@classroom), confirm: classroom_delete_confirmation_message, method: :delete, class: 'btn awesome-button'
+        %li= button_to "Edit classroom", edit_classroom_path(@classroom), method: :get, class: 'btn awesome-button'
+    %h2 #{@classroom.name}
+    - if @classroom.sti_id
+      .classrooms-alert.alert.alert-warning
+        You must log into the Student Information System to manage this classroom.
 
-%p
-  Please Note:
-%p
-  You can only add students from your school that have already been added to
-  Learning Earnings. If you need to add or upload students for your school visit
-  the #{link_to("Students", teachers_bulk_students_path)} page.
-%table#classroom-students.table.table-bordered.table-striped.solid-background
-  %thead
-    %tr
-      %th Student Name
-      %th Homeroom?
-      %th Username
-      %th Actions
-  %tbody
-    - @classroom.students.order("last_name, first_name").each do |student|
-      %tr
-        %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td= student.homeroom == @classroom ? "Yes" : "No"
-        %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
-        %td
-          - unless @classroom.sti_id
-            = link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
+    %p
+      Please Note:
+    %p
+      You can only add students from your school that have already been added to
+      Learning Earnings. If you need to add or upload students for your school visit
+      the #{link_to("Students", teachers_bulk_students_path)} page.
+    %table#classroom-students.table.table-bordered.table-striped.solid-background
+      %thead
+        %tr
+          %th Student Name
+          %th Homeroom?
+          %th Username
+          %th Actions
+      %tbody
+        - @classroom.students.order("last_name, first_name").each do |student|
+          %tr
+            %td= link_to student.name, teachers_show_student_path(student, :classroom_id => @classroom.id)
+            %td= student.homeroom == @classroom ? "Yes" : "No"
+            %td= link_to student.user.username, teachers_show_student_path(student, :classroom_id => @classroom.id)
+            %td
+              - unless @classroom.sti_id
+                = link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
-- unless @classroom.sti_id
-  .btn.btn-success.add-existing-student
-    Add Existing Student
-  OR
-  .btn.btn-success.add-new-student
-    Add New Student
+    - unless @classroom.sti_id
+      .btn.btn-success.add-existing-student
+        Add Existing Student
+      OR
+      .btn.btn-success.add-new-student
+        Add New Student
 
-#add-new-student-modal.modal
-  .modal-header
-    %h3 Add New Student
-  .modal-body
-    .form
-      = render partial: "add_new_student_form"
-    .btn.btn-success.add-new-student-save
-      Add
-    .btn.btn-danger.cancel-modal
-      Cancel
+    #add-new-student-modal.modal
+      .modal-header
+        %h3 Add New Student
+      .modal-body
+        .form
+          = render partial: "add_new_student_form"
+        .btn.btn-success.add-new-student-save
+          Add
+        .btn.btn-danger.cancel-modal
+          Cancel
 
-#add-existing-student-modal.modal
-  .modal-header
-    %h3 Add Existing Student
-  .modal-body
-    = form_for PersonSchoolClassroomLink.new, html: { class: 'add-existing-student' }, url: new_classroom_student_path do |f|
-      = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
-      = hidden_field_tag :classroom_id, @classroom.id
-    .btn.btn-success.add-existing-student-save
-      Add
-    .btn.btn-danger.cancel-modal
-      Cancel
+    #add-existing-student-modal.modal
+      .modal-header
+        %h3 Add Existing Student
+      .modal-body
+        = form_for PersonSchoolClassroomLink.new, html: { class: 'add-existing-student' }, url: new_classroom_student_path do |f|
+          = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
+          = hidden_field_tag :classroom_id, @classroom.id
+        .btn.btn-success.add-existing-student-save
+          Add
+        .btn.btn-danger.cancel-modal
+          Cancel
 
-%script#students{ type: 'text/html' }
-  :plain
-    {{#students}}
-      <tr>
-        <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{first_name}} {{last_name}}</a></td>
-        <td>{{is_homeroom}}</td>
-        <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{username}}</a></td>
-        <td><a href="/remove_classroom_student?classroom={{classroom_id}}&student={{id}}">Remove</a></td>
-      </tr>
-    {{/students}}
+    %script#students{ type: 'text/html' }
+      :plain
+        {{#students}}
+          <tr>
+            <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{first_name}} {{last_name}}</a></td>
+            <td>{{is_homeroom}}</td>
+            <td><a href="/teachers/show_student/{{id}}?classroom_id={{classroom_id}}">{{username}}</a></td>
+            <td><a href="/remove_classroom_student?classroom={{classroom_id}}&student={{id}}">Remove</a></td>
+          </tr>
+        {{/students}}
 
-= javascript_include_tag "tours/school_admin/overview"
-= javascript_include_tag "tours/teacher/overview"
+    = javascript_include_tag "tours/school_admin/overview"
+    = javascript_include_tag "tours/teacher/overview"
 
 :javascript
 

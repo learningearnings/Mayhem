@@ -1,37 +1,37 @@
 require 'sidekiq/web'
 Leror::Application.routes.draw do
-  
-  get 'errors/not_found' 
+
+  get 'errors/not_found'
   get 'errors/server_error'
 
-  get  'navmenus' => 'nav#menus'  
+  get  'navmenus' => 'nav#menus'
   get '/consumer/index' => "consumer#index"
-  post '/consumer/index' => "consumer#index"  
-  get '/consumer/complete' => "consumer#complete"  
-  post '/consumer/complete' => "consumer#complete"    
+  post '/consumer/index' => "consumer#index"
+  get '/consumer/complete' => "consumer#complete"
+  post '/consumer/complete' => "consumer#complete"
   get 'sso_signin' => "consumer#start"
   post 'sso_signin' => "consumer#start"
   get '/confirm/:id' => "teachers#confirm"
-  post '/sti/auth' => "sti#auth"   
-  get '/sti/auth' => "sti#auth" 
+  post '/sti/auth' => "sti#auth"
+  get '/sti/auth' => "sti#auth"
   get '/homes/schools_for_username' => "homes#schools_for_username"
   get  '/teachers/home/defer_email' => "teachers/home#defer_email"
   post '/teachers/log_event' => "teachers#log_event"
   post '/sti/save_teacher' => "sti#save_teacher"
-  post '/teachers/home/save' => "home#save"  
+  post '/teachers/home/save' => "home#save"
   get '/confirm/:id' => "teachers#confirm"
-  post '/sti/auth' => "sti#auth"   
-  get '/sti/auth' => "sti#auth" 
+  post '/sti/auth' => "sti#auth"
+  get '/sti/auth' => "sti#auth"
   get '/homes/schools_for_username' => "homes#schools_for_username"
   get  '/teachers/home/defer_email' => "teachers/home#defer_email"
   post '/teachers/log_event' => "teachers#log_event"
   post '/sti/save_teacher' => "sti#save_teacher"
   post '/teachers/home/save' => "home#save"
   get '/sti/give_credits' => "sti#give_credits"
-  get '/sti/new_school_for_credits' => "sti#new_school_for_credits"  
-  post '/sti/save_school_for_credits' => "sti#save_school_for_credits" 
-  get '/sti/begin_le_tour' => "sti#begin_le_tour"  
-  
+  get '/sti/new_school_for_credits' => "sti#new_school_for_credits"
+  post '/sti/save_school_for_credits' => "sti#save_school_for_credits"
+  get '/sti/begin_le_tour' => "sti#begin_le_tour"
+
   get '/sti/sync_district' => 'sti#sync_district'
 
   # Mobile App API's
@@ -40,8 +40,8 @@ Leror::Application.routes.draw do
       get  'schools' => 'base#schools'
       namespace :teachers do
         post 'auth'             => 'base#authenticate'
-        get 'auth'             => 'base#authenticate'        
-        post 'register'             => 'base#register'        
+        get 'auth'             => 'base#authenticate'
+        post 'register'             => 'base#register'
         post 'bank/award_credits' => 'bank#award_credits'
         get  'classrooms'       => 'classrooms#index'
         get  'classrooms/:id'   => 'classrooms#show'
@@ -51,15 +51,15 @@ Leror::Application.routes.draw do
         post 'classrooms/:id/add_students' => 'classrooms#add_students'
         get  'students'         => 'students#index'
         get  'students/:id'     => 'students#show'
-        post 'students'     => 'students#create' 
-        post 'students/:id'     => 'students#update'        
+        post 'students'     => 'students#create'
+        post 'students/:id'     => 'students#update'
         get  'teacher/:id'     => 'profile#show'
         post 'teacher/:id'     => 'profile#update'
         post 'students/:id/add_classrooms' => 'students#add_classrooms'
-        get  'purchases'          => 'purchases#index' 
+        get  'purchases'          => 'purchases#index'
         get  'purchases/reward_creator_options'          => 'purchases#reward_creator_options'
         get  'purchases/student_options'          => 'purchases#student_options'
-        
+
         get  'rewards'          => 'rewards#index'
         get  'rewards/:id'      => 'rewards#show'
         post 'rewards'          => 'rewards#create'
@@ -69,21 +69,21 @@ Leror::Application.routes.draw do
         get  'awards'           => 'awards#index'
         get  'goals'            => 'goals#index'
         post 'goals/:id'        => 'goals#update'
-        get 'goals/:id/update'        => 'goals#update'        
-        post 'goals'            => 'goals#create' 
-        get 'goals/create'            => 'goals#create'         
-        delete 'goals/:id'      => 'goals#destroy' 
-        get  'goals/:id/destroy'      => 'goals#destroy' 
+        get 'goals/:id/update'        => 'goals#update'
+        post 'goals'            => 'goals#create'
+        get 'goals/create'            => 'goals#create'
+        delete 'goals/:id'      => 'goals#destroy'
+        get  'goals/:id/destroy'      => 'goals#destroy'
       end
       namespace :students do
         post "rewards/purchase" => 'rewards#purchase'
         post "/bank/transfer_credits" => 'bank#transfer_credits'
-        post "/bank/redeem_bucks" => 'bank#redeem_bucks'        
+        post "/bank/redeem_bucks" => 'bank#redeem_bucks'
         post 'auth'             => 'base#authenticate'
         get  'classrooms'       => 'classrooms#index'
         get  'classrooms/:id'   => 'classrooms#show'
         get  'student/:id'     => 'profile#show'
-        post 'student/:id'     => 'profile#update' 
+        post 'student/:id'     => 'profile#update'
         get  'profile/:id/update' => 'profile#update'
         get  'auctions' => 'auctions#index'
         get 'auctions/:id/bid'       => 'auctions#bid'
@@ -127,7 +127,7 @@ Leror::Application.routes.draw do
   resources :faq_questions
   get '/tour' => 'faq_questions#tour'
   get '/begin_tour' => 'faq_questions#begin_tour'
-  get '/end_tour' => 'faq_questions#end_tour'    
+  get '/end_tour' => 'faq_questions#end_tour'
   match "/help" => "faq_questions#index", :as => 'help'
   post "/faq_question_search" => "faq_questions#search", :as => 'faq_question_search'
   post "events/log_tour_event"
@@ -181,7 +181,7 @@ Leror::Application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   get "/homeroom_check" => "classrooms#homeroom_check", :as => "homeroom_check"
-  get '/classrooms/set_homeroom/:id' => 'classrooms#set_homeroom'
+  get '/classrooms/set_homeroom/:id' => 'classrooms#set_homeroom', as: 'set_homeroom'
   mount Ckeditor::Engine => '/ckeditor'
 
   # This line mounts Spree's routes at the root of your application.
@@ -258,9 +258,9 @@ Leror::Application.routes.draw do
   # Messaging routes
   match "inbox/friend_messages" => 'messages#friend_messages', :as => 'friend_messages'
   match "inbox/school_messages" => 'messages#school_messages', :as => 'school_messages'
-  match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'  
+  match "inbox/teacher_messages" => 'messages#teacher_messages', :as => 'teacher_messages'
   match "inbox/games_messages" => 'messages#games_messages', :as => 'games_messages'
-  match "inbox/auctions_messages" => 'messages#auctions_messages', :as => 'auctions_messages'  
+  match "inbox/auctions_messages" => 'messages#auctions_messages', :as => 'auctions_messages'
   match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
   match "inbox/:message_id/reply" => 'messages#reply', :as => 'reply_message'
   match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
@@ -272,6 +272,7 @@ Leror::Application.routes.draw do
   resources :pdfs
 
   resources :classrooms
+
   match "/add_classroom_student" => 'classrooms#add_student', as: 'new_classroom_student'
   get :remove_classroom_student, :controller => :classrooms, :action => :remove_student
   # Student banking bits
@@ -311,7 +312,7 @@ Leror::Application.routes.draw do
   post "/undeliver_reward" => "deliver_rewards_commands#undeliver", :as => :undeliver_reward
   namespace :teachers do
     get "balance" => "teachers#get_balance"
-    #get "home", to: redirect('bank')    
+    #get "home", to: redirect('bank')
     match "/otu_code_categories/new" => "otu_code_categories#create", :as => 'new_otu_code_category'
     match "/get_otu_code_category" => "otu_code_categories#get_category", :as => 'get_otu_code_category'
     resources :otu_code_types
@@ -348,8 +349,8 @@ Leror::Application.routes.draw do
     match "inbox/peer_messages" => 'messages#peer_messages', :as => 'peer_messages'
     match "inbox/system_messages" => 'messages#system_messages', :as => 'system_messages'
     match "inbox/admin_message" => 'messages#admin_message', :as => 'leadmin_message'
-    match "inbox/auctions_messages" => 'messages#auctions_messages', :as => 'auctions_messages' 
-    match "inbox/games_messages" => 'messages#games_messages', :as => 'games_messages' 
+    match "inbox/auctions_messages" => 'messages#auctions_messages', :as => 'auctions_messages'
+    match "inbox/games_messages" => 'messages#games_messages', :as => 'games_messages'
     match "inbox/classroom_message" => 'messages#classroom_message', :as => 'classroom_message'
     match "inbox/peer_message" => 'messages#peer_message', :as => 'peer_message'
     match "/inbox" => 'messages#index'
@@ -360,7 +361,7 @@ Leror::Application.routes.draw do
   resources :students
   namespace :school_admins do
     resources :auctions do
-      get "delete_school_auction", on: :member      
+      get "delete_school_auction", on: :member
       get "cancel_school_auction", on: :member
       post 'create_auction_reward', on: :collection
       get 'all', on: :collection
@@ -407,7 +408,7 @@ Leror::Application.routes.draw do
   # spree admin manual orders
   match 'create_manual_order'    => 'spree/admin/orders#create_manual_order'
   match 'refresh_school_rewards' => 'spree/admin/orders#refresh_school_rewards'
- 
+
 end
 
 # Any routes we add to Spree go here:
