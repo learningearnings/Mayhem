@@ -5,17 +5,17 @@
 
     %h1 Student Roster Report
 
-    .filter.noprint
-      %h4 Filter By
-      = form_tag student_roster_report_path, method: :get do
+    %h4 Filter By
+    = form_tag student_roster_report_path, method: :get do
+      .filter.noprint
         .grade-filter
           = label_tag :grade
           = select_tag :grade_filter, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(grades, :first, :last, params[:grade_filter])
         .classroom-roster
           = label_tag :classroom
           = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
-        .grade
-          = submit_tag 'Go!'
+    .grade
+      = submit_tag 'Go!'
     = button_to_function "Print Report", "window.print();", class: "noprint btn awesome-button"
     .report
       %br.onlyprint/
