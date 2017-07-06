@@ -1,7 +1,7 @@
 require 'readline'
 require 'powerschool-client'
 
-ARRAY_OF_PS_INOW_CRITERIAS = [
+ARRAY_OF_PS_POWERSCHOOL_CRITERIAS = [
   {
     ps_client_method_name: 'get_weekly_credits_no_absences',
     school_method_name: 'weekly_perfect_attendance_amount',
@@ -103,9 +103,9 @@ namespace :le do
     end
   end
 
-  desc 'Award weekly automatic credits iNow'
-  task award_weekly_automatic_credits_inow: :environment do
-    ARRAY_OF_PS_INOW_CRITERIAS.each do |criteria|
+  desc 'Award weekly automatic credits for Powerschool'
+  task award_weekly_automatic_credits_powerschool: :environment do
+    ARRAY_OF_PS_POWERSCHOOL_CRITERIAS.each do |criteria|
       options = {
         url: 'https://powerschool.hcde.org',
         id: '3058d3a6-2081-403e-8030-875e04cc22fb',
