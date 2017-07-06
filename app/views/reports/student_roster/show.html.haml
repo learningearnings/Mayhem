@@ -1,7 +1,7 @@
 = javascript_include_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"
 = stylesheet_link_tag "https://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css"
 .main-content-wrapper
-  .primary-content-fw
+  .full-content
 
     %h1 Student Roster Report
 
@@ -16,6 +16,7 @@
           = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
         .grade
           = submit_tag 'Go!'
+    %br
     = button_to_function "Print Report", "window.print();", class: "noprint btn awesome-button"
     .report
       %br.onlyprint/
@@ -33,7 +34,7 @@
               - if @classroom
                 %td= @classroom
               - else
-                %td= student.classrooms.first ? student.classrooms.first : "No Classroom"              
+                %td= student.classrooms.first ? student.classrooms.first : "No Classroom"
               %td= student.grade
               %td= student.name_last_first
               %td= student.user.username
@@ -44,6 +45,6 @@
     $('#report_table').dataTable( {
       "bPaginate": false,
       "bInfo": false,
-      "aaSorting": [[2, "asc"]] 
+      "aaSorting": [[2, "asc"]]
     } );
   } );
