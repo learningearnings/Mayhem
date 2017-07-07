@@ -15,14 +15,14 @@
             .filter-rewards
               = f.input :reward_status_filter,:label => "Show Rewards", :collection => report_params.reward_status_filter_options
             .filter-teachers
-              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)            
+              = f.input :teachers_filter, :label => "Homeroom Teacher", :collection => report_params.teachers_filter_options(current_school)
             .filter-teachers
               - if report_params.page.blank?
-                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true                              
+                = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school), :selected => current_person.id, :include_blank => true
               - else
                 = f.input :reward_creator_filter, :label => "Show Reward Creator", :collection => report_params.reward_creator_filter_options(current_school)
-              
-            
+
+
           .sorting2
             %h4 Options
             .filter-dates
@@ -31,7 +31,7 @@
               = f.input :teachers_name_option, :label => "Teachers Name", :collection => report_params.teacher_name_options, :include_blank => false
             %br/
           = f.submit 'Run Report', :class => 'btn awesome-button', :id => "run_report_button"
-          = button_to_function "Print Report", "window.print();", class: "noprint btn awesome-button"
+          = button_to "Print Report", '#', { class: "noprint btn awesome-button", onclick: 'window.print();return false;', method: :put }
 
       .report
         = form_tag DeliverRewardsCommand.new, method: :post do
@@ -60,13 +60,13 @@
                   %td= row["delivery_teacher"]
                   %td= row["delivered_by"]
                   %td= row["student"]
-                  %td= row["classroom"]                  
+                  %td= row["classroom"]
                   %td= row["grade"]
                   %td
                     -if row["purchased"].present?
                       = time_ago_in_words(row["purchased"]) + " ago"
                     -else
-                      = "None"  
+                      = "None"
                   %td= row["purchased"]
                   %td= row["reward"]
                   %td= row["quantity"]
@@ -153,17 +153,17 @@
     $('#report_table').on('sort.DT', function(e,d) {
       $.cookie('purchases_report_order', JSON.stringify(d.aaSorting));
     });
-    
+
     $('#reports_purchases_params_reward_creator_filter').change(function() {
       console.log("Reward Creator changed...");
-      $('#reports_purchases_params_teachers_filter').prop('selectedIndex', 0); 
+      $('#reports_purchases_params_teachers_filter').prop('selectedIndex', 0);
     });
-      
-    $('#reports_purchases_params_teachers_filter').change(function() {  
-      console.log("Homeroom changed...");  
-      $('#reports_purchases_params_reward_creator_filter').prop('selectedIndex', 0); 
-    });     
-      
+
+    $('#reports_purchases_params_teachers_filter').change(function() {
+      console.log("Homeroom changed...");
+      $('#reports_purchases_params_reward_creator_filter').prop('selectedIndex', 0);
+    });
+
   } );
 
 :plain
@@ -186,7 +186,7 @@
         });
       }
     }
-    
+
 
     function undeliverReward(element, reward_delivery_id) {
       $.ajax({

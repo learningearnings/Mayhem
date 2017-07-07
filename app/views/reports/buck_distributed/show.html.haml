@@ -12,7 +12,7 @@
       -# f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       %br
       = f.submit 'Go!', class: "btn awesome-button"
-      = button_tag "Print Report", class: "noprint btn awesome-button",type: 'button', onclick: "window.print();"
+      = button_to "Print Report", '#', { class: "noprint btn awesome-button", onclick: 'window.print();return false;', method: :put }
     %p.credits-available
       %strong
         School Current Credit Balance:
@@ -20,7 +20,7 @@
       %br
       %strong
         = "School Monthly Credits Awarded In #{report.parameters.date_filter.to_date.strftime("%B %Y")}:"
-          
+
       = number_with_precision(report.school_monthly_credits[0].total_credit_amount, precision: 2, delimiter: ',') || 0
     .report
       %br.onlyprint/
@@ -56,6 +56,6 @@
          'orderable': false
         }],
        'order': [[1, 'asc']]
-     }); 
+     });
 
     });
