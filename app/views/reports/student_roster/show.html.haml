@@ -16,7 +16,7 @@
           = select_tag :classroom, "<option value='all'>All</option>".html_safe + options_from_collection_for_select(classrooms, :id, :name, params[:classroom])
         .grade
           = submit_tag 'Go!'
-    = button_to_function "Print Report", "window.print();", class: "noprint btn awesome-button"
+    = button_to "Print Report", '#', { class: "noprint btn awesome-button", onclick: 'window.print();return false;', method: :put }
     .report
       %br.onlyprint/
       %table#report_table.table.table-bordered.table-striped.solid-background
@@ -33,7 +33,7 @@
               - if @classroom
                 %td= @classroom
               - else
-                %td= student.classrooms.first ? student.classrooms.first : "No Classroom"              
+                %td= student.classrooms.first ? student.classrooms.first : "No Classroom"
               %td= student.grade
               %td= student.name_last_first
               %td= student.user.username
@@ -44,6 +44,6 @@
     $('#report_table').dataTable( {
       "bPaginate": false,
       "bInfo": false,
-      "aaSorting": [[2, "asc"]] 
+      "aaSorting": [[2, "asc"]]
     } );
   } );
