@@ -135,6 +135,8 @@ module Reports
         if i
           stud.num_logins = i.num_logins
           stud.last_sign_in = i.last_sign_in.present? ? i.last_sign_in : nil
+        else
+          stud.last_sign_in = nil
         end
         if t
           stud.total_credits_deposited = t.total_credits_deposited
