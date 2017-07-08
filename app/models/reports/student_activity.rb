@@ -20,6 +20,7 @@ module Reports
         u.last_sign_in_at as last_sign_in,
         0 AS total_credits_deposited,
         0 AS total_credits_spent_on_purchase,
+        '' AS purchase_descriptions,
         0 AS total_credits_refunded,
         0 AS credits_awarded_by_teacher,
         0 AS credits_awarded_by_system,
@@ -114,23 +115,32 @@ module Reports
                   0
             END)
           AS credits_awarded_by_system
-        from people p, person_school_links psl,
+        from people p, 
+                 person_school_links psl,
+                 reward_deliveries rd,
                  plutus_transactions pt,
                  plutus_amounts pa,
                  person_account_links pal
-        where p.id = psl.person_id and psl.school_id = #{school.id} 
+        where p.id = psl.person_id and psl.school_id = #{school.id}       
           and p.status = 'active' and psl.status = 'active' and p.type in ('Student')        
           AND pa.transaction_id = pt.id
           AND pa.account_id = pal.plutus_account_id
           AND pal.person_school_link_id = psl.id
           and pt.created_at >= \'#{fromStr}\'
-        group by p.id
+        group by p.id, 
       )
       transactions = Plutus::Transaction.find_by_sql(sql3)
+       
+      reward_deliveries = RewardDelivery.where(" created_at >=  \'#{fromStr}\' ")           
+      
       students.each do | stud |
         
         i = interactions.detect { | int | int.person_id.to_i == stud.id.to_i }
         t = transactions.detect { | txn | txn.person_id.to_i == stud.id.to_i }
+        r = reward_deliveries.select { | rd | rd.to.to_i == stud.id.to_i  }
+        r = r.collect { | rd | rd.try(:reward).try(:product).try(:name) }.uniq
+        r = r.compact.reject(&:empty?).join(',')
+        
         stud.has_activity = "N" if !(i or t)
         if i
           stud.num_logins = i.num_logins
@@ -139,6 +149,7 @@ module Reports
         if t
           stud.total_credits_deposited = t.total_credits_deposited
           stud.total_credits_spent_on_purchase = t.total_credits_spent_on_purchase
+          stud.purchase_descriptions = r
           stud.total_credits_refunded = t.total_credits_refunded 
           stud.credits_awarded_by_teacher = t.credits_awarded_by_teacher
           stud.credits_awarded_by_system = t.credits_awarded_by_system
@@ -161,6 +172,7 @@ module Reports
           total_credits_refunded: (number_with_precision(person.total_credits_refunded, precision: 2, delimiter: ',') || 0), 
           total_credits_deposited: (number_with_precision(person.total_credits_deposited, precision: 2, delimiter: ',') || 0),
           total_credits_spent_on_purchase: (number_with_precision(person.total_credits_spent_on_purchase, precision: 2, delimiter: ',') || 0),
+          purchase_descriptions: person.purchase_descriptions,
           num_of_logins: person.num_logins,
           last_sign_in_at: (person.last_sign_in)?time_ago_in_words(person.last_sign_in) + " ago":"",
           account_balance: (number_with_precision(person.main_account(@school).balance, precision: 2, delimiter: ',') || 0),
@@ -178,6 +190,7 @@ module Reports
         total_credits_refunded: "Total Credits Refunded",                
         total_credits_deposited: "Total Credits Deposited",
         total_credits_spent_on_purchase: "Total Credits Spent On Purchases",
+        purchase_descriptions: "Purchase Descriptions",
         num_of_logins: "Num of Logins",
         last_sign_in_at: "Last Sign In",
         account_balance: "Current Account Balance"      
