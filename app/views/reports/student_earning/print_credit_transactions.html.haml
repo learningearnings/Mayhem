@@ -1,17 +1,17 @@
 .main-content-wrapper
   .primary-content-fw
-    %h2 Preview
+    %h1 Preview
     #printable-section
       .print-title
         %h1 Student Earnings Report
       .credit-print-button
         = button_tag "Print Report", class: "noprint btn awesome-button", id: "print-credit"
       - @students.each do |student|
-        .student-info.clear    
+        .student-info.clear
           .credit-student-title
             %h3= student.name
           .credit-type
-            %h4= credit_transactions_title(credit_type) 
+            %h4= credit_transactions_title(credit_type)
           %table.table.table-bordered.table-striped.solid-background
             %tr
               %th.teacher Type
@@ -27,7 +27,7 @@
                 %td.date= credit_type == "total_credit" ? l(otu_code.created_at.to_date) : l(otu_code.updated_at.to_date)
 
 :javascript
- 
+
   $('#print-credit').on('click', function() {
      var printContents = document.getElementById('printable-section').innerHTML;
      var originalContents = document.body.innerHTML;
