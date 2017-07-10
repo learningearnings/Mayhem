@@ -17,7 +17,7 @@
       .sorting
         = f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       = f.submit 'Go!', class: "btn awesome-button"
-      = button_to "Print Report", '#', { class: "noprint btn awesome-button", onclick: 'window.print();return false;', method: :put }
+      = button_to "Print Report", '#', { class: "noprint btn awesome-button print-report", method: :put, onclick: 'printReport();' }
       -if report.endpoints
         %span#start_date{:style => 'display:none'}= report.endpoints[0]
         %span#end_date{:style => 'display:none'}= report.endpoints[1]
@@ -52,6 +52,3 @@
 #history-modal.modal
   .modal-header
     #credit-history
-
-
-
