@@ -127,7 +127,7 @@ module Reports
           AND pa.account_id = pal.plutus_account_id
           AND pal.person_school_link_id = psl.id
           and pt.created_at >= \'#{fromStr}\'
-        group by p.id,
+        group by p.id
       )
       transactions = Plutus::Transaction.find_by_sql(sql3)
 
@@ -137,7 +137,7 @@ module Reports
 
         i = interactions.detect { | int | int.person_id.to_i == stud.id.to_i }
         t = transactions.detect { | txn | txn.person_id.to_i == stud.id.to_i }
-        r = reward_deliveries.select { | rd | rd.to.to_i == stud.id.to_i  }
+        r = reward_deliveries.select { | rd | rd.to_id.to_i == stud.id.to_i  }
         r = r.collect { | rd | rd.try(:reward).try(:product).try(:name) }.uniq
         r = r.compact.reject(&:empty?).join(',')
 
