@@ -35,11 +35,9 @@
                 = link_to 'Remove', remove_classroom_student_path(:classroom => @classroom, :student => student)
 
     - unless @classroom.sti_id
-      .btn.btn-success.add-existing-student
-        Add Existing Student
+      = submit_tag 'Add Existing Student', class: 'btn awesome-button add-existing-student'
       OR
-      .btn.btn-success.add-new-student
-        Add New Student
+      = submit_tag 'Add New Student', class: 'btn awesome-button add-new-student'
 
     #add-new-student-modal.modal
       .modal-header
