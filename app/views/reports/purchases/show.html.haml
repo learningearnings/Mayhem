@@ -31,7 +31,7 @@
               = f.input :teachers_name_option, :label => "Teachers Name", :collection => report_params.teacher_name_options, :include_blank => false
             %br/
           = f.submit 'Run Report', :class => 'btn awesome-button', :id => "run_report_button"
-          = button_to "Print Report", '#', { class: "noprint btn awesome-button", onclick: 'window.print();return false;', method: :put }
+          = button_to 'Print Report', '#', { class: 'noprint btn awesome-button', onclick: 'printReport();', method: :put }
 
       .report
         = form_tag DeliverRewardsCommand.new, method: :post do

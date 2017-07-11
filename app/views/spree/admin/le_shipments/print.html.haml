@@ -3,7 +3,7 @@
 
 %h2
   = "Order # #{@order.number}"
-  %button{:class => "btn btn-primary noprint", :onclick => "window.print(); return false;"} Print
+  = button_to 'Print', '#', { class: 'noprint btn awesome-button', onclick: 'printReport();', method: :put }
 .adr
   %h4= t(:ship_address)
   %div= @address.company

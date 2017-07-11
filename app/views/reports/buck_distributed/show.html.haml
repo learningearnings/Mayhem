@@ -12,7 +12,7 @@
       -# f.input :sort_by,:label => "Sorting", :collection => report.parameters.sort_by_options
       %br
       = f.submit 'Go!', class: "btn awesome-button"
-      = button_to "Print Report", '#', { class: "noprint btn awesome-button", onclick: 'window.print();return false;', method: :put }
+      = button_to 'Print Report', '#', { class: 'noprint btn awesome-button', onclick: 'printReport();', method: :put }
     %p.credits-available
       %strong
         School Current Credit Balance:
