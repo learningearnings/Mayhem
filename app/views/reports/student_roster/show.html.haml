@@ -17,7 +17,7 @@
         .grade
           = submit_tag 'Go!'
     %br
-    = button_to "Print Report", '#', { class: "noprint btn awesome-button", onclick: 'window.print();return false;', method: :put }
+    = button_to 'Print Report', '#', { class: 'noprint btn awesome-button', onclick: 'printReport();', method: :put }
     .report
       %br.onlyprint/
       %table#report_table.table.table-bordered.table-striped.solid-background
