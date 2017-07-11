@@ -1,5 +1,7 @@
 function printReport(){
-  var printContents = document.getElementsByClassName('report')[0].innerHTML;
+  var printBody = document.getElementsByClassName('report')[0].innerHTML;
+  var printHeader = document.getElementsByTagName('h1')[0].innerHTML;
+  var printContents = '<h1>' + printHeader + '</h1>' + printBody;
   var originalContents = document.body.innerHTML;
   document.body.innerHTML = printContents;
   window.print();

@@ -5,33 +5,24 @@
       .print-title
         %h1 Student Earnings Report
       .credit-print-button
-        = button_tag "Print Report", class: "noprint btn awesome-button", id: "print-credit"
-      - @students.each do |student|
-        .student-info.clear    
-          .credit-student-title
-            %h3= student.name
-          .credit-type
-            %h4= credit_transactions_title(credit_type) 
-          %table.table.table-bordered.table-striped.solid-background
-            %tr
-              %th.teacher Type
-              %th.amount Amount
-              %th.teacher Source
-              %th.date Date
-            - otu_codes = otu_codes_credits(student.id,credit_type,start_date,end_date)
-            - otu_codes.each do |otu_code|
+        = button_to 'Print Report', '#', { class: 'noprint btn awesome-button', onclick: 'printReport();', method: :put }
+      .report
+        - @students.each do |student|
+          .student-info.clear
+            .credit-student-title
+              %h3= student.name
+            .credit-type
+              %h4= credit_transactions_title(credit_type)
+            %table.table.table-bordered.table-striped.solid-background
               %tr
-                %td{:nowrap => "nowrap"}= otu_code.otu_code_category.present? ?  otu_code.otu_code_category.name : "none"
-                %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
-                %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
-                %td.date= credit_type == "total_credit" ? l(otu_code.created_at.to_date) : l(otu_code.updated_at.to_date)
-
-:javascript
- 
-  $('#print-credit').on('click', function() {
-     var printContents = document.getElementById('printable-section').innerHTML;
-     var originalContents = document.body.innerHTML;
-     document.body.innerHTML = printContents;
-     window.print();
-     document.body.innerHTML = originalContents;
-  });
+                %th.teacher Type
+                %th.amount Amount
+                %th.teacher Source
+                %th.date Date
+              - otu_codes = otu_codes_credits(student.id,credit_type,start_date,end_date)
+              - otu_codes.each do |otu_code|
+                %tr
+                  %td{:nowrap => "nowrap"}= otu_code.otu_code_category.present? ?  otu_code.otu_code_category.name : "none"
+                  %td.amount.currency= number_with_precision(otu_code.points, :precision => 2)
+                  %td{:nowrap => "nowrap"}= source_from_otu_code(otu_code)
+                  %td.date= credit_type == "total_credit" ? l(otu_code.created_at.to_date) : l(otu_code.updated_at.to_date)
