@@ -70,7 +70,7 @@ module Reports
           delivered_by = reward_delivery.delivered_by.present? ? reward_delivery.delivered_by.name : reward_delivery.from.name
 
           csv << [row.district_name, row.sti_district_guid, row.sti_school_id, row.le_school_id, row.school_name, row.le_person_id, row.sti_user_id, row.student_last_name,row.student_first_name,row.student_grade,
-            reward_creator, delivered_by, reward_delivery.created_at, reward_delivery.reward.product.name, reward_deliver.reward.price, reward_delivery.reward.quantity, reward_delivery.status.humanize]
+            reward_creator, delivered_by, reward_delivery.created_at, reward_delivery.reward.product.name, reward_delivery.reward.price, reward_delivery.reward.quantity, reward_delivery.status.humanize]
         end
       end
     end
