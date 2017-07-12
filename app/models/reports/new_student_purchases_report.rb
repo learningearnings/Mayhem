@@ -32,13 +32,13 @@ module Reports
                  p.last_name AS student_last_name,
                  p.first_name AS student_first_name,
                  p.grade AS student_grade,
-                 rd.id as reward_delivery_id      
+                 reward_deliveries.id as reward_delivery_id      
             FROM districts d,
                  schools s,
                  people p,
                  person_school_links psl,
-                 reward_deliveries rd
-           WHERE     rd.to = p.id
+                 reward_deliveries 
+           WHERE reward_deliveries.to_id = p.id
                  AND p.status = 'active'
                  AND psl.status = 'active'
                  AND s.id = psl.school_id
@@ -46,13 +46,13 @@ module Reports
                  AND p.type IN ('Student')
                  AND s.district_guid = d.guid
                  #{@districts_where}
-                 AND rd.created_at >= '#{@beginning_day}'
-                 AND rd.created_at <=  '#{@ending_day}'
+                 AND reward_deliveries.created_at >= '#{@beginning_day}'
+                 AND reward_deliveries.created_at <=  '#{@ending_day}'
         ORDER BY district_name,
                  school_name,
                  student_first_name,
                  student_last_name,
-                 date
+                 reward_deliveries.created_at
       )
       @rows = Person.find_by_sql(sql)
       
