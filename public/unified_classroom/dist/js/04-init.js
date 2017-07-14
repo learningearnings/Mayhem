@@ -189,8 +189,6 @@ $(document).arrive(_active_menu_id, function() {
   // 'this' refers to the newly created element
   var newElem = $(this);
   newElem.addClass('pds-is-active');
-  $(".nav_place_holder").hide();
-  $(".nav_place_holder").css("display","none");
   $(".nav_place_holder").remove();
   // Firfox fix
   window.setTimeout(function() { $(_active_menu_id).addClass('pds-is-active'); }, 2000);
