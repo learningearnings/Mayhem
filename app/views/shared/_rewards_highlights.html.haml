@@ -6,6 +6,19 @@
           - product_image_url = product.images[0].attachment.url(:product)
           = link_to resized_image(product_image_url, '80x80#'), spree.product_path(product)
       .product-details
-        = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :class => 'info', :itemprop => "name", :title => product.name
+        = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :onclick => "return false;", :class => 'info', :itemprop => "name", :title => product.name
         .price.selling{:itemprop => "price"}= number_with_precision(product.price, precision: 2, delimiter: ',')
     .clear
+    
+  :javascript
+    $(".product-details a").click(function(event) {
+       console.log("Clicked product");
+       var link = $(this).attr("href");
+       $.ajax({
+          type: "GET",
+          url: link
+        }).success(function(response) {
+          var result = $('.right-content-area',response);
+          $(".right-content-area").html(result.html());
+        });
+    });  
