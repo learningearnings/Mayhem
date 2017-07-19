@@ -1,6 +1,5 @@
-.main-content-wrapper-no-bg
+.main-content-wrapper
   .primary-content
-
     .reward-content{ "data-hook" => "product_show", itemscope: true, itemtype: "http://schema.org/Product" }
       - @body_id = 'product-details'
 
@@ -31,5 +30,4 @@
                       %div
                         %span.price.selling{ itemprop:"price" }= number_with_precision(@product.price, precision: 2, delimiter: ',')
                 %p= t(:school_store_is_for_students, school: current_school_name)
-  .secondary-content
-    = render :partial => 'taxons'
+ 
