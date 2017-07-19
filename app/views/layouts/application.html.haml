@@ -37,13 +37,14 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
   %body
-    .unified_classroom_wrapper
-      :plain
-        <div class="nav_place_holder" style="position:absolute;top:0px;left:0px;z-index:-1;width:250px;">
-        </div>
-      .pds-main.main-content-wrapper.resp-page-content
-        = render "layouts/resp_content_container"
-        = render "layouts/footer"
+    .wrapper
+      .unified_classroom_wrapper
+        :plain
+          <div class="nav_place_holder" style="position:absolute;top:0px;left:0px;z-index:-1;width:250px;">
+          </div>
+        .pds-main.main-content-wrapper.resp-page-content
+          = render "layouts/resp_content_container"
+      = render "layouts/footer"
 
 
     = oboe_rum_footer rescue ""
