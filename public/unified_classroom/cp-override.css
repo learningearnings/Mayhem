@@ -2,20 +2,14 @@
 body {
   padding: 0;
   margin: 0;
-  height:100%;
-}
-
-.wrapper{
-  min-height:100%;
-  position:relative;
 }
 
 .unified_classroom_wrapper {
   display: flex;
   overflow: hidden;
-  /*height: 100vh;*/
+  height: 100vh;
   align-items: stretch;
-  padding-bottom:100px;
+  padding-bottom:40px;
 }
 
 pds-app-nav {

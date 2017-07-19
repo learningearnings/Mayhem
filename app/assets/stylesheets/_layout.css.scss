@@ -1357,8 +1357,8 @@ html.resp, body.resp {
 
 .foot {
   //color: $supporting-text-color;
-  position: absolute;
-  top: 0;
+  position: relative;
+  top: -3em;
   //float: right;
   //bottom: 0px;
   right: 0;
