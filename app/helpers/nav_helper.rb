@@ -64,7 +64,7 @@ module NavHelper
               id: 'teachers-link',
               name: 'Teachers',
               activeAt: '^/teachers',
-              iconName: 'book-f'
+              iconName: 'teacher'
           },
           {
               id: 'classrooms-link',
@@ -76,13 +76,13 @@ module NavHelper
               id: 'play-link',
               name: 'Play',
               activeAt: '^/play',
-              iconName: 'rocket-f'
+              iconName: 'play'
           },
           {
               id: 'shop-link',
               name: 'Shop',
               activeAt: '^/shop',
-              iconName: 'global-f'
+              iconName: 'shop'
           },
           {
               id: 'school-admin-reports-link',
@@ -121,7 +121,7 @@ module NavHelper
               id: 'shop-link',
               name: 'Shop',
               activeAt: '^/shop',
-              iconName: 'global-f'
+              iconName: 'shop'
           },
           {
               id: 'reports-link',
@@ -144,7 +144,7 @@ module NavHelper
                 id: 'locker-link',
                 name: 'Locker',
                 activeAt: '^/locker',
-                iconName: 'lock'
+                iconName: 'locker'
             }
          end
          main.concat( [
@@ -166,13 +166,13 @@ module NavHelper
               id: 'play-link',
               name: 'Play',
               activeAt: '^/play',
-              iconName: 'rocket-f'
+              iconName: 'play'
           },
           {
               id: 'shop-link',
               name: 'Shop',
               activeAt: '^/shop',
-              iconName: 'global-f'
+              iconName: 'shop'
           }
         ])
       end
