@@ -6,7 +6,7 @@
     - if report.state == "complete"
       %h1 Purchases Report
       - report_params = Reports::Purchases.new(params.merge(school: current_school)).parameters
-      = simple_form_for report_params,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'} do |f|
+      = simple_form_for report_params,  :url => purchases_report_path, method: :post, :html => {:class => 'form-horizontal noprint'}, remote: true do |f|
         .form-sections
           .filter
             %h4 Filter By
