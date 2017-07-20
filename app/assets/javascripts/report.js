@@ -3,7 +3,8 @@ function printReport(){
   var printHeader = document.getElementsByTagName('h1')[0].innerHTML;
   var printContents = '<h1>' + printHeader + '</h1>' + printBody;
   var originalContents = document.body.innerHTML;
-  document.body.innerHTML = printContents;
-  window.print();
-  document.body.innerHTML = originalContents;
+  w = window.open();
+  w.document.body.innerHTML = printContents;
+  w.print();
+  w.close();
 }
