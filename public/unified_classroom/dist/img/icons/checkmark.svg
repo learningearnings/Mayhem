@@ -1,4 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="699.97 640.77 14.06 10.46">
-  <title>Checkmark</title>
-  <desc>A simple checkmark</desc>
-  <path d="M704.64 651.23l-4.67-4.67 1.06-1.06 3.61 3.6 8.33-8.33 1.06 1.06z"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>checkmark</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="checkmark" fill="#000000">
+            <path d="M14.3229688,5.00693689 C14.6816464,4.96892875 15.052955,5.08700076 15.3297871,5.3638328 L21.6371865,11.6712322 C22.1222865,12.1563322 22.123213,12.9419083 21.6316543,13.433467 C21.1434989,13.9216224 20.3588224,13.9284021 19.8694195,13.4389992 L14.4183232,7.98790284 L4.13725979,18.2689663 C3.65071091,18.7555151 2.85468625,18.7600836 2.36653089,18.2719282 C1.87497219,17.7803695 1.87970163,16.9909905 2.36949284,16.5011993 L13.4983652,5.37232692 C13.7264296,5.14426253 14.0224908,5.02209704 14.3229688,5.00693689 Z" id="Check" transform="translate(12.000335, 11.817983) rotate(-180.000000) translate(-12.000335, -11.817983) "></path>
+        </g>
+    </g>
+</svg>
