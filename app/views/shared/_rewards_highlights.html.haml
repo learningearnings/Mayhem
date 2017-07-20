@@ -10,15 +10,4 @@
         .price.selling{:itemprop => "price"}= number_with_precision(product.price, precision: 2, delimiter: ',')
     .clear
     
-  :javascript
-    $(".product-details a").click(function(event) {
-       console.log("Clicked product");
-       var link = $(this).attr("href");
-       $.ajax({
-          type: "GET",
-          url: link
-        }).success(function(response) {
-          var result = $('.right-content-area',response);
-          $(".right-content-area").html(result.html());
-        });
-    });  
+  

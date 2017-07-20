@@ -17,12 +17,12 @@ class ConsumerController < ApplicationController
       identifier = params[:openid_identifier]
       if identifier.nil?
         flash[:error] = "Enter an OpenID identifier"
-        redirect_to "/" and return
+        redirect_to "/errors/unauthorized" and return    
       end
       oidreq = consumer.begin(identifier)
     rescue OpenID::OpenIDError => e
       flash[:error] = "Discovery failed for #{identifier}: #{e}"
-      redirect_to "/" and return
+      redirect_to "/errors/unauthorized" and return    
     end
     # required fields
     ax_req = OpenID::AX::FetchRequest.new
@@ -58,7 +58,8 @@ class ConsumerController < ApplicationController
       else
         flash[:error] = "Verification failed: #{oidresp.message}"
       end
-      render :layout => false and return    
+      
+      redirect_to "/errors/unauthorized" and return    
     when OpenID::Consumer::SUCCESS
       ax_resp = OpenID::AX::FetchResponse.from_success_response(oidresp)
       @data = ax_resp.data
