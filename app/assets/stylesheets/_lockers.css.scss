@@ -84,14 +84,14 @@ ul.action_buttons.locker_buttons {
   top: 0;
   right:0;
   padding: 2em 1em;
-  color: #fff;
-  text-align: left;
   margin: 2em 0 0 0;
-  &:hover {
-    color: #fff
-  }
   a {
     margin: 0 .5em;
+    text-align: left;
+    color: #fff;
+    &:hover {
+      color: #fff
+    }
   }
   .decorate-locker {
       @extend .awesome-button;
