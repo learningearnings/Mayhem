@@ -84,16 +84,21 @@ ul.action_buttons.locker_buttons {
   top: 0;
   right:0;
   padding: 2em 1em;
+  color: #fff;
+  text-align: left;
   margin: 2em 0 0 0;
+  &:hover {
+    color: #fff
+  }
   a {
     margin: 0 .5em;
   }
   .decorate-locker {
       @extend .awesome-button;
-      background: rgb(37, 134, 11);
+      background: #2b9e12;
       @include rotate(-3deg);
       &:hover {
-          background: rgb(97, 194, 71);
+        background: rgb(97, 194, 71);
       /*      background: rgba(37, 134, 11, 1); */
       }
   }
@@ -102,7 +107,7 @@ ul.action_buttons.locker_buttons {
       background: rgb(255, 151, 86);
       @include rotate(3deg);
       &:hover {
-          background: rgba(238, 91, 26,1);
+        background: rgba(238, 91, 26,1);
       }
   }
   .visit-locker {
@@ -110,7 +115,7 @@ ul.action_buttons.locker_buttons {
       background: rgb(182, 17, 176);
       @include rotate(1.8deg);
       &:hover {
-          background: rgb(242, 77, 236);
+        background: rgb(242, 77, 236);
       }
   }
 }
