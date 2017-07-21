@@ -89,28 +89,36 @@ ul.action_buttons.locker_buttons {
     margin: 0 .5em;
   }
   .decorate-locker {
-      @extend .awesome-button;
-      background: rgb(37, 134, 11);
-      @include rotate(-3deg);
-      &:hover {
-          background: rgb(97, 194, 71);
-      /*      background: rgba(37, 134, 11, 1); */
-      }
+    @extend .awesome-button;
+    background: #2b9e12;
+    color: #fff;
+    text-align: left;
+    @include rotate(-3deg);
+    &:hover {
+      background: rgb(97, 194, 71);
+      color: #fff;
+    /*      background: rgba(37, 134, 11, 1); */
+    }
   }
   .share-locker {
-      @extend .awesome-button;
-      background: rgb(255, 151, 86);
-      @include rotate(3deg);
-      &:hover {
-          background: rgba(238, 91, 26,1);
-      }
+    @extend .awesome-button;
+    //background: rgb(255, 151, 86);
+    background: #2b9e12;
+    color: #fff;
+    @include rotate(3deg);
+    &:hover {
+      color: #fff;
+      background: rgba(238, 91, 26,1);
+    }
   }
   .visit-locker {
-      @extend .awesome-button;
-      background: rgb(182, 17, 176);
-      @include rotate(1.8deg);
-      &:hover {
-          background: rgb(242, 77, 236);
-      }
+    @extend .awesome-button;
+    background: rgb(182, 17, 176);
+    color: #fff;
+    @include rotate(1.8deg);
+    &:hover {
+      color: #fff;
+      background: rgb(242, 77, 236);
+    }
   }
 }
