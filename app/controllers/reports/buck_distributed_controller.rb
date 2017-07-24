@@ -3,7 +3,7 @@ module Reports
 		def show
 			report = Reports::BuckDistributed.new params.merge(school: current_school)
 			report.execute!
-			MixPanelTrackerWorker.perform_async(current_user.id, 'View Student Earning', mixpanel_options)
+			#MixPanelTrackerWorker.perform_async(current_user.id, 'View Student Earning', mixpanel_options)
 			render 'show', locals: {
 				report: report
 			}

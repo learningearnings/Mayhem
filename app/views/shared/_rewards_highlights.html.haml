@@ -9,3 +9,5 @@
         = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :class => 'info', :itemprop => "name", :title => product.name
         .price.selling{:itemprop => "price"}= number_with_precision(product.price, precision: 2, delimiter: ',')
     .clear
+    
+  

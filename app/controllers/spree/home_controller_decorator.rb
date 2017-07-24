@@ -23,7 +23,7 @@ Spree::HomeController.class_eval do
     @teachers = @products.includes(:person).map(&:person).compact.uniq
     @products = filter_by_rewards_for_teacher(@products, params[:teacher], params[:reward_type])
     @products = @products.order("spree_products.name").page(params[:page]).per(9)
-    MixPanelTrackerWorker.perform_async(current_user.id, 'View School Store', mixpanel_options)
+    #MixPanelTrackerWorker.perform_async(current_user.id, 'View School Store', mixpanel_options)
     respond_with(@products)
   end
 end

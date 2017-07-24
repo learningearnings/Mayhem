@@ -30,7 +30,7 @@ module Teachers
       end
       clear_balance_cache!
       
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Print Credits', mixpanel_options)
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'Print Credits', mixpanel_options)
 
     end
 

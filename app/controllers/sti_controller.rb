@@ -11,7 +11,7 @@ class StiController < ApplicationController
   def sync_district
     sti_link_token = StiLinkToken.where(district_guid: params[:district_guid].downcase).last      
     if sti_link_token.username == "PowerSchool"
-      PSImporterWorker.setup_sync(district_guid: sti_link_token.district_guid)
+      PSImporterWorker.setup_sync(district_guid: params[:district_guid].downcase)
     else
       @district = District.where(guid: params[:district_guid].downcase ).first if params[:district_guid]
       @district = District.where(guid: School.find(params[:school_id]).district_guid).first if params[:school_id]
@@ -98,7 +98,11 @@ class StiController < ApplicationController
         return         
       end    
       if login_teacher
+<<<<<<< HEAD
+        if current_school    
+=======
         if current_school
+>>>>>>> origin/staging
           if @teacher.is_a?(SchoolAdmin)
             redirect_to main_app.school_admins_bank_path and return
           else

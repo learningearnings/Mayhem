@@ -3,6 +3,7 @@ Leror::Application.routes.draw do
 
   get 'errors/not_found'
   get 'errors/server_error'
+  get 'errors/unauthorized'  
 
   get  'navmenus' => 'nav#menus'
   get '/consumer/index' => "consumer#index"

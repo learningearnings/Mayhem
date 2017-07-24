@@ -23,10 +23,12 @@ class AdminMailer < ActionMailer::Base
     tcfn = "teacher_credits" + filename
     slfn = "student_logins" + filename
     scfn = "student_credits" + filename
+    spfn = "student_purchases" + filename    
     attachments[tlfn] = File.read("/tmp/" + tlfn)
     attachments[tcfn] = File.read("/tmp/" + tcfn)
     attachments[slfn] = File.read("/tmp/" + slfn)
-    attachments[scfn] = File.read("/tmp/" + scfn)           
+    attachments[scfn] = File.read("/tmp/" + scfn) 
+    attachments[spfn] = File.read("/tmp/" + spfn)              
     recipients = ["aktaylor@chalkable.com"] + email_recipients.split(",") 
     title = "User Activity Detail Reports for districts " + options["districts"]
     mail :to => recipients, :subject => title, :body => title

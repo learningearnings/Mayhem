@@ -22,9 +22,9 @@ module Mobile
   
   def check_mixpanel
     if !session[:mixpanelinit] and current_user
-      MixPanelIdentifierWorker.perform_async(current_user.id, mixpanel_options)
-      MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', mixpanel_options)
-      session[:mixpanelinit] = true
+      #MixPanelIdentifierWorker.perform_async(current_user.id, mixpanel_options)
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', mixpanel_options)
+      #session[:mixpanelinit] = true
 
     end
   end
@@ -56,7 +56,7 @@ module Mobile
   
   def log_event
     if current_user
-      MixPanelTrackerWorker.perform_async(current_user.id, params[:event], mixpanel_options) 
+      #MixPanelTrackerWorker.perform_async(current_user.id, params[:event], mixpanel_options) 
       render :text => "Logged event #{params[:event]}"
     else
       render :text => "Could not log event, no user"

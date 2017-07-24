@@ -44,7 +44,7 @@ class ClassroomsController < LoggedInController
       if link.save
         link.audit_logs.create(district_guid: link.person_school_link.school.try(:district_guid), school_id: link.person_school_link.school.try(:id), school_sti_id: link.person_school_link.school.try(:sti_id), person_id: current_person.id, person_name: current_person.name, person_type: current_person.type, person_sti_id: current_person.sti_id, log_event_name: link.person.name, action: "Deactivate")
         flash[:notice] = "Student removed from classroom."
-        MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom', mixpanel_options)
+        #MixPanelTrackerWorker.perform_async(current_user.id, 'Remove Student from Classroom', mixpanel_options)
         redirect_to classroom_path(@classroom)
       else
         flash[:error] = "Student not removed from classroom."
@@ -67,7 +67,7 @@ class ClassroomsController < LoggedInController
         respond_to do |format|
           format.html {
             flash[:notice] = "Student added to classroom."
-            MixPanelTrackerWorker.perform_async(current_user.id, 'Add Student to Classroom', mixpanel_options)
+            #MixPanelTrackerWorker.perform_async(current_user.id, 'Add Student to Classroom', mixpanel_options)
             redirect_to classroom_path(@classroom)
           }
           format.json { render json: @classroom.students, each_serializer: ClassroomStudentSerializer, classroom_id: @classroom.id, school_id: @classroom.school.id, root: false }
@@ -91,7 +91,7 @@ class ClassroomsController < LoggedInController
     classroom_creator = ClassroomCreator.new(params[:classroom][:name], current_person, current_school)
     classroom_creator.execute!
     if classroom_creator.success?
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Add Classroom', mixpanel_options)
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'Add Classroom', mixpanel_options)
       respond_to do |format|
         format.html {
           flash[:notice] = "Classroom Created."

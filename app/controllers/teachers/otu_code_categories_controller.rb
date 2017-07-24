@@ -18,7 +18,7 @@ module Teachers
         @category = current_school.otu_code_categories.new(params[:otu_code_category])
         if @category.save
           flash[:notice] = 'Category Created'
-          MixPanelTrackerWorker.perform_async(current_user.id, 'Add Credit Category', mixpanel_options)
+          #MixPanelTrackerWorker.perform_async(current_user.id, 'Add Credit Category', mixpanel_options)
           redirect_to teachers_otu_code_types_path
         else
           flash[:error] = "Couldn't create category"

@@ -6,9 +6,9 @@ class StudentTransferCommandsController < LoggedInController
     transfer.on_failure = method(:on_failure)
     transfer.execute!
     if params[:student_transfer_command][:direction] == "checking_to_savings"
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Transfer Credits to Savings', mixpanel_options)   
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'Transfer Credits to Savings', mixpanel_options)   
     else
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Transfer Credits to Checking', mixpanel_options)
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'Transfer Credits to Checking', mixpanel_options)
     end  
     clear_balance_cache!
   end

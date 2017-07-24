@@ -31,7 +31,7 @@ class RewardsController < LoggedInController
     if @product.save
       after_save
       flash[:notice] = "Your reward was created successfully."
-      MixPanelTrackerWorker.perform_async(current_user.id, 'Add Reward To Store', mixpanel_options)
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'Add Reward To Store', mixpanel_options)
       redirect_to rewards_path
     else
       flash[:error] = "There was an error saving your Reward, please check the form and try again"

@@ -43,8 +43,8 @@ class TeachersController < ApplicationController
       #session[:current_school_id] = @teacher_signup_form.school.id
       UserMailer.delay.teacher_self_signup_email(@teacher_signup_form.person)
       flash[:notice] = 'Thank you for signing up!  An activation email has been sent to the address you provided.'
-      MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, mixpanel_options)              
-      MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up', mixpanel_options)
+      #MixPanelIdentifierWorker.perform_async(@teacher_signup_form.person.user.id, mixpanel_options)              
+      #MixPanelTrackerWorker.perform_async(@teacher_signup_form.person.user.id, 'Teacher Sign Up', mixpanel_options)
       track_signup_interaction(@teacher_signup_form)
       redirect_to main_app.page_path('home')
     else

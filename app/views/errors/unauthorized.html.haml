@@ -1,0 +1,49 @@
+!!!
+/[if lt IE 7] <html class="lt-ie9 lt-ie8 lt-ie7">
+/[if IE 7] <html class="lt-ie9 lt-ie8">
+/[if IE 8] <html class="lt-ie9">
+/[if gt IE 8]<!
+%html.resp
+  / <![endif]
+  %head
+    %title Learning Earnings - Unauthorized
+    = csrf_meta_tags
+    %meta{:name => "viewport", :content => "width=device-width"}
+    = oboe_rum_header rescue ""
+
+    = javascript_include_tag 'svgweb/svg.js', "data-path" => "#{File.dirname(asset_path('svgweb/svg.js'))}", "data-htc-filename" => "#{File.basename(asset_path('svgweb/svg.htc'))}",  "data-swf-path" => "#{asset_path('svgweb/svg.swf')}"
+    = javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js'
+    = javascript_include_tag 'application'
+    = stylesheet_link_tag    'application', media: 'all'  
+    = stylesheet_link_tag 'admin/ie_noprint.css', media: 'print'
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-8360883-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+  :plain
+    <body style="color:#ffffff;background-color: #005c7e;" >
+      <div style="text-align: center;position:relative;top: 25%;">
+        <span style="font-size:18px;">User Authentication Error</span><br/>
+        <input type="button" onclick="window.location= '/';" value="Go to Homepage" style="margin-top: 30px;border: 0px; background-color: #137abb;color:#ffffff;width:300px;border-radius: 2px;">
+        <br/>
+        <br/>
+        <span style="margin-top: 40px;font-size: 14px;">We're Sorry...</span>
+        <br/>
+        <span style="font-size: 10px;">Looks like we've run into a problem.  You've done nothing wrong.  Meanwhile, you can</span>
+        <br/>
+        <span  style="font-size: 10px;"> return to the homepage.</span>
+        <br/>
+        <br/>
+        <span style="margin-top:30px;margin-bottom:30px;font-size: 16px;"><a href="mailto:learningearnings@powerschool.com" style="color:white">Let us know</a></span>
+        <br/>
+        <img alt="Logo-powerschool-ondark" class="login-logo" src="/assets/logo-powerschool-ondark.png">
+      </div>
+      
+    </body>
+      

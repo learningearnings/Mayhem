@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="8px" height="14px" viewBox="0 0 8 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <title>Pointer Right</title>
-    <desc>A right pointing chevron</desc>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>pointer-right</title>
+    <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="pointer-right" transform="translate(-1.000000, -1.000000)" fill-rule="nonzero" fill="#000000">
-            <g id="group-8" transform="translate(4.670000, 8.130000) rotate(-90.000000) translate(-4.670000, -8.130000) translate(-2.830000, 4.130000)">
-                <polygon id="path" points="6.95 7.15 7.8 8 14.62 1.18 13.77 0.33 7.77 6.33 1.82 0.35 0.97 1.2 4.38 4.61"></polygon>
-            </g>
+    <g id="PDS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="pointer-right" fill="#000000">
+            <path d="M11.9955216,6.36688108 C12.3276372,6.35844923 12.6633593,6.48171452 12.9188935,6.73724871 L21.5717999,15.390155 C22.0630029,15.881358 22.0688768,16.6718815 21.5773181,17.1634402 C21.0891627,17.6515956 20.2972374,17.6511265 19.8040329,17.157922 L11.9955216,9.34941072 L4.18701037,17.157922 C3.69380583,17.6511265 2.90188055,17.6515956 2.41372519,17.1634402 C1.92216649,16.6718815 1.92804042,15.881358 2.41924341,15.390155 L11.0721497,6.73724871 C11.3276839,6.48171452 11.6634061,6.35844923 11.9955216,6.36688108 Z" id="Chevron" transform="translate(11.995522, 11.947585) rotate(90.000000) translate(-11.995522, -11.947585) "></path>
         </g>
     </g>
 </svg>
