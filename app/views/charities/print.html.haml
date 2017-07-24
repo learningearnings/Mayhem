@@ -1,6 +1,6 @@
 .print-charity
   .row-fluid
-    = link_to_function "Print", 'window.print();return false;' ,class: 'btn awesome-button noprint'
+    = button_to 'Print', '#', { class: 'noprint btn awesome-button', onclick: 'printReport();', method: :put }
   .row-fluid
     = le_svg_tag charity.spree_product.svg.to_s do
       = render :file => charity.spree_product.svg.path,:formats => [:svg], :locals => {:name => current_person.name, :school_name => current_school.name}

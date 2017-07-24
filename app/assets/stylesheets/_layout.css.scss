@@ -163,6 +163,7 @@ $how-to-active-color: #f05c1a;
     background-image: url(asset_path('common/icon-bank.svg', image));
     background-repeat: no-repeat;
     text-indent: 20px;
+    padding-left: 0px;
 }
 #login-school {
     background-image: url(asset_path('common/icon-bank.svg', image));
@@ -174,6 +175,7 @@ $how-to-active-color: #f05c1a;
 }
 #login-password:active {
   background-image: none;
+  padding-left: 0px;
 }
 #login-school:active {
   background-image: none;
@@ -1174,7 +1176,7 @@ html.resp, body.resp {
 /* Pages */
 .privacy-content {
   //margin: -8px 0 0 180px;
-  padding: 2em;
+  padding: 0 2em 2em;
 }
 
 .picaso-pig {
@@ -1356,10 +1358,10 @@ html.resp, body.resp {
 .foot {
   //color: $supporting-text-color;
   position: relative;
-  top: -20px;
+  top: -3em;
   //float: right;
   //bottom: 0px;
-  right: 20px;
+  right: 0;
   margin: 0px 0px 0px 0px;
   color: #333;
   text-align: right;

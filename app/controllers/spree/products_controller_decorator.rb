@@ -28,6 +28,7 @@ Spree::ProductsController.class_eval do
   
   def show
     MixPanelTrackerWorker.perform_async(current_user.id, 'View Reward Item', mixpanel_options)
+    render :layout => "application"
   end
 end
 
