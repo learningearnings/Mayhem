@@ -7,4 +7,8 @@ class ErrorsController < ApplicationController
   def server_error
     render :layout => false    
   end
+  
+  def unauthorized
+    render :layout => false    
+  end
 end

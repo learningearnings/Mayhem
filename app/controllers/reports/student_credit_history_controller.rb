@@ -11,7 +11,7 @@ module Reports
       report = Reports::StudentCreditHistory.new params.merge(school: current_school, person: current_person, classroom: classroom, student_filter_type: params[:student_filter_type])
       delayed_report = DelayedReport.create(person_id: current_person.id)
       DelayedReportWorker.perform_async(Marshal.dump(report), delayed_report.id)
-      MixPanelTrackerWorker.perform_async(current_user.id, 'View Student Credit History Report', mixpanel_options)
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'View Student Credit History Report', mixpanel_options)
       redirect_to student_credit_history_report_show_path(delayed_report.id, params)
     end
 

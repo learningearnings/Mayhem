@@ -8,7 +8,7 @@ class BanksController < LoggedInController
 
   def code_lookup
     @looked_up_code = OtuCode.for_school(current_school).where(code: params[:code]).first
-    MixPanelTrackerWorker.perform_async(current_user.id, 'Lookup Credit Code', mixpanel_options)
+    #MixPanelTrackerWorker.perform_async(current_user.id, 'Lookup Credit Code', mixpanel_options)
     render :partial => "code_lookup"
   end
 
@@ -29,9 +29,9 @@ class BanksController < LoggedInController
         @bank.claim_bucks(person, otu_code)
         flash[:notice] = 'Credits claimed!'
         if params[:student_id]
-          MixPanelTrackerWorker.perform_async(current_user.id, 'Deposit e-Credit', mixpanel_options)
+          #MixPanelTrackerWorker.perform_async(current_user.id, 'Deposit e-Credit', mixpanel_options)
         else
-          MixPanelTrackerWorker.perform_async(current_user.id, 'Enter Credit Code', mixpanel_options)
+          #MixPanelTrackerWorker.perform_async(current_user.id, 'Enter Credit Code', mixpanel_options)
         end
         person.code_entry_failures.destroy_all
       else
@@ -47,13 +47,13 @@ class BanksController < LoggedInController
   end
 
   def checking_transactions
-    MixPanelTrackerWorker.perform_async(current_user.id, 'View Checking History', mixpanel_options)
+    #MixPanelTrackerWorker.perform_async(current_user.id, 'View Checking History', mixpanel_options)
     recent_checking_amounts = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.checking_account).joins(:transaction).order({ transaction: :created_at}).reverse_order.page(params[:page]).per(5))
     render partial: 'checking_ledger_table', locals: { amounts: recent_checking_amounts }
   end
 
   def savings_transactions
-    MixPanelTrackerWorker.perform_async(current_user.id, 'View Savings History', mixpanel_options)    
+    #MixPanelTrackerWorker.perform_async(current_user.id, 'View Savings History', mixpanel_options)    
     recent_savings_amounts  = PlutusAmountDecorator.decorate(Plutus::Amount.where(account_id: current_person.savings_account).joins(:transaction).order({ transaction: :created_at }).reverse_order.page(params[:page]).per(5))
     render partial: 'savings_ledger_table', locals: { amounts: recent_savings_amounts }
   end

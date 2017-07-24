@@ -42,7 +42,7 @@ Spree::User.class_eval do
       end
     end
     
-    if user.nil? && school 
+    if user.nil? and school
       link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
       return unless link_token
       begin

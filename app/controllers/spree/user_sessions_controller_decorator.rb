@@ -17,8 +17,8 @@ Spree::UserSessionsController.class_eval do
     session[:current_school_id] = params[:user]["school_id"] if params[:user]
 
     if user_signed_in?
-      MixPanelIdentifierWorker.perform_async(current_user.id, {'email' => current_user.email, 'username' => current_user.username, 'first_name' => current_user.person.first_name, 'last_name' => current_user.person.last_name, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
-      MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', {'email' => current_user.email, 'username' => current_user.username, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
+      #MixPanelIdentifierWorker.perform_async(current_user.id, {'email' => current_user.email, 'username' => current_user.username, 'first_name' => current_user.person.first_name, 'last_name' => current_user.person.last_name, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
+      #MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', {'email' => current_user.email, 'username' => current_user.username, 'type' => current_user.person.type, 'school' => current_user.person.school.try(:name)})
       respond_to do |format|
         format.html {
           flash.notice = t(:logged_in_succesfully)

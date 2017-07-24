@@ -1,30 +1,30 @@
-%h1 Create New Auction Reward
+.main-content-wrapper
+  .full-content
+    %h3 Create New Auction Reward
+    = form_tag create_auction_reward_school_admins_auctions_path, :method => :post, :enctype =>"multipart/form-data" do
+      = hidden_field_tag :fullfillment_type, "Auction Reward"
+      = label_tag :auction_reward_name
+      = text_field_tag :auction_reward_name
+      = label_tag :auction_reward_description
+      = text_area_tag :auction_reward_description
+      = label_tag :auction_reward_image
+      = file_field_tag :auction_reward_image
+      = submit_tag "Create Auction Reward"
 
-= form_tag create_auction_reward_school_admins_auctions_path, :method => :post, :enctype =>"multipart/form-data" do
-  = hidden_field_tag :fullfillment_type, "Auction Reward"
-  = label_tag :auction_reward_name
-  = text_field_tag :auction_reward_name
-  = label_tag :auction_reward_description
-  = text_area_tag :auction_reward_description
-  = label_tag :auction_reward_image
-  = file_field_tag :auction_reward_image
-  = submit_tag "Create Auction Reward"
-
-%h1 Create an Auction for your School
-
-= semantic_form_for [:school_admins, @auction] do |f|
-  = f.label :product
-  = f.select :product_id, @products.map{|p| [p.name, p.id] }
-  = f.label :start_date
-  = f.text_field :start_date, :id => 'datepicker'
-  = f.label :end_date
-  = f.text_field :end_date, :id => 'datepicker2'
-  = f.label :min_grade
-  = f.select :min_grade, School::GRADES
-  = f.label :max_grade
-  = f.select :max_grade, School::GRADES
-  %br
-  = f.submit
+    %h3 Create an Auction for your School
+    = semantic_form_for [:school_admins, @auction] do |f|
+      = f.label :product
+      = f.select :product_id, @products.map{|p| [p.name, p.id] }
+      = f.label :start_date
+      = f.text_field :start_date, :id => 'datepicker'
+      = f.label :end_date
+      = f.text_field :end_date, :id => 'datepicker2'
+      = f.label :min_grade
+      = f.select :min_grade, School::GRADES
+      = f.label :max_grade
+      = f.select :max_grade, School::GRADES
+      %br
+      = f.submit
 
 :javascript
   $(function() {

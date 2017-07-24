@@ -1,121 +1,122 @@
 .main-content-wrapper
-  %h1
-    = current_school.name
-  %h32Your School's LE Settings
-  %hr
-  
-  -#           %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.person_school_links.where(school_id: current_school.id).first.ignore ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
-  
-  %div{role: "tabpanel"}
-    %ul.nav.nav-tabs{role: "tablist"}
-      %li.active{role: "presentation"}
-        %a{"href" => "#edit-sponsors-text", "aria-controls" => "manage-sponsors-text", "role" => "tab", "data-toggle" => "tab"}
-          <strong>Edit Sponsors Text</strong>
-      %li{role: "presentation"}
-        %a{"href" => "#edit-teachers", "aria-controls" => "edit-teachers", "role" => "tab", "data-toggle" => "tab"}
-          <strong>Edit Teacher Permissions</strong>
-      %li{role: "presentation"}
-        %a{"href" => "#import-teachers", "aria-controls" => "import-teachers", "role" => "tab", "data-toggle" => "tab"}
-          <strong>Import Teachers</strong>
-      %li{role: "presentation"}
-        %a{"href" => "#manage-negative-credits", "aria-controls" => "manage-negative-credits", "role" => "tab", "data-toggle" => "tab"}
-          <strong>Manage Negative Credits</strong>
-      %li{role: "presentation"}
-        %a{"href" => "#manage-printed-credits", "aria-controls" => "manage-printed-credits", "role" => "tab", "data-toggle" => "tab"}
-          <strong>School Logo</strong>
-  
-    %div.tab-content
-      #edit-sponsors-text.tab-pane.active{role: "tabpanel"}
-        .school-settings
-          %h3 Manage Sponsors Text
-          %p This is displayed on all student's home pages.  Any updates here will be seen by all students and potentially their parents.
-          .manage-sponsors-text
-            = simple_form_for @sponsor_post, url: "update_sponsors_text" do |f|
-              = f.input_field :body, value: @sponsor_post.body, rows: 3
-              = f.button :submit, "Update"
-          .sponsors-text-preview
-            .our-sponsors
-              = @sponsor_post.body.html_safe
-  
-      #edit-teachers.tab-pane{role: "tabpanel"}
-        .school-settings
-          %h3 Select the teachers that will distribute credits or rewards
-          = form_for :teacher, :url => schools_toggle_distributor_path do |f|
-            %table.table.table-bordered.table-striped.solid-background
-              %thead
-                %tr
-                  %td Teacher Name
-                  %td Can Deliver Rewards?
-                  %td Can Distribute Credits?
-                  %td Ignored?
-              %body
-                - @teachers.each do |teacher|
+  .full-content
+    %h1
+      = current_school.name
+    %h32Your School's LE Settings
+    %hr
+
+    -#           %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.person_school_links.where(school_id: current_school.id).first.ignore ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
+
+    %div{role: "tabpanel"}
+      %ul.nav.nav-tabs{role: "tablist"}
+        %li.active{role: "presentation"}
+          %a{"href" => "#edit-sponsors-text", "aria-controls" => "manage-sponsors-text", "role" => "tab", "data-toggle" => "tab"}
+            <strong>Edit Sponsors Text</strong>
+        %li{role: "presentation"}
+          %a{"href" => "#edit-teachers", "aria-controls" => "edit-teachers", "role" => "tab", "data-toggle" => "tab"}
+            <strong>Edit Teacher Permissions</strong>
+        %li{role: "presentation"}
+          %a{"href" => "#import-teachers", "aria-controls" => "import-teachers", "role" => "tab", "data-toggle" => "tab"}
+            <strong>Import Teachers</strong>
+        %li{role: "presentation"}
+          %a{"href" => "#manage-negative-credits", "aria-controls" => "manage-negative-credits", "role" => "tab", "data-toggle" => "tab"}
+            <strong>Manage Negative Credits</strong>
+        %li{role: "presentation"}
+          %a{"href" => "#manage-printed-credits", "aria-controls" => "manage-printed-credits", "role" => "tab", "data-toggle" => "tab"}
+            <strong>School Logo</strong>
+
+      %div.tab-content
+        #edit-sponsors-text.tab-pane.active{role: "tabpanel"}
+          .school-settings
+            %h3 Manage Sponsors Text
+            %p This is displayed on all student's home pages.  Any updates here will be seen by all students and potentially their parents.
+            .manage-sponsors-text
+              = simple_form_for @sponsor_post, url: schools_settings_update_sponsors_text_path do |f|
+                = f.input_field :body, value: @sponsor_post.body, rows: 3
+                = f.button :submit, "Update"
+            .sponsors-text-preview
+              .our-sponsors
+                = @sponsor_post.body.html_safe
+
+        #edit-teachers.tab-pane{role: "tabpanel"}
+          .school-settings
+            %h3 Select the teachers that will distribute credits or rewards
+            = form_for :teacher, :url => schools_toggle_distributor_path do |f|
+              %table.table.table-bordered.table-striped.solid-background
+                %thead
                   %tr
-                    %td= teacher.name
-                    %td= select_tag "[teachers][#{teacher.id}][reward_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_rewards?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_rewards" }
-                    %td= select_tag "[teachers][#{teacher.id}][credit_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits_for_school?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
-                    %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.ignored?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
-  
-      #import-teachers.tab-pane{role: "tabpanel"}
-        .school-settings
-          %h3 Import Teachers
-          %h4 Required Format Example:
-          %table.table.table-bordered.table-striped.solid-background
-            %tr
-              %th First
-              %th Last
-              %th Email Address
-              %th Grade
-              %th Gender
-              %th Username
-              %th Password
-              %th LE Admin (Y/N)?
-            %tr
-              %td John
-              %td Doe
-              %td jdoe@example.org
-              %td 1
-              %td m
-              %td jdoe1
-              %td password
-              %td n
-          = link_to "Click here to download an example spreadsheet.", "/teacher_sample_template.xls"
-  
-          = form_tag schools_import_teachers_path, :multipart => true, :method => :post do
-            = hidden_field_tag :school_id, current_school.id
-            .field
-              = file_field_tag :file
-            = submit_tag 'Import Teachers', class: "btn awesome-button"
-  
-      #manage-negative-credits.tab-pane{role: "tabpanel"}
-        .school-settings
-          .allow-negative-credits
-            %h3 Allow Negative Credits
-            = form_for @school, url: revoke_credit_setting_path do |f|
-              = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
-              = f.label :allow_negative_credits
-              = f.submit "Update Negative Credits Setting"
-  
-            .alert.alert-info
-              Note:
-              %ul
-                %li
-                  You can use this setting to allow or disallow LE School Admins (NOT Teachers) to enter negative credit amounts.
-                %li
-                  If you DON'T ALLOW NEGATIVE credits, then LE School Admins will only be allowed to enter positive number values when issuing e-Credits and therefore can only add credits to a students account.
-                %li
-                  If you ALLOW NEGATIVE e-Credits to be issued then LE School Admins can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately (since a student most likely wouldn't deposit a negative e-Credit - at least we wouldn't).
-      #manage-printed-credits.tab-pane{role: "tabpanel"}
-        .school-settings
-          %h3 School Logo
-          - if @school.printed_credit_logo.present?
-            = image_tag(@school.printed_credit_logo.thumb('100x100#').url, alt: @school.name)
-          %p This logo will get displayed on printed credits.
-          .manage-sponsors-text
-            = form_for @school, url: printed_credit_logo_path do |f|
-              = f.file_field :printed_credit_logo
-              %br
-              = f.submit "Submit"
+                    %td Teacher Name
+                    %td Can Deliver Rewards?
+                    %td Can Distribute Credits?
+                    %td Ignored?
+                %body
+                  - @teachers.each do |teacher|
+                    %tr
+                      %td= teacher.name
+                      %td= select_tag "[teachers][#{teacher.id}][reward_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_rewards?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_rewards" }
+                      %td= select_tag "[teachers][#{teacher.id}][credit_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.can_distribute_credits_for_school?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "can_distribute_credits" }
+                      %td= select_tag "[teachers][#{teacher.id}][ignore_teachers]", options_for_select([["Yes", "true"], ["No", "false"]], teacher.ignored?(current_school) ? "true" : "false"), { class: "auto-update", "data-person-id" => teacher.id, "data-url" => "/schools/update_setting", "data-setting" => "ignore_teacher" }
+
+        #import-teachers.tab-pane{role: "tabpanel"}
+          .school-settings
+            %h3 Import Teachers
+            %h4 Required Format Example:
+            %table.table.table-bordered.table-striped.solid-background
+              %tr
+                %th First
+                %th Last
+                %th Email Address
+                %th Grade
+                %th Gender
+                %th Username
+                %th Password
+                %th LE Admin (Y/N)?
+              %tr
+                %td John
+                %td Doe
+                %td jdoe@example.org
+                %td 1
+                %td m
+                %td jdoe1
+                %td password
+                %td n
+            = link_to "Click here to download an example spreadsheet.", "/teacher_sample_template.xls"
+
+            = form_tag schools_import_teachers_path, :multipart => true, :method => :post do
+              = hidden_field_tag :school_id, current_school.id
+              .field
+                = file_field_tag :file
+              = submit_tag 'Import Teachers', class: "btn awesome-button"
+
+        #manage-negative-credits.tab-pane{role: "tabpanel"}
+          .school-settings
+            .allow-negative-credits
+              %h3 Allow Negative Credits
+              = form_for @school, url: revoke_credit_setting_path do |f|
+                = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
+                = f.label :allow_negative_credits
+                = f.submit "Update Negative Credits Setting"
+
+              .alert.alert-info
+                Note:
+                %ul
+                  %li
+                    You can use this setting to allow or disallow LE School Admins (NOT Teachers) to enter negative credit amounts.
+                  %li
+                    If you DON'T ALLOW NEGATIVE credits, then LE School Admins will only be allowed to enter positive number values when issuing e-Credits and therefore can only add credits to a students account.
+                  %li
+                    If you ALLOW NEGATIVE e-Credits to be issued then LE School Admins can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately (since a student most likely wouldn't deposit a negative e-Credit - at least we wouldn't).
+        #manage-printed-credits.tab-pane{role: "tabpanel"}
+          .school-settings
+            %h3 School Logo
+            - if @school.printed_credit_logo.present?
+              = image_tag(@school.printed_credit_logo.thumb('100x100#').url, alt: @school.name)
+            %p This logo will get displayed on printed credits.
+            .manage-sponsors-text
+              = form_for @school, url: printed_credit_logo_path do |f|
+                = f.file_field :printed_credit_logo
+                %br
+                = f.submit "Submit"
 
 
 :javascript

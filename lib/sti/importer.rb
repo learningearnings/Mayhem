@@ -47,7 +47,7 @@ module STI
           begin
             teacher.deactivate
           rescue
-            Rails.logger.warn "SYNC-ERROR:  Could not deactivate teacher #{teacher.inspect}"
+            Rails.logger.error "SYNC-ERROR: Could not deactivate teacher #{teacher.inspect}"
           end
         end
       end
