@@ -20,6 +20,7 @@ config/initializers/session_store.rb
 config/database.yml
 config/sunspot.yml
 config/environments/00_env.rb
+config/initializers/byebug.rb
 public/uploads/**/*
 
 # Ignore solr stuff

@@ -98,7 +98,11 @@ class StiController < ApplicationController
         return         
       end    
       if login_teacher
+<<<<<<< HEAD
         if current_school    
+=======
+        if current_school
+>>>>>>> origin/staging
           if @teacher.is_a?(SchoolAdmin)
             redirect_to main_app.school_admins_bank_path and return
           else

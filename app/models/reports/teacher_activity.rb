@@ -11,8 +11,8 @@ module Reports
         fromStr =  (Date.today - 365).strftime("%m/%d/%Y")
       end
       sql1 =  %Q(
-        select p.*, 
-        u.username as person_username, 
+        select p.*,
+        u.username as person_username,
         u.last_sign_in_at as last_sign_in,
         NULL as last_sign_in,
         0 as issued_balance,
@@ -30,48 +30,50 @@ module Reports
                     AS has_classroom,
         'Y' as has_activity
         from people p, spree_users u, person_school_links psl
-        where p.id = u.person_id and p.id = psl.person_id and psl.school_id = #{school.id} 
+        where p.id = u.person_id and p.id = psl.person_id and psl.school_id = #{school.id}
           and p.status = 'active' and psl.status = 'active' and p.type in ('Teacher','SchoolAdmin')
       )
       if sort_by.size > 1
-        sql1 = sql1 + " order by #{sort_by[1]} " 
-      else  
-        sql1 = sql1 + " order by p.last_name, p.first_name "  
-      end      
-      teachers = Teacher.find_by_sql(sql1)  
-          
+        sql1 = sql1 + " order by #{sort_by[1]} "
+      else
+        sql1 = sql1 + " order by p.last_name, p.first_name "
+      end
+      teachers = Teacher.find_by_sql(sql1)
+
       sql2 = %Q(
-        select 
+        select
         p.id as person_id,
         max(i.created_at) as last_sign_in,
-        count(i.id) as num_logins        
+        count(i.id) as num_logins
         from interactions i, people p, person_school_links psl
-        where p.id = psl.person_id and psl.school_id = #{school.id} 
-          and p.status = 'active' and psl.status = 'active' and p.type in ('Teacher','SchoolAdmin')        
+        where p.id = psl.person_id and psl.school_id = #{school.id}
+          and p.status = 'active' and psl.status = 'active' and p.type in ('Teacher','SchoolAdmin')
           and i.person_id = p.id and i.page in ('/teachers/home','/mobile/v1/teachers/auth','/sti/give_credits')
           and i.created_at >= \'#{fromStr}\'
         group by p.id
-      )  
+      )
       interactions = Interaction.find_by_sql(sql2)
-          
+
       sql3 = %Q(
         select
-        p.id as person_id, 
+        p.id as person_id,
         sum(oc.points) as issued_balance,
         count(oc.id) as num_credits
         from people p, person_school_links psl, otu_codes oc
-        where p.id = psl.person_id and psl.school_id = #{school.id} 
+        where p.id = psl.person_id and psl.school_id = #{school.id}
           and p.status = 'active' and psl.status = 'active' and p.type in ('Teacher','SchoolAdmin')
           and oc.person_school_link_id = psl.id and oc.created_at >= \'#{fromStr}\'
         group by p.id
       )
       otu_codes = OtuCode.find_by_sql(sql3)
-      
+
       teachers.each do | teach |
         i = interactions.detect { | int | int.person_id.to_i == teach.id.to_i }
         if i
           teach.num_logins = i.num_logins
-          teach.last_sign_in = i.last_sign_in if !i.last_sign_in.blank?
+          teach.last_sign_in = i.last_sign_in.present? ? i.last_sign_in : nil
+        else
+          teach.last_sign_in = nil
         end
         o = otu_codes.detect { | oc| oc.person_id.to_i == teach.id.to_i }
         if o
@@ -107,23 +109,23 @@ module Reports
         classroom: "Has Classroom",
         type: "Type",
         issued_balance: "Total Credits Issued",
-        num_credits: "Num of Credits Issued Txns",        
+        num_credits: "Num of Credits Issued Txns",
         num_of_logins: "Num of Logins",
         last_sign_in_at: "Last Sign In",
-        account_balance: "Account Balance",        
+        account_balance: "Account Balance",
       }
     end
     def data_classes
       {
         person: "",
         username: "",
-        classroom: "",       
-        type: "", 
+        classroom: "",
+        type: "",
         issued_balance: "currency",
         num_credits: "",
         num_of_logins: "",
         last_sign_in_at: "",
-        account_balance: ""        
+        account_balance: ""
       }
     end
 
