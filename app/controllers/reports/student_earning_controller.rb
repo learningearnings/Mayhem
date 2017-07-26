@@ -12,6 +12,7 @@ module Reports
         classrooms: current_person.classrooms_for_school(current_school)
       }
     end
+
     def credit_transactions
       @student = Student.find(params[:student_id])
       @start_date = DateTime.parse(params[:start_date])
@@ -28,6 +29,7 @@ module Reports
         format.js
       end
     end
+
     def print_credit_transactions
       if params[:student_id].present? && params[:student_id].kind_of?(Array)
         student_ids = params[:student_id].map { |i| i.to_i }
@@ -52,6 +54,5 @@ module Reports
         format.js
       end
     end
-
   end
 end
