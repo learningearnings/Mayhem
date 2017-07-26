@@ -54,7 +54,7 @@ body {
 
 //All headings have the same color
 h1, h2, h3, h4, h5, h6 {
-   font-family: "Open Sans";  
+   font-family: "Open Sans";
    font-color: #333;
    color: #333;
 }
@@ -123,7 +123,7 @@ input[type="submit"], input[type="button"], input[type="text"] {
     //text-align: center;
     line-height: 1;
     cursor: pointer;
-    vertical-align: middle;
+    //vertical-align: middle;
     padding: 9px 20px;
     color: #137abb;
     background-color: #fff;
@@ -153,7 +153,7 @@ input[type="text"] {
     text-align: center;
     line-height: 1;
     cursor: pointer;
-    vertical-align: middle;
+    //vertical-align: middle;
     padding: 9px 20px;
     color: #137abb;
     background-color: #fff;
@@ -184,6 +184,8 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
   color: #333;
+  vertical-align: unset;
+  height: 36px;
 }
 
 .btn:hover:not([disabled]) {
@@ -252,13 +254,13 @@ a:focus, a:hover {
 .btn {
   text-shadow: 0 0 0;
 }
-.profile .arrow img, 
+.profile .arrow img,
 .profile-collapsed .arrow img {
     cursor: pointer;
 }
 
-.profile .avatar img, 
-.profile-collapsed .avatar img, 
+.profile .avatar img,
+.profile-collapsed .avatar img,
 .person-details {
     cursor: pointer;
 }
