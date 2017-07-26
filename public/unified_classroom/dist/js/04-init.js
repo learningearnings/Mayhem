@@ -115,7 +115,8 @@
                 $(".resp-page-content").html(result.html());
               }
             });
-          } else {
+          }
+          else {
             $.ajax({
               type: "GET",
               url: data["routes"][id] + "/?inline=Y",
@@ -134,7 +135,18 @@
           window.localStorage.setItem('active_id',id);
           if (id == "logout-link") {
             window.location = data["routes"][id];
-          } else {
+          }
+          else if (id == 'profile-link') {
+            $.ajax({
+              type: "GET",
+              url: data["routes"][id] + "/?inline=Y",
+              success: function(data){
+                var result = $('.resp-page-content',data);
+                $(".resp-page-content").html(result.html());
+              }
+            });
+          }
+          else {
             $.ajax({
               type: "GET",
               url: data["routes"][id] + "/?inline=Y",
