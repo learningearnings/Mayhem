@@ -12,6 +12,7 @@ module Reports
         classrooms: current_person.classrooms_for_school(current_school)
       }
     end
+
     def credit_transactions
       @student = Student.find(params[:student_id])
       @start_date = DateTime.parse(params[:start_date])
@@ -28,15 +29,21 @@ module Reports
         format.js
       end
     end
+
     def print_credit_transactions
       if params[:student_id].present? && params[:student_id].kind_of?(Array)
         student_ids = params[:student_id].map { |i| i.to_i }
       elsif params[:student_id].kind_of?(String)
         student_ids = params[:student_id].split(",").map { |i| i.to_i }
       else
-        flash[:error] = "Please select students from the list."
-        redirect_to :back
-        return
+        begin
+          flash[:error] = 'Please select students from the list.'
+          redirect_to :back
+          return
+        rescue ActionController::RedirectBackError
+          redirect_to student_earning_report_path
+          return
+        end
       end
       @students = Student.selected_students(student_ids)
       @start_date = DateTime.parse(params[:start_date]) if params[:start_date]
@@ -47,6 +54,5 @@ module Reports
         format.js
       end
     end
-
   end
 end
