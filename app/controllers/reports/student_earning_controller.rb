@@ -34,9 +34,14 @@ module Reports
       elsif params[:student_id].kind_of?(String)
         student_ids = params[:student_id].split(",").map { |i| i.to_i }
       else
-        flash[:error] = "Please select students from the list."
-        redirect_to :back
-        return
+        begin
+          flash[:error] = 'Please select students from the list.'
+          redirect_to :back
+          return
+        rescue ActionController::RedirectBackError
+          redirect_to student_earning_report_path
+          return
+        end
       end
       @students = Student.selected_students(student_ids)
       @start_date = DateTime.parse(params[:start_date]) if params[:start_date]
