@@ -38,11 +38,13 @@ class BaseImporter
   end
 
   def call
-    begin
-      run
-    ensure
-      @log_file.try(:close)
-    end
+    run
+    @log_file.try(:close)
+    # begin
+    #   run
+    # ensure
+    #   @log_file.try(:close)
+    # end
   end
 
   protected
