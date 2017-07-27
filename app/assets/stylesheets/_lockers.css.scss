@@ -102,8 +102,7 @@ ul.action_buttons.locker_buttons {
   }
   .share-locker {
     @extend .awesome-button;
-    //background: rgb(255, 151, 86);
-    background: #2b9e12;
+    background: rgb(255, 151, 86);
     color: #fff;
     @include rotate(3deg);
     &:hover {
