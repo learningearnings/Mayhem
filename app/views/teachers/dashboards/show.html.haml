@@ -1,62 +1,64 @@
-.student-account-content
-  %h1= "Student - #{@student.name}"
-  .account-info
-    .profile-bank-account
-      .avatar
-        = avatar_for(@student, '80x80#')
-      %h4 Accounts
-      %dl.balance
-        %dt Checking Balance:
-        %dd= number_with_precision(@student.checking_balance, precision: 2, delimiter: ',')
-      %dl.balance
-        %dt Savings Balance
-        %dd= number_with_precision(@student.savings_balance, precision: 2, delimiter: ',')
+.main-content-wrapper
+  .full-content
+    .student-account-content
+      %h1= "Student - #{@student.name}"
+      .account-info
+        .profile-bank-account
+          .avatar
+            = avatar_for(@student, '80x80#')
+          %h4 Accounts
+          %dl.balance
+            %dt Checking Balance:
+            %dd= number_with_precision(@student.checking_balance, precision: 2, delimiter: ',')
+          %dl.balance
+            %dt Savings Balance
+            %dd= number_with_precision(@student.savings_balance, precision: 2, delimiter: ',')
 
-  %h4= link_to "Back to Classroom", classroom_path(@classroom)
+      %h4= link_to "Back to Classroom", classroom_path(@classroom)
 
-  .student-account-form
-    = form_for @student, :url => teachers_update_student_path do |f|
-      = f.hidden_field :id, :value => @student.id
-      = hidden_field_tag :classroom_id, @classroom.id
-      .row
-        .span3
-          = f.label :first_name
-          = f.text_field :first_name
-          = f.label :last_name
-          = f.text_field :last_name
-          = f.label :username
-          = f.text_field :username, :value => f.object.user.username
-        .span3
-          = f.label :grade
-          .select-grade
-            = f.select :grade, School::GRADES
-          = f.label :gender
-          .select-gender
-            = f.select :gender, ['Male', 'Female'], include_blank: true
-          = f.label :password
-          = f.text_field :password
-      = f.submit class: 'btn awesome-button'
+      .student-account-form
+        = form_for @student, :url => teachers_update_student_path do |f|
+          = f.hidden_field :id, :value => @student.id
+          = hidden_field_tag :classroom_id, @classroom.id
+          .row
+            .span3
+              = f.label :first_name
+              = f.text_field :first_name
+              = f.label :last_name
+              = f.text_field :last_name
+              = f.label :username
+              = f.text_field :username, :value => f.object.user.username
+            .span3
+              = f.label :grade
+              .select-grade
+                = f.select :grade, School::GRADES
+              = f.label :gender
+              .select-gender
+                = f.select :gender, ['Male', 'Female'], include_blank: true
+              = f.label :password
+              = f.text_field :password
+          = f.submit class: 'btn awesome-button'
 
-  %br
+      %br
 
-  - if @orders && @orders.any?
-    %table.table.table-bordered.table-striped.solid-background
-      %thead
-        %tr
-          %th Completed At
-          %th Amount
-          %th Payment State
-          %th Shipment State
-          %th Product Name
-          %th Product Description
-          %th Refund
-      %tbody
-        - @orders.each do |order|
-          %tr
-            %td= order.completed_at
-            %td= order.amount
-            %td= order.payment_state
-            %td= order.state
-            %td= order.products.first.name
-            %td= order.products.first.description
-            %td= link_to "Refund", refund_purchase_path(reward_delivery_id: order.id), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
+      - if @orders && @orders.any?
+        %table.table.table-bordered.table-striped.solid-background
+          %thead
+            %tr
+              %th Completed At
+              %th Amount
+              %th Payment State
+              %th Shipment State
+              %th Product Name
+              %th Product Description
+              %th Refund
+          %tbody
+            - @orders.each do |order|
+              %tr
+                %td= order.completed_at
+                %td= order.amount
+                %td= order.payment_state
+                %td= order.state
+                %td= order.products.first.name
+                %td= order.products.first.description
+                %td= link_to "Refund", refund_purchase_path(reward_delivery_id: order.id), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
