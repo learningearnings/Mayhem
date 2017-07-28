@@ -1,21 +1,9 @@
 .main-content-wrapper
-  .full-content
-    .student-account-content
-      %h1= "Student - #{@student.name}"
-      .account-info
-        .profile-bank-account
-          .avatar
-            = avatar_for(@student, '80x80#')
-          %h4 Accounts
-          %dl.balance
-            %dt Checking Balance:
-            %dd= number_with_precision(@student.checking_balance, precision: 2, delimiter: ',')
-          %dl.balance
-            %dt Savings Balance
-            %dd= number_with_precision(@student.savings_balance, precision: 2, delimiter: ',')
+  .student-account-content
+    %h1= "Student - #{@student.name}"
+    %h4= link_to "Back to Classroom", classroom_path(@classroom)
 
-      %h4= link_to "Back to Classroom", classroom_path(@classroom)
-
+    .primary-content
       .student-account-form
         = form_for @student, :url => teachers_update_student_path do |f|
           = f.hidden_field :id, :value => @student.id
@@ -38,27 +26,38 @@
               = f.label :password
               = f.text_field :password
           = f.submit class: 'btn awesome-button'
+    .secondary-content
+      .account-info
+        .profile-bank-account
+          .avatar
+            = avatar_for(@student, '80x80#')
+          %h4 Accounts
+          %dl.balance
+            %dt Checking Balance:
+            %dd= number_with_precision(@student.checking_balance, precision: 2, delimiter: ',')
+          %dl.balance
+            %dt Savings Balance
+            %dd= number_with_precision(@student.savings_balance, precision: 2, delimiter: ',')
+    %br
 
-      %br
-
-      - if @orders && @orders.any?
-        %table.table.table-bordered.table-striped.solid-background
-          %thead
+    - if @orders && @orders.any?
+      %table.table.table-bordered.table-striped.solid-background
+        %thead
+          %tr
+            %th Completed At
+            %th Amount
+            %th Payment State
+            %th Shipment State
+            %th Product Name
+            %th Product Description
+            %th Refund
+        %tbody
+          - @orders.each do |order|
             %tr
-              %th Completed At
-              %th Amount
-              %th Payment State
-              %th Shipment State
-              %th Product Name
-              %th Product Description
-              %th Refund
-          %tbody
-            - @orders.each do |order|
-              %tr
-                %td= order.completed_at
-                %td= order.amount
-                %td= order.payment_state
-                %td= order.state
-                %td= order.products.first.name
-                %td= order.products.first.description
-                %td= link_to "Refund", refund_purchase_path(reward_delivery_id: order.id), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
+              %td= order.completed_at
+              %td= order.amount
+              %td= order.payment_state
+              %td= order.state
+              %td= order.products.first.name
+              %td= order.products.first.description
+              %td= link_to "Refund", refund_purchase_path(reward_delivery_id: order.id), :confirm => "Are you sure you want to refund this purchase?", :class => "button"
