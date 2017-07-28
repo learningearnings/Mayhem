@@ -37,7 +37,7 @@
   }
 
   .allow-negative-credits {
-    input[type="submit"] {
+    input[type="submit"],input[type="text"] {
       display: block;
       margin-top: 1em;
     }
