@@ -52,3 +52,16 @@
 #history-modal.modal
   .modal-header
     #credit-history
+
+:javascript
+$(document).ready(function(){
+  $('#print-report').on('click', function(event){
+    if ($('.student-select input[type=checkbox]:checked').length == 0){
+      $('.messages-container').html(
+        "<div class='alert error flash-message'><a class='close' data-dismiss='alert' href='#'>&times;</a><p>Please select students from the list.</p></div>"
+      );
+      event.preventDefault();
+      return false;
+    }
+  });
+});
