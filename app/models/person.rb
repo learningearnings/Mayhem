@@ -45,7 +45,7 @@ class Person < ActiveRecord::Base
   has_many :food_fight_players
 
   has_many :votes
-  
+
   accepts_nested_attributes_for :user
 
   attr_accessible :dob, :first_name, :grade, :last_name, :legacy_user_id, :user, :gender, :salutation, :school, :username, :email, :user_attributes, :recovery_password, :password, :sti_id, :district_guid, :password_confirmation, :type, :can_distribute_credits
@@ -160,7 +160,7 @@ class Person < ActiveRecord::Base
   def classrooms(status = :status_active)
     Classroom.joins(:person_school_classroom_links).where(person_school_classroom_links: { id: person_school_classroom_links(status).map(&:id) }).send(status)
   end
-  
+
   def person_classroom
     Person.joins(person_school_links: [{ person_school_classroom_links: :classroom }]).select("classrooms.id as classroom_id, classrooms.name as class_name").where("people.id = ?", self.id).order("classrooms.name ASC")
   end
@@ -172,7 +172,7 @@ class Person < ActiveRecord::Base
 
   # Only return the classrooms for the given school
   def classrooms_for_school(school)
-    classrooms.order(:name).select{|c| c.school == school}
+    classrooms.order(:name).select{|c| c.school.school_id == school.school_id}
   end
 
   def full_name
@@ -239,7 +239,7 @@ class Person < ActiveRecord::Base
       PersonSchoolClassroomLink.create(:classroom_id => d.id, :person_school_link_id => psl.id)
     end
   end
-  
+
    def strip_whitespace
     self.first_name = self.first_name.strip unless self.first_name.blank?
     self.last_name = self.last_name.strip unless self.last_name.blank?
