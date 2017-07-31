@@ -24,7 +24,3 @@
             = link_to 'Edit', '#', onclick: 'sti_edit();', class: 'btn awesome-button'
           - else
             = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
-:javascript
-  function sti_edit() {
-    alert("This user was created in the Student Information System. You will have to edit it there")
-  }
