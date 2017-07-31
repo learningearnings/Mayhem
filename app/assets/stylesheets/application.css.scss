@@ -53,7 +53,7 @@ body {
 }
 
 //All headings have the same color
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, label {
    font-family: "Open Sans";
    font-color: #333;
    color: #333;
@@ -100,6 +100,10 @@ h6 {
    font-size: 18px;
    line-height: 18px;
    padding: 16px 0;
+}
+
+label {
+    font-size: 16px;
 }
 
 .login .chosen-container-single .chosen-single div {
