@@ -1,7 +1,7 @@
 .main-content-wrapper
   .full-content
     %h1 Your Profile
-  
+
     .row
       .span2
         .avatar= image_tag(@person.avatar.image.url) if @person.avatar
@@ -18,13 +18,9 @@
         %dl.details
           %dt School
           %dd= current_school.name
-  
+
         .link
           - if @person.sti_id && !@person.is_a?(Student)
-            = link_to_function "Edit", "sti_edit()", class: 'btn awesome-button'
+            = link_to 'Edit', '#', onclick: 'sti_edit();', class: 'btn awesome-button'
           - else
             = link_to "Edit", edit_person_path(@person.id), class: 'btn awesome-button'
-:javascript
-  function sti_edit() {
-    alert("This user was created in the Student Information System. You will have to edit it there") 
-  }
