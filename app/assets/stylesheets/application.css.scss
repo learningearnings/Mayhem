@@ -141,7 +141,9 @@ input[type="submit"], input[type="button"] {
 input[type="text"] {
     text-align: left;
 }
-
+select {
+    padding: 9px 20px;
+}
 
 
 ::-webkit-file-upload-button {
