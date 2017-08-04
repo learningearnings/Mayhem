@@ -1,8 +1,8 @@
 .main-content-wrapper
-	.full-content
-		%h1 Classroom: #{@classroom.name}
-		%ul.action_buttons
-		  %li= link_to "Back", classroom_path(@classroom), class: 'btn awesome-button'
+  .full-content
+    %h1 Classroom: #{@classroom.name}
+    %ul.action_buttons
+      %li= link_to "Back", classroom_path(@classroom), class: 'btn awesome-button'
 
 		= form_for @classroom do |f|
 		  = f.text_field :name
