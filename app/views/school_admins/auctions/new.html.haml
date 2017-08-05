@@ -1,6 +1,6 @@
 .main-content-wrapper
   .full-content
-    %h3 Create New Auction Reward
+    %h1 Create New Auction Reward
     = form_tag create_auction_reward_school_admins_auctions_path, :method => :post, :enctype =>"multipart/form-data" do
       = hidden_field_tag :fullfillment_type, "Auction Reward"
       = label_tag :auction_reward_name
