@@ -1,14 +1,16 @@
-.auctions-content
-  %h1 Active Auctions
-  .span8
-    .auctions
-      = link_to 'New Auction', new_school_admins_auction_path, { class: 'btn awesome-button' }
-      = link_to 'Ended Auctions', all_school_admins_auctions_path, { class: 'btn awesome-button' }
-      - if @auctions.any? && current_school.name != 'STI'
-        %p
-          %h4 Here are the currently-open auctions.
-        = render @auctions
+.main-content-wrapper
+  .full-content
+    .auctions-content
+      %h1 Active Auctions
+      .span8
+        .auctions
+          = link_to 'New Auction', new_school_admins_auction_path, { class: 'btn awesome-button' }
+          = link_to 'Ended Auctions', all_school_admins_auctions_path, { class: 'btn awesome-button' }
+          - if @auctions.any? && current_school.name != 'STI'
+            %p
+              %h4 Here are the currently-open auctions.
+            = render @auctions
 
-      - else
-        %p
-          %h4 There are no auctions currently open, sorry.
+          - else
+            %p
+              %h4 There are no auctions currently open, sorry.
