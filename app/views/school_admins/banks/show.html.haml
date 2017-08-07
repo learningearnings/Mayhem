@@ -40,7 +40,7 @@
 
         .tab-content
           .tab-pane#print-credits
-            %p Print Physical Credits
+            %h4 Print Physical Credits
             = form_for OtuCode.new, :url => school_admins_create_print_bucks_path do |f|
               %span.form-input-control
                 = label_tag "Teacher"
@@ -58,7 +58,7 @@
 
           .tab-pane#electronic-credits
             .electronic-credits-for-student
-              %p Issue Electronic Credits to a single student
+              %h4 Issue Electronic Credits to a single student
               = form_for OtuCode.new, :url => school_admins_create_ebucks_path do |f|
                 %span.form-input-control
                   = label_tag 'Student'
@@ -73,7 +73,7 @@
                 = f.submit 'Send Credits', :class => 'btn awesome-button', style: 'float:left;'
             %br
             .electronic-credits-for-classroom
-              %p Issue Electronic Credits to each student in a classroom
+              %h4 Issue Electronic Credits to each student in a classroom
               = form_for OtuCode.new, :url => school_admins_create_ebucks_for_classroom_path do |f|
                 %span.form-input-control
                   = label_tag 'Classroom'
@@ -88,7 +88,7 @@
                 = f.submit 'Send Credits', class: 'btn awesome-button', style: 'float:left;'
 
           .tab-pane#transfer-credits
-            %p Transfer Credits Between Teachers
+            %h4 Transfer Credits Between Teachers
             = form_for OtuCode.new, :url => school_admins_transfer_bucks_path do |f|
               %span.form-input-control
                 = label_tag 'Credits'
