@@ -9,6 +9,7 @@
     width: 50px;
     &.grade, &.grade select {
       width: 60px;
+      display: table-cell;
     }
     &.gender, &.gender select {
       width: 90px;
@@ -23,6 +24,10 @@
     margin-bottom: 1em;
     label {
       display: inline-block;
+    }
+    select {
+      display: inline-block;
+      margin-right: 10px;
     }
     #controls_grade {
       width: 60px;
