@@ -27,15 +27,10 @@
     width: 90px;
     &.grade {
       width: 115px;
+      display: table-cell;
     }
-    &.grade select {
-      width: 90px;
-    }
-    &.gender, &.gender select {
+    &.gender {
       width: 115px;
-    }
-    &.gender select {
-      width: 90px;
     }
     .classroom, &.classroom select {
       width: 100px;
@@ -47,6 +42,10 @@
     margin-bottom: 1em;
     label {
       display: inline-block;
+    }
+    select {
+      display: inline-block;
+      margin-right: 10px;
     }
     #controls_grade {
       width: 100px;
@@ -63,7 +62,7 @@
   }
   .grade {
     margin-left: 0; // Overriding something too generic elsewhere
-    width: 60px;
+    //width: 60px;
   }
 
   .students_body{
@@ -72,10 +71,10 @@
     }
     td.student-contact{
       text-align:center;
-    }  
+    }
     td.grade{
       text-align: center;
-    } 
+    }
   }
 
 
