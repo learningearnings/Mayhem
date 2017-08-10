@@ -55,7 +55,7 @@
         %h3 Add Existing Student
       .modal-body
         = form_for PersonSchoolClassroomLink.new, html: { class: 'add-existing-student' }, url: new_classroom_student_path do |f|
-          = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), id: 'selected-student'
+          = select_tag :student_id, options_from_collection_for_select((current_school.students.sort_by(&:name) - @classroom.students), :id, :to_s), id: 'selected-student'
           = hidden_field_tag :classroom_id, @classroom.id
         .btn.btn-success.add-existing-student-save
           Add
