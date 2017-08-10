@@ -1,9 +1,7 @@
 .main-content-wrapper
   .full-content.shared-locker
     %h1 #{student}'s Locker
-
-    %ul.action_buttons.locker_buttons
-      %li= link_to 'My Locker', locker_path, class: 'btn share-locker'
-
     .locker_wrapper
       = render 'locker_stickers', locker_sticker_links: locker_sticker_links
+    %ul.locker_buttons
+      %li= link_to 'My Locker', locker_path, class: 'submit-button'
