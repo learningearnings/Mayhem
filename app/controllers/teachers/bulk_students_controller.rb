@@ -12,6 +12,11 @@ module Teachers
     end
 
     def import_students
+      unless params[:file]
+        flash[:error] = 'No file selected'
+        redirect_to :back
+        return
+      end
       begin
         importer = StudentsImporter.new(params[:school_id], params[:file])
         importer.call
@@ -72,6 +77,6 @@ module Teachers
       end
 
       @students = @students.for_grade(params[:grade]) if params[:grade].present?
-    end    
+    end
   end
 end

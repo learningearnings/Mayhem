@@ -3,6 +3,7 @@ class StudentsImporter < BaseImporter
 
   protected
   def run
+    return false unless parsed_doc
     check_header(parsed_doc.headers)
     student_data.each do |datum|
       find_or_create_student(datum)

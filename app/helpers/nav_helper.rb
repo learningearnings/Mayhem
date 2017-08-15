@@ -70,7 +70,7 @@ module NavHelper
               id: 'classrooms-link',
               name: 'Classrooms',
               activeAt: '/classrooms/',
-              iconName: 'group'
+              iconName: 'board'
           },
           {
               id: 'play-link',
@@ -88,7 +88,7 @@ module NavHelper
               id: 'school-admin-reports-link',
               name: 'Reports',
               activeAt: '^/reports',
-              iconName: 'bar-graph-f'
+              iconName: 'report'
           }
         ]
       elsif current_person.is_a?(Teacher)
@@ -115,7 +115,7 @@ module NavHelper
               id: 'classrooms-link',
               name: 'Classrooms',
               activeAt: '^/classrooms',
-              iconName: 'group'
+              iconName: 'board'
           },
           {
               id: 'shop-link',
@@ -127,7 +127,7 @@ module NavHelper
               id: 'reports-link',
               name: 'Reports',
               activeAt: '^/reports',
-              iconName: 'bar-graph-f'
+              iconName: 'report'
           }
         ]
       else

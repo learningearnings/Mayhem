@@ -1,38 +1,38 @@
 .main-content-wrapper
-  %h1 Choose a Student
-  
-  = form_for FoodPersonLink.new, :url => play_games_food_fight_path do |f|
-    #hover_value= hidden_field_tag :person_id
-    - if current_person.favorite_people.present?
-      %h4 Favorite People
-      - current_person.favorite_people.each do |student|
-        %ul
-          %div{:id => "#{student.id}", :class => "student_hover"}
-            %li= student.name
-  
-    %h4 All Students
-    %ul.student_list
-      - (@students).each do |student|
-        %li.student_hover{ id: student.id }
-          .avatar= avatar_for(student)
-          .name= student.name
-    = paginate @students
-  
-    %h4 All Teachers
-    %ul.student_list
-      - (@teachers).each do |teacher|
-        %li.student_hover{ id: teacher.id }
-          .avatar= avatar_for(teacher)
-          .name= teacher.name
-    = paginate @teachers
-  
-  
+  .full-content
+    %h1 Choose a Student
+    = form_for FoodPersonLink.new, :url => play_games_food_fight_path do |f|
+      #hover_value= hidden_field_tag :person_id
+      - if current_person.favorite_people.present?
+        %h4 Favorite People
+        - current_person.favorite_people.each do |student|
+          %ul
+            %div{:id => "#{student.id}", :class => "student_hover"}
+              %li= student.name
+
+      %h4 All Students
+      %ul.student_list
+        - (@students).each do |student|
+          %li.student_hover{ id: student.id }
+            .avatar= avatar_for(student)
+            .name= student.name
+      = paginate @students
+
+      %h4 All Teachers
+      %ul.student_list
+        - (@teachers).each do |teacher|
+          %li.student_hover{ id: teacher.id }
+            .avatar= avatar_for(teacher)
+            .name= teacher.name
+      = paginate @teachers
+
+
   :javascript
     $(".student_hover").hover(
       function() { $(this).addClass("hover"); },
       function() { $(this).removeClass("hover"); }
     );
-  
+
     $(".student_hover").click( function() {
       $('.student_hover').removeClass("active");
       $(this).addClass("active").siblings().removeClass("active");

@@ -1,16 +1,14 @@
 .main-content-wrapper
   .full-content.show-locker
     %h1 My Locker
-
-    %ul.action_buttons.locker_buttons
-      %li= button_to 'Decorate My Locker', edit_locker_path, class: 'btn decorate-locker', method: :get
-      %li= button_to 'Share My Locker', share_locker_path, class: 'btn share-locker',
-        data: { toggle: 'modal', target: '#share-locker-modal' }, method: :get
-      %li= link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn visit-locker',
-        data: { toggle: 'modal', target: '#visit-locker-modal' }, method: :get
-
     .locker_wrapper
       = render 'locker_stickers', locker_sticker_links: locker_sticker_links
+    %ul.locker_buttons
+      %li= link_to 'Decorate My Locker', edit_locker_path, class: 'submit-button'
+      %li= link_to 'Share My Locker', share_locker_path, class: 'submit-button',
+        data: { toggle: 'modal', target: '#share-locker-modal' }
+      %li= link_to "Visit My Friend's Locker", friends_locker_path, class: 'submit-button',
+        data: { toggle: 'modal', target: '#visit-locker-modal' }
 
     #share-locker-modal.modal
       .modal-body

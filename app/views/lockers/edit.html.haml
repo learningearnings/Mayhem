@@ -1,14 +1,13 @@
 .main-content-wrapper
   .locker_edit.full-content
     %h1 Decorate My Locker
-
-    %ul.action_buttons.locker_buttons
-      %li= link_to 'Share My Locker', share_locker_path, class: 'btn share-locker', "data-toggle" => 'modal', 'data-target' => '#share-locker-modal'
-      %li= link_to "Visit My Friend's Locker", friends_locker_path, class: 'btn visit-locker', "data-toggle" => 'modal', 'data-target' => '#visit-locker-modal'
-
     .locker_wrapper.editable
       = render 'locker_stickers', locker_sticker_links: locker_sticker_links
-
+    %ul.locker_buttons
+      %li= link_to 'Share My Locker', share_locker_path, class: 'submit-button',
+        data: { toggle: 'modal', target: '#share-locker-modal' }
+      %li= link_to "Visit My Friend's Locker", friends_locker_path, class: 'submit-button',
+        data: { toggle: 'modal', target: '#visit-locker-modal' }
     .locker_interface
       .available_stickers
         %p Pick out your favorite stickers and add some pizazz to your locker.

@@ -9,6 +9,7 @@ class BaseImporter
 
   attr_reader :school_id, :file, :log_file_path
   def initialize(school_id, file, log_file_path='/tmp/le_importer.log')
+    return false unless file
     if file.original_filename.include?('.xlsx')
       new_file = store_xlsx_file(file)
       @file = convert_xlsx(new_file.path)
@@ -40,7 +41,7 @@ class BaseImporter
     begin
       run
     ensure
-      @log_file.close
+      @log_file.try(:close)
     end
   end
 

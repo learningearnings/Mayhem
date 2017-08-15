@@ -1,32 +1,34 @@
 .main-content-wrapper
   .full-content
-    %h3= current_school.name
+    %h1= current_school.name
 
-    = form_for @school, url: revoke_credit_setting_path do |f|
-      = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
+    .school-settings
+      .allow-negative-credits
+        %h4 Allow Negative Credits
+        = form_for @school, url: revoke_credit_setting_path do |f|
+          = f.check_box :can_revoke_credits, checked: current_school.can_revoke_credits
+          = f.label :allow_negative_credits
 
-      %h4 Allow Negative Credits
+          %p You can use this setting to allow or disallow teachers to enter negative credit amounts. If you don't allow negative credits, then teachers will only be allowed to enter positive number values when issuing e-Credits and can only add credits to a students account.
 
-      %p You can use this setting to allow or disallow teachers to enter negative credit amounts. If you don't allow negative credits, then teachers will only be allowed to enter positive number values when issuing e-Credits and can only add credits to a students account.
+          %p If you allow negative e-Credits to be issued then teachers can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately.
 
-      %p If you allow negative e-Credits to be issued then teachers can take away, or deduct, credits from a students account by sending an e-Credit for a negative amount. These e-Credits are automatically deposited into the students account and affect their balance immediately.
-
-      -if current_school.is_inow?
-        %h4 Award Automatic Credits For:
-        = f.label :weekly_perfect_attendance_amount
-        = f.text_field :weekly_perfect_attendance_amount
-        /
-          = f.label :monthly_perfect_attendance_amount
-          = f.text_field :monthly_perfect_attendance_amount
-        = f.label :weekly_no_tardies_amount
-        = f.text_field :weekly_no_tardies_amount
-        /
-          = f.label :monthly_no_tardies_amount
-          = f.text_field :monthly_no_tardies_amount
-        = f.label :weekly_no_infractions_amount
-        = f.text_field :weekly_no_infractions_amount
-        /
-          = f.label :monthly_no_infractions_amount
-          = f.text_field :monthly_no_infractions_amount
-        %br/
-      = f.submit
+          -if current_school.is_inow?
+            %h4 Award Automatic Credits For:
+            = f.label :weekly_perfect_attendance_amount
+            = f.text_field :weekly_perfect_attendance_amount
+            /
+              = f.label :monthly_perfect_attendance_amount
+              = f.text_field :monthly_perfect_attendance_amount
+            = f.label :weekly_no_tardies_amount
+            = f.text_field :weekly_no_tardies_amount
+            /
+              = f.label :monthly_no_tardies_amount
+              = f.text_field :monthly_no_tardies_amount
+            = f.label :weekly_no_infractions_amount
+            = f.text_field :weekly_no_infractions_amount
+            /
+              = f.label :monthly_no_infractions_amount
+              = f.text_field :monthly_no_infractions_amount
+            %br/
+          = f.submit

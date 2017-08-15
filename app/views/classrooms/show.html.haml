@@ -55,7 +55,7 @@
         %h3 Add Existing Student
       .modal-body
         = form_for PersonSchoolClassroomLink.new, html: { class: 'add-existing-student' }, url: new_classroom_student_path do |f|
-          = select_tag :student_id, options_from_collection_for_select((current_school.students.all.sort_by{|x| x.name} - @classroom.students), :id, :to_s), :class => 'chzn-select'
+          = select_tag :student_id, options_from_collection_for_select((current_school.students.sort_by(&:name) - @classroom.students), :id, :to_s), id: 'selected-student'
           = hidden_field_tag :classroom_id, @classroom.id
         .btn.btn-success.add-existing-student-save
           Add
@@ -78,7 +78,7 @@
 
 :javascript
 
-  $(".chzn-select").chosen();
+  $('#selected-student').chosen();
 
   if (hopscotch.getState() !== null  && (localStorage.getItem('tour:shouldStartTour') == 'Y')) {
     var tour = window[hopscotch.getState().split(":")[0]];
@@ -153,7 +153,7 @@
   });
 
   function homeroom_check(classroom_id) {
-    var student_id = $('.chzn-select').val();
+    var student_id = $('#selected-student').val();
     var student = 'student_id='+student_id;
     var classroom = '&classroom_id='+classroom_id;
     var url =  '/homeroom_check?'+student+classroom;
