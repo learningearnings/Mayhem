@@ -28,7 +28,7 @@ set :sidekiq_role, :sidekiq
 set :sidekiq_default_hooks, true
 set :bundle_flags, '--system --quiet'
 
-set :stages, %w(production demo staging sandbox qa demo)
+set :stages, %w(production demo staging awsproduction awsdemo awsstaging )
 set :default_stage, "staging"
 
 after 'deploy:start',   'unicorn:start'
