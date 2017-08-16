@@ -96,36 +96,31 @@
       data["home"]["onUserClick"] = function() {
         var id = $(this).attr('id');
         window.localStorage.setItem('active_id',id);
-        window.location = data["routes"][id];
+        $.ajax({
+              type: "GET",
+              url: data["routes"][id] ,
+              success: function(data){
+                $(".right-content-area").html(data);
+              }
+            });
       };
 
       data["main"].forEach(function(entry) {
         entry["onUserClick"] = function() {
           var id = $(this).attr('id');
           window.localStorage.setItem('active_id',id);
-          if ((id == 'shop-link') || (id == 'home-link')) {
-            $.ajax({
-              type: "GET",
-              url: data["routes"][id] + "/?inline=Y",
-              success: function(data){
-                var result = $('.resp-page-content',data);
-                //var result2 = $('.main-content-wrapper',result);
-                //alert(result.html());
-                //alert(result2.html());
-                $(".resp-page-content").html(result.html());
-              }
-            });
+          if (id == 'shop-link') {
+            window.location = data["routes"][id];
           }
           else {
             $.ajax({
               type: "GET",
-              url: data["routes"][id] + "/?inline=Y",
+              url: data["routes"][id] ,
               success: function(data){
                 $(".right-content-area").html(data);
               }
             });
           }
-          //window.location = data["routes"][id];
         };
       });
 
@@ -136,26 +131,15 @@
           if (id == "logout-link") {
             window.location = data["routes"][id];
           }
-          else if (id == 'profile-link') {
-            $.ajax({
-              type: "GET",
-              url: data["routes"][id] + "/?inline=Y",
-              success: function(data){
-                var result = $('.resp-page-content',data);
-                $(".resp-page-content").html(result.html());
-              }
-            });
-          }
           else {
             $.ajax({
               type: "GET",
-              url: data["routes"][id] + "/?inline=Y",
+              url: data["routes"][id] ,
               success: function(data) {
                 $(".right-content-area").html(data);
               }
             });
           }
-          //window.location = data["routes"][id];
         };
       });
 
