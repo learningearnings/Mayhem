@@ -11,7 +11,6 @@ class PeopleController < LoggedInController
   end
 
   def show
-    render :layout => 'application'
   end
 
   def get_avatar_results
