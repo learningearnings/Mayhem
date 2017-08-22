@@ -4,10 +4,25 @@
       .product-image
         - if product.images.present?
           - product_image_url = product.images[0].attachment.url(:product)
-          = link_to resized_image(product_image_url, '80x80#'), spree.product_path(product)
+          = link_to resized_image(product_image_url, '80x80#'), spree.product_path(product), class: 'product-path', remote: true
       .product-details
-        = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), :class => 'info', :itemprop => "name", :title => product.name
+        = link_to truncate("#{product.name}", :length => 50), spree.product_path(product), class: 'info product-path', :itemprop => "name", :title => product.name, remote: true
         .price.selling{:itemprop => "price"}= number_with_precision(product.price, precision: 2, delimiter: ',')
     .clear
-    
-  
+
+:javascript
+$(document).ready(function(){
+  $('.product-path').on('click', function(e){
+    var url = this.href;
+    e.preventDefault();
+    $.ajax({
+      url: url,
+      success: function(data){
+        parser = new DOMParser();
+        htmlDoc = parser.parseFromString(data, "text/html");
+        content = htmlDoc.getElementsByClassName('main-content-wrapper')[1]
+        $(".right-content-area").html(content);
+      }
+    })
+  })
+})
