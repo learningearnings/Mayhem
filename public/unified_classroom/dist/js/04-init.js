@@ -97,12 +97,12 @@
         var id = $(this).attr('id');
         window.localStorage.setItem('active_id',id);
         $.ajax({
-              type: "GET",
-              url: data["routes"][id] ,
-              success: function(data){
-                $(".right-content-area").html(data);
-              }
-            });
+          type: "GET",
+          url: data["routes"][id] ,
+          success: function(data){
+            $(".right-content-area").html(data);
+          }
+        });
       };
 
       data["main"].forEach(function(entry) {

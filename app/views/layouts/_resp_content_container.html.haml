@@ -1,16 +1,5 @@
 .messages-container
   = render "layouts/flashes"
-  - if respond_to? :breadcrumbs
-    = #breadcrumbs(@taxon)
-
 .resp-page-content
   .right-content-area
     = yield
--# - if (sidebar = yield :sidebar).empty?
--#   .resp-page-content= yield
--# - else
--#   .resp-page-content
--#     .span2= sidebar
--#     .span9= yield
-
-
