@@ -24,17 +24,8 @@
     width: 140px;
   }
   td.select, th.select, td.select select {
-    width: 90px;
-    &.grade {
-      width: 115px;
-      display: table-cell;
-    }
-    &.gender {
-      width: 115px;
-    }
-    .classroom, &.classroom select {
-      width: 100px;
-    }
+    width: 115px;
+    display: table-cell;
   }
   .controls {
     background: #eee;
