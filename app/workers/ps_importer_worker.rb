@@ -10,7 +10,10 @@ class PSImporterWorker
       options["url"]  = slt.api_url
       options["id"]  = slt.link_key
       options["secret"] = slt.password 
-      options['start_year'] = '2016'
+      options['start_year'] = '2017'
+      options["log_responses"] = false
+      options["silence_logging"] = true
+      options["import_dir"] = ""
       options['schools'] = [1,21,62] if district_guid == "903cd06f-623c-3909-a0e4-d503d57b8131"
       ps = PowerschoolImporter.new(options).run
       sync_attempt.status = "Success"
