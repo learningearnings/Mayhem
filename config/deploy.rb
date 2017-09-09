@@ -80,10 +80,10 @@ set :slack_local_user, `git config user.name`.chomp
 namespace :deploy do
   desc "Sends deployment notification to Slack."
   task :start_notify_slack, roles: :app do
-  #  text = "#{slack_local_user} started deploying #{slack_application}'s #{current_branch} to #{fetch(:stage, 'production')}"
-  #  notifier = Slack::Notifier.new slack_webhook_url, channel: slack_channel, username: slack_username
-  #  notifier.post text: text, icon_emoji: slack_emoji
-  #end
+  text = "#{slack_local_user} started deploying #{slack_application}'s #{current_branch} to #{fetch(:stage, 'production')}"
+  notifier = Slack::Notifier.new slack_webhook_url, channel: slack_channel, username: slack_username
+  notifier.post text: text, icon_emoji: slack_emoji
+  end
 
   desc "Symlink shared resources on each release"
   task :symlink_shared, :roles => [:app, :sidekiq] do
