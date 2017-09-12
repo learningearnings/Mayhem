@@ -46,11 +46,11 @@ class ApplicationController < ActionController::Base
   end
   
   def check_mixpanel
-    #if !session[:mixpanelinit] and current_user
-    #  MixPanelIdentifierWorker.perform_async(current_user.id, mixpanel_options)
-    #  MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', mixpanel_options)
+    if !session[:mixpanelinit] and current_user
+      MixPanelIdentifierWorker.perform_async(current_user.id, mixpanel_options)
+      MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', mixpanel_options)
       session[:mixpanelinit] = true
-    #
+
     end
   end
   
@@ -181,7 +181,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Override this anywhere you need to actually know how to get a current_person
-  # - i.e. when logged in :)172.20.0.101
+  # - i.e. when logged in :)
   def current_person
     @current_person ||= if current_user
                           current_user.person
