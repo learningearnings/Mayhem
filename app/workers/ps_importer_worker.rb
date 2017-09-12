@@ -5,7 +5,7 @@ class PSImporterWorker
 
     sync_attempt = SyncAttempt.create(:district_guid => district_guid, :status => "Running")
     begin
-      slt = StiLinkToken.where(district_guid: district_guid).first
+      slt = StiLinkToken.where(district_guid: district_guid).order(:status).first
       options = {}
       options["url"]  = slt.api_url
       options["id"]  = slt.link_key

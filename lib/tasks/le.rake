@@ -34,7 +34,7 @@ namespace :le do
 
   desc "STI Nightly Import"
   task :sti_nightly_import => :environment do
-    StiLinkToken.where(status: 'active').each do |link_token|
+    StiLinkToken.where(status: 'active').order(:status).each do |link_token|
       if link_token.username == "PowerSchool"
         PSImporterWorker.setup_sync(link_token.district_guid)
       else
@@ -51,7 +51,7 @@ namespace :le do
         start_date = Time.zone.now.beginning_of_week.strftime("%Y-%m-%d")
         end_date = Time.zone.now.end_of_week.strftime("%Y-%m-%d")
         credit_manager = CreditManager.new
-        sti_link_token = StiLinkToken.where(district_guid: school.district_guid, status: 'active').first
+        sti_link_token = StiLinkToken.where(district_guid: school.district_guid, status: 'active').order(:status).first
         next unless sti_link_token
         sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
         if school.weekly_perfect_attendance_amount.present?
@@ -146,7 +146,7 @@ namespace :le do
       start_date = 1.month.ago.beginning_of_month.strftime("%Y-%m-%d")
       end_date = 1.month.ago.end_of_month.strftime("%Y-%m-%d")
       credit_manager = CreditManager.new
-      sti_link_token = StiLinkToken.where(district_guid: school.district_guid, status: 'active').first
+      sti_link_token = StiLinkToken.where(district_guid: school.district_guid, status: 'active').order(:status).first
       next unless sti_link_token
       sti_client = STI::Client.new :base_url => sti_link_token.api_url, :username => sti_link_token.username, :password => sti_link_token.password
       if school.monthly_perfect_attendance_amount.present?

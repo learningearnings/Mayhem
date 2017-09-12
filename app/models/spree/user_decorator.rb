@@ -43,7 +43,7 @@ Spree::User.class_eval do
     end
     
     if user.nil? && school 
-      link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').first
+      link_token = StiLinkToken.where(:district_guid => school.district_guid, status: 'active').order(:status).first
       return unless link_token
       begin
         client = STI::Client.new(:base_url => link_token.api_url, :username => username, :password => password)

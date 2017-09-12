@@ -10,7 +10,7 @@ module STI
           if school
             school.deactivate
 
-            sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').first
+            sti_link_token = StiLinkToken.where(district_guid: @district_guid, status: 'active').order(:status).first
             client = STI::Client.new(base_url: sti_link_token.api_url, username: sti_link_token.username, password: sti_link_token.password)
             client.set_school_synced(school.sti_id, false)
           end  

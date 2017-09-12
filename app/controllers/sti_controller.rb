@@ -9,7 +9,7 @@ class StiController < ApplicationController
   before_filter :handle_sti_token, :only => [:give_credits, :create_ebucks_for_students]
   
   def sync_district
-    sti_link_token = StiLinkToken.where(district_guid: params[:district_guid].downcase).last      
+    sti_link_token = StiLinkToken.where(district_guid: params[:district_guid].downcase).order(:status).last      
     if sti_link_token.username == "PowerSchool"
       PSImporterWorker.setup_sync(district_guid: sti_link_token.district_guid)
     else
@@ -205,7 +205,7 @@ class StiController < ApplicationController
   end 
   
   def sync
-    @link = StiLinkToken.where(district_guid: params[:district_guid], status: 'active').first
+    @link = StiLinkToken.where(district_guid: params[:district_guid], status: 'active').order(:status).first
     if @link
       if StiImporterWorker.setup_sync(@link.api_url, @link.username, @link.password, @link.district_guid)
         render :json => {:status => :success}
@@ -221,7 +221,7 @@ class StiController < ApplicationController
     if params[:district_guid].blank? || params[:api_url].blank? || params[:link_key].blank? || params[:inow_username].blank?
       render :status => 400, :json => {:status => :failure, :message => "You must provide a district_guid, api_url, inow_username, and link_key"} and return
     end
-    @link = StiLinkToken.where(district_guid: params[:district_guid], status: 'active').first
+    @link = StiLinkToken.where(district_guid: params[:district_guid], status: 'active').order(:status).first
     password = params[:inow_password].blank? ? @link.try(:password) : params[:inow_password]
     if @link && @link.api_url != params[:api_url]
       render :status => 400, :json => {:status => :failure, :message => "The api url doesn't match that district_guid record"} and return
@@ -372,7 +372,7 @@ class StiController < ApplicationController
   end
 
   def handle_sti_token
-    sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
+    sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').order(:status).last
     if (sti_link_token == nil)
       return false
     end    
