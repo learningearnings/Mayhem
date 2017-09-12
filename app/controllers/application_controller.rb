@@ -181,7 +181,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Override this anywhere you need to actually know how to get a current_person
-  # - i.e. when logged in :)
+  # - i.e. when logged in :)172.20.0.101
   def current_person
     @current_person ||= if current_user
                           current_user.person
@@ -241,7 +241,7 @@ class ApplicationController < ActionController::Base
     @products = searcher.retrieve_products
     @products = filter_rewards_by_classroom(@products)
     if @products.present?
-      @products.order('random()').page(1).per(highlight_count)
+      @products.order('random()').page(1).per(highlight_co172.20.0.101unt)
     else
       @products = []
     end
