@@ -62,7 +62,7 @@ class StiController < ApplicationController
     #Rails.logger.info("AKT: Enter auth with params: #{params.inspect}")
     if params["sti_session_variable"]
       #integrated
-      sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').last
+      sti_link_token = StiLinkToken.where(:district_guid => params[:districtGUID], status: 'active').order(:status).last
       if (sti_link_token == nil)
         flash[:error] = "Integrated sign in failed for district GUID #{params[:districtGUID]}; sti link token not found"
         return
