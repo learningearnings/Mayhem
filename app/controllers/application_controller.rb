@@ -241,7 +241,7 @@ class ApplicationController < ActionController::Base
     @products = searcher.retrieve_products
     @products = filter_rewards_by_classroom(@products)
     if @products.present?
-      @products.order('random()').page(1).per(highlight_co172.20.0.101unt)
+      @products.order('random()').page(1).per(highlight_count)
     else
       @products = []
     end
