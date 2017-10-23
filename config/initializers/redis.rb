@@ -1,1 +1,1 @@
-$redis = Rails.env.production? ? Redis.new(:host => "192.241.241.213", :port => "6379") : Redis.new
+$redis = Rails.env.production? ? Redis.new(:host => "127.0.0.1", :port => "6379") : Redis.new
