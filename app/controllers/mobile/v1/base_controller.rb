@@ -21,12 +21,7 @@ module Mobile
   end
   
   def check_mixpanel
-    if !session[:mixpanelinit] and current_user
-      #MixPanelIdentifierWorker.perform_async(current_user.id, mixpanel_options)
-      #MixPanelTrackerWorker.perform_async(current_user.id, 'User Login', mixpanel_options)
-      #session[:mixpanelinit] = true
-
-    end
+      session[:mixpanelinit] = true
   end
   
   def mixpanel_options
