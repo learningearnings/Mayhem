@@ -13,13 +13,8 @@
     = stylesheet_link_tag "https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"          
     = stylesheet_link_tag    'application'
     :plain
-      <style>
-        html, body {
-          overflow: -moz-scrollbars-vertical; 
-          overflow: scroll;
-        }      
+      <style>    
         html.resp, body.resp {
-          overflow: -moz-scrollbars-vertical; 
           overflow: scroll;
         }
       </style>
@@ -34,12 +29,6 @@
       })();
   
   %body.resp
-    <style>
-        html.resp, body.resp {
-          overflow: -moz-scrollbars-vertical; 
-          overflow: scroll;
-        }
-    </style>
     .resp-page-content-container
       .resp-head
         .messages-container
