@@ -12,6 +12,12 @@
     = javascript_include_tag "https://code.jquery.com/ui/1.11.4/jquery-ui.js"
     = stylesheet_link_tag "https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"          
     = stylesheet_link_tag    'application'
+    :plain
+      <style>    
+        html.resp, body.resp {
+          overflow: scroll;
+        }
+      </style>
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-8360883-1']);
